@@ -10,120 +10,21 @@ using UnityEngine;
 * Copyright(c) 2021  mengyu
 *
 * 模块名：     
-* GamePackage.cs
+* GamePackageInfo.cs
 * 
 * 用途：
-* 游戏模块声明
+* 游戏模块所用信息结构体和枚举声明
 *
 * 作者：
 * mengyu
 *
 * 更改历史：
-* 2021-1-14 创建
+* 2021-1-16 创建
 *
 */
 
-namespace Ballance2.System.Bridge
+namespace Ballance2.System.Package
 {
-    /// <summary>
-    /// 模块包实例
-    /// </summary>
-    [SLua.CustomLuaClass]
-    public class GamePackage
-    {
-        private readonly string TAG = "GamePackage";
-
-        [SLua.DoNotToLua]
-        public bool ReadInfo(XmlDocument xml)
-        {
-            XmlNode nodePackage = xml.SelectSingleNode("Package");
-            XmlAttribute attributeName = nodePackage.Attributes["name"];
-            XmlAttribute attributeVersion = nodePackage.Attributes["version"];
-            XmlNode nodeBaseInfo = nodePackage.SelectSingleNode("BaseInfo");
-
-            if (attributeName == null)
-            {
-                GameErrorChecker.SetLastErrorAndLog(GameError.MissingAttribute, TAG, "Package attribute name is null");
-                return false;
-            }
-            if (attributeVersion == null)
-            {
-                GameErrorChecker.SetLastErrorAndLog(GameError.MissingAttribute, TAG, "Package attribute version is null");
-                return false;
-            }
-            if (nodeBaseInfo == null)
-            {
-                GameErrorChecker.SetLastErrorAndLog(GameError.MissingAttribute, TAG, "Package node BaseInfo is null");
-                return false;
-            }
-
-            //Version and PackageName
-            PackageName = attributeName.Value;
-            PackageVersion = ConverUtils.StringToInt(attributeVersion.Value, 0, "Package/version");
-
-            //BaseInfo
-            BaseInfo = new GamePackageBaseInfo(nodeBaseInfo);
-
-            //Compatibility
-            XmlNode nodeCompatibility = nodePackage.SelectSingleNode("Compatibility");
-            if (nodeCompatibility != null)
-                for (int i = 0; i < nodeCompatibility.Attributes.Count; i++)
-                {
-                    switch (nodeCompatibility.ChildNodes[i].Name)
-                    {
-                        case "TargetVersion":
-                            TargetVersion = ConverUtils.StringToInt(nodeCompatibility.ChildNodes[i].InnerText,
-                                GameConst.GameBulidVersion, "Compatibility/TargetVersion");
-                            break;
-                        case "MinVersion":
-                            MinVersion = ConverUtils.StringToInt(nodeCompatibility.ChildNodes[i].InnerText,
-                                GameConst.GameBulidVersion, "Compatibility/MinVersion");
-                            break;
-                    }
-                }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 模块包名
-        /// </summary>
-        public string PackageName { get; private set; }
-        /// <summary>
-        /// 模块版本号
-        /// </summary>
-        public int PackageVersion { get; private set; }
-        /// <summary>
-        /// 基础信息
-        /// </summary>
-        public GamePackageBaseInfo BaseInfo { get; private set; }
-
-        /// <summary>
-        /// 表示模块目标游戏内核版本
-        /// </summary>
-        public int TargetVersion { get; private set; } = GameConst.GameBulidVersion;
-        /// <summary>
-        /// 表示模块可以正常使用的最低游戏内核版本
-        /// </summary>
-        public int MinVersion { get; private set; } = GameConst.GameBulidVersion;
-
-        /// <summary>
-        /// 入口代码
-        /// </summary>
-        public string EntryCode { get; private set; }
-        /// <summary>
-        /// 模块类型
-        /// </summary>
-        public GamePackageType Type { get; private set; }
-        /// <summary>
-        /// 代码类型
-        /// </summary>
-        public GamePackageCodeType CodeType { get; private set; }
-        /// <summary>
-        /// 共享Lua虚拟机
-        /// </summary>
-        public string ShareLuaState { get; private set; }
-    }
     /// <summary>
     /// 模块代码类型
     /// </summary>
@@ -200,6 +101,10 @@ namespace Ballance2.System.Bridge
         /// 模块Logo
         /// </summary>
         public string Logo { get; private set; }
+        /// <summary>
+        /// 模块Logo Sprite
+        /// </summary>
+        public Sprite LogoTexture { get; set; }
         /// <summary>
         /// 模块链接
         /// </summary>

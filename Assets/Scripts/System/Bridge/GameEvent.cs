@@ -14,7 +14,8 @@ using UnityEngine;
  * mengyu
  * 
  * 更改历史：
- * 2020-1-1 创建
+ * 2020-8-7 创建
+ * 2021-1-16 修改事件 mengyu
  *
  */
 
@@ -150,45 +151,44 @@ namespace Ballance2.System.Bridge
         public const string EVENT_ENTER_MENULEVEL = "e:init:enter_menulevel";
 
         /// <summary>
-        /// 模组加载成功
+        /// 模块加载成功
         /// </summary>
         /// <remarks>
         /// 事件参数：
-        /// 【0】对应模组包名
-        /// 【1】对应模组对象
+        /// 【0】对应模块包名
+        /// 【1】对应模块对象
         /// </remarks>
-        public const string EVENT_MOD_LOAD_SUCCESS = "e:mod:mod_load_success";
+        public const string EVENT_PACKAGE_LOAD_SUCCESS = "e:package:package_load_success";
 
         /// <summary>
-        /// 模组加载成功
+        /// 模块加载成功
         /// </summary>
         /// <remarks>
         /// 事件参数：
-        /// 【0】对应模组包名
-        /// 【1】对应模组对象
+        /// 【0】对应模块包名
+        /// 【1】对应模块对象
         /// 【2】错误信息
         /// </remarks>
-        public const string EVENT_MOD_LOAD_FAILED = "e:mod:mod_load_failed";
+        public const string EVENT_PACKAGE_LOAD_FAILED = "e:package:package_load_failed";
 
         /// <summary>
-        /// 模组注册
+        /// 模块注册
         /// </summary>
         /// <remarks>
         /// 事件参数：
-        /// 【0】对应模组包名
-        /// 【1】对应模组对象
+        /// 【0】对应模块包名
         /// </remarks>
-        public const string EVENT_MOD_REGISTERED = "e:mod:mod_registered";
+        public const string EVENT_PACKAGE_REGISTERED = "e:package:package_registered";
 
         /// <summary>
-        /// 模组卸载
+        /// 模块卸载
         /// </summary>
         /// <remarks>
         /// 事件参数：
-        /// 【0】对应模组包名
-        /// 【1】对应模组对象
+        /// 【0】对应模块包名
+        /// 【1】对应模块对象
         /// </remarks>
-        public const string EVENT_MOD_UNLOAD = "e:mod:mod_unload";
+        public const string EVENT_PACKAGE_UNLOAD = "e:package:package_unload";
 
         /// <summary>
         /// 屏幕分辨率变化

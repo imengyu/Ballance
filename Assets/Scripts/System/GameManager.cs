@@ -1,5 +1,6 @@
 ﻿using Ballance2.System.Services;
 using Ballance2.Utils;
+using SLua;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Ballance2.System
     /// <summary>
     /// 游戏管理器
     /// </summary>
-    [SLua.CustomLuaClass]
+    [CustomLuaClass]
     public partial class GameManager : MonoBehaviour
     {
         void Start()
@@ -22,6 +23,16 @@ namespace Ballance2.System
         /// </summary>
         public static GameManager Instance { get; private set; }
         /// <summary>
+        /// GameMediator 实例
+        /// </summary>
+        public static GameMediator GameMediator { get; private set; }
+
+
+        /// <summary>
+        /// 游戏全局Lua虚拟机
+        /// </summary>
+        public LuaSvr.MainState GameMainLuaState { get; private set; }
+        /// <summary>
         /// 基础摄像机
         /// </summary>
         public Camera GameBaseCamera { get; private set; }
@@ -30,7 +41,6 @@ namespace Ballance2.System
         /// </summary>
         public RectTransform GameCanvas { get; private set; }
 
-        private GameEntry gameEntryInstance = null;
         private readonly string TAG = "GameManager";
 
         /// <summary>
@@ -71,10 +81,11 @@ namespace Ballance2.System
         {
             Log.D(TAG, "Initialize");
 
-            this.gameEntryInstance = gameEntryInstance;
-
+            GameMediator = GetSystemService<GameMediator>("GameMediator");
             GameBaseCamera = gameEntryInstance.GameBaseCamera;
             GameCanvas = gameEntryInstance.GameCanvas;
+
+            GameMainLuaState = new LuaSvr.MainState();
         }
         /// <summary>
         /// 释放
@@ -83,7 +94,16 @@ namespace Ballance2.System
         {
             Log.D(TAG, "Destroy");
 
+            if (GameMainLuaState != null)
+                GameMainLuaState = null;
+        }
 
+        /// <summary>
+        /// 开始退出游戏流程
+        /// </summary>
+        public void QuitGame()
+        {
+            Log.D(TAG, "QuitGame start");
         }
 
         /// <summary>

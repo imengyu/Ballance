@@ -31,9 +31,10 @@ namespace Ballance2.System.Bridge
         /// 接收器标识符字符串:
         ///    [格式] 模块标识符:对象名称:函数名称
         ///    
-        ///     [模块标识符] 可选：模组包包名 或  模组包UID
+        ///     [模块标识符] 模组包包名 或  模组包UID
         ///     [对象名称]   已注册的 GameLuaObjectHost 名称  或  Main (模组主代码)
         ///     [函数名称]
+        ///     [附带参数]   可选：要传给接收器的附带参数，参数将放在结尾
         /// </remarks>
         public GameLuaHandler(string luaModulHandlerString)
         {

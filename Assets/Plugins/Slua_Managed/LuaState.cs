@@ -542,7 +542,7 @@ namespace SLua
         }
 
 #if !SLUA_STANDALONE
-        internal LuaSvrGameObject lgo;
+        public LuaSvrGameObject lgo;
 #endif
 
         static public LuaState get(IntPtr l)

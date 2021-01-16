@@ -1,6 +1,7 @@
 ﻿using Ballance2.System.Bridge;
 using Ballance2.System.Debug;
 using Ballance2.Utils;
+using SLua;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,15 +82,14 @@ namespace Ballance2.System.Services
                 GameErrorChecker.LastError = GameError.ParamNotProvide;
                 return;
             }
-            GameEvent gameEvent = null;
-            if (IsGlobalEventRegistered(evtName, out gameEvent))
+            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
                 gameEvent.Dispose();
                 events.Remove(evtName);
             }
             else
             {
-                Log.Warning(TAG, "事件 {0} 未注册", evtName);
+                Log.W(TAG, "事件 {0} 未注册", evtName);
                 GameErrorChecker.LastError = GameError.NotRegister;
             }
         }
@@ -126,7 +126,7 @@ namespace Ballance2.System.Services
 
             if (string.IsNullOrEmpty(evtName))
             {
-                Log.Warning(TAG, "GetRegisteredGlobalEvent evtName 参数未提供");
+                Log.W(TAG, "GetRegisteredGlobalEvent evtName 参数未提供");
                 GameErrorChecker.LastError = GameError.ParamNotProvide;
                 return gameEvent;
             }
@@ -178,7 +178,6 @@ namespace Ballance2.System.Services
         public int DispatchGlobalEvent(string evtName, string handlerFilter, params object[] pararms)
         {
             int handledCount = 0;
-            GameEvent gameEvent = null;
 
             if (string.IsNullOrEmpty(evtName))
             {
@@ -186,7 +185,7 @@ namespace Ballance2.System.Services
                 GameErrorChecker.LastError = GameError.ParamNotProvide;
                 return 0;
             }
-            if (IsGlobalEventRegistered(evtName, out gameEvent))
+            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
                 return DispatchGlobalEvent(gameEvent, handlerFilter, pararms);
             else
             {
@@ -238,8 +237,7 @@ namespace Ballance2.System.Services
                 return null;
             }
 
-            GameEvent gameEvent = null;
-            if (IsGlobalEventRegistered(evtName, out gameEvent))
+            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
                 GameHandler gameHandler = new GameHandler(name, luaFunction);
                 gameEvent.EventHandlers.Add(gameHandler);
@@ -270,8 +268,7 @@ namespace Ballance2.System.Services
                 return null;
             }
 
-            GameEvent gameEvent = null;
-            if (IsGlobalEventRegistered(evtName, out gameEvent))
+            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
                 GameHandler gameHandler = new GameHandler(name, gameHandlerDelegate);
                 gameEvent.EventHandlers.Add(gameHandler);
@@ -302,8 +299,7 @@ namespace Ballance2.System.Services
                 return null;
             }
 
-            GameEvent gameEvent = null;
-            if (IsGlobalEventRegistered(evtName, out gameEvent))
+            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
                 GameHandler gameHandler = new GameHandler(name, luaModulHandler);
                 gameEvent.EventHandlers.Add(gameHandler);
@@ -331,8 +327,7 @@ namespace Ballance2.System.Services
                 return;
             }
 
-            GameEvent gameEvent = null;
-            if (IsGlobalEventRegistered(evtName, out gameEvent))
+            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
                 gameEvent.EventHandlers.Remove(handler);
             else
             {
@@ -381,8 +376,7 @@ namespace Ballance2.System.Services
         /// <returns></returns>
         public GameActionStore GetActionStore(string packageName)
         {
-            GameActionStore s;
-            actionStores.TryGetValue(packageName, out s);
+            actionStores.TryGetValue(packageName, out GameActionStore s);
             return s;
         }
         /// <summary>
@@ -522,7 +516,7 @@ namespace Ballance2.System.Services
             CoreActinoStore = RegisterActionStore(GamePartName.Core);
             CoreActinoStore.RegisterAction("QuitGame", "GameManager", (param) =>
             {
-                GameManager.QuitGame();
+                GameManager.Instance.QuitGame();
                 return GameActionCallResult.SuccessResult;
             }, null);
         }
@@ -555,7 +549,7 @@ namespace Ballance2.System.Services
         /// <returns>如果注册成功，返回池对象；如果已经注册，则返回已经注册的池对象</returns>
         public Store RegisterGlobalDataStore(string name)
         {
-            Store store = null;
+            Store store;
             if (string.IsNullOrEmpty(name))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG,
@@ -581,8 +575,7 @@ namespace Ballance2.System.Services
         /// <returns></returns>
         public Store GetGlobalDataStore(string name)
         {
-            Store s;
-            globalStore.TryGetValue(name, out s);
+            globalStore.TryGetValue(name, out Store s);
             return s;
         }
         /// <summary>
