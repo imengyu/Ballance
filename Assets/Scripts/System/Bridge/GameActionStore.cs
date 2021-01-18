@@ -1,4 +1,6 @@
-﻿using Ballance2.System.Debug;
+﻿using Ballance2.System.Bridge.Handler;
+using Ballance2.System.Debug;
+using Ballance2.System.Package;
 using Ballance2.Utils;
 using SLua;
 using System.Collections.Generic;
@@ -9,14 +11,16 @@ using System.Collections.Generic;
  * 模块名：     
  * GameActionStore.cs
  * 用途：
- * 存储操作的类。向每个模块提供统一的操作接口。
+ * 存储操作的类。
+ * 操作可以向每个模块提供统一的操作接口。
  * 
  * 作者：
  * mengyu
  * 
  * 更改历史：
  * 2020-1-1 创建
- *
+ * 2021-1-17 imengyu 修改Store使GamePackage逻辑分离
+ * 
  */
 
 namespace Ballance2.System.Bridge
@@ -24,36 +28,44 @@ namespace Ballance2.System.Bridge
     /// <summary>
     /// 操作存储库
     /// </summary>
+    [CustomLuaClass] 
     public class GameActionStore
     {
         /// <summary>
         /// 创建操作存储库
         /// </summary>
-        /// <param name="packageName">所属包名</param>
-        public GameActionStore(string packageName)
+        /// <param name="name">池名称</param>
+        public GameActionStore(GamePackage package, string name)
         {
-            _PackageName = packageName;
+            _Package = package;
+            _Name = name;
             actions = new Dictionary<string, GameAction>();
         }
 
+        [DoNotToLua]
         public void Destroy()
         {
             if (actions != null)
             {
                 foreach (var v in actions)
+                {
+                    if (v.Value.Package != null)
+                        v.Value.Package.ActionRemove(v.Value);
                     v.Value.Dispose();
+                }
                 actions.Clear();
                 actions = null;
             }
         }
 
-        private string _PackageName;
+        private GamePackage _Package;
+        private string _Name;
         private Dictionary<string, GameAction> actions = null;
 
         /// <summary>
         /// 标签
         /// </summary>
-        public string TAG { get { return _PackageName + ":GameActionStore"; } }
+        public string TAG { get { return _Name + ":GameActionStore"; } }
         /// <summary>
         /// 获取此存储库的所有操作
         /// </summary>
@@ -61,11 +73,20 @@ namespace Ballance2.System.Bridge
         /// <summary>
         /// 获取此存储库的包名
         /// </summary>
-        public string PackageName { get { return _PackageName; } }
+        public string Name { get { return _Name; } }
+        /// <summary>
+        /// 获取此存储库的KeyName
+        /// </summary>
+        public string KeyName { get { return _Package.PackageName + ":" + _Name; } }
+        /// <summary>
+        /// 获取此存储库所属的包
+        /// </summary>
+        public GamePackage Package { get { return _Package; } }
 
         /// <summary>
         /// 注册操作
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="name">操作名称</param>
         /// <param name="handlerName">接收器名称</param>
         /// <param name="handler">接收函数</param>
@@ -75,13 +96,14 @@ namespace Ballance2.System.Bridge
         /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
         /// </param>
         /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
-        public GameAction RegisterAction(string name, string handlerName, GameActionHandlerDelegate handler, string[] callTypeCheck)
+        public GameAction RegisterAction(GamePackage package, string name, string handlerName, GameActionHandlerDelegate handler, string[] callTypeCheck)
         {
-            return RegisterAction(name, new GameHandler(handlerName, handler), callTypeCheck);
+            return RegisterAction(package, name, GameHandler.CreateCsActionHandler(package, handlerName, handler), callTypeCheck);
         }
         /// <summary>
         /// 注册操作(LUA)
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="name">操作名称</param>
         /// <param name="handlerName">接收器名称</param>
         /// <param name="luaFunction">LUA接收函数</param>
@@ -92,13 +114,14 @@ namespace Ballance2.System.Bridge
         /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
         /// </param>
         /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
-        public GameAction RegisterAction(string name, string handlerName, LuaFunction luaFunction, LuaTable self, string[] callTypeCheck)
+        public GameAction RegisterAction(GamePackage package, string name, string handlerName, LuaFunction luaFunction, LuaTable self, string[] callTypeCheck)
         {
-            return RegisterAction(name, new GameHandler(handlerName, luaFunction, self), callTypeCheck);
+            return RegisterAction(package, name, GameHandler.CreateLuaHandler(package, handlerName, luaFunction, self), callTypeCheck);
         }
         /// <summary>
         /// 注册操作
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="name">操作名称</param>
         /// <param name="handler">接收器</param>
         /// <param name="callTypeCheck">函数参数检查，数组长度规定了操作需要的参数，
@@ -107,7 +130,7 @@ namespace Ballance2.System.Bridge
         /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
         /// </param>
         /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
-        public GameAction RegisterAction(string name, GameHandler handler, string[] callTypeCheck)
+        public GameAction RegisterAction(GamePackage package, string name, GameHandler handler, string[] callTypeCheck)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -125,8 +148,16 @@ namespace Ballance2.System.Bridge
                 GameErrorChecker.LastError = GameError.AlreadyRegistered;
                 return null;
             }
+            if (package != handler.BelongPackage)
+            {
+                GameErrorChecker.SetLastErrorAndLog(GameError.ContextMismatch, TAG, "RegisterAction package 与 handler.BelongPackage 不同");
+                return null;
+            }
 
-            GameAction gameAction = new GameAction(name, handler, callTypeCheck);
+            GameAction gameAction = new GameAction(
+                this, package, name, handler, callTypeCheck);
+
+            package.ActionReg(gameAction);
             actions.Add(name, gameAction);
             return gameAction;
         }
@@ -142,7 +173,14 @@ namespace Ballance2.System.Bridge
                 GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, "UnRegisterAction action 参数未提供");
                 return;
             }
+            if(!actions.ContainsKey(action.Name)) 
+            {
+                GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, "UnRegisterAction action " + action.Name + " 未注册");
+                return;
+            }
 
+            if(action.Package != null)
+                action.Package.ActionRemove(action);
             action.Dispose();
             actions.Remove(action.Name);
         }
@@ -222,12 +260,13 @@ namespace Ballance2.System.Bridge
         /// <summary>
         /// 注册多个操作
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="names">操作名称数组</param>
         /// <param name="handlerNames">接收器名称数组</param>
         /// <param name="handlers">接收函数数组</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
-        public int RegisterActions(string[] names, string[] handlerNames, GameActionHandlerDelegate[] handlers, string[][] callTypeChecks)
+        public int RegisterActions(GamePackage package, string[] names, string[] handlerNames, GameActionHandlerDelegate[] handlers, string[][] callTypeChecks)
         {
             int succCount = 0;
 
@@ -260,7 +299,7 @@ namespace Ballance2.System.Bridge
 
             for (int i = 0, c = names.Length; i < c; i++)
             {
-                if (RegisterAction(names[i], new GameHandler(handlerNames[i], handlers[i]),
+                if (RegisterAction(package, names[i], GameHandler.CreateCsActionHandler(package, handlerNames[i], handlers[i]),
                     callTypeChecks == null ? null : callTypeChecks[i]) != null)
                     succCount++;
             }
@@ -270,12 +309,13 @@ namespace Ballance2.System.Bridge
         /// <summary>
         /// 注册多个操作
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="names">操作名称数组</param>
         /// <param name="handlerNams">接收器名称</param>
         /// <param name="handlers">接收函数数组</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
-        public int RegisterActions(string[] names, string handlerName, GameActionHandlerDelegate[] handlers, string[][] callTypeChecks)
+        public int RegisterActions(GamePackage package, string[] names, string handlerName, GameActionHandlerDelegate[] handlers, string[][] callTypeChecks)
         {
             int succCount = 0;
 
@@ -307,7 +347,7 @@ namespace Ballance2.System.Bridge
 
             for (int i = 0, c = names.Length; i < c; i++)
             {
-                if (RegisterAction(names[i], new GameHandler(handlerName, handlers[i]),
+                if (RegisterAction(package, names[i], GameHandler.CreateCsActionHandler(package, handlerName, handlers[i]),
                     callTypeChecks == null ? null : callTypeChecks[i]) != null)
                     succCount++;
             }
@@ -317,13 +357,14 @@ namespace Ballance2.System.Bridge
         /// <summary>
         /// 注册多个操作
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="names">操作名称数组</param>
         /// <param name="handlerNames">接收器名称数组</param>
         /// <param name="luaFunctionHandlers">LUA接收函数数组</param>
         /// <param name="self">LUA self （当前类，LuaTable），如无可填null</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
-        public int RegisterActions(string[] names, string[] handlerNames, LuaFunction[] luaFunctionHandlers, LuaTable self, string[][] callTypeChecks)
+        public int RegisterActions(GamePackage package, string[] names, string[] handlerNames, LuaFunction[] luaFunctionHandlers, LuaTable self, string[][] callTypeChecks)
         {
             int succCount = 0;
 
@@ -355,7 +396,7 @@ namespace Ballance2.System.Bridge
             }
 
             for (int i = 0, c = names.Length; i < c; i++)
-                if (RegisterAction(names[i], new GameHandler(handlerNames[i], luaFunctionHandlers[i], self),
+                if (RegisterAction(package, names[i], GameHandler.CreateLuaHandler(package, handlerNames[i], luaFunctionHandlers[i], self),
                     callTypeChecks == null ? null : callTypeChecks[i]) != null)
                     succCount++;
 
@@ -364,13 +405,14 @@ namespace Ballance2.System.Bridge
         /// <summary>
         /// 注册多个操作
         /// </summary>
+        /// <param name="package">操作所在模块包</param>
         /// <param name="names">操作名称数组</param>
         /// <param name="handlerName">接收器名（多个接收器名字一样）</param>
         /// <param name="luaFunctionHandlers">LUA接收函数数组</param>
         /// <param name="self">LUA self （当前类，LuaTable），如无可填null</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
-        public int RegisterActions(string[] names, string handlerName, LuaFunction[] luaFunctionHandlers, LuaTable self, string[][] callTypeChecks)
+        public int RegisterActions(GamePackage package, string[] names, string handlerName, LuaFunction[] luaFunctionHandlers, LuaTable self, string[][] callTypeChecks)
         {
             int succCount = 0;
 
@@ -401,7 +443,7 @@ namespace Ballance2.System.Bridge
             }
 
             for (int i = 0, c = names.Length; i < c; i++)
-                if (RegisterAction(names[i], new GameHandler(handlerName, luaFunctionHandlers[i], self),
+                if (RegisterAction(package, names[i], GameHandler.CreateLuaHandler(package, handlerName, luaFunctionHandlers[i], self),
                     callTypeChecks == null ? null : callTypeChecks[i]) != null)
                     succCount++;
 

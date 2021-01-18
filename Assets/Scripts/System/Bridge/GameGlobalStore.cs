@@ -1,11 +1,8 @@
-﻿using Ballance2.ModBase;
-using Ballance2.System.Debug;
-using Ballance2.Utils;
+﻿using Ballance2.System.Debug;
+using Ballance2.System.Package;
 using SLua;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 /*

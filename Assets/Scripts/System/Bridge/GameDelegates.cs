@@ -26,6 +26,13 @@ namespace Ballance2.System.Bridge
     public delegate bool BooleanDelegate();
 
     /// <summary>
+    /// 自定义接收器内核回调
+    /// </summary>
+    /// <param name="pararms">参数</param>
+    /// <returns>返回自定义对象</returns>
+    [CustomLuaClass]
+    public delegate object GameCustomHandlerDelegate(params object[] pararms);
+    /// <summary>
     /// 事件接收器内核回调
     /// </summary>
     /// <param name="evtName">事件名称</param>

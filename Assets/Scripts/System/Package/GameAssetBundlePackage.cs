@@ -42,7 +42,7 @@ namespace Ballance2.System.Package
 
         public override async Task<bool> LoadInfo(string filePath)
         {
-            await base.LoadInfo(filePath);
+            PackageFilePath = filePath;
 
             UnityWebRequest request = UnityWebRequest.Get(filePath);
             await request.SendWebRequest();

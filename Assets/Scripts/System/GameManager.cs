@@ -1,4 +1,6 @@
-﻿using Ballance2.System.Services;
+﻿using Ballance2.System.Bridge;
+using Ballance2.System.Entry;
+using Ballance2.System.Services;
 using Ballance2.Utils;
 using SLua;
 using System.Collections;
@@ -13,11 +15,6 @@ namespace Ballance2.System
     [CustomLuaClass]
     public partial class GameManager : MonoBehaviour
     {
-        void Start()
-        {
-            Instance = this;
-        }
-
         /// <summary>
         /// 实例
         /// </summary>
@@ -25,7 +22,7 @@ namespace Ballance2.System
         /// <summary>
         /// GameMediator 实例
         /// </summary>
-        public static GameMediator GameMediator { get; private set; }
+        public static GameMediator GameMediator { get; internal set; }
 
 
         /// <summary>
@@ -81,12 +78,31 @@ namespace Ballance2.System
         {
             Log.D(TAG, "Initialize");
 
-            GameMediator = GetSystemService<GameMediator>("GameMediator");
+            Instance = this;
             GameBaseCamera = gameEntryInstance.GameBaseCamera;
             GameCanvas = gameEntryInstance.GameCanvas;
 
             GameMainLuaState = new LuaSvr.MainState();
+            GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
+
+            //Run init
+            StartCoroutine(InitAsysc());
         }
+
+        private IEnumerator InitAsysc()
+        {
+            //LoadSystem packages
+            yield return StartCoroutine(LoadSystemPackages());
+
+
+
+            yield break;
+        }
+        private IEnumerator LoadSystemPackages()
+        {
+            yield break;
+        }
+
         /// <summary>
         /// 释放
         /// </summary>
@@ -133,5 +149,8 @@ namespace Ballance2.System
         {
             GameBaseCamera.gameObject.SetActive(visible);
         }
+
+
+
     }
 }

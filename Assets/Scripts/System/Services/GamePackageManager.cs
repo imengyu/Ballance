@@ -34,6 +34,8 @@ namespace Ballance2.System.Services
     {
         private static readonly string TAG = "GamePackageManager";
 
+        public const string SYSTEM_PACKAGE_NAME = "core.system";
+
         public GamePackageManager() : base(TAG) {}
 
         public override void Destroy()
@@ -58,15 +60,13 @@ namespace Ballance2.System.Services
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
+
+            //初始化系统包
+            InitSystemPackage();
             return true;
         }
 
-        private const int PACKAGE_DEFAULT = 0;
-        private const int PACKAGE_REGISTING = 1;
-        private const int PACKAGE_LOADING = 2;
-        private const int PACKAGE_LOAD_SUCCESS = 3;
-        private const int PACKAGE_LOAD_FAILED = 4;
-        private const int PACKAGE_UNLOAD_WAITING = 5;
+        private GamePackage systemPackage;
 
         private Dictionary<string, int> packagesLoadStatus = new Dictionary<string, int>();
 
@@ -81,6 +81,12 @@ namespace Ballance2.System.Services
         /// <returns>返回是否加载成功。要获得错误代码，请获取 <see cref="GameErrorChecker.LastError"/></returns>
         public async Task<bool> RegisterPackage(string packageName)
         {
+            if (packagesLoadStatus.ContainsKey(packageName))
+            {
+                GameErrorChecker.SetLastErrorAndLog(GameError.IsLoading, TAG, "Package {0} is loading", packageName);
+                return false;
+            }
+
             if (registeredPackages.ContainsKey(packageName))
             {
                 Log.W(TAG, "Package {0} already registered!", packageName);
@@ -98,7 +104,7 @@ namespace Ballance2.System.Services
             }
 
             //设置正在加载
-            packagesLoadStatus.Add(packageName, PACKAGE_REGISTING);
+            packagesLoadStatus.Add(packageName, 1);
 
             GamePackage gamePackage;
             //判断文件类型
@@ -108,22 +114,27 @@ namespace Ballance2.System.Services
                 gamePackage = new GameAssetBundlePackage();
             else
             {
+                packagesLoadStatus.Remove(packageName);
                 //文件格式不支持
                 GameErrorChecker.LastError = GameError.NotSupportFileType;
                 Log.E(TAG, "Package file type not support {0}", realPackagePath);
                 return false;
             }
+            gamePackage._Status = GamePackageStatus.Registing;
 
             //加载信息
-            if(await gamePackage.LoadInfo(realPackagePath))
+            if (await gamePackage.LoadInfo(realPackagePath))
             {
 
                 packagesLoadStatus.Remove(packageName);
                 registeredPackages.Add(packageName, gamePackage);
 
+                gamePackage._Status = GamePackageStatus.Registered;
+
                 //通知事件
                 GameManager.GameMediator.DispatchGlobalEvent(
                     GameEventNames.EVENT_PACKAGE_REGISTERED, "*", packageName);
+
                 return true;
             }
 
@@ -149,6 +160,12 @@ namespace Ballance2.System.Services
         public bool UnRegisterPackage(string packageName, bool unLoadImmediately)
         {
             bool success = false;
+            if(packageName == systemPackage.PackageName)
+            {
+                GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG,
+                    "Package {0} can not UnRegister", packageName);
+                return success;
+            }
             if (registeredPackages.ContainsKey(packageName))
             {
                 registeredPackages.Remove(packageName);
@@ -170,7 +187,7 @@ namespace Ballance2.System.Services
         /// <returns></returns>
         public bool IsPackageLoading(string packageName)
         {
-            return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == PACKAGE_LOADING;
+            return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 2;
         }        
         /// <summary>
         /// 获取包是否正在注册
@@ -179,7 +196,7 @@ namespace Ballance2.System.Services
         /// <returns></returns>
         public bool IsPackageRegistering(string packageName)
         {
-            return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == PACKAGE_REGISTING;
+            return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 1;
         }
         /// <summary>
         /// 获取包是否已加载
@@ -191,6 +208,7 @@ namespace Ballance2.System.Services
             return loadedPackages.ContainsKey(packageName); 
         }
 
+
         /// <summary>
         /// 加载模块
         /// </summary>
@@ -200,19 +218,24 @@ namespace Ballance2.System.Services
         {
             if(!StringUtils.IsPackageName(packageName))
             {
-                GameErrorChecker.SetLastErrorAndLog(GameError.InvalidPackageName, TAG, "Invalid packageName {0}", packageName);
+                GameErrorChecker.SetLastErrorAndLog(GameError.InvalidPackageName, TAG, 
+                    "Invalid packageName {0}", packageName);
                 return false;
             }
             if (IsPackageLoaded(packageName))
             {
-                Log.W(TAG, "Package {0} already loaded!", packageName);
+                GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, 
+                    "Package {0} already loaded!", packageName);
                 return true;
             }
             if (IsPackageLoading(packageName))
             {
-                Log.W(TAG, "Package {0} is loading!", packageName);
+                GameErrorChecker.SetLastErrorAndLog(GameError.IsLoading, TAG,
+                    "Package {0} is loading!", packageName);
                 return false;
             }
+
+            packagesLoadStatus.Add(packageName, 2);
 
             //注册包
             GamePackage package = FindRegisteredPackage(packageName);
@@ -220,6 +243,7 @@ namespace Ballance2.System.Services
             {
                 if(!await RegisterPackage(packageName))
                 {
+                    packagesLoadStatus.Remove(packageName);
                     string err = string.Format("Package {0} could not load, because RegisterPackage failed",
                         packageName);
 
@@ -234,8 +258,7 @@ namespace Ballance2.System.Services
                 package = FindRegisteredPackage(packageName);
             }
 
-            if (packagesLoadStatus.ContainsKey(packageName)) packagesLoadStatus[packageName] = PACKAGE_LOADING;
-            else packagesLoadStatus.Add(packageName, PACKAGE_LOADING);
+            package._Status = GamePackageStatus.Loading;
 
             //加载依赖
             List<GamePackageDependencies> dependencies = package.BaseInfo.Dependencies;
@@ -253,6 +276,7 @@ namespace Ballance2.System.Services
                         bool loadSuccess = await LoadPackage(dependency.Name);
                         if(!loadSuccess)
                         {
+                            packagesLoadStatus.Remove(packageName);
                             string err = string.Format("Package {0} load failed because a dependency {1}/{2} " +
                                "load failed",
                                packageName, dependency.Name, dependency.MinVersion);
@@ -262,7 +286,7 @@ namespace Ballance2.System.Services
                             GameManager.GameMediator.DispatchGlobalEvent(
                                 GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, err);
 
-                            packagesLoadStatus[packageName] = PACKAGE_LOAD_FAILED;
+                            package._Status = GamePackageStatus.LoadFailed;
                             return false;
                         }
                     }
@@ -281,12 +305,14 @@ namespace Ballance2.System.Services
                                 packageName, dependency.Name, dependencyPackage.PackageVersion,
                                 dependency.MinVersion);
 
+                            packagesLoadStatus.Remove(packageName);
+                            package._Status = GamePackageStatus.LoadFailed;
+
                             Log.E(TAG, err);
                             //通知事件
                             GameManager.GameMediator.DispatchGlobalEvent(
                                 GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, err);
 
-                            packagesLoadStatus[packageName] = PACKAGE_LOAD_FAILED;
                             return false;
                         }
                         //添加依赖计数
@@ -298,7 +324,8 @@ namespace Ballance2.System.Services
             //加载
             if(!await package.LoadPackage())
             {
-                packagesLoadStatus[packageName] = PACKAGE_LOAD_FAILED;
+                package._Status = GamePackageStatus.LoadFailed;
+                packagesLoadStatus.Remove(packageName);
 
                 string err = string.Format("Package {0} load failed {1}",
                         packageName, GameErrorChecker.GetLastErrorMessage());
@@ -310,8 +337,9 @@ namespace Ballance2.System.Services
                 return false;
             }
 
-            packagesLoadStatus[packageName] = PACKAGE_LOAD_SUCCESS;
+            package._Status = GamePackageStatus.LoadSuccess;
             loadedPackages.Add(packageName, package);
+            packagesLoadStatus.Remove(packageName);
 
             //通知事件
             GameManager.GameMediator.DispatchGlobalEvent(
@@ -330,6 +358,13 @@ namespace Ballance2.System.Services
         /// <returns>返回是否成功</returns>
         public bool UnLoadPackage(string packageName, bool unLoadImmediately)
         {
+            if (packageName == systemPackage.PackageName)
+            {
+                GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG,
+                    "Package {0} can not unload", packageName);
+                return false;
+            }
+
             GamePackage package = FindPackage(packageName);
             if (package == null)
             {
@@ -344,6 +379,7 @@ namespace Ballance2.System.Services
             if (!unLoadImmediately && package.DependencyRefCount > 0)
             {
                 package.UnLoadWhenDependencyRefNone = true;
+                package._Status = GamePackageStatus.UnloadWaiting;
                 return true;
             }
 
@@ -368,6 +404,7 @@ namespace Ballance2.System.Services
             GameManager.GameMediator.DispatchGlobalEvent(
                 GameEventNames.EVENT_PACKAGE_UNLOAD, "*", packageName, package);
 
+            package._Status = GamePackageStatus.NotLoad;
             package.Destroy();
             packagesLoadStatus.Remove(packageName);
             loadedPackages.Remove(packageName);
@@ -387,8 +424,16 @@ namespace Ballance2.System.Services
 
         private void UnLoadAllPackages()
         {
-            foreach(string key in loadedPackages.Keys)
-                UnLoadPackage(key, true);
+            foreach (string key in loadedPackages.Keys)
+                if (key != SYSTEM_PACKAGE_NAME)
+                    UnLoadPackage(key, true);
+        }
+        private void InitSystemPackage()
+        {
+            systemPackage = GamePackage.GetSystemPackage();
+            systemPackage._Status = GamePackageStatus.LoadSuccess;
+            registeredPackages.Add(systemPackage.PackageName, systemPackage);
+            loadedPackages.Add(systemPackage.PackageName, systemPackage);
         }
     }
 }

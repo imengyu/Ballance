@@ -1,4 +1,5 @@
-﻿using Ballance2.Utils;
+﻿using Ballance2.System.Debug;
+using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.IO;
@@ -37,7 +38,7 @@ namespace Ballance2.System.Package
         }
         public override async Task<bool> LoadInfo(string filePath)
         {
-            await base.LoadInfo(filePath);
+            PackageFilePath = filePath;
 
             bool defFileLoadSuccess = false;
             bool defFileFounded = false;
@@ -48,7 +49,7 @@ namespace Ballance2.System.Package
             while ((theEntry = zip.GetNextEntry()) != null)
             {
                 if (theEntry.Name == "/PackageDef.xml" || theEntry.Name == "PackageDef.xml")
-                    defFileLoadSuccess = LoadModDefInZip(zip, theEntry);
+                    defFileLoadSuccess = await LoadModDefInZip(zip, theEntry);
                 else if (theEntry.Name == "/" + BaseInfo.Logo || theEntry.Name == BaseInfo.Logo)
                     LoadLogoInZip(zip, theEntry);
             }
@@ -57,7 +58,7 @@ namespace Ballance2.System.Package
 
             if(!defFileFounded)
             {
-                GameErrorChecker.SetLastErrorAndLog(Debug.GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
+                GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
                 LoadError = "模块并不包含 PackageDef.xml";
                 return false;
             }
@@ -95,9 +96,9 @@ namespace Ballance2.System.Package
             return await base.LoadPackage();
         }
 
-        private bool LoadModDefInZip(ZipInputStream zip, ZipEntry theEntry)
+        private async Task<bool> LoadModDefInZip(ZipInputStream zip, ZipEntry theEntry)
         {
-            MemoryStream ms = ZipUtils.ReadZipFileToMemory(zip);
+            MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
             PackageDef = new XmlDocument();
             PackageDef.LoadXml(Encoding.UTF8.GetString(ms.ToArray()));

@@ -1,4 +1,6 @@
-﻿using Ballance2.Utils;
+﻿using Ballance2.System.Bridge.Handler;
+using Ballance2.System.Package;
+using Ballance2.Utils;
 using System;
 using UnityEngine;
 
@@ -15,6 +17,7 @@ using UnityEngine;
  * 
  * 更改历史：
  * 2020-1-1 创建
+ * 2021-1-17 imengyu 修改Package逻辑
  *
  */
 
@@ -33,8 +36,11 @@ namespace Ballance2.System.Bridge
         /// <param name="name">操作名称</param>
         /// <param name="gameHandler">操作接收器</param>
         /// <param name="callTypeCheck">操作调用参数检查</param>
-        public GameAction(string name, GameHandler gameHandler, string[] callTypeCheck)
+        public GameAction(GameActionStore store, GamePackage package,
+            string name, GameHandler gameHandler, string[] callTypeCheck)
         {
+            Store = store;
+            Package = package;
             _Name = name;
             _GameHandler = gameHandler;
             _CallTypeCheck = callTypeCheck;
@@ -47,6 +53,14 @@ namespace Ballance2.System.Bridge
         [SerializeField, SetProperty("CallTypeCheck")]
         private string[] _CallTypeCheck;
 
+        /// <summary>
+        /// 所属模块
+        /// </summary>
+        public GameActionStore Store { get; private set; }
+        /// <summary>
+        /// 所属模块
+        /// </summary>
+        public GamePackage Package { get; private set; }
         /// <summary>
         /// 操作名称
         /// </summary>
@@ -63,10 +77,14 @@ namespace Ballance2.System.Bridge
         /// <summary>
         /// 空操作
         /// </summary>
-        public static GameAction Empty { get; } = new GameAction("internal.empty", null, null);
+        public static GameAction Empty { get; } = new GameAction(null, 
+            GamePackage.GetSystemPackage(), 
+            "internal.empty", null, null);
 
         public void Dispose()
         {
+            Store = null;
+            Package = null;
             _CallTypeCheck = null;
             _GameHandler.Dispose();
             _GameHandler = null;
@@ -79,6 +97,8 @@ namespace Ballance2.System.Bridge
     [SLua.CustomLuaClass]
     public class GameActionCallResult
     {
+        private GameActionCallResult() { }
+
         /// <summary>
         /// 创建操作调用结果
         /// </summary>

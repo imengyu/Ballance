@@ -56,6 +56,42 @@ namespace Ballance2.System.Package
         Asset
     }
     /// <summary>
+    /// 模块加载状态
+    /// </summary>
+    [SLua.CustomLuaClass]
+    public enum GamePackageStatus
+    {
+        /// <summary>
+        /// 未加载
+        /// </summary>
+        NotLoad = 0,
+        /// <summary>
+        /// 正在注册
+        /// </summary>
+        Registing = 1,
+        /// <summary>
+        /// 正在加载
+        /// </summary>
+        Loading = 2,
+        /// <summary>
+        /// 加载成功
+        /// </summary>
+        LoadSuccess = 3,
+        /// <summary>
+        /// 加载失败
+        /// </summary>
+        LoadFailed = 4,
+        /// <summary>
+        /// 正在等待卸载
+        /// </summary>
+        UnloadWaiting = 5,
+        /// <summary>
+        /// 已经注册但未加载
+        /// </summary>
+        Registered = 6,
+    }
+
+    /// <summary>
     /// 模块基础信息
     /// </summary>
     [SLua.CustomLuaClass]

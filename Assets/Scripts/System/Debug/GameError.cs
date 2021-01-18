@@ -49,6 +49,8 @@ namespace Ballance2.System.Debug
         NotSupportFileType,
         NetworkError,
         ExecutionFailed,
+        AccessDenined,
+        IsLoading,
     }
 
     /// <summary>
@@ -69,6 +71,8 @@ namespace Ballance2.System.Debug
                 default: return "未知错误: " + err.ToString();
                 case GameError.None: return "无错误。";
                 case GameError.InvalidPackageName: return "无效的包名。";
+                case GameError.IsLoading: return "正在加载，请稍后。";
+                case GameError.AccessDenined: return "不能执行这个操作。";
                 case GameError.ExecutionFailed: return "执行 Lua 代码失败。";
                 case GameError.NetworkError: return "网络错误。";
                 case GameError.NotSupportFileType: return "不支持的文件格式。";

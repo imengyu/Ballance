@@ -40,7 +40,7 @@ namespace Ballance2.System.Services
         [SLua.DoNotToLua]
         public virtual bool Initialize()
         {
-            GameErrorChecker.LastError = Debug.GameError.NotImplemented;
+            Debug.GameErrorChecker.LastError = Debug.GameError.NotImplemented;
             return false;
         }
         /// <summary>

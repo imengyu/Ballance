@@ -62,12 +62,14 @@ public static class IEnumeratorAwaitExtensions
             InstructionWrappers.ResourceRequest(awaiter, instruction)));
         return awaiter;
     }
-
+    
+    /*
     // Return itself so you can do things like (await new WWW(url)).bytes
     public static SimpleCoroutineAwaiter<WWW> GetAwaiter(this WWW instruction)
     {
         return GetAwaiterReturnSelf(instruction);
     }
+    */
 
     public static SimpleCoroutineAwaiter<AssetBundle> GetAwaiter(this AssetBundleCreateRequest instruction)
     {

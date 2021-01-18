@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Ballance2.Utils
 {
@@ -44,7 +43,7 @@ namespace Ballance2.Utils
             {
                 if (excludeQuotes)
                 {
-                    string[] bufbuf = s.Split(new char[] { sp }, System.StringSplitOptions.RemoveEmptyEntries);
+                    string[] bufbuf = s.Split(new char[] { sp }, StringSplitOptions.RemoveEmptyEntries);
                     count = bufbuf.Length;
                     if (count > 0)
                     {
@@ -104,7 +103,7 @@ namespace Ballance2.Utils
         {
             if (s.Contains(sp.ToString()))
             {
-                buf = s.Split(new char[] { sp, sp2 }, System.StringSplitOptions.RemoveEmptyEntries);
+                buf = s.Split(new char[] { sp, sp2 }, StringSplitOptions.RemoveEmptyEntries);
                 count = buf.Length;
             }
             else

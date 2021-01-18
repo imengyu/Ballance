@@ -21,7 +21,7 @@ local TAG = "MyMod:Main" --
 function PackageEntry(thisGamePackage)
 	GamePackage = thisGamePackage
   
-  Log:D(TAG, "这是模块入口 !")
+  Log.D(TAG, "这是模块入口 !")
 
   --[[
     ...在这里添加你的模块初始化代码...
@@ -47,6 +47,6 @@ function PackageBeforeUnLoad(thisGamePackage)
   
   -- 在这里可以做一些资源释放的操作
 
-  Log:D(TAG, "模块将被卸载 !")
+  Log.D(TAG, "模块将被卸载 !")
   return true
 end

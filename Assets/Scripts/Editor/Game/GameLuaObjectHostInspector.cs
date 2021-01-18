@@ -1,5 +1,5 @@
-﻿using Ballance2.CoreBridge;
-using Ballance2.CoreBridge.GameLuaWapperEvents;
+﻿using Ballance2.System.Bridge.LuaWapper;
+using Ballance2.System.Bridge.LuaWapper.GameLuaWapperEvents;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -194,8 +194,8 @@ class GameLuaObjectHostInspector : Editor
 
         if (string.IsNullOrEmpty(myScript.LuaClassName))
             EditorGUILayout.HelpBox("必须提供 Lua 类名，否则该 Lua 组件不会运行", MessageType.Warning);
-        if (string.IsNullOrEmpty(myScript.LuaModName))
-            EditorGUILayout.HelpBox("必须提供 Lua 文件所在模组，否则该 Lua 组件不会运行", MessageType.Warning);
+        if (string.IsNullOrEmpty(myScript.LuaPackageName))
+            EditorGUILayout.HelpBox("必须提供 Lua 文件所在模块，否则该 Lua 组件不会运行", MessageType.Warning);
 
         EditorGUILayout.Space(5);
         EditorGUILayout.EndVertical();

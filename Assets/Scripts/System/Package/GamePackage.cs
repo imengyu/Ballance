@@ -1,5 +1,7 @@
 ﻿using Ballance2.Config;
 using Ballance2.System.Bridge;
+using Ballance2.System.Bridge.Handler;
+using Ballance2.System.Bridge.LuaWapper;
 using Ballance2.System.Debug;
 using Ballance2.System.Res;
 using Ballance2.System.Services;
@@ -36,7 +38,7 @@ namespace Ballance2.System.Package
     /// <summary>
     /// 模块包实例
     /// </summary>
-    [SLua.CustomLuaClass]
+    [CustomLuaClass]
     public class GamePackage
     {
         private readonly string TAG = "GamePackage";
@@ -45,10 +47,10 @@ namespace Ballance2.System.Package
         internal bool UnLoadWhenDependencyRefNone = false;
 
         [DoNotToLua]
-        public virtual async Task<bool> LoadInfo(string filePath)
+        public virtual Task<bool> LoadInfo(string filePath)
         {
             PackageFilePath = filePath;
-            return true;
+            return null;
         }
         [DoNotToLua]
         public virtual async Task<bool> LoadPackage()
@@ -102,6 +104,9 @@ namespace Ballance2.System.Package
             RunPackageBeforeUnLoadCode();
 
             //GameManager.DestroyManagersInMod(PackageName);
+            GameManager.GameMediator.UnloadAllPackageActionStore(this);
+            HandlerClear();
+            ActionClear();
 
             //释放AssetBundle
             if (AssetBundle != null)
@@ -132,6 +137,18 @@ namespace Ballance2.System.Package
                 CSharpPackageEntry = null;
         }
 
+        #region 系统包
+
+        private static GamePackage _SystemPackage = new GameSystemPackage();
+
+        /// <summary>
+        /// 获取系统的模块结构
+        /// </summary>
+        /// <returns></returns>
+        public static GamePackage GetSystemPackage() { return _SystemPackage; }
+
+        #endregion
+
         #region 模块运行环境
 
         /// <summary>
@@ -141,16 +158,13 @@ namespace Ballance2.System.Package
         /// <summary>
         /// C# 程序入口
         /// </summary>
-        public object CSharpPackageEntry { get; private set; }
+        private object CSharpPackageEntry = null;
 
         /// <summary>
         /// Lua 虚拟机
         /// </summary>
-        public LuaState PackageLuaState { get; private set; }
-        /// <summary>
-        /// Lua 虚拟机
-        /// </summary>
-        public PackageLuaServer PackageLuaServer { get; private set; }
+        public virtual LuaState PackageLuaState { get; private set; }
+        private PackageLuaServer PackageLuaServer = null;
 
         //管理当前模块下的所有lua虚拟脚本，统一管理、释放
         private List<GameLuaObjectHost> luaObjects = new List<GameLuaObjectHost>();
@@ -168,7 +182,6 @@ namespace Ballance2.System.Package
             newGameLuaObjectHost.Package = this;
             newGameLuaObjectHost.LuaState = PackageLuaState;
             newGameLuaObjectHost.LuaClassName = className;
-            newGameLuaObjectHost.LuaModName = PackageName;
             luaObjects.Add(newGameLuaObjectHost);
         }
         /// <summary>
@@ -656,19 +669,19 @@ namespace Ballance2.System.Package
         /// <summary>
         /// 模块文件路径
         /// </summary>
-        public string PackageFilePath { get; private set; }
+        public string PackageFilePath { get; protected set; }
         /// <summary>
         /// 模块包名
         /// </summary>
-        public string PackageName { get; private set; }
+        public string PackageName { get; protected set; }
         /// <summary>
         /// 模块版本号
         /// </summary>
-        public int PackageVersion { get; private set; }
+        public int PackageVersion { get; protected set; }
         /// <summary>
         /// 基础信息
         /// </summary>
-        public GamePackageBaseInfo BaseInfo { get; private set; }
+        public GamePackageBaseInfo BaseInfo { get; protected set; }
 
         /// <summary>
         /// 加载错误
@@ -709,6 +722,13 @@ namespace Ballance2.System.Package
         /// 共享Lua虚拟机
         /// </summary>
         public string ShareLuaState { get; private set; }
+
+        internal GamePackageStatus _Status = GamePackageStatus.NotLoad;
+
+        /// <summary>
+        /// 获取模块状态
+        /// </summary>
+        public GamePackageStatus Status { get { return _Status; } }
 
         #endregion
 
@@ -756,7 +776,7 @@ namespace Ballance2.System.Package
 
         #endregion
 
-        #region 模组操作
+        #region 模块操作
 
         /// <summary>
         /// 修复 模块透明材质 Shader
@@ -803,42 +823,84 @@ namespace Ballance2.System.Package
 
         //自定义数据,方便LUA层操作
 
-        private Dictionary<string, object> modCustomData = new Dictionary<string, object>();
+        private Dictionary<string, object> packageCustomData = new Dictionary<string, object>();
 
         public object AddCustomProp(string name, object data)
         {
-            if (modCustomData.ContainsKey(name))
+            if (packageCustomData.ContainsKey(name))
             {
-                modCustomData[name] = data;
+                packageCustomData[name] = data;
                 return data;
             }
-            modCustomData.Add(name, data);
+            packageCustomData.Add(name, data);
             return data;
         }
         public object GetCustomProp(string name)
         {
-            if (modCustomData.ContainsKey(name))
-                return modCustomData[name];
+            if (packageCustomData.ContainsKey(name))
+                return packageCustomData[name];
             return null;
         }
         public object SetCustomProp(string name, object data)
         {
-            if (modCustomData.ContainsKey(name))
+            if (packageCustomData.ContainsKey(name))
             {
-                object old = modCustomData[name];
-                modCustomData[name] = data;
+                object old = packageCustomData[name];
+                packageCustomData[name] = data;
                 return old;
             }
             return null;
         }
         public bool RemoveCustomProp(string name)
         {
-            if (modCustomData.ContainsKey(name))
+            if (packageCustomData.ContainsKey(name))
             {
-                modCustomData.Remove(name);
+                packageCustomData.Remove(name);
                 return true;
             }
             return false;
+        }
+
+        #endregion
+
+        #region 模块从属资源处理
+
+        private HashSet<GameHandler> packageHandlers = new HashSet<GameHandler>();
+        private HashSet<GameAction> packageActions = new HashSet<GameAction>();
+
+        internal void HandlerReg(GameHandler handler)
+        {
+            packageHandlers.Add(handler);
+        }
+        internal void HandlerRemove(GameHandler handler)
+        {
+            packageHandlers.Remove(handler);
+        }
+        internal void ActionReg(GameAction action)
+        {
+            packageActions.Add(action);
+        }
+        internal void ActionRemove(GameAction action)
+        {
+            packageActions.Remove(action);
+        }
+
+        //释放所有从属于当前模块的GameHandler
+        private void HandlerClear()
+        {
+            List<GameHandler> list = new List<GameHandler>(packageHandlers);
+            foreach (GameHandler gameHandler in list)
+                gameHandler.Dispose();
+            list.Clear();
+            packageHandlers.Clear();
+        }
+        private void ActionClear()
+        {
+            List<GameAction> list = new List<GameAction>(packageActions);
+            foreach (GameAction action in list)
+                action.Store.UnRegisterAction(action);
+            list.Clear();
+            packageActions.Clear();
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace Ballance2.System.UI.Utils
         {
         }
 
-        public UIWindow DragWindow = null;
+        public Window DragWindow = null;
         public RectTransform DragWindowRectTransform = null;
         public Image DragImage = null;
 
@@ -55,7 +55,7 @@ namespace Ballance2.System.UI.Utils
                 if (dragPos.x > Screen.width - 30) dragPos.x = Screen.width - 30;
                 if (dragPos.y < 30) dragPos.y = 30;
 
-                Vector2 minSize = DragWindow.GetMinSize();
+                Vector2 minSize = DragWindow.MinSize;
                 Vector2 v =  new Vector2(
                     (dragPos.x - mouseDownWindowPos.x),
                     ((-dragPos.y - mouseDownWindowPos.y))

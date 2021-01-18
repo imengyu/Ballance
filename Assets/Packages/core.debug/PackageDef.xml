@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="core.debug" version="1">
+  <BaseInfo>
+    <Name>调试基础包</Name>
+    <Author>imengyu</Author>
+    <Introduction>用于系统调试的基础包</Introduction>
+    <Logo>PackageLogo.png</Logo>
+    <Link>https://imengyu.top/ballcnceProject</Link>
+    <VersionName>1.0</VersionName>
+    <Dependencies>
+    </Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>1</MinVersion>
+    <TargetVersion>1</TargetVersion>
+  </Compatibility>
+  <EntryCode>Entry.lua.txt</EntryCode>
+  <Type>Module</Type>
+  <CodeType>Lua</CodeType>
+  <RunType>GameBase</RunType>
+  <ShareLuaState>core</ShareLuaState>
+</Package>

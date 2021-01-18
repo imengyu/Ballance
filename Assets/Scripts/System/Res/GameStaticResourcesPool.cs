@@ -62,7 +62,7 @@ namespace Ballance2.System.Res
         /// </summary>
         /// <param name="name">资源名称</param>
         /// <returns></returns>
-        public static UnityEngine.Object FindStaticAssets(string name)
+        public static Object FindStaticAssets(string name)
         {
             foreach (GameAssetsInfo gameAssetsInfo in GameAssets)
             {

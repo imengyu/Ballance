@@ -1,5 +1,7 @@
 ﻿using Ballance2.System.Bridge;
+using Ballance2.System.Bridge.Handler;
 using Ballance2.System.Debug;
+using Ballance2.System.Package;
 using Ballance2.Utils;
 using SLua;
 using System;
@@ -15,7 +17,7 @@ namespace Ballance2.System.Services
     /// <summary>
     /// 游戏中介者
     /// </summary>
-    [SLua.CustomLuaClass]
+    [CustomLuaClass]
     [Serializable]
     public class GameMediator : GameService
     {
@@ -53,20 +55,22 @@ namespace Ballance2.System.Services
         /// <param name="evtName">事件名称</param>
         public GameEvent RegisterGlobalEvent(string evtName)
         {
+            GameEvent gameEvent;
+
             if (string.IsNullOrEmpty(evtName))
             {
                 Log.W(TAG, "RegisterGlobalEvent evtName 参数未提供");
                 GameErrorChecker.LastError = GameError.ParamNotProvide;
                 return null;
             }
-            if (IsGlobalEventRegistered(evtName))
+            if (IsGlobalEventRegistered(evtName, out gameEvent))
             {
                 Log.W(TAG, "事件 {0} 已注册", evtName);
                 GameErrorChecker.LastError = GameError.AlreadyRegistered;
-                return null;
+                return gameEvent;
             }
 
-            GameEvent gameEvent = new GameEvent(evtName);
+            gameEvent = new GameEvent(evtName);
             events.Add(evtName, gameEvent);
             return gameEvent;
         }
@@ -153,8 +157,13 @@ namespace Ballance2.System.Services
             }
 
             //事件分发
-            foreach (GameHandler gameHandler in gameEvent.EventHandlers)
+            GameHandler gameHandler;
+            for (int i = gameEvent.EventHandlers.Count - 1; i >= 0; i--)
             {
+                gameHandler = gameEvent.EventHandlers[i];
+                if (gameHandler.Destroyed)
+                    gameEvent.EventHandlers.RemoveAt(i);
+                //筛选Handler
                 if (handlerFilter == "*" || Regex.IsMatch(gameHandler.Name, handlerFilter))
                 {
                     handledCount++;
@@ -213,10 +222,6 @@ namespace Ballance2.System.Services
             //注册内置事件
             RegisterGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED);
             RegisterGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT);
-            RegisterGlobalEvent(GameEventNames.EVENT_GAME_INIT_ENTRY);
-            RegisterGlobalEvent(GameEventNames.EVENT_BASE_MANAGER_INIT_FINISHED);
-            RegisterGlobalEvent(GameEventNames.EVENT_ENTER_SCENSE);
-            RegisterGlobalEvent(GameEventNames.EVENT_BEFORE_LEAVE_SCENSE);
         }
 
         /// <summary>
@@ -226,7 +231,7 @@ namespace Ballance2.System.Services
         /// <param name="name">接收器名字</param>
         /// <param name="gameHandlerDelegate">回调</param>
         /// <returns></returns>
-        public GameHandler RegisterEventHandler(string evtName, string name, LuaFunction luaFunction)
+        public GameHandler RegisterEventHandler(GamePackage package, string evtName, string name, LuaFunction luaFunction, LuaTable luaSelf)
         {
             if (string.IsNullOrEmpty(evtName)
                || string.IsNullOrEmpty(name)
@@ -239,7 +244,7 @@ namespace Ballance2.System.Services
 
             if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
-                GameHandler gameHandler = new GameHandler(name, luaFunction);
+                GameHandler gameHandler = GameHandler.CreateLuaHandler(package, name, luaFunction, luaSelf);
                 gameEvent.EventHandlers.Add(gameHandler);
                 return gameHandler;
             }
@@ -257,7 +262,7 @@ namespace Ballance2.System.Services
         /// <param name="name">接收器名字</param>
         /// <param name="gameHandlerDelegate">回调</param>
         /// <returns></returns>
-        public GameHandler RegisterEventHandler(string evtName, string name, GameEventHandlerDelegate gameHandlerDelegate)
+        public GameHandler RegisterEventHandler(GamePackage package, string evtName, string name, GameEventHandlerDelegate gameHandlerDelegate)
         {
             if (string.IsNullOrEmpty(evtName)
                || string.IsNullOrEmpty(name)
@@ -270,7 +275,7 @@ namespace Ballance2.System.Services
 
             if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
-                GameHandler gameHandler = new GameHandler(name, gameHandlerDelegate);
+                GameHandler gameHandler = GameHandler.CreateCsEventHandler(package, name, gameHandlerDelegate);
                 gameEvent.EventHandlers.Add(gameHandler);
                 return gameHandler;
             }
@@ -288,7 +293,7 @@ namespace Ballance2.System.Services
         /// <param name="name">接收器名字</param>
         /// <param name="luaModulHandler">模块接收器函数标识符</param>
         /// <returns>返回接收器类</returns>
-        public GameHandler RegisterEventHandler(string evtName, string name, string luaModulHandler)
+        public GameHandler RegisterEventHandler(GamePackage package, string evtName, string name, string luaModulHandler)
         {
             if (string.IsNullOrEmpty(evtName)
                 || string.IsNullOrEmpty(name)
@@ -301,7 +306,7 @@ namespace Ballance2.System.Services
 
             if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
             {
-                GameHandler gameHandler = new GameHandler(name, luaModulHandler);
+                GameHandler gameHandler = GameHandler.CreateLuaStaticHandler(package, name, luaModulHandler);
                 gameEvent.EventHandlers.Add(gameHandler);
                 return gameHandler;
             }
@@ -346,61 +351,66 @@ namespace Ballance2.System.Services
         /// <summary>
         /// 注册全局共享数据存储池
         /// </summary>
+        /// <param name="package">所属包</param>
         /// <param name="name">池名称</param>
         /// <returns>如果注册成功，返回池对象；如果已经注册，则返回已经注册的池对象</returns>
-        public GameActionStore RegisterActionStore(string packageName)
+        public GameActionStore RegisterActionStore(GamePackage package, string name)
         {
+            string keyName = package.PackageName + ":" + name;
             GameActionStore store;
-            if (string.IsNullOrEmpty(packageName))
+            if (string.IsNullOrEmpty(name))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG,
                     "RegisterGlobalDataStore name 参数未提供");
                 return null;
             }
-            if (actionStores.ContainsKey(packageName))
+            if (actionStores.ContainsKey(keyName))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG,
-                    "共享操作仓库 {0} 已经注册", packageName);
-                store = actionStores[packageName];
+                    "共享操作仓库 {0} 已经注册", keyName);
+                store = actionStores[keyName];
                 return store;
             }
 
-            store = new GameActionStore(packageName);
-            actionStores.Add(packageName, store);
+            store = new GameActionStore(package, name);
+            actionStores.Add(keyName, store);
             return store;
         }
         /// <summary>
         /// 获取全局共享数据存储池
         /// </summary>
+        /// <param name="package">所属包</param>
         /// <param name="name">池名称</param>
         /// <returns></returns>
-        public GameActionStore GetActionStore(string packageName)
+        public GameActionStore GetActionStore(GamePackage package, string name)
         {
-            actionStores.TryGetValue(packageName, out GameActionStore s);
+            actionStores.TryGetValue(package.PackageName + ":" + name, out GameActionStore s);
             return s;
         }
         /// <summary>
         /// 释放已注册的全局共享数据存储池
         /// </summary>
+        /// <param name="package">所属包</param>
         /// <param name="name">池名称</param>
         /// <returns></returns>
-        public bool UnRegisterActionStore(string packageName)
+        public bool UnRegisterActionStore(GamePackage package, string name)
         {
-            if (string.IsNullOrEmpty(packageName))
+            string keyName = package.PackageName + ":" + name;
+            if (string.IsNullOrEmpty(name))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG,
                     "UnRegisterActionStore name 参数未提供");
                 return false;
             }
-            if (!actionStores.ContainsKey(packageName))
+            if (!actionStores.ContainsKey(keyName))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG,
-                    "共享操作仓库 {0} 未注册", packageName);
+                    "共享操作仓库 {0} 未注册", keyName);
                 return false;
             }
 
-            actionStores[packageName].Destroy();
-            actionStores.Remove(packageName);
+            actionStores[keyName].Destroy();
+            actionStores.Remove(keyName);
             return false;
         }
         /// <summary>
@@ -410,31 +420,67 @@ namespace Ballance2.System.Services
         /// <returns></returns>
         public bool UnRegisterActionStore(GameActionStore store)
         {
-            if (!actionStores.ContainsKey(store.PackageName))
+            if (!actionStores.ContainsKey(store.KeyName))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG,
-                    "actionStores {0} 未注册", store.PackageName);
+                    "actionStores {0} 未注册", store.KeyName);
                 return false;
             }
-            actionStores[store.PackageName].Destroy();
-            globalStore.Remove(store.PackageName);
+
+            actionStores[store.KeyName].Destroy();
+            globalStore.Remove(store.KeyName);
             return false;
         }
 
-        public GameActionCallResult CallAction(string storeName, string name, params object[] param)
+        //卸载所属模块的全部操作
+        internal void UnloadAllPackageActionStore(GamePackage package)
         {
-            if (!actionStores.ContainsKey(storeName))
+            List<string> keys = new List<string>(actionStores.Keys);
+            GameActionStore store;
+            foreach (string key in keys)
+            {
+                store = actionStores[key];
+                if (store.Package == package)
+                    UnRegisterActionStore(store);
+            }
+        }
+
+        /// <summary>
+        /// 调用操作
+        /// </summary>
+        /// <param name="package">所属包</param>
+        /// <param name="storeName">操作仓库名称</param>
+        /// <param name="name">操作名称</param>
+        /// <param name="param">调用参数</param>
+        /// <returns></returns>
+        public GameActionCallResult CallAction(GamePackage package, string storeName, string name, params object[] param)
+        {
+            string keyName = package.PackageName + ":" + storeName;
+            if (!actionStores.ContainsKey(keyName))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG,
-                    "共享操作仓库 {0} 未注册", storeName);
+                    "共享操作仓库 {0} 未注册", keyName);
                 return GameActionCallResult.FailResult;
             }
-            return CallAction(actionStores[storeName], name, param);
+            return CallAction(actionStores[keyName], name, param);
         }
+        /// <summary>
+        /// 调用操作
+        /// </summary>
+        /// <param name="store">操作仓库名称</param>
+        /// <param name="name">操作名称</param>
+        /// <param name="param">调用参数</param>
+        /// <returns></returns>
         public GameActionCallResult CallAction(GameActionStore store, string name, params object[] param)
         {
             return store.CallAction(name, param);
         }
+        /// <summary>
+        /// 调用操作
+        /// </summary>
+        /// <param name="action">操作实体</param>
+        /// <param name="param">调用参数</param>
+        /// <returns></returns>
         public GameActionCallResult CallAction(GameAction action, params object[] param)
         {
             GameErrorChecker.LastError = GameError.None;
@@ -496,14 +542,17 @@ namespace Ballance2.System.Services
             return result;
         }
 
-        public GameActionStore CoreActinoStore { get; private set; }
+        /// <summary>
+        /// 内核的 ActinoStore
+        /// </summary>
+        public GameActionStore SystemActionStore { get; private set; }
 
         private void UnLoadAllActions()
         {
             if (actionStores != null)
             {
-                foreach (var action in actionStores)
-                    action.Value.Destroy();
+                foreach (var actionStore in actionStores)
+                    actionStore.Value.Destroy();
                 actionStores.Clear();
                 actionStores = null;
             }
@@ -513,13 +562,18 @@ namespace Ballance2.System.Services
             actionStores = new Dictionary<string, GameActionStore>();
 
             //注册内置事件
-            CoreActinoStore = RegisterActionStore(GamePartName.Core);
-            CoreActinoStore.RegisterAction("QuitGame", "GameManager", (param) =>
+            SystemActionStore = RegisterActionStore(GamePackage.GetSystemPackage(), SYSTEM_ACTION_STORE_NAME);
+            SystemActionStore.RegisterAction(GamePackage.GetSystemPackage(), "QuitGame", "GameManager", (param) =>
             {
                 GameManager.Instance.QuitGame();
                 return GameActionCallResult.SuccessResult;
             }, null);
         }
+
+        /// <summary>
+        /// 内核的 ActinoStore 名称
+        /// </summary>
+        public const string SYSTEM_ACTION_STORE_NAME = "core";
 
         #endregion
 
