@@ -30,10 +30,10 @@ namespace Ballance2.System.Bridge.LuaWapper
     /// <remarks>
     /// ✧使用方法：
     ///     ★ 可以直接绑定此组件至你的 Prefab 上，填写 LuaClassName 与 LuaPackageName，
-    ///     Instantiate Prefab 后GameLuaObjectHost会自动找到模块并加载 LUA 文件并执行。
-    ///     如果找不到模块或LUA 文件，将会抛出错误。
+    ///     Instantiate Prefab 后GameLuaObjectHost会自动找到模块并加载 Lua 文件并执行。
+    ///     如果找不到模块或Lua 文件，将会抛出错误。
     ///     ★ 也可以在 GameMod 中直接调用 RegisterLuaObject 注册一个 Lua 对象
-    ///     ☆ 以上两种方法都可以在 GameMod 中使用 FindLuaObject 找到你注册的 Lua 对象
+    ///     ☆ 以上两种方法都可以在 GamePackage 中使用 FindLuaObject 找到你注册的 Lua 对象
     /// 
     /// ✧参数引入
     ///     可以在编辑器中设置 LuaInitialVars 添加你想引入的参数，承载组件会自动将的参数设置
@@ -54,9 +54,9 @@ namespace Ballance2.System.Bridge.LuaWapper
         public const string TAG = "GameLuaObjectHost";
 
         /// <summary>
-        /// LUA 对象名字，用于 FindLuaObject 查找
+        /// Lua 对象名字，用于 FindLuaObject 查找
         /// </summary>
-        [Tooltip("LUA 对象名字，用于 FindLuaObject 查找")]
+        [Tooltip("Lua 对象名字，用于 FindLuaObject 查找")]
         public string Name;
 
         /// <summary>
@@ -70,20 +70,20 @@ namespace Ballance2.System.Bridge.LuaWapper
         [Tooltip("设置 Lua 类所在的模块包名（该模块类型必须是 Module 并可运行）。设置后该对象会自动注册到 LuaObject 中")]
         public string LuaPackageName;
         /// <summary>
-        /// 设置 LUA 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。
+        /// 设置 Lua 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。
         /// </summary>
         /// <remarks>
-        /// 提示：这些参数仅用于LUA对象初始化时来传递参数使用的，如果你在LUA中修改了变量值，或是在其他脚本中访问修改，
+        /// 提示：这些参数仅用于Lua对象初始化时来传递参数使用的，如果你在Lua中修改了变量值，或是在其他脚本中访问修改，
         /// 其不会自动更新，你需要手动调用 UpdateVarFromLua UpdateVarToLua 来更新对应数据。
         /// </remarks>
-        [Tooltip("设置 LUA 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。")]
+        [Tooltip("设置 Lua 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。")]
         [SerializeField]
         public List<LuaVarObjectInfo> LuaInitialVars = new List<LuaVarObjectInfo>();
         /// <summary>
-        /// 设置 LUA 脚本执行顺序，这个值越大，脚本越晚被执行。(仅在加载时有效)
+        /// 设置 Lua 脚本执行顺序，这个值越大，脚本越晚被执行。(仅在加载时有效)
         /// </summary>
         [DoNotToLua]
-        [Tooltip("设置 LUA 脚本执行顺序，这个值越大，脚本越晚被执行。")]
+        [Tooltip("设置 Lua 脚本执行顺序，这个值越大，脚本越晚被执行。")]
         [SerializeField]
         public int ExecuteOrder = 0;
         [Tooltip("是否创建 GlobalStore，勾选后会创建此Lua脚本的共享数据仓库(仓库名字是 包名:Name)，可以使用 self.store 或 GameLuaObjectHost.Store 访问 ")]
@@ -271,7 +271,7 @@ namespace Ballance2.System.Bridge.LuaWapper
 
             InitLuaInternalVars();
             InitLuaVars(); //初始化引入参数
-            //调用其他LUA初始化脚本
+            //调用其他Lua初始化脚本
             SendMessage("OnInitLua", gameObject, SendMessageOptions.DontRequireReceiver);
             InitLuaEvents();
             return true;
@@ -310,6 +310,7 @@ namespace Ballance2.System.Bridge.LuaWapper
         private void InitLuaInternalVars()
         {
             LuaSelf["transform"] = transform;
+            LuaSelf["monoBehaviour"] = this;
             LuaSelf["gameObject"] = gameObject;
             LuaSelf["store"] = Store;
             LuaSelf["actionStore"] = ActionStore;
@@ -326,6 +327,23 @@ namespace Ballance2.System.Bridge.LuaWapper
             awake = null;
             onGUI = null;
             onDestory = null;
+        }
+
+        /// <summary>
+        /// 更新 lua 脚本的 InitialVars 至 LuaInitialVars 脚本上
+        /// </summary>
+        public void UpdateAllVarToLua()
+        {
+            foreach (LuaVarObjectInfo objectInfo in LuaInitialVars)
+                objectInfo.UpdateToLua(LuaSelf);
+        }
+        /// <summary>
+        /// 更新所有 LuaInitialVars 至 lua 脚本上
+        /// </summary>
+        public void UpdateAllVarFromLua()
+        {
+            foreach (LuaVarObjectInfo objectInfo in LuaInitialVars)
+                objectInfo.UpdateFromLua(LuaSelf);
         }
 
         /// <summary>

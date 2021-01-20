@@ -16,10 +16,17 @@ class GameLuaObjectHostInspector : Editor
     private SerializedProperty pLuaInitialVars;
     private SerializedProperty pName;
     private SerializedProperty pLuaClassName;
-    private SerializedProperty pLuaModName;
+    private SerializedProperty pLuaPackageName;
+    private SerializedProperty pExecuteOrder;
+    private SerializedProperty pCreateStore;
+    private SerializedProperty pCreateActionStore;
 
     private ReorderableList reorderableList;
     private GUIStyle styleHighlight = null;
+    private GUIStyle styleCNBox = null;
+
+    private bool bDrawVarsInspector = false;
+    private bool bDrawEventCallerInspector = false;
 
     public override void OnInspectorGUI()
     {
@@ -28,11 +35,21 @@ class GameLuaObjectHostInspector : Editor
         myScript = (GameLuaObjectHost)target;
         myScript.GetComponents(events);
 
+        if(styleCNBox == null)
+            styleCNBox = GUI.skin.GetStyle("CN Box");
+
         EditorGUI.BeginChangeCheck();
 
         DrawMinInspector();
-        DrawVarsInspector();
-        DrawEventCallerInspector();
+
+        bDrawVarsInspector = EditorGUILayout.Foldout(bDrawVarsInspector, "Lua 引入参数", true);
+        if (bDrawVarsInspector)
+            DrawVarsInspector();
+
+        bDrawEventCallerInspector = EditorGUILayout.Foldout(bDrawEventCallerInspector, "Lua 类 On * 事件接收器", true);
+        if (bDrawEventCallerInspector)
+            DrawEventCallerInspector();
+        
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -41,12 +58,25 @@ class GameLuaObjectHostInspector : Editor
     }
     private void OnEnable()
     {
+        bDrawVarsInspector = EditorPrefs.GetBool("GameLuaObjectHostInspector_bDrawVarsInspector", false);
+        bDrawEventCallerInspector = EditorPrefs.GetBool("GameLuaObjectHostInspector_bDrawEventCallerInspector", false);
+
         pName = serializedObject.FindProperty("Name");
         pLuaClassName = serializedObject.FindProperty("LuaClassName");
-        pLuaModName = serializedObject.FindProperty("LuaModName");
+        pLuaPackageName = serializedObject.FindProperty("LuaPackageName");
         pLuaInitialVars = serializedObject.FindProperty("LuaInitialVars");
+        pExecuteOrder = serializedObject.FindProperty("ExecuteOrder");
+        pCreateStore = serializedObject.FindProperty("CreateStore");
+        pCreateActionStore = serializedObject.FindProperty("CreateActionStore");
 
         InitVarsList();
+    }
+    private void OnDisable()
+    {
+        EditorPrefs.SetBool("GameLuaObjectHostInspector_bDrawVarsInspector", bDrawVarsInspector);
+        EditorPrefs.SetBool("GameLuaObjectHostInspector_bDrawEventCallerInspector", bDrawEventCallerInspector);
+        styleCNBox = null;
+        styleHighlight = null;
     }
 
     private void InitVarsList()
@@ -186,11 +216,14 @@ class GameLuaObjectHostInspector : Editor
 
     private void DrawMinInspector()
     {
-        EditorGUILayout.BeginVertical(GUI.skin.GetStyle("CN Box"));
+        EditorGUILayout.BeginVertical(styleCNBox);
 
         EditorGUILayout.PropertyField(pName);
         EditorGUILayout.PropertyField(pLuaClassName);
-        EditorGUILayout.PropertyField(pLuaModName);
+        EditorGUILayout.PropertyField(pLuaPackageName);
+        EditorGUILayout.PropertyField(pExecuteOrder);
+        EditorGUILayout.PropertyField(pCreateStore);
+        EditorGUILayout.PropertyField(pCreateActionStore);
 
         if (string.IsNullOrEmpty(myScript.LuaClassName))
             EditorGUILayout.HelpBox("必须提供 Lua 类名，否则该 Lua 组件不会运行", MessageType.Warning);
@@ -202,28 +235,49 @@ class GameLuaObjectHostInspector : Editor
     }
     private void DrawVarsInspector()
     {
-        EditorGUILayout.BeginVertical(GUI.skin.GetStyle("CN Box"));
+        EditorGUILayout.BeginVertical(styleCNBox);
         EditorGUILayout.Space(5);
-        EditorGUILayout.LabelField("Lua 引入参数 (" + pLuaInitialVars.arraySize + ")", GUI.skin.GetStyle("IN Title Flat"));
+        
+        EditorGUILayout.LabelField("当前参数个数：" + pLuaInitialVars.arraySize);
+
+        EditorGUILayout.HelpBox("提示：这些参数仅用于LUA对象初始化时来传递参数使用的，如果你在LUA中修改了变量值，或是在其他脚本中访问修改，" +
+            "其不会自动更新，你需要手动调用 UpdateVarFromLua UpdateVarToLua 来更新对应数据。", MessageType.Info);
+
+        EditorGUILayout.Space(5);
 
         reorderableList.DoLayoutList();
 
+        if(!EditorApplication.isPlaying)
+        {
+            EditorGUILayout.Space(5);
+            EditorGUILayout.HelpBox(" 提示：在运行时才能调用更新函数", MessageType.Info);
+        }
+
         EditorGUILayout.Space(5);
+
+        GUI.enabled = EditorApplication.isPlaying;
+        if (GUILayout.Button("UpdateAllVarToLua"))
+            myScript.UpdateAllVarToLua();
+        if (GUILayout.Button("UpdateAllVarFromLua"))
+            myScript.UpdateAllVarFromLua();
+        GUI.enabled = true;
+
+        EditorGUILayout.Space(5);
+
         EditorGUILayout.EndVertical();
     }
     private void DrawEventCallerInspector()
     {
-        EditorGUILayout.BeginVertical(GUI.skin.GetStyle("CN Box"));
+        EditorGUILayout.BeginVertical(styleCNBox);
         EditorGUILayout.Space(5);
-        EditorGUILayout.LabelField("Lua 类 On * 事件接收器", GUI.skin.GetStyle("IN Title Flat"));
 
         foreach (GameLuaObjectEventCaller c in events)
         {
             EditorGUILayout.BeginVertical(GUI.skin.box);
 
             EditorGUILayout.BeginHorizontal();//b Title
-            EditorGUILayout.LabelField(c.GetType().ToString(), GUI.skin.GetStyle("AssetLabel"));
-            if (GUILayout.Button("移除", GUI.skin.GetStyle("OL Minus")))//del
+            EditorGUILayout.LabelField(c.GetType().Name, GUI.skin.GetStyle("AssetLabel"));
+            if (GUILayout.Button("", GUI.skin.GetStyle("OL Minus")))//del
                 DestroyImmediate(c);
             EditorGUILayout.EndHorizontal();//e Title
 
@@ -249,7 +303,6 @@ class GameLuaObjectHostInspector : Editor
         EditorGUILayout.Space(5);
         EditorGUILayout.EndVertical();
     }
-
 
     private void AddEventCaller()
     {

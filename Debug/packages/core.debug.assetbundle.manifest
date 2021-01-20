@@ -1,0 +1,42 @@
+ManifestFileVersion: 0
+CRC: 495824520
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8550ef6b5b5610467307b45fcad52130
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a53d19c010284579283e1db4a578269c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4a1624f4fefb6fd45aa49fe116903639, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Packages/core.debug/Prefabs/DebugToolbar.prefab
+- Assets/Packages/core.debug/PackageLogo.png
+- Assets/Packages/core.debug/PackageDef.xml
+Dependencies: []

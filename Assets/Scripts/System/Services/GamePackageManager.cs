@@ -5,6 +5,7 @@ using Ballance2.System.Res;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 /*
@@ -96,8 +97,8 @@ namespace Ballance2.System.Services
             //路径转换
             string realPackagePath = GamePathManager.GetResRealPath("package", packageName + ".ballance");
             string realPackagePathInCore = GamePathManager.GetResRealPath("core", packageName + ".ballance");
-            if (File.Exists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
-            else if (!File.Exists(realPackagePath))
+            if (GamePathManager.Exists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
+            else if (!GamePathManager.Exists(realPackagePath))
             {
                 Log.E(TAG, "Package {0} register failed because file {1} not found", packageName, realPackagePath);
                 return false;
@@ -208,6 +209,19 @@ namespace Ballance2.System.Services
             return loadedPackages.ContainsKey(packageName); 
         }
 
+        /// <summary>
+        /// 通知模块运行
+        /// </summary>
+        /// <param name="runTime"></param>
+        public void NotifyAllPackageRun(string packageNameFilter)
+        {
+            foreach (GamePackage package in loadedPackages.Values)
+            {
+                if (!package.IsEntryCodeExecuted() &&
+                    (packageNameFilter == "*" || Regex.IsMatch(package.PackageName, packageNameFilter)))
+                    package.RunPackageExecutionCode();
+            }
+        }
 
         /// <summary>
         /// 加载模块
@@ -235,8 +249,6 @@ namespace Ballance2.System.Services
                 return false;
             }
 
-            packagesLoadStatus.Add(packageName, 2);
-
             //注册包
             GamePackage package = FindRegisteredPackage(packageName);
             if (package == null)
@@ -258,6 +270,7 @@ namespace Ballance2.System.Services
                 package = FindRegisteredPackage(packageName);
             }
 
+            packagesLoadStatus.Add(packageName, 2);
             package._Status = GamePackageStatus.Loading;
 
             //加载依赖

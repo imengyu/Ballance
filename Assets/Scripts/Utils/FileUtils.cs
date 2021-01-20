@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using Ballance2.System.Res;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ballance2.Utils
 {
@@ -28,7 +25,7 @@ namespace Ballance2.Utils
         public static bool TestFileHead(string file, byte[] head)
         {
             byte[] temp = new byte[head.Length];
-            FileStream fs = new FileStream(file, FileMode.Open);
+            FileStream fs = new FileStream(GamePathManager.FixFilePathScheme(file), FileMode.Open);
             fs.Read(temp, 0, head.Length);
             fs.Close();
             return StringUtils.TestBytesMatch(temp, head);

@@ -1,4 +1,5 @@
 ﻿using Ballance2.System.Debug;
+using Ballance2.System.Res;
 using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
@@ -30,10 +31,16 @@ namespace Ballance2.System.Package
     public class GameZipPackage: GamePackage
     {
         private readonly string TAG = "GameZipPackage";
-
+        private ZipInputStream zip = null;
 
         public override void Destroy()
         {
+            if (zip != null)
+            {
+                zip.Close();
+                zip.Dispose();
+                zip = null;
+            }
             base.Destroy();
         }
         public override async Task<bool> LoadInfo(string filePath)
@@ -43,20 +50,32 @@ namespace Ballance2.System.Package
             bool defFileLoadSuccess = false;
             bool defFileFounded = false;
 
-            //在zip中加载ModDef
-            ZipInputStream zip = ZipUtils.OpenZipFile(PackageFilePath);
+            //在zip中加载Def
+            try
+            {
+                zip = ZipUtils.OpenZipFile(GamePathManager.FixFilePathScheme(PackageFilePath));
+            }
+            catch(Exception e)
+            {
+                Log.E(TAG, "Load file failed! " + e.ToString());
+                GameErrorChecker.LastError = GameError.FileReadFailed;
+                return false;
+            }
+
             ZipEntry theEntry;
             while ((theEntry = zip.GetNextEntry()) != null)
             {
                 if (theEntry.Name == "/PackageDef.xml" || theEntry.Name == "PackageDef.xml")
-                    defFileLoadSuccess = await LoadModDefInZip(zip, theEntry);
-                else if (theEntry.Name == "/" + BaseInfo.Logo || theEntry.Name == BaseInfo.Logo)
+                {
+                    defFileFounded = true;
+                    defFileLoadSuccess = await LoadPackageDefInZip(zip, theEntry);
+                }
+                else if (BaseInfo != null &&
+                    (theEntry.Name == "/" + BaseInfo.Logo || theEntry.Name == BaseInfo.Logo))
                     LoadLogoInZip(zip, theEntry);
             }
-            zip.Close();
-            zip.Dispose();
 
-            if(!defFileFounded)
+            if (!defFileFounded)
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
                 LoadError = "模块并不包含 PackageDef.xml";
@@ -96,12 +115,12 @@ namespace Ballance2.System.Package
             return await base.LoadPackage();
         }
 
-        private async Task<bool> LoadModDefInZip(ZipInputStream zip, ZipEntry theEntry)
+        private async Task<bool> LoadPackageDefInZip(ZipInputStream zip, ZipEntry theEntry)
         {
             MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
             PackageDef = new XmlDocument();
-            PackageDef.LoadXml(Encoding.UTF8.GetString(ms.ToArray()));
+            PackageDef.LoadXml(StringUtils.FixUtf8BOM(ms.ToArray()));
 
             ms.Close();
             ms.Dispose();
@@ -132,22 +151,37 @@ namespace Ballance2.System.Package
         //在zip中加载AssetBundle
         private async Task<MemoryStream> LoadAssetBundleToMemoryInZipAsync()
         {
-            ZipInputStream zip = ZipUtils.OpenZipFile(PackageFilePath);
+            MemoryStream ms = null;
             ZipEntry theEntry;
             while ((theEntry = zip.GetNextEntry()) != null)
             {
-                if (theEntry.Name == PackageName + ".assetbundle"
-                    || theEntry.Name == "/" + PackageName + ".assetbundle")
+                if (theEntry.Name == "assets" + PackageName + ".assetbundle"
+                    || theEntry.Name == "/assets/" + PackageName + ".assetbundle")
                 {
-                    MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
-                    zip.Close();
-                    zip.Dispose();
-                    return ms;
+                    ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
                 }
             }
+            return ms;
+        }
 
-            zip.Close();
-            zip.Dispose();
+        public override string GetCodeLuaAsset(string pathorname)
+        {
+            ZipEntry theEntry;
+            MemoryStream ms = null;
+            while ((theEntry = zip.GetNextEntry()) != null)
+            {
+                if (theEntry.Name.StartsWith("/code") 
+                    && 
+                    (theEntry.Name == pathorname
+                        || theEntry.Name == "/code" + pathorname
+                        || Path.GetFileName(theEntry.Name) == pathorname))
+                    ms = ZipUtils.ReadZipFileToMemory(zip);
+            }
+
+            if(ms != null)
+                return Encoding.UTF8.GetString(ms.ToArray());
+
+            GameErrorChecker.LastError = GameError.FileNotFound;
             return null;
         }
     }

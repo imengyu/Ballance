@@ -14,14 +14,16 @@ namespace Ballance2.Utils
     {
         public static void AddFileToZip(ZipOutputStream zipStream, string file, int subIndex, Crc32 crc)
         {
+            string fileName = file.Substring(subIndex);
+            AddFileToZip(zipStream, file, fileName, crc);
+        }
+        public static void AddFileToZip(ZipOutputStream zipStream, string file, string inZipFilePath, Crc32 crc)
+        {
             FileStream fileStream = File.OpenRead(file);
             byte[] buffer = new byte[fileStream.Length];
             fileStream.Read(buffer, 0, buffer.Length);
-            string fileName = file.Substring(subIndex);
 
-            Debug.Log("AddFileToZip: " + fileName);
-
-            ZipEntry entry = new ZipEntry(fileName);
+            ZipEntry entry = new ZipEntry(inZipFilePath);
             entry.DateTime = DateTime.Now;
             entry.Size = fileStream.Length;
             fileStream.Close();

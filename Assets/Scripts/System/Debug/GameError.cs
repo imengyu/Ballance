@@ -27,6 +27,7 @@ namespace Ballance2.System.Debug
         /// 无错误
         /// </summary>
         None,
+        UnKnow,
         AlreadyRegistered,
         NotRegister,
         NotLoad,
@@ -43,6 +44,7 @@ namespace Ballance2.System.Debug
         FunctionNotFound,
         PackageDefNotFound,
         AssetBundleNotFound,
+        FileReadFailed,
         NotReturn,
         InvalidPackageName,
         RegisterPackageFailed,
@@ -51,6 +53,8 @@ namespace Ballance2.System.Debug
         ExecutionFailed,
         AccessDenined,
         IsLoading,
+        SystemPackageNotLoad,
+        UnKnowType,
     }
 
     /// <summary>
@@ -71,6 +75,7 @@ namespace Ballance2.System.Debug
                 default: return "未知错误: " + err.ToString();
                 case GameError.None: return "无错误。";
                 case GameError.InvalidPackageName: return "无效的包名。";
+                case GameError.FileReadFailed: return "读取文件失败。";
                 case GameError.IsLoading: return "正在加载，请稍后。";
                 case GameError.AccessDenined: return "不能执行这个操作。";
                 case GameError.ExecutionFailed: return "执行 Lua 代码失败。";

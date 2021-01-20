@@ -90,6 +90,15 @@ namespace Ballance2.System.Package
         /// </summary>
         Registered = 6,
     }
+    /// <summary>
+    /// 模块运行时机
+    /// </summary>
+    [SLua.CustomLuaClass]
+    public enum GamePackageRunTime
+    {
+
+    }
+
 
     /// <summary>
     /// 模块基础信息

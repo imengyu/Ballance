@@ -150,6 +150,21 @@ namespace Ballance2.Utils
             return null;
         }
 
+        public static string LogLevelToString(LogLevel logLevel)
+        {
+            switch (logLevel)
+            {
+                case LogLevel.None: return "N";
+                case LogLevel.Verbose: return "V";
+                case LogLevel.Debug: return "D";
+                case LogLevel.Info: return "I";
+                case LogLevel.Warning: return "W";
+                case LogLevel.Error: return "E";
+                case LogLevel.All: return "A";
+            }
+            return logLevel.ToString();
+        }
+
         private static List<LogObserverInternal> observers = new List<LogObserverInternal>();
 
         /// <summary>

@@ -1,11 +1,17 @@
 ﻿using Ballance2.System.Bridge;
+using Ballance2.System.Debug;
 using Ballance2.System.Entry;
+using Ballance2.System.Package;
+using Ballance2.System.Res;
 using Ballance2.System.Services;
 using Ballance2.Utils;
 using SLua;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Xml;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Ballance2.System
 {
@@ -92,14 +98,105 @@ namespace Ballance2.System
         private IEnumerator InitAsysc()
         {
             //LoadSystem packages
-            yield return StartCoroutine(LoadSystemPackages());
+            yield return StartCoroutine(LoadSystemInit());
 
 
 
             yield break;
         }
-        private IEnumerator LoadSystemPackages()
+        private IEnumerator LoadSystemInit()
         {
+            //读取读取SystemInit文件
+            string url = GamePathManager.GetResRealPath("systeminit", "");
+            Log.D(TAG, "systeminit : {0}", url);
+            UnityWebRequest request = UnityWebRequest.Get(url);
+            yield return request.SendWebRequest();
+            if (request.isNetworkError || !string.IsNullOrEmpty(request.error))
+            {
+                //加载失败
+                StopAllCoroutines();
+                if (request.responseCode == 404)
+                    GameErrorChecker.ThrowGameError(GameError.FileNotFound, "未找到 SystemInit\n您可尝试重新安装游戏");
+                else
+                    GameErrorChecker.ThrowGameError(GameError.FileNotFound, "读取 SystemInit 失败：" + request.responseCode + "\n您可尝试重新安装游戏");
+                yield break;
+            }
+
+            //读取SystemInit.xml
+            XmlDocument systemInit = new XmlDocument();
+            systemInit.LoadXml(request.downloadHandler.text);
+
+            var pm = GetSystemService<GamePackageManager>("GamePackageManager");
+
+            //加载SystemPackages中定义的包
+            XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
+            for(int i = 0; i < nodeSystemPackages.ChildNodes.Count; i++)
+            {
+                XmlNode nodePackage = nodeSystemPackages.ChildNodes[i];
+
+                if (nodePackage.Name == "Package" && nodePackage.Attributes["name"] != null)
+                {
+                    string packageName = nodePackage.Attributes["name"].InnerText;
+                    int minVer = 0;
+                    bool mustLoad = false;
+                    foreach (XmlAttribute attribute in nodePackage.Attributes)
+                    {
+                        if (attribute.Name == "minVer")
+                            minVer = ConverUtils.StringToInt(attribute.Value, 0, "Package/minVer");
+                        else if (attribute.Name == "mustLoad")
+                            mustLoad = ConverUtils.StringToBoolean(attribute.Value, false, "Package/mustLoad");
+                    }
+                    if(string.IsNullOrEmpty(packageName))
+                    {
+                        Log.W(TAG, "The Package node {0} name is empty!", i);
+                        continue;
+                    }
+
+                    //加载包
+                    Task<bool> task = pm.LoadPackage(packageName);
+                    yield return new WaitUntil(() => task.IsCompleted);
+
+                    if (task.Result)
+                    {
+                        GamePackage package = pm.FindPackage(packageName);
+                        if (package == null)
+                        {
+                            StopAllCoroutines();
+                            GameErrorChecker.ThrowGameError(GameError.UnKnow, packageName + " not found!\n请尝试重启游戏");
+                            yield break;
+                        }
+                        if (package.PackageVersion < minVer)
+                        {
+                            StopAllCoroutines();
+                            GameErrorChecker.ThrowGameError(GameError.SystemPackageNotLoad,
+                                string.Format("模块 {0} 版本过低：{1} 小于所需版本 {2}, 您可尝试重新安装游戏", 
+                                packageName, package.PackageVersion, minVer));
+                            yield break;
+                        }
+                    }
+                    else
+                    {
+                        if (mustLoad)
+                        {
+                            StopAllCoroutines();
+                            GameErrorChecker.ThrowGameError(GameError.SystemPackageNotLoad,
+                                "系统定义的模块：" + packageName + " 未能加载成功\n错误：" +
+                                GameErrorChecker.GetLastErrorMessage() + " (" + GameErrorChecker.LastError + ")\n请尝试重启游戏");
+                            yield break;
+                        }
+                    }
+                }
+                else
+                {
+                    Log.W(TAG, "Unknow node in System/SystemPackages : {0}\nNode " +
+                        "should be Package", 
+                        nodePackage.ToString());
+                }
+            }
+
+            //全部加载完毕之后通知所有模块初始化
+            pm.NotifyAllPackageRun("*");
+
             yield break;
         }
 

@@ -21,21 +21,19 @@
     <Logo>PackageLogo.png</Logo>
     <Link>https://yourwebsite.com</Link>
     <VersionName>1.0.DEV</VersionName>
-    
     <!--模块依赖-->
     <Dependencies>
       <!--
         如果你的模块分成多个模块，你可以在这里写明每个模块的依赖信息，加载器会自动处理并按次序依次加载依赖。
         name ：依赖的包名
-        minVer ：依赖的模块最低版本，如果模块低于你设置的版本，将会抛出错误。可不写
+        minVer ：依赖的模块最低版本，如果模块低于你设置的版本，将会抛出错误。不写则不限制版本
         mustLoad：表示这个包是否是必须要加载的，如果为true，依赖加载失败将会抛出错误
       -->
       <!--
-      <Package name="core.scenes.menulevel.ui" minVer="1.0" mustLoad="true" ></Package>
+      <Package name="core.scenes.menulevel.ui" minVer="1" mustLoad="true" ></Package>
       -->
     </Dependencies>
   </BaseInfo>
-  
   <!--
     模块兼容性信息
     MinVersion：表示模块可以正常使用的最低游戏内核版本
@@ -45,7 +43,6 @@
     <MinVersion>1</MinVersion>
     <TargetVersion>1</TargetVersion>
   </Compatibility>
-  
   <!--
     模块入口代码
     ★ Lua ：入口Lua代码，文本文件（例如 Entry.lua.txt），下面是一个示例：
@@ -69,7 +66,7 @@
         
     ☆ CSharp：你的模块DLL文件名（例如 xx.dll.bytes）
   -->
-  <EntryCode>Entry.lua.txt</EntryCode>
+  <EntryCode>Entry.lua</EntryCode>
   <!--
     模块类型 Module 或 Asset
     仅有 Module 才能运行代码
@@ -99,5 +96,4 @@
     如果填写 core 表示共享模块到全局Lua虚拟机
   -->
   <ShareLuaState>core</ShareLuaState>
-  
 </Package>

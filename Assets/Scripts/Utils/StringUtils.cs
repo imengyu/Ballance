@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Ballance2.Utils
@@ -229,6 +226,24 @@ namespace Ballance2.Utils
                 }
             }
             return rs;
+        }
+
+
+        public static string FixUtf8BOM(byte[] buffer)
+        {
+            string xmlStr;
+            byte[] bomBuffer = new byte[] { 0xef, 0xbb, 0xbf };
+            if (buffer[0] == bomBuffer[0]
+                && buffer[1] == bomBuffer[1]
+                && buffer[2] == bomBuffer[2])
+            {
+                xmlStr = Encoding.UTF8.GetString(buffer, 3, buffer.Length - 3);
+            }
+            else
+            {
+                xmlStr = Encoding.UTF8.GetString(buffer);
+            }
+            return xmlStr;
         }
     }
 }

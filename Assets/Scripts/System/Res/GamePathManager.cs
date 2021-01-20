@@ -1,6 +1,9 @@
 ﻿using Ballance2.Config;
 using Ballance2.Config.Settings;
+using Ballance2.System.Debug;
 using System;
+using System.IO;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -48,11 +51,11 @@ namespace Ballance2.System.Res
         /// <summary>
         /// 调试路径（模组目录）
         /// </summary>
-        public static string DEBUG_PACKAGES_PATH { get { return DEBUG_PATH + "Packages/"; } }
+        public static string DEBUG_PACKAGES_PATH { get { return DEBUG_PATH + "/packages/"; } }
         /// <summary>
         /// 调试路径（关卡目录）
         /// </summary>
-        public static string DEBUG_LEVELS_PATH { get { return DEBUG_PATH + "Levels/"; } }
+        public static string DEBUG_LEVELS_PATH { get { return DEBUG_PATH + "/levels/"; } }
 
         /// <summary>
         /// 安卓系统数据目录
@@ -61,11 +64,11 @@ namespace Ballance2.System.Res
         /// <summary>
         /// 安卓系统模组目录
         /// </summary>
-        public const string ANDROID_PACKAGES_PATH = ANDROID_FOLDER_PATH + "Packages/";
+        public const string ANDROID_PACKAGES_PATH = ANDROID_FOLDER_PATH + "packages/";
         /// <summary>
         /// 安卓系统关卡目录
         /// </summary>
-        public const string ANDROID_LEVELS_PATH = ANDROID_FOLDER_PATH + "Levels/";
+        public const string ANDROID_LEVELS_PATH = ANDROID_FOLDER_PATH + "levels/";
 
 
 
@@ -94,6 +97,7 @@ namespace Ballance2.System.Res
         /// <returns></returns>
         public static string GetResRealPath(string type, string pathorname, bool replacePlatform = true)
         {
+            string result = null;
             string pathbuf = "";
             string[] spbuf = null;
 
@@ -108,21 +112,31 @@ namespace Ballance2.System.Res
             if (type == "gameinit")
             {
 #if UNITY_EDITOR
-                return DEBUG_PATH + "core/core.gameinit.txt";
+                result = DEBUG_PATH + "/core/game.init.xml";
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                    return Application.dataPath + "/core/core.gameinit.txt";
+                result = Application.dataPath + "/core/game.init.xml";
 #elif UNITY_IOS
-                    return Application.streamingAssetsPath + "/core/core.gameinit.txt";
+                result = Application.streamingAssetsPath + "/core/game.init.xml";
+#endif
+            }
+            else if (type == "systeminit")
+            {
+#if UNITY_EDITOR
+                result = DEBUG_PATH + "/core/system.init.xml";
+#elif UNITY_STANDALONE || UNITY_ANDROID
+                result = Application.dataPath + "/core/system.init.xml";
+#elif UNITY_IOS
+                result = Application.streamingAssetsPath + "/core/system.init.xml";
 #endif
             }
             else if (type == "logfile")
             {
 #if UNITY_EDITOR
-                return DEBUG_PATH + "/output.log";
+                result = DEBUG_PATH + "/output.log";
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                    return Application.dataPath + "/output.log";
+                result = Application.dataPath + "/output.log";
 #elif UNITY_IOS
-                    return Application.persistentDataPath + "/output.log";
+                result = Application.persistentDataPath + "/output.log";
 #endif
             }
             else if (type == "level") return GetLevelRealPath(pathbuf);
@@ -140,18 +154,18 @@ namespace Ballance2.System.Res
 #elif UNITY_IOS
                     pathbuf = pathbuf;
 #endif
-                    return ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
+                    result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
                 }
                 else
                 {
 #if UNITY_EDITOR
-                    return DEBUG_PACKAGES_PATH + pathbuf;
+                    result = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
-                    return Application.dataPath + "/packages/" + pathbuf;
+                    result = Application.dataPath + "/packages/" + pathbuf;
 #elif UNITY_ANDROID
-                    return ANDROID_PACKAGES_PATH + pathbuf;
+                    result = ANDROID_PACKAGES_PATH + pathbuf;
 #elif UNITY_IOS
-                    return pathorname;
+                    result = pathorname;
 #endif
                 }
             }
@@ -161,26 +175,32 @@ namespace Ballance2.System.Res
                 {
                     if (IsAbsolutePath(pathbuf)) return pathbuf;
 #if UNITY_EDITOR
-                    pathbuf = DEBUG_PATH + "core/" + pathbuf;
+                    pathbuf = DEBUG_PATH + "/core/" + pathbuf;
 #elif UNITY_STANDALONE || UNITY_ANDROID
                     pathbuf = Application.dataPath + "/core/" + pathbuf;
 #elif UNITY_IOS
                     pathbuf = Application.streamingAssetsPath + "/core/" + pathbuf;
 #endif
-                    return ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
+                    result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
                 }
                 else
                 {
 #if UNITY_EDITOR
-                    return DEBUG_PATH + "core/" + pathbuf;
+                    result = DEBUG_PATH + "/core/" + pathbuf;
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                    return Application.dataPath + "/core/" + pathbuf;
+                    result = Application.dataPath + "/core/" + pathbuf;
 #elif UNITY_IOS
-                    return Application.streamingAssetsPath + "/core/" + pathbuf;
+                    result = Application.streamingAssetsPath + "/core/" + pathbuf;
 #endif
                 }
             }
-            return pathorname;
+            else
+            {
+                GameErrorChecker.LastError = GameError.UnKnowType;
+                return pathorname;
+            }
+
+            return "file:///" + result;
         }
         /// <summary>
         /// 将关卡资源的相对路径转为关卡资源真实路径
@@ -189,6 +209,7 @@ namespace Ballance2.System.Res
         /// <returns></returns>
         public static string GetLevelRealPath(string pathorname)
         {
+            string result = "";
             string pathbuf = "";
             string[] spbuf = null;
 
@@ -206,20 +227,22 @@ namespace Ballance2.System.Res
 #elif UNITY_IOS
                 pathbuf = pathbuf;
 #endif
-                return ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
+                result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
             }
             else
             {
 #if UNITY_EDITOR
-                return DEBUG_LEVELS_PATH + pathorname;
+                result = DEBUG_LEVELS_PATH + pathorname;
 #elif UNITY_STANDALONE
-                return Application.dataPath + "/levels/" + pathorname;
+                result = Application.dataPath + "/levels/" + pathorname;
 #elif UNITY_ANDROID
-                return ANDROID_LEVELS_PATH + pathorname;
+                result = ANDROID_LEVELS_PATH + pathorname;
 #elif UNITY_IOS
-                return pathorname;
+                result = pathorname;
 #endif
             }
+
+            return "file:///" + result;
         }
         /// <summary>
         /// Replace Path In Resource Identifier (Identifier:Path:Arg0:Arg1)
@@ -309,6 +332,23 @@ namespace Ballance2.System.Res
                 }
                 path = path.Substring(lastPos + 1);
             }
+            return path;
+        }
+        /// <summary>
+        /// 获取文件是否存在
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        /// <returns></returns>
+        public static bool Exists(string path)
+        {
+            if (path.StartsWith("file:///"))
+                return File.Exists(path.Substring(8));
+            return File.Exists(path);
+        }
+        public static string FixFilePathScheme(string path)
+        {
+            if (path.StartsWith("file:///"))
+                return path.Substring(8);
             return path;
         }
     }
