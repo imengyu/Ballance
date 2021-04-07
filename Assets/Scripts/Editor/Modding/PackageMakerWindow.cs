@@ -1,6 +1,6 @@
 ﻿using Ballance2.Config;
-using Ballance2.System.Package;
-using Ballance2.System.Res;
+using Ballance2.Sys.Package;
+using Ballance2.Sys.Res;
 using Ballance2.Utils;
 using System.IO;
 using System.Xml;

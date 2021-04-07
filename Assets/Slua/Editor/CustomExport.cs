@@ -74,6 +74,7 @@ namespace SLua
             list = new List<string>
             {
                 // "UnityEngine.Font",
+
             };
         }
 
@@ -87,6 +88,7 @@ namespace SLua
             "UnityEngine.Texture.get_imageContentsHash",
             "UnityEngine.Texture.set_imageContentsHash",
             "UnityEngine.Texture.imageContentsHash",
+
         };
         // black list if white list not given
         public static void OnGetNoUseList(out List<string> list)
@@ -189,6 +191,12 @@ namespace SLua
                 "UnityEngine.LightProbeGroup",
                 "UnityEngine.Playables",
                 "UnityEngine.Rendering",
+                "UnityEngine.TrailRenderer",
+                "UnityEngine.LineRenderer",
+                "Unity.Profiling.LowLevel.Unsafe.ProfilerCategoryDescription",
+                "Unity.Profiling.LowLevel.Unsafe.ProfilerMarkerData",
+                "Unity.Profiling.LowLevel.Unsafe.ProfilerRecorderDescription",
+                "Unity.Profiling.LowLevel.Unsafe.ProfilerUnsafeUtility",
             };
         }
     }

@@ -44,12 +44,12 @@ public class Lua_UnityEngine_TextureFormat : LuaObject {
 		addMember(l,47,"ETC2_RGBA8");
 		addMember(l,48,"ASTC_4x4");
 		addMember(l,48,"ASTC_RGB_4x4");
-		addMember(l,49,"ASTC_5x5");
 		addMember(l,49,"ASTC_RGB_5x5");
-		addMember(l,50,"ASTC_6x6");
+		addMember(l,49,"ASTC_5x5");
 		addMember(l,50,"ASTC_RGB_6x6");
-		addMember(l,51,"ASTC_RGB_8x8");
+		addMember(l,50,"ASTC_6x6");
 		addMember(l,51,"ASTC_8x8");
+		addMember(l,51,"ASTC_RGB_8x8");
 		addMember(l,52,"ASTC_10x10");
 		addMember(l,52,"ASTC_RGB_10x10");
 		addMember(l,53,"ASTC_RGB_12x12");
@@ -72,6 +72,9 @@ public class Lua_UnityEngine_TextureFormat : LuaObject {
 		addMember(l,69,"ASTC_HDR_8x8");
 		addMember(l,70,"ASTC_HDR_10x10");
 		addMember(l,71,"ASTC_HDR_12x12");
+		addMember(l,72,"RG32");
+		addMember(l,73,"RGB48");
+		addMember(l,74,"RGBA64");
 		addMember(l,-127,"PVRTC_2BPP_RGB");
 		addMember(l,-127,"PVRTC_2BPP_RGBA");
 		addMember(l,-127,"ATC_RGB4");

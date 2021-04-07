@@ -182,15 +182,33 @@ public class Lua_UnityEngine_Events_UnityEventBase : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			System.Object a1;
-			checkType(l,1,out a1);
-			System.String a2;
-			checkType(l,2,out a2);
-			System.Type[] a3;
-			checkArray(l,3,out a3);
-			var ret=UnityEngine.Events.UnityEventBase.GetValidMethodInfo(a1,a2,a3);
-			pushValue(l,true);
-			pushValue(l,ret);
+			int argc = LuaDLL.lua_gettop(l);
+			if(matchType(l,argc,1,typeof(System.Object),typeof(string),typeof(System.Type[]))){
+				System.Object a1;
+				checkType(l,1,out a1);
+				System.String a2;
+				checkType(l,2,out a2);
+				System.Type[] a3;
+				checkArray(l,3,out a3);
+				var ret=UnityEngine.Events.UnityEventBase.GetValidMethodInfo(a1,a2,a3);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,1,typeof(System.Type),typeof(string),typeof(System.Type[]))){
+				System.Type a1;
+				checkType(l,1,out a1);
+				System.String a2;
+				checkType(l,2,out a2);
+				System.Type[] a3;
+				checkArray(l,3,out a3);
+				var ret=UnityEngine.Events.UnityEventBase.GetValidMethodInfo(a1,a2,a3);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function GetValidMethodInfo to call");
 			return 2;
 		}
 		catch(Exception e) {

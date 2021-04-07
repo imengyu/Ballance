@@ -94,7 +94,9 @@ public class Lua_UnityEngine_Profiling_CustomSampler : LuaObject {
 			#endif
 			System.String a1;
 			checkType(l,1,out a1);
-			var ret=UnityEngine.Profiling.CustomSampler.Create(a1);
+			System.Boolean a2;
+			checkType(l,2,out a2);
+			var ret=UnityEngine.Profiling.CustomSampler.Create(a1,a2);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;

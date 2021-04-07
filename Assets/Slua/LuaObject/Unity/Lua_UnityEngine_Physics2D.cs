@@ -5050,7 +5050,7 @@ public class Lua_UnityEngine_Physics2D : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_autoSimulation(IntPtr l) {
+	static public int get_simulationMode(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -5062,7 +5062,7 @@ public class Lua_UnityEngine_Physics2D : LuaObject {
 			#endif
 			#endif
 			pushValue(l,true);
-			pushValue(l,UnityEngine.Physics2D.autoSimulation);
+			pushEnum(l,(int)UnityEngine.Physics2D.simulationMode);
 			return 2;
 		}
 		catch(Exception e) {
@@ -5080,7 +5080,7 @@ public class Lua_UnityEngine_Physics2D : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_autoSimulation(IntPtr l) {
+	static public int set_simulationMode(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -5091,9 +5091,9 @@ public class Lua_UnityEngine_Physics2D : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			bool v;
-			checkType(l,2,out v);
-			UnityEngine.Physics2D.autoSimulation=v;
+			UnityEngine.SimulationMode2D v;
+			v = (UnityEngine.SimulationMode2D)LuaDLL.luaL_checkinteger(l, 2);
+			UnityEngine.Physics2D.simulationMode=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -6474,7 +6474,7 @@ public class Lua_UnityEngine_Physics2D : LuaObject {
 		addMember(l,"callbacksOnDisable",get_callbacksOnDisable,set_callbacksOnDisable,false);
 		addMember(l,"reuseCollisionCallbacks",get_reuseCollisionCallbacks,set_reuseCollisionCallbacks,false);
 		addMember(l,"autoSyncTransforms",get_autoSyncTransforms,set_autoSyncTransforms,false);
-		addMember(l,"autoSimulation",get_autoSimulation,set_autoSimulation,false);
+		addMember(l,"simulationMode",get_simulationMode,set_simulationMode,false);
 		addMember(l,"jobOptions",get_jobOptions,set_jobOptions,false);
 		addMember(l,"velocityThreshold",get_velocityThreshold,set_velocityThreshold,false);
 		addMember(l,"maxLinearCorrection",get_maxLinearCorrection,set_maxLinearCorrection,false);

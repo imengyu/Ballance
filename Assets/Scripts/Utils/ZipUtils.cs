@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.Checksum;
+﻿using Ballance2.Sys.Debug;
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.IO;
@@ -41,7 +42,16 @@ namespace Ballance2.Utils
         }
         public static ZipInputStream OpenZipFile(string file)
         {
-            ZipInputStream zipStream = new ZipInputStream(File.OpenRead(file));
+            ZipInputStream zipStream = null;
+            try
+            {
+                zipStream = new ZipInputStream(File.OpenRead(file));
+            }
+            catch(Exception e)
+            {
+                Log.E("ZipUtils", "Load Zip file {0} failed! {1}", file, e.ToString());
+                GameErrorChecker.LastError = GameError.FileReadFailed;
+            }
             return zipStream;
         }
         public static MemoryStream ReadZipFileToMemory(ZipInputStream zip)
@@ -66,7 +76,7 @@ namespace Ballance2.Utils
             {
                 int i = await zip.ReadAsync(buffer, 0, 1048576);
                 if (i > 0)
-                    ms.Write(buffer, 0, 1048576);
+                    ms.Write(buffer, 0, i);
                 else break;
             }
             return ms;

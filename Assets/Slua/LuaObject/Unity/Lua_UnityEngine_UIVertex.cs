@@ -350,7 +350,7 @@ public class Lua_UnityEngine_UIVertex : LuaObject {
 			#endif
 			UnityEngine.UIVertex self;
 			checkValueType(l,1,out self);
-			UnityEngine.Vector2 v;
+			UnityEngine.Vector4 v;
 			checkType(l,2,out v);
 			self.uv0=v;
 			setBack(l,self);
@@ -417,7 +417,7 @@ public class Lua_UnityEngine_UIVertex : LuaObject {
 			#endif
 			UnityEngine.UIVertex self;
 			checkValueType(l,1,out self);
-			UnityEngine.Vector2 v;
+			UnityEngine.Vector4 v;
 			checkType(l,2,out v);
 			self.uv1=v;
 			setBack(l,self);
@@ -484,7 +484,7 @@ public class Lua_UnityEngine_UIVertex : LuaObject {
 			#endif
 			UnityEngine.UIVertex self;
 			checkValueType(l,1,out self);
-			UnityEngine.Vector2 v;
+			UnityEngine.Vector4 v;
 			checkType(l,2,out v);
 			self.uv2=v;
 			setBack(l,self);
@@ -551,7 +551,7 @@ public class Lua_UnityEngine_UIVertex : LuaObject {
 			#endif
 			UnityEngine.UIVertex self;
 			checkValueType(l,1,out self);
-			UnityEngine.Vector2 v;
+			UnityEngine.Vector4 v;
 			checkType(l,2,out v);
 			self.uv3=v;
 			setBack(l,self);

@@ -1,4 +1,5 @@
 ﻿using SLua;
+using System.Text;
 
 namespace Ballance2.Utils
 {
@@ -24,7 +25,5 @@ namespace Ballance2.Utils
         {
             return param ? "true" : "false";
         }
-
-
     }
 }

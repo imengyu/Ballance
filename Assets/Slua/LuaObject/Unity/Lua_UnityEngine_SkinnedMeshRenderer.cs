@@ -85,12 +85,28 @@ public class Lua_UnityEngine_SkinnedMeshRenderer : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			UnityEngine.SkinnedMeshRenderer self=(UnityEngine.SkinnedMeshRenderer)checkSelf(l);
-			UnityEngine.Mesh a1;
-			checkType(l,2,out a1);
-			self.BakeMesh(a1);
-			pushValue(l,true);
-			return 1;
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				UnityEngine.SkinnedMeshRenderer self=(UnityEngine.SkinnedMeshRenderer)checkSelf(l);
+				UnityEngine.Mesh a1;
+				checkType(l,2,out a1);
+				self.BakeMesh(a1);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(argc==3){
+				UnityEngine.SkinnedMeshRenderer self=(UnityEngine.SkinnedMeshRenderer)checkSelf(l);
+				UnityEngine.Mesh a1;
+				checkType(l,2,out a1);
+				System.Boolean a2;
+				checkType(l,3,out a2);
+				self.BakeMesh(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function BakeMesh to call");
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);

@@ -50,7 +50,7 @@ public class Lua_UnityEngine_Texture3D : LuaObject {
 				pushValue(l,o);
 				return 2;
 			}
-			else if(argc==7){
+			else if(matchType(l,argc,2,typeof(int),typeof(int),typeof(int),typeof(UnityEngine.Experimental.Rendering.GraphicsFormat),typeof(UnityEngine.Experimental.Rendering.TextureCreationFlags),typeof(int))){
 				System.Int32 a1;
 				checkType(l,2,out a1);
 				System.Int32 a2;
@@ -84,6 +84,24 @@ public class Lua_UnityEngine_Texture3D : LuaObject {
 				pushValue(l,o);
 				return 2;
 			}
+			else if(matchType(l,argc,2,typeof(int),typeof(int),typeof(int),typeof(UnityEngine.TextureFormat),typeof(int),typeof(System.IntPtr))){
+				System.Int32 a1;
+				checkType(l,2,out a1);
+				System.Int32 a2;
+				checkType(l,3,out a2);
+				System.Int32 a3;
+				checkType(l,4,out a3);
+				UnityEngine.TextureFormat a4;
+				a4 = (UnityEngine.TextureFormat)LuaDLL.luaL_checkinteger(l, 5);
+				System.Int32 a5;
+				checkType(l,6,out a5);
+				System.IntPtr a6;
+				checkType(l,7,out a6);
+				o=new UnityEngine.Texture3D(a1,a2,a3,a4,a5,a6);
+				pushValue(l,true);
+				pushValue(l,o);
+				return 2;
+			}
 			else if(matchType(l,argc,2,typeof(int),typeof(int),typeof(int),typeof(UnityEngine.TextureFormat),typeof(bool))){
 				System.Int32 a1;
 				checkType(l,2,out a1);
@@ -100,7 +118,58 @@ public class Lua_UnityEngine_Texture3D : LuaObject {
 				pushValue(l,o);
 				return 2;
 			}
+			else if(matchType(l,argc,2,typeof(int),typeof(int),typeof(int),typeof(UnityEngine.TextureFormat),typeof(bool),typeof(System.IntPtr))){
+				System.Int32 a1;
+				checkType(l,2,out a1);
+				System.Int32 a2;
+				checkType(l,3,out a2);
+				System.Int32 a3;
+				checkType(l,4,out a3);
+				UnityEngine.TextureFormat a4;
+				a4 = (UnityEngine.TextureFormat)LuaDLL.luaL_checkinteger(l, 5);
+				System.Boolean a5;
+				checkType(l,6,out a5);
+				System.IntPtr a6;
+				checkType(l,7,out a6);
+				o=new UnityEngine.Texture3D(a1,a2,a3,a4,a5,a6);
+				pushValue(l,true);
+				pushValue(l,o);
+				return 2;
+			}
 			return error(l,"New object failed.");
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int UpdateExternalTexture(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Texture3D self=(UnityEngine.Texture3D)checkSelf(l);
+			System.IntPtr a1;
+			checkType(l,2,out a1);
+			self.UpdateExternalTexture(a1);
+			pushValue(l,true);
+			return 1;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -543,6 +612,49 @@ public class Lua_UnityEngine_Texture3D : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int CreateExternalTexture_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			System.Int32 a1;
+			checkType(l,1,out a1);
+			System.Int32 a2;
+			checkType(l,2,out a2);
+			System.Int32 a3;
+			checkType(l,3,out a3);
+			UnityEngine.TextureFormat a4;
+			a4 = (UnityEngine.TextureFormat)LuaDLL.luaL_checkinteger(l, 4);
+			System.Boolean a5;
+			checkType(l,5,out a5);
+			System.IntPtr a6;
+			checkType(l,6,out a6);
+			var ret=UnityEngine.Texture3D.CreateExternalTexture(a1,a2,a3,a4,a5,a6);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_depth(IntPtr l) {
 		try {
 			#if DEBUG
@@ -637,6 +749,7 @@ public class Lua_UnityEngine_Texture3D : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.Texture3D");
+		addMember(l,UpdateExternalTexture);
 		addMember(l,GetPixels);
 		addMember(l,GetPixels32);
 		addMember(l,SetPixels);
@@ -645,6 +758,7 @@ public class Lua_UnityEngine_Texture3D : LuaObject {
 		addMember(l,SetPixel);
 		addMember(l,GetPixel);
 		addMember(l,GetPixelBilinear);
+		addMember(l,CreateExternalTexture_s);
 		addMember(l,"depth",get_depth,null,true);
 		addMember(l,"format",get_format,null,true);
 		addMember(l,"isReadable",get_isReadable,null,true);

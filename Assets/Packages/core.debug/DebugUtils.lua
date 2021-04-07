@@ -1,6 +1,8 @@
 
-
-function getLogColor(logLevel)
+---获取日志颜色
+---@param level LogLevel
+---@return string
+function GetLogColor(level)
   if level == LogLevel.Info then
     return "67CCFF"
   elseif level == LogLevel.Verbose then

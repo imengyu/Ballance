@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    "**/*.vsconfig": true,
+    "**/*.meta": true,
+    "**/*.sln": true,
+    "**/Temp": true,
+    "**/Logs": true,
+    "**/obj": true,
+    "**/Library": true,
+  }
+}

@@ -104,6 +104,73 @@ public class Lua_UnityEngine_UI_Navigation : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_wrapAround(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.Navigation self;
+			checkValueType(l,1,out self);
+			pushValue(l,true);
+			pushValue(l,self.wrapAround);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_wrapAround(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.Navigation self;
+			checkValueType(l,1,out self);
+			bool v;
+			checkType(l,2,out v);
+			self.wrapAround=v;
+			setBack(l,self);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_selectOnUp(IntPtr l) {
 		try {
 			#if DEBUG
@@ -404,6 +471,7 @@ public class Lua_UnityEngine_UI_Navigation : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.UI.Navigation");
 		addMember(l,"mode",get_mode,set_mode,true);
+		addMember(l,"wrapAround",get_wrapAround,set_wrapAround,true);
 		addMember(l,"selectOnUp",get_selectOnUp,set_selectOnUp,true);
 		addMember(l,"selectOnDown",get_selectOnDown,set_selectOnDown,true);
 		addMember(l,"selectOnLeft",get_selectOnLeft,set_selectOnLeft,true);

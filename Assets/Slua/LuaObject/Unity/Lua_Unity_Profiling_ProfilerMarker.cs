@@ -16,13 +16,33 @@ public class Lua_Unity_Profiling_ProfilerMarker : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
+			int argc = LuaDLL.lua_gettop(l);
 			Unity.Profiling.ProfilerMarker o;
-			System.String a1;
-			checkType(l,2,out a1);
-			o=new Unity.Profiling.ProfilerMarker(a1);
-			pushValue(l,true);
-			pushValue(l,o);
-			return 2;
+			if(argc==2){
+				System.String a1;
+				checkType(l,2,out a1);
+				o=new Unity.Profiling.ProfilerMarker(a1);
+				pushValue(l,true);
+				pushValue(l,o);
+				return 2;
+			}
+			else if(argc==3){
+				Unity.Profiling.ProfilerCategory a1;
+				checkValueType(l,2,out a1);
+				System.String a2;
+				checkType(l,3,out a2);
+				o=new Unity.Profiling.ProfilerMarker(a1,a2);
+				pushValue(l,true);
+				pushValue(l,o);
+				return 2;
+			}
+			else if(argc==0){
+				o=new Unity.Profiling.ProfilerMarker();
+				pushValue(l,true);
+				pushObject(l,o);
+				return 2;
+			}
+			return error(l,"New object failed.");
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -152,12 +172,45 @@ public class Lua_Unity_Profiling_ProfilerMarker : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_Handle(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Unity.Profiling.ProfilerMarker self;
+			checkValueType(l,1,out self);
+			pushValue(l,true);
+			pushValue(l,self.Handle);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Unity.Profiling.ProfilerMarker");
 		addMember(l,Begin);
 		addMember(l,End);
 		addMember(l,Auto);
+		addMember(l,"Handle",get_Handle,null,true);
 		createTypeMetatable(l,constructor, typeof(Unity.Profiling.ProfilerMarker),typeof(System.ValueType));
 	}
 }

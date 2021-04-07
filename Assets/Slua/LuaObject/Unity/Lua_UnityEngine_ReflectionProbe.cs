@@ -571,6 +571,70 @@ public class Lua_UnityEngine_ReflectionProbe : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_renderDynamicObjects(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ReflectionProbe self=(UnityEngine.ReflectionProbe)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.renderDynamicObjects);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_renderDynamicObjects(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ReflectionProbe self=(UnityEngine.ReflectionProbe)checkSelf(l);
+			bool v;
+			checkType(l,2,out v);
+			self.renderDynamicObjects=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_shadowDistance(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1661,6 +1725,7 @@ public class Lua_UnityEngine_ReflectionProbe : LuaObject {
 		addMember(l,"intensity",get_intensity,set_intensity,true);
 		addMember(l,"bounds",get_bounds,null,true);
 		addMember(l,"hdr",get_hdr,set_hdr,true);
+		addMember(l,"renderDynamicObjects",get_renderDynamicObjects,set_renderDynamicObjects,true);
 		addMember(l,"shadowDistance",get_shadowDistance,set_shadowDistance,true);
 		addMember(l,"resolution",get_resolution,set_resolution,true);
 		addMember(l,"cullingMask",get_cullingMask,set_cullingMask,true);

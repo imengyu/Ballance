@@ -1,6 +1,7 @@
 ﻿using System;
 using SLua;
 using System.Collections.Generic;
+using Ballance2.Sys.UI.Utils;
 [UnityEngine.Scripting.Preserve]
 public class Lua_UnityEngine_RectTransform : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
@@ -158,6 +159,40 @@ public class Lua_UnityEngine_RectTransform : LuaObject {
 			self.SetSizeWithCurrentAnchors(a1,a2);
 			pushValue(l,true);
 			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int GetContentSizeFitterPreferredSize(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.RectTransform self=(UnityEngine.RectTransform)checkSelf(l);
+			UnityEngine.UI.ContentSizeFitter a2;
+			checkType(l,2,out a2);
+			var ret=self.GetContentSizeFitterPreferredSize(a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -723,6 +758,7 @@ public class Lua_UnityEngine_RectTransform : LuaObject {
 		addMember(l,GetWorldCorners);
 		addMember(l,SetInsetAndSizeFromParentEdge);
 		addMember(l,SetSizeWithCurrentAnchors);
+		addMember(l,GetContentSizeFitterPreferredSize);
 		addMember(l,"rect",get_rect,null,true);
 		addMember(l,"anchorMin",get_anchorMin,set_anchorMin,true);
 		addMember(l,"anchorMax",get_anchorMax,set_anchorMax,true);

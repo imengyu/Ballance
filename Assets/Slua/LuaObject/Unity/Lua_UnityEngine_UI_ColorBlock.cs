@@ -107,6 +107,68 @@ public class Lua_UnityEngine_UI_ColorBlock : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_defaultColorBlock(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushValue(l,UnityEngine.UI.ColorBlock.defaultColorBlock);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_defaultColorBlock(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.ColorBlock v;
+			checkValueType(l,2,out v);
+			UnityEngine.UI.ColorBlock.defaultColorBlock=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_normalColor(IntPtr l) {
 		try {
 			#if DEBUG
@@ -574,41 +636,12 @@ public class Lua_UnityEngine_UI_ColorBlock : LuaObject {
 		}
 		#endif
 	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_defaultColorBlock(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			pushValue(l,true);
-			pushValue(l,UnityEngine.UI.ColorBlock.defaultColorBlock);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.UI.ColorBlock");
 		addMember(l,op_Equality);
 		addMember(l,op_Inequality);
+		addMember(l,"defaultColorBlock",get_defaultColorBlock,set_defaultColorBlock,false);
 		addMember(l,"normalColor",get_normalColor,set_normalColor,true);
 		addMember(l,"highlightedColor",get_highlightedColor,set_highlightedColor,true);
 		addMember(l,"pressedColor",get_pressedColor,set_pressedColor,true);
@@ -616,7 +649,6 @@ public class Lua_UnityEngine_UI_ColorBlock : LuaObject {
 		addMember(l,"disabledColor",get_disabledColor,set_disabledColor,true);
 		addMember(l,"colorMultiplier",get_colorMultiplier,set_colorMultiplier,true);
 		addMember(l,"fadeDuration",get_fadeDuration,set_fadeDuration,true);
-		addMember(l,"defaultColorBlock",get_defaultColorBlock,null,false);
 		createTypeMetatable(l,constructor, typeof(UnityEngine.UI.ColorBlock),typeof(System.ValueType));
 	}
 }

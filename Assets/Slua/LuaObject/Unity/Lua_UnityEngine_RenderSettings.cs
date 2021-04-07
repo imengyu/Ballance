@@ -1499,6 +1499,7 @@ public class Lua_UnityEngine_RenderSettings : LuaObject {
 		addMember(l,"fogEndDistance",get_fogEndDistance,set_fogEndDistance,false);
 		addMember(l,"fogMode",get_fogMode,set_fogMode,false);
 		addMember(l,"fogColor",get_fogColor,set_fogColor,false);
+		addMember(l,"fogDensity",get_fogDensity,set_fogDensity,false);
 		addMember(l,"ambientMode",get_ambientMode,set_ambientMode,false);
 		addMember(l,"ambientSkyColor",get_ambientSkyColor,set_ambientSkyColor,false);
 		addMember(l,"ambientEquatorColor",get_ambientEquatorColor,set_ambientEquatorColor,false);

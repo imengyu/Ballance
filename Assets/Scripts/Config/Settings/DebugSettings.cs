@@ -33,6 +33,10 @@ namespace Ballance2.Config.Settings
 		public string DebugFolder = "";
 		[Tooltip("设置是否启用System调试测试")]
 		public bool EnableSystemDebugTests = true;
+		[Tooltip("设置系统初始化文件加载方式")]
+		public LoadResWay SystemInitLoadWay = LoadResWay.InDebugFolder;
+		[Tooltip("设置模块文件加载方式")]
+		public LoadResWay PackageLoadWay = LoadResWay.InDebugFolder;
 
 		private static DebugSettings _instance = null;
 
@@ -66,7 +70,7 @@ namespace Ballance2.Config.Settings
 		}
 
 #if UNITY_EDITOR 
-		[MenuItem("Ballance/开发设置/Debug Settings", priority = 298)]
+		[MenuItem("Ballance/设置/开发设置", priority = 298)]
 		public static void Open()
 		{
 			Selection.activeObject = Instance;
@@ -74,4 +78,10 @@ namespace Ballance2.Config.Settings
 #endif
 
 	}
+
+	public enum LoadResWay
+    {
+		InDebugFolder,
+		InUnityEditorProject,
+    }
 }

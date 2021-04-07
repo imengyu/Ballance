@@ -497,6 +497,39 @@ public class Lua_UnityEngine_Profiling_Profiler : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int GetTotalFragmentationInfo_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Unity.Collections.NativeArray<System.Int32> a1;
+			checkValueType(l,1,out a1);
+			var ret=UnityEngine.Profiling.Profiler.GetTotalFragmentationInfo(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetAllocatedMemoryForGraphicsDriver_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -980,6 +1013,7 @@ public class Lua_UnityEngine_Profiling_Profiler : LuaObject {
 		addMember(l,GetTotalAllocatedMemoryLong_s);
 		addMember(l,GetTotalUnusedReservedMemoryLong_s);
 		addMember(l,GetTotalReservedMemoryLong_s);
+		addMember(l,GetTotalFragmentationInfo_s);
 		addMember(l,GetAllocatedMemoryForGraphicsDriver_s);
 		addMember(l,EmitFrameMetaData_s);
 		addMember(l,"supported",get_supported,null,false);

@@ -19,7 +19,7 @@ function class_类名()
     return o
   end
 
-  -- 成员函数
+  ---成员函数
   function 类名:MyFunction(arg)
   end
   function 类名:MyFunction2()

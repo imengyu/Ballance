@@ -235,6 +235,69 @@ public class Lua_UnityEngine_CustomRenderTexture : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int GetDoubleBufferRenderTexture(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.CustomRenderTexture self=(UnityEngine.CustomRenderTexture)checkSelf(l);
+			var ret=self.GetDoubleBufferRenderTexture();
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int EnsureDoubleBufferConsistency(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.CustomRenderTexture self=(UnityEngine.CustomRenderTexture)checkSelf(l);
+			self.EnsureDoubleBufferConsistency();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int SetUpdateZones(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1034,6 +1097,70 @@ public class Lua_UnityEngine_CustomRenderTexture : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_updatePeriod(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.CustomRenderTexture self=(UnityEngine.CustomRenderTexture)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.updatePeriod);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_updatePeriod(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.CustomRenderTexture self=(UnityEngine.CustomRenderTexture)checkSelf(l);
+			float v;
+			checkType(l,2,out v);
+			self.updatePeriod=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.CustomRenderTexture");
@@ -1041,6 +1168,8 @@ public class Lua_UnityEngine_CustomRenderTexture : LuaObject {
 		addMember(l,Initialize);
 		addMember(l,ClearUpdateZones);
 		addMember(l,GetUpdateZones);
+		addMember(l,GetDoubleBufferRenderTexture);
+		addMember(l,EnsureDoubleBufferConsistency);
 		addMember(l,SetUpdateZones);
 		addMember(l,"material",get_material,set_material,true);
 		addMember(l,"initializationMaterial",get_initializationMaterial,set_initializationMaterial,true);
@@ -1054,6 +1183,7 @@ public class Lua_UnityEngine_CustomRenderTexture : LuaObject {
 		addMember(l,"cubemapFaceMask",get_cubemapFaceMask,set_cubemapFaceMask,true);
 		addMember(l,"doubleBuffered",get_doubleBuffered,set_doubleBuffered,true);
 		addMember(l,"wrapUpdateZones",get_wrapUpdateZones,set_wrapUpdateZones,true);
+		addMember(l,"updatePeriod",get_updatePeriod,set_updatePeriod,true);
 		createTypeMetatable(l,constructor, typeof(UnityEngine.CustomRenderTexture),typeof(UnityEngine.RenderTexture));
 	}
 }

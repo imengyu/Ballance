@@ -1,25 +1,30 @@
---- 调试工具类
-
-GameManager = Ballance2.System.GameManager
-CloneUtils = Ballance2.System.Utils.CloneUtils
+-- 调试工具类
+GameManager = Ballance2.Sys.GameManager
+CloneUtils = Ballance2.Sys.Utils.CloneUtils
+GameUIManager = Ballance2.Sys.Services.GameUIManager
 Log = Ballance2.Utils.Log
 
-GamePackage = nil
-DebugToolbar = nil
-local TAG = "GameDebugTools:Main"
+GlobalDebugToolbar = nil
+GlobalDebugWindow = nil
 
--- 模块入口函数
+---模块入口函数
+---@param thisGamePackage GamePackage
+---@return boolean
 function PackageEntry(thisGamePackage)
-  GamePackage = thisGamePackage
-  thisGamePackage:RequireLuaFile("DebugUtils")
-  DebugToolbar = thisGamePackage:GetPrefabAsset("Assets/Packages/core.debug/Prefabs/DebugToolbar.prefab")
-  DebugToolbar = CloneUtils.CloneNewObjectWithParent(DebugToolbar, GameManager.Instance.GameCanvas, "DebugToolbar")
-  return true
+    thisGamePackage:RequireLuaFile('DebugUtils')
+
+    GlobalDebugToolbar = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugToolbar.prefab')
+    GlobalDebugToolbar = CloneUtils.CloneNewObjectWithParent(DebugToolbar, GameManager.Instance.GameCanvas, 'DebugToolbar')
+    GlobalDebugWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugWindow.prefab')
+    GlobalDebugWindow = GameUIManager:CreateWindow('Console', CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, 'DebugWindow'), true)
+    return true
 end
 
--- 模块卸载前函数
+---模块卸载前函数
+---@param thisGamePackage GamePackage
+---@return boolean
 function PackageBeforeUnLoad(thisGamePackage)
-	GamePackage = thisGamePackage
-  UnityEngine.Object.Destroy(DebugToolbar)
-  return true
+    if (not Slua.IsNull(GlobalDebugToolbar)) then UnityEngine.Object.Destroy(GlobalDebugToolbar) end
+    if (not Slua.IsNull(GlobalDebugWindow)) then UnityEngine.Object.Destroy(GlobalDebugWindow) end
+    return true
 end

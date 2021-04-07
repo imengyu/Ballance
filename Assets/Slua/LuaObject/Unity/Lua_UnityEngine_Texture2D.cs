@@ -900,7 +900,7 @@ public class Lua_UnityEngine_Texture2D : LuaObject {
 				pushValue(l,ret);
 				return 2;
 			}
-			else if(argc==5){
+			else if(matchType(l,argc,2,typeof(int),typeof(int),typeof(UnityEngine.TextureFormat),typeof(bool))){
 				UnityEngine.Texture2D self=(UnityEngine.Texture2D)checkSelf(l);
 				System.Int32 a1;
 				checkType(l,2,out a1);
@@ -908,6 +908,21 @@ public class Lua_UnityEngine_Texture2D : LuaObject {
 				checkType(l,3,out a2);
 				UnityEngine.TextureFormat a3;
 				a3 = (UnityEngine.TextureFormat)LuaDLL.luaL_checkinteger(l, 4);
+				System.Boolean a4;
+				checkType(l,5,out a4);
+				var ret=self.Resize(a1,a2,a3,a4);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,2,typeof(int),typeof(int),typeof(UnityEngine.Experimental.Rendering.GraphicsFormat),typeof(bool))){
+				UnityEngine.Texture2D self=(UnityEngine.Texture2D)checkSelf(l);
+				System.Int32 a1;
+				checkType(l,2,out a1);
+				System.Int32 a2;
+				checkType(l,3,out a2);
+				UnityEngine.Experimental.Rendering.GraphicsFormat a3;
+				a3 = (UnityEngine.Experimental.Rendering.GraphicsFormat)LuaDLL.luaL_checkinteger(l, 4);
 				System.Boolean a4;
 				checkType(l,5,out a4);
 				var ret=self.Resize(a1,a2,a3,a4);
@@ -1398,6 +1413,37 @@ public class Lua_UnityEngine_Texture2D : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_vtOnly(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Texture2D self=(UnityEngine.Texture2D)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.vtOnly);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_streamingMipmaps(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1741,6 +1787,7 @@ public class Lua_UnityEngine_Texture2D : LuaObject {
 		addMember(l,"linearGrayTexture",get_linearGrayTexture,null,false);
 		addMember(l,"normalTexture",get_normalTexture,null,false);
 		addMember(l,"isReadable",get_isReadable,null,true);
+		addMember(l,"vtOnly",get_vtOnly,null,true);
 		addMember(l,"streamingMipmaps",get_streamingMipmaps,null,true);
 		addMember(l,"streamingMipmapsPriority",get_streamingMipmapsPriority,null,true);
 		addMember(l,"requestedMipmapLevel",get_requestedMipmapLevel,set_requestedMipmapLevel,true);

@@ -390,6 +390,70 @@ public class Lua_UnityEngine_EventSystems_PointerEventData : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_pointerClick(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.EventSystems.PointerEventData self=(UnityEngine.EventSystems.PointerEventData)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.pointerClick);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_pointerClick(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.EventSystems.PointerEventData self=(UnityEngine.EventSystems.PointerEventData)checkSelf(l);
+			UnityEngine.GameObject v;
+			checkType(l,2,out v);
+			self.pointerClick=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_pointerCurrentRaycast(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1356,6 +1420,7 @@ public class Lua_UnityEngine_EventSystems_PointerEventData : LuaObject {
 		addMember(l,"lastPress",get_lastPress,null,true);
 		addMember(l,"rawPointerPress",get_rawPointerPress,set_rawPointerPress,true);
 		addMember(l,"pointerDrag",get_pointerDrag,set_pointerDrag,true);
+		addMember(l,"pointerClick",get_pointerClick,set_pointerClick,true);
 		addMember(l,"pointerCurrentRaycast",get_pointerCurrentRaycast,set_pointerCurrentRaycast,true);
 		addMember(l,"pointerPressRaycast",get_pointerPressRaycast,set_pointerPressRaycast,true);
 		addMember(l,"eligibleForClick",get_eligibleForClick,set_eligibleForClick,true);

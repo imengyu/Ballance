@@ -5,38 +5,6 @@ using System.Collections.Generic;
 public class Lua_UnityEngine_Random : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int constructor(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			UnityEngine.Random o;
-			o=new UnityEngine.Random();
-			pushValue(l,true);
-			pushValue(l,o);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int InitState_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -474,6 +442,6 @@ public class Lua_UnityEngine_Random : LuaObject {
 		addMember(l,"onUnitSphere",get_onUnitSphere,null,false);
 		addMember(l,"rotation",get_rotation,null,false);
 		addMember(l,"rotationUniform",get_rotationUniform,null,false);
-		createTypeMetatable(l,constructor, typeof(UnityEngine.Random));
+		createTypeMetatable(l,null, typeof(UnityEngine.Random));
 	}
 }

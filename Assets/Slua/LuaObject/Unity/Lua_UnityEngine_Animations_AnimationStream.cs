@@ -140,6 +140,41 @@ public class Lua_UnityEngine_Animations_AnimationStream : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int CopyAnimationStreamMotion(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Animations.AnimationStream self;
+			checkValueType(l,1,out self);
+			UnityEngine.Animations.AnimationStream a1;
+			checkValueType(l,2,out a1);
+			self.CopyAnimationStreamMotion(a1);
+			pushValue(l,true);
+			setBack(l,self);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_isValid(IntPtr l) {
 		try {
 			#if DEBUG
@@ -470,6 +505,7 @@ public class Lua_UnityEngine_Animations_AnimationStream : LuaObject {
 		addMember(l,AsHuman);
 		addMember(l,GetInputStream);
 		addMember(l,GetInputWeight);
+		addMember(l,CopyAnimationStreamMotion);
 		addMember(l,"isValid",get_isValid,null,true);
 		addMember(l,"deltaTime",get_deltaTime,null,true);
 		addMember(l,"velocity",get_velocity,set_velocity,true);

@@ -109,6 +109,39 @@ public class Lua_UnityEngine_UI_MaskableGraphic : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetClipSoftness(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.MaskableGraphic self=(UnityEngine.UI.MaskableGraphic)checkSelf(l);
+			UnityEngine.Vector2 a1;
+			checkType(l,2,out a1);
+			self.SetClipSoftness(a1);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int RecalculateClipping(IntPtr l) {
 		try {
 			#if DEBUG
@@ -367,6 +400,7 @@ public class Lua_UnityEngine_UI_MaskableGraphic : LuaObject {
 		addMember(l,GetModifiedMaterial);
 		addMember(l,Cull);
 		addMember(l,SetClipRect);
+		addMember(l,SetClipSoftness);
 		addMember(l,RecalculateClipping);
 		addMember(l,RecalculateMasking);
 		addMember(l,"onCullStateChanged",get_onCullStateChanged,set_onCullStateChanged,true);

@@ -1,5 +1,5 @@
 ﻿using Ballance2.Config.Settings;
-using Ballance2.System.Res;
+using Ballance2.Sys.Res;
 using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;

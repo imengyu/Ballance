@@ -298,10 +298,30 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
-			else if(argc==3){
+			else if(matchType(l,argc,1,typeof(int),typeof(UnityEngine.GraphicsBuffer))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				UnityEngine.Graphics.SetRandomWriteTarget(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(int),typeof(UnityEngine.ComputeBuffer),typeof(bool))){
 				System.Int32 a1;
 				checkType(l,1,out a1);
 				UnityEngine.ComputeBuffer a2;
+				checkType(l,2,out a2);
+				System.Boolean a3;
+				checkType(l,3,out a3);
+				UnityEngine.Graphics.SetRandomWriteTarget(a1,a2,a3);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(int),typeof(UnityEngine.GraphicsBuffer),typeof(bool))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				UnityEngine.GraphicsBuffer a2;
 				checkType(l,2,out a2);
 				System.Boolean a3;
 				checkType(l,3,out a3);
@@ -1950,154 +1970,7 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 			#endif
 			#endif
 			int argc = LuaDLL.lua_gettop(l);
-			if(argc==5){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==6){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				System.Int32 a6;
-				checkType(l,6,out a6);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==7){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				System.Int32 a6;
-				checkType(l,6,out a6);
-				UnityEngine.MaterialPropertyBlock a7;
-				checkType(l,7,out a7);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==8){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				System.Int32 a6;
-				checkType(l,6,out a6);
-				UnityEngine.MaterialPropertyBlock a7;
-				checkType(l,7,out a7);
-				UnityEngine.Rendering.ShadowCastingMode a8;
-				a8 = (UnityEngine.Rendering.ShadowCastingMode)LuaDLL.luaL_checkinteger(l, 8);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7,a8);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==9){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				System.Int32 a6;
-				checkType(l,6,out a6);
-				UnityEngine.MaterialPropertyBlock a7;
-				checkType(l,7,out a7);
-				UnityEngine.Rendering.ShadowCastingMode a8;
-				a8 = (UnityEngine.Rendering.ShadowCastingMode)LuaDLL.luaL_checkinteger(l, 8);
-				System.Boolean a9;
-				checkType(l,9,out a9);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7,a8,a9);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==10){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				System.Int32 a6;
-				checkType(l,6,out a6);
-				UnityEngine.MaterialPropertyBlock a7;
-				checkType(l,7,out a7);
-				UnityEngine.Rendering.ShadowCastingMode a8;
-				a8 = (UnityEngine.Rendering.ShadowCastingMode)LuaDLL.luaL_checkinteger(l, 8);
-				System.Boolean a9;
-				checkType(l,9,out a9);
-				System.Int32 a10;
-				checkType(l,10,out a10);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==11){
-				UnityEngine.Mesh a1;
-				checkType(l,1,out a1);
-				System.Int32 a2;
-				checkType(l,2,out a2);
-				UnityEngine.Material a3;
-				checkType(l,3,out a3);
-				UnityEngine.Bounds a4;
-				checkValueType(l,4,out a4);
-				UnityEngine.ComputeBuffer a5;
-				checkType(l,5,out a5);
-				System.Int32 a6;
-				checkType(l,6,out a6);
-				UnityEngine.MaterialPropertyBlock a7;
-				checkType(l,7,out a7);
-				UnityEngine.Rendering.ShadowCastingMode a8;
-				a8 = (UnityEngine.Rendering.ShadowCastingMode)LuaDLL.luaL_checkinteger(l, 8);
-				System.Boolean a9;
-				checkType(l,9,out a9);
-				System.Int32 a10;
-				checkType(l,10,out a10);
-				UnityEngine.Camera a11;
-				checkType(l,11,out a11);
-				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==12){
+			if(matchType(l,argc,1,typeof(UnityEngine.Mesh),typeof(int),typeof(UnityEngine.Material),typeof(UnityEngine.Bounds),typeof(UnityEngine.ComputeBuffer),typeof(int),typeof(UnityEngine.MaterialPropertyBlock),typeof(UnityEngine.Rendering.ShadowCastingMode),typeof(bool),typeof(int),typeof(UnityEngine.Camera),typeof(UnityEngine.Rendering.LightProbeUsage))){
 				UnityEngine.Mesh a1;
 				checkType(l,1,out a1);
 				System.Int32 a2;
@@ -2126,7 +1999,36 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
-			else if(argc==13){
+			else if(matchType(l,argc,1,typeof(UnityEngine.Mesh),typeof(int),typeof(UnityEngine.Material),typeof(UnityEngine.Bounds),typeof(UnityEngine.GraphicsBuffer),typeof(int),typeof(UnityEngine.MaterialPropertyBlock),typeof(UnityEngine.Rendering.ShadowCastingMode),typeof(bool),typeof(int),typeof(UnityEngine.Camera),typeof(UnityEngine.Rendering.LightProbeUsage))){
+				UnityEngine.Mesh a1;
+				checkType(l,1,out a1);
+				System.Int32 a2;
+				checkType(l,2,out a2);
+				UnityEngine.Material a3;
+				checkType(l,3,out a3);
+				UnityEngine.Bounds a4;
+				checkValueType(l,4,out a4);
+				UnityEngine.GraphicsBuffer a5;
+				checkType(l,5,out a5);
+				System.Int32 a6;
+				checkType(l,6,out a6);
+				UnityEngine.MaterialPropertyBlock a7;
+				checkType(l,7,out a7);
+				UnityEngine.Rendering.ShadowCastingMode a8;
+				a8 = (UnityEngine.Rendering.ShadowCastingMode)LuaDLL.luaL_checkinteger(l, 8);
+				System.Boolean a9;
+				checkType(l,9,out a9);
+				System.Int32 a10;
+				checkType(l,10,out a10);
+				UnityEngine.Camera a11;
+				checkType(l,11,out a11);
+				UnityEngine.Rendering.LightProbeUsage a12;
+				a12 = (UnityEngine.Rendering.LightProbeUsage)LuaDLL.luaL_checkinteger(l, 12);
+				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(UnityEngine.Mesh),typeof(int),typeof(UnityEngine.Material),typeof(UnityEngine.Bounds),typeof(UnityEngine.ComputeBuffer),typeof(int),typeof(UnityEngine.MaterialPropertyBlock),typeof(UnityEngine.Rendering.ShadowCastingMode),typeof(bool),typeof(int),typeof(UnityEngine.Camera),typeof(UnityEngine.Rendering.LightProbeUsage),typeof(UnityEngine.LightProbeProxyVolume))){
 				UnityEngine.Mesh a1;
 				checkType(l,1,out a1);
 				System.Int32 a2;
@@ -2136,6 +2038,37 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 				UnityEngine.Bounds a4;
 				checkValueType(l,4,out a4);
 				UnityEngine.ComputeBuffer a5;
+				checkType(l,5,out a5);
+				System.Int32 a6;
+				checkType(l,6,out a6);
+				UnityEngine.MaterialPropertyBlock a7;
+				checkType(l,7,out a7);
+				UnityEngine.Rendering.ShadowCastingMode a8;
+				a8 = (UnityEngine.Rendering.ShadowCastingMode)LuaDLL.luaL_checkinteger(l, 8);
+				System.Boolean a9;
+				checkType(l,9,out a9);
+				System.Int32 a10;
+				checkType(l,10,out a10);
+				UnityEngine.Camera a11;
+				checkType(l,11,out a11);
+				UnityEngine.Rendering.LightProbeUsage a12;
+				a12 = (UnityEngine.Rendering.LightProbeUsage)LuaDLL.luaL_checkinteger(l, 12);
+				UnityEngine.LightProbeProxyVolume a13;
+				checkType(l,13,out a13);
+				UnityEngine.Graphics.DrawMeshInstancedIndirect(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(UnityEngine.Mesh),typeof(int),typeof(UnityEngine.Material),typeof(UnityEngine.Bounds),typeof(UnityEngine.GraphicsBuffer),typeof(int),typeof(UnityEngine.MaterialPropertyBlock),typeof(UnityEngine.Rendering.ShadowCastingMode),typeof(bool),typeof(int),typeof(UnityEngine.Camera),typeof(UnityEngine.Rendering.LightProbeUsage),typeof(UnityEngine.LightProbeProxyVolume))){
+				UnityEngine.Mesh a1;
+				checkType(l,1,out a1);
+				System.Int32 a2;
+				checkType(l,2,out a2);
+				UnityEngine.Material a3;
+				checkType(l,3,out a3);
+				UnityEngine.Bounds a4;
+				checkValueType(l,4,out a4);
+				UnityEngine.GraphicsBuffer a5;
 				checkType(l,5,out a5);
 				System.Int32 a6;
 				checkType(l,6,out a6);
@@ -2243,7 +2176,7 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 			#endif
 			#endif
 			int argc = LuaDLL.lua_gettop(l);
-			if(argc==3){
+			if(matchType(l,argc,1,typeof(UnityEngine.MeshTopology),typeof(UnityEngine.ComputeBuffer),typeof(int))){
 				UnityEngine.MeshTopology a1;
 				a1 = (UnityEngine.MeshTopology)LuaDLL.luaL_checkinteger(l, 1);
 				UnityEngine.ComputeBuffer a2;
@@ -2254,12 +2187,36 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
-			else if(argc==4){
+			else if(matchType(l,argc,1,typeof(UnityEngine.MeshTopology),typeof(UnityEngine.GraphicsBuffer),typeof(int))){
+				UnityEngine.MeshTopology a1;
+				a1 = (UnityEngine.MeshTopology)LuaDLL.luaL_checkinteger(l, 1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				System.Int32 a3;
+				checkType(l,3,out a3);
+				UnityEngine.Graphics.DrawProceduralIndirectNow(a1,a2,a3);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(UnityEngine.MeshTopology),typeof(UnityEngine.GraphicsBuffer),typeof(UnityEngine.ComputeBuffer),typeof(int))){
 				UnityEngine.MeshTopology a1;
 				a1 = (UnityEngine.MeshTopology)LuaDLL.luaL_checkinteger(l, 1);
 				UnityEngine.GraphicsBuffer a2;
 				checkType(l,2,out a2);
 				UnityEngine.ComputeBuffer a3;
+				checkType(l,3,out a3);
+				System.Int32 a4;
+				checkType(l,4,out a4);
+				UnityEngine.Graphics.DrawProceduralIndirectNow(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(UnityEngine.MeshTopology),typeof(UnityEngine.GraphicsBuffer),typeof(UnityEngine.GraphicsBuffer),typeof(int))){
+				UnityEngine.MeshTopology a1;
+				a1 = (UnityEngine.MeshTopology)LuaDLL.luaL_checkinteger(l, 1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				UnityEngine.GraphicsBuffer a3;
 				checkType(l,3,out a3);
 				System.Int32 a4;
 				checkType(l,4,out a4);
@@ -2788,6 +2745,36 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_minOpenGLESVersion(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushEnum(l,(int)UnityEngine.Graphics.minOpenGLESVersion);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_activeColorBuffer(IntPtr l) {
 		try {
 			#if DEBUG
@@ -2874,6 +2861,7 @@ public class Lua_UnityEngine_Graphics : LuaObject {
 		addMember(l,"activeColorGamut",get_activeColorGamut,null,false);
 		addMember(l,"activeTier",get_activeTier,set_activeTier,false);
 		addMember(l,"preserveFramebufferAlpha",get_preserveFramebufferAlpha,null,false);
+		addMember(l,"minOpenGLESVersion",get_minOpenGLESVersion,null,false);
 		addMember(l,"activeColorBuffer",get_activeColorBuffer,null,false);
 		addMember(l,"activeDepthBuffer",get_activeDepthBuffer,null,false);
 		createTypeMetatable(l,constructor, typeof(UnityEngine.Graphics));

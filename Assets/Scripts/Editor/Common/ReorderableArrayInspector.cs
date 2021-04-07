@@ -57,7 +57,6 @@ namespace SubjectNerd.Utilities
         private static void HandleScriptReload()
         {
             FORCE_INIT = true;
-
             EditorApplication.delayCall += () => { EditorApplication.delayCall += () => { FORCE_INIT = false; }; };
         }
 
@@ -308,6 +307,8 @@ namespace SubjectNerd.Utilities
         #region Initialization
         private void OnEnable()
         {
+            if (FORCE_INIT)
+                return;
             InitInspector();
         }
 
@@ -323,7 +324,15 @@ namespace SubjectNerd.Utilities
             if (isInitialized && FORCE_INIT == false)
                 return;
 
-            styleEditBox = new GUIStyle(EditorStyles.helpBox) { padding = new RectOffset(5, 5, 5, 5) };
+            try
+            {
+                styleEditBox = new GUIStyle(EditorStyles.helpBox) { padding = new RectOffset(5, 5, 5, 5) };
+            }
+            catch
+            {
+                return;
+            }
+
             FindTargetProperties();
             FindContextMenu();
         }

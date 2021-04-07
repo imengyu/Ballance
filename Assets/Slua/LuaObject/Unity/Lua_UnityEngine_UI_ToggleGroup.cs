@@ -201,6 +201,38 @@ public class Lua_UnityEngine_UI_ToggleGroup : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int GetFirstActiveToggle(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.ToggleGroup self=(UnityEngine.UI.ToggleGroup)checkSelf(l);
+			var ret=self.GetFirstActiveToggle();
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int SetAllTogglesOff(IntPtr l) {
 		try {
 			#if DEBUG
@@ -305,6 +337,7 @@ public class Lua_UnityEngine_UI_ToggleGroup : LuaObject {
 		addMember(l,EnsureValidState);
 		addMember(l,AnyTogglesOn);
 		addMember(l,ActiveToggles);
+		addMember(l,GetFirstActiveToggle);
 		addMember(l,SetAllTogglesOff);
 		addMember(l,"allowSwitchOff",get_allowSwitchOff,set_allowSwitchOff,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.UI.ToggleGroup),typeof(UnityEngine.EventSystems.UIBehaviour));

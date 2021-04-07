@@ -178,6 +178,7 @@ namespace Ballance2.Utils
         }
     }
 
+    [SLua.CustomLuaClass]
     public enum LogLevel
     {
         None = 0,
@@ -189,5 +190,6 @@ namespace Ballance2.Utils
         All = Verbose | Debug | Info | Warning | Error,
     }
 
+    [SLua.CustomLuaClass]
     public delegate void LogObserver(LogLevel level, string tag, string message, string stackTrace);
 }

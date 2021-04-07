@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using Ballance2.Config.Settings;
-using Ballance2.System.Res;
+using Ballance2.Sys.Res;
 
 namespace Ballance2.Editor.Modding
 {

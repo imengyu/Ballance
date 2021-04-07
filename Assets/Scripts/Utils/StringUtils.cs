@@ -131,7 +131,7 @@ namespace Ballance2.Utils
                         string[] s = color.Split(',');
                         if (s.Length >= 3)
                         {
-                            int r = 0, g = 0, b = 0, a = 255;
+                            int r, g, b, a = 255;
                             int.TryParse(s[0], out r);
                             int.TryParse(s[1], out g);
                             int.TryParse(s[2], out b);
@@ -233,7 +233,7 @@ namespace Ballance2.Utils
         {
             string xmlStr;
             byte[] bomBuffer = new byte[] { 0xef, 0xbb, 0xbf };
-            if (buffer[0] == bomBuffer[0]
+            if (buffer.Length > 3 && buffer[0] == bomBuffer[0]
                 && buffer[1] == bomBuffer[1]
                 && buffer[2] == bomBuffer[2])
             {

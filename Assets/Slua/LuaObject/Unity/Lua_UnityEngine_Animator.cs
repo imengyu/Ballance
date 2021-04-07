@@ -1651,6 +1651,26 @@ public class Lua_UnityEngine_Animator : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
+			else if(argc==8){
+				UnityEngine.Animator self=(UnityEngine.Animator)checkSelf(l);
+				UnityEngine.Vector3 a1;
+				checkType(l,2,out a1);
+				UnityEngine.Quaternion a2;
+				checkType(l,3,out a2);
+				UnityEngine.AvatarTarget a3;
+				a3 = (UnityEngine.AvatarTarget)LuaDLL.luaL_checkinteger(l, 4);
+				UnityEngine.MatchTargetWeightMask a4;
+				checkValueType(l,5,out a4);
+				System.Single a5;
+				checkType(l,6,out a5);
+				System.Single a6;
+				checkType(l,7,out a6);
+				System.Boolean a7;
+				checkType(l,8,out a7);
+				self.MatchTarget(a1,a2,a3,a4,a5,a6,a7);
+				pushValue(l,true);
+				return 1;
+			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function MatchTarget to call");
 			return 2;

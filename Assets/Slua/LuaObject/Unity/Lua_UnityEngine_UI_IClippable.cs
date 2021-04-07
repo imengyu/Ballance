@@ -106,6 +106,39 @@ public class Lua_UnityEngine_UI_IClippable : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetClipSoftness(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.IClippable self=(UnityEngine.UI.IClippable)checkSelf(l);
+			UnityEngine.Vector2 a1;
+			checkType(l,2,out a1);
+			self.SetClipSoftness(a1);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_gameObject(IntPtr l) {
 		try {
 			#if DEBUG
@@ -172,6 +205,7 @@ public class Lua_UnityEngine_UI_IClippable : LuaObject {
 		addMember(l,RecalculateClipping);
 		addMember(l,Cull);
 		addMember(l,SetClipRect);
+		addMember(l,SetClipSoftness);
 		addMember(l,"gameObject",get_gameObject,null,true);
 		addMember(l,"rectTransform",get_rectTransform,null,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.UI.IClippable));

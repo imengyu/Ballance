@@ -547,9 +547,9 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 				checkType(l,2,out a2);
 				System.Collections.Generic.List<UnityEngine.Color32> a3;
 				checkType(l,3,out a3);
-				System.Collections.Generic.List<UnityEngine.Vector2> a4;
+				System.Collections.Generic.List<UnityEngine.Vector4> a4;
 				checkType(l,4,out a4);
-				System.Collections.Generic.List<UnityEngine.Vector2> a5;
+				System.Collections.Generic.List<UnityEngine.Vector4> a5;
 				checkType(l,5,out a5);
 				System.Collections.Generic.List<UnityEngine.Vector3> a6;
 				checkType(l,6,out a6);
@@ -568,13 +568,13 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 				checkType(l,2,out a2);
 				System.Collections.Generic.List<UnityEngine.Color32> a3;
 				checkType(l,3,out a3);
-				System.Collections.Generic.List<UnityEngine.Vector2> a4;
+				System.Collections.Generic.List<UnityEngine.Vector4> a4;
 				checkType(l,4,out a4);
-				System.Collections.Generic.List<UnityEngine.Vector2> a5;
+				System.Collections.Generic.List<UnityEngine.Vector4> a5;
 				checkType(l,5,out a5);
-				System.Collections.Generic.List<UnityEngine.Vector2> a6;
+				System.Collections.Generic.List<UnityEngine.Vector4> a6;
 				checkType(l,6,out a6);
-				System.Collections.Generic.List<UnityEngine.Vector2> a7;
+				System.Collections.Generic.List<UnityEngine.Vector4> a7;
 				checkType(l,7,out a7);
 				System.Collections.Generic.List<UnityEngine.Vector3> a8;
 				checkType(l,8,out a8);
@@ -624,9 +624,9 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 				checkType(l,2,out a2);
 				System.Collections.Generic.List<UnityEngine.Color32> a3;
 				checkType(l,3,out a3);
-				System.Collections.Generic.List<UnityEngine.Vector2> a4;
+				System.Collections.Generic.List<UnityEngine.Vector4> a4;
 				checkType(l,4,out a4);
-				System.Collections.Generic.List<UnityEngine.Vector2> a5;
+				System.Collections.Generic.List<UnityEngine.Vector4> a5;
 				checkType(l,5,out a5);
 				System.Collections.Generic.List<UnityEngine.Vector3> a6;
 				checkType(l,6,out a6);
@@ -645,13 +645,13 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 				checkType(l,2,out a2);
 				System.Collections.Generic.List<UnityEngine.Color32> a3;
 				checkType(l,3,out a3);
-				System.Collections.Generic.List<UnityEngine.Vector2> a4;
+				System.Collections.Generic.List<UnityEngine.Vector4> a4;
 				checkType(l,4,out a4);
-				System.Collections.Generic.List<UnityEngine.Vector2> a5;
+				System.Collections.Generic.List<UnityEngine.Vector4> a5;
 				checkType(l,5,out a5);
-				System.Collections.Generic.List<UnityEngine.Vector2> a6;
+				System.Collections.Generic.List<UnityEngine.Vector4> a6;
 				checkType(l,6,out a6);
-				System.Collections.Generic.List<UnityEngine.Vector2> a7;
+				System.Collections.Generic.List<UnityEngine.Vector4> a7;
 				checkType(l,7,out a7);
 				System.Collections.Generic.List<UnityEngine.Vector3> a8;
 				checkType(l,8,out a8);
@@ -701,9 +701,9 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 				checkType(l,2,out a2);
 				System.Collections.Generic.List<UnityEngine.Color32> a3;
 				checkType(l,3,out a3);
-				System.Collections.Generic.List<UnityEngine.Vector2> a4;
+				System.Collections.Generic.List<UnityEngine.Vector4> a4;
 				checkType(l,4,out a4);
-				System.Collections.Generic.List<UnityEngine.Vector2> a5;
+				System.Collections.Generic.List<UnityEngine.Vector4> a5;
 				checkType(l,5,out a5);
 				System.Collections.Generic.List<UnityEngine.Vector3> a6;
 				checkType(l,6,out a6);
@@ -720,13 +720,13 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 				checkType(l,2,out a2);
 				System.Collections.Generic.List<UnityEngine.Color32> a3;
 				checkType(l,3,out a3);
-				System.Collections.Generic.List<UnityEngine.Vector2> a4;
+				System.Collections.Generic.List<UnityEngine.Vector4> a4;
 				checkType(l,4,out a4);
-				System.Collections.Generic.List<UnityEngine.Vector2> a5;
+				System.Collections.Generic.List<UnityEngine.Vector4> a5;
 				checkType(l,5,out a5);
-				System.Collections.Generic.List<UnityEngine.Vector2> a6;
+				System.Collections.Generic.List<UnityEngine.Vector4> a6;
 				checkType(l,6,out a6);
-				System.Collections.Generic.List<UnityEngine.Vector2> a7;
+				System.Collections.Generic.List<UnityEngine.Vector4> a7;
 				checkType(l,7,out a7);
 				System.Collections.Generic.List<UnityEngine.Vector3> a8;
 				checkType(l,8,out a8);
@@ -1197,6 +1197,70 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_clippingSoftness(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.CanvasRenderer self=(UnityEngine.CanvasRenderer)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.clippingSoftness);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_clippingSoftness(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.CanvasRenderer self=(UnityEngine.CanvasRenderer)checkSelf(l);
+			UnityEngine.Vector2 v;
+			checkType(l,2,out v);
+			self.clippingSoftness=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.CanvasRenderer");
@@ -1227,6 +1291,7 @@ public class Lua_UnityEngine_CanvasRenderer : LuaObject {
 		addMember(l,"hasRectClipping",get_hasRectClipping,null,true);
 		addMember(l,"relativeDepth",get_relativeDepth,null,true);
 		addMember(l,"cull",get_cull,set_cull,true);
+		addMember(l,"clippingSoftness",get_clippingSoftness,set_clippingSoftness,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.CanvasRenderer),typeof(UnityEngine.Component));
 	}
 }

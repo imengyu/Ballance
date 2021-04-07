@@ -116,6 +116,67 @@ public class Lua_UnityEngine_Hash128 : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int Append(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(matchType(l,argc,2,typeof(string))){
+				UnityEngine.Hash128 self;
+				checkValueType(l,1,out self);
+				System.String a1;
+				checkType(l,2,out a1);
+				self.Append(a1);
+				pushValue(l,true);
+				setBack(l,self);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(int))){
+				UnityEngine.Hash128 self;
+				checkValueType(l,1,out self);
+				System.Int32 a1;
+				checkType(l,2,out a1);
+				self.Append(a1);
+				pushValue(l,true);
+				setBack(l,self);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(float))){
+				UnityEngine.Hash128 self;
+				checkValueType(l,1,out self);
+				System.Single a1;
+				checkType(l,2,out a1);
+				self.Append(a1);
+				pushValue(l,true);
+				setBack(l,self);
+				return 1;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function Append to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int Parse_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -160,11 +221,33 @@ public class Lua_UnityEngine_Hash128 : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			System.String a1;
-			checkType(l,1,out a1);
-			var ret=UnityEngine.Hash128.Compute(a1);
-			pushValue(l,true);
-			pushValue(l,ret);
+			int argc = LuaDLL.lua_gettop(l);
+			if(matchType(l,argc,1,typeof(string))){
+				System.String a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Hash128.Compute(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,1,typeof(int))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Hash128.Compute(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,1,typeof(float))){
+				System.Single a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Hash128.Compute(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function Compute to call");
 			return 2;
 		}
 		catch(Exception e) {
@@ -356,6 +439,7 @@ public class Lua_UnityEngine_Hash128 : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.Hash128");
 		addMember(l,CompareTo);
+		addMember(l,Append);
 		addMember(l,Parse_s);
 		addMember(l,Compute_s);
 		addMember(l,op_Equality);

@@ -209,7 +209,7 @@ namespace SLua
             GenerateFor("UnityEngine.Advertisements", "Unity/", 2, "BindUnityAds");
         }
 
-        static List<Type> GetExportsType(string[] asemblyNames, string genAtPath)
+        public static List<Type> GetExportsType(string[] asemblyNames, string genAtPath)
         {
 
             List<Type> exports = new List<Type>();

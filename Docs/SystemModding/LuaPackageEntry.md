@@ -24,10 +24,14 @@ Log = Ballance2.Utils.Log
   另外，如果你的模组要在低版本游戏上运行，你也必须知道那些版本有没有对应函数导出，要做兼容。。
 ]]
 
-GamePackage = nil -- 这是你的模组实例，可以通过它来操作你的模组
+---这是你的模组实例，可以通过它来操作你的模组
+---@type GamePackage
+GamePackage = nil 
 local TAG = "MyMod:Main" --
 
--- 模块入口函数
+---模块入口函数
+---@param thisGamePackage GamePackage 当前模块包实例
+---@return boolean 返回初始化是否成功
 function PackageEntry(thisGamePackage)
   GamePackage = thisGamePackage
 
@@ -51,7 +55,9 @@ function PackageEntry(thisGamePackage)
   return true
 end
 
--- 模块卸载前函数
+---模块卸载前函数
+---@param thisGamePackage GamePackage 当前模块包实例
+---@return boolean 返回卸载是否成功
 function PackageBeforeUnLoad(thisGamePackage)
   GamePackage = thisGamePackage
 

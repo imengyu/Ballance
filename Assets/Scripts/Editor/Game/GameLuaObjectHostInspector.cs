@@ -1,5 +1,5 @@
-﻿using Ballance2.System.Bridge.LuaWapper;
-using Ballance2.System.Bridge.LuaWapper.GameLuaWapperEvents;
+﻿using Ballance2.Sys.Bridge.LuaWapper;
+using Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -337,6 +337,9 @@ class GameLuaObjectHostInspector : Editor
                 break;
             case GameLuaObjectEventWarps.Particle:
                 myScript.gameObject.AddComponent<GameLuaObjectParticleEventCaller>();
+                break;
+            case GameLuaObjectEventWarps.EventTrigger:
+                myScript.gameObject.AddComponent<GameLuaObjectEventTriggerCaller>();
                 break;
             case GameLuaObjectEventWarps.Other:
                 myScript.gameObject.AddComponent<GameLuaObjectOtherEventCaller>();

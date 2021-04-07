@@ -111,6 +111,20 @@ public class Lua_UnityEngine_RectTransformUtility : LuaObject {
 				pushValue(l,ret);
 				return 2;
 			}
+			else if(argc==4){
+				UnityEngine.RectTransform a1;
+				checkType(l,1,out a1);
+				UnityEngine.Vector2 a2;
+				checkType(l,2,out a2);
+				UnityEngine.Camera a3;
+				checkType(l,3,out a3);
+				UnityEngine.Vector4 a4;
+				checkType(l,4,out a4);
+				var ret=UnityEngine.RectTransformUtility.RectangleContainsScreenPoint(a1,a2,a3,a4);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function RectangleContainsScreenPoint to call");
 			return 2;

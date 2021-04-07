@@ -170,12 +170,29 @@ public class Lua_UnityEngine_GameObject : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			UnityEngine.GameObject self=(UnityEngine.GameObject)checkSelf(l);
-			System.Type a1;
-			checkType(l,2,out a1);
-			var ret=self.GetComponentInParent(a1);
-			pushValue(l,true);
-			pushValue(l,ret);
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				UnityEngine.GameObject self=(UnityEngine.GameObject)checkSelf(l);
+				System.Type a1;
+				checkType(l,2,out a1);
+				var ret=self.GetComponentInParent(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==3){
+				UnityEngine.GameObject self=(UnityEngine.GameObject)checkSelf(l);
+				System.Type a1;
+				checkType(l,2,out a1);
+				System.Boolean a2;
+				checkType(l,3,out a2);
+				var ret=self.GetComponentInParent(a1,a2);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function GetComponentInParent to call");
 			return 2;
 		}
 		catch(Exception e) {
@@ -1189,6 +1206,37 @@ public class Lua_UnityEngine_GameObject : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_sceneCullingMask(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.GameObject self=(UnityEngine.GameObject)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.sceneCullingMask);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_gameObject(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1238,6 +1286,7 @@ public class Lua_UnityEngine_GameObject : LuaObject {
 		addMember(l,FindWithTag_s);
 		addMember(l,FindGameObjectWithTag_s);
 		addMember(l,FindGameObjectsWithTag_s);
+		addMember(l,Find_s);
 		addMember(l,"transform",get_transform,null,true);
 		addMember(l,"layer",get_layer,set_layer,true);
 		addMember(l,"activeSelf",get_activeSelf,null,true);
@@ -1245,6 +1294,7 @@ public class Lua_UnityEngine_GameObject : LuaObject {
 		addMember(l,"isStatic",get_isStatic,set_isStatic,true);
 		addMember(l,"tag",get_tag,set_tag,true);
 		addMember(l,"scene",get_scene,null,true);
+		addMember(l,"sceneCullingMask",get_sceneCullingMask,null,true);
 		addMember(l,"gameObject",get_gameObject,null,true);
 		createTypeMetatable(l,constructor, typeof(UnityEngine.GameObject),typeof(UnityEngine.Object));
 	}

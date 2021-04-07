@@ -21,10 +21,10 @@ public class Lua_UnityEngine_RuntimePlatform : LuaObject {
 		addMember(l,15,"FlashPlayer");
 		addMember(l,16,"LinuxEditor");
 		addMember(l,17,"WebGLPlayer");
-		addMember(l,18,"WSAPlayerX86");
 		addMember(l,18,"MetroPlayerX86");
-		addMember(l,19,"MetroPlayerX64");
+		addMember(l,18,"WSAPlayerX86");
 		addMember(l,19,"WSAPlayerX64");
+		addMember(l,19,"MetroPlayerX64");
 		addMember(l,20,"MetroPlayerARM");
 		addMember(l,20,"WSAPlayerARM");
 		addMember(l,21,"WP8Player");
@@ -41,6 +41,10 @@ public class Lua_UnityEngine_RuntimePlatform : LuaObject {
 		addMember(l,32,"Switch");
 		addMember(l,33,"Lumin");
 		addMember(l,34,"Stadia");
+		addMember(l,35,"CloudRendering");
+		addMember(l,36,"GameCoreScarlett");
+		addMember(l,37,"GameCoreXboxOne");
+		addMember(l,38,"PS5");
 		LuaDLL.lua_pop(l, 1);
 	}
 }

@@ -226,6 +226,37 @@ public class Lua_UnityEngine_Profiling_Recorder : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_gpuElapsedNanoseconds(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Profiling.Recorder self=(UnityEngine.Profiling.Recorder)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.gpuElapsedNanoseconds);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_sampleBlockCount(IntPtr l) {
 		try {
 			#if DEBUG
@@ -255,6 +286,37 @@ public class Lua_UnityEngine_Profiling_Recorder : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_gpuSampleBlockCount(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Profiling.Recorder self=(UnityEngine.Profiling.Recorder)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.gpuSampleBlockCount);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.Profiling.Recorder");
@@ -264,7 +326,9 @@ public class Lua_UnityEngine_Profiling_Recorder : LuaObject {
 		addMember(l,"isValid",get_isValid,null,true);
 		addMember(l,"enabled",get_enabled,set_enabled,true);
 		addMember(l,"elapsedNanoseconds",get_elapsedNanoseconds,null,true);
+		addMember(l,"gpuElapsedNanoseconds",get_gpuElapsedNanoseconds,null,true);
 		addMember(l,"sampleBlockCount",get_sampleBlockCount,null,true);
+		addMember(l,"gpuSampleBlockCount",get_gpuSampleBlockCount,null,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.Profiling.Recorder));
 	}
 }

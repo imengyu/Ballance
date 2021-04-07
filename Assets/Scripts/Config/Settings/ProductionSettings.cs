@@ -30,7 +30,7 @@ namespace Ballance2.Config.Settings
 	{
 
 
-
+		public bool EnableSteamSupport = false;
 
 
 		private static ProductionSettings _instance = null;

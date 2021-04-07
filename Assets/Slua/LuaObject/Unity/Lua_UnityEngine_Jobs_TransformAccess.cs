@@ -434,6 +434,38 @@ public class Lua_UnityEngine_Jobs_TransformAccess : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_isValid(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Jobs.TransformAccess self;
+			checkValueType(l,1,out self);
+			pushValue(l,true);
+			pushValue(l,self.isValid);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.Jobs.TransformAccess");
@@ -444,6 +476,7 @@ public class Lua_UnityEngine_Jobs_TransformAccess : LuaObject {
 		addMember(l,"localScale",get_localScale,set_localScale,true);
 		addMember(l,"localToWorldMatrix",get_localToWorldMatrix,null,true);
 		addMember(l,"worldToLocalMatrix",get_worldToLocalMatrix,null,true);
+		addMember(l,"isValid",get_isValid,null,true);
 		createTypeMetatable(l,constructor, typeof(UnityEngine.Jobs.TransformAccess),typeof(System.ValueType));
 	}
 }

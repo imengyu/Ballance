@@ -241,7 +241,7 @@ public class Lua_UnityEngine_UI_VertexHelper : LuaObject {
 				checkType(l,2,out a1);
 				UnityEngine.Color32 a2;
 				checkValueType(l,3,out a2);
-				UnityEngine.Vector2 a3;
+				UnityEngine.Vector4 a3;
 				checkType(l,4,out a3);
 				self.AddVert(a1,a2,a3);
 				pushValue(l,true);
@@ -253,9 +253,9 @@ public class Lua_UnityEngine_UI_VertexHelper : LuaObject {
 				checkType(l,2,out a1);
 				UnityEngine.Color32 a2;
 				checkValueType(l,3,out a2);
-				UnityEngine.Vector2 a3;
+				UnityEngine.Vector4 a3;
 				checkType(l,4,out a3);
-				UnityEngine.Vector2 a4;
+				UnityEngine.Vector4 a4;
 				checkType(l,5,out a4);
 				UnityEngine.Vector3 a5;
 				checkType(l,6,out a5);
@@ -271,13 +271,13 @@ public class Lua_UnityEngine_UI_VertexHelper : LuaObject {
 				checkType(l,2,out a1);
 				UnityEngine.Color32 a2;
 				checkValueType(l,3,out a2);
-				UnityEngine.Vector2 a3;
+				UnityEngine.Vector4 a3;
 				checkType(l,4,out a3);
-				UnityEngine.Vector2 a4;
+				UnityEngine.Vector4 a4;
 				checkType(l,5,out a4);
-				UnityEngine.Vector2 a5;
+				UnityEngine.Vector4 a5;
 				checkType(l,6,out a5);
-				UnityEngine.Vector2 a6;
+				UnityEngine.Vector4 a6;
 				checkType(l,7,out a6);
 				UnityEngine.Vector3 a7;
 				checkType(l,8,out a7);

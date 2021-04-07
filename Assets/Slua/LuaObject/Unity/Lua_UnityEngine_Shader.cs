@@ -515,6 +515,44 @@ public class Lua_UnityEngine_Shader : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int FindTextureStack(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Shader self=(UnityEngine.Shader)checkSelf(l);
+			System.Int32 a1;
+			checkType(l,2,out a1);
+			System.String a2;
+			System.Int32 a3;
+			var ret=self.FindTextureStack(a1,out a2,out a3);
+			pushValue(l,true);
+			pushValue(l,ret);
+			pushValue(l,a2);
+			pushValue(l,a3);
+			return 4;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int Find_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1054,6 +1092,24 @@ public class Lua_UnityEngine_Shader : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
+			else if(matchType(l,argc,1,typeof(string),typeof(UnityEngine.GraphicsBuffer))){
+				System.String a1;
+				checkType(l,1,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				UnityEngine.Shader.SetGlobalBuffer(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(int),typeof(UnityEngine.GraphicsBuffer))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				UnityEngine.Shader.SetGlobalBuffer(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function SetGlobalBuffer to call");
 			return 2;
@@ -1084,17 +1140,62 @@ public class Lua_UnityEngine_Shader : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			System.Int32 a1;
-			checkType(l,1,out a1);
-			UnityEngine.ComputeBuffer a2;
-			checkType(l,2,out a2);
-			System.Int32 a3;
-			checkType(l,3,out a3);
-			System.Int32 a4;
-			checkType(l,4,out a4);
-			UnityEngine.Shader.SetGlobalConstantBuffer(a1,a2,a3,a4);
-			pushValue(l,true);
-			return 1;
+			int argc = LuaDLL.lua_gettop(l);
+			if(matchType(l,argc,1,typeof(string),typeof(UnityEngine.ComputeBuffer),typeof(int),typeof(int))){
+				System.String a1;
+				checkType(l,1,out a1);
+				UnityEngine.ComputeBuffer a2;
+				checkType(l,2,out a2);
+				System.Int32 a3;
+				checkType(l,3,out a3);
+				System.Int32 a4;
+				checkType(l,4,out a4);
+				UnityEngine.Shader.SetGlobalConstantBuffer(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(int),typeof(UnityEngine.ComputeBuffer),typeof(int),typeof(int))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				UnityEngine.ComputeBuffer a2;
+				checkType(l,2,out a2);
+				System.Int32 a3;
+				checkType(l,3,out a3);
+				System.Int32 a4;
+				checkType(l,4,out a4);
+				UnityEngine.Shader.SetGlobalConstantBuffer(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(string),typeof(UnityEngine.GraphicsBuffer),typeof(int),typeof(int))){
+				System.String a1;
+				checkType(l,1,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				System.Int32 a3;
+				checkType(l,3,out a3);
+				System.Int32 a4;
+				checkType(l,4,out a4);
+				UnityEngine.Shader.SetGlobalConstantBuffer(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(int),typeof(UnityEngine.GraphicsBuffer),typeof(int),typeof(int))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,2,out a2);
+				System.Int32 a3;
+				checkType(l,3,out a3);
+				System.Int32 a4;
+				checkType(l,4,out a4);
+				UnityEngine.Shader.SetGlobalConstantBuffer(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function SetGlobalConstantBuffer to call");
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -2086,6 +2187,7 @@ public class Lua_UnityEngine_Shader : LuaObject {
 		addMember(l,GetPropertyRangeLimits);
 		addMember(l,GetPropertyTextureDimension);
 		addMember(l,GetPropertyTextureDefaultName);
+		addMember(l,FindTextureStack);
 		addMember(l,Find_s);
 		addMember(l,EnableKeyword_s);
 		addMember(l,DisableKeyword_s);

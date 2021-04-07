@@ -324,10 +324,28 @@ public class Lua_UnityEngine_Object : LuaObject {
 				pushValue(l,ret);
 				return 2;
 			}
-			else if(argc==1){
+			else if(matchType(l,argc,1,typeof(System.Type))){
 				System.Type a1;
 				checkType(l,1,out a1);
 				var ret=UnityEngine.Object.FindObjectsOfType(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,1,typeof(bool))){
+				System.Boolean a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Object.FindObjectsOfType<UnityEngine.Object>(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==2){
+				System.Type a1;
+				checkType(l,1,out a1);
+				System.Boolean a2;
+				checkType(l,2,out a2);
+				var ret=UnityEngine.Object.FindObjectsOfType(a1,a2);
 				pushValue(l,true);
 				pushValue(l,ret);
 				return 2;
@@ -401,10 +419,28 @@ public class Lua_UnityEngine_Object : LuaObject {
 				pushValue(l,ret);
 				return 2;
 			}
-			else if(argc==1){
+			else if(matchType(l,argc,1,typeof(bool))){
+				System.Boolean a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Object.FindObjectOfType<UnityEngine.Object>(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,1,typeof(System.Type))){
 				System.Type a1;
 				checkType(l,1,out a1);
 				var ret=UnityEngine.Object.FindObjectOfType(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==2){
+				System.Type a1;
+				checkType(l,1,out a1);
+				System.Boolean a2;
+				checkType(l,2,out a2);
+				var ret=UnityEngine.Object.FindObjectOfType(a1,a2);
 				pushValue(l,true);
 				pushValue(l,ret);
 				return 2;

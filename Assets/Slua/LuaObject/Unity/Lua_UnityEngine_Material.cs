@@ -1017,6 +1017,26 @@ public class Lua_UnityEngine_Material : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
+			else if(matchType(l,argc,2,typeof(string),typeof(UnityEngine.GraphicsBuffer))){
+				UnityEngine.Material self=(UnityEngine.Material)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,3,out a2);
+				self.SetBuffer(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(int),typeof(UnityEngine.GraphicsBuffer))){
+				UnityEngine.Material self=(UnityEngine.Material)checkSelf(l);
+				System.Int32 a1;
+				checkType(l,2,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,3,out a2);
+				self.SetBuffer(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function SetBuffer to call");
 			return 2;
@@ -1067,6 +1087,34 @@ public class Lua_UnityEngine_Material : LuaObject {
 				System.Int32 a1;
 				checkType(l,2,out a1);
 				UnityEngine.ComputeBuffer a2;
+				checkType(l,3,out a2);
+				System.Int32 a3;
+				checkType(l,4,out a3);
+				System.Int32 a4;
+				checkType(l,5,out a4);
+				self.SetConstantBuffer(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(string),typeof(UnityEngine.GraphicsBuffer),typeof(int),typeof(int))){
+				UnityEngine.Material self=(UnityEngine.Material)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				UnityEngine.GraphicsBuffer a2;
+				checkType(l,3,out a2);
+				System.Int32 a3;
+				checkType(l,4,out a3);
+				System.Int32 a4;
+				checkType(l,5,out a4);
+				self.SetConstantBuffer(a1,a2,a3,a4);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(int),typeof(UnityEngine.GraphicsBuffer),typeof(int),typeof(int))){
+				UnityEngine.Material self=(UnityEngine.Material)checkSelf(l);
+				System.Int32 a1;
+				checkType(l,2,out a1);
+				UnityEngine.GraphicsBuffer a2;
 				checkType(l,3,out a2);
 				System.Int32 a3;
 				checkType(l,4,out a3);
