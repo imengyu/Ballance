@@ -45,25 +45,7 @@
   </Compatibility>
   <!--
     模块入口代码
-    ★ Lua ：入口Lua代码，文本文件（例如 Entry.lua.txt），下面是一个示例：
-        gameModThis = nil
-
-        function ModEntry(thisGameMod)
-	        gameModThis = thisGameMod
-	        你的代码...
-	        return true
-        end
-
-        function ModBeforeUnLoad(thisGameMod)
-          gameModThis = thisGameMod
-          你的代码...
-	        return true
-        end
-        
-        以上两个函数是模块的整个入口，分别是 ModEntry 模块进入时，ModBeforeUnLoad 模块卸载时的函数。
-        你可以在这里进行模块的初始化。gameModThis 代表你的模块实例（GameMod），
-        可参考开发文档有关于 Ballance2.ModBase.GameMod 类的详细说明
-        
+    ★ Lua ：入口Lua代码，文本文件（例如 Entry.lua.txt），参考示例template_PackageEntry.lua
     ☆ CSharp：你的模块DLL文件名（例如 xx.dll.bytes）
   -->
   <EntryCode>Entry.lua</EntryCode>
@@ -91,7 +73,7 @@
   <RunType>GameBase</RunType>
   <!--
     模块共享lua虚拟机，如果你的模块分成多个模块，你可以仅用一个模块来运行代码，其他的模块作为附属模块，
-    填写 ModShareLuaState 为主模块包名，这样子模块可以和主模块共享运行环境。
+    填写 ShareLuaState 为主模块包名，这样子模块可以和主模块共享运行环境。
     （为空或默认情况下每个模块相互独立不能互相访问）
     如果填写 core 表示共享模块到全局Lua虚拟机
   -->

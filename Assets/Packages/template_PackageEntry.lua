@@ -17,7 +17,9 @@ Log = Ballance2.Utils.Log
 GamePackage = nil -- 这是你的模组实例，可以通过它来操作你的模组
 local TAG = "MyMod:Main" -- 
 
--- 模块入口函数
+---模块入口函数
+---@param thisGamePackage GamePackage
+---@return boolean
 function PackageEntry(thisGamePackage)
 	GamePackage = thisGamePackage
   
@@ -41,7 +43,9 @@ function PackageEntry(thisGamePackage)
   return true
 end
 
--- 模块卸载前函数
+---模块卸载前函数
+---@param thisGamePackage GamePackage
+---@return boolean
 function PackageBeforeUnLoad(thisGamePackage)
 	GamePackage = thisGamePackage
   

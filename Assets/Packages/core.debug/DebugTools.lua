@@ -8,7 +8,7 @@ DebugTools = {
   ---@type GameObject
   DebugLogText = nil,
   ---@type Text
-  textDebugLogText = nil
+  textDebugLogText = nil,
 }
 
 function class_DebugTools()

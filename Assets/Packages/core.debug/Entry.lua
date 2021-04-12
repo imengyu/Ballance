@@ -14,7 +14,7 @@ function PackageEntry(thisGamePackage)
     thisGamePackage:RequireLuaFile('DebugUtils')
 
     GlobalDebugToolbar = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugToolbar.prefab')
-    GlobalDebugToolbar = CloneUtils.CloneNewObjectWithParent(DebugToolbar, GameManager.Instance.GameCanvas, 'DebugToolbar')
+    GlobalDebugToolbar = CloneUtils.CloneNewObjectWithParent(GlobalDebugToolbar, GameManager.Instance.GameCanvas, 'DebugToolbar')
     GlobalDebugWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugWindow.prefab')
     GlobalDebugWindow = GameUIManager:CreateWindow('Console', CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, 'DebugWindow'), true)
     return true
