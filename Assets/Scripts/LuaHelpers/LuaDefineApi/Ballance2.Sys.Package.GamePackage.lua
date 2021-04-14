@@ -50,7 +50,7 @@ function GamePackage:RunPackageExecutionCode() end
 ---@public
 ---@return boolean 
 function GamePackage:RunPackageBeforeUnLoadCode() end
----导入 Lua 类到当前模组虚拟机中。            注意，类函数以 “class_类名” 开头，            关于 Lua 类，请参考 Docs/LuaClass 。
+---导入 Lua 类到当前模组虚拟机中。            注意，类函数以 “@类名” 开头，            关于 Lua 类，请参考 Docs/LuaClass 。
 ---@public
 ---@param className string 类名
 ---@return LuaFunction 类创建函数

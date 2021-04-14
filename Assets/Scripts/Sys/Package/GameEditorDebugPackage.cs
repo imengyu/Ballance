@@ -41,18 +41,16 @@ namespace Ballance2.Sys.Package
         public override async Task<bool> LoadInfo(string filePath)
         {
             PackageFilePath = filePath;
-
 #if !UNITY_EDITOR
-            GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "Package can only use in editor.");
+            GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "This package can only use in editor.");
             return false;
-#endif
-
+#else
             string defPath = filePath + "/PackageDef.xml";
             if (!File.Exists(defPath))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
                 LoadError = "模块并不包含 PackageDef.xml";
-                return false;
+                return await base.LoadPackage();
             } 
             else
             {
@@ -61,6 +59,7 @@ namespace Ballance2.Sys.Package
 
                 return ReadInfo(PackageDef);
             }
+#endif
         }
         public override async Task<bool> LoadPackage()
         {

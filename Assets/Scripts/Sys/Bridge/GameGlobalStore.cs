@@ -48,7 +48,7 @@ namespace Ballance2.Sys.Bridge
             {
                 if (StoreDataProvider != null)
                 {
-                   object data = StoreDataProvider();
+                   object data = StoreDataProvider(true, null);
                     if(data == null)
                     {
                         _DataRaw = null;
@@ -132,9 +132,10 @@ namespace Ballance2.Sys.Bridge
         /// 注册数据更新观察者
         /// </summary>
         /// <param name="observer">观察者</param>
-        public void RegisterDataObserver(StoreOnDataChanged observer)
+        public StoreOnDataChanged RegisterDataObserver(StoreOnDataChanged observer)
         {
             DataObserver += observer;
+            return observer;
         }
         /// <summary>
         /// 移除已经注册的数据更新观察者
@@ -153,6 +154,13 @@ namespace Ballance2.Sys.Bridge
         {
             if (DataObserver != null)
                 DataObserver(this, oldV, newV);
+        }
+        /// <summary>
+        /// 重新通知数据更新观察者数据已经更改
+        /// </summary>
+        public void ReNotificationAllDataObserver() {
+            if (DataObserver != null)
+                DataObserver(this, null, Data());
         }
 
         private StoreDataProvider StoreDataProvider = null;
@@ -228,13 +236,25 @@ namespace Ballance2.Sys.Bridge
                 return false;
             }
 
-            if (_DataRaw != data)
+            if (StoreDataProvider != null) {
+                object old = StoreDataProvider(true, null);
+                StoreDataProvider(false, data);
+                NotificationDataObserver(old, data);
+            } 
+            else if (_DataRaw != data)
             {
                 object old = _DataRaw;
                 _DataRaw = data;
                 NotificationDataObserver(old, data);
             }
             return true;
+        }
+        /// <summary>
+        /// 获取数据的值
+        /// </summary>
+        /// <returns></returns>
+        public object GetData() {
+            return DataRaw;
         }
 
         // 数组操作
@@ -341,7 +361,7 @@ namespace Ballance2.Sys.Bridge
     /// </summary>
     /// <returns>请返回当前数据的值</returns>
     [CustomLuaClass]
-    public delegate object StoreDataProvider();
+    public delegate object StoreDataProvider(bool isGet, object newValue);
 
     /// <summary>
     /// 数据类型

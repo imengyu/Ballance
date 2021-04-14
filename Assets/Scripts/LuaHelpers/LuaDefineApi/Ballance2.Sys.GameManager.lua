@@ -6,6 +6,8 @@
 ---@field public GameMainLuaSvr LuaSvr 游戏全局Lua虚拟机
 ---@field public GameBaseCamera Camera 基础摄像机
 ---@field public GameCanvas RectTransform 根Canvas
+---@field public GameActionStore GameActionStore 游戏内核ActionStore
+---@field public GameStore Store 游戏内核Store
 local GameManager={ }
 ---开始退出游戏流程
 ---@public

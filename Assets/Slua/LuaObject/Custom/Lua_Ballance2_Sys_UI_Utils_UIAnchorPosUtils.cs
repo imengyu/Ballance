@@ -202,6 +202,142 @@ public class Lua_Ballance2_Sys_UI_Utils_UIAnchorPosUtils : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetUIRight_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.RectTransform a1;
+			checkType(l,1,out a1);
+			System.Single a2;
+			checkType(l,2,out a2);
+			Ballance2.Sys.UI.Utils.UIAnchorPosUtils.SetUIRight(a1,a2);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int SetUITop_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.RectTransform a1;
+			checkType(l,1,out a1);
+			System.Single a2;
+			checkType(l,2,out a2);
+			Ballance2.Sys.UI.Utils.UIAnchorPosUtils.SetUITop(a1,a2);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int SetUILeft_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.RectTransform a1;
+			checkType(l,1,out a1);
+			System.Single a2;
+			checkType(l,2,out a2);
+			Ballance2.Sys.UI.Utils.UIAnchorPosUtils.SetUILeft(a1,a2);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int SetUIBottom_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.RectTransform a1;
+			checkType(l,1,out a1);
+			System.Single a2;
+			checkType(l,2,out a2);
+			Ballance2.Sys.UI.Utils.UIAnchorPosUtils.SetUIBottom(a1,a2);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetUIRight_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -461,6 +597,10 @@ public class Lua_Ballance2_Sys_UI_Utils_UIAnchorPosUtils : LuaObject {
 		addMember(l,SetUIRightTop_s);
 		addMember(l,SetUILeftBottom_s);
 		addMember(l,SetUIPos_s);
+		addMember(l,SetUIRight_s);
+		addMember(l,SetUITop_s);
+		addMember(l,SetUILeft_s);
+		addMember(l,SetUIBottom_s);
 		addMember(l,GetUIRight_s);
 		addMember(l,GetUITop_s);
 		addMember(l,GetUILeft_s);

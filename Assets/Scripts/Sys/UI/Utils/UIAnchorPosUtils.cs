@@ -148,6 +148,44 @@ namespace Ballance2.Sys.UI.Utils
             rectTransform.offsetMax = new Vector2(-right, -top);
         }
 
+        /// <summary>
+        /// 设置 UI 组件 右 坐标
+        /// </summary>
+        /// <param name="rectTransform"></param>
+        /// <param name="top"></param>
+        public static void SetUIRight(RectTransform rectTransform, float right)
+        {
+            rectTransform.offsetMax = new Vector2(-right, rectTransform.offsetMax.y);
+        }
+        /// <summary>
+        /// 设置 UI 组件 上 坐标
+        /// </summary>
+        /// </summary>
+        /// <param name="rectTransform"></param>
+        /// <param name="top"></param>
+        public static void SetUITop(RectTransform rectTransform, float top)
+        {
+            rectTransform.offsetMax = new Vector2(rectTransform.offsetMax.x, -top);
+        }
+        /// <summary>
+        /// 设置 UI 组件左坐标
+        /// </summary>
+        /// <param name="rectTransform"></param>
+        /// <param name="left"></param>
+        public static void SetUILeft(RectTransform rectTransform, float left)
+        {
+            rectTransform.offsetMin = new Vector2(left, rectTransform.offsetMin.y);
+        }
+        /// <summary>
+        /// 设置 UI 组件下坐标
+        /// </summary>
+        /// <param name="rectTransform"></param>
+        /// <param name="bottom"></param>
+        public static void SetUIBottom(RectTransform rectTransform, float bottom)
+        {
+            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, bottom);
+        }
+
         public static float GetUIRight(RectTransform rectTransform)
         {
             return -rectTransform.offsetMax.x;

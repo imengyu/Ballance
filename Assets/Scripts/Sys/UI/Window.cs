@@ -1,4 +1,4 @@
-﻿using Ballance2.Sys.Res;
+﻿using Ballance2.Utils;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.UI.Utils;
 using UnityEngine;
@@ -31,7 +31,7 @@ namespace Ballance2.Sys.UI
     [ExecuteInEditMode]
     public class Window : MonoBehaviour
     {
-        private int windowId = 0;
+        internal int windowId = 0;
 
         /// <summary>
         /// 获取窗口是否显示
@@ -47,9 +47,11 @@ namespace Ballance2.Sys.UI
         /// <param name="visible">是否显示</param>
         public void SetVisible(bool visible)
         {
-            gameObject.SetActive(visible);
-            if (visible) Show();
-            else Hide();
+            if(gameObject.activeSelf != visible) {
+                gameObject.SetActive(visible);
+                if (visible) onShow?.Invoke(windowId);
+                else onHide?.Invoke(windowId);
+            }
         }
         /// <summary>
         /// 销毁窗口
@@ -63,26 +65,26 @@ namespace Ballance2.Sys.UI
         /// </summary>
         public int GetWindowId() { return windowId; }
 
-        private RectTransform WindowRectTransform;
-        private UIDragControl WindowTitleDragger;
+        public RectTransform WindowRectTransform;
+        public UIDragControl WindowTitleDragger;
 
-        private Sprite MinIcon;
-        private Sprite MinRestoreIcon;
-        private Sprite WindowMaxIcon;
-        private Sprite WindowRestoreIcon;
+        public Color TitleDefaultColor;
+        public Color TitleActiveColor;
+        public Sprite TitleDefaultSprite;
+        public Sprite TitleMinSprite;
 
-        public Button WindowButtonMax;
-        public Button WindowButtonMin;
-        public RectTransform WindowButtonMinRectTransform;
         public Button WindowButtonClose;
+        public Button WindowButtonMin;
         public Image WindowIconImage;
+        public Image WindowTitleImage;
+        public Image MinButtonImage;
         public Text WindowTitleText;
         public RectTransform WindowClientArea;
         public RectTransform WindowTitle;
         public UISizeDrag SizeDrag;
 
         private GameUIManager UIManager;
-        private Vector2 minSize = new Vector2(150, 35);
+        private Vector2 minSize = new Vector2(150, 32);
 
         private void Awake()
         {
@@ -91,37 +93,25 @@ namespace Ballance2.Sys.UI
         }
         private void Start()
         {
-            MinIcon = GameStaticResourcesPool.FindStaticAssets<Sprite>("MinIcon");
-            MinRestoreIcon = GameStaticResourcesPool.FindStaticAssets<Sprite>("MinRestoreIcon");
-            WindowMaxIcon = GameStaticResourcesPool.FindStaticAssets<Sprite>("WindowMaxIcon");
-            WindowRestoreIcon = GameStaticResourcesPool.FindStaticAssets<Sprite>("WindowRestoreIcon");
-
             if (GameManager.Instance != null)
                 UIManager = (GameUIManager)GameManager.Instance.GetSystemService("GameUIManager");
-            if (UIManager != null)
-                windowId = UIManager.GenWindowId();
 
             WindowButtonClose.onClick.AddListener(() =>
             {
                 if (CloseAsHide) Hide();
                 else Close();
             });
-            WindowButtonMax.onClick.AddListener(() =>
-            {
-                if (WindowState == WindowState.Max)
-                    WindowState = WindowState.Normal;
-                else
-                    WindowState = WindowState.Max;
-            });
             WindowButtonMin.onClick.AddListener(() =>
             {
-                WindowState = WindowState.Min;
+                if(WindowState == WindowState.Normal) WindowState = WindowState.Min;
+                else WindowState = WindowState.Normal;
             });
-
-            EventTriggerListener.Get(WindowTitleDragger.gameObject).onClick = (g) => {
-                WindowRectTransform.transform.SetAsLastSibling();
+            EventTriggerListener.Get(WindowTitleDragger.gameObject).onDown = (g) => {
+                UIManager.ActiveWindow(this);
             };
         }
+
+
 
         /// <summary>
         /// 获取或设置窗口大小
@@ -132,9 +122,9 @@ namespace Ballance2.Sys.UI
             get { return WindowRectTransform.sizeDelta; }
             set
             {
-                if (minSize.x != 0 && value.x > minSize.x)
+                if (minSize.x != 0 && value.x < minSize.x)
                     value.x = minSize.x;
-                if (minSize.y != 0 && value.y > minSize.y)
+                if (minSize.y != 0 && value.y < minSize.y)
                     value.y = minSize.y;
                 WindowRectTransform.sizeDelta = value;
             }
@@ -272,11 +262,10 @@ namespace Ballance2.Sys.UI
         public bool CanMin
         {
             get { return _CanMin; }
-            set
-            {
-                _CanMin = value;
-                if (WindowButtonMin != null)
-                    WindowButtonMin.gameObject.SetActive(value);
+            set { 
+                _CanMin = value; 
+                WindowButtonMin.gameObject.SetActive(_CanMin);
+                UIAnchorPosUtils.SetUILeft(WindowTitleText.rectTransform, _CanMin ? 46 : 25);
             }
         }
         /// <summary>
@@ -285,25 +274,7 @@ namespace Ballance2.Sys.UI
         public bool CanMax
         {
             get { return _CanMax; }
-            set
-            {
-                _CanMax = value;
-                if (WindowButtonMax != null) 
-                    WindowButtonMax.gameObject.SetActive(value);
-                if (WindowButtonMinRectTransform != null)
-                {
-                    if (_CanMax)
-                    {
-                        WindowButtonMinRectTransform.anchoredPosition =
-                            new Vector2(-64, WindowButtonMinRectTransform.anchoredPosition.y);
-                    }
-                    else
-                    {
-                        WindowButtonMinRectTransform.anchoredPosition =
-                            new Vector2(-38, WindowButtonMinRectTransform.anchoredPosition.y);
-                    }
-                }
-            }
+            set { _CanMax = value; }
         }
         /// <summary>
         /// 点击窗口关闭按钮是否替换为隐藏窗口
@@ -335,11 +306,10 @@ namespace Ballance2.Sys.UI
         /// </summary>
         public void Show()
         {
-            if (_WindowState == WindowState.Hidden)
+            if (_WindowState == WindowState.Hidden && oldWindowState != WindowState.Hidden)
                 WindowState = oldWindowState;
             else
                 WindowState = WindowState.Normal;
-            onShow?.Invoke(windowId);
         }
         /// <summary>
         /// 隐藏窗口
@@ -348,7 +318,6 @@ namespace Ballance2.Sys.UI
         {
             oldWindowState = _WindowState;
             WindowState = WindowState.Hidden;
-            onHide?.Invoke(windowId);
         }
         /// <summary>
         /// 窗口剧中
@@ -378,15 +347,15 @@ namespace Ballance2.Sys.UI
                     break;
                 case WindowState.Normal:
                     SetVisible(true);
+                    MinButtonImage.rectTransform.eulerAngles = new Vector3(0,0,-90);
+                    WindowTitleImage.sprite = TitleDefaultSprite;
                     WindowClientArea.gameObject.SetActive(true);
-                    WindowButtonMin.image.sprite = MinIcon;
-                    WindowButtonMax.image.sprite = WindowMaxIcon;
                     if (_CanResize) SizeDrag.gameObject.SetActive(true);
                     if (oldWindowSize.x > 0 && oldWindowSize.y > 0)
                     {
                         Size = oldWindowSize;
                         oldWindowSize = Vector2.zero;
-                    }
+                    } 
                     if (oldWindowPos.x > 0 && oldWindowPos.y > 0)
                     {
                         Position = oldWindowPos;
@@ -396,8 +365,7 @@ namespace Ballance2.Sys.UI
                 case WindowState.Max:
                     SetVisible(true);
                     WindowClientArea.gameObject.SetActive(true);
-                    WindowButtonMin.image.sprite = MinIcon;
-                    WindowButtonMax.image.sprite = WindowRestoreIcon;
+                    WindowTitleImage.sprite = TitleDefaultSprite;
                     if (_CanResize) SizeDrag.gameObject.SetActive(true);
                     if (oldWindowState == WindowState.Normal)
                     {
@@ -405,17 +373,18 @@ namespace Ballance2.Sys.UI
                         oldWindowPos = Position;
                     }
                     Position = Vector2.zero;
-                    Size = new Vector2(Screen.width, Screen.height);
+                    WindowRectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
                     break;
                 case WindowState.Min:
                     SetVisible(true); 
+                    MinButtonImage.rectTransform.eulerAngles = new Vector3(0,0,0);
+                    WindowTitleImage.sprite = TitleMinSprite;
                     WindowClientArea.gameObject.SetActive(false);
-                    WindowButtonMin.image.sprite = MinRestoreIcon;
-                    WindowButtonMax.image.sprite = WindowMaxIcon;
                     if (_CanResize) SizeDrag.gameObject.SetActive(false);
-                    if (oldWindowState == WindowState.Normal)
+                    if (oldWindowState == WindowState.Normal) {
                         oldWindowSize = Size;
-                    Size = new Vector2(120, 30);
+                    } 
+                     WindowRectTransform.sizeDelta = new Vector2(250, 20);
                     break;
             }
         }

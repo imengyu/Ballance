@@ -31,8 +31,8 @@ namespace Ballance2.Sys.UI {
         public RectTransform Drag;
         public RectTransform Background;
         public UnityEngine.UI.Image DragImage;
-        public Color ActiveColor = new Color(1.0f, 0.7f, 0.0f);
-        public Color DeactiveColor = new Color(0.55f, 0.55f, 0.55f);
+        public Sprite ActiveImage;
+        public Sprite DeactiveImage;
 
         public UnityEngine.UI.Toggle.ToggleEvent onValueChanged;
 
@@ -42,6 +42,7 @@ namespace Ballance2.Sys.UI {
             {
                 isOn = !isOn;
             };
+            UpdateOn();
         }
 
         [SerializeField, HideInInspector]
@@ -49,9 +50,9 @@ namespace Ballance2.Sys.UI {
 
         public void UpdateOn()
         {
-            DragImage.color = on ? ActiveColor : DeactiveColor;
+            DragImage.sprite = on ? ActiveImage : DeactiveImage;
             Drag.anchoredPosition = new Vector2(
-                on ? 10.5f : 31.6f,
+                on ? 31.6f : 10.5f,
                 Drag.anchoredPosition.y
             );
         }
@@ -64,7 +65,8 @@ namespace Ballance2.Sys.UI {
                 if(on != value)
                 {
                     on = value;
-                    onValueChanged.Invoke(on);
+                    if(!Application.isEditor)
+                        onValueChanged.Invoke(on);
                     UpdateOn();
                 }
             }

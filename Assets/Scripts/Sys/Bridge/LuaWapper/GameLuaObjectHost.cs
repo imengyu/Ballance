@@ -244,7 +244,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
                 if (CreateStore)
                 {
-                    Store = GameManager.GameMediator.RegisterGlobalDataStore(Name);
+                    Store = GameManager.GameMediator.RegisterGlobalDataStore(_PackageName + ":" + Name);
                 }
                 if (CreateActionStore)
                 {
@@ -402,9 +402,9 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// <returns>返回函数，未找到返回null</returns>
         public LuaFunction GetLuaFun(string funName)
         {
-            LuaFunction f;
+            LuaFunction f = null;
             if (self != null) f = self[funName] as LuaFunction;
-            else f = LuaState.getFunction(funName);
+            else if(LuaState != null) f = LuaState.getFunction(funName);
             return f;
         }
         /// <summary>
@@ -426,5 +426,9 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             LuaFunction f = GetLuaFun(funName);
             if (f != null) f.call(self, pararms);
         }
+        public void CallLuaFun(string funName, int number) { CallLuaFun(funName, number); }
+        public void CallLuaFun(string funName, float number) { CallLuaFun(funName, number); }
+        public void CallLuaFun(string funName, bool boolean) { CallLuaFun(funName, boolean); }
+        public void CallLuaFun(string funName, string str) { CallLuaFun(funName, str); }
     }
 }

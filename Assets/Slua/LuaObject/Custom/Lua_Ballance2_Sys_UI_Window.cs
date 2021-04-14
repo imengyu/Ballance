@@ -355,7 +355,7 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_WindowButtonMax(IntPtr l) {
+	static public int get_WindowRectTransform(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -368,7 +368,7 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 			#endif
 			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.WindowButtonMax);
+			pushValue(l,self.WindowRectTransform);
 			return 2;
 		}
 		catch(Exception e) {
@@ -386,135 +386,7 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_WindowButtonMax(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
-			UnityEngine.UI.Button v;
-			checkType(l,2,out v);
-			self.WindowButtonMax=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_WindowButtonMin(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.WindowButtonMin);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_WindowButtonMin(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
-			UnityEngine.UI.Button v;
-			checkType(l,2,out v);
-			self.WindowButtonMin=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_WindowButtonMinRectTransform(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.WindowButtonMinRectTransform);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_WindowButtonMinRectTransform(IntPtr l) {
+	static public int set_WindowRectTransform(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -528,7 +400,327 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
 			UnityEngine.RectTransform v;
 			checkType(l,2,out v);
-			self.WindowButtonMinRectTransform=v;
+			self.WindowRectTransform=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_WindowTitleDragger(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.WindowTitleDragger);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_WindowTitleDragger(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			Ballance2.Sys.UI.Utils.UIDragControl v;
+			checkType(l,2,out v);
+			self.WindowTitleDragger=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_TitleDefaultColor(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.TitleDefaultColor);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_TitleDefaultColor(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.Color v;
+			checkType(l,2,out v);
+			self.TitleDefaultColor=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_TitleActiveColor(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.TitleActiveColor);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_TitleActiveColor(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.Color v;
+			checkType(l,2,out v);
+			self.TitleActiveColor=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_TitleDefaultSprite(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.TitleDefaultSprite);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_TitleDefaultSprite(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.Sprite v;
+			checkType(l,2,out v);
+			self.TitleDefaultSprite=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_TitleMinSprite(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.TitleMinSprite);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_TitleMinSprite(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.Sprite v;
+			checkType(l,2,out v);
+			self.TitleMinSprite=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -611,6 +803,70 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_WindowButtonMin(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.WindowButtonMin);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_WindowButtonMin(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.UI.Button v;
+			checkType(l,2,out v);
+			self.WindowButtonMin=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_WindowIconImage(IntPtr l) {
 		try {
 			#if DEBUG
@@ -657,6 +913,134 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 			UnityEngine.UI.Image v;
 			checkType(l,2,out v);
 			self.WindowIconImage=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_WindowTitleImage(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.WindowTitleImage);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_WindowTitleImage(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.UI.Image v;
+			checkType(l,2,out v);
+			self.WindowTitleImage=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_MinButtonImage(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.MinButtonImage);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_MinButtonImage(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Window self=(Ballance2.Sys.UI.Window)checkSelf(l);
+			UnityEngine.UI.Image v;
+			checkType(l,2,out v);
+			self.MinButtonImage=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -1880,11 +2264,17 @@ public class Lua_Ballance2_Sys_UI_Window : LuaObject {
 		addMember(l,Show);
 		addMember(l,Hide);
 		addMember(l,MoveToCenter);
-		addMember(l,"WindowButtonMax",get_WindowButtonMax,set_WindowButtonMax,true);
-		addMember(l,"WindowButtonMin",get_WindowButtonMin,set_WindowButtonMin,true);
-		addMember(l,"WindowButtonMinRectTransform",get_WindowButtonMinRectTransform,set_WindowButtonMinRectTransform,true);
+		addMember(l,"WindowRectTransform",get_WindowRectTransform,set_WindowRectTransform,true);
+		addMember(l,"WindowTitleDragger",get_WindowTitleDragger,set_WindowTitleDragger,true);
+		addMember(l,"TitleDefaultColor",get_TitleDefaultColor,set_TitleDefaultColor,true);
+		addMember(l,"TitleActiveColor",get_TitleActiveColor,set_TitleActiveColor,true);
+		addMember(l,"TitleDefaultSprite",get_TitleDefaultSprite,set_TitleDefaultSprite,true);
+		addMember(l,"TitleMinSprite",get_TitleMinSprite,set_TitleMinSprite,true);
 		addMember(l,"WindowButtonClose",get_WindowButtonClose,set_WindowButtonClose,true);
+		addMember(l,"WindowButtonMin",get_WindowButtonMin,set_WindowButtonMin,true);
 		addMember(l,"WindowIconImage",get_WindowIconImage,set_WindowIconImage,true);
+		addMember(l,"WindowTitleImage",get_WindowTitleImage,set_WindowTitleImage,true);
+		addMember(l,"MinButtonImage",get_MinButtonImage,set_MinButtonImage,true);
 		addMember(l,"WindowTitleText",get_WindowTitleText,set_WindowTitleText,true);
 		addMember(l,"WindowClientArea",get_WindowClientArea,set_WindowClientArea,true);
 		addMember(l,"WindowTitle",get_WindowTitle,set_WindowTitle,true);

@@ -162,8 +162,8 @@ namespace SubjectNerd.Utilities
 
                 // Draw the header
                 string headerText = string.Format("{0} [{1}]", property.displayName, property.arraySize);
-                EditorGUILayout.PropertyField(property, new GUIContent(headerText), false);
-
+                property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, headerText, true);
+                    
                 // Save header rect for handling drag and drop
                 Rect dropRect = GUILayoutUtility.GetLastRect();
 

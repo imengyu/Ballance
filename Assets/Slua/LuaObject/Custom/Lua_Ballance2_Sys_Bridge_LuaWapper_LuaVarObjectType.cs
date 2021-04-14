@@ -21,11 +21,12 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_LuaVarObjectType : LuaObject {
 		addMember(l,13,"Bounds");
 		addMember(l,14,"Object");
 		addMember(l,15,"GameObject");
-		addMember(l,16,"Long");
-		addMember(l,17,"Int");
-		addMember(l,18,"String");
-		addMember(l,19,"Double");
-		addMember(l,20,"Bool");
+		addMember(l,16,"ComponentClass");
+		addMember(l,17,"Long");
+		addMember(l,18,"Int");
+		addMember(l,19,"String");
+		addMember(l,20,"Double");
+		addMember(l,21,"Bool");
 		LuaDLL.lua_pop(l, 1);
 	}
 }

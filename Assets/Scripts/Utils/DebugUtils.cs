@@ -26,13 +26,17 @@ namespace Ballance2.Utils
                 stringBuilder.Append(i);
                 stringBuilder.Append("] ");
                 stringBuilder.Append(method.Name);
-                stringBuilder.Append("\n");
-                stringBuilder.Append(frame.GetFileName());
-                stringBuilder.Append(" (");
-                stringBuilder.Append(frame.GetFileLineNumber());
-                stringBuilder.Append(":");
-                stringBuilder.Append(frame.GetFileColumnNumber());
-                stringBuilder.Append(")");
+
+                var lineNum = frame.GetFileLineNumber();
+                if(lineNum > 0) {
+                    stringBuilder.Append(" in ");
+                    stringBuilder.Append(frame.GetFileName());
+                    stringBuilder.Append(" (");
+                    stringBuilder.Append(lineNum);
+                    stringBuilder.Append(":");
+                    stringBuilder.Append(frame.GetFileColumnNumber());
+                    stringBuilder.Append(")");
+                }
             }
             return stringBuilder.ToString();
         }

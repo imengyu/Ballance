@@ -16,6 +16,7 @@ namespace SLua {
 				Lua_Ballance2_Utils_StringUtils.reg,
 				Lua_Ballance2_Sys_GameManager.reg,
 				Lua_Ballance2_Sys_Utils_CloneUtils.reg,
+				Lua_Ballance2_Sys_Utils_KeyListener.reg,
 				Lua_Ballance2_Sys_Utils_Web_FileRequestUtil.reg,
 				Lua_Ballance2_Sys_UI_Progress.reg,
 				Lua_Ballance2_Sys_UI_SplitView.reg,

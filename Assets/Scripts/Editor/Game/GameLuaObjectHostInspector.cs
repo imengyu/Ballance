@@ -83,7 +83,7 @@ class GameLuaObjectHostInspector : Editor
     {
         reorderableList = new ReorderableList(serializedObject, pLuaInitialVars, true, true, true, true);
 
-        reorderableList.elementHeight = 66;     
+        reorderableList.elementHeight = 85;
         reorderableList.drawElementCallback =
             (rect, index, isActive, isFocused) => {
 
@@ -163,6 +163,32 @@ class GameLuaObjectHostInspector : Editor
                             pVal = ptargetElement.FindPropertyRelative("objectVal");
                             EditorGUI.ObjectField(rect, pVal);
                             break;
+                        case LuaVarObjectType.ComponentClass: {
+                            SerializedProperty pValGo = ptargetElement.FindPropertyRelative("gameObjectVal");
+                            pVal = ptargetElement.FindPropertyRelative("componentClassVal");
+                            EditorGUI.ObjectField(rect, pValGo);rect.y += 20;
+                            
+                            GUI.Label(rect, "类全名");
+                            if(pValGo.objectReferenceValue != null && pValGo.objectReferenceValue is GameObject) {
+                                List<string> componentNames = new List<string>(); 
+                                int selectIndex = -1, i = 0;
+                                foreach(Component c in ((GameObject)pValGo.objectReferenceValue).GetComponents<Component>()) {
+                                    string s = c.GetType().FullName;
+                                    componentNames.Add(s);
+                                    if(selectIndex == -1 && s == pVal.stringValue) selectIndex = i;
+                                    i++;
+                                }
+                                rect.x += 40;
+                                rect.width -= 40;
+                                selectIndex = EditorGUI.Popup(rect, selectIndex < 0 ? 0 : selectIndex, componentNames.ToArray());
+                                if(selectIndex >= 0 && selectIndex < componentNames.Count)
+                                    pVal.stringValue = componentNames[selectIndex];
+                                else
+                                    pVal.stringValue = "";
+                            }
+                            
+                            break;
+                        }
                         case LuaVarObjectType.GameObject:
                             pVal = ptargetElement.FindPropertyRelative("gameObjectVal");
                             EditorGUI.ObjectField(rect, pVal);
@@ -208,7 +234,7 @@ class GameLuaObjectHostInspector : Editor
                 styleHighlight = GUI.skin.FindStyle("MeTransitionSelectHead");
             if (isFocused == false)
                 return;
-            rect.height = 66;
+            rect.height = 85;
             GUI.Box(rect, GUIContent.none, styleHighlight);
         };
         reorderableList.drawHeaderCallback = (rect) => EditorGUI.LabelField(rect, pLuaInitialVars.displayName);

@@ -37,6 +37,38 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_LuaVarObjectInfo : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int ComponentClass(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.LuaVarObjectInfo self=(Ballance2.Sys.Bridge.LuaWapper.LuaVarObjectInfo)checkSelf(l);
+			var ret=self.ComponentClass();
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int Vector2(IntPtr l) {
 		try {
 			#if DEBUG
@@ -872,6 +904,7 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_LuaVarObjectInfo : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Bridge.LuaWapper.LuaVarObjectInfo");
+		addMember(l,ComponentClass);
 		addMember(l,Vector2);
 		addMember(l,Vector2Int);
 		addMember(l,Vector3);

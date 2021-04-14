@@ -73,7 +73,17 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         public double doubleVal;
         [HideInInspector, SerializeField, DoNotToLua]
         public bool boolVal;
+        [HideInInspector, SerializeField, DoNotToLua]
+        public string componentClassVal;
 
+        public Component ComponentClass() {
+            switch (componentClassVal)
+            { 
+                case "UnityEngine.Transform": return gameObjectVal.GetComponent<Transform>();
+                case "UnityEngine.RectTransform": return gameObjectVal.GetComponent<RectTransform>();
+                default: return gameObjectVal.GetComponent(componentClassVal);
+            }
+        }
         public Vector2 Vector2() { return vector2; }
         public Vector2Int Vector2Int() { return vector2Int; }
         public Vector3 Vector3() { return vector3; }
@@ -124,6 +134,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 case LuaVarObjectType.String: LuaSelf[Name] = String(); break;
                 case LuaVarObjectType.Double: LuaSelf[Name] = Double(); break;
                 case LuaVarObjectType.Bool: LuaSelf[Name] = Bool(); break;
+                case LuaVarObjectType.ComponentClass: LuaSelf[Name] = ComponentClass(); break;
             }
         }
         /// <summary>
@@ -181,6 +192,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         Bounds,
         Object,
         GameObject,
+        ComponentClass,
 
         Long,
         Int,

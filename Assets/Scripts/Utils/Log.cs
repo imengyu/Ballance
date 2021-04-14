@@ -20,6 +20,7 @@
 *
 * 更改历史：
 * 2021-1-14 创建
+* 2021-4-12 imengyu 增加日志暂存区
 *
 */
 
@@ -88,10 +89,37 @@ namespace Ballance2.Utils
         /// <param name="stackTrace">堆栈信息</param>
         public static void LogWrite(LogLevel level, string tag, string message, string stackTrace)
         {
+            if(!logTemporaryForeachLock) {
+                LogTemporaryData data = new LogTemporaryData();
+                data.level = level;
+                data.message = message;
+                data.tag = tag;
+                data.stackTrace = stackTrace;
+                logTemporary.Add(data);
+            }
+
+            if(logTemporary.Count > 256)
+                logTemporary.RemoveAt(0);
+
             observers.ForEach((observer) => {
                 if ((observer.AcceptLevel & level) != LogLevel.None)
                     observer.Observer(level, tag, message, stackTrace);
             });
+        }
+
+        /// <summary>
+        /// 重新发送暂存区中的日志条目
+        /// </summary>
+        public static void SendLogsInTemporary() {
+            logTemporaryForeachLock = true;
+            logTemporary.ForEach((data) => {
+                observers.ForEach((observer) => {
+                if ((observer.AcceptLevel & data.level) != LogLevel.None)
+                    observer.Observer(data.level, data.tag, data.message, data.stackTrace);
+                });
+            });
+            logTemporary.Clear();
+            logTemporaryForeachLock = false;
         }
 
         /// <summary>
@@ -165,7 +193,16 @@ namespace Ballance2.Utils
             return logLevel.ToString();
         }
 
+        private struct LogTemporaryData {
+            public LogLevel level;
+            public string tag;
+            public string message;
+            public string stackTrace;
+        }
+
         private static List<LogObserverInternal> observers = new List<LogObserverInternal>();
+        private static List<LogTemporaryData> logTemporary = new List<LogTemporaryData>();
+        private static bool logTemporaryForeachLock = false;
 
         /// <summary>
         /// 内部观察者保存类

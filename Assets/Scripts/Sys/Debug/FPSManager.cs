@@ -6,6 +6,7 @@ public class FPSManager : MonoBehaviour
 {
     public float updateInterval = 0.5F;
     private double lastInterval;
+    private double lastFpsInterval;
     private int frames = 0;
     private int tick = 0;
     public float fps;
@@ -34,6 +35,7 @@ public class FPSManager : MonoBehaviour
             frames = 0;
             lastInterval = timeNow;
         }
+        lastFpsInterval = timeNow;
         if (tick < 60) tick++;
         else
         {
@@ -42,8 +44,8 @@ public class FPSManager : MonoBehaviour
             sb.Clear();
             sb.Append("FPS:");
             sb.Append(fps.ToString("0.0"));
-            sb.Append('(');
-            sb.Append((timeNow - lastInterval).ToString("0.00"));
+            sb.Append(" (");
+            sb.Append((1000 * Time.deltaTime).ToString("0.00"));
             sb.Append("ms)");
 
             if (FpsText != null) FpsText.text = sb.ToString(); 

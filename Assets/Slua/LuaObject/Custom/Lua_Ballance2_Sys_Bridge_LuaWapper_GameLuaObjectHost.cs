@@ -234,12 +234,52 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 				pushValue(l,true);
 				return 1;
 			}
-			else if(argc==3){
+			else if(matchType(l,argc,2,typeof(string),typeof(object[]))){
 				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
 				System.String a1;
 				checkType(l,2,out a1);
 				System.Object[] a2;
 				checkParams(l,3,out a2);
+				self.CallLuaFun(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(string),typeof(int))){
+				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				System.Int32 a2;
+				checkType(l,3,out a2);
+				self.CallLuaFun(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(string),typeof(float))){
+				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				System.Single a2;
+				checkType(l,3,out a2);
+				self.CallLuaFun(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(string),typeof(bool))){
+				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				System.Boolean a2;
+				checkType(l,3,out a2);
+				self.CallLuaFun(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,2,typeof(string),typeof(string))){
+				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				System.String a2;
+				checkType(l,3,out a2);
 				self.CallLuaFun(a1,a2);
 				pushValue(l,true);
 				return 1;

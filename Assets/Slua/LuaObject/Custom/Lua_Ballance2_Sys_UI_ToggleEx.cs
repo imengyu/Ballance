@@ -228,7 +228,7 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_ActiveColor(IntPtr l) {
+	static public int get_ActiveImage(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -241,7 +241,7 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 			#endif
 			Ballance2.Sys.UI.ToggleEx self=(Ballance2.Sys.UI.ToggleEx)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.ActiveColor);
+			pushValue(l,self.ActiveImage);
 			return 2;
 		}
 		catch(Exception e) {
@@ -259,7 +259,7 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_ActiveColor(IntPtr l) {
+	static public int set_ActiveImage(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -271,9 +271,9 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.ToggleEx self=(Ballance2.Sys.UI.ToggleEx)checkSelf(l);
-			UnityEngine.Color v;
+			UnityEngine.Sprite v;
 			checkType(l,2,out v);
-			self.ActiveColor=v;
+			self.ActiveImage=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -292,7 +292,7 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_DeactiveColor(IntPtr l) {
+	static public int get_DeactiveImage(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -305,7 +305,7 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 			#endif
 			Ballance2.Sys.UI.ToggleEx self=(Ballance2.Sys.UI.ToggleEx)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.DeactiveColor);
+			pushValue(l,self.DeactiveImage);
 			return 2;
 		}
 		catch(Exception e) {
@@ -323,7 +323,7 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_DeactiveColor(IntPtr l) {
+	static public int set_DeactiveImage(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -335,9 +335,9 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.ToggleEx self=(Ballance2.Sys.UI.ToggleEx)checkSelf(l);
-			UnityEngine.Color v;
+			UnityEngine.Sprite v;
 			checkType(l,2,out v);
-			self.DeactiveColor=v;
+			self.DeactiveImage=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -489,8 +489,8 @@ public class Lua_Ballance2_Sys_UI_ToggleEx : LuaObject {
 		addMember(l,"Drag",get_Drag,set_Drag,true);
 		addMember(l,"Background",get_Background,set_Background,true);
 		addMember(l,"DragImage",get_DragImage,set_DragImage,true);
-		addMember(l,"ActiveColor",get_ActiveColor,set_ActiveColor,true);
-		addMember(l,"DeactiveColor",get_DeactiveColor,set_DeactiveColor,true);
+		addMember(l,"ActiveImage",get_ActiveImage,set_ActiveImage,true);
+		addMember(l,"DeactiveImage",get_DeactiveImage,set_DeactiveImage,true);
 		addMember(l,"onValueChanged",get_onValueChanged,set_onValueChanged,true);
 		addMember(l,"isOn",get_isOn,set_isOn,true);
 		createTypeMetatable(l,null, typeof(Ballance2.Sys.UI.ToggleEx),typeof(UnityEngine.MonoBehaviour));

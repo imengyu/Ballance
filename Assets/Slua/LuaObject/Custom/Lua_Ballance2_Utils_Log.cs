@@ -298,6 +298,36 @@ public class Lua_Ballance2_Utils_Log : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SendLogsInTemporary_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Utils.Log.SendLogsInTemporary();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int RegisterLogObserver_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -438,6 +468,7 @@ public class Lua_Ballance2_Utils_Log : LuaObject {
 		addMember(l,W_s);
 		addMember(l,E_s);
 		addMember(l,LogWrite_s);
+		addMember(l,SendLogsInTemporary_s);
 		addMember(l,RegisterLogObserver_s);
 		addMember(l,UnRegisterLogObserver_s);
 		addMember(l,GetLogObserver_s);

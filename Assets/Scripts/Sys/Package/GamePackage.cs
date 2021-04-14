@@ -434,13 +434,13 @@ namespace Ballance2.Sys.Package
 
         /// <summary>
         /// 导入 Lua 类到当前模组虚拟机中。
-        /// 注意，类函数以 “class_类名” 开头，
+        /// 注意，类函数以 “<!--@-->类名” 开头，
         /// 关于 Lua 类，请参考 Docs/LuaClass 。
         /// </summary>
         /// <param name="className">类名</param>
         /// <returns>类创建函数</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模组包中找到类文件或是类创建函数 class_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模组包中找到类文件或是类创建函数 @* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
@@ -451,7 +451,7 @@ namespace Ballance2.Sys.Package
             if (requiredLuaClasses.TryGetValue(className, out classInit))
                 return classInit;
 
-            classInit = PackageLuaState.getFunction("class_" + className);
+            classInit = PackageLuaState.getFunction("CreateClass_" + className);
             if (classInit != null)
             {
                 requiredLuaClasses.Add(className, classInit);
@@ -477,11 +477,11 @@ namespace Ballance2.Sys.Package
                 throw new Exception(PackageName + " 无法导入 Lua class : " + e.Message);
             }
 
-            classInit = PackageLuaState.getFunction("class_" + className);
+            classInit = PackageLuaState.getFunction("CreateClass_" + className);
             if (classInit == null)
             {
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " +
-                    className + ", 未找到初始类函数: class_" + className);
+                    className + ", 未找到初始类函数: CreateClass_" + className);
             }
 
             requiredLuaClasses.Add(className, classInit);
@@ -492,7 +492,7 @@ namespace Ballance2.Sys.Package
         /// </summary>
         /// <param name="fileName">LUA文件名</param>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模组包中找到类文件或是类创建函数 class_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模组包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。

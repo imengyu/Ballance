@@ -10,7 +10,7 @@
   -- 更多变量...
 }
 
-function class_类名()
+function CreateClass_类名()
 
   function 类名:new(o)
     o = o or {}

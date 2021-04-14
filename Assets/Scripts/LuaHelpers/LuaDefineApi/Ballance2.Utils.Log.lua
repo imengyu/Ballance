@@ -95,5 +95,8 @@ function Log.GetLogObserver(id) end
 ---@param logLevel number 
 ---@return string 
 function Log.LogLevelToString(logLevel) end
+---重新发送暂存区中的日志条目
+---@public
+function Log.SendLogsInTemporary() end
 ---日志器
 Ballance2.Utils.Log = Log

@@ -101,11 +101,15 @@ namespace Ballance2.Sys.Services
             GlobalWindowRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIGlobalWindow").GetComponent<RectTransform>();
             PagesRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIPages").GetComponent<RectTransform>();
             WindowsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIWindow").GetComponent<RectTransform>();
-            ViewsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "ViewsRectTransform").GetComponent<RectTransform>();
+            ViewsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameViewsRectTransform").GetComponent<RectTransform>();
             UIAnchorPosUtils.SetUIAnchor(ViewsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
             UIAnchorPosUtils.SetUIPos(ViewsRectTransform, 0, 0, 0, 0);
             UIAnchorPosUtils.SetUIAnchor(PagesRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
             UIAnchorPosUtils.SetUIPos(PagesRectTransform, 0, 0, 0, 0);
+            UIAnchorPosUtils.SetUIAnchor(GlobalWindowRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
+            UIAnchorPosUtils.SetUIPos(GlobalWindowRectTransform, 0, 0, 0, 0);
+            UIAnchorPosUtils.SetUIAnchor(WindowsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
+            UIAnchorPosUtils.SetUIPos(WindowsRectTransform, 0, 0, 0, 0);
 
             UIToast = CloneUtils.CloneNewObjectWithParent(GameStaticResourcesPool.FindStaticPrefabs("PrefabToast"), UIRoot.transform, "GlobalUIToast").GetComponent<RectTransform>();
             UIToastImage = UIToast.GetComponent<Image>();
@@ -370,18 +374,23 @@ namespace Ballance2.Sys.Services
             GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIWindow, WindowsRectTransform.transform);
             Window window = windowGo.GetComponent<Window>();
             window.Title = title;
-            window.Position = new Vector2(x, y);
             window.SetView(customView);
-            if (w != 0 && h != 0) window.Size = new Vector2(w, h);
-            if (show) window.Show();
+            window.windowId = GenWindowId();
             RegisterWindow(window);
-            window.MoveToCenter();
+
             window.onClose += (id) =>
             {
                 ReturnWindowId(id);
                 window.Destroy();
                 managedWindows.Remove(window.GetWindowId());
             };
+            
+            if(x == 0 && y == 0) window.MoveToCenter();
+            else window.Position = new Vector2(x, y);
+            if (w != 0 && h != 0) window.Size = new Vector2(w, h);
+            if (show) window.Show();
+            else window.SetVisible(false);
+            
             return window;
         }
         /// <summary>
@@ -411,6 +420,7 @@ namespace Ballance2.Sys.Services
         }
 
         private Window currentVisibleWindowAlert = null;
+        private Window currentActiveWindow = null;
 
         public void ShowWindow(Window window)
         {
@@ -434,7 +444,13 @@ namespace Ballance2.Sys.Services
         public void CloseWindow(Window window) { 
             window.Close(); 
         }
-
+        public void ActiveWindow(Window window) {
+            if(currentActiveWindow != null) 
+                currentActiveWindow.WindowTitleImage.color = currentActiveWindow.TitleDefaultColor;
+            currentActiveWindow = window;
+            currentActiveWindow.WindowTitleImage.color = currentActiveWindow.TitleActiveColor;
+            currentActiveWindow.WindowRectTransform.transform.SetAsLastSibling();
+        }
 
         #endregion
 

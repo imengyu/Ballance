@@ -30,6 +30,10 @@ function StoreData:UnRegisterDataObserver(observer) end
 ---@param newV Object 新的值
 ---@return void 
 function StoreData:NotificationDataObserver(oldV, newV) end
+---重新通知数据更新观察者数据已经更改
+---@public
+---@return void 
+function StoreData:ReNotificationAllDataObserver() end
 ---设置数据提供者
 ---@public
 ---@param context number 数据安全上下文（注册成功后须使用此上下文才能进行私有数据更新）

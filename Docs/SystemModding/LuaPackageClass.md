@@ -12,7 +12,7 @@ MyClass = {
   --自定义属性
 }
 
-function class_MyClass()
+function CreateClass_MyClass()
   function MyClass:new(o)
     o = o or {}
     setmetatable(o, self)

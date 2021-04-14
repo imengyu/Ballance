@@ -33,7 +33,6 @@ namespace Ballance2.Sys
         /// </summary>
         public static GameMediator GameMediator { get; internal set; }
 
-
         /// <summary>
         /// 游戏全局Lua虚拟机
         /// </summary>
@@ -50,6 +49,14 @@ namespace Ballance2.Sys
         /// 根Canvas
         /// </summary>
         public RectTransform GameCanvas { get; private set; }
+        /// <summary>
+        /// 游戏内核Store
+        /// </summary>
+        public Store GameStore { get; private set; }
+        /// <summary>
+        /// 游戏内核ActionStore
+        /// </summary>
+        public GameActionStore GameActionStore { get; private set; }
 
         private readonly string TAG = "GameManager";
 
@@ -95,6 +102,8 @@ namespace Ballance2.Sys
             GameBaseCamera = gameEntryInstance.GameBaseCamera;
             GameCanvas = gameEntryInstance.GameCanvas;
 
+            GameStore = GameMediator.RegisterGlobalDataStore("core.System");
+            GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
 
             GameMainLuaSvr = new LuaSvr();
             GameMainLuaSvr.init(null, () =>
