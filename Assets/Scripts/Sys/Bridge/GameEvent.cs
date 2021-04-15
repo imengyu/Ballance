@@ -78,6 +78,14 @@ namespace Ballance2.Sys.Bridge
         public const string EVENT_BASE_INIT_FINISHED = "e:base_init_finished";
 
         /// <summary>
+        /// 全局（UI管理器）全部初始化完成时触发该事件
+        /// </summary>
+        /// <remarks>
+        /// 事件参数：无
+        /// </remarks>
+        public const string EVENT_UI_MANAGER_INIT_FINISHED = "e:ui_manager_init_finished";
+
+        /// <summary>
         /// 全局对话框（Alert，Confirm）关闭时触发该事件
         /// </summary>
         /// <remarks>

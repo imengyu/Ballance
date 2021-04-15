@@ -4,7 +4,6 @@ using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Res;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.UI;
-using Ballance2.Sys.UI.Utils;
 using Ballance2.Sys.Utils;
 using Ballance2.Utils;
 using System.Text;
@@ -63,20 +62,27 @@ class DebugStat : MonoBehaviour
         
         WindowSystemInfo = GameUIManager.CreateWindow("System info", DebugSysinfoWindow, false, 9, -309, 385, 306);
         WindowSystemInfo.CloseAsHide = true;
-        WindowStats = GameUIManager.CreateWindow("Statistics", DebugStatsWindow, false, 9, -71, 240, 230);
+        WindowStats = GameUIManager.CreateWindow("Statistics", DebugStatsWindow, false, 9, -71, 250, 240);
         WindowStats.CloseAsHide = true;
+        WindowStats.CanResize = false;
 
         DebugStatsText = DebugStatsWindow.transform.Find("DebugStatsText").GetComponent<Text>();
         DebugStatsWindow.transform.Find("CheckBoxBetterMem").GetComponent<Toggle>().onValueChanged.AddListener((b) => betterMemorySize = b);
         DebugSysinfoText = DebugSysinfoWindow.transform.Find("DebugSysinfoText").GetComponent<Text>();
 
-        LoafSysinfoWindowData();
+        LoadSysinfoWindowData();
     }
     private void OnDestroy() {
-        GameManager.Instance.GameStore.RemoveAddParameter("DbgStatShowSystemInfo");
-        GameManager.Instance.GameStore.RemoveAddParameter("DbgStatShowStats");
-        WindowSystemInfo.Destroy();
-        WindowStats.Destroy();
+        GameManager.Instance.GameStore.RemoveParameter("DbgStatShowSystemInfo");
+        GameManager.Instance.GameStore.RemoveParameter("DbgStatShowStats");
+        if(WindowSystemInfo != null) {
+            WindowSystemInfo.Destroy();
+            WindowSystemInfo = null;
+        }
+        if(WindowStats != null) {
+            WindowStats.Destroy();
+            WindowStats = null;
+        }
     }
     private void Update()
     {
@@ -143,7 +149,7 @@ class DebugStat : MonoBehaviour
 
         DebugStatsText.text = sb.ToString();
     }
-    private void LoafSysinfoWindowData()
+    private void LoadSysinfoWindowData()
     {
         StringBuilder sb = new StringBuilder();
 
@@ -164,5 +170,4 @@ class DebugStat : MonoBehaviour
 
         DebugSysinfoText.text = sb.ToString();
     }
-
 }

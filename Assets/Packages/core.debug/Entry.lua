@@ -5,8 +5,8 @@ GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type 
 Log = Ballance2.Utils.Log
 
 GlobalDebugToolbar = nil ---@type GameLuaObjectHost
-GlobalDebugWindow = nil
-GlobalDebugOptWindow = nil
+GlobalDebugWindow = nil ---@type Window|MonoBehaviour
+GlobalDebugOptWindow = nil ---@type Window|MonoBehaviour
 
 ---模块入口函数
 ---@param thisGamePackage GamePackage
@@ -23,6 +23,7 @@ function PackageEntry(thisGamePackage)
         CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, 'DebugWindow').transform, 
         true, 9, -70, 660, 440)
     GlobalDebugWindow.CloseAsHide = true
+    GlobalDebugWindow.gameObject.tag = 'DebugWindow'
     local DebugOptWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugOptWindow.prefab')
     GlobalDebugOptWindow = GameUIManager:CreateWindow('Debug options', 
         CloneUtils.CloneNewObjectWithParent(DebugOptWindow, GameManager.Instance.GameCanvas, 'DebugOptWindow').transform, 
@@ -37,5 +38,6 @@ end
 function PackageBeforeUnLoad(thisGamePackage)
     if (not Slua.IsNull(GlobalDebugToolbar)) then UnityEngine.Object.Destroy(GlobalDebugToolbar) end
     if (not Slua.IsNull(GlobalDebugWindow)) then UnityEngine.Object.Destroy(GlobalDebugWindow) end
+    if (not Slua.IsNull(GlobalDebugOptWindow)) then UnityEngine.Object.Destroy(GlobalDebugOptWindow) end
     return true
 end

@@ -1,4 +1,5 @@
-﻿using Ballance2.Sys.Debug;
+﻿using Ballance2.Sys.Bridge;
+using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using SLua;
 using System;
@@ -123,8 +124,7 @@ namespace Ballance2.Sys.Bridge
             }
         }
 
-        // 观察者和数据提供者
-        // ====================================
+        #region 观察者和数据提供者
 
         private StoreOnDataChanged DataObserver;
 
@@ -210,16 +210,17 @@ namespace Ballance2.Sys.Bridge
             }
         }
 
-        // 设置数据
-        // ====================================
+        #endregion
+
+        #region 设置数据
 
         /// <summary>
-        /// 设置数据的值
+        /// 所有者设置数据的值
         /// </summary>
         /// <param name="context">数据安全上下文</param>
         /// <param name="data">新值</param>
         /// <returns></returns>
-        public bool SetData(int context, object data)
+        public bool OwnerSetData(int context, object data)
         {
             if (_StoreDataAccess != StoreDataAccess.GetAndSet && context != currentHolderContext)
             {
@@ -228,6 +229,34 @@ namespace Ballance2.Sys.Bridge
                 return false;
             }
 
+            return SetDataInternal(data);
+        }
+        /// <summary>
+        /// 设置数据的值
+        /// </summary>
+        /// <param name="context">数据安全上下文</param>
+        /// <param name="data">新值</param>
+        /// <returns></returns>
+        public bool SetData(object data)
+        {
+            //只读检测
+            if (_StoreDataAccess != StoreDataAccess.GetAndSet)
+            {
+                GameErrorChecker.SetLastErrorAndLog(GameError.ParamReadOnly, "StoreData", "参数 {0} 只读", Name);
+                return false;
+            }
+
+            return SetDataInternal(data);
+        }
+        /// <summary>
+        /// 获取数据的值
+        /// </summary>
+        /// <returns></returns>
+        public object GetData() {
+            return DataRaw;
+        }
+
+        private bool SetDataInternal(object data) {
             //类型检查
             if (_DataType != StoreDataType.Custom && data.GetType().Name != _DataType.ToString())
             {
@@ -236,6 +265,7 @@ namespace Ballance2.Sys.Bridge
                 return false;
             }
 
+            //设置值，分为已有Provider和原始数据两种情况的设置
             if (StoreDataProvider != null) {
                 object old = StoreDataProvider(true, null);
                 StoreDataProvider(false, data);
@@ -249,16 +279,10 @@ namespace Ballance2.Sys.Bridge
             }
             return true;
         }
-        /// <summary>
-        /// 获取数据的值
-        /// </summary>
-        /// <returns></returns>
-        public object GetData() {
-            return DataRaw;
-        }
 
-        // 数组操作
-        // ====================================
+        #endregion
+
+        #region 数组操作
 
         public bool DataArrayAdd(StoreData data)
         {
@@ -298,8 +322,9 @@ namespace Ballance2.Sys.Bridge
             DataArray.Clear();
         }
 
-        // 获取数据
-        // ====================================
+        #endregion
+
+        #region 获取数据
 
         public int IntData() { return (int)DataRaw; }
         public long LongData() { return (long)DataRaw; }
@@ -331,6 +356,8 @@ namespace Ballance2.Sys.Bridge
         public AudioSource AudioSourceData() { return DataRaw == null ? null : (AudioSource)DataRaw; }
         public MonoBehaviour MonoBehaviourData() { return DataRaw == null ? null : (MonoBehaviour)DataRaw; }
         public GamePackage GamePackageData() { return DataRaw == null ? null : (GamePackage)DataRaw; }
+
+        #endregion
 
         /// <summary>
         /// 将当前数据转为字符串表达形式
@@ -435,10 +462,12 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 池的名称
         /// </summary>
+        [DoNotToLua]
         public string PoolName { get { return _PoolName; }  }
         /// <summary>
         /// 池中的数据
         /// </summary>
+        [DoNotToLua]
         public Dictionary<string, StoreData> PoolDatas { get { return _PoolDatas; } }
 
         internal Store(string name)
@@ -447,6 +476,7 @@ namespace Ballance2.Sys.Bridge
             _PoolDatas = new Dictionary<string, StoreData>();
         }
 
+        [DoNotToLua]
         public void Destroy()
         {
             _PoolName = null;
@@ -467,11 +497,11 @@ namespace Ballance2.Sys.Bridge
         public StoreData AddParameter(string name, StoreDataAccess access, StoreDataType storeDataType)
         {
             StoreData old;
-            if (PoolDatas.TryGetValue(name, out old))
+            if (_PoolDatas.TryGetValue(name, out old))
                 return old;
 
             old = new StoreData(name, access, storeDataType);
-            PoolDatas.Add(name, old);
+            _PoolDatas.Add(name, old);
             return old;
         }
         /// <summary>
@@ -479,11 +509,11 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="name">数据名称</param>
         /// <returns>如果移除成功，返回true，如果数据不存在，返回false</returns>
-        public bool RemoveAddParameter(string name)
+        public bool RemoveParameter(string name)
         {
-            if (PoolDatas.ContainsKey(name))
+            if (_PoolDatas != null && _PoolDatas.ContainsKey(name))
             {
-                PoolDatas.Remove(name);
+                _PoolDatas.Remove(name);
                 return true;
             }
             return false;
@@ -496,8 +526,30 @@ namespace Ballance2.Sys.Bridge
         public StoreData GetParameter(string name)
         {
             StoreData old;
-            PoolDatas.TryGetValue(name, out old);
+            _PoolDatas.TryGetValue(name, out old);
             return old;
+        }
+
+        /// <summary>
+        /// 获取或设置指定参数的值
+        /// </summary>
+        /// <value>要设置的值</value>
+        public object this[string key] {
+            get {
+                var prop = this.GetParameter(key);
+                if(prop != null) 
+                    return prop.GetData();
+                else
+                    GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, "StoreData Get", "未找到参数 {0}", key);
+                return null;
+            }
+            set {
+                var prop = this.GetParameter(key);
+                if(prop != null) 
+                     prop.SetData(value);
+                else
+                    GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, "StoreData Set", "未找到参数 {0}", key);
+            }
         }
     }
 }

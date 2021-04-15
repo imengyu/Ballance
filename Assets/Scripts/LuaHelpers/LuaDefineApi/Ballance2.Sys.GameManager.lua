@@ -8,6 +8,7 @@
 ---@field public GameCanvas RectTransform 根Canvas
 ---@field public GameActionStore GameActionStore 游戏内核ActionStore
 ---@field public GameStore Store 游戏内核Store
+---@field public GameDebugCommandServer GameDebugCommandServer 调试命令控制器
 local GameManager={ }
 ---开始退出游戏流程
 ---@public

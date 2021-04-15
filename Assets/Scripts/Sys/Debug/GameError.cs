@@ -35,6 +35,8 @@ namespace Ballance2.Sys.Debug
         NotImplemented,
         ContextMismatch,
         ParamNotProvide,
+        ParamNotFound,
+        ParamReadOnly,
         Empty,
         MissingAttribute,
         PackageCanNotRun,
@@ -84,6 +86,8 @@ namespace Ballance2.Sys.Debug
                 case GameError.AccessDenined: return "不能执行这个操作。";
                 case GameError.ExecutionFailed: return "执行 Lua 代码失败。";
                 case GameError.NetworkError: return "网络错误。";
+                case GameError.ParamNotFound: return "未找到参数。";
+                case GameError.ParamReadOnly: return "参数只读。";
                 case GameError.NotSupportFileType: return "不支持的文件格式。";
                 case GameError.RegisterPackageFailed: return "注册包失败。";
                 case GameError.MissingAttribute: return "必须的配置属性丢失。";

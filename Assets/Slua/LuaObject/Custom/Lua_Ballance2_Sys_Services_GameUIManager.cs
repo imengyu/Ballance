@@ -37,6 +37,110 @@ public class Lua_Ballance2_Sys_Services_GameUIManager : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int GetUIPrefab(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameUIManager self=(Ballance2.Sys.Services.GameUIManager)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.GetUIPrefab(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int RegisterUIPrefab(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameUIManager self=(Ballance2.Sys.Services.GameUIManager)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			UnityEngine.GameObject a2;
+			checkType(l,3,out a2);
+			var ret=self.RegisterUIPrefab(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int RemoveUIPrefab(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameUIManager self=(Ballance2.Sys.Services.GameUIManager)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.RemoveUIPrefab(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GlobalToast(IntPtr l) {
 		try {
 			#if DEBUG
@@ -289,6 +393,38 @@ public class Lua_Ballance2_Sys_Services_GameUIManager : LuaObject {
 			System.Int32 a1;
 			checkType(l,2,out a1);
 			var ret=self.FindWindowById(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int GetCurrentActiveWindow(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameUIManager self=(Ballance2.Sys.Services.GameUIManager)checkSelf(l);
+			var ret=self.GetCurrentActiveWindow();
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;
@@ -900,12 +1036,16 @@ public class Lua_Ballance2_Sys_Services_GameUIManager : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Services.GameUIManager");
+		addMember(l,GetUIPrefab);
+		addMember(l,RegisterUIPrefab);
+		addMember(l,RemoveUIPrefab);
 		addMember(l,GlobalToast);
 		addMember(l,GlobalAlertWindow);
 		addMember(l,GlobalConfirmWindow);
 		addMember(l,CreateWindow);
 		addMember(l,RegisterWindow);
 		addMember(l,FindWindowById);
+		addMember(l,GetCurrentActiveWindow);
 		addMember(l,ShowWindow);
 		addMember(l,HideWindow);
 		addMember(l,CloseWindow);

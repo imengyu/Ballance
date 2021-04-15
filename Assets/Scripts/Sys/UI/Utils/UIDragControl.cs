@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ballance2.Sys.Services;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
@@ -15,6 +16,8 @@ namespace Ballance2.Sys.UI.Utils
     public class UIDragControl : UIBehaviour
     {
         public RectTransform dragTransform;
+        public Window window;
+
         private Vector2 mouseOffest = Vector2.zero;
 
         protected override void Awake()
@@ -44,10 +47,20 @@ namespace Ballance2.Sys.UI.Utils
             trigger.triggers.Add(myclickDrag);
         }
 
+        private GameUIManager UIManager;
+
+        protected override void Start() {
+            if (GameManager.Instance != null)
+                UIManager = (GameUIManager)GameManager.Instance.GetSystemService("GameUIManager");
+        }
+
         public void OnPointerDown(BaseEventData data)
         {
             dragTransform.SetAsLastSibling();
             mouseOffest = new Vector2(Input.mousePosition.x - dragTransform.position.x, Input.mousePosition.y - dragTransform.position.y);
+
+            if(window != null && UIManager.GetCurrentActiveWindow() != window)
+                UIManager.ActiveWindow(window);
         }
         public void OnPointerUp(BaseEventData data)
         {
@@ -57,6 +70,8 @@ namespace Ballance2.Sys.UI.Utils
             //if (dragTransform.position.x > Screen.width - 30) dragTransform.position = new Vector3(Screen.width - 30, dragTransform.position.y, dragTransform.position.z);
             //if (dragTransform.position.y < 30) dragTransform.position = new Vector3(dragTransform.position.x, 30, dragTransform.position.z);
             //if (dragTransform.position.y > Screen.height - 10) dragTransform.position = new Vector3(dragTransform.position.x, Screen.height - 10, dragTransform.position.z);
+
+
         }
         public void OnDrag(BaseEventData data)
         {

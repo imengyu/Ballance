@@ -14,6 +14,8 @@ public class FPSManager : MonoBehaviour
 
     private StringBuilder sb = new StringBuilder();
 
+    public static FPSManager Instance { get; private set; }
+
     void Awake()
     {
         //		Application.runInBackground = true;
@@ -22,6 +24,7 @@ public class FPSManager : MonoBehaviour
     }
     void Start()
     {
+        Instance = this;
         lastInterval = Time.realtimeSinceStartup;
         frames = 0;
     }

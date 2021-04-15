@@ -47,4 +47,13 @@ namespace Ballance2.Sys.Bridge
     /// <returns>返回事件数据</returns>
     [CustomLuaClass]
     public delegate GameActionCallResult GameActionHandlerDelegate(params object[] pararms);
+    /// <summary>
+    /// 调试命令回调
+    /// </summary>
+    /// <param name="keyword">命令单词</param>
+    /// <param name="fullCmd">完整命令</param>
+    /// <param name="args">命令参数</param>
+    /// <returns>须返回命令是否执行成功</returns>
+    [SLua.CustomLuaClass]
+    public delegate bool CommandDelegate(string keyword, string fullCmd, string[] args);
 }

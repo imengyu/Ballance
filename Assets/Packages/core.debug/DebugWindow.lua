@@ -11,11 +11,14 @@ UIAnchor = Ballance2.Sys.UI.Utils.UIAnchor
 UIPivot = Ballance2.Sys.UI.Utils.UIPivot
 EventTriggerListener = Ballance2.Sys.UI.Utils.EventTriggerListener
 GameStaticResourcesPool = Ballance2.Sys.Res.GameStaticResourcesPool
+GameEventNames = Ballance2.Sys.Bridge.GameEventNames
+GamePackage = Ballance2.Sys.Package.GamePackage
 
 ---@type GameLuaObjectHostClass
 DebugWindow = {
   --Initvars
   CommandInputField = nil,---@type InputField
+  FilterLogInputField = nil,---@type InputField
   LogContentView = nil,---@type RectTransform
   LogScrollView = nil,---@type ScrollRect
   LogStacktraceScrollView = nil,---@type ScrollRect
@@ -33,6 +36,9 @@ DebugWindow = {
   logForceDisable = true,
   logFont = nil,
   logMaxCount = 256,
+  logFilter = '',
+
+  cmdServer = nil, 
 }
 
 function CreateClass_DebugWindow()
@@ -60,6 +66,13 @@ function CreateClass_DebugWindow()
           UnityEngine.Object.Destroy(item.go)
         end
 
+        if #message >= 16384 then
+          message = string.sub(message, 0, 16383)
+        end
+        if #message >= 32768 then
+          message = string.sub(message, 0, 32767)
+        end
+
         local logColor = GetLogColor(level)
         local t = table.concat({'<color=#', logColor, '>', Log.LogLevelToString(level), '/', tag, ' ', message, '</color>'})
 
@@ -75,12 +88,7 @@ function CreateClass_DebugWindow()
         ---日志点击事件
         ---@param go GameObject
         EventTriggerListener.Get(newEle).onClick = function (go)
-          local data = self.logItems[go.transform:GetSiblingIndex() + 1]
-          self.LogStacktraceText.text = table.concat({ data.message, '\n= StackTrace ====\n', data.stackTrace })
-          LayoutRebuilder.ForceRebuildLayoutImmediate(self.LogStacktraceText.rectTransform);
-          local size = self.LogStacktraceText.rectTransform.sizeDelta;
-          self.LogStacktraceView.sizeDelta = Vector2(size.x + 40, size.y + 40)
-          self.LogStacktraceScrollView.normalizedPosition = Vector2(0, 1)
+          self:ShowLogStackTrace(go.transform:GetSiblingIndex() + 1)
         end
 
         table.insert(self.logItems, {
@@ -102,6 +110,17 @@ function CreateClass_DebugWindow()
 
     self.logForceDisable = false
 
+    --命令服务的准备
+    self.cmdServer = GameManager.Instance.GameDebugCommandServer
+
+    --游戏退出事件
+    GameManager.GameMediator:RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_BEFORE_GAME_QUIT, 'DebugWindow', function ()
+      self.logForceDisable = true
+      Log.UnRegisterLogObserver(self.logObserver)
+      return false
+    end)
+
+    --发送没有抓取到的日志
     Log.SendLogsInTemporary()
   end
   function DebugWindow:OnDestroy()
@@ -119,13 +138,19 @@ function CreateClass_DebugWindow()
     local transform = self.LogContentView
     local c = transform.childCount
     local h = 0
+    local logFilter = self.logFilter
+    local logItems = self.logItems
+    local logFilterEmpty = logFilter == ''
+    local logShowErrAndWarn = self.logShowErrAndWarn
+    local logShowMessage = self.logShowMessage
     for i = 0, c - 1, 1 do
       ---@type RectTransform
       local child = transform:GetChild(i)
-      local log = self.logItems[i + 1]
+      local log = logItems[i + 1]
       if(
-        (self.logShowErrAndWarn and (log.level == LogLevel.Warning or log.level == LogLevel.Error)) or
-        (self.logShowMessage and (log.level == LogLevel.Info or log.level == LogLevel.Debug))
+        ((logShowErrAndWarn and (log.level == LogLevel.Warning or log.level == LogLevel.Error)) or
+        (logShowMessage and (log.level == LogLevel.Info or log.level == LogLevel.Debug))) and  
+        (logFilterEmpty or logFilter == string.find(log.message, logFilter))
       ) then
         child.gameObject:SetActive(true)
         child.anchoredPosition = Vector2(0, -h)
@@ -148,6 +173,19 @@ function CreateClass_DebugWindow()
     end
     transform.sizeDelta = Vector2(transform.sizeDelta.x, 300)
   end
+  ---显示日志StackTrace
+  ---@param index number
+  function DebugWindow:ShowLogStackTrace(index)
+    local data = self.logItems[index]
+    self.LogStacktraceText.text = table.concat({ data.message, '\n= StackTrace ====\n', data.stackTrace })
+    LayoutRebuilder.ForceRebuildLayoutImmediate(self.LogStacktraceText.rectTransform);
+    local size = self.LogStacktraceText.rectTransform.sizeDelta;
+    self.LogStacktraceView.sizeDelta = Vector2(size.x + 40, size.y + 40)
+    self.LogStacktraceScrollView.normalizedPosition = Vector2(0, 1)
+  end
+  function DebugWindow:SelectLastLog()
+    self:ShowLogStackTrace(self.LogContentView.childCount)
+  end
   ---AutoScroll更改
   function DebugWindow:OnAutoScrollChanged() 
     self.logAutoScroll = self.ToggleAutoScroll.isOn
@@ -162,9 +200,17 @@ function CreateClass_DebugWindow()
     self.logShowMessage = self.CheckBoxMessages.isOn
     self:RelayoutLogContent()
   end
+  ---筛选Input输入完成事件
+  function DebugWindow:OnFilterInputEndInput()
+    self.logFilter = self.FilterLogInputField.text
+    self:RelayoutLogContent()
+  end
   ---执行命令
   function DebugWindow:ExecCommand()
-    Log.D('DebugWindow', 'ExecCommand')
+    if self.cmdServer:ExecuteCommand(self.CommandInputField.text) then
+      self.CommandInputField.text = ''
+      self:SelectLastLog()
+    end
   end
   ---显示调试窗口
   function DebugWindow:ShowDebugOptWindow()

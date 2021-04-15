@@ -106,12 +106,11 @@ namespace Ballance2.Sys.UI
                 if(WindowState == WindowState.Normal) WindowState = WindowState.Min;
                 else WindowState = WindowState.Normal;
             });
-            EventTriggerListener.Get(WindowTitleDragger.gameObject).onDown = (g) => {
-                UIManager.ActiveWindow(this);
+            EventTriggerListener.Get(gameObject).onDown = (g) => {
+                if(UIManager.GetCurrentActiveWindow() != this)
+                    UIManager.ActiveWindow(this);
             };
         }
-
-
 
         /// <summary>
         /// 获取或设置窗口大小
@@ -310,6 +309,9 @@ namespace Ballance2.Sys.UI
                 WindowState = oldWindowState;
             else
                 WindowState = WindowState.Normal;
+
+            if(UIManager != null)
+                UIManager.ActiveWindow(this);
         }
         /// <summary>
         /// 隐藏窗口
@@ -318,6 +320,9 @@ namespace Ballance2.Sys.UI
         {
             oldWindowState = _WindowState;
             WindowState = WindowState.Hidden;
+
+            if(gameObject.activeSelf)
+                SetVisible(false);
         }
         /// <summary>
         /// 窗口剧中

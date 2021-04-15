@@ -46,6 +46,8 @@ namespace Ballance2.Sys.Entry
         /// </summary>
         public bool SetFrameRate = true;
 
+        public static GameEntry Instance { get; private set;}
+
         public Camera GameBaseCamera = null;
         public RectTransform GameCanvas = null;
 
@@ -62,6 +64,7 @@ namespace Ballance2.Sys.Entry
 
         void Start()
         {
+            Instance = this;
             if (SetFrameRate) Application.targetFrameRate = TargetFrameRate;
 
             InitCommandLine();
@@ -72,6 +75,9 @@ namespace Ballance2.Sys.Entry
         private void OnDestroy()
         {
             GameSystem.Destroy();
+        }
+        public static void Destroy() {
+            UnityEngine.Object.Destroy(Instance.gameObject);
         }
 
         /// <summary>

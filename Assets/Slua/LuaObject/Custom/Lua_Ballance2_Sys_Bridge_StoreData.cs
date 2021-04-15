@@ -270,7 +270,7 @@ public class Lua_Ballance2_Sys_Bridge_StoreData : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int SetData(IntPtr l) {
+	static public int OwnerSetData(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -286,7 +286,41 @@ public class Lua_Ballance2_Sys_Bridge_StoreData : LuaObject {
 			checkType(l,2,out a1);
 			System.Object a2;
 			checkType(l,3,out a2);
-			var ret=self.SetData(a1,a2);
+			var ret=self.OwnerSetData(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int SetData(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.StoreData self=(Ballance2.Sys.Bridge.StoreData)checkSelf(l);
+			System.Object a1;
+			checkType(l,2,out a1);
+			var ret=self.SetData(a1);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;
@@ -1677,6 +1711,7 @@ public class Lua_Ballance2_Sys_Bridge_StoreData : LuaObject {
 		addMember(l,ReNotificationAllDataObserver);
 		addMember(l,SetDataProvider);
 		addMember(l,RemoveRegisterProvider);
+		addMember(l,OwnerSetData);
 		addMember(l,SetData);
 		addMember(l,GetData);
 		addMember(l,DataArrayAdd);

@@ -58,6 +58,12 @@ function CreateClass_DebugTools()
     )
     self.DebugLogText.text = ''
 
+    --游戏退出事件
+    GameManager.GameMediator:RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_BEFORE_GAME_QUIT, 'DebugWindow', function ()
+      Log.UnRegisterLogObserver(self.logObserver)
+      return false
+    end)
+
     --注册控制台按键事件
     local k = KeyListener.Get(self.gameObject)
     k:AddKeyListen(KeyCode.F12, function (key, downed)

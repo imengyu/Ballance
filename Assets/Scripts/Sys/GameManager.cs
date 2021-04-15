@@ -50,6 +50,11 @@ namespace Ballance2.Sys
         /// </summary>
         public RectTransform GameCanvas { get; private set; }
         /// <summary>
+        /// 调试命令控制器
+        /// </summary>
+        /// <value></value>
+        public GameDebugCommandServer GameDebugCommandServer { get; private set; }
+        /// <summary>
         /// 游戏内核Store
         /// </summary>
         public Store GameStore { get; private set; }
@@ -76,11 +81,11 @@ namespace Ballance2.Sys
                     for (int j = 0, c1 = go.transform.childCount; j < c1; j++)
                     {
                         go1 = go.transform.GetChild(j).gameObject;
-                        if (go1.name != "GameUIWindow_Debug Window")
-                            go1.SetActive(false);
+                        if(go1.tag != "DebugWindow")
+                        go1.SetActive(false);
                     }
                 }
-                else if (go.name != "DebugToolbar" && go.name != "GameUIWindow_Debug Window")
+                else if (go.name != "DebugToolbar")
                     go.SetActive(false);
             }
             for (int i = 0, c = transform.childCount; i < c; i++)
@@ -99,10 +104,16 @@ namespace Ballance2.Sys
             Log.D(TAG, "Initialize");
 
             Instance = this;
+
+            Application.wantsToQuit += Application_wantsToQuit;
+
             GameBaseCamera = gameEntryInstance.GameBaseCamera;
             GameCanvas = gameEntryInstance.GameCanvas;
 
-            GameStore = GameMediator.RegisterGlobalDataStore("core.System");
+            GameDebugCommandServer = new GameDebugCommandServer();
+            GameDebugCommandServer.RegisterSystemCommands(this);
+
+            GameStore = GameMediator.RegisterGlobalDataStore("core");
             GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
 
             GameMainLuaSvr = new LuaSvr();
@@ -158,10 +169,10 @@ namespace Ballance2.Sys
                 systemInit.Load("Assets/Packages/system_SystemInit.xml");
             }
             else
-            {
 #else
-            if(true) {
+            if(true) 
 #endif
+            {
                 string url = GamePathManager.GetResRealPath("systeminit", "");
                 UnityWebRequest request = UnityWebRequest.Get(url);
                 yield return request.SendWebRequest();
@@ -246,6 +257,8 @@ namespace Ballance2.Sys
             pm.NotifyAllPackageRun("*");
         }
 
+        #region 退出和销毁
+
         /// <summary>
         /// 释放
         /// </summary>
@@ -262,8 +275,54 @@ namespace Ballance2.Sys
         /// </summary>
         public void QuitGame()
         {
-            Log.D(TAG, "QuitGame start");
+            Log.D(TAG, "quit");
+            if(!gameIsQuitEmitByGameManager) {
+                gameIsQuitEmitByGameManager = true;
+                DoQuit();
+            }
         }
+        
+        private static bool gameIsQuitEmitByGameManager = false;
+
+        private bool Application_wantsToQuit()
+        {
+            if (!gameIsQuitEmitByGameManager)
+                DoQuit();
+            return true;
+        }
+        private void DoQuit() 
+        {
+            GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
+            ReqGameQuit();
+        }
+
+        #endregion
+
+        #region Update
+
+        private int nextGameQuitTick = -1;
+
+        /// <summary>
+        /// 请求游戏退出
+        /// </summary>
+        private void ReqGameQuit()
+        {
+            nextGameQuitTick = 50;
+        }
+        private void Update() {
+            if (nextGameQuitTick >= 0)
+            {
+                nextGameQuitTick--;
+                if (nextGameQuitTick == 10)
+                    ClearScense();
+                if (nextGameQuitTick == 0) {
+                    GameSystem.Destroy();
+                    GameSystem.QuitPlayer();
+                }
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// 获取系统服务

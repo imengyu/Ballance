@@ -56,9 +56,20 @@ namespace Ballance2.Sys
             if (sysHandler != null)
             {
                 Log.E("GameSystemInit", "SysHandler already set ");
+                GameErrorChecker.LastError = GameError.AccessDenined;
                 return;
             }
             sysHandler = handler;
+        }
+        /// <summary>
+        /// 退出程序
+        /// </summary>
+        public static void QuitPlayer() {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         #endregion
@@ -160,58 +171,73 @@ namespace Ballance2.Sys
 
         #region 初始化
 
+        private static bool sysInit = false;
+
         /// <summary>
         /// 初始化
         /// </summary> 
         public static void Init()
         {
-            //Init system
-            UnityLogCatcher.Init();
-            
-            //Call game init
-            if(sysHandler == null) {
-                Log.D(TAG, "Not found SysHandler, did you call RegSysHandler first?");
-                GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, null);
-                return;
+            if(!sysInit) {
+                sysInit = true;
+
+                //Init system
+                UnityLogCatcher.Init();
+                
+                //Call game init
+                if(sysHandler == null) {
+                    Log.D(TAG, "Not found SysHandler, did you call RegSysHandler first?");
+                    GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, null);
+                    return;
+                }
+
+                //Init system services
+                RegSystemService("GameMediator", new GameMediator());
+
+                GameManager.GameMediator = (GameMediator)GetSystemService("GameMediator");
+                GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
+                    GameEventNames.EVENT_BASE_INIT_FINISHED, "DebuggerHandler", (evtName, param) =>
+                    {
+                        StartRunDebugProvider();
+                        return false;
+                    });
+
+                //Init base services
+                RegSystemService("GameUIManager", new GameUIManager());
+                RegSystemService("GamePackageManager", new GamePackageManager());
+
+                //Call init
+                sysHandler(ACTION_INIT);
+
+                Log.D(TAG, "System init ok");
+            } else {
+                Log.D(TAG, "System already init ok");
             }
-
-            //Init system services
-            RegSystemService("GameMediator", new GameMediator());
-
-            GameManager.GameMediator = (GameMediator)GetSystemService("GameMediator");
-            GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
-                GameEventNames.EVENT_BASE_INIT_FINISHED, "DebuggerHandler", (evtName, param) =>
-                {
-                    StartRunDebugProvider();
-                    return false;
-                });
-
-            //Init
-            RegSystemService("GamePackageManager", new GamePackageManager());
-            RegSystemService("GameUIManager", new GameUIManager());
-
-            //Call init
-            sysHandler(ACTION_INIT);
-
-            Log.D(TAG, "System init ok");
         }
         /// <summary>
         /// 消毁
         /// </summary>
         public static void Destroy()
         {
-            sysHandler?.Invoke(ACTION_DESTROY);
+            if(sysInit) {
+                sysInit = false;
+                
+                Log.D(TAG, "System destroy");
 
-            //Destroy system service
-            List<string> serviceNames = new List<string>(systemService.Keys);
-            for(int i = serviceNames.Count - 1; i >= 0; i--)
-                systemService[serviceNames[i]].Destroy();
-            serviceNames.Clear();
-            systemService.Clear();
+                sysHandler?.Invoke(ACTION_DESTROY);
 
-            UnityLogCatcher.Destroy();
+                //Destroy system service
+                List<string> serviceNames = new List<string>(systemService.Keys);
+                for(int i = serviceNames.Count - 1; i >= 0; i--)
+                    systemService[serviceNames[i]].Destroy();
+                serviceNames.Clear();
+                systemService.Clear();
 
-            Log.D(TAG, "System destroy");
+                UnityLogCatcher.Destroy();
+
+            } else {
+                Log.W(TAG, "System already destroyed");
+            }
         }
         /// <summary>
         /// 强制停止游戏

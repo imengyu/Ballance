@@ -18,7 +18,7 @@ function Store:AddParameter(name, access, storeDataType) end
 ---@public
 ---@param name string 数据名称
 ---@return boolean 如果移除成功，返回true，如果数据不存在，返回false
-function Store:RemoveAddParameter(name) end
+function Store:RemoveParameter(name) end
 ---获取池中的数据
 ---@public
 ---@param name string 数据名称

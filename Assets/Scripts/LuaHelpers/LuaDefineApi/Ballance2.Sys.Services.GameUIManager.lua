@@ -109,6 +109,22 @@ function GameUIManager:MaskBlackFadeOut(second) end
 ---@param second number 耗时（秒）
 ---@return void 
 function GameUIManager:MaskWhiteFadeOut(second) end
+---获取 UI 控件预制体
+---@public
+---@param name number 名称
+---@return GameObject 
+function GameUIManager:GetUIPrefab(name) end
+---注册 UI 控件预制体
+---@public
+---@param name number 名称
+---@param prefab number 预制体
+---@return boolean 
+function GameUIManager:RegisterUIPrefab(name, prefab) end
+---清除已注册的 UI 控件预制体
+---@public
+---@param name number 名称
+---@return boolean 
+function GameUIManager:RemoveUIPrefab(name) end
 ---
 ---@public
 ---@param view RectTransform 

@@ -1,4 +1,5 @@
 ﻿using Ballance2.Sys.Bridge;
+using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.Res;
 using Ballance2.Sys.UI;
@@ -18,6 +19,8 @@ namespace Ballance2.Sys.Services
     [SLua.CustomLuaClass]
     public class GameUIManager : GameService
     {
+        #region 基础
+
         private static readonly string TAG = "GameUIManager";
 
         public GameUIManager() : base(TAG) {}
@@ -25,8 +28,8 @@ namespace Ballance2.Sys.Services
         [SLua.DoNotToLua]
         public override void Destroy()
         {
-            Object.Destroy(uiManagerGameObject);
             DestroyWindowManagement();
+            Object.Destroy(uiManagerGameObject);
 
             Log.D(TAG, "Destroy {0} ui objects", UIRoot.transform.childCount);
             for (int i = 0, c = UIRoot.transform.childCount; i < c; i++)
@@ -35,6 +38,7 @@ namespace Ballance2.Sys.Services
         [SLua.DoNotToLua]
         public override bool Initialize()
         {
+            GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED);
             //等待基础加载完成
             GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
                 GameEventNames.EVENT_BASE_INIT_FINISHED, TAG, (evtName, param) =>
@@ -53,6 +57,9 @@ namespace Ballance2.Sys.Services
                     //Init all
                     InitAllObects();
                     InitWindowManagement();
+
+                    //发送就绪事件
+                    GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "*");
                     return false;
                 });
             //退出时的黑
@@ -102,6 +109,9 @@ namespace Ballance2.Sys.Services
             PagesRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIPages").GetComponent<RectTransform>();
             WindowsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIWindow").GetComponent<RectTransform>();
             ViewsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameViewsRectTransform").GetComponent<RectTransform>();
+
+            InitAllPrefabs();
+
             UIAnchorPosUtils.SetUIAnchor(ViewsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
             UIAnchorPosUtils.SetUIPos(ViewsRectTransform, 0, 0, 0, 0);
             UIAnchorPosUtils.SetUIAnchor(PagesRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
@@ -118,6 +128,65 @@ namespace Ballance2.Sys.Services
             UIToast.SetAsLastSibling();
             EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
         }
+
+        #endregion
+
+        #region UI控件Prefab
+
+        private Dictionary<string, GameObject> uIPrefabs = new Dictionary<string, GameObject>();
+
+        /// <summary>
+        /// 获取 UI 控件预制体
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns></returns>
+        public GameObject GetUIPrefab(string name) {
+            GameObject gameObject;
+            uIPrefabs.TryGetValue(name, out gameObject);
+            return gameObject;
+        }
+        /// <summary>
+        /// 注册 UI 控件预制体
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="perfab">预制体</param>
+        /// <returns>返回注册是否成功</returns>
+        public bool RegisterUIPrefab(string name, GameObject perfab) {
+            if(uIPrefabs.ContainsKey(name)) {
+                GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, "UI控件Prefab {0} 已经注册", name);
+                return false;
+            }
+            uIPrefabs[name] = perfab;
+            return true;
+        }
+        /// <summary>
+        /// 清除已注册的 UI 控件预制体
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns>返回注册是否成功</returns>
+        public bool RemoveUIPrefab(string name) {
+            if(uIPrefabs.ContainsKey(name)) {
+                uIPrefabs.Remove(name);
+                return true;
+            }
+            else {
+                GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, "UI控件Prefab {0} 未注册", name);
+                return false;
+            }
+        }
+
+        private void InitAllPrefabs() {
+            RegisterUIPrefab("Toggle", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabToggle"));
+            RegisterUIPrefab("Slider", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabSlider"));
+            RegisterUIPrefab("Progress", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabProgress"));
+            RegisterUIPrefab("ScrollView", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabScrollView"));
+            RegisterUIPrefab("InputField", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabInput"));
+            RegisterUIPrefab("Dropdown", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabDropdown"));
+            RegisterUIPrefab("CheckBox", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabCheck"));
+            RegisterUIPrefab("Button", GameStaticResourcesPool.FindStaticPrefabs("UIPrefabButton"));
+        }
+
+        #endregion
 
         #region 全局对话框
 
@@ -422,6 +491,15 @@ namespace Ballance2.Sys.Services
         private Window currentVisibleWindowAlert = null;
         private Window currentActiveWindow = null;
 
+        /// <summary>
+        /// 获取当前激活的窗口
+        /// </summary>
+        /// <returns></returns>
+        public Window GetCurrentActiveWindow() { return currentActiveWindow; }
+        /// <summary>
+        /// 显示窗口
+        /// </summary>
+        /// <param name="window"></param>
         public void ShowWindow(Window window)
         {
             switch (window.WindowType)
@@ -440,10 +518,22 @@ namespace Ballance2.Sys.Services
             }
             window.SetVisible(true);
         }
+        /// <summary>
+        /// 隐藏窗口
+        /// </summary>
+        /// <param name="window.Hide("></param>
         public void HideWindow(Window window) { window.Hide(); }
+        /// <summary>
+        /// 关闭窗口
+        /// </summary>
+        /// <param name="window"></param>
         public void CloseWindow(Window window) { 
             window.Close(); 
         }
+        /// <summary>
+        /// 激活窗口至最顶层
+        /// </summary>
+        /// <param name="window"></param>
         public void ActiveWindow(Window window) {
             if(currentActiveWindow != null) 
                 currentActiveWindow.WindowTitleImage.color = currentActiveWindow.TitleDefaultColor;

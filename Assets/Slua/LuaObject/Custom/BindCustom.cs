@@ -46,6 +46,7 @@ namespace SLua {
 				Lua_Ballance2_Sys_Package_GamePackageRunTime.reg,
 				Lua_Ballance2_Sys_Package_GamePackageBaseInfo.reg,
 				Lua_Ballance2_Sys_Package_GamePackageDependencies.reg,
+				Lua_Ballance2_Sys_Debug_GameDebugCommandServer.reg,
 				Lua_Ballance2_Sys_Debug_GameError.reg,
 				Lua_Ballance2_Sys_Debug_GameErrorInfo.reg,
 				Lua_Ballance2_Sys_Debug_GameErrorChecker.reg,

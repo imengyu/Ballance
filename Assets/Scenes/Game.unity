@@ -465,6 +465,32 @@ MonoBehaviour:
   - Object: {fileID: 8037047437229278588, guid: b658eea55d1dd9247b039a45801f8a1d,
       type: 3}
     Name: DebugStatsWindow
+  - Object: {fileID: 8836237458197220665, guid: aa917cc1e17a7554391bb7228135653e,
+      type: 3}
+    Name: PackageManageWindow
+  - Object: {fileID: 532992993284287189, guid: ef29e32d53bc7894bb1e565ca67a8be7, type: 3}
+    Name: UIPrefabToggle
+  - Object: {fileID: 6848956318651197643, guid: 19d3d986208bb8a4e95277a417788f36,
+      type: 3}
+    Name: UIPrefabSlider
+  - Object: {fileID: 8064477193573346477, guid: b340d79ca4752f743a65b17898729cff,
+      type: 3}
+    Name: UIPrefabProgress
+  - Object: {fileID: 6512753940811861447, guid: 38d86cc1785d7774f87dab7495bf034d,
+      type: 3}
+    Name: UIPrefabScrollView
+  - Object: {fileID: 3080357253436928746, guid: 811d2a41527d36c43a3ec02653a15404,
+      type: 3}
+    Name: UIPrefabInput
+  - Object: {fileID: 2025606154173585381, guid: f9437510609df8540b223c9c855f39bf,
+      type: 3}
+    Name: UIPrefabDropdown
+  - Object: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
+      type: 3}
+    Name: UIPrefabCheck
+  - Object: {fileID: 6758423850950945838, guid: 2534452a5613b024693a065135468baa,
+      type: 3}
+    Name: UIPrefabButton
   GameAssets:
   - Object: {fileID: 12800000, guid: 1e8e467ff6bba96438cb72b95c335b1e, type: 3}
     Name: FontConsole
@@ -1780,7 +1806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -49.099976, y: -2.5999756}
+  m_AnchoredPosition: {x: -49.099854, y: -2.5999756}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &998005558

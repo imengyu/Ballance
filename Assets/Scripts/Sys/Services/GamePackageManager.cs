@@ -3,11 +3,14 @@ using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.Res;
+using Ballance2.Sys.UI;
+using Ballance2.Sys.Utils;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -36,12 +39,17 @@ namespace Ballance2.Sys.Services
     {
         private static readonly string TAG = "GamePackageManager";
 
+        /// <summary>
+        /// 系统包的包名
+        /// </summary>
         public const string SYSTEM_PACKAGE_NAME = "core.system";
 
         public GamePackageManager() : base(TAG) {}
 
+        [SLua.DoNotToLua]
         public override void Destroy()
         {
+            DestroyPackageManageWindow();
             UnLoadAllPackages();
 
             registeredPackages.Clear();
@@ -56,12 +64,20 @@ namespace Ballance2.Sys.Services
             GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
             GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
         }
+        [SLua.DoNotToLua]
         public override bool Initialize()
         {
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
+            GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
+                GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "GamePackageManagerHandler", (evtName, param) =>
+                {
+                    //初始化调试窗口
+                    InitPackageManageWindow();
+                    return false;
+                });
 
             //初始化系统包
             InitSystemPackage();
@@ -106,11 +122,11 @@ namespace Ballance2.Sys.Services
                 gamePackage = new GameEditorDebugPackage();
                 Log.D(TAG, "Load package in editor : {0}", realPackagePath);
             }
-            else
-            {
+            else 
 #else
-            if(true) {
+            if(true) 
 #endif
+            {
                 //路径转换
                 realPackagePath = GamePathManager.GetResRealPath("package", packageName + ".ballance");
                 string realPackagePathInCore = GamePathManager.GetResRealPath("core", packageName + ".ballance");
@@ -185,7 +201,7 @@ namespace Ballance2.Sys.Services
         public bool UnRegisterPackage(string packageName, bool unLoadImmediately)
         {
             bool success = false;
-            if(packageName == systemPackage.PackageName)
+            if (packageName == systemPackage.PackageName)
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG,
                     "Package {0} can not UnRegister", packageName);
@@ -236,7 +252,7 @@ namespace Ballance2.Sys.Services
         /// <summary>
         /// 通知模块运行
         /// </summary>
-        /// <param name="runTime"></param>
+        /// <param name="packageNameFilter">包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。</param>
         public void NotifyAllPackageRun(string packageNameFilter)
         {
             foreach (GamePackage package in loadedPackages.Values)
@@ -481,5 +497,36 @@ namespace Ballance2.Sys.Services
             registeredPackages.Add(systemPackage.PackageName, systemPackage);
             loadedPackages.Add(systemPackage.PackageName, systemPackage);
         }
+        
+
+        #region 模块管理窗口
+
+        private Window PackageManageWindow;
+        private GameUIManager GameUIManager;
+        
+        private void InitPackageManageWindow() {
+            GameUIManager = GameSystem.GetSystemService("GameUIManager") as GameUIManager;
+            //Store data
+            var storeDataShowPackageManageWindow = GameManager.Instance.GameStore.AddParameter("DbgShowPackageManageWindow", StoreDataAccess.GetAndSet, StoreDataType.Boolean);
+            storeDataShowPackageManageWindow.SetDataProvider(0, (get, val) => {
+                if(get) return PackageManageWindow.GetVisible();
+                else { PackageManageWindow.SetVisible((bool)val); return null; }
+            }); 
+            //Create window
+            PackageManageWindow = GameUIManager.CreateWindow("Package manager", 
+                CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("PackageManageWindow"), "PackageManageWindow").GetComponent<RectTransform>(),
+                false, 9, -30, 480, 400);
+            PackageManageWindow.CloseAsHide = true;
+            PackageManageWindow.gameObject.AddComponent<PackageManageWindow>();
+        }
+        private void DestroyPackageManageWindow() {   
+            GameManager.Instance.GameStore.RemoveParameter("DbgShowPackageManageWindow");
+            if(PackageManageWindow != null) {
+                PackageManageWindow.Destroy();
+                PackageManageWindow = null;
+            }
+        }
+
+        #endregion
     }
 }

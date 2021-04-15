@@ -684,6 +684,12 @@ local function newindex(ud,k,v)
         end
         t=rawget(t,'__parent')
     until t==nil
+    t=getmetatable(ud)
+    local h=rawget(t,'setItem')
+     if type(h) == 'function' then
+        h(ud,k, v)
+        return
+    end
     error('can not find '..k)
 end
 
@@ -712,14 +718,19 @@ local function index(ud,k)
         end
         t = rawget(t,'__parent')
     until t==nil
+    t=getmetatable(ud)
+    local h=rawget(t,'getItem')
+    if type(h) == 'function' then
+        return h(ud,k)
+    end
     error('Can not find '..k)
 end
 
 return index
 ";
 
-            newindex_func = (LuaFunction)doString(newindexfun);
-            index_func = (LuaFunction)doString(indexfun);
+            newindex_func = (LuaFunction)doString(newindexfun, "newindexfun");
+            index_func = (LuaFunction)doString(indexfun, "indexfun");
 
             setupPushVar();
 
