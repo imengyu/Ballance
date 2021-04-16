@@ -21,6 +21,10 @@ namespace Ballance2.Utils
             else
                 return param;
         }
+        public static bool CheckParamIsLuaTable(object[] param)
+        {
+            return param != null && param.Length == 1 && param[0] != null && param[0].GetType() == typeof(LuaTable);
+        }
         public static string BooleanToString(bool param)
         {
             return param ? "true" : "false";

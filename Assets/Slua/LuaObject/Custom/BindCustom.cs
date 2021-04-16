@@ -5,6 +5,7 @@ namespace SLua {
 	public class BindCustom {
 		public static Action<IntPtr>[] GetBindList() {
 			Action<IntPtr>[] list= {
+				Lua_Ballance2_DebugCamera.reg,
 				Lua_Ballance2_Utils_CommonUtils.reg,
 				Lua_Ballance2_Utils_ConverUtils.reg,
 				Lua_Ballance2_Utils_DebugUtils.reg,

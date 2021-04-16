@@ -1,4 +1,6 @@
 ﻿using Ballance2.Sys.Bridge;
+using Ballance2.Utils;
+using SLua;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,24 +31,36 @@ namespace Ballance2.Sys.Bridge.Handler
         {
             if (Destroyed)
                 return null;
-            if (actionHandlerDelegate != null)
-                return actionHandlerDelegate.Invoke(pararms);
+            if (actionHandlerDelegate != null) {
+                if(LuaUtils.CheckParamIsLuaTable(pararms))
+                    return actionHandlerDelegate.Invoke(LuaUtils.LuaTableArrayToObjectArray(pararms));
+                else 
+                    return actionHandlerDelegate.Invoke(pararms);
+            }
             return base.CallActionHandler(pararms);
         }
         public override bool CallEventHandler(string evtName, params object[] pararms)
         {
             if (Destroyed)
                 return false;
-            if (eventHandlerDelegate != null)
-                return eventHandlerDelegate.Invoke(evtName, pararms);
+            if (eventHandlerDelegate != null) {
+                if(LuaUtils.CheckParamIsLuaTable(pararms))
+                    return eventHandlerDelegate.Invoke(evtName, LuaUtils.LuaTableArrayToObjectArray(pararms));
+                else 
+                    return eventHandlerDelegate.Invoke(evtName, pararms);
+            }
             return base.CallEventHandler(evtName, pararms);
         }
         public override object CallCustomHandler(params object[] pararms)
         {
             if (Destroyed)
                 return false;
-            if (customHandlerDelegate != null)
-                return customHandlerDelegate.Invoke(pararms);
+            if (customHandlerDelegate != null) {
+                if(LuaUtils.CheckParamIsLuaTable(pararms))
+                    return customHandlerDelegate.Invoke(LuaUtils.LuaTableArrayToObjectArray(pararms));
+                else 
+                    return customHandlerDelegate.Invoke(pararms);
+            }
             return base.CallCustomHandler(pararms);
         }
 

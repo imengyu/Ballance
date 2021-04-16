@@ -517,7 +517,7 @@ namespace Ballance2.Sys.Services
                 CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("PackageManageWindow"), "PackageManageWindow").GetComponent<RectTransform>(),
                 false, 9, -30, 480, 400);
             PackageManageWindow.CloseAsHide = true;
-            PackageManageWindow.gameObject.AddComponent<PackageManageWindow>();
+            PackageManageWindow.gameObject.AddComponent<GamePackageManageWindow>();
         }
         private void DestroyPackageManageWindow() {   
             GameManager.Instance.GameStore.RemoveParameter("DbgShowPackageManageWindow");

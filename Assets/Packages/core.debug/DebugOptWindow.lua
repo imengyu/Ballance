@@ -3,17 +3,19 @@ LogLevel = Ballance2.Utils.LogLevel
 GameManager = Ballance2.Sys.GameManager
 GamePackage = Ballance2.Sys.Package.GamePackage
 GameEventNames = Ballance2.Sys.Bridge.GameEventNames
+GameActionCallResult = Ballance2.Sys.Bridge.GameActionCallResult
 
 ---@type GameLuaObjectHostClass
 DebugOptWindow = { 
   CheckBoxShowSystemInfo = nil,---@type Toggle
   CheckBoxShowStats = nil,---@type Toggle
   CheckBoxShowPackageManager = nil,---@type Toggle
+  CheckBoxWireframe = nil,---@type Toggle
   ContentView = nil,---@type RectTransform
 
 }
 
-DebugOptEvent = 'core.debug.OptNotify'
+
 
 ---调试功能列表窗口
 function CreateClass_DebugOptWindow()
@@ -28,21 +30,26 @@ function CreateClass_DebugOptWindow()
     GlobalDebugOptWindow.onShow = { "+=", function ()
       self:LoadAllStatus()
     end  }
-    GameManager.GameMediator:RegisterGlobalEvent(DebugOptEvent)
-    GameManager.Instance.GameActionStore:RegisterAction(GamePackage.GetSystemPackage(), "DebugOptAddOption", "DebugOptWindow", function (name, text, type)
+    GameManager.Instance.GameActionStore:RegisterAction(GamePackage.GetSystemPackage(), "DebugOptAddOption", "DebugOptWindow", function (arr)
+      local name = arr[1]
+      local text = arr[2]
+      local type = arr[3]
       if type == 'Button' then
         self:AddButtonItem(name, text)
       elseif type == 'Toggle' then
         self:AddToggleItem(name, text)
       end
-    end, self, nil)
-    GameManager.Instance.GameActionStore:RegisterAction(GamePackage.GetSystemPackage(), "DebugOptRemoveOption", "DebugOptWindow", function (name)
+      return GameActionCallResult.SuccessResult
+    end, nil)
+    GameManager.Instance.GameActionStore:RegisterAction(GamePackage.GetSystemPackage(), "DebugOptRemoveOption", "DebugOptWindow", function (arr)
+      local name = arr[1]
       self:RemoveItem(name)
-    end, self, nil)
+      return GameActionCallResult.SuccessResult
+    end, nil)
+    GameManager.GameMediator:DispatchGlobalEvent(DebugOptStandByEvent, "*", nil)
     self:LoadAllStatus()
   end
   function DebugOptWindow:OnDestroy()
-    GameManager.GameMediator:UnRegisterGlobalEvent(DebugOptEvent)
     GameManager.Instance.GameActionStore:UnRegisterActions({ "DebugOptAddOption", "DebugOptRemoveOption" })
   end
 
@@ -55,7 +62,7 @@ function CreateClass_DebugOptWindow()
     newButtonText.text = text
     newButton.name = name
     newButton.onClick:AddListener(function ()
-      GameManager.GameMediator:DispatchGlobalEvent(DebugOptEvent, "*", name)
+      GameManager.GameMediator:DispatchGlobalEvent(DebugOptEvent, "*", {name,'click'})
     end)
   end
   function DebugOptWindow:AddToggleItem(name, text) 
@@ -66,7 +73,7 @@ function CreateClass_DebugOptWindow()
     newToggleText.text = text
     newToggle.name = name
     newToggle.onValueChanged:AddListener(function (value)
-      GameManager.GameMediator:DispatchGlobalEvent(DebugOptEvent, "*", name, value)
+      GameManager.GameMediator:DispatchGlobalEvent(DebugOptEvent, "*", { name, value })
     end)
   end
   function DebugOptWindow:RemoveItem(name) 
@@ -85,9 +92,13 @@ function CreateClass_DebugOptWindow()
     self.CheckBoxShowSystemInfo.isOn = GameManager.Instance.GameStore['DbgStatShowSystemInfo']
     self.CheckBoxShowStats.isOn = GameManager.Instance.GameStore['DbgStatShowStats']
     self.CheckBoxShowPackageManager.isOn = GameManager.Instance.GameStore['DbgShowPackageManageWindow']
+    self.CheckBoxWireframe.isOn = DebugCamera.Instance.Wireframe
   end
   function DebugOptWindow:OnCheckBoxShowSystemInfoCheckChanged() 
     GameManager.Instance.GameStore['DbgStatShowSystemInfo'] = self.CheckBoxShowSystemInfo.isOn
+  end
+  function DebugOptWindow:OnCheckBoxWireframeCheckChanged()
+    DebugCamera.Instance.Wireframe = self.CheckBoxWireframe.isOn
   end
   function DebugOptWindow:OnCheckBoxShowStatsCheckChanged() 
     GameManager.Instance.GameStore['DbgStatShowStats'] = self.CheckBoxShowStats.isOn

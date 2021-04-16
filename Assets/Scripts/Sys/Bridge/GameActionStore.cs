@@ -531,7 +531,9 @@ namespace Ballance2.Sys.Bridge
             //Log.Log(TAG, "CallAction {0} -> {1}", action.Name, StringUtils.ValueArrayToString(param));
 
             result = action.GameHandler.CallActionHandler(param);
-            if (!result.Success)
+            if (result == null)
+                Log.W(TAG, "操作 {0} 未返回数据", action.Name);
+            else if (!result.Success)
                 Log.W(TAG, "操作 {0} 执行失败 {1}", action.Name, GameErrorChecker.LastError);
 
             return result;

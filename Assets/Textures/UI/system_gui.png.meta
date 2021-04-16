@@ -142,31 +142,31 @@ TextureImporter:
     second: BoxRoundBordered
   - first:
       213: -4825753653546556987
-    second: system_gui_51
+    second: IconHand
   - first:
       213: 2843758286862564216
     second: TexMadeWithUnity
   - first:
       213: -6787322772362598568
-    second: system_gui_53
+    second: IconMove
   - first:
       213: 89167502557122216
-    second: system_gui_54
+    second: IconRotate
   - first:
       213: -1714946349274030861
-    second: system_gui_55
+    second: IconResize
   - first:
       213: 1219836524575074602
-    second: system_gui_56
+    second: IconGlobal
   - first:
       213: -775183344312285971
-    second: system_gui_57
+    second: IconLocal
   - first:
       213: -4618419649242449049
-    second: system_gui_58
+    second: IconLoca
   - first:
       213: -9041830655727726778
-    second: system_gui_59
+    second: IconPiovt
   - first:
       213: -1771439767053489083
     second: IconUpdown
@@ -211,7 +211,10 @@ TextureImporter:
     second: IconArrowUp
   - first:
       213: 8051123311531701542
-    second: BoxYellow
+    second: IconTransparent
+  - first:
+      213: 8438798086717914939
+    second: IconDrag
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1384,7 +1387,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BoxYellow
+      name: IconTransparent
       rect:
         serializedVersion: 2
         x: 2
@@ -1493,9 +1496,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 100
-        y: 0
+        y: 2
         width: 96
-        height: 99
+        height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1535,9 +1538,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 296
-        y: 0
+        y: 5
         width: 88
-        height: 99
+        height: 88
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1589,6 +1592,195 @@ TextureImporter:
       bones: []
       spriteID: 7827d279e17a50010800000000000000
       internalID: 1154512629317595783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconHand
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 152
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c160dabe9a770db0800000000000000
+      internalID: -4825753653546556987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconMove
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 152
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 857686936e59ec1a0800000000000000
+      internalID: -6787322772362598568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconRotate
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 152
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ae0d630f59cc3100800000000000000
+      internalID: 89167502557122216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconResize
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 152
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fc1baaa1694338e0800000000000000
+      internalID: -1714946349274030861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconGlobal
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 184
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a29285b2bdabde010800000000000000
+      internalID: 1219836524575074602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconLocal
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 184
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de4877efadefd35f0800000000000000
+      internalID: -775183344312285971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconLoca
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 152
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76b38376cc318efb0800000000000000
+      internalID: -4618419649242449049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconPiovt
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 184
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64f8c1e9ce6f48280800000000000000
+      internalID: -9041830655727726778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconDrag
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 152
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3f31123622ac1570800000000000000
+      internalID: 8438798086717914939
       vertices: []
       indices: 
       edges: []

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Ballance2.Utils
 {
@@ -11,7 +12,7 @@ namespace Ballance2.Utils
     [SLua.CustomLuaClass]
     public class CommonUtils
     {
-        private static Random random = new Random();
+        private static System.Random random = new System.Random();
         private static int idPool = 1000;
         private static int idPoolRm = 1000;
         private static int idPoolSq = 0;
@@ -105,6 +106,16 @@ namespace Ballance2.Utils
         {
             Dictionary<string, T>.ValueCollection ts = keyValuePairs.Values;
             return ts.ToList<T>().ToArray();
+        }
+        /// <summary>
+        /// 更改颜色Alpha值，其他不变
+        /// </summary>
+        /// <param name="o">原颜色</param>
+        /// <param name="a">Alpha值</param>
+        /// <returns></returns>
+        public static Color ChangeColorAlpha(Color o, float a)
+        {
+            return new Color(o.r, o.g, o.b, a);
         }
     }
 }

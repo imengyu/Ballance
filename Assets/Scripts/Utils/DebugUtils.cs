@@ -126,5 +126,14 @@ namespace Ballance2.Utils
 
             return sb.ToString();
         }
+    
+        /// <summary>
+        /// 打印出数组的代码
+        /// </summary>
+        /// <param name="any"></param>
+        /// <returns></returns>
+        public static string PrintArrVar(object[] any) {
+            return StringUtils.ValueArrayToString(any);
+        }
     }
 }
