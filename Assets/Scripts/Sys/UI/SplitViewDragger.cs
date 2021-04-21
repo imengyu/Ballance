@@ -1,4 +1,6 @@
-﻿using Ballance2.Utils;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Utils;
+using SLua;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,9 +30,9 @@ namespace Ballance2.Sys.UI
     /// <summary>
     /// 拖动托块组件
     /// </summary>
-    [SLua.CustomLuaClass]
-    public class SplitViewDragger : MonoBehaviour,
-        IPointerDownHandler, IPointerUpHandler, IDragHandler
+    [CustomLuaClass]
+    [LuaApiDescription("拖动托块组件")]
+    public class SplitViewDragger : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         void Start()
         {
@@ -53,11 +55,13 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 拖动事件（value表示拖动的百分比）
         /// </summary>
+        [LuaApiDescription("拖动事件（value表示拖动的百分比）")]
         public Slider.SliderEvent onValueChanged;
 
         /// <summary>
         /// 拖动参考RectTransform
         /// </summary>
+        [LuaApiDescription("拖动参考RectTransform")]
         public RectTransform referenceTransform
         {
             get { return _referenceTransform; }
@@ -66,6 +70,7 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 是否正在拖动
         /// </summary>
+        [LuaApiDescription("是否正在拖动")]
         public bool isDrag
         {
             get; private set;
@@ -73,6 +78,7 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 拖动方向
         /// </summary>
+        [LuaApiDescription("拖动方向")]
         public SplitViewDirection direction
         {
             get { return _direction; }
@@ -86,6 +92,7 @@ namespace Ballance2.Sys.UI
             }
         }
 
+        [DoNotToLua]
         public void OnDrag(PointerEventData eventData)
         {
             Vector3[] pos = new Vector3[4];
@@ -97,11 +104,13 @@ namespace Ballance2.Sys.UI
                 newVal = ((Screen.height - eventData.position.y) - pos[0].y) / (pos[2].y - pos[0].y);
             onValueChanged.Invoke(newVal);
         }
+        [DoNotToLua]
         public void OnPointerDown(PointerEventData eventData)
         {
             isDrag = true;
             image.color = new Color(image.color.r, image.color.g, image.color.b, 0.7f);
         }
+        [DoNotToLua]
         public void OnPointerUp(PointerEventData eventData)
         {
             isDrag = false;

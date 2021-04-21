@@ -1,9 +1,30 @@
-﻿using SLua;
-using UnityEngine;
+﻿using Ballance.LuaHelpers;
+using SLua;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameLuaObjectOtherEventCaller.cs
+* 
+* 用途：
+* Lua 其他不常用事件调用器
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-22 创建
+*
+*/
 
 namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
 {
+    /// <summary>
+    /// Lua 其他不常用事件调用器
+    /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("Lua 其他不常用事件调用器")]
     public class GameLuaObjectOtherEventCaller : GameLuaObjectEventCaller
     {
         private LuaTable self = null;
@@ -37,6 +58,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
         {
             return supportEvents;
         }
+        [DoNotToLua]
         public override void OnInitLua(GameLuaObjectHost host)
         {
             LuaFunction fun;

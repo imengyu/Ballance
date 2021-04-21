@@ -5,237 +5,6 @@ using System.Collections.Generic;
 public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerClick(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerClick(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerDown(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerDown(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerEnter(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerEnter(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerExit(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerExit(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerUp(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerUp(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnSelect(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.BaseEventData a1;
-			checkType(l,2,out a1);
-			self.OnSelect(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnUpdateSelected(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			UnityEngine.EventSystems.BaseEventData a1;
-			checkType(l,2,out a1);
-			self.OnUpdateSelected(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int Get_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -281,7 +50,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onClick=v;
 			else if(op==1) self.onClick+=v;
@@ -316,7 +85,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onDown=v;
 			else if(op==1) self.onDown+=v;
@@ -351,7 +120,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onEnter=v;
 			else if(op==1) self.onEnter+=v;
@@ -386,7 +155,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onExit=v;
 			else if(op==1) self.onExit+=v;
@@ -421,7 +190,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onUp=v;
 			else if(op==1) self.onUp+=v;
@@ -456,7 +225,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onSelect=v;
 			else if(op==1) self.onSelect+=v;
@@ -491,7 +260,7 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.UI.Utils.EventTriggerListener self=(Ballance2.Sys.UI.Utils.EventTriggerListener)checkSelf(l);
-			Ballance2.Sys.UI.Utils.EventTriggerListener.VoidDelegate v;
+			Ballance2.Sys.Bridge.GameObjectDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.onUpdateSelect=v;
 			else if(op==1) self.onUpdateSelect+=v;
@@ -515,13 +284,6 @@ public class Lua_Ballance2_Sys_UI_Utils_EventTriggerListener : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.UI.Utils.EventTriggerListener");
-		addMember(l,OnPointerClick);
-		addMember(l,OnPointerDown);
-		addMember(l,OnPointerEnter);
-		addMember(l,OnPointerExit);
-		addMember(l,OnPointerUp);
-		addMember(l,OnSelect);
-		addMember(l,OnUpdateSelected);
 		addMember(l,Get_s);
 		addMember(l,"onClick",null,set_onClick,true);
 		addMember(l,"onDown",null,set_onDown,true);

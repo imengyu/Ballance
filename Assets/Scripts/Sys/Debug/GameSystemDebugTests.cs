@@ -1,9 +1,25 @@
 ﻿using Ballance2.Config.Settings;
-using Ballance2.Sys.Services;
 using Ballance2.Sys.Utils;
 using Ballance2.Utils;
 using System.Collections;
 using UnityEngine;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameSystemDebugTests.cs
+* 
+* 用途：
+* 主系统调试测试类。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-1 创建
+*
+*/
 
 namespace Ballance2.Sys.Debug
 {
@@ -22,17 +38,10 @@ namespace Ballance2.Sys.Debug
             return null;
         }
 
-        private GameUIManager gameUIManager = null;
-
         public bool StartDebug()
         {
-            Log.I(TAG, "StartDebug! ");
-
-            gameUIManager = GameManager.Instance.GetSystemService<GameUIManager>("GameUIManager");
-            gameUIManager.MaskBlackFadeOut(0.5f);
-            
+            Log.I(TAG, "StartDebug! ");   
             shouldStartDebugLine = true;
-
             return true;
         }
 

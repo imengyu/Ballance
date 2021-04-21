@@ -1,15 +1,34 @@
 using System.Collections.Generic;
+using Ballance.LuaHelpers;
 using Ballance2.Sys.Bridge;
 using Ballance2.Utils;
 using SLua;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameDebugCommandServer.cs
+* 
+* 用途：
+* 调试命令服务，管理游戏自定义调试命令。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-14 创建
+*
+*/
+
 namespace Ballance2.Sys.Debug
 {
     /// <summary>
-    /// 调试命令服务
+    /// 调试命令服务，使用此服务添加自定义调试命令。
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("调试命令服务，使用此服务添加自定义调试命令")]
     public class GameDebugCommandServer
     {
         private const string TAG = "DebugCommand";
@@ -29,6 +48,8 @@ namespace Ballance2.Sys.Debug
         /// </summary>
         /// <param name="cmd">命令字符串</param>
         /// <returns>返回是否成功</returns>
+        [LuaApiDescription("运行命令", "返回是否成功")]
+        [LuaApiParamDescription("cmd", "命令字符串")]
         public bool ExecuteCommand(string cmd)
         {
             if (string.IsNullOrEmpty(cmd)) {
@@ -71,11 +92,15 @@ namespace Ballance2.Sys.Debug
         /// 注册调试命令
         /// </summary>
         /// <param name="keyword">命令单词</param>
-        /// <param name="kernelCallback">命令回调</param>
+        /// <param name="callback">命令回调</param>
         /// <param name="limitArgCount">命令最低参数，默认 0 表示无参数或不限制</param>
         /// <param name="helpText">命令帮助文字</param>
         /// <returns>成功返回命令ID，不成功返回-1</returns>
-        /// <returns></returns>
+        [LuaApiDescription("注册调试命令", "成功返回命令ID，不成功返回-1")]
+        [LuaApiParamDescription("keyword", "命令单词")]
+        [LuaApiParamDescription("callback", "命令回调")]
+        [LuaApiParamDescription("limitArgCount", "命令最低参数，默认 0 表示无参数或不限制")]
+        [LuaApiParamDescription("helpText", "命令帮助文字")]
         public int RegisterCommand(string keyword, CommandDelegate callback, int limitArgCount, string helpText)
         {
             if (!IsCommandRegistered(keyword))
@@ -99,6 +124,8 @@ namespace Ballance2.Sys.Debug
         /// 取消注册命令
         /// </summary>
         /// <param name="cmdId">命令ID</param>
+        [LuaApiDescription("取消注册命令")]
+        [LuaApiParamDescription("cmdId", "命令ID")]
         public void UnRegisterCommand(int cmdId)
         {
             CmdItem removeItem = null;
@@ -117,7 +144,9 @@ namespace Ballance2.Sys.Debug
         /// 获取命令是否注册
         /// </summary>
         /// <param name="keyword">命令单词</param>
-        /// <returns></returns>
+        /// <returns>返回命令是否注册</returns>
+        [LuaApiDescription("获取命令是否注册", "返回命令是否注册")]
+        [LuaApiParamDescription("keyword", "命令单词")]
         public bool IsCommandRegistered(string keyword)
         {
             foreach (CmdItem cmdItem in commands)
@@ -159,13 +188,12 @@ namespace Ballance2.Sys.Debug
                 int fpsVal = 0;
                 if(args.Length >= 1)
                 {
-                    if (int.TryParse(args[0], out fpsVal) && fpsVal > 0 && fpsVal < 120)
-                        FPSManager.Instance.ForceSetFps(fpsVal);
+                    if (int.TryParse(args[0], out fpsVal) && fpsVal > 0 && fpsVal <= 120) Application.targetFrameRate = fpsVal;
                     else Log.E(TAG, "错误的参数：{0}", args[0]);
                 }
                 Log.D(TAG, "Application.targetFrameRate = {0}", Application.targetFrameRate);
                 return true;
-            }, 0, "[targetFps:int] 获取或设置 targetFrameRate");
+            }, 0, "[targetFps:number] 获取或设置 targetFrameRate");
             RegisterCommand("help", OnCommandHelp, 1, "显示命令帮助");
         }
     }

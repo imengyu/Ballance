@@ -1,4 +1,5 @@
-﻿using SLua;
+﻿using Ballance.LuaHelpers;
+using SLua;
 using UnityEngine.EventSystems;
 
 /*
@@ -18,7 +19,11 @@ using UnityEngine.EventSystems;
  */
 namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
 {
+    /// <summary>
+    /// Lua的 EventTrigger 包装
+    /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("Lua的 EventTrigger 包装")]
     public class GameLuaObjectEventTriggerCaller : GameLuaObjectEventCaller, 
         IPointerEnterHandler, IEventSystemHandler, IPointerExitHandler, 
         IPointerDownHandler, IPointerUpHandler, IPointerClickHandler, 
@@ -58,6 +63,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
         {
             return supportEvents;
         }
+        [DoNotToLua]
         public override void OnInitLua(GameLuaObjectHost host)
         {
             LuaFunction fun;

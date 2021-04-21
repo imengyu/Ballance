@@ -1,4 +1,16 @@
-﻿
+﻿--[[
+Copyright(c) 2021  mengyu
+* 模块名：     
+DebugTools.lua
+* 用途：
+调试顶部条的主逻辑
+* 作者：
+mengyu
+* 更改历史：
+2021-1-12 创建
+]]--
+
+
 Log = Ballance2.Utils.Log
 LogLevel = Ballance2.Utils.LogLevel
 KeyListener = Ballance2.Sys.Utils.KeyListener

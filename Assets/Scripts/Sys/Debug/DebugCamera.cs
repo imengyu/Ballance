@@ -7,6 +7,23 @@ using SLua;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* DebugCamera.cs
+* 
+* 用途：
+* 调试摄像机主逻辑控制类。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-4-15 创建
+*
+*/
+
 namespace Ballance2
 {
     [CustomLuaClass]
@@ -17,6 +34,9 @@ namespace Ballance2
         public DebugCameraTool Tool = DebugCameraTool.Drag;
         public bool EnableDebug = true;
         public bool Wireframe = true;
+        public bool Audio = true;
+        public bool Fog = true;
+        public bool SkyBox = true;
         public static DebugCamera Instance;
 
         [DoNotToLua]
@@ -25,7 +45,9 @@ namespace Ballance2
         public Texture2D cursorDragEyeFreeTexture;
         [DoNotToLua]
         public Texture2D cursorDragHandTexture;
+        private AudioListener AudioListener;
 
+        public GameObject GameGrid;
         [HideInInspector]
         public GameDebugTools GameDebugTools;
         [HideInInspector]
@@ -42,14 +64,31 @@ namespace Ballance2
        
         private bool _EnableDebug  = false;
         private bool _Wireframe  = false;
+        private bool _Audio = true;
+        private bool _Fog = true;
+        private bool _SkyBox = true;
         private void UpdateEnableDebug() {
             _EnableDebug = EnableDebug;
             SceneGizmoRenderer.gameObject.SetActive(_EnableDebug);
+            GameGrid.SetActive(_EnableDebug);
             TransformGizmo.enabled = _EnableDebug;
         }
         private void UpdateWireframe() {
             _Wireframe = Wireframe;
             mainCam.clearFlags = _Wireframe ? CameraClearFlags.SolidColor : CameraClearFlags.Skybox;
+        }
+        private void UpdateAudio() {
+            _Audio = Audio;
+            AudioListener.enabled = _Audio;
+        }
+        private void UpdateFog() {
+            _Fog = Fog;
+            RenderSettings.fog = _Fog;
+        }
+        private void UpdateSkyBox() {
+            _SkyBox = SkyBox;
+            if(!_Wireframe)
+                mainCam.clearFlags = _SkyBox ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor ;
         }
 
         public float cameraSpeed = 4f;
@@ -81,6 +120,7 @@ namespace Ballance2
         private void Start()
         {
             Instance = this;
+            AudioListener = GetComponent<AudioListener>();
             TransformGizmo.onStartSelect = (t) => {
                 if(GameDebugTools != null)
                     GameDebugTools.InspectObject(t);
@@ -90,6 +130,9 @@ namespace Ballance2
 		{
             if(EnableDebug != _EnableDebug) UpdateEnableDebug();
             if(Wireframe != _Wireframe) UpdateWireframe();
+            if(Audio != _Audio) UpdateAudio();
+            if(Fog != _Fog) UpdateFog();
+            if(SkyBox != _SkyBox) UpdateSkyBox();
 
             if(_EnableDebug) {
                 //在GUI上拖动除外

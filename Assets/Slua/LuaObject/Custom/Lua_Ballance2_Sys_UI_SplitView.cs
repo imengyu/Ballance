@@ -655,6 +655,6 @@ public class Lua_Ballance2_Sys_UI_SplitView : LuaObject {
 		addMember(l,"max",get_max,set_max,true);
 		addMember(l,"direction",get_direction,set_direction,true);
 		addMember(l,"value",get_value,set_value,true);
-		createTypeMetatable(l,null, typeof(Ballance2.Sys.UI.SplitView),typeof(UnityEngine.MonoBehaviour));
+		createTypeMetatable(l,null, typeof(Ballance2.Sys.UI.SplitView),typeof(UnityEngine.EventSystems.UIBehaviour));
 	}
 }

@@ -1,5 +1,23 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Ballance.LuaHelpers;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* DebugUtils.cs
+* 
+* 用途：
+* 调试工具类
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-15 创建
+*
+*/
 
 namespace Ballance2.Utils
 {
@@ -7,6 +25,7 @@ namespace Ballance2.Utils
     /// 调试工具类
     /// </summary>
     [SLua.CustomLuaClass]
+    [LuaApiDescription("游戏中介者")]
     public class DebugUtils
     {
         /// <summary>
@@ -14,6 +33,8 @@ namespace Ballance2.Utils
         /// </summary>
         /// <param name="skipFrame">要跳过的帧，为0不跳过</param>
         /// <returns></returns>
+        [LuaApiDescription("获取当前调用堆栈", "")]
+        [LuaApiParamDescription("skipFrame", "要跳过的帧，为0不跳过")]
         public static string GetStackTrace(int skipFrame)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -46,6 +67,8 @@ namespace Ballance2.Utils
         /// </summary>
         /// <param name="vs">byte 数组</param>
         /// <returns></returns>
+        [LuaApiDescription("打印出格式化过的 byte 数组，以十六进制显示", "")]
+        [LuaApiParamDescription("vs", "byte 数组")]
         public static string PrintBytes(byte[] vs)
         {
             StringBuilder sb = new StringBuilder();
@@ -92,6 +115,8 @@ namespace Ballance2.Utils
         /// </summary>
         /// <param name="code">代码字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("打印出带行号的代码", "")]
+        [LuaApiParamDescription("code", "代码字符串")]
         public static string PrintCodeWithLine(string code)
         {
             string[] lines = code.Split('\n');
@@ -130,8 +155,10 @@ namespace Ballance2.Utils
         /// <summary>
         /// 打印出数组的代码
         /// </summary>
-        /// <param name="any"></param>
+        /// <param name="any">要转换的数组</param>
         /// <returns></returns>
+        [LuaApiDescription("打印出数组的代码", "")]
+        [LuaApiParamDescription("any", "要转换的数组")]
         public static string PrintArrVar(object[] any) {
             return StringUtils.ValueArrayToString(any);
         }

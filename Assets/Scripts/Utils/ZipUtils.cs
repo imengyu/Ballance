@@ -4,12 +4,27 @@ using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using UnityEngine;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* ZipUtils.cs
+* 
+* 用途：
+* Zip 帮助类
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2020-11-28 创建
+*
+*/
 namespace Ballance2.Utils
 {
     /// <summary>
-    /// zip 帮助类
+    /// Zip 帮助类
     /// </summary>
     public class ZipUtils
     {

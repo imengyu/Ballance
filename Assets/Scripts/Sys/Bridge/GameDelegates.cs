@@ -1,4 +1,5 @@
-﻿using SLua;
+﻿using Ballance.LuaHelpers;
+using SLua;
 using System.Xml;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ namespace Ballance2.Sys.Bridge
     public delegate void VoidDelegate();
     [CustomLuaClass]
     public delegate bool BooleanDelegate();
+    [CustomLuaClass]
+    public delegate void GameObjectDelegate(GameObject go);
 
     /// <summary>
     /// 自定义接收器内核回调
@@ -31,6 +34,7 @@ namespace Ballance2.Sys.Bridge
     /// <param name="pararms">参数</param>
     /// <returns>返回自定义对象</returns>
     [CustomLuaClass]
+    [LuaApiDescription("自定义接收器内核回调")]
     public delegate object GameCustomHandlerDelegate(params object[] pararms);
     /// <summary>
     /// 事件接收器内核回调
@@ -39,6 +43,7 @@ namespace Ballance2.Sys.Bridge
     /// <param name="pararms">参数</param>
     /// <returns>返回是否中断其他事件的分发</returns>
     [CustomLuaClass]
+    [LuaApiDescription("事件接收器内核回调")]
     public delegate bool GameEventHandlerDelegate(string evtName, params object[] pararms);
     /// <summary>
     /// 操作接收器内核回调
@@ -46,6 +51,7 @@ namespace Ballance2.Sys.Bridge
     /// <param name="pararms">参数</param>
     /// <returns>返回事件数据</returns>
     [CustomLuaClass]
+    [LuaApiDescription("操作接收器内核回调")]
     public delegate GameActionCallResult GameActionHandlerDelegate(params object[] pararms);
     /// <summary>
     /// 调试命令回调
@@ -55,5 +61,6 @@ namespace Ballance2.Sys.Bridge
     /// <param name="args">命令参数</param>
     /// <returns>须返回命令是否执行成功</returns>
     [SLua.CustomLuaClass]
+    [LuaApiDescription("调试命令回调")]
     public delegate bool CommandDelegate(string keyword, string fullCmd, string[] args);
 }

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="core.intro" version="1">
+  <BaseInfo>
+    <Name>进入动画</Name>
+    <Author>imengyu</Author>
+    <Introduction>游戏进入动画模块</Introduction>
+    <Description>游戏进入动画模块</Description>
+    <Logo>PackageLogo.png</Logo>
+    <Link>https://imengyu.top/ballcnceProject</Link>
+    <AuthorLink>https://imengyu.top/ballcnceProject</AuthorLink>
+    <DocLink>https://imengyu.top/ballcnceProject</DocLink>
+    <VersionName>1.0</VersionName>
+    <Dependencies>
+    </Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>1</MinVersion>
+    <TargetVersion>1</TargetVersion>
+  </Compatibility>
+  <EntryCode>Entry.lua</EntryCode>
+  <Type>Module</Type>
+  <CodeType>Lua</CodeType>
+  <RunType>GameBase</RunType>
+  <ShareLuaState>core</ShareLuaState>
+</Package>

@@ -1,77 +1,111 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using Ballance.LuaHelpers;
 using UnityEngine;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* StringUtils.cs
+* 
+* 用途：
+* 字符串工具类
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2018-8-11 创建
+*
+*/
 
 namespace Ballance2.Utils
 {
-    [SLua.CustomLuaClass]
     /// <summary>
     /// 字符串工具类
     /// </summary>
+    [SLua.CustomLuaClass]
+    [LuaApiDescription("")]
     public static class StringUtils
     {
         /// <summary>
-        /// 字符串是否为空
+        /// 检测字符串是否为空
         /// </summary>
-        /// <param name="text">字符串</param>
+        /// <param name="text">要检测的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("检测字符串是否为空", "")]
+        [LuaApiParamDescription("text", "要检测的字符串")]
         public static bool isNullOrEmpty(string text)
         {
             return string.IsNullOrEmpty(text);
         }
         /// <summary>
-        /// 字符串是否为空或空白
+        /// 检测字符串是否为空或空白
         /// </summary>
-        /// <param name="text">字符串</param>
+        /// <param name="text">要检测的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("检测字符串是否为空或空白", "")]
+        [LuaApiParamDescription("text", "要检测的字符串")]
         public static bool IsNullOrWhiteSpace(string text)
         {
             return string.IsNullOrWhiteSpace(text);
         }
         /// <summary>
-        /// 字符串是否是URL
+        /// 检测字符串是否是URL
         /// </summary>
-        /// <param name="text">字符串</param>
+        /// <param name="text">要检测的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("检测字符串是否是URL", "")]
+        [LuaApiParamDescription("text", "要检测的字符串")]
         public static bool IsUrl(string text)
         {
-            return Regex.IsMatch(text, "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
+            return !isNullOrEmpty(text) && Regex.IsMatch(text, "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
         }
         /// <summary>
-        /// 字符串是否是整数
+        /// 检测字符串是否是整数
         /// </summary>
-        /// <param name="text">字符串</param>
+        /// <param name="text">要检测的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("检测字符串是否是整数", "")]
+        [LuaApiParamDescription("text", "要检测的字符串")]
         public static bool IsNumber(string text)
         {
-            return Regex.IsMatch(text, "^-?[1-9]\\d*$");
+            return !isNullOrEmpty(text) && Regex.IsMatch(text, "^-?[1-9]\\d*$");
         }
         /// <summary>
-        /// 字符串是否是浮点数
+        /// 检测字符串是否是浮点数
         /// </summary>
-        /// <param name="text">字符串</param>
+        /// <param name="text">要检测的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("检测字符串是否是浮点数", "")]
+        [LuaApiParamDescription("text", "要检测的字符串")]
         public static bool IsFloatNumber(string text)
         {
-            return Regex.IsMatch(text, "^(-?\\d+)(\\.\\d+)?");
+            return !isNullOrEmpty(text) && Regex.IsMatch(text, "^(-?\\d+)(\\.\\d+)?");
         }
         /// <summary>
-        /// 字符串是否是包名
+        /// 检测字符串是否是包名
         /// </summary>
-        /// <param name="text">字符串</param>
+        /// <param name="text">要检测的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("检测字符串是否是包名", "")]
+        [LuaApiParamDescription("text", "要检测的字符串")]
         public static bool IsPackageName(string text)
         {
             if (isNullOrEmpty(text)) return false;
             return Regex.IsMatch(text, "^([a-zA-Z]+[.][a-zA-Z]+)[.]*.*");
         }
         /// <summary>
-        /// 比较两个版本先后，1 小于 2 返回 -1 ，大于返回 1，等于返回 0
+        /// 比较两个版本字符串的先后
         /// </summary>
         /// <param name="version1">版本1</param>
         /// <param name="version2">版本2</param>
-        /// <returns></returns>
+        /// <returns>1 小于 2 返回 -1 ，大于返回 1，等于返回 0</returns>
+        [LuaApiDescription("比较两个版本字符串的先后", "1 小于 2 返回 -1 ，大于返回 1，等于返回 0")]
+        [LuaApiParamDescription("version1", "版本1")]
+        [LuaApiParamDescription("version2", "版本2")]
         public static int CompareTwoVersion(string version1, string version2)
         {
             if (version1 == version2) return 0;
@@ -97,8 +131,10 @@ namespace Ballance2.Utils
         /// <summary>
         /// 替换字符串的 &lt;br&gt; 转为换行符
         /// </summary>
-        /// <param name="str">字符串</param>
+        /// <param name="str">要替换的字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("替换字符串的 <br> 转为换行符", "")]
+        [LuaApiParamDescription("str", "要替换的字符串")]
         public static string ReplaceBrToLine(string str)
         {
             return str.Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n"); ;
@@ -106,8 +142,10 @@ namespace Ballance2.Utils
         /// <summary>
         /// 颜色字符串转为 Color
         /// </summary>
-        /// <param name="color">颜色字符串</param>
+        /// <param name="color">要转换的颜色字符串,支持Color中定义的颜色名称，或者是#ffffff格式或者是255,255,255格式的颜色数值字符串</param>
         /// <returns></returns>
+        [LuaApiDescription("颜色字符串转为 Color", "")]
+        [LuaApiParamDescription("color", "要转换的颜色字符串,支持Color中定义的颜色名称，或者是#ffffff格式或者是255,255,255格式的颜色数值字符串")]
         public static Color StringToColor(string color)
         {
             switch(color)
@@ -149,8 +187,10 @@ namespace Ballance2.Utils
         /// <summary>
         /// 尝试把字符串数组转为参数数组
         /// </summary>
-        /// <param name="arr">字符串数组</param>
+        /// <param name="arr">要转换的字符串数组</param>
         /// <returns></returns>
+        [LuaApiDescription("尝试把字符串数组转为参数数组", "")]
+        [LuaApiParamDescription("arr", "要转换的字符串数组")]
         public static object[] TryConvertStringArrayToValueArray(string[] arr)
         {
             object[] rs = new object[arr.Length];
@@ -182,8 +222,10 @@ namespace Ballance2.Utils
         /// <summary>
         /// 尝试把参数数组数组转为字符串
         /// </summary>
-        /// <param name="arr">参数数组</param>
+        /// <param name="arr">要转换的参数数组</param>
         /// <returns></returns>
+        [LuaApiDescription("尝试把参数数组数组转为字符串", "")]
+        [LuaApiParamDescription("arr", "要转换的参数数组")]
         public static string ValueArrayToString(object[] arr)
         {
             StringBuilder sb = new StringBuilder();
@@ -208,6 +250,9 @@ namespace Ballance2.Utils
         /// <param name="inV">bytes数组1</param>
         /// <param name="outV">bytes数组2</param>
         /// <returns>返回两个Bytes是否相等</returns>
+        [LuaApiDescription("比较Bytes", "返回两个Bytes是否相等")]
+        [LuaApiParamDescription("inV", "bytes数组1")]
+        [LuaApiParamDescription("outV", "bytes数组2")]
         public static bool TestBytesMatch(byte[] inV, byte[] outV)
         {
             bool rs = true;
@@ -228,7 +273,13 @@ namespace Ballance2.Utils
             return rs;
         }
 
-
+        /// <summary>
+        /// 修复UTF8的BOM头
+        /// </summary>
+        /// <param name="buffer">内容数组</param>
+        /// <returns>返回处理完成的字符串</returns>
+        [LuaApiDescription("修复UTF8的BOM头", "返回处理完成的字符串")]
+        [LuaApiParamDescription("buffer", "内容数组")]
         public static string FixUtf8BOM(byte[] buffer)
         {
             string xmlStr;

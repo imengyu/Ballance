@@ -1,28 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Ballance.LuaHelpers;
 using UnityEngine;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* KeyListener.cs
+* 
+* 用途：
+* 键盘按键事件事件侦听器
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2018-8-16 创建
+*
+*/
 
 namespace Ballance2.Sys.Utils
 {
-    [SLua.CustomLuaClass]
     /// <summary>
-    /// 键 事件侦听器
+    /// 键盘按键事件事件侦听器
     /// </summary>
+    [SLua.CustomLuaClass]
+    [LuaApiDescription("键盘按键事件事件侦听器")]
     public class KeyListener : MonoBehaviour
-    {
-        [SLua.CustomLuaClass]
+    {    
         /// <summary>
         /// 键盘按键事件回调
         /// </summary>
         /// <param name="downed">是否按下</param>
+        [SLua.CustomLuaClass]
+        [LuaApiDescription("键盘按键事件回调")]
         public delegate void KeyDelegate(KeyCode key, bool downed);
 
         /// <summary>
         /// 从 指定 GameObject 创建键事件侦听器
         /// </summary>
         /// <param name="go">指定 GameObject</param>
-        /// <returns></returns>
-        static public KeyListener Get(GameObject go)
+        /// <returns>返回事件侦听器实例</returns>
+        [LuaApiDescription("从 指定 GameObject 创建键事件侦听器", "返回事件侦听器实例")]
+        [LuaApiParamDescription("go", "指定 GameObject")]
+        public static KeyListener Get(GameObject go)
         {
             KeyListener listener = go.GetComponent<KeyListener>();
             if (listener == null) listener = go.AddComponent<KeyListener>();
@@ -45,6 +66,7 @@ namespace Ballance2.Sys.Utils
         /// <summary>
         /// 检测延迟
         /// </summary>
+        [LuaApiDescription("检测延迟")]
         public int UpdateInterval
         {
             set { updateInterval = value; }
@@ -53,6 +75,7 @@ namespace Ballance2.Sys.Utils
         /// <summary>
         /// 是否开启监听
         /// </summary>
+        [LuaApiDescription("是否开启监听")]
         public bool IsListenKey { get { return isListenKey; } set { isListenKey = value; } }
 
         /// <summary>
@@ -61,6 +84,10 @@ namespace Ballance2.Sys.Utils
         /// <param name="key">键值。</param>
         /// <param name="key2">键值2。</param>
         /// <param name="callBack">回调函数。</param>
+        [LuaApiDescription("添加侦听器侦听键")]
+        [LuaApiParamDescription("key", "键值")]
+        [LuaApiParamDescription("key2", "键值2")]
+        [LuaApiParamDescription("callBack", "回调函数")]
         public void AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
         {
             KeyListener.KeyListenerItem item = new KeyListener.KeyListenerItem();
@@ -75,6 +102,9 @@ namespace Ballance2.Sys.Utils
         /// </summary>
         /// <param name="key">键值。</param>
         /// <param name="callBack">回调函数。</param>
+        [LuaApiDescription("添加侦听器侦听键。")]
+        [LuaApiParamDescription("key", "键值")]
+        [LuaApiParamDescription("callBack", "回调函数")]
         public void AddKeyListen(KeyCode key, KeyDelegate callBack)
         {
             KeyListener.KeyListenerItem item = new KeyListener.KeyListenerItem();
@@ -85,6 +115,7 @@ namespace Ballance2.Sys.Utils
         /// <summary>
         /// 清空事件侦听器所有侦听键。
         /// </summary>
+        [LuaApiDescription("清空事件侦听器所有侦听键。")]
         public void ClearKeyListen()
         {
             items.Clear();

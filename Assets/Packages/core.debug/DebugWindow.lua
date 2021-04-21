@@ -1,3 +1,15 @@
+--[[
+Copyright(c) 2021  mengyu
+* 模块名：     
+DebugWindow.lua
+* 用途：
+调试命令窗口的逻辑
+* 作者：
+mengyu
+* 更改历史：
+2021-1-11 创建
+]]--
+
 Vector2 = UnityEngine.Vector2
 InputField = UnityEngine.UI.InputField
 Text = UnityEngine.UI.Text
@@ -62,7 +74,7 @@ function CreateClass_DebugWindow()
         end
 
         if(#self.logItems > self.logMaxCount) then
-          local item = table.remove(self.logItems, 0)
+          local item = table.remove(self.logItems, 1)
           UnityEngine.Object.Destroy(item.go)
         end
 

@@ -1,5 +1,8 @@
-﻿using Ballance2.Sys.UI.Utils;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Sys.UI.Utils;
+using SLua;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -25,10 +28,11 @@ namespace Ballance2.Sys.UI
     /// 分割两个视图控件，用户可以手动拖动调整两个视图的大小
     /// </summary>
     [ExecuteInEditMode]
-    [SLua.CustomLuaClass]
-    public class SplitView : MonoBehaviour
+    [LuaApiDescription("分割两个视图控件，用户可以手动拖动调整两个视图的大小")]
+    [CustomLuaClass]
+    public class SplitView : UIBehaviour
     {
-        void Start()
+        protected override void Start()
         {
             self = GetComponent<RectTransform>();
             if (splitViewDragger != null)
@@ -59,6 +63,9 @@ namespace Ballance2.Sys.UI
             });
         }
 
+        protected override void OnRectTransformDimensionsChange() {
+            UpdateVal();
+        }
 
         public void UpdateVal()
         {
@@ -95,6 +102,7 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 最小的分割比例（相当于左边或是上部最小大小）
         /// </summary>
+        [LuaApiDescription("最小的分割比例（相当于左边或是上部最小大小）")]
         public float min
         {
             get { return _min; }
@@ -107,6 +115,7 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 最大的分割比例（相当于右边或是下部最小大小）
         /// </summary>
+        [LuaApiDescription("最大的分割比例（相当于右边或是下部最小大小）")]
         public float max
         {
             get { return _max; }
@@ -119,6 +128,7 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 分割方向
         /// </summary>
+        [LuaApiDescription("分割方向")]
         public SplitViewDirection direction
         {
             get { 
@@ -133,6 +143,7 @@ namespace Ballance2.Sys.UI
         /// <summary>
         /// 分割比例(0-1,相当于两个视图的大小比例)
         /// </summary>
+        [LuaApiDescription("分割比例(0-1,相当于两个视图的大小比例)")]
         public float value
         {
             get { return _value; }
@@ -144,17 +155,20 @@ namespace Ballance2.Sys.UI
         }
     }
     /// <summary>
-    /// 分割方向
+    /// 分割视图控件的分割方向
     /// </summary>
+    [LuaApiDescription("分割视图控件的分割方向")]
     public enum SplitViewDirection
     {
         /// <summary>
         /// 左右
         /// </summary>
+        [LuaApiDescription("左右")]
         LeftRight,
         /// <summary>
         /// 上下
         /// </summary>
+        [LuaApiDescription("上下")]
         TopBottom
     }
 }

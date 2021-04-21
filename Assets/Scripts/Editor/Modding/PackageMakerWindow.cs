@@ -24,7 +24,7 @@ namespace Ballance2.Editor.Modding
         private int modVersion = 1;
         private bool GenEntryCodeTemplate = true;
         private GamePackageType PackageType = GamePackageType.Module;
-        private string EntryCode = "Entry.lua.txt";
+        private string EntryCode = "Entry.lua";
 
         private SerializedObject serializedObject;
 
@@ -38,6 +38,10 @@ namespace Ballance2.Editor.Modding
             serializedObject = new SerializedObject(this);
 
             template_PackageDef = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Packages/template_PackageDef.xml");
+        }
+
+        private void OnDisable() {
+            serializedObject = null;
         }
 
         private void OnGUI()
@@ -73,7 +77,7 @@ namespace Ballance2.Editor.Modding
             modAuthor = EditorGUILayout.TextField("模组作者名字", modAuthor);
             modIntroduction = EditorGUILayout.TextField("模组简介文字", modIntroduction, GUILayout.Height(60));
             modVersion = EditorGUILayout.IntField("模组版本（默认1）", modVersion);
-            modUserVersion = EditorGUILayout.TextField("模组版本（显示给用户看的版本，默认1.0）", modUserVersion);
+            modUserVersion = EditorGUILayout.TextField("模组版本（显示用户看）", modUserVersion);
 
 
             PackageType = (GamePackageType)EditorGUILayout.EnumPopup("模组类型", PackageType);
@@ -100,7 +104,7 @@ namespace Ballance2.Editor.Modding
 
             EditorGUILayout.EndVertical();
 
-            if (EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck() && serializedObject != null)
                 serializedObject.ApplyModifiedProperties();
         }
 
@@ -148,18 +152,18 @@ namespace Ballance2.Editor.Modding
             XmlNode EntryCode = xml.SelectSingleNode("Package/EntryCode");
             XmlNode PackageType = xml.SelectSingleNode("Package/Type");
 
-            if (!this.EntryCode.Contains("."))
-                this.EntryCode += ".lua.txt";
-            if (!this.EntryCode.EndsWith(".txt"))
-                this.EntryCode += ".txt";
+            //if (!this.EntryCode.Contains("."))
+            //    this.EntryCode += ".lua.txt";
+            //if (!this.EntryCode.EndsWith(".txt"))
+            //    this.EntryCode += ".txt";
 
             EntryCode.InnerText = this.EntryCode;
             PackageType.InnerText = this.PackageType.ToString();
 
             xml.Save(folderPath + "/PackageDef.xml");
 
-            if(GenEntryCodeTemplate)
-                File.Copy("Assets/Packages/template_PackageEntry.lua.txt", folderPath + "/" + this.EntryCode);
+            if(this.PackageType == GamePackageType.Module &&  GenEntryCodeTemplate)
+                File.Copy("Assets/Packages/template_PackageEntry.lua", folderPath + "/" + this.EntryCode);
 
             File.Copy("Assets/Packages/template_PackageLogo.png", folderPath + "/PackageLogo.png");
 

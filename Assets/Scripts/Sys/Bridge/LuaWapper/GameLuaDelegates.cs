@@ -20,10 +20,6 @@ using UnityEngine.EventSystems;
 
 namespace Ballance2.Sys.Bridge.LuaWapper
 {
-    //[CustomLuaClass]
-    //public delegate void LuaManagerRedayDelegate(LuaTable self, 
-    //    Store store, GameActionStore actionStore, BaseManager baseManager);
-
     [CustomLuaClass]
     public delegate void LuaStartDelegate(LuaTable self, GameObject gameObject);
     [CustomLuaClass]
@@ -51,7 +47,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
     [CustomLuaClass]
     public delegate void LuaAxisEventDataDelegate(LuaTable self, AxisEventData baseEvent);
     
-
     [CustomLuaClass]
     public delegate void LuaVoidDelegate(LuaTable self);
 
@@ -61,6 +56,4 @@ namespace Ballance2.Sys.Bridge.LuaWapper
     public delegate bool LuaStoreReturnBoolDelegate(LuaTable self, Store store);
     [CustomLuaClass]
     public delegate bool LuaActionStoreReturnBoolDelegate(LuaTable self, GameActionStore store);
-
-
 }

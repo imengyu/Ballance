@@ -1,3 +1,14 @@
+--[[
+Copyright(c) 2021  mengyu
+* 模块名：     
+DebugUtils.lua
+* 用途：
+日志信息
+* 作者：
+mengyu
+* 更改历史：
+2021-1-12 创建
+]]--
 
 ---获取日志颜色
 ---@param level LogLevel

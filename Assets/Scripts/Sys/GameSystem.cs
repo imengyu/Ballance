@@ -1,6 +1,9 @@
-﻿using Ballance2.Sys.Bridge;
+﻿using Ballance2.Config;
+using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
+using Ballance2.Sys.Entry;
 using Ballance2.Sys.Package;
+using Ballance2.Sys.Res;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.Utils;
 using Ballance2.Utils;
@@ -173,6 +176,10 @@ namespace Ballance2.Sys
 
         private static bool sysInit = false;
 
+        internal static void FillResEntry(GameStaticResEntry gameEntry)  { gameStaticResEntryInstance = gameEntry; }
+
+        private static GameStaticResEntry gameStaticResEntryInstance = null;
+
         /// <summary>
         /// 初始化
         /// </summary> 
@@ -183,6 +190,12 @@ namespace Ballance2.Sys
 
                 //Init system
                 UnityLogCatcher.Init();
+                //初始化静态资源入口
+                GameStaticResourcesPool.InitStaticPrefab(
+                    gameStaticResEntryInstance.GamePrefab,
+                    gameStaticResEntryInstance.GameAssets);
+                //初始化设置
+                GameSettingsManager.Init();
                 
                 //Call game init
                 if(sysHandler == null) {
@@ -205,6 +218,7 @@ namespace Ballance2.Sys
                 //Init base services
                 RegSystemService("GameUIManager", new GameUIManager());
                 RegSystemService("GamePackageManager", new GamePackageManager());
+                RegSystemService("GameSoundManager", new GameSoundManager());
 
                 //Call init
                 sysHandler(ACTION_INIT);
@@ -233,6 +247,8 @@ namespace Ballance2.Sys
                 serviceNames.Clear();
                 systemService.Clear();
 
+                //释放其他组件
+                GameSettingsManager.Destroy();
                 UnityLogCatcher.Destroy();
 
             } else {

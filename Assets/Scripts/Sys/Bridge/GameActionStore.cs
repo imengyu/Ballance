@@ -1,4 +1,5 @@
-﻿using Ballance2.Sys.Bridge.Handler;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Sys.Bridge.Handler;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using Ballance2.Utils;
@@ -29,12 +30,15 @@ namespace Ballance2.Sys.Bridge
     /// 操作存储库
     /// </summary>
     [CustomLuaClass] 
+    [LuaApiDescription("操作存储库")]
     public class GameActionStore
     {
         /// <summary>
         /// 创建操作存储库
         /// </summary>
         /// <param name="name">池名称</param>
+        [LuaApiDescription("创建操作存储库")]
+        [LuaApiParamDescription("name", "池名称")]
         public GameActionStore(GamePackage package, string name)
         {
             _Package = package;
@@ -63,24 +67,29 @@ namespace Ballance2.Sys.Bridge
         private Dictionary<string, GameAction> actions = null;
 
         /// <summary>
-        /// 标签
+        /// 获取此存储库的标签
         /// </summary>
+        [LuaApiDescription("获取此存储库的标签")]
         public string TAG { get { return _Name + ":GameActionStore"; } }
         /// <summary>
         /// 获取此存储库的所有操作
         /// </summary>
+        [LuaApiDescription("获取此存储库的所有操作")]
         public Dictionary<string, GameAction> Actions { get { return actions; } }
         /// <summary>
         /// 获取此存储库的包名
         /// </summary>
+        [LuaApiDescription("获取此存储库的包名")]
         public string Name { get { return _Name; } }
         /// <summary>
         /// 获取此存储库的KeyName
         /// </summary>
+        [LuaApiDescription("获取此存储库的KeyName")]
         public string KeyName { get { return _Package.PackageName + ":" + _Name; } }
         /// <summary>
         /// 获取此存储库所属的包
         /// </summary>
+        [LuaApiDescription("获取此存储库所属的包")]
         public GamePackage Package { get { return _Package; } }
 
         /// <summary>
@@ -96,6 +105,12 @@ namespace Ballance2.Sys.Bridge
         /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
         /// </param>
         /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
+        [LuaApiDescription("注册操作", "返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("name", "操作名称")]
+        [LuaApiParamDescription("handlerName", "接收器名称")]
+        [LuaApiParamDescription("handler", "接收函数")]
+        [LuaApiParamDescription("callTypeCheck", "函数参数检查，数组长度规定了操作需要的参数，组值是一个或多个允许的类型名字，例如 UnityEngine.GameObject System.String 。如果一个参数允许多种类型，可使用/分隔。如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查")]
         public GameAction RegisterAction(GamePackage package, string name, string handlerName, GameActionHandlerDelegate handler, string[] callTypeCheck)
         {
             return RegisterAction(package, name, GameHandler.CreateCsActionHandler(package, handlerName, handler), callTypeCheck);
@@ -114,6 +129,13 @@ namespace Ballance2.Sys.Bridge
         /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
         /// </param>
         /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
+        [LuaApiDescription("注册操作(LUA)", "返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("name", "操作名称")]
+        [LuaApiParamDescription("handlerName", "接收器名称")]
+        [LuaApiParamDescription("luaFunction", "LUA接收函数")]
+        [LuaApiParamDescription("self", "LUA self （当前类，LuaTable），如无可填null")]
+        [LuaApiParamDescription("callTypeCheck", "函数参数检查，数组长度规定了操作需要的参数，组值是一个或多个允许的类型名字，例如 UnityEngine.GameObject System.String 。如果一个参数允许多种类型，可使用/分隔。如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查")]
         public GameAction RegisterAction(GamePackage package, string name, string handlerName, LuaFunction luaFunction, LuaTable self, string[] callTypeCheck)
         {
             return RegisterAction(package, name, GameHandler.CreateLuaHandler(package, handlerName, luaFunction, self), callTypeCheck);
@@ -130,6 +152,11 @@ namespace Ballance2.Sys.Bridge
         /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
         /// </param>
         /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
+        [LuaApiDescription("注册操作", "返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("name", "操作名称")]
+        [LuaApiParamDescription("handler", "接收器")]
+        [LuaApiParamDescription("callTypeCheck", "函数参数检查，数组长度规定了操作需要的参数，组值是一个或多个允许的类型名字，例如 UnityEngine.GameObject System.String 。如果一个参数允许多种类型，可使用/分隔。如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查")]
         public GameAction RegisterAction(GamePackage package, string name, GameHandler handler, string[] callTypeCheck)
         {
             if (string.IsNullOrEmpty(name))
@@ -166,6 +193,8 @@ namespace Ballance2.Sys.Bridge
         /// 取消注册操作
         /// </summary>
         /// <param name="action">操作实例</param>
+        [LuaApiDescription("取消注册操作")]
+        [LuaApiParamDescription("action", "操作实例")]
         public void UnRegisterAction(GameAction action)
         {
             if (action == null)
@@ -188,6 +217,8 @@ namespace Ballance2.Sys.Bridge
         /// 取消注册操作
         /// </summary>
         /// <param name="name">操作名称</param>
+        [LuaApiDescription("取消注册操作")]
+        [LuaApiParamDescription("name", "操作名称")]
         public void UnRegisterAction(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -211,7 +242,9 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 取消注册多个操作
         /// </summary>
-        /// <param name="name">操作名称</param>
+        /// <param name="names">操作名称数组</param>
+        [LuaApiDescription("取消注册多个操作")]
+        [LuaApiParamDescription("names", "操作名称数组")]
         public void UnRegisterActions(string[] names)
         {
             if (CommonUtils.IsArrayNullOrEmpty(names))
@@ -226,7 +259,9 @@ namespace Ballance2.Sys.Bridge
         /// 获取操作是否注册
         /// </summary>
         /// <param name="name">操作名称</param>
-        /// <returns>是否注册</returns>
+        /// <returns>返回是否注册</returns>
+        [LuaApiDescription("获取操作是否注册", "返回是否注册")]
+        [LuaApiParamDescription("name", "操作名称")]
         public bool IsActionRegistered(string name)
         {
             return actions.ContainsKey(name);
@@ -236,7 +271,10 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="name">操作名称</param>
         /// <param name="e">返回的操作实例</param>
-        /// <returns>是否注册</returns>
+        /// <returns>返回是否注册</returns>
+        [LuaApiDescription("获取操作是否注册，如果已注册，则返回实例", "返回是否注册")]
+        [LuaApiParamDescription("name", "操作名称")]
+        [LuaApiParamDescription("e", "返回的操作实例")]
         public bool IsActionRegistered(string name, out GameAction e)
         {
             if (actions.TryGetValue(name, out e))
@@ -249,6 +287,8 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="name">操作名称</param>
         /// <returns>返回的操作实例</returns>
+        [LuaApiDescription("获取操作实例", "返回的操作实例")]
+        [LuaApiParamDescription("name", "操作名称")]
         public GameAction GetRegisteredAction(string name)
         {
             GameAction a;
@@ -266,6 +306,12 @@ namespace Ballance2.Sys.Bridge
         /// <param name="handlers">接收函数数组</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
+        [LuaApiDescription("注册多个操作", "返回注册成功的操作个数")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("names", "操作名称数组")]
+        [LuaApiParamDescription("handlerNames", "接收器名称数组")]
+        [LuaApiParamDescription("handlers", "接收函数数组")]
+        [LuaApiParamDescription("callTypeChecks", "函数参数检查，如果不需要，也可以为null")]
         public int RegisterActions(GamePackage package, string[] names, string[] handlerNames, GameActionHandlerDelegate[] handlers, string[][] callTypeChecks)
         {
             int succCount = 0;
@@ -311,10 +357,15 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="package">操作所在模块包</param>
         /// <param name="names">操作名称数组</param>
-        /// <param name="handlerNams">接收器名称</param>
+        /// <param name="handlerName">接收器名称</param>
         /// <param name="handlers">接收函数数组</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
+        [LuaApiDescription("注册多个操作", "返回注册成功的操作个数")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("names", "操作名称数组")]
+        [LuaApiParamDescription("handlerName", "接收器名称")]
+        [LuaApiParamDescription("callTypeChecks", "函数参数检查，如果不需要，也可以为null")]
         public int RegisterActions(GamePackage package, string[] names, string handlerName, GameActionHandlerDelegate[] handlers, string[][] callTypeChecks)
         {
             int succCount = 0;
@@ -364,6 +415,13 @@ namespace Ballance2.Sys.Bridge
         /// <param name="self">LUA self （当前类，LuaTable），如无可填null</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
+        [LuaApiDescription("注册多个操作", "返回注册成功的操作个数")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("names", "操作名称数组")]
+        [LuaApiParamDescription("handlerNames", "接收器名称数组")]
+        [LuaApiParamDescription("luaFunctionHandlers", "LUA接收函数数组")]
+        [LuaApiParamDescription("self", "LUA self （当前类，LuaTable），如无可填null")]
+        [LuaApiParamDescription("callTypeChecks", "函数参数检查，如果不需要，也可以为null")]
         public int RegisterActions(GamePackage package, string[] names, string[] handlerNames, LuaFunction[] luaFunctionHandlers, LuaTable self, string[][] callTypeChecks)
         {
             int succCount = 0;
@@ -412,6 +470,13 @@ namespace Ballance2.Sys.Bridge
         /// <param name="self">LUA self （当前类，LuaTable），如无可填null</param>
         /// <param name="callTypeChecks">函数参数检查，如果不需要，也可以为null</param>
         /// <returns>返回注册成功的操作个数</returns>
+        [LuaApiDescription("注册多个操作", "返回注册成功的操作个数")]
+        [LuaApiParamDescription("package", "操作所在模块包")]
+        [LuaApiParamDescription("names", "操作名称数组")]
+        [LuaApiParamDescription("handlerName", "接收器名（多个接收器名字一样）")]
+        [LuaApiParamDescription("luaFunctionHandlers", "LUA接收函数数组")]
+        [LuaApiParamDescription("self", "LUA self （当前类，LuaTable），如无可填null")]
+        [LuaApiParamDescription("callTypeChecks", "函数参数检查，如果不需要，也可以为null")]
         public int RegisterActions(GamePackage package, string[] names, string handlerName, LuaFunction[] luaFunctionHandlers, LuaTable self, string[][] callTypeChecks)
         {
             int succCount = 0;
@@ -456,6 +521,9 @@ namespace Ballance2.Sys.Bridge
         /// <param name="name">目标操作名称</param>
         /// <param name="param">调用参数</param>
         /// <returns>返回操作调用结果，如果未找到操作，则返回 GameActionCallResult.FailResult </returns>
+        [LuaApiDescription("调用操作", "返回操作调用结果，如果未找到操作，则返回 GameActionCallResult.FailResult ")]
+        [LuaApiParamDescription("name", "目标操作名称")]
+        [LuaApiParamDescription("param", "调用参数")]
         public GameActionCallResult CallAction(string name, params object[] param)
         {
             GameActionCallResult result = GameActionCallResult.FailResult;
@@ -476,6 +544,9 @@ namespace Ballance2.Sys.Bridge
         /// <param name="action">目标操作实例</param>
         /// <param name="param">调用参数</param>
         /// <returns>返回操作调用结果，如果未找到操作，则返回 GameActionCallResult.FailResult </returns>
+        [LuaApiDescription("调用操作", "返回操作调用结果，如果未找到操作，则返回 GameActionCallResult.FailResult ")]
+        [LuaApiParamDescription("name", "目标操作名称")]
+        [LuaApiParamDescription("param", "调用参数")]
         public GameActionCallResult CallAction(GameAction action, params object[] param)
         {
             GameErrorChecker.LastError = GameError.None;

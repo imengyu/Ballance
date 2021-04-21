@@ -1,8 +1,6 @@
-﻿using Ballance2.Config;
-using Ballance2.Sys.Debug;
+﻿using Ballance2.Sys.Debug;
+using Ballance2.Sys.Res;
 using Ballance2.Utils;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
@@ -30,11 +28,8 @@ namespace Ballance2.Sys.Package
     /// <summary>
     /// 模块包 AssetBundle
     /// </summary>
-    [SLua.CustomLuaClass]
     public class GameAssetBundlePackage : GamePackage
     {
-        private readonly string TAG = "GameAssetBundlePackage";
-
         public override void Destroy()
         {
             base.Destroy();
@@ -72,6 +67,10 @@ namespace Ballance2.Sys.Package
                     {
                         PackageDef = new XmlDocument();
                         PackageDef.LoadXml(modDefTextAsset.text);
+
+                        if(StringUtils.IsUrl(filePath)) UpdateTime = System.DateTime.Now;
+                        else UpdateTime = System.IO.File.GetLastWriteTime(GamePathManager.FixFilePathScheme(filePath));
+
                         ReadInfo(PackageDef);
 
                         return true;

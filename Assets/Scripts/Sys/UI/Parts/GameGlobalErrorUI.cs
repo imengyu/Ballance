@@ -1,6 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameGlobalErrorUI.cs
+* 
+* 用途：
+* 全局错误UI逻辑控制
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-1 创建
+*
+*/
+
 namespace Ballance2.UI.Parts
 {
     class GameGlobalErrorUI : MonoBehaviour

@@ -7,41 +7,41 @@ using UnityEngine;
 /*
 * Copyright (c) 2020  mengyu
 * 
-* Ä£¿éÃû£º 
+* æ¨¡å—åï¼š 
 * DebugSettings.cs
 * 
-* ÓÃÍ¾£º
-* »ñÈ¡µ÷ÊÔÉèÖÃ¡£
-* Äã¿ÉÒÔÔÚUnity±à¼­Æ÷ÖĞµã»÷ Ballance/¿ª·¢ÉèÖÃ/Debug Settings ²Ëµ¥À´ÅäÖÃ×Ô¼ºµÄ¿ª·¢ÉèÖÃ¡£
+* ç”¨é€”ï¼š
+* è·å–è°ƒè¯•è®¾ç½®ã€‚
+* ä½ å¯ä»¥åœ¨Unityç¼–è¾‘å™¨ä¸­ç‚¹å‡» Ballance/å¼€å‘è®¾ç½®/Debug Settings èœå•æ¥é…ç½®è‡ªå·±çš„å¼€å‘è®¾ç½®ã€‚
 * 
-* ×÷Õß£º
+* ä½œè€…ï¼š
 * mengyu
 * 
-* ¸ü¸ÄÀúÊ·£º
-* 2020-6-12 ´´½¨
+* æ›´æ”¹å†å²ï¼š
+* 2020-6-12 åˆ›å»º
 * 
 */
 
 namespace Ballance2.Config.Settings
 {
 	/// <summary>
-	/// µ÷ÊÔÉèÖÃ
+	/// è°ƒè¯•è®¾ç½®
 	/// </summary>
 	public class DebugSettings : ScriptableObject
 	{
-		[Tooltip("ÉèÖÃ Ballance µ÷ÊÔÊä³ö ×éÓëÄ£¿éµÄÎÄ¼ş¼ĞÂ·¾¶")]
+		[Tooltip("è®¾ç½® Ballance è°ƒè¯•è¾“å‡º ç»„ä¸æ¨¡å—çš„æ–‡ä»¶å¤¹è·¯å¾„")]
 		public string DebugFolder = "";
-		[Tooltip("ÉèÖÃÊÇ·ñÆôÓÃSystemµ÷ÊÔ²âÊÔ")]
+		[Tooltip("è®¾ç½®æ˜¯å¦å¯ç”¨Systemè°ƒè¯•æµ‹è¯•")]
 		public bool EnableSystemDebugTests = true;
-		[Tooltip("ÉèÖÃÏµÍ³³õÊ¼»¯ÎÄ¼ş¼ÓÔØ·½Ê½")]
+		[Tooltip("è®¾ç½®ç³»ç»Ÿåˆå§‹åŒ–æ–‡ä»¶åŠ è½½æ–¹å¼")]
 		public LoadResWay SystemInitLoadWay = LoadResWay.InDebugFolder;
-		[Tooltip("ÉèÖÃÄ£¿éÎÄ¼ş¼ÓÔØ·½Ê½")]
+		[Tooltip("è®¾ç½®æ¨¡å—æ–‡ä»¶åŠ è½½æ–¹å¼")]
 		public LoadResWay PackageLoadWay = LoadResWay.InDebugFolder;
 
 		private static DebugSettings _instance = null;
 
 		/// <summary>
-		/// »ñÈ¡µ÷ÊÔÉèÖÃÊµÀı
+		/// è·å–è°ƒè¯•è®¾ç½®å®ä¾‹
 		/// </summary>
 		public static DebugSettings Instance
 		{
@@ -70,7 +70,7 @@ namespace Ballance2.Config.Settings
 		}
 
 #if UNITY_EDITOR 
-		[MenuItem("Ballance/ÉèÖÃ/¿ª·¢ÉèÖÃ", priority = 298)]
+		[MenuItem("Ballance/è®¾ç½®/å¼€å‘è®¾ç½®", priority = 298)]
 		public static void Open()
 		{
 			Selection.activeObject = Instance;

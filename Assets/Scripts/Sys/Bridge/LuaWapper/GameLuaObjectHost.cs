@@ -1,4 +1,5 @@
-﻿using Ballance2.Sys.Debug;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.Services;
 using Ballance2.Utils;
@@ -57,6 +58,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
     /// </remarks>
     [CustomLuaClass]
     [AddComponentMenu("Ballance/Lua/GameLuaObjectHost")]
+    [LuaApiDescription("简易 Lua 脚本承载组件")]
     public class GameLuaObjectHost : MonoBehaviour
     {
         public const string TAG = "GameLuaObjectHost";
@@ -65,17 +67,19 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// Lua 对象名字，用于 FindLuaObject 查找
         /// </summary>
         [Tooltip("Lua 对象名字，用于 FindLuaObject 查找")]
+        [LuaApiDescription("Lua 对象名字")]
         public string Name;
-
         /// <summary>
         /// 获取或设置 Lua类的文件名（eg MenuLevel）
         /// </summary>
         [Tooltip("设置 Lua类的文件名（eg MenuLevel）")]
+        [LuaApiDescription("Lua类的文件名")]
         public string LuaClassName;
         /// <summary>
         /// 获取或设置 Lua 类所在的模块包名（该模块类型必须是 Module 并可运行）。设置后该对象会自动注册到 LuaObject 中
         /// </summary>
         [Tooltip("设置 Lua 类所在的模块包名（该模块类型必须是 Module 并可运行）。设置后该对象会自动注册到 LuaObject 中")]
+        [LuaApiDescription("Lua 类所在的模块包名")]
         public string LuaPackageName;
         /// <summary>
         /// 设置 Lua 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。
@@ -85,6 +89,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// 其不会自动更新，你需要手动调用 UpdateVarFromLua UpdateVarToLua 来更新对应数据。
         /// </remarks>
         [Tooltip("设置 Lua 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。")]
+        [LuaApiDescription("Lua 初始参数")]
         [SerializeField]
         public List<LuaVarObjectInfo> LuaInitialVars = new List<LuaVarObjectInfo>();
         /// <summary>
@@ -95,35 +100,43 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [SerializeField]
         public int ExecuteOrder = 0;
         [Tooltip("是否创建 GlobalStore，勾选后会创建此Lua脚本的共享数据仓库(仓库名字是 包名:Name)，可以使用 self.store 或 GameLuaObjectHost.Store 访问 ")]
+        [LuaApiDescription("是否创建 GlobalStore")]
         [SerializeField]
         public bool CreateStore = false;
         [Tooltip("是否自动创建共享操作仓库，勾选后会创建此Lua脚本的操作仓库(仓库名字是 包名:Name)，可以使用 self.actionStore 或 GameLuaObjectHost.ActionStore 访问 ")]
+        [LuaApiDescription("是否自动创建共享操作仓库")]
         [SerializeField]
         public bool CreateActionStore = false;
 
         /// <summary>
-        /// lua self
+        /// 获取lua self
         /// </summary>
+        [LuaApiDescription("获取lua self")]
         public LuaTable LuaSelf { get { return self; } }
         /// <summary>
         /// 获取当前虚拟机
         /// </summary>
+        [LuaApiDescription("获取当前虚拟机")]
         public LuaState LuaState { get; set; }
         /// <summary>
-        /// 获取对应 模组包
+        /// 获取对应模块包
         /// </summary>
+        [LuaApiDescription("获取对应模块包")]
         public GamePackage Package { get; set; }
         /// <summary>
         /// 获取此Lua脚本的共享数据仓库
         /// </summary>
+        [LuaApiDescription("获取此Lua脚本的共享数据仓库")]
         public Store Store { get; set; }
         /// <summary>
         /// 获取此Lua脚本的共享操作仓库
         /// </summary>
+        [LuaApiDescription("获取此Lua脚本的共享操作仓库")]
         public GameActionStore ActionStore { get; set; }
         /// <summary>
         /// 获取该 Lua 脚本所属包包名
         /// </summary>
+        [LuaApiDescription("获取该 Lua 脚本所属包包名")]
         public string PackageName { get { return _PackageName; } }
 
         private GamePackageManager GamePackageManager;
@@ -145,9 +158,11 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         private bool awakeCalledBeforeInit = false;
         private bool startCalledBeforeInit = false;
 
+        public System.Action LuaInitFinished;
+
         private void DoInit()
         {
-            GamePackageManager = GameManager.Instance.GetSystemService<GamePackageManager>("GamePackageManager");
+            GamePackageManager = GameManager.Instance.GetSystemService<GamePackageManager>();
 
             if (!LuaInit())
             {
@@ -156,8 +171,10 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             }
             else
             {
+                LuaInitFinished.Invoke();
+
                 if (awakeCalledBeforeInit && awake != null) awake(self);
-                if (startCalledBeforeInit && start != null) start(self, gameObject);      
+                if (startCalledBeforeInit && start != null) start(self, gameObject);   
             }
         }
 
@@ -338,26 +355,29 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         }
 
         /// <summary>
-        /// 更新 lua 脚本的 InitialVars 至 LuaInitialVars 脚本上
+        /// 更新 lua 脚本的所有 InitialVars 至 lua table上
         /// </summary>
+        [LuaApiDescription("更新 lua 脚本的所有 InitialVars 至 lua table上")]
         public void UpdateAllVarToLua()
         {
             foreach (LuaVarObjectInfo objectInfo in LuaInitialVars)
                 objectInfo.UpdateToLua(LuaSelf);
         }
         /// <summary>
-        /// 更新所有 LuaInitialVars 至 lua 脚本上
+        /// 更新所有  lua table上的 InitialVars 至当前脚本上
         /// </summary>
+        [LuaApiDescription("更新所有  lua table上的 InitialVars 至当前脚本上")]
         public void UpdateAllVarFromLua()
         {
             foreach (LuaVarObjectInfo objectInfo in LuaInitialVars)
                 objectInfo.UpdateFromLua(LuaSelf);
         }
-
         /// <summary>
-        /// 更新 LuaVarObjectInfo 至 lua 脚本上
+        /// 更新指定的初始变量 LuaVarObjectInfo 至 lua 脚本上
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="v">初始变量名称</param>
+        [LuaApiDescription("更新指定的初始变量 LuaVarObjectInfo 至 lua 脚本上")]
+        [LuaApiParamDescription("v", "初始变量名称")]
         public void UpdateVarToLua(LuaVarObjectInfo v)
         {
             if (!string.IsNullOrEmpty(v.Name))
@@ -366,7 +386,9 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// <summary>
         /// 从 lua 脚本上获取 lua 变量更新至 LuaVarObjectInfo 
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="v">初始变量名称</param>
+        [LuaApiDescription("从 lua 脚本上获取 lua 变量更新至 LuaVarObjectInfo ")]
+        [LuaApiParamDescription("v", "初始变量名称")]
         public void UpdateVarFromLua(LuaVarObjectInfo v)
         {
             v.UpdateFromLua(LuaSelf);
@@ -376,6 +398,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// </summary>
         /// <param name="paramName">变量名称</param>
         /// <returns>如果没有找到变量，则返回false，否则返回true。</returns>
+        [LuaApiDescription("将指定名字的 lua 变量更新至 LuaVarObjectInfo ", "如果没有找到变量，则返回false，否则返回true")]
+        [LuaApiParamDescription("paramName", "变量名称")]
         public bool UpdateVarFromLua(string paramName)
         {
             foreach (LuaVarObjectInfo v in LuaInitialVars)
@@ -391,6 +415,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// 获取当前 Lua 类
         /// </summary>
         /// <returns></returns>
+        [LuaApiDescription("获取当前 Lua 类")]
         public LuaTable GetLuaClass()
         {
             return self;
@@ -400,6 +425,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// </summary>
         /// <param name="funName">函数名</param>
         /// <returns>返回函数，未找到返回null</returns>
+        [LuaApiDescription("获取当前 Object 的指定函数", "返回函数，未找到返回null")]
+        [LuaApiParamDescription("funName", "函数名")]
         public LuaFunction GetLuaFun(string funName)
         {
             LuaFunction f = null;
@@ -408,27 +435,33 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             return f;
         }
         /// <summary>
-        /// 调用的lua无参函数
+        /// 调用lua无参函数
         /// </summary>
         /// <param name="funName">lua函数名称</param>
-        public void CallLuaFun(string funName)
+        /// <returns>Lua函数返回的对象，如果调用该函数失败，则返回null</returns>
+        [LuaApiDescription("调用lua无参函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
+        public object CallLuaFun(string funName)
         {
             LuaFunction f = GetLuaFun(funName);
-            if (f != null) f.call(self);
+            if (f != null) 
+                return f.call(self);
+            return null;
         }
         /// <summary>
-        /// 调用的lua函数
+        /// 调用lua函数
         /// </summary>
         /// <param name="funName">lua函数名称</param>
         /// <param name="pararms">参数</param>
-        public void CallLuaFun(string funName, params object[] pararms)
+        /// <returns>Lua函数返回的对象，如果调用该函数失败，则返回null</returns>
+        [LuaApiDescription("调用lua函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
+        [LuaApiParamDescription("pararms", "参数")]
+        public object CallLuaFun(string funName, params object[] pararms)
         {
             LuaFunction f = GetLuaFun(funName);
-            if (f != null) f.call(self, pararms);
+            if (f != null) return f.call(self, pararms);
+            return null;
         }
-        public void CallLuaFun(string funName, int number) { CallLuaFun(funName, number); }
-        public void CallLuaFun(string funName, float number) { CallLuaFun(funName, number); }
-        public void CallLuaFun(string funName, bool boolean) { CallLuaFun(funName, boolean); }
-        public void CallLuaFun(string funName, string str) { CallLuaFun(funName, str); }
     }
 }

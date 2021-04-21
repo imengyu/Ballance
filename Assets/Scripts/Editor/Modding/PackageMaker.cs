@@ -76,12 +76,7 @@ namespace Ballance2.Editor.Modding
                 }
             }
         }
-    
-        [@MenuItem("Ballance/模组开发/帮助", false, 100)]
-        static void ShowModHelp()
-        {
 
-        }
         [@MenuItem("Ballance/模组开发/生成模组包模板", false, 100)]
         static void MakeModFile()
         {

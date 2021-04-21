@@ -174,70 +174,6 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int RunPackageExecutionCode(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
-			var ret=self.RunPackageExecutionCode();
-			pushValue(l,true);
-			pushValue(l,ret);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int RunPackageBeforeUnLoadCode(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
-			var ret=self.RunPackageBeforeUnLoadCode();
-			pushValue(l,true);
-			pushValue(l,ret);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int RequireLuaClass(IntPtr l) {
 		try {
 			#if DEBUG
@@ -922,6 +858,37 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_TAG(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.TAG);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_CSharpAssembly(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1108,6 +1075,68 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_UpdateTime(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.UpdateTime);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_SystemPackage(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.SystemPackage);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_LoadError(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1246,6 +1275,37 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.MinVersion);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_IsCompatible(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.IsCompatible);
 			return 2;
 		}
 		catch(Exception e) {
@@ -1423,8 +1483,6 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 		addMember(l,FindLuaObject);
 		addMember(l,IsEntryCodeExecuted);
 		addMember(l,IsLuaStateInitFinished);
-		addMember(l,RunPackageExecutionCode);
-		addMember(l,RunPackageBeforeUnLoadCode);
 		addMember(l,RequireLuaClass);
 		addMember(l,RequireLuaFile);
 		addMember(l,GetLuaFun);
@@ -1444,17 +1502,21 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 		addMember(l,SetCustomProp);
 		addMember(l,RemoveCustomProp);
 		addMember(l,GetSystemPackage_s);
+		addMember(l,"TAG",get_TAG,null,true);
 		addMember(l,"CSharpAssembly",get_CSharpAssembly,null,true);
 		addMember(l,"PackageLuaState",get_PackageLuaState,null,true);
 		addMember(l,"PackageFilePath",get_PackageFilePath,null,true);
 		addMember(l,"PackageName",get_PackageName,null,true);
 		addMember(l,"PackageVersion",get_PackageVersion,null,true);
 		addMember(l,"BaseInfo",get_BaseInfo,null,true);
+		addMember(l,"UpdateTime",get_UpdateTime,null,true);
+		addMember(l,"SystemPackage",get_SystemPackage,null,true);
 		addMember(l,"LoadError",get_LoadError,null,true);
 		addMember(l,"PackageDef",get_PackageDef,null,true);
 		addMember(l,"AssetBundle",get_AssetBundle,null,true);
 		addMember(l,"TargetVersion",get_TargetVersion,null,true);
 		addMember(l,"MinVersion",get_MinVersion,null,true);
+		addMember(l,"IsCompatible",get_IsCompatible,null,true);
 		addMember(l,"EntryCode",get_EntryCode,null,true);
 		addMember(l,"Type",get_Type,null,true);
 		addMember(l,"CodeType",get_CodeType,null,true);

@@ -1,4 +1,5 @@
-﻿using Ballance2.Config;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Config;
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Bridge.Handler;
 using Ballance2.Sys.Bridge.LuaWapper;
@@ -39,9 +40,18 @@ namespace Ballance2.Sys.Package
     /// 模块包实例
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("模块包实例")]
     public class GamePackage
     {
-        private readonly string TAG = "GamePackage";
+        /// <summary>
+        /// 标签
+        /// </summary>
+        [LuaApiDescription("标签")]
+        public string TAG { 
+            get {
+                return "GamePackage:" + PackageName;
+            }
+        }
 
         internal int DependencyRefCount = 0;
         internal bool UnLoadWhenDependencyRefNone = false;
@@ -128,6 +138,7 @@ namespace Ballance2.Sys.Package
         /// 获取系统的模块结构
         /// </summary>
         /// <returns></returns>
+        [LuaApiDescription("获取系统模块包")]
         public static GamePackage GetSystemPackage() { return _SystemPackage; }
 
         #endregion
@@ -137,15 +148,23 @@ namespace Ballance2.Sys.Package
         /// <summary>
         /// C# 程序集
         /// </summary>
+        [LuaApiDescription("C# 程序集")]
         public Assembly CSharpAssembly { get; protected set; }
         /// <summary>
         /// C# 程序入口
         /// </summary>
+        [LuaApiDescription("C# 程序入口")]
         private object CSharpPackageEntry = null;
+        /// <summary>
+        /// LUA程序入口
+        /// </summary>
+        [LuaApiDescription("LUA程序入口")]
+        private LuaTable LuaPackageEntry = null;
 
         /// <summary>
-        /// Lua 虚拟机
+        /// 获取 Lua 虚拟机
         /// </summary>
+        [LuaApiDescription("获取 Lua 虚拟机")]
         public virtual LuaState PackageLuaState { get; private set; }
         private PackageLuaServer PackageLuaServer = null;
 
@@ -158,6 +177,10 @@ namespace Ballance2.Sys.Package
         /// <param name="name">lua虚拟脚本的名称</param>
         /// <param name="gameObject">要附加的物体</param>
         /// <param name="className">目标代码类名</param>
+        [LuaApiDescription("注册lua虚拟脚本到物体上")]
+        [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
+        [LuaApiParamDescription("gameObject", "要附加的物体")]
+        [LuaApiParamDescription("className", "目标代码类名")]
         public void RegisterLuaObject(string name, GameObject gameObject, string className)
         {
             GameLuaObjectHost newGameLuaObjectHost = gameObject.AddComponent<GameLuaObjectHost>();
@@ -173,6 +196,9 @@ namespace Ballance2.Sys.Package
         /// <param name="name">lua虚拟脚本的名称</param>
         /// <param name="gameLuaObjectHost">输出lua虚拟脚本</param>
         /// <returns>返回是否找到对应脚本</returns>
+        [LuaApiDescription("查找lua虚拟脚本", "返回是否找到对应脚本")]
+        [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
+        [LuaApiParamDescription("gameLuaObjectHost", "输出lua虚拟脚本")]
         public bool FindLuaObject(string name, out GameLuaObjectHost gameLuaObjectHost)
         {
             foreach (GameLuaObjectHost luaObjectHost in luaObjects)
@@ -201,11 +227,12 @@ namespace Ballance2.Sys.Package
         /// 获取模组启动代码是否已经执行
         /// </summary>
         /// <returns></returns>
+        [LuaApiDescription("获取模组启动代码是否已经执行")]
         public bool IsEntryCodeExecuted() { return mainLuaCodeLoaded; }
 
         private bool mainLuaCodeLoaded = false;
         private bool luaStateInited = false;
-        private bool baseInited = false;
+        protected bool baseInited = false;
 
         //初始化LUA虚拟机
         private async Task<bool> InitLuaState()
@@ -220,17 +247,16 @@ namespace Ballance2.Sys.Package
                 if (ShareLuaState == "core")
                 {
                     PackageLuaState = GameManager.Instance.GameMainLuaState;
-                    LuaStateInitFinished();
+                    SetLuaStateInitFinished();
                     return false;
                 }
 
-                GamePackage m = GameManager.Instance.GetSystemService<GamePackageManager>("GamePackageManager")
-                    .FindPackage(ShareLuaState);
+                GamePackage m = GameManager.Instance.GetSystemService<GamePackageManager>().FindPackage(ShareLuaState);
 
                 if (m != null && m.PackageLuaState != null && m.luaStateInited)
                 {
                     PackageLuaState = m.PackageLuaState;
-                    LuaStateInitFinished();
+                    SetLuaStateInitFinished();
                     return false;
                 }
                 else Log.E(TAG, "package {0} can not be load because " +
@@ -240,31 +266,29 @@ namespace Ballance2.Sys.Package
 
             PackageLuaServer = new PackageLuaServer(PackageName);
             PackageLuaState = PackageLuaServer.getLuaState();
-            PackageLuaServer.init(null, LuaStateInitFinished);
+            PackageLuaServer.init(null, SetLuaStateInitFinished);
 
             await new WaitUntil(IsLuaStateInitFinished);
 
             return true;
         }
+        private void SetLuaStateInitFinished() { luaStateInited = true; }
 
         /// <summary>
         /// 获取Lua虚拟机是否初始化完成
         /// </summary>
         /// <returns></returns>
+        [LuaApiDescription("获取Lua虚拟机是否初始化完成")]
         public bool IsLuaStateInitFinished()
         {
             return luaStateInited;
-        }
-
-        private void LuaStateInitFinished()
-        {
-            luaStateInited = true;
         }
 
         /// <summary>
         /// 运行模块初始化代码
         /// </summary>
         /// <returns></returns>
+        [DoNotToLua]
         public bool RunPackageExecutionCode()
         {
             if (Type != GamePackageType.Module)
@@ -302,9 +326,17 @@ namespace Ballance2.Sys.Package
                         
                         try
                         {
-                            PackageLuaState.doString(lua, PackageName + ":Entry");
-                            mainLuaCodeLoaded = true;
-                            requiredLuaFiles.Add(EntryCode);
+                            LuaPackageEntry = PackageLuaState.doString(lua, PackageName + ":Entry") as LuaTable;
+                            if(LuaPackageEntry == null) {
+                                Log.E(TAG, "模组 {0} 运行启动代码失败! 启动代码未返回指定结构体。\n请检查代码 ->\n{1}", 
+                                    PackageName, 
+                                    DebugUtils.PrintCodeWithLine(lua));
+                                GameErrorChecker.LastError = GameError.ExecutionFailed;
+                                return false;
+                            } else {
+                                mainLuaCodeLoaded = true;
+                                requiredLuaFiles.Add(EntryCode);
+                            }
                         }
                         catch (Exception e)
                         {
@@ -316,7 +348,7 @@ namespace Ballance2.Sys.Package
                             return false;
                         }
 
-                        LuaFunction fPackageEntry = GetLuaFun("PackageEntry");
+                        LuaFunction fPackageEntry = LuaPackageEntry["PackageEntry"] as LuaFunction;
                         if (fPackageEntry != null)
                         {
                             object b = fPackageEntry.call(this);
@@ -379,6 +411,7 @@ namespace Ballance2.Sys.Package
         /// <summary>
         /// 运行模块卸载回调
         /// </summary>
+        [DoNotToLua]
         public bool RunPackageBeforeUnLoadCode()
         {
             if (Type != GamePackageType.Module)
@@ -390,7 +423,9 @@ namespace Ballance2.Sys.Package
             {
                 if (mainLuaCodeLoaded)
                 {
-                    CallLuaFun("PackageBeforeUnLoad", this);
+                    LuaFunction fPackageBeforeUnLoad = LuaPackageEntry["PackageBeforeUnLoad"] as LuaFunction;
+                    if (fPackageBeforeUnLoad != null)
+                        fPackageBeforeUnLoad.call(this);
                     return true;
                 }
             }
@@ -434,7 +469,7 @@ namespace Ballance2.Sys.Package
 
         /// <summary>
         /// 导入 Lua 类到当前模组虚拟机中。
-        /// 注意，类函数以 “<!--@-->类名” 开头，
+        /// 注意，类函数以 “CreateClass_类名” 开头，
         /// 关于 Lua 类，请参考 Docs/LuaClass 。
         /// </summary>
         /// <param name="className">类名</param>
@@ -445,6 +480,8 @@ namespace Ballance2.Sys.Package
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
+        [LuaApiDescription("导入 Lua 类到当前模组虚拟机中", "类创建函数")]
+        [LuaApiParamDescription("className", "类名")]
         public LuaFunction RequireLuaClass(string className)
         {
             LuaFunction classInit;
@@ -491,12 +528,15 @@ namespace Ballance2.Sys.Package
         /// 导入Lua文件到当前模组虚拟机中
         /// </summary>
         /// <param name="fileName">LUA文件名</param>
+        /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
         /// <exception cref="MissingReferenceException">
         /// 如果没有在当前模组包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
+        [LuaApiDescription("导入Lua文件到当前模组虚拟机中", "如果对应文件已导入，则返回true，否则返回false")]
+        [LuaApiParamDescription("fileName", "LUA文件名")]
         public bool RequireLuaFile(string fileName)
         {
             if (requiredLuaFiles.Contains(fileName))
@@ -532,6 +572,8 @@ namespace Ballance2.Sys.Package
         /// </summary>
         /// <param name="funName">函数名</param>
         /// <returns>返回函数，未找到返回null</returns>
+        [LuaApiDescription("获取当前 模块主代码 的指定函数", "返回函数，未找到返回null")]
+        [LuaApiParamDescription("funName", "函数名")]
         public LuaFunction GetLuaFun(string funName)
         {
             if (PackageLuaState == null)
@@ -546,6 +588,8 @@ namespace Ballance2.Sys.Package
         /// 调用模块主代码的lua无参函数
         /// </summary>
         /// <param name="funName">lua函数名称</param>
+        [LuaApiDescription("调用模块主代码的lua无参函数")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
         public void CallLuaFun(string funName)
         {
             LuaFunction f = GetLuaFun(funName);
@@ -557,6 +601,9 @@ namespace Ballance2.Sys.Package
         /// </summary>
         /// <param name="funName">lua函数名称</param>
         /// <param name="pararms">参数</param>
+        [LuaApiDescription("调用模块主代码的lua函数")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
+        [LuaApiParamDescription("pararms", "参数")]
         public void CallLuaFun(string funName, params object[] pararms)
         {
             LuaFunction f = GetLuaFun(funName);
@@ -568,6 +615,9 @@ namespace Ballance2.Sys.Package
         /// </summary>
         /// <param name="luaObjectName">lua虚拟脚本名称</param>
         /// <param name="funName">lua函数名称</param>
+        [LuaApiDescription("调用指定的lua虚拟脚本中的lua无参函数")]
+        [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
         public void CallLuaFun(string luaObjectName, string funName)
         {
             GameLuaObjectHost targetObject = null;
@@ -581,6 +631,10 @@ namespace Ballance2.Sys.Package
         /// <param name="luaObjectName">lua虚拟脚本名称</param>
         /// <param name="funName">lua函数名称</param>
         /// <param name="pararms">参数</param>
+        [LuaApiDescription("调用指定的lua虚拟脚本中的lua函数")]
+        [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
+        [LuaApiParamDescription("pararms", "参数")]
         public void CallLuaFun(string luaObjectName, string funName, params object[] pararms)
         {
             GameLuaObjectHost targetObject = null;
@@ -652,7 +706,10 @@ namespace Ballance2.Sys.Package
                 Log.E(TAG, "MinVersion {0} greater than game version {1}", MinVersion, GameConst.GameBulidVersion);
                 LoadError = "模块版本与当前游戏不兼容，模块所需版本 >=" + MinVersion;
                 GameErrorChecker.LastError = GameError.PackageIncompatible;
+                IsCompatible = false;
                 return false;
+            } else {
+                IsCompatible = true;
             }
 
             //参数
@@ -674,69 +731,104 @@ namespace Ballance2.Sys.Package
         }
 
         /// <summary>
-        /// 模块文件路径
+        /// 获取模块文件路径
         /// </summary>
+        [LuaApiDescription("模块文件路径")]
         public string PackageFilePath { get; protected set; }
         /// <summary>
-        /// 模块包名
+        /// 获取模块包名
         /// </summary>
+        [LuaApiDescription("获取模块包名")]
         public string PackageName { get; protected set; }
         /// <summary>
-        /// 模块版本号
+        /// 获取模块版本号
         /// </summary>
+        [LuaApiDescription("获取模块版本号")]
         public int PackageVersion { get; protected set; }
         /// <summary>
-        /// 基础信息
+        /// 获取基础信息
         /// </summary>
+        [LuaApiDescription("获取基础信息")]
         public GamePackageBaseInfo BaseInfo { get; protected set; }
+        /// <summary>
+        /// 获取模块更新时间
+        /// </summary>
+        [LuaApiDescription("获取模块更新时间")]
+        public DateTime UpdateTime { get; protected set; }
+        /// <summary>
+        /// 获取获取是否是系统必须包
+        /// </summary>
+        [LuaApiDescription("获取获取是否是系统必须包")]
+        public bool SystemPackage { get; internal set; }
 
         /// <summary>
-        /// 加载错误
+        /// 获取模块加载错误
         /// </summary>
+        [LuaApiDescription("获取模块加载错误")]
         public string LoadError { get; protected set; } = "";
 
         /// <summary>
-        /// PackageDef文档
+        /// 获取模块PackageDef文档
         /// </summary>
+        [LuaApiDescription("获取模块PackageDef文档")]
         public XmlDocument PackageDef { get; protected set; }
         /// <summary>
-        /// AssetBundle
+        /// 获取模块AssetBundle
         /// </summary>
+        [LuaApiDescription("获取模块AssetBundle")]
         public AssetBundle AssetBundle { get; protected set; }
 
         /// <summary>
-        /// 表示模块目标游戏内核版本
+        /// 获取表示模块目标游戏内核版本
         /// </summary>
-        public int TargetVersion { get; private set; } = GameConst.GameBulidVersion;
+        [LuaApiDescription("获取表示模块目标游戏内核版本")]
+        public int TargetVersion { get; protected set; } = GameConst.GameBulidVersion;
         /// <summary>
-        /// 表示模块可以正常使用的最低游戏内核版本
+        /// 获取表示模块可以正常使用的最低游戏内核版本
         /// </summary>
-        public int MinVersion { get; private set; } = GameConst.GameBulidVersion;
+        [LuaApiDescription("获取表示模块可以正常使用的最低游戏内核版本")]
+        public int MinVersion { get; protected set; } = GameConst.GameBulidVersion;
+        /// <summary>
+        /// 获取模块是否兼容当前内核
+        /// </summary>
+        [LuaApiDescription("获取模块是否兼容当前内核")]
+        public bool IsCompatible { get; protected set; }
+
 
         /// <summary>
-        /// 入口代码
+        /// 获取模块入口代码
         /// </summary>
-        public string EntryCode { get; private set; }
+        [LuaApiDescription("获取模块入口代码")]
+        public string EntryCode { get; protected set; }
         /// <summary>
-        /// 模块类型
+        /// 获取模块类型
         /// </summary>
-        public GamePackageType Type { get; private set; } = GamePackageType.Asset;
+        [LuaApiDescription("获取模块类型")]
+        public GamePackageType Type { get; protected set; } = GamePackageType.Asset;
         /// <summary>
-        /// 代码类型
+        /// 获取模块代码类型
         /// </summary>
-        public GamePackageCodeType CodeType { get; private set; } = GamePackageCodeType.Lua;
+        [LuaApiDescription("获取模块代码类型")]
+        public GamePackageCodeType CodeType { get; protected set; } = GamePackageCodeType.None;
         /// <summary>
-        /// 共享Lua虚拟机
+        /// 获取模块共享Lua虚拟机
         /// </summary>
-        public string ShareLuaState { get; private set; }
+        [LuaApiDescription("获取模块共享Lua虚拟机")]
+        public string ShareLuaState { get; protected set; }
 
         internal GamePackageStatus _Status = GamePackageStatus.NotLoad;
 
         /// <summary>
         /// 获取模块状态
         /// </summary>
+        [LuaApiDescription("获取模块状态")]
         public GamePackageStatus Status { get { return _Status; } }
-
+        
+        /// <summary>
+        /// 转为字符串显示
+        /// </summary>
+        /// <returns></returns>
+        [LuaApiDescription("转为字符串显示")]
         public override string ToString()
         {
             return "Package: " + PackageName + "(" + PackageVersion + ") => " + _Status;
@@ -747,10 +839,12 @@ namespace Ballance2.Sys.Package
         #region 资源读取
 
         /// <summary>
-        /// 读取 资源包 中的资源
+        /// 读取模块资源包中的资源
         /// </summary>
         /// <param name="pathorname">资源路径</param>
-        /// <returns></returns>
+        /// <returns>返回资源实例，如果未找到，则返回null</returns>
+        [LuaApiDescription("读取模块资源包中的资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual T GetAsset<T>(string pathorname) where T : UnityEngine.Object
         {
             if (AssetBundle == null)
@@ -762,16 +856,20 @@ namespace Ballance2.Sys.Package
             return AssetBundle.LoadAsset<T>(pathorname);
         }
         /// <summary>
-        /// 读取 资源包 中的文字资源
+        /// 读取模块资源包中的文字资源
         /// </summary>
         /// <param name="pathorname">资源路径</param>
-        /// <returns></returns>
+        /// <returns>返回TextAsset实例，如果未找到，则返回null</returns>
+        [LuaApiDescription("读取模块资源包中的文字资源", "返回TextAsset实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual TextAsset GetTextAsset(string pathorname) { return GetAsset<TextAsset>(pathorname); }
         /// <summary>
-        /// 读取 资源包 中的 Prefab 资源
+        /// 读取模块资源包中的 Prefab 资源
         /// </summary>
         /// <param name="pathorname">资源路径</param>
-        /// <returns></returns>
+        /// <returns>返回 GameObject 实例，如果未找到，则返回null</returns>
+        [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回 GameObject 实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual GameObject GetPrefabAsset(string pathorname) { return GetAsset<GameObject>(pathorname); }
         public virtual Texture GetTextureAsset(string pathorname) { return GetAsset<Texture>(pathorname); }
         public virtual Texture2D GetTexture2DAsset(string pathorname) { return GetAsset<Texture2D>(pathorname); }
@@ -779,10 +877,12 @@ namespace Ballance2.Sys.Package
         public virtual Material GetMaterialAsset(string pathorname) { return GetAsset<Material>(pathorname); }
         public virtual PhysicMaterial GetPhysicMaterialAsset(string pathorname) { return GetAsset<PhysicMaterial>(pathorname); }
         /// <summary>
-        /// 读取包中的Lua代码资源
+        /// 读取模块资源包中的Lua代码资源
         /// </summary>
         /// <param name="pathorname">文件名称或路径</param>
         /// <returns>如果读取成功则返回代码内容，否则返回null</returns>
+        [LuaApiDescription("读取模块资源包中的Lua代码资源", "如果读取成功则返回代码内容，否则返回null")]
+        [LuaApiParamDescription("pathorname", "文件名称或路径")]
         public virtual string GetCodeLuaAsset(string pathorname)
         {
             TextAsset textAsset = GetTextAsset(pathorname);
@@ -793,17 +893,18 @@ namespace Ballance2.Sys.Package
             return null;
         }
         /// <summary>
-        /// 加载包中的c#代码资源
+        /// 加载模块资源包中的c#代码资源
         /// </summary>
-        /// <param name="pathorname"></param>
-        /// <returns></returns>
+        /// <param name="pathorname">资源路径</param>
+        /// <returns>如果加载成功则返回已加载的Assembly，否则将抛出异常，若当前环境并不支持加载，则返回null</returns>
+        [LuaApiDescription("加载模块资源包中的c#代码资源", "如果加载成功则返回已加载的Assembly，否则将抛出异常，若当前环境并不支持加载，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual Assembly LoadCodeCSharp(string pathorname)
         {
             GameErrorChecker.SetLastErrorAndLog(GameError.NotSupportFileType, 
                 TAG, "当前模块不支持加载 CSharp 代码");
             return null;
         }
-
 
         #endregion
 
@@ -856,6 +957,15 @@ namespace Ballance2.Sys.Package
 
         private Dictionary<string, object> packageCustomData = new Dictionary<string, object>();
 
+        /// <summary>
+        /// 添加自定义数据
+        /// </summary>
+        /// <param name="name">数据名称</param>
+        /// <param name="data">数据值</param>
+        /// <returns>返回数据值</returns>
+        [LuaApiDescription("添加自定义数据", "返回数据值")]
+        [LuaApiParamDescription("name", "数据名称")]
+        [LuaApiParamDescription("data", "数据值")]
         public object AddCustomProp(string name, object data)
         {
             if (packageCustomData.ContainsKey(name))
@@ -866,12 +976,29 @@ namespace Ballance2.Sys.Package
             packageCustomData.Add(name, data);
             return data;
         }
+        /// <summary>
+        /// 获取自定义数据
+        /// </summary>
+        /// <param name="name">数据名称</param>
+        /// <returns>返回数据值</returns>
+        [LuaApiDescription("获取自定义数据", "返回数据值")]
+        [LuaApiParamDescription("name", "数据名称")]
+        [LuaApiParamDescription("data", "数据值")]
         public object GetCustomProp(string name)
         {
             if (packageCustomData.ContainsKey(name))
                 return packageCustomData[name];
             return null;
         }
+        /// <summary>
+        /// 设置自定义数据
+        /// </summary>
+        /// <param name="name">数据名称</param>
+        /// <param name="data"></param>
+        /// <returns>返回旧的数据值，如果之前没有该数据，则返回null</returns>
+        [LuaApiDescription("设置自定义数据", "返回旧的数据值，如果之前没有该数据，则返回null")]
+        [LuaApiParamDescription("name", "数据名称")]
+        [LuaApiParamDescription("data", "数据值")]
         public object SetCustomProp(string name, object data)
         {
             if (packageCustomData.ContainsKey(name))
@@ -882,6 +1009,13 @@ namespace Ballance2.Sys.Package
             }
             return null;
         }
+        /// <summary>
+        /// 清除自定义数据
+        /// </summary>
+        /// <param name="name">数据名称</param>
+        /// <returns>返回是否成功</returns>
+        [LuaApiDescription("清除自定义数据", "返回是否成功")]
+        [LuaApiParamDescription("name", "数据名称")]
         public bool RemoveCustomProp(string name)
         {
             if (packageCustomData.ContainsKey(name))

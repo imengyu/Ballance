@@ -111,6 +111,37 @@ public class Lua_Ballance2_Sys_Bridge_Store : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_PoolName(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.Store self=(Ballance2.Sys.Bridge.Store)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.PoolName);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int getItem(IntPtr l) {
 		try {
 			#if DEBUG
@@ -186,6 +217,7 @@ public class Lua_Ballance2_Sys_Bridge_Store : LuaObject {
 		addMember(l,GetParameter);
 		addMember(l,getItem);
 		addMember(l,setItem);
+		addMember(l,"PoolName",get_PoolName,null,true);
 		createTypeMetatable(l,null, typeof(Ballance2.Sys.Bridge.Store));
 	}
 }

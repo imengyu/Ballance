@@ -98,6 +98,37 @@ public class Lua_Ballance2_Sys_Package_GamePackageBaseInfo : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_Description(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackageBaseInfo self=(Ballance2.Sys.Package.GamePackageBaseInfo)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.Description);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_Logo(IntPtr l) {
 		try {
 			#if DEBUG
@@ -224,6 +255,68 @@ public class Lua_Ballance2_Sys_Package_GamePackageBaseInfo : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_AuthorLink(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackageBaseInfo self=(Ballance2.Sys.Package.GamePackageBaseInfo)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.AuthorLink);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_DocLink(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Package.GamePackageBaseInfo self=(Ballance2.Sys.Package.GamePackageBaseInfo)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.DocLink);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_VersionName(IntPtr l) {
 		try {
 			#if DEBUG
@@ -290,9 +383,12 @@ public class Lua_Ballance2_Sys_Package_GamePackageBaseInfo : LuaObject {
 		addMember(l,"Name",get_Name,null,true);
 		addMember(l,"Author",get_Author,null,true);
 		addMember(l,"Introduction",get_Introduction,null,true);
+		addMember(l,"Description",get_Description,null,true);
 		addMember(l,"Logo",get_Logo,null,true);
 		addMember(l,"LogoTexture",get_LogoTexture,set_LogoTexture,true);
 		addMember(l,"Link",get_Link,null,true);
+		addMember(l,"AuthorLink",get_AuthorLink,null,true);
+		addMember(l,"DocLink",get_DocLink,null,true);
 		addMember(l,"VersionName",get_VersionName,null,true);
 		addMember(l,"Dependencies",get_Dependencies,null,true);
 		createTypeMetatable(l,null, typeof(Ballance2.Sys.Package.GamePackageBaseInfo));

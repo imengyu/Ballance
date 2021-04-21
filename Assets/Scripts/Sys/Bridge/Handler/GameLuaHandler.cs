@@ -1,10 +1,4 @@
-﻿using Ballance2.Sys.Bridge;
-using SLua;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SLua;
 
 /*
  * Copyright (c) 2020  mengyu

@@ -230,59 +230,21 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
 				System.String a1;
 				checkType(l,2,out a1);
-				self.CallLuaFun(a1);
+				var ret=self.CallLuaFun(a1);
 				pushValue(l,true);
-				return 1;
+				pushValue(l,ret);
+				return 2;
 			}
-			else if(matchType(l,argc,2,typeof(string),typeof(object[]))){
+			else if(argc==3){
 				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
 				System.String a1;
 				checkType(l,2,out a1);
 				System.Object[] a2;
 				checkParams(l,3,out a2);
-				self.CallLuaFun(a1,a2);
+				var ret=self.CallLuaFun(a1,a2);
 				pushValue(l,true);
-				return 1;
-			}
-			else if(matchType(l,argc,2,typeof(string),typeof(int))){
-				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				System.Int32 a2;
-				checkType(l,3,out a2);
-				self.CallLuaFun(a1,a2);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(matchType(l,argc,2,typeof(string),typeof(float))){
-				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				System.Single a2;
-				checkType(l,3,out a2);
-				self.CallLuaFun(a1,a2);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(matchType(l,argc,2,typeof(string),typeof(bool))){
-				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				System.Boolean a2;
-				checkType(l,3,out a2);
-				self.CallLuaFun(a1,a2);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(matchType(l,argc,2,typeof(string),typeof(string))){
-				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				System.String a2;
-				checkType(l,3,out a2);
-				self.CallLuaFun(a1,a2);
-				pushValue(l,true);
-				return 1;
+				pushValue(l,ret);
+				return 2;
 			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function CallLuaFun to call");
@@ -717,6 +679,41 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int set_LuaInitFinished(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.Action v;
+			int op=checkDelegate(l,2,out v);
+			if(op==0) self.LuaInitFinished=v;
+			else if(op==1) self.LuaInitFinished+=v;
+			else if(op==2) self.LuaInitFinished-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_LuaSelf(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1050,6 +1047,7 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 		addMember(l,"LuaInitialVars",get_LuaInitialVars,set_LuaInitialVars,true);
 		addMember(l,"CreateStore",get_CreateStore,set_CreateStore,true);
 		addMember(l,"CreateActionStore",get_CreateActionStore,set_CreateActionStore,true);
+		addMember(l,"LuaInitFinished",null,set_LuaInitFinished,true);
 		addMember(l,"LuaSelf",get_LuaSelf,null,true);
 		addMember(l,"LuaState",get_LuaState,set_LuaState,true);
 		addMember(l,"Package",get_Package,set_Package,true);

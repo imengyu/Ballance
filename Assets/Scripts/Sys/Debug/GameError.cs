@@ -15,17 +15,21 @@
 *
 */
 
+using Ballance.LuaHelpers;
+
 namespace Ballance2.Sys.Debug
 {
-    [SLua.CustomLuaClass]
     /// <summary>
     /// 游戏发生错误的枚举
     /// </summary>
+    [SLua.CustomLuaClass]
+    [LuaApiDescription("游戏发生错误的枚举")]
     public enum GameError
     {
         /// <summary>
         /// 无错误
         /// </summary>
+        [LuaApiDescription("无错误")]
         None,
         UnKnow,
         AlreadyRegistered,
@@ -46,6 +50,7 @@ namespace Ballance2.Sys.Debug
         FunctionNotFound,
         PackageDefNotFound,
         AssetBundleNotFound,
+        AssetNotFound,
         FileReadFailed,
         NotReturn,
         InvalidPackageName,
@@ -59,19 +64,23 @@ namespace Ballance2.Sys.Debug
         UnKnowType,
         LuaBindCheckFailed,
         OnlyCanUseInEditor,
+        PrefabNotFound,
     }
 
     /// <summary>
     /// 错误信息
     /// </summary>
     [SLua.CustomLuaClass]
+    [LuaApiDescription("错误信息")]
     public static class GameErrorInfo
     {
         /// <summary>
         /// 获取错误代码的说明信息
         /// </summary>
         /// <param name="err">错误代码</param>
-        /// <returns></returns>
+        /// <returns>错误代码的说明信息</returns>
+        [LuaApiDescription("获取错误代码的说明信息", "错误代码的说明信息")]
+        [LuaApiParamDescription("err", "错误代码")]
         public static string GetErrorMessage(GameError err)
         {
             switch(err)
@@ -81,7 +90,9 @@ namespace Ballance2.Sys.Debug
                 case GameError.InvalidPackageName: return "无效的包名。";
                 case GameError.LuaBindCheckFailed: return "Lua绑定检测失败。";
                 case GameError.OnlyCanUseInEditor: return "这个功能只能在Unity编辑器中使用。";
+                case GameError.PrefabNotFound: return "未找到预制体。";
                 case GameError.FileReadFailed: return "读取文件失败。";
+                case GameError.AssetNotFound: return "未找到指定的资源。";
                 case GameError.IsLoading: return "正在加载，请稍后。";
                 case GameError.AccessDenined: return "不能执行这个操作。";
                 case GameError.ExecutionFailed: return "执行 Lua 代码失败。";

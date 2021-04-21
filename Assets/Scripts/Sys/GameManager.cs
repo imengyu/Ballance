@@ -1,4 +1,5 @@
-﻿using Ballance2.Config;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Config;
 using Ballance2.Config.Settings;
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
@@ -16,86 +17,89 @@ using System.Xml;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/*
+* Copyright(c) 2021 imengyu
+*
+* 模块名：     
+* GameManager.cs
+* 
+* 用途：
+* 游戏底层主管理器，提供多个关键全局组件使用，负责管理游戏底层管理与控制
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-15 创建
+* 2021-4-13 mengyu 添加了退出方法
+*
+*/
+
 namespace Ballance2.Sys
 {
     /// <summary>
-    /// 游戏管理器
+    /// 游戏底层主管理器，提供多个关键全局组件使用，负责管理游戏底层管理与控制
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("游戏底层主管理器，提供多个关键全局组件使用，负责管理游戏底层管理与控制")]
     public partial class GameManager : MonoBehaviour
     {
+        #region 全局关键组件变量
+
         /// <summary>
         /// 实例
         /// </summary>
+        [LuaApiDescription("实例")]
         public static GameManager Instance { get; private set; }
         /// <summary>
         /// GameMediator 实例
         /// </summary>
+        [LuaApiDescription("GameMediator 实例")]
         public static GameMediator GameMediator { get; internal set; }
 
         /// <summary>
         /// 游戏全局Lua虚拟机
         /// </summary>
+        [LuaApiDescription("游戏全局Lua虚拟机")]
         public LuaSvr.MainState GameMainLuaState { get; private set; }
         /// <summary>
         /// 游戏全局Lua虚拟机
         /// </summary>
+        [LuaApiDescription("游戏全局Lua虚拟机")]
         public LuaSvr GameMainLuaSvr { get; private set; }
         /// <summary>
         /// 基础摄像机
         /// </summary>
+        [LuaApiDescription("基础摄像机")]
         public Camera GameBaseCamera { get; private set; }
         /// <summary>
         /// 根Canvas
         /// </summary>
-        public RectTransform GameCanvas { get; private set; }
+        [LuaApiDescription("根Canvas")]
+        public RectTransform GameCanvas { get; internal set; }
         /// <summary>
         /// 调试命令控制器
         /// </summary>
         /// <value></value>
+        [LuaApiDescription("调试命令控制器")]
         public GameDebugCommandServer GameDebugCommandServer { get; private set; }
         /// <summary>
         /// 游戏内核Store
         /// </summary>
+        [LuaApiDescription("游戏内核Store")]
         public Store GameStore { get; private set; }
         /// <summary>
         /// 游戏内核ActionStore
         /// </summary>
+        [LuaApiDescription("游戏内核ActionStore")]
         public GameActionStore GameActionStore { get; private set; }
 
         private readonly string TAG = "GameManager";
 
-        /// <summary>
-        /// 清空整个场景
-        /// </summary>
-        internal void ClearScense()
-        {
-            foreach (Camera c in Camera.allCameras)
-                c.gameObject.SetActive(false);
-            for (int i = 0, c = GameCanvas.transform.childCount; i < c; i++)
-            {
-                GameObject go = GameCanvas.transform.GetChild(i).gameObject;
-                if (go.name == "GameUIWindow")
-                {
-                    GameObject go1 = null;
-                    for (int j = 0, c1 = go.transform.childCount; j < c1; j++)
-                    {
-                        go1 = go.transform.GetChild(j).gameObject;
-                        if(go1.tag != "DebugWindow")
-                        go1.SetActive(false);
-                    }
-                }
-                else if (go.name != "DebugToolbar")
-                    go.SetActive(false);
-            }
-            for (int i = 0, c = transform.childCount; i < c; i++)
-            {
-                GameObject go = transform.GetChild(i).gameObject;
-                if (go.name != "GameManager")
-                    go.SetActive(false);
-            }
-            GameBaseCamera.gameObject.SetActive(true);
-        }
+        #endregion
+
+        #region 初始化
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -115,6 +119,7 @@ namespace Ballance2.Sys
 
             GameStore = GameMediator.RegisterGlobalDataStore("core");
             GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
+            GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
 
             GameMainLuaSvr = new LuaSvr();
             GameMainLuaSvr.init(null, () =>
@@ -150,12 +155,38 @@ namespace Ballance2.Sys
                 yield break;
             }
 
-            //LoadSystem packages
+            //加载系统 packages
             yield return StartCoroutine(LoadSystemInit());
 
+            //加载用户选择的模块
+            yield return StartCoroutine(LoadUserPackages());
 
+            //通知初始化完成
+            GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
+        }
+        private IEnumerator LoadUserPackages() {
+            var pm = GetSystemService<GamePackageManager>();
+            var list = pm.LoadPackageRegisterInfo();
 
-            yield break;
+            //Save action
+            GameActionStore.RegisterAction(GamePackage.GetSystemPackage(), "SavePackageRegisterInfo", "GameManager", (param) => {
+                pm.SavePackageRegisterInfo();
+                return GameActionCallResult.SuccessResult;
+            }, null);
+
+            foreach(var info in list) {
+
+                var task = pm.RegisterPackage((info.enableLoad ? "Enable:" : "") + info.package);
+                yield return task;
+
+                if(task.Result && info.enableLoad) 
+                    yield return pm.LoadPackage(info.packageName);
+            }
+   
+            yield return new WaitForSeconds(1);
+
+            //全部加载完毕之后通知所有模块初始化
+            pm.NotifyAllPackageRun("*");
         }
         private IEnumerator LoadSystemInit()
         {
@@ -190,75 +221,123 @@ namespace Ballance2.Sys
             }
 
             
-            var pm = GetSystemService<GamePackageManager>("GamePackageManager");
+            var pm = GetSystemService<GamePackageManager>();
 
             //加载SystemPackages中定义的包
             XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
-            for(int i = 0; i < nodeSystemPackages.ChildNodes.Count; i++)
-            {
-                XmlNode nodePackage = nodeSystemPackages.ChildNodes[i];
 
-                if (nodePackage.Name == "Package" && nodePackage.Attributes["name"] != null)
+            for(int loadStepNow = 0; loadStepNow < 2; loadStepNow++) {
+                for(int i = 0; i < nodeSystemPackages.ChildNodes.Count; i++)
                 {
-                    string packageName = nodePackage.Attributes["name"].InnerText;
-                    int minVer = 0;
-                    bool mustLoad = false;
-                    foreach (XmlAttribute attribute in nodePackage.Attributes)
-                    {
-                        if (attribute.Name == "minVer")
-                            minVer = ConverUtils.StringToInt(attribute.Value, 0, "Package/minVer");
-                        else if (attribute.Name == "mustLoad")
-                            mustLoad = ConverUtils.StringToBoolean(attribute.Value, false, "Package/mustLoad");
-                    }
-                    if(string.IsNullOrEmpty(packageName))
-                    {
-                        Log.W(TAG, "The Package node {0} name is empty!", i);
-                        continue;
-                    }
+                    XmlNode nodePackage = nodeSystemPackages.ChildNodes[i];
 
-                    //加载包
-                    Task<bool> task = pm.LoadPackage(packageName);
-                    yield return new WaitUntil(() => task.IsCompleted);
+                    if (nodePackage.Name == "Package" && nodePackage.Attributes["name"] != null)
+                    {
+                        string packageName = nodePackage.Attributes["name"].InnerText;
+                        int minVer = 0;
+                        int loadStep = 0;
+                        bool mustLoad = false;
+                        foreach (XmlAttribute attribute in nodePackage.Attributes)
+                        {
+                            if (attribute.Name == "minVer")
+                                minVer = ConverUtils.StringToInt(attribute.Value, 0, "Package/minVer");
+                            else if (attribute.Name == "mustLoad")
+                                mustLoad = ConverUtils.StringToBoolean(attribute.Value, false, "Package/mustLoad");
+                            else if (attribute.Name == "loadStep")
+                                loadStep = ConverUtils.StringToInt(attribute.Value, 0, "Package/loadStep");
+                        }
+                        if(string.IsNullOrEmpty(packageName))
+                        {
+                            Log.W(TAG, "The Package node {0} name is empty!", i);
+                            continue;
+                        }
+                        if(loadStepNow != loadStep) continue;
 
-                    if (task.Result)
-                    {
-                        GamePackage package = pm.FindPackage(packageName);
-                        if (package == null)
+                        //加载包
+                        Task<bool> task = pm.LoadPackage(packageName);
+                        yield return new WaitUntil(() => task.IsCompleted);
+
+                        if (task.Result)
                         {
-                            StopAllCoroutines();
-                            GameErrorChecker.ThrowGameError(GameError.UnKnow, packageName + " not found!\n请尝试重启游戏");
-                            yield break;
+                            GamePackage package = pm.FindPackage(packageName);
+                            if (package == null)
+                            {
+                                StopAllCoroutines();
+                                GameErrorChecker.ThrowGameError(GameError.UnKnow, packageName + " not found!\n请尝试重启游戏");
+                                yield break;
+                            }
+                            if (package.PackageVersion < minVer)
+                            {
+                                StopAllCoroutines();
+                                GameErrorChecker.ThrowGameError(GameError.SystemPackageNotLoad,
+                                    string.Format("模块 {0} 版本过低：{1} 小于所需版本 {2}, 您可尝试重新安装游戏", 
+                                    packageName, package.PackageVersion, minVer));
+                                yield break;
+                            }
+                            package.SystemPackage = mustLoad;
                         }
-                        if (package.PackageVersion < minVer)
+                        else
                         {
-                            StopAllCoroutines();
-                            GameErrorChecker.ThrowGameError(GameError.SystemPackageNotLoad,
-                                string.Format("模块 {0} 版本过低：{1} 小于所需版本 {2}, 您可尝试重新安装游戏", 
-                                packageName, package.PackageVersion, minVer));
-                            yield break;
-                        }
-                    }
-                    else
-                    {
-                        if (mustLoad)
-                        {
-                            StopAllCoroutines();
-                            GameErrorChecker.ThrowGameError(GameError.SystemPackageNotLoad,
-                                "系统定义的模块：" + packageName + " 未能加载成功\n错误：" +
-                                GameErrorChecker.GetLastErrorMessage() + " (" + GameErrorChecker.LastError + ")\n请尝试重启游戏");
-                            yield break;
+                            if (mustLoad)
+                            {
+                                StopAllCoroutines();
+                                GameErrorChecker.ThrowGameError(GameError.SystemPackageNotLoad,
+                                    "系统定义的模块：" + packageName + " 未能加载成功\n错误：" +
+                                    GameErrorChecker.GetLastErrorMessage() + " (" + GameErrorChecker.LastError + ")\n请尝试重启游戏");
+                                yield break;
+                            }
                         }
                     }
                 }
-            }
-            yield return new WaitForSeconds(1);
 
+                //第一次加载基础包，等待其运行
+                if(loadStepNow == 0) {
+                    yield return new WaitForSeconds(1);
+                    pm.NotifyAllPackageRun("*");
+                    yield return new WaitForSeconds(2);
+                }
+            }
+
+            yield return new WaitForSeconds(2);
             //全部加载完毕之后通知所有模块初始化
             pm.NotifyAllPackageRun("*");
         }
 
+        #endregion
+
         #region 退出和销毁
 
+        /// <summary>
+        /// 清空整个场景
+        /// </summary>
+        internal void ClearScense()
+        {
+            foreach (Camera c in Camera.allCameras)
+                c.gameObject.SetActive(false);
+            for (int i = 0, c = GameCanvas.transform.childCount; i < c; i++)
+            {
+                GameObject go = GameCanvas.transform.GetChild(i).gameObject;
+                if (go.name == "GameUIWindow")
+                {
+                    GameObject go1 = null;
+                    for (int j = 0, c1 = go.transform.childCount; j < c1; j++)
+                    {
+                        go1 = go.transform.GetChild(j).gameObject;
+                        if(go1.tag != "DebugWindow")
+                        go1.SetActive(false);
+                    }
+                }
+                else if (go.name != "DebugToolbar")
+                    go.SetActive(false);
+            }
+            for (int i = 0, c = transform.childCount; i < c; i++)
+            {
+                GameObject go = transform.GetChild(i).gameObject;
+                if (go.name != "GameManager")
+                    go.SetActive(false);
+            }
+            GameBaseCamera.gameObject.SetActive(true);
+        }   
         /// <summary>
         /// 释放
         /// </summary>
@@ -292,7 +371,11 @@ namespace Ballance2.Sys
         }
         private void DoQuit() 
         {
+            var pm = GetSystemService<GamePackageManager>();
+            pm.SavePackageRegisterInfo();
+
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
+            
             ReqGameQuit();
         }
 
@@ -324,42 +407,55 @@ namespace Ballance2.Sys
 
         #endregion
 
+        #region 获取系统服务的包装
+
         /// <summary>
         /// 获取系统服务
         /// </summary>
         /// <typeparam name="T">继承于GameService的服务类型</typeparam>
-        /// <param name="name">服务名称</param>
         /// <returns>返回服务实例，如果没有找到，则返回null</returns>
-        public T GetSystemService<T>(string name) where T : GameService
+        [DoNotToLua]
+        public T GetSystemService<T>() where T : GameService
         {
-            return (T)GameSystem.GetSystemService(name);
+            return (T)GameSystem.GetSystemService(typeof(T).Name);
         }
         /// <summary>
         /// 获取系统服务
         /// </summary>
         /// <param name="name">服务名称</param>
         /// <returns>返回服务实例，如果没有找到，则返回null</returns>
+        [LuaApiDescription("获取系统服务", "返回服务实例，如果没有找到，则返回null")]
+        [LuaApiParamDescription("name", "服务名称")]
         public GameService GetSystemService(string name)
         {
             return GameSystem.GetSystemService(name);
         }
+        
+        #endregion
+        
+        #region 其他方法
+
         /// <summary>
         /// 设置基础摄像机状态
         /// </summary>
         /// <param name="visible">是否显示</param>
+        [LuaApiDescription("设置基础摄像机状态")]
+        [LuaApiParamDescription("visible", "是否显示")]
         public void SetGameBaseCameraVisible(bool visible)
         {
             GameBaseCamera.gameObject.SetActive(visible);
         }
 
         /// <summary>
-        /// 获取游戏版本
+        /// Lua绑定检查回调
         /// </summary>
         /// <returns></returns>
+        [LuaApiDescription("Lua绑定检查回调")]
         public static int LuaBindingCallback()
         {
             return GameConst.GameBulidVersion;
         }
 
+        #endregion
     }
 }

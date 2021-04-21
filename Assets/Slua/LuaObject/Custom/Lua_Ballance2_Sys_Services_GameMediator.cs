@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int constructor(IntPtr l) {
+	static public int RegisterSingleEvent(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -16,10 +16,12 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.Services.GameMediator o;
-			o=new Ballance2.Sys.Services.GameMediator();
+			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.RegisterSingleEvent(a1);
 			pushValue(l,true);
-			pushValue(l,o);
+			pushValue(l,ret);
 			return 2;
 		}
 		catch(Exception e) {
@@ -37,7 +39,7 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int Destroy(IntPtr l) {
+	static public int UnRegisterSingleEvent(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -49,9 +51,12 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
-			self.Destroy();
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.UnRegisterSingleEvent(a1);
 			pushValue(l,true);
-			return 1;
+			pushValue(l,ret);
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -68,7 +73,7 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int Initialize(IntPtr l) {
+	static public int IsSingleEventRegistered(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -80,7 +85,9 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 			#endif
 			#endif
 			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
-			var ret=self.Initialize();
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.IsSingleEventRegistered(a1);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;
@@ -148,9 +155,10 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
 			System.String a1;
 			checkType(l,2,out a1);
-			self.UnRegisterGlobalEvent(a1);
+			var ret=self.UnRegisterGlobalEvent(a1);
 			pushValue(l,true);
-			return 1;
+			pushValue(l,ret);
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -252,6 +260,42 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int NotifySingleEvent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			System.Object[] a2;
+			checkParams(l,3,out a2);
+			var ret=self.NotifySingleEvent(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int DispatchGlobalEvent(IntPtr l) {
 		try {
 			#if DEBUG
@@ -292,6 +336,84 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function DispatchGlobalEvent to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int SubscribeSingleEvent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
+			Ballance2.Sys.Package.GamePackage a1;
+			checkType(l,2,out a1);
+			System.String a2;
+			checkType(l,3,out a2);
+			System.String a3;
+			checkType(l,4,out a3);
+			Ballance2.Sys.Bridge.GameEventHandlerDelegate a4;
+			checkDelegate(l,5,out a4);
+			var ret=self.SubscribeSingleEvent(a1,a2,a3,a4);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int UnsubscribeSingleEvent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
+			Ballance2.Sys.Package.GamePackage a1;
+			checkType(l,2,out a1);
+			System.String a2;
+			checkType(l,3,out a2);
+			Ballance2.Sys.Bridge.Handler.GameHandler a3;
+			checkType(l,4,out a3);
+			var ret=self.UnsubscribeSingleEvent(a1,a2,a3);
+			pushValue(l,true);
+			pushValue(l,ret);
 			return 2;
 		}
 		catch(Exception e) {
@@ -856,13 +978,17 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Services.GameMediator");
-		addMember(l,Destroy);
-		addMember(l,Initialize);
+		addMember(l,RegisterSingleEvent);
+		addMember(l,UnRegisterSingleEvent);
+		addMember(l,IsSingleEventRegistered);
 		addMember(l,RegisterGlobalEvent);
 		addMember(l,UnRegisterGlobalEvent);
 		addMember(l,IsGlobalEventRegistered);
 		addMember(l,GetRegisteredGlobalEvent);
+		addMember(l,NotifySingleEvent);
 		addMember(l,DispatchGlobalEvent);
+		addMember(l,SubscribeSingleEvent);
+		addMember(l,UnsubscribeSingleEvent);
 		addMember(l,RegisterEventHandler);
 		addMember(l,UnRegisterEventHandler);
 		addMember(l,RegisterActionStore);
@@ -876,6 +1002,6 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 		addMember(l,"Events",get_Events,null,true);
 		addMember(l,"SystemActionStore",get_SystemActionStore,null,true);
 		addMember(l,"GlobalStore",get_GlobalStore,null,true);
-		createTypeMetatable(l,constructor, typeof(Ballance2.Sys.Services.GameMediator),typeof(Ballance2.Sys.Services.GameService));
+		createTypeMetatable(l,null, typeof(Ballance2.Sys.Services.GameMediator),typeof(Ballance2.Sys.Services.GameService));
 	}
 }

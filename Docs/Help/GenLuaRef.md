@@ -19,7 +19,7 @@
 ```
 3. 在VS 命令行工具中运行以下代码，生成xml注释文档
 ```shell
-devenv "D:\Programming\GameProjects\Ballance\Assembly-CSharp.csproj" /build
+devenv "E:\Programming\GameProjects\Ballance\Assembly-CSharp.csproj" /build
 ```
 
 4. 在 Unity 编辑器点击 SLua/Lua API 定义文件/生成，生成后Lua定义文件就放在

@@ -2,6 +2,23 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* UISizeDrag.cs
+* 
+* 用途：
+* Window右下角的拖拽块的调整大小逻辑
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-1 创建
+*
+*/
+
 namespace Ballance2.Sys.UI.Utils
 {
     public class UISizeDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler,

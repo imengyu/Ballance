@@ -1,4 +1,4 @@
-﻿using Ballance2.Sys.Bridge;
+﻿using Ballance.LuaHelpers;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using SLua;
@@ -28,21 +28,25 @@ namespace Ballance2.Sys.Bridge
     /// 全局数据共享存储类
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("全局数据共享存储类")]
     [Serializable]
     public class StoreData
     {
         /// <summary>
-        /// 空数据
+        /// 空数据的静态实例
         /// </summary>
+        [LuaApiDescription("空数据的静态实例")]
         public static StoreData Empty { get; } = new StoreData("Empty", StoreDataAccess.GetAndSet, StoreDataType.NotSet);
 
         /// <summary>
         /// 名称
         /// </summary>
+        [LuaApiDescription("名称")]
         public string Name { get; private set; }
         /// <summary>
         /// 原始数据
         /// </summary>
+        [LuaApiDescription("原始数据")]
         public object DataRaw
         {
             get
@@ -68,6 +72,7 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 数据类型
         /// </summary>
+        [LuaApiDescription("数据类型")]
         public StoreDataType DataType
         {
             get { return _DataType; }
@@ -75,6 +80,7 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 数组类型
         /// </summary>
+        [LuaApiDescription("数组类型")]
         public List<StoreData> DataArray
         {
             get { return _DataArray; }
@@ -95,9 +101,10 @@ namespace Ballance2.Sys.Bridge
         }
 
         /// <summary>
-        /// 判断是否为空
+        /// 判断当前数据是否为空
         /// </summary>
-        /// <returns></returns>
+        /// <returns>如果当前数据类未设置数据，或是类型为 Empty，则返回 true</returns>
+        [LuaApiDescription("判断当前数据是否为空", "如果当前数据类未设置数据，或是类型为 Empty，则返回 true")]
         public bool IsNull()
         {
             if (DataType == StoreDataType.NotSet)
@@ -111,6 +118,7 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 释放
         /// </summary>
+        [LuaApiDescription("释放")]
         public void Destroy()
         {
             _DataRaw = null;
@@ -132,6 +140,8 @@ namespace Ballance2.Sys.Bridge
         /// 注册数据更新观察者
         /// </summary>
         /// <param name="observer">观察者</param>
+        [LuaApiDescription("注册数据更新观察者")]
+        [LuaApiParamDescription("observer", "观察者")]
         public StoreOnDataChanged RegisterDataObserver(StoreOnDataChanged observer)
         {
             DataObserver += observer;
@@ -141,6 +151,8 @@ namespace Ballance2.Sys.Bridge
         /// 移除已经注册的数据更新观察者
         /// </summary>
         /// <param name="observer">观察者</param>
+        [LuaApiDescription("移除已经注册的数据更新观察者")]
+        [LuaApiParamDescription("observer", "观察者")]
         public void UnRegisterDataObserver(StoreOnDataChanged observer)
         {
             DataObserver -= observer;
@@ -150,6 +162,9 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="oldV">旧的值</param>
         /// <param name="newV">新的值</param>
+        [LuaApiDescription("通知数据更新观察者数据已经更改")]
+        [LuaApiParamDescription("oldV", "旧的值")]
+        [LuaApiParamDescription("newV", "新的值")]
         public void NotificationDataObserver(object oldV, object newV)
         {
             if (DataObserver != null)
@@ -158,6 +173,7 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 重新通知数据更新观察者数据已经更改
         /// </summary>
+        [LuaApiDescription("重新通知数据更新观察者数据已经更改")]
         public void ReNotificationAllDataObserver() {
             if (DataObserver != null)
                 DataObserver(this, null, Data());
@@ -171,6 +187,9 @@ namespace Ballance2.Sys.Bridge
         /// <param name="context">数据安全上下文（注册成功后须使用此上下文才能进行私有数据更新）</param>
         /// <param name="provider">数据提供者</param>
         /// <returns></returns>
+        [LuaApiDescription("设置数据提供者")]
+        [LuaApiParamDescription("context", "数据安全上下文（注册成功后须使用此上下文才能进行私有数据更新）")]
+        [LuaApiParamDescription("provider", "数据提供者")]
         public int SetDataProvider(int context, StoreDataProvider provider)
         {
             if(StoreDataProvider == null)
@@ -195,6 +214,8 @@ namespace Ballance2.Sys.Bridge
         /// 取消设置数据提供者
         /// </summary>
         /// <param name="context">数据安全上下文</param>
+        [LuaApiDescription("取消设置数据提供者")]
+        [LuaApiParamDescription("context", "数据安全上下文")]
         public void RemoveRegisterProvider(int context)
         {
             if (StoreDataProvider != null)
@@ -219,7 +240,10 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="context">数据安全上下文</param>
         /// <param name="data">新值</param>
-        /// <returns></returns>
+        /// <returns>返回设置是否成功</returns>
+        [LuaApiDescription("所有者设置数据的值", "返回设置是否成功")]
+        [LuaApiParamDescription("context", "数据安全上下文")]
+        [LuaApiParamDescription("data", "新值")]
         public bool OwnerSetData(int context, object data)
         {
             if (_StoreDataAccess != StoreDataAccess.GetAndSet && context != currentHolderContext)
@@ -234,9 +258,10 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 设置数据的值
         /// </summary>
-        /// <param name="context">数据安全上下文</param>
         /// <param name="data">新值</param>
-        /// <returns></returns>
+        /// <returns>返回设置是否成功</returns>
+        [LuaApiDescription("设置数据的值", "返回设置是否成功")]
+        [LuaApiParamDescription("data", "新值")]
         public bool SetData(object data)
         {
             //只读检测
@@ -252,6 +277,7 @@ namespace Ballance2.Sys.Bridge
         /// 获取数据的值
         /// </summary>
         /// <returns></returns>
+        [LuaApiDescription("获取数据的值")]
         public object GetData() {
             return DataRaw;
         }
@@ -363,6 +389,7 @@ namespace Ballance2.Sys.Bridge
         /// 将当前数据转为字符串表达形式
         /// </summary>
         /// <returns>字符串</returns>
+        [LuaApiDescription("将当前数据转为字符串表达形式", "字符串")]
         public override string ToString()
         {
             if (DataType == StoreDataType.NotSet)
@@ -382,24 +409,28 @@ namespace Ballance2.Sys.Bridge
     /// <param name="oldV">旧值</param>
     /// <param name="newV">新值</param>
     [CustomLuaClass]
+    [LuaApiDescription("数据改变回调")]
     public delegate void StoreOnDataChanged(StoreData data, object oldV, object newV);
     /// <summary>
     /// 用于自己提供数据的回调
     /// </summary>
     /// <returns>请返回当前数据的值</returns>
     [CustomLuaClass]
+    [LuaApiDescription("用于自己提供数据的回调")]
     public delegate object StoreDataProvider(bool isGet, object newValue);
 
     /// <summary>
-    /// 数据类型
+    /// 数据池所用的类型
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("数据池所用的类型")]
     public enum StoreDataType
     {
         NotSet,
         /// <summary>
         /// object 类型
         /// </summary>
+        [LuaApiDescription("object 类型")]
         Custom,
         Array,
         Integer,
@@ -425,6 +456,7 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// UnityEngine.Object
         /// </summary>
+        [LuaApiDescription("UnityEngine.Object")]
         Object,
         AudioClip,
         AudioSource,
@@ -432,18 +464,21 @@ namespace Ballance2.Sys.Bridge
     }
 
     /// <summary>
-    /// 数据访问
+    /// 数据可访问类型
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("数据可访问类型")]
     public enum StoreDataAccess
     {
         /// <summary>
         /// 仅获取
         /// </summary>
+        [LuaApiDescription("仅获取")]
         Get,
         /// <summary>
         /// 获取和设置
         /// </summary>
+        [LuaApiDescription("获取和设置")]
         GetAndSet,
     }
 
@@ -452,6 +487,7 @@ namespace Ballance2.Sys.Bridge
     /// </summary>
     [CustomLuaClass]
     [Serializable]
+    [LuaApiDescription("全局数据共享存储池类")]
     public class Store
     {
         [SerializeField, SetProperty("PoolName")]
@@ -462,7 +498,7 @@ namespace Ballance2.Sys.Bridge
         /// <summary>
         /// 池的名称
         /// </summary>
-        [DoNotToLua]
+        [LuaApiDescription("池的名称")]
         public string PoolName { get { return _PoolName; }  }
         /// <summary>
         /// 池中的数据
@@ -494,6 +530,8 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="name">数据名称</param>
         /// <returns>添加成功，则返回数据，如果数据已经存在，则返回存在的实例</returns>
+        [LuaApiDescription("原始数据", "添加成功，则返回数据，如果数据已经存在，则返回存在的实例")]
+        [LuaApiParamDescription("name", "数据名称")]
         public StoreData AddParameter(string name, StoreDataAccess access, StoreDataType storeDataType)
         {
             StoreData old;
@@ -509,6 +547,8 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="name">数据名称</param>
         /// <returns>如果移除成功，返回true，如果数据不存在，返回false</returns>
+        [LuaApiDescription("原始数据", "如果移除成功，返回true，如果数据不存在，返回false")]
+        [LuaApiParamDescription("name", "数据名称")]
         public bool RemoveParameter(string name)
         {
             if (_PoolDatas != null && _PoolDatas.ContainsKey(name))
@@ -523,6 +563,8 @@ namespace Ballance2.Sys.Bridge
         /// </summary>
         /// <param name="name">数据名称</param>
         /// <returns>返回数据实例</returns>
+        [LuaApiDescription("获取池中的数据", "返回数据实例")]
+        [LuaApiParamDescription("name", "数据名称")]
         public StoreData GetParameter(string name)
         {
             StoreData old;
@@ -534,6 +576,7 @@ namespace Ballance2.Sys.Bridge
         /// 获取或设置指定参数的值
         /// </summary>
         /// <value>要设置的值</value>
+        [LuaApiDescription("获取或设置指定参数的值")]
         public object this[string key] {
             get {
                 var prop = this.GetParameter(key);

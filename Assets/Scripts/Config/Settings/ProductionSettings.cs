@@ -7,24 +7,24 @@ using UnityEngine;
 /*
 * Copyright (c) 2020  mengyu
 * 
-* Ä£¿éÃû£º 
+* æ¨¡å—åï¼š 
 * ProductionSettings.cs
 * 
-* ÓÃÍ¾£º
-* ·¢²¼ËùÓÃ¾²Ì¬ÉèÖÃ
+* ç”¨é€”ï¼š
+* å‘å¸ƒæ‰€ç”¨é™æ€è®¾ç½®
 * 
-* ×÷Õß£º
+* ä½œè€…ï¼š
 * mengyu
 * 
-* ¸ü¸ÄÀúÊ·£º
-* 2020-6-12 ´´½¨
+* æ›´æ”¹å†å²ï¼š
+* 2020-6-12 åˆ›å»º
 * 
 */
 
 namespace Ballance2.Config.Settings
 {
 	/// <summary>
-	/// ·¢²¼ËùÓÃ¾²Ì¬ÉèÖÃ
+	/// å‘å¸ƒæ‰€ç”¨é™æ€è®¾ç½®
 	/// </summary>
 	public class ProductionSettings : ScriptableObject
 	{
@@ -36,7 +36,7 @@ namespace Ballance2.Config.Settings
 		private static ProductionSettings _instance = null;
 
 		/// <summary>
-		/// »ñÈ¡·¢²¼ÉèÖÃÊµÀı
+		/// è·å–å‘å¸ƒè®¾ç½®å®ä¾‹
 		/// </summary>
 		public static ProductionSettings Instance
 		{
@@ -65,7 +65,7 @@ namespace Ballance2.Config.Settings
 		}
 
 #if UNITY_EDITOR 
-		[MenuItem("Ballance/ÉèÖÃ/Production Settings", priority = 298)]
+		[MenuItem("Ballance/è®¾ç½®/Production Settings", priority = 298)]
 		public static void Open()
 		{
 			Selection.activeObject = Instance;

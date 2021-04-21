@@ -11,6 +11,23 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* DebugStat.cs
+* 
+* 用途：
+* 调试信息显示工具类。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-10 创建
+*
+*/
+
 class DebugStat : MonoBehaviour
 {
     private int tick = 0;
@@ -24,7 +41,7 @@ class DebugStat : MonoBehaviour
     private string allocatedMemoryForGraphicsDriver;
 
     public Text StatText = null;
-    public FPSManager fPSManager = null;
+    public DebugFPSStat DebugFPSStat = null;
 
     private StringBuilder sb = new StringBuilder();
 
@@ -41,7 +58,7 @@ class DebugStat : MonoBehaviour
 
     private void Start()
     {        
-        GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>("GameUIManager");
+        GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>();
         //Profiler.enabled = true;
 
         //Store datas
@@ -135,7 +152,7 @@ class DebugStat : MonoBehaviour
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.AppendLine("FPS: " + fPSManager.fps.ToString("0.00"));
+        sb.AppendLine("FPS: " + DebugFPSStat.fps.ToString("0.00"));
         sb.AppendLine("ProfilerEnabled : " + Profiler.enabled.ToString());
         sb.AppendLine("ProfilerSupported : " + Profiler.supported.ToString());
         sb.AppendLine("MaxUsedMemory: " + maxUsedMemory);

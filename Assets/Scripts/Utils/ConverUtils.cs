@@ -16,6 +16,7 @@
 */
 
 using System;
+using Ballance.LuaHelpers;
 
 namespace Ballance2.Utils
 {
@@ -23,6 +24,7 @@ namespace Ballance2.Utils
     /// 字符串转换类
     /// </summary>
     [SLua.CustomLuaClass]
+    [LuaApiDescription("字符串转换类")]
     public static class ConverUtils
     {
         private static readonly string TAG = "ConverUtils";
@@ -40,6 +42,10 @@ namespace Ballance2.Utils
         /// <param name="defaultValue">默认值</param>
         /// <param name="paramName">参数名称（用于错误日志）</param>
         /// <returns>转换成功的枚举，如果输入字符串无法转为枚举，则返回默认值</returns>
+        [LuaApiDescription("字符串转为枚举", "转换成功的枚举，如果输入字符串无法转为枚举，则返回默认值")]
+        [LuaApiParamDescription("stringValue", "要转换的字符串")]
+        [LuaApiParamDescription("defaultValue", "默认值")]
+        [LuaApiParamDescription("paramName", "参数名称（用于错误日志）")]
         public static T StringToEnum<T>(string stringValue, T defaultValue, string paramName = "") where T : struct
         {
             if (string.IsNullOrEmpty(stringValue))
@@ -60,6 +66,10 @@ namespace Ballance2.Utils
         /// <param name="defaultValue">默认值</param>
         /// <param name="paramName">参数名称（用于错误日志）</param>
         /// <returns>转换成功的数字，如果输入字符串无法转为数字，则返回默认值</returns>
+        [LuaApiDescription("字符串转为数字", "转换成功的数字，如果输入字符串无法转为数字，则返回默认值")]
+        [LuaApiParamDescription("stringValue", "要转换的字符串")]
+        [LuaApiParamDescription("defaultValue", "默认值")]
+        [LuaApiParamDescription("paramName", "参数名称（用于错误日志）")]
         public static int StringToInt(string stringValue, int defaultValue, string paramName = "")
         {
             if (string.IsNullOrEmpty(stringValue))
@@ -80,6 +90,10 @@ namespace Ballance2.Utils
         /// <param name="defaultValue">默认值</param>
         /// <param name="paramName">参数名称（用于错误日志）</param>
         /// <returns>转换成功的长整型数字，如果输入字符串无法转为长整型数字，则返回默认值</returns>
+        [LuaApiDescription("字符串转为长整型数字", "转换成功的长整型数字，如果输入字符串无法转为长整型数字，则返回默认值")]
+        [LuaApiParamDescription("stringValue", "要转换的字符串")]
+        [LuaApiParamDescription("defaultValue", "默认值")]
+        [LuaApiParamDescription("paramName", "参数名称（用于错误日志）")]
         public static long StringToLong(string stringValue, long defaultValue, string paramName = "")
         {
             if (string.IsNullOrEmpty(stringValue))
@@ -100,6 +114,10 @@ namespace Ballance2.Utils
         /// <param name="defaultValue">默认值</param>
         /// <param name="paramName">参数名称（用于错误日志）</param>
         /// <returns>转换成功的布尔类型，如果输入字符串无法转为布尔类型，则返回默认值</returns>
+        [LuaApiDescription("字符串转为布尔类型", "转换成功的布尔类型，如果输入字符串无法转为布尔类型，则返回默认值")]
+        [LuaApiParamDescription("stringValue", "要转换的字符串")]
+        [LuaApiParamDescription("defaultValue", "默认值")]
+        [LuaApiParamDescription("paramName", "参数名称（用于错误日志）")]
         public static bool StringToBoolean(string stringValue, bool defaultValue, string paramName = "")
         {
             if (string.IsNullOrEmpty(stringValue))
@@ -122,6 +140,10 @@ namespace Ballance2.Utils
         /// <param name="defaultValue">默认值</param>
         /// <param name="paramName">参数名称（用于错误日志）</param>
         /// <returns>转换成功的浮点数，如果输入字符串无法转为浮点数，则返回默认值</returns>
+        [LuaApiDescription("字符串转为浮点数", "转换成功的浮点数，如果输入字符串无法转为浮点数，则返回默认值")]
+        [LuaApiParamDescription("stringValue", "要转换的字符串")]
+        [LuaApiParamDescription("defaultValue", "默认值")]
+        [LuaApiParamDescription("paramName", "参数名称（用于错误日志）")]
         public static float StringToFloat(string stringValue, float defaultValue, string paramName = "")
         {
             if (string.IsNullOrEmpty(stringValue))

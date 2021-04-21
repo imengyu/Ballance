@@ -8,63 +8,122 @@ using System.IO;
 using UnityEngine;
 using JimBlackler.DocsByReflection;
 using System.Xml;
+using Ballance.LuaHelpers;
 
 namespace Slua
 {
   public static class SLuaApiExporter
   {
     const string path = "Assets/Scripts/LuaHelpers/LuaDefineApi/";
+    const string SubUnityPath = "Unity/";
+    const string SubCustomPath = "Ballance/";
+    /// <summary>
+    /// 设置Unity源DLL的路径。如果这个路径不配置，那么生成的lua定义文件将没有注释。
+    /// </summary>
+    const string unityDocPath = @"E:\Program Files\Unity\Editor\Data\Managed\UnityEngine\";
 
-    [MenuItem("SLua/Lua API 定义文件/生成", false)]
-    static void Gen()
+    private static bool PreCheck() {
+      if (EditorApplication.isCompiling) {
+        Debug.LogWarning("编辑器正在编译，请等待编译完成再生成");
+        return false;
+      }
+
+      if (!Directory.Exists(path))
+        Directory.CreateDirectory(path);
+      return true;
+    }
+
+    [MenuItem("Ballance/Lua API 定义文件/生成所有", false, 102)]
+    public static void GenAll()
     {      
+      GenerateForEngine(() => {
+        GenCustom();
+      });
+    }
+    [MenuItem("Ballance/Lua API 定义文件/生成 UnityEngine", false, 102)]
+    public static void GenUnityEngine()
+    {      
+      if(!PreCheck())
+        return;
+
+      GenerateForEngine(null);
+    }
+    [MenuItem("Ballance/Lua API 定义文件/生成游戏内核", false, 102)]
+    public static void GenCustom()
+    {            
+      if(!PreCheck())
+        return;
+      GenNext();
+    }
+    [MenuItem("Ballance/Lua API 定义文件/生成单个类", false, 103)]
+    public static void GenClass() {
       if (EditorApplication.isCompiling) {
         Debug.LogWarning("编辑器正在编译，请等待编译完成再生成");
         return;
       }
+      if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-      if (Directory.Exists(path))
-        Directory.Delete(path, true);
-
-      Directory.CreateDirectory(path);
-
-#if UNITY_2017_2_OR_NEWER
-      ModuleSelector wnd = EditorWindow.GetWindow<ModuleSelector>("ModuleSelector");
-      wnd.onExport = (string[] module) =>
-      {
-        GenerateFor(module, path);
-        GenNext(path);
+      var w = ChooseExportClass.ShowWindow();
+      w.Chooseed = (types) => {
+        foreach(var t in types)
+          GenType(t, true, path);
+        w.Close();
+        Debug.Log("生成完成");
       };
-#else
-      GenerateFor("UnityEngine", path);
-      GenNext(path);
-#endif
-    }
-    [MenuItem("SLua/Lua API 定义文件/清空 ", false)]
-    private static void GenClear()
+    }  
+    [MenuItem("Ballance/Lua API 定义文件/清空", false, 104)]
+    public static void GenClear()
     {
       if (Directory.Exists(path))
         Directory.Delete(path, true);
       EditorUtility.DisplayDialog("完成", "清空完成", "好");
     }
+    [MenuItem("Ballance/Lua API 定义文件/清空 UnityEngine", false, 104)]
+    public static void GenClearUnityEngine()
+    {
+      if (Directory.Exists(path + SubUnityPath))
+        Directory.Delete(path + SubUnityPath, true);
+      EditorUtility.DisplayDialog("完成", "清空完成", "好");
+    }
+    [MenuItem("Ballance/Lua API 定义文件/清空游戏内核 ", false, 104)]
+    public static void GenClearCustom()
+    {
+      if (Directory.Exists(path + SubCustomPath))
+        Directory.Delete(path + SubCustomPath, true);
+      EditorUtility.DisplayDialog("完成", "清空完成", "好");
+    }
     
     private static bool disableXmlComment = false;
-    private static void GenNext(string path)
+    private static void GenNext()
     {
-      GenCustom(path);
+      GenCustom(path + SubCustomPath);
       EditorUtility.DisplayDialog("完成", "定义文件已经放在 /Assets/Scripts/LuaHelpers/LuaDefineApi/ 下，推荐使用 VS Code IDE 来编辑你的 Lua 代码，并将定义文件的目录添加到你的编辑器设置中。", "好");
+    }
+    private static void GenerateForEngine(Action finish) {
+      DocsByReflection.SetEntendXmlSearchPath(unityDocPath);
+#if UNITY_2017_2_OR_NEWER
+      ModuleSelector wnd = EditorWindow.GetWindow<ModuleSelector>("ModuleSelector");
+      wnd.onExport = (string[] module) =>
+      {
+        GenerateFor(module, path + SubUnityPath);
+        if(finish != null) finish.Invoke();
+      };
+#else
+      GenerateFor("UnityEngine", path + SubUnityPath);
+      if(finish != null)  finish.Invoke();
+#endif
     }
     private static void GenerateFor(string[] asemblyNames, string path)
     {
-
+      if (!Directory.Exists(path))
+        Directory.CreateDirectory(path);
       foreach (string name in asemblyNames) {
         string dir = path + name + "/";
         if(!Directory.Exists(dir))
           Directory.CreateDirectory(dir);
         GenAssembly(name, dir);
       }
-    }
-    
+    }    
     private static void GenAssembly(string name, string path)
     {
       List<string> excludeList;
@@ -74,10 +133,12 @@ namespace Slua
       var assembly = Assembly.Load(name);
       var types = assembly.GetTypes();
       
+      Debug.Log("Generate assembly " + name);
       try
       {
         DocsByReflection.XMLFromAssembly(assembly);
         disableXmlComment = false;
+        Debug.Log("Assembly doc " + name + " loaded");
       } 
       catch(Exception e)
       {
@@ -95,18 +156,12 @@ namespace Slua
     }
     private static void GenCustom(string path)
     {
+      if (!Directory.Exists(path))
+        Directory.CreateDirectory(path);
+
       var assembly = Assembly.Load("Assembly-CSharp-firstpass");
       var types = assembly.GetTypes();
-      try
-      {
-        DocsByReflection.XMLFromAssembly(assembly);
-        disableXmlComment = false;
-      } 
-      catch(Exception e)
-      {
-        disableXmlComment = true;
-        Debug.LogWarning("无法获取 Assembly-CSharp-firstpass 的XML注释文档，生成的Lua定义文件将不包含注释" + e.ToString());
-      }
+      disableXmlComment = true;
       foreach (Type t in types)
       {
         if (t.IsDefined(typeof(CustomLuaClassAttribute), false))
@@ -117,16 +172,7 @@ namespace Slua
 
       assembly = Assembly.Load("Assembly-CSharp");
       types = Assembly.Load("Assembly-CSharp").GetTypes();
-      try
-      {
-        DocsByReflection.XMLFromAssembly(assembly);
-        disableXmlComment = false;
-      } 
-      catch(Exception e)
-      {
-        disableXmlComment = true;
-        Debug.LogWarning("无法获取 Assembly-CSharp 的XML注释文档，生成的Lua定义文件将不包含注释" + e.ToString());
-      }
+      
       foreach (Type t in types)
       {
         if (t.IsDefined(typeof(CustomLuaClassAttribute), false))
@@ -140,7 +186,6 @@ namespace Slua
     {
       if (!CheckType(t, custom))
         return;
-      //TODO System.MulticastDelegate
       var sb = new StringBuilder(
         "---@diagnostic disable: duplicate-set-field, undefined-doc-class, undefined-doc-name, duplicate-doc-field" +
         "\n"
@@ -179,24 +224,24 @@ namespace Slua
       return true;
     }
     private static string GetSummary(MemberInfo info) {
-      try {
-        if(!disableXmlComment) {
-          XmlElement documentation = DocsByReflection.XMLFromMember(info);
-          if(documentation != null && documentation["summary"] != null)
-            return FixString(documentation["summary"].InnerText);
-        }
-      } catch {
+      if(info.IsDefined(typeof(LuaApiDescription))) {
+        var attr = info.GetCustomAttribute<LuaApiDescription>();
+        return attr.DescriptionString;
+      } else if(!disableXmlComment) {
+        XmlElement documentation = DocsByReflection.XMLFromMember(info);
+        if(documentation != null && documentation["summary"] != null)
+          return FixString(documentation["summary"].InnerText);
       }
       return "";
     }
     private static string GetSummaryByType(Type t) {
-      try {
-        if(!disableXmlComment) {
-          XmlElement documentation = DocsByReflection.XMLFromType(t);
-          if(documentation != null && documentation["summary"] != null)
-            return FixString(documentation["summary"].InnerText);
-        }
-      } catch {
+      if(t.IsDefined(typeof(LuaApiDescription))) {
+        var attr = t.GetCustomAttribute<LuaApiDescription>();
+        return attr.DescriptionString;
+      } else if(!disableXmlComment) {
+        XmlElement documentation = DocsByReflection.XMLFromType(t);
+        if(documentation != null && documentation["summary"] != null)
+          return FixString(documentation["summary"].InnerText);
       }
       return "";
     }
@@ -206,6 +251,7 @@ namespace Slua
 
     private static void GenTypeField(Type t, StringBuilder sb)
     {
+      var paramOrgType = "";
       FieldInfo[] fields = t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
       string comment = "";
       foreach (var field in fields)
@@ -214,7 +260,7 @@ namespace Slua
           continue;
         
         comment = GetSummary(field);
-        sb.AppendFormat("---@field public {0} {1} {2}\n", ReplaceLuaKeyWord(field.Name), GetLuaType(field.FieldType), comment);
+        sb.AppendFormat("---@field public {0} {1} {2}\n", ReplaceLuaKeyWord(field.Name), GetLuaType(field.FieldType, out paramOrgType), AppendParamOrgType(paramOrgType, comment));
       }
       PropertyInfo[] properties = t.GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
       foreach (var pro in properties)
@@ -223,7 +269,7 @@ namespace Slua
           continue;
 
         comment = GetSummary(pro);
-        sb.AppendFormat("---@field public {0} {1} {2}\n", ReplaceLuaKeyWord(pro.Name), GetLuaType(pro.PropertyType), comment);
+        sb.AppendFormat("---@field public {0} {1} {2}\n", ReplaceLuaKeyWord(pro.Name), GetLuaType(pro.PropertyType, out paramOrgType), AppendParamOrgType(paramOrgType, comment));
       }
     }
     private static void GenTypeMethod(Type t, StringBuilder sb)
@@ -248,38 +294,47 @@ namespace Slua
         methodComment = "";
         methodRetComment = "";
 
-        if(!disableXmlComment) { 
-          try{
-            XmlElement documentation = DocsByReflection.XMLFromMember(method);
-            if(documentation != null) {
-              for(int i = 0; i < documentation.ChildNodes.Count; i++) {
-                XmlNode node = documentation.ChildNodes[i];
-                if(node.Name == "summary")
-                  methodComment = FixString(node.InnerText.Trim());
-                else if(node.Name == "param" && node.Attributes["name"] != null)
-                  methodVarComments.Add(FixString(node.Attributes["name"].InnerText), FixString(node.InnerText));
-                else if(node.Name == "returns")
-                  methodRetComment = FixString(node.InnerText);
-              }
+
+        if(method.IsDefined(typeof(LuaApiDescription))) {
+          var attr = method.GetCustomAttribute<LuaApiDescription>();
+          var paramDesps = method.GetCustomAttributes<LuaApiParamDescription>();
+          methodComment = attr.DescriptionString;
+          methodRetComment = attr.ReturnString;
+          foreach(var dep in paramDesps)
+            if(!methodVarComments.ContainsKey(dep.ParamName))
+              methodVarComments.Add(dep.ParamName, dep.DescriptionString);
+        } else if(!disableXmlComment) { 
+          XmlElement documentation = DocsByReflection.XMLFromMember(method);
+          if(documentation != null) {
+            for(int i = 0; i < documentation.ChildNodes.Count; i++) {
+              XmlNode node = documentation.ChildNodes[i];
+              if(node.Name == "summary")
+                methodComment = FixString(node.InnerText.Trim());
+              else if(node.Name == "param" && node.Attributes["name"] != null)
+                methodVarComments.Add(FixString(node.Attributes["name"].InnerText), FixString(node.InnerText));
+              else if(node.Name == "returns")
+                methodRetComment = FixString(node.InnerText);
             }
-          } catch{}
+          }
         }
 
         sb.AppendLine("---"+methodComment);
         sb.AppendLine("---@public");
 
+        var paramOrgType = "";
         foreach (var param in method.GetParameters())
         {
           var paramComment = "";
           methodVarComments.TryGetValue(param.Name, out paramComment);
-          sb.AppendFormat("---@param {0} {1} {2}\n", ReplaceLuaKeyWord(param.Name), GetLuaType(param.ParameterType), paramComment);
+          sb.AppendFormat("---@param {0} {1} {2}\n", ReplaceLuaKeyWord(param.Name), GetLuaType(param.ParameterType, out paramOrgType), 
+            AppendParamOrgType(paramOrgType, paramComment));
           if (paramstr.Length != 0)
             paramstr.Append(", ");
           paramstr.Append(ReplaceLuaKeyWord(param.Name));
         }
 
         if(method.ReturnType != null)
-          sb.AppendFormat("---@return {0} {1}\n", GetLuaType(method.ReturnType), methodRetComment);
+          sb.AppendFormat("---@return {0} {1}\n", GetLuaType(method.ReturnType, out paramOrgType), AppendParamOrgType(paramOrgType, methodRetComment));
 
         if (method.IsStatic)      
           sb.AppendFormat("function {0}.{1}({2}) end\n", ReplaceLuaKeyWord(t.Name), ReplaceLuaKeyWord(method.Name), paramstr);     
@@ -287,8 +342,10 @@ namespace Slua
           sb.AppendFormat("function {0}:{1}({2}) end\n", ReplaceLuaKeyWord(t.Name), ReplaceLuaKeyWord(method.Name), paramstr);
       }
     }
-
-    private static string GetLuaType(Type t)
+    private static string AppendParamOrgType(string paramOrgType, string comment) {
+      return (paramOrgType != "" ? ("[" + paramOrgType + "] ") : "") + comment;
+    }
+    private static string GetLuaType(Type t, out string paramOrgType)
     {
       if (t.IsEnum
           || t == typeof(ulong)
@@ -300,15 +357,17 @@ namespace Slua
           || t == typeof(byte)
           || t == typeof(ushort)
           || t == typeof(short)
-          )
+          ) {
+        paramOrgType = t.Name;
         return "number";
+      }
+      paramOrgType = "";
       if (t == typeof(bool))
         return "boolean";
       if (t == typeof(string))
         return "string";
       if (t == typeof(void))
         return "void";
-
       return t.Name;
     }
   

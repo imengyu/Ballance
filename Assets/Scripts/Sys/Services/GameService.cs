@@ -15,14 +15,18 @@
 *
 */
 
+using Ballance.LuaHelpers;
+
 namespace Ballance2.Sys.Services
 {
     /// <summary>
-    /// 服务基类
+    /// 系统服务基类
     /// </summary>
     [SLua.CustomLuaClass]
+    [LuaApiDescription("系统服务基类")]
     public class GameService
     {
+        [SLua.DoNotToLua]
         public GameService(string name)
         {
             Name = name;
@@ -31,6 +35,7 @@ namespace Ballance2.Sys.Services
         /// <summary>
         /// 服务名称
         /// </summary>
+        [LuaApiDescription("服务名称")]
         public string Name { get; private set; }
 
         /// <summary>

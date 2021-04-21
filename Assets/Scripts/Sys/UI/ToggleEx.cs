@@ -26,6 +26,7 @@ namespace Ballance2.Sys.UI {
     /// </summary>
     [ExecuteInEditMode]
     [SLua.CustomLuaClass]
+    [Ballance.LuaHelpers.LuaApiDescription("一个开关组件")]
     public class ToggleEx : MonoBehaviour
     {
         public RectTransform Drag;

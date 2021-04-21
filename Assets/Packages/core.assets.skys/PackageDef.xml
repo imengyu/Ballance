@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="core.assets.skys" version="1">
+  <BaseInfo>
+    <Name>天空盒资源包</Name>
+    <Author>imengyu</Author>
+    <Introduction>天空盒资源包，包含原版游戏的12种天空盒</Introduction>
+    <Description>天空盒资源包，包含原版游戏的12种天空盒</Description>
+    <Logo>PackageLogo.jpg</Logo>
+    <Link>https://imengyu.tojjjp</Link>
+    <AuthorLink>https://imengyu.top</AuthorLink>
+    <DocLink>https://imengyu.top</DocLink>
+    <VersionName>1.0</VersionName>
+    <Dependencies></Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>1</MinVersion>
+    <TargetVersion>1</TargetVersion>
+  </Compatibility>
+  <EntryCode></EntryCode>
+  <Type>Asset</Type>
+  <CodeType>Lua</CodeType>
+  <RunType>GameBase</RunType>
+  <ShareLuaState>core</ShareLuaState>
+</Package>bjmb

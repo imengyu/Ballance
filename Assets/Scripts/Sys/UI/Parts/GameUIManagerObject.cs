@@ -1,5 +1,22 @@
 ﻿using UnityEngine;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameUIManagerObject.cs
+* 
+* 用途：
+* GameUIManager 所用的Update实例。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-1 创建
+*
+*/
+
 namespace Ballance2.Sys.UI.Parts
 {
     class GameUIManagerObject : MonoBehaviour

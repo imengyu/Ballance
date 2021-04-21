@@ -4,6 +4,23 @@ using RuntimeInspectorNamespace;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameDebugTools.cs
+* 
+* 用途：
+* 调试工具控制类。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-15 创建
+*
+*/
+
 public class GameDebugTools : MonoBehaviour {
 
   public RuntimeInspector RuntimeInspector;

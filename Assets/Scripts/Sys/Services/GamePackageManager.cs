@@ -1,4 +1,6 @@
-﻿using Ballance2.Config.Settings;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Config;
+using Ballance2.Config.Settings;
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
@@ -8,8 +10,10 @@ using Ballance2.Sys.Utils;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 using UnityEngine;
 
 /*
@@ -26,25 +30,35 @@ using UnityEngine;
 *
 * 更改历史：
 * 2021-1-17 创建
+* 2021-4-17 imengyu 添加模块管理器窗口
 *
 */
 
 namespace Ballance2.Sys.Services
 {
     /// <summary>
-    /// 框架包管理器
+    /// 框架模块管理器
     /// </summary>
     [SLua.CustomLuaClass]
+    [LuaApiDescription("框架模块管理器")]
     public class GamePackageManager : GameService
     {
         private static readonly string TAG = "GamePackageManager";
 
         /// <summary>
-        /// 系统包的包名
+        /// 系统模块的包名
         /// </summary>
-        public const string SYSTEM_PACKAGE_NAME = "core.system";
+        [LuaApiDescription("系统模块的包名")]
+        public const string SYSTEM_PACKAGE_NAME = "core";
 
+        [SLua.DoNotToLua]
         public GamePackageManager() : base(TAG) {}
+
+        /// <summary>
+        /// 是否是无模块模式
+        /// </summary>
+        /// <value></value>
+        public bool NoPackageMode { get; set; }
 
         [SLua.DoNotToLua]
         public override void Destroy()
@@ -70,6 +84,7 @@ namespace Ballance2.Sys.Services
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
+            GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNREGISTERED);
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
             GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
                 GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "GamePackageManagerHandler", (evtName, param) =>
@@ -84,21 +99,112 @@ namespace Ballance2.Sys.Services
             return true;
         }
 
+        #region 模块包自动加载管理
+
         private GamePackage systemPackage;
+        internal class GamePackageRegisterInfo {
+            public GamePackageRegisterInfo(GamePackage package) {
+                this.package = package;
+            }
+            public GamePackageRegisterInfo(string packageName, bool enableLoad) {
+                this.packageName = packageName;
+                this.enableLoad = enableLoad;
+            }
 
-        private Dictionary<string, int> packagesLoadStatus = new Dictionary<string, int>();
+            public GamePackage package;
 
-        private Dictionary<string, GamePackage> registeredPackages = new Dictionary<string, GamePackage>();
-        private Dictionary<string, GamePackage> loadedPackages = new Dictionary<string, GamePackage>();
+            public string packageName;
+            public bool enableLoad;
+        }
+
+        internal Dictionary<string, int> packagesLoadStatus = new Dictionary<string, int>();
+        internal Dictionary<string, GamePackageRegisterInfo> registeredPackages = new Dictionary<string, GamePackageRegisterInfo>();
+        internal Dictionary<string, GamePackage> loadedPackages = new Dictionary<string, GamePackage>();
+
+        private XmlDocument packageEnableStatusListXml = new XmlDocument();
+
+        internal List<GamePackageRegisterInfo> LoadPackageRegisterInfo() {
+            string pathPackageStatus = Application.persistentDataPath + "/PackageStatus.xml";
+            if (File.Exists(pathPackageStatus))
+            {
+                StreamReader sr = new StreamReader(pathPackageStatus, Encoding.UTF8);
+                try {
+                    packageEnableStatusListXml.LoadXml(sr.ReadToEnd());
+                } catch {
+                    packageEnableStatusListXml.LoadXml(ConstStrings.DEFAULT_PACKAGE_STATUS_XML);
+                }
+                sr.Close();
+                sr.Dispose();
+            }
+            else//加载默认xml文档
+                packageEnableStatusListXml.LoadXml(ConstStrings.DEFAULT_PACKAGE_STATUS_XML);
+
+            List<GamePackageRegisterInfo> lastRegisteredPackages = new List<GamePackageRegisterInfo>();
+            XmlNode nodeNoPackagePackagee = packageEnableStatusListXml.SelectSingleNode("NoPackagePackagee");
+            if (nodeNoPackagePackagee != null)
+                NoPackageMode = bool.Parse(nodeNoPackagePackagee.InnerText);
+            XmlNode nodePackageList = packageEnableStatusListXml.SelectSingleNode("PackageList");
+            if (nodePackageList != null)
+            {
+                foreach (XmlNode n in nodePackageList) 
+                    lastRegisteredPackages.Add(new GamePackageRegisterInfo(n.InnerText, n.Attributes["enabled"].Value == "True"));
+            }
+
+            return lastRegisteredPackages;
+        }
+        internal void SavePackageRegisterInfo() {
+            StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/PackageStatus.xml", false, Encoding.UTF8);
+
+            XmlDocument xml = new XmlDocument();
+            XmlNode nodePackageConfig = xml.CreateElement("PackageConfig");
+            XmlNode nodePackageList = xml.CreateElement("PackageList");
+            XmlNode nodeNoPackagePackagee = xml.CreateElement("NoPackagePackagee");
+
+            xml.AppendChild(xml.CreateXmlDeclaration("1.0", "utf-8", null));
+            xml.AppendChild(nodePackageConfig);
+            nodePackageConfig.AppendChild(nodePackageList);
+            nodePackageConfig.AppendChild(nodeNoPackagePackagee);
+
+            nodeNoPackagePackagee.InnerText = NoPackageMode.ToString();
+            foreach(var s in registeredPackages.Values)
+            {
+                XmlNode node = xml.CreateElement("Package"); 
+                XmlAttribute attr = xml.CreateAttribute("enabled");
+                attr.Value = s.enableLoad.ToString();
+                node.InnerText = s.package.PackageName;
+                nodePackageList.AppendChild(node);
+            }
+
+            //save
+            packageEnableStatusListXml.Save(sw);
+            sw.Close();
+            sw.Dispose();
+
+        }
+        internal void SetPackageEnableLoad(string packageName, bool val) {
+            if(registeredPackages.TryGetValue(packageName, out var outPackage)) 
+                outPackage.enableLoad = val;
+        }
+
+        #endregion
 
         /// <summary>
-        /// 注册包
+        /// 注册模块
         /// </summary>
         /// <param name="packageName">包名</param>
         /// <param name="load">是否立即加载</param>
         /// <returns>返回是否加载成功。要获得错误代码，请获取 <see cref="GameErrorChecker.LastError"/></returns>
+        [LuaApiDescription("注册模块", "返回是否加载成功。要获得错误代码，请获取 GameErrorChecker.LastError")]
+        [LuaApiParamDescription("packageName", "包名")]
+        [LuaApiParamDescription("load", "是否立即加载")]
         public async Task<bool> RegisterPackage(string packageName)
         {
+            bool forceEnablePackage = false;
+            if (packageName.StartsWith("Enable:")) {
+                packageName = packageName.Substring(7);
+                forceEnablePackage = true;
+            }
+
             if (packagesLoadStatus.ContainsKey(packageName))
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.IsLoading, TAG, "Package {0} is loading", packageName);
@@ -167,14 +273,17 @@ namespace Ballance2.Sys.Services
             {
 
                 packagesLoadStatus.Remove(packageName);
-                registeredPackages.Add(packageName, gamePackage);
+                if(!registeredPackages.ContainsKey(packageName)) {
+                    var info = new GamePackageRegisterInfo(gamePackage);
+                    info.enableLoad = forceEnablePackage;
+                    registeredPackages.Add(packageName, info);
+                }
 
                 gamePackage._Status = GamePackageStatus.Registered;
 
                 Log.D(TAG, "Package {0} registered", packageName);
                 //通知事件
-                GameManager.GameMediator.DispatchGlobalEvent(
-                    GameEventNames.EVENT_PACKAGE_REGISTERED, "*", packageName);
+                GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED, "*", packageName);
 
                 return true;
             }
@@ -186,18 +295,35 @@ namespace Ballance2.Sys.Services
         /// 查找已注册的模块
         /// </summary>
         /// <param name="packageName">包名</param>
-        /// <returns></returns>
+        /// <returns>返回模块实例，如果未找到，则返回null</returns>
+        [LuaApiDescription("查找已注册的模块", "返回模块实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("packageName", "包名")]
         public GamePackage FindRegisteredPackage(string packageName)
         {
             registeredPackages.TryGetValue(packageName, out var outPackage);
-            return outPackage;
+            return outPackage != null ? outPackage.package : null;
+        }
+        /// <summary>
+        /// 检测模块是否用户选择了启用
+        /// </summary>
+        /// <param name="packageName">包名</param>
+        /// <returns></returns>
+        [LuaApiDescription("检测模块是否用户选择了启用", "")]
+        [LuaApiParamDescription("packageName", "包名")]
+        public bool IsPackageEnableLoad(string packageName)
+        {
+            registeredPackages.TryGetValue(packageName, out var outPackage);
+            return outPackage != null && outPackage.enableLoad;
         }
         /// <summary>
         /// 取消注册模块
         /// </summary>
         /// <param name="packageName">包名</param>
         /// <param name="unLoadImmediately">是否立即卸载</param>
-        /// <returns></returns>
+        /// <returns>返回是否成功</returns>
+        [LuaApiDescription("取消注册模块", "返回是否成功")]
+        [LuaApiParamDescription("packageName", "包名")]
+        [LuaApiParamDescription("unLoadImmediately", "是否立即卸载")]
         public bool UnRegisterPackage(string packageName, bool unLoadImmediately)
         {
             bool success = false;
@@ -217,33 +343,42 @@ namespace Ballance2.Sys.Services
 
             if (IsPackageLoaded(packageName))
                 UnLoadPackage(packageName, unLoadImmediately);
-
+            
+            Log.D(TAG, "Package {0} unregistered", packageName);
+            //通知事件
+            GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNREGISTERED, "*", packageName);
             return success;
         }
 
         /// <summary>
-        /// 获取包是否正在加载
+        /// 获取模块是否正在加载
         /// </summary>
         /// <param name="packageName">包名</param>
         /// <returns></returns>
+        [LuaApiDescription("获取模块是否正在加载", "")]
+        [LuaApiParamDescription("packageName", "包名")]
         public bool IsPackageLoading(string packageName)
         {
             return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 2;
         }        
         /// <summary>
-        /// 获取包是否正在注册
+        /// 获取模块是否正在注册
         /// </summary>
         /// <param name="packageName">包名</param>
         /// <returns></returns>
+        [LuaApiDescription("获取模块是否正在注册", "")]
+        [LuaApiParamDescription("packageName", "包名")]
         public bool IsPackageRegistering(string packageName)
         {
             return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 1;
         }
         /// <summary>
-        /// 获取包是否已加载
+        /// 获取模块是否已加载
         /// </summary>
         /// <param name="packageName">包名</param>
         /// <returns></returns>
+        [LuaApiDescription("获取模块是否已加载", "")]
+        [LuaApiParamDescription("packageName", "包名")]
         public bool IsPackageLoaded(string packageName)
         {
             return loadedPackages.ContainsKey(packageName); 
@@ -253,11 +388,13 @@ namespace Ballance2.Sys.Services
         /// 通知模块运行
         /// </summary>
         /// <param name="packageNameFilter">包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。</param>
+        [LuaApiDescription("通知模块运行")]
+        [LuaApiParamDescription("packageNameFilter", "包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。")]
         public void NotifyAllPackageRun(string packageNameFilter)
         {
             foreach (GamePackage package in loadedPackages.Values)
             {
-                if (!package.IsEntryCodeExecuted() &&
+                if (package.Status == GamePackageStatus.LoadSuccess && !package.IsEntryCodeExecuted() &&
                     (packageNameFilter == "*" || Regex.IsMatch(package.PackageName, packageNameFilter)))
                     package.RunPackageExecutionCode();
             }
@@ -268,6 +405,8 @@ namespace Ballance2.Sys.Services
         /// </summary>
         /// <param name="packageName">模块包名</param>
         /// <returns>返回加载是否成功</returns>
+        [LuaApiDescription("加载模块", "返回加载是否成功")]
+        [LuaApiParamDescription("packageName", "模块包名")]
         public async Task<bool> LoadPackage(string packageName)
         {
             if(!StringUtils.IsPackageName(packageName))
@@ -412,6 +551,9 @@ namespace Ballance2.Sys.Services
         /// 将等待至依赖它的模块全部卸载之后才会卸载
         /// </param>
         /// <returns>返回是否成功</returns>
+        [LuaApiDescription("卸载模块", "bbb")]
+        [LuaApiParamDescription("packageName", "模块包名")]
+        [LuaApiParamDescription("unLoadImmediately", "是否立即卸载，如果为false，此模块将等待至依赖它的模块全部卸载之后才会卸载")]
         public bool UnLoadPackage(string packageName, bool unLoadImmediately)
         {
             if (packageName == systemPackage.PackageName)
@@ -475,7 +617,9 @@ namespace Ballance2.Sys.Services
         /// 查找已加载的模块
         /// </summary>
         /// <param name="packageName">模块包名</param>
-        /// <returns></returns>
+        /// <returns>返回模块实例，如果未找到，则返回null</returns>
+        [LuaApiDescription("查找已加载的模块", "返回模块实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("packageName", "模块包名")]
         public GamePackage FindPackage(string packageName)
         {
             loadedPackages.TryGetValue(packageName, out var outPackage);
@@ -494,11 +638,10 @@ namespace Ballance2.Sys.Services
         {
             systemPackage = GamePackage.GetSystemPackage();
             systemPackage._Status = GamePackageStatus.LoadSuccess;
-            registeredPackages.Add(systemPackage.PackageName, systemPackage);
+            registeredPackages.Add(systemPackage.PackageName, new GamePackageRegisterInfo(systemPackage));
             loadedPackages.Add(systemPackage.PackageName, systemPackage);
         }
         
-
         #region 模块管理窗口
 
         private Window PackageManageWindow;
@@ -515,9 +658,8 @@ namespace Ballance2.Sys.Services
             //Create window
             PackageManageWindow = GameUIManager.CreateWindow("Package manager", 
                 CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("PackageManageWindow"), "PackageManageWindow").GetComponent<RectTransform>(),
-                false, 9, -30, 480, 400);
+                false, 0, 0, 900, 600);
             PackageManageWindow.CloseAsHide = true;
-            PackageManageWindow.gameObject.AddComponent<GamePackageManageWindow>();
         }
         private void DestroyPackageManageWindow() {   
             GameManager.Instance.GameStore.RemoveParameter("DbgShowPackageManageWindow");

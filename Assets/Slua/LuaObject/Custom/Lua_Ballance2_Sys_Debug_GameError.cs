@@ -25,19 +25,21 @@ public class Lua_Ballance2_Sys_Debug_GameError : LuaObject {
 		addMember(l,17,"FunctionNotFound");
 		addMember(l,18,"PackageDefNotFound");
 		addMember(l,19,"AssetBundleNotFound");
-		addMember(l,20,"FileReadFailed");
-		addMember(l,21,"NotReturn");
-		addMember(l,22,"InvalidPackageName");
-		addMember(l,23,"RegisterPackageFailed");
-		addMember(l,24,"NotSupportFileType");
-		addMember(l,25,"NetworkError");
-		addMember(l,26,"ExecutionFailed");
-		addMember(l,27,"AccessDenined");
-		addMember(l,28,"IsLoading");
-		addMember(l,29,"SystemPackageNotLoad");
-		addMember(l,30,"UnKnowType");
-		addMember(l,31,"LuaBindCheckFailed");
-		addMember(l,32,"OnlyCanUseInEditor");
+		addMember(l,20,"AssetNotFound");
+		addMember(l,21,"FileReadFailed");
+		addMember(l,22,"NotReturn");
+		addMember(l,23,"InvalidPackageName");
+		addMember(l,24,"RegisterPackageFailed");
+		addMember(l,25,"NotSupportFileType");
+		addMember(l,26,"NetworkError");
+		addMember(l,27,"ExecutionFailed");
+		addMember(l,28,"AccessDenined");
+		addMember(l,29,"IsLoading");
+		addMember(l,30,"SystemPackageNotLoad");
+		addMember(l,31,"UnKnowType");
+		addMember(l,32,"LuaBindCheckFailed");
+		addMember(l,33,"OnlyCanUseInEditor");
+		addMember(l,34,"PrefabNotFound");
 		LuaDLL.lua_pop(l, 1);
 	}
 }

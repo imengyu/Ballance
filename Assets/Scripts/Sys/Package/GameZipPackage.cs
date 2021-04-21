@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
@@ -32,7 +31,6 @@ namespace Ballance2.Sys.Package
 {
     public class GameZipPackage: GamePackage
     {
-        private readonly string TAG = "GameZipPackage";
         private Dictionary<string, string> packageCodeAsset = new Dictionary<string, string>();
 
         public override void Destroy()
@@ -51,6 +49,8 @@ namespace Ballance2.Sys.Package
             ZipInputStream zip = ZipUtils.OpenZipFile(GamePathManager.FixFilePathScheme(PackageFilePath));
             if(zip == null)
                 return false;
+
+            UpdateTime = File.GetLastWriteTime(GamePathManager.FixFilePathScheme(PackageFilePath));
 
             ZipEntry theEntry;
             while ((theEntry = zip.GetNextEntry()) != null)

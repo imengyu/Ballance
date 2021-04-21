@@ -4,9 +4,22 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 /*
- * UI 控件拖动脚本
- * 
- */
+
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* UIDragControl.cs
+* 
+* 用途：
+* UI 控件拖动脚本
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-1 创建
+*
+*/
 
 namespace Ballance2.Sys.UI.Utils
 {
@@ -65,13 +78,6 @@ namespace Ballance2.Sys.UI.Utils
         public void OnPointerUp(BaseEventData data)
         {
             mouseOffest = Vector2.zero;
-          
-            //if (dragTransform.position.x < -dragTransform.sizeDelta.x + 30) dragTransform.position = new Vector3(-dragTransform.sizeDelta.x + 30, dragTransform.position.y, dragTransform.position.z);
-            //if (dragTransform.position.x > Screen.width - 30) dragTransform.position = new Vector3(Screen.width - 30, dragTransform.position.y, dragTransform.position.z);
-            //if (dragTransform.position.y < 30) dragTransform.position = new Vector3(dragTransform.position.x, 30, dragTransform.position.z);
-            //if (dragTransform.position.y > Screen.height - 10) dragTransform.position = new Vector3(dragTransform.position.x, Screen.height - 10, dragTransform.position.z);
-
-
         }
         public void OnDrag(BaseEventData data)
         {

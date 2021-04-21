@@ -5,105 +5,6 @@ using System.Collections.Generic;
 public class Lua_Ballance2_Sys_UI_SplitViewDragger : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int OnDrag(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.SplitViewDragger self=(Ballance2.Sys.UI.SplitViewDragger)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnDrag(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerDown(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.SplitViewDragger self=(Ballance2.Sys.UI.SplitViewDragger)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerDown(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int OnPointerUp(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.UI.SplitViewDragger self=(Ballance2.Sys.UI.SplitViewDragger)checkSelf(l);
-			UnityEngine.EventSystems.PointerEventData a1;
-			checkType(l,2,out a1);
-			self.OnPointerUp(a1);
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int get_draggerImage(IntPtr l) {
 		try {
 			#if DEBUG
@@ -456,9 +357,6 @@ public class Lua_Ballance2_Sys_UI_SplitViewDragger : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.UI.SplitViewDragger");
-		addMember(l,OnDrag);
-		addMember(l,OnPointerDown);
-		addMember(l,OnPointerUp);
 		addMember(l,"draggerImage",get_draggerImage,set_draggerImage,true);
 		addMember(l,"image",get_image,set_image,true);
 		addMember(l,"onValueChanged",get_onValueChanged,set_onValueChanged,true);

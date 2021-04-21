@@ -1,5 +1,23 @@
 ﻿using UnityEngine;
 
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameLuaObjectEventCaller.cs
+* 
+* 用途：
+* Lua 事件调用器声明。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-22 创建
+*
+*/
+
 namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
 {
     public class GameLuaObjectEventCaller : MonoBehaviour

@@ -1,10 +1,7 @@
-﻿using Ballance2.Sys;
-using Ballance2.Sys.Bridge;
+﻿using Ballance.LuaHelpers;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using SLua;
-using System;
-using UnityEngine;
 
 /*
  * Copyright (c) 2020  mengyu
@@ -30,6 +27,7 @@ namespace Ballance2.Sys.Bridge.Handler
     /// 游戏通用接收器
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("游戏通用接收器")]
     public class GameHandler
     {
         private static readonly string TAG = "GameHandler";
@@ -53,6 +51,9 @@ namespace Ballance2.Sys.Bridge.Handler
         /// <param name="evtName">事件名称</param>
         /// <param name="pararms">参数</param>
         /// <returns>返回自定义对象</returns>
+        [LuaApiDescription("调用自定义接收器", "返回自定义对象")]
+        [LuaApiParamDescription("evtName", "事件名称")]
+        [LuaApiParamDescription("pararms", "参数")]
         public virtual object CallCustomHandler(params object[] pararms)
         {
             return null;
@@ -63,6 +64,9 @@ namespace Ballance2.Sys.Bridge.Handler
         /// <param name="evtName">事件名称</param>
         /// <param name="pararms">参数</param>
         /// <returns>返回是否中断剩余事件分发/返回Action是否成功</returns>
+        [LuaApiDescription("调用接收器", "返回是否中断剩余事件分发/返回Action是否成功")]
+        [LuaApiParamDescription("evtName", "事件名称")]
+        [LuaApiParamDescription("pararms", "参数")]
         public virtual bool CallEventHandler(string evtName, params object[] pararms)
         {
             return false;
@@ -72,6 +76,8 @@ namespace Ballance2.Sys.Bridge.Handler
         /// </summary>
         /// <param name="pararms">参数</param>
         /// <returns>返回是否中断剩余事件分发/返回Action是否成功</returns>
+        [LuaApiDescription("调用操作接收器", "返回是否中断剩余事件分发/返回Action是否成功")]
+        [LuaApiParamDescription("pararms", "参数")]
         public virtual GameActionCallResult CallActionHandler(params object[] pararms)
         {
             return null;
@@ -80,14 +86,17 @@ namespace Ballance2.Sys.Bridge.Handler
         /// <summary>
         /// 所属模块
         /// </summary>
+        [LuaApiDescription("所属模块")]
         public GamePackage BelongPackage { get; private set; }
         /// <summary>
         /// 接收器名称
         /// </summary>
+        [LuaApiDescription("接收器名称")]
         public string Name { get; private set; }
         /// <summary>
         /// 获取是否被释放
         /// </summary>
+        [LuaApiDescription("获取是否被释放")]
         public bool Destroyed { get; private set; } = false;
 
         //自定义接收器
@@ -112,6 +121,11 @@ namespace Ballance2.Sys.Bridge.Handler
         /// <param name="luaFunction">Lua函数</param>
         /// <param name="self">Lua self</param>
         /// <returns>返回创建的 GameHandler，如果创建失败，则返回null</returns>
+        [LuaApiDescription("创建 Lua 通用接收器", "返回创建的 GameHandler，如果创建失败，则返回null")]
+        [LuaApiParamDescription("gamePackage", "所在包")]
+        [LuaApiParamDescription("name", "接收器名称")]
+        [LuaApiParamDescription("luaFunction", "Lua函数")]
+        [LuaApiParamDescription("self", "Lua self")]
         public static GameHandler CreateLuaHandler(GamePackage gamePackage, string name, LuaFunction luaFunction, LuaTable self)
         {
             return CreateHandlerInternal(gamePackage, name, new GameLuaHandler(luaFunction, self));
@@ -131,6 +145,10 @@ namespace Ballance2.Sys.Bridge.Handler
         ///     [附带参数]   可选：要传给接收器的附带参数，参数将放在结尾
         /// </remarks>
         /// <returns>返回创建的 GameHandler，如果创建失败，则返回null</returns>
+        [LuaApiDescription("创建 Lua 静态或 GameLuaObjectHost 接收器", "返回创建的 GameHandler，如果创建失败，则返回null")]
+        [LuaApiParamDescription("gamePackage", "所在包")]
+        [LuaApiParamDescription("name", "接收器名称")]
+        [LuaApiParamDescription("luaModulHandler", "接收器标识符字符串")]
         public static GameHandler CreateLuaStaticHandler(GamePackage gamePackage, string name, string luaModulHandler)
         {
             return CreateHandlerInternal(gamePackage, name, new GameLuaStaticHandler(luaModulHandler));

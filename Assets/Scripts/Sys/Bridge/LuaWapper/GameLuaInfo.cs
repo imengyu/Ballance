@@ -1,7 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
+using Ballance.LuaHelpers;
 using SLua;
 using UnityEngine;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameLuaInfo.cs
+* 
+* 用途：
+* Lua定义结构体。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-21 创建
+*
+*/
 
 namespace Ballance2.Sys.Bridge.LuaWapper
 {
@@ -9,6 +26,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
     /// lua 引入 var 信息
     /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("lua 引入 var 信息")]
     [Serializable]
     public class LuaVarObjectInfo
     {
@@ -17,12 +35,14 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// </summary>
         [Tooltip("值类型")]
         [SerializeField]
+        [LuaApiDescription("值类型")]
         public LuaVarObjectType Type;
         /// <summary>
         /// 值名称
         /// </summary>
         [Tooltip("值名称")]
         [SerializeField]
+        [LuaApiDescription("值名称")]
         public string Name;
 
         public LuaVarObjectInfo()
@@ -108,7 +128,9 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// <summary>
         /// 更新数据到 Lua
         /// </summary>
-        /// <param name="LuaSelf"></param>
+        /// <param name="LuaSelf">self</param>
+        [LuaApiDescription("更新数据到 Lua")]
+        [LuaApiParamDescription("LuaSelf", "self")]
         public void UpdateToLua(LuaTable LuaSelf)
         {
             switch (Type)
@@ -140,7 +162,9 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// <summary>
         /// 从 Lua 获取数据
         /// </summary>
-        /// <param name="LuaSelf"></param>
+        /// <param name="LuaSelf">self</param>
+        [LuaApiDescription("从 Lua 获取数据")]
+        [LuaApiParamDescription("LuaSelf", "self")]
         public void UpdateFromLua(LuaTable LuaSelf)
         {
             switch (Type)
@@ -174,6 +198,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
     /// </summary>
     [Serializable]
     [CustomLuaClass]
+    [LuaApiDescription("指定引入数据的类型")]
     public enum LuaVarObjectType
     {
         None = 0,

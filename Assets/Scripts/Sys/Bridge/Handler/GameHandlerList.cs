@@ -21,7 +21,6 @@ namespace Ballance2.Sys.Bridge.Handler
     /// <summary>
     /// GameHandler的一个List包装类
     /// </summary>
-    [SLua.CustomLuaClass]
     public class GameHandlerList : List<GameHandler>
     {
         public void CallEventHandler(string evtName, params object[] parm)

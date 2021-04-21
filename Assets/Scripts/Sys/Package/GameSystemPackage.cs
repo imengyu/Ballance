@@ -16,6 +16,7 @@ using UnityEngine;
 *
 * 更改历史：
 * 2021-1-17 创建
+* 2021-4-17 Add BaseInfo for GameSystemPackage
 *
 */
 
@@ -27,6 +28,11 @@ namespace Ballance2.Sys.Package
         {
             PackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
             PackageFilePath = Application.dataPath;
+            UpdateTime = System.DateTime.Now;
+            IsCompatible = true;
+            Type = GamePackageType.Module;
+            BaseInfo = new GamePackageBaseInfo(true);
+            baseInited = true;
         }
 
         public override LuaState PackageLuaState

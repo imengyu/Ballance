@@ -1,4 +1,5 @@
-﻿using Ballance2.Sys.UI.Utils;
+﻿using Ballance.LuaHelpers;
+using Ballance2.Sys.UI.Utils;
 using UnityEngine;
 
 /*
@@ -26,6 +27,7 @@ namespace Ballance2.Sys.UI
     /// </summary>
     [ExecuteInEditMode]
     [SLua.CustomLuaClass]
+    [LuaApiDescription("进度条组件")]
     public class Progress : MonoBehaviour
     {
         [SerializeField, HideInInspector]
@@ -39,6 +41,11 @@ namespace Ballance2.Sys.UI
             UIAnchorPosUtils.SetUIRightTop(fillRect, ((1.0f - val) * fillArea.rect.size.x), 0);
         }
 
+        /// <summary>
+        /// 进度条数值（0-1）
+        /// </summary>
+        /// <value></value>
+        [LuaApiDescription("进度条数值（0-1）")]
         public float value
         {
             get { return val; }

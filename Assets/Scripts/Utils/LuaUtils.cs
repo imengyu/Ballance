@@ -1,9 +1,30 @@
-﻿using SLua;
-using System.Text;
+﻿using Ballance.LuaHelpers;
+using SLua;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* LuaUtils.cs
+* 
+* 用途：
+* Lua 工具类
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-15 创建
+*
+*/
 
 namespace Ballance2.Utils
 {
+    /// <summary>
+    /// Lua 工具类
+    /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("Lua 工具类")]
     public class LuaUtils
     {
         public static object[] LuaTableArrayToObjectArray(object[] param)
@@ -25,9 +46,25 @@ namespace Ballance2.Utils
         {
             return param != null && param.Length == 1 && param[0] != null && param[0].GetType() == typeof(LuaTable);
         }
+        /// <summary>
+        /// 布尔值转为字符串
+        /// </summary>
+        /// <param name="param">布尔值</param>
+        /// <returns>字符串 "true" 或者 "false"</returns>
+        [LuaApiDescription("布尔值转为字符串", "字符串 \"true\" 或者 \"false\"")]
+        [LuaApiParamDescription("param", "布尔值")]
         public static string BooleanToString(bool param)
         {
             return param ? "true" : "false";
         }
+        public static LuaTable ToLuaTableForCS(object param)
+        {
+            return param as LuaTable;
+        }
+        public static LuaFunction ToLuaFunctionForCS(object param)
+        {
+            return param as LuaFunction;
+        }
     }
+    
 }

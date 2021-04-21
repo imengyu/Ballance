@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using UnityEngine;
 
 namespace JimBlackler.DocsByReflection
 {
@@ -36,7 +37,7 @@ namespace JimBlackler.DocsByReflection
                 parametersString += parameterInfo.ParameterType.FullName;
             }
 
-            //AL: 15.04.2008 ==> BUG-FIX remove “()” if parametersString is empty
+            //AL: 15.04.2008 ==> BUG-FIX remove ï¿½()ï¿½ if parametersString is empty
             if (parametersString.Length > 0)
                 return XMLFromName(methodInfo.DeclaringType, 'M', methodInfo.Name + "(" + parametersString + ")");
             else
@@ -92,11 +93,13 @@ namespace JimBlackler.DocsByReflection
 
             foreach (XmlElement xmlElement in xmlDocument["doc"]["members"])
             {
-                if (xmlElement.Attributes["name"].Value.Equals(fullName))
+                if (xmlElement.Attributes["name"] != null && 
+                    xmlElement.Attributes["name"].Value.Equals(fullName))
                 {
                     if (matchedElement != null)
                     {
-                        throw new DocsByReflectionException("Multiple matches to query", null);
+                        //throw new DocsByReflectionException("Multiple matches to query", null);
+                        Debug.LogWarning("Multiple matches to query : " + fullName);
                     }
 
                     matchedElement = xmlElement;
@@ -105,7 +108,8 @@ namespace JimBlackler.DocsByReflection
 
             if (matchedElement == null)
             {
-                throw new DocsByReflectionException("Could not find documentation for specified element", null);
+                //throw new DocsByReflectionException("Could not find documentation for specified element", null);
+                //Debug.LogWarning("Could not find documentation for specified element : " + fullName);
             }
 
             return matchedElement;
@@ -168,9 +172,13 @@ namespace JimBlackler.DocsByReflection
             {
                 StreamReader streamReader;
 
+                var path = Path.ChangeExtension(assemblyFilename.Substring(prefix.Length), ".xml");
+                if(!File.Exists(path))
+                    path = entendXmlSearchPath + Path.GetFileName(path);
+
                 try
                 {
-                    streamReader = new StreamReader(Path.ChangeExtension(assemblyFilename.Substring(prefix.Length), ".xml"));
+                    streamReader = new StreamReader(path);
                 }
                 catch (FileNotFoundException exception)
                 {
@@ -185,6 +193,16 @@ namespace JimBlackler.DocsByReflection
             {
                 throw new DocsByReflectionException("Could not ascertain assembly filename", null);
             }
+        }
+
+        private static string entendXmlSearchPath = "";
+
+        /// <summary>
+        /// Set entend xml search path
+        /// </summary>
+        /// <param name="path"></param>
+        public static void SetEntendXmlSearchPath(string path) {
+            entendXmlSearchPath = path;
         }
     }
 }

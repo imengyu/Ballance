@@ -1,6 +1,8 @@
 <System>
     <SystemPackages>
-        <Package name="core.debug" minVer="1" mustLoad="false" ></Package>
-        <!--<Package name="core.intro" minVer="1" mustLoad="true" ></Package>-->
+        <Package name="core.intro" minVer="1" mustLoad="true" loadStep="0"></Package>
+        <Package name="core.debug" minVer="1" mustLoad="false" loadStep="1"></Package>
+        <Package name="core.assets.skybox" minVer="1" mustLoad="false" loadStep="1"></Package>
+        <Package name="core.menulevel" minVer="1" mustLoad="false" loadStep="1"></Package>
     </SystemPackages>
 </System>

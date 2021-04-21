@@ -1,9 +1,31 @@
-﻿using SLua;
+﻿using Ballance.LuaHelpers;
+using SLua;
 using UnityEngine;
+
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameLuaObjectPhysics2DEventCaller.cs
+* 
+* 用途：
+* Lua 2D物理 事件调用器。
+*
+* 作者：
+* mengyu
+*
+* 更改历史：
+* 2021-1-22 创建
+*
+*/
 
 namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
 {
+    /// <summary>
+    /// Lua 2D物理 事件调用器
+    /// </summary>
     [CustomLuaClass]
+    [LuaApiDescription("Lua 2D物理 事件调用器")]
     public class GameLuaObjectPhysics2DEventCaller : GameLuaObjectEventCaller
     {
         private LuaTable self = null;
@@ -33,6 +55,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
         {
             return supportEvents;
         }
+        [DoNotToLua]
         public override void OnInitLua(GameLuaObjectHost host)
         {
             LuaFunction fun;

@@ -299,6 +299,41 @@ public class Lua_Ballance2_Utils_CommonUtils : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int ChangeColorAlpha_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Color a1;
+			checkType(l,1,out a1);
+			System.Single a2;
+			checkType(l,2,out a2);
+			var ret=Ballance2.Utils.CommonUtils.ChangeColorAlpha(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Utils.CommonUtils");
@@ -310,6 +345,7 @@ public class Lua_Ballance2_Utils_CommonUtils : LuaObject {
 		addMember(l,GenSameStringArray_s);
 		addMember(l,CheckParam_s);
 		addMember(l,GetStringArrayFromDictionary_s);
+		addMember(l,ChangeColorAlpha_s);
 		createTypeMetatable(l,constructor, typeof(Ballance2.Utils.CommonUtils));
 	}
 }

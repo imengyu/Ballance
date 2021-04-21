@@ -1,12 +1,9 @@
 ﻿using Ballance2.Sys.Debug;
 using Ballance2.Sys.Res;
 using Ballance2.Utils;
-using ICSharpCode.SharpZipLib.Zip;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
@@ -32,8 +29,6 @@ namespace Ballance2.Sys.Package
 {
     public class GameEditorDebugPackage : GamePackage
     {
-        private readonly string TAG = "GameEditorDebugPackage";
-        
         public override void Destroy()
         {
             
@@ -56,7 +51,7 @@ namespace Ballance2.Sys.Package
             {
                 PackageDef = new XmlDocument();
                 PackageDef.Load(defPath);
-
+                UpdateTime = File.GetLastWriteTime(defPath);
                 return ReadInfo(PackageDef);
             }
 #endif
@@ -131,7 +126,5 @@ namespace Ballance2.Sys.Package
             return false;
 #endif
         }
-
-
     }
 }

@@ -5,38 +5,6 @@ using System.Collections.Generic;
 public class Lua_Ballance2_Sys_Services_GamePackageManager : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int constructor(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			Ballance2.Sys.Services.GamePackageManager o;
-			o=new Ballance2.Sys.Services.GamePackageManager();
-			pushValue(l,true);
-			pushValue(l,o);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int RegisterPackage(IntPtr l) {
 		try {
 			#if DEBUG
@@ -86,6 +54,40 @@ public class Lua_Ballance2_Sys_Services_GamePackageManager : LuaObject {
 			System.String a1;
 			checkType(l,2,out a1);
 			var ret=self.FindRegisteredPackage(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int IsPackageEnableLoad(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GamePackageManager self=(Ballance2.Sys.Services.GamePackageManager)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.IsPackageEnableLoad(a1);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;
@@ -408,11 +410,76 @@ public class Lua_Ballance2_Sys_Services_GamePackageManager : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_NoPackageMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GamePackageManager self=(Ballance2.Sys.Services.GamePackageManager)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.NoPackageMode);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_NoPackageMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GamePackageManager self=(Ballance2.Sys.Services.GamePackageManager)checkSelf(l);
+			bool v;
+			checkType(l,2,out v);
+			self.NoPackageMode=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Services.GamePackageManager");
 		addMember(l,RegisterPackage);
 		addMember(l,FindRegisteredPackage);
+		addMember(l,IsPackageEnableLoad);
 		addMember(l,UnRegisterPackage);
 		addMember(l,IsPackageLoading);
 		addMember(l,IsPackageRegistering);
@@ -422,6 +489,7 @@ public class Lua_Ballance2_Sys_Services_GamePackageManager : LuaObject {
 		addMember(l,UnLoadPackage);
 		addMember(l,FindPackage);
 		addMember(l,"SYSTEM_PACKAGE_NAME",get_SYSTEM_PACKAGE_NAME,null,false);
-		createTypeMetatable(l,constructor, typeof(Ballance2.Sys.Services.GamePackageManager),typeof(Ballance2.Sys.Services.GameService));
+		addMember(l,"NoPackageMode",get_NoPackageMode,set_NoPackageMode,true);
+		createTypeMetatable(l,null, typeof(Ballance2.Sys.Services.GamePackageManager),typeof(Ballance2.Sys.Services.GameService));
 	}
 }

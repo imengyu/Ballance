@@ -47,27 +47,12 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			int argc = LuaDLL.lua_gettop(l);
-			if(matchType(l,argc,2,typeof(string))){
-				Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				var ret=self.GetSystemService<Ballance2.Sys.Services.GameService>(a1);
-				pushValue(l,true);
-				pushValue(l,ret);
-				return 2;
-			}
-			else if(matchType(l,argc,2,typeof(string))){
-				Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				var ret=self.GetSystemService(a1);
-				pushValue(l,true);
-				pushValue(l,ret);
-				return 2;
-			}
-			pushValue(l,false);
-			LuaDLL.lua_pushstring(l,"No matched override function GetSystemService to call");
+			Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			var ret=self.GetSystemService(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
 			return 2;
 		}
 		catch(Exception e) {
