@@ -225,6 +225,37 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_GameSettings(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.GameSettings);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_GameMainLuaSvr(IntPtr l) {
 		try {
 			#if DEBUG
@@ -419,6 +450,7 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 		addMember(l,"Instance",get_Instance,null,false);
 		addMember(l,"GameMediator",get_GameMediator,null,false);
 		addMember(l,"GameMainLuaState",get_GameMainLuaState,null,true);
+		addMember(l,"GameSettings",get_GameSettings,null,true);
 		addMember(l,"GameMainLuaSvr",get_GameMainLuaSvr,null,true);
 		addMember(l,"GameBaseCamera",get_GameBaseCamera,null,true);
 		addMember(l,"GameCanvas",get_GameCanvas,null,true);

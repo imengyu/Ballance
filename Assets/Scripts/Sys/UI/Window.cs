@@ -358,9 +358,9 @@ namespace Ballance2.Sys.UI
         [LuaApiDescription("窗口居中")]
         public void MoveToCenter()
         {
-            var rootSize = GameManager.Instance.GameCanvas.sizeDelta;
-            Position = new Vector2(rootSize.x / 2 - WindowRectTransform.sizeDelta.x / 2, 
-                -(rootSize.y / 2 - WindowRectTransform.sizeDelta.y / 2));            
+            Position = new Vector2(
+                Screen.width / 2 - WindowRectTransform.sizeDelta.x / 2, 
+                -(Screen.height / 2 - WindowRectTransform.sizeDelta.y / 2));
         }
 
         public delegate void WindowEventDelegate(int windowId);

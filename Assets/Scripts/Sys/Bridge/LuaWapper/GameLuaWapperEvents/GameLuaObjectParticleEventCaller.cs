@@ -47,8 +47,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
         public override string[] GetSupportEvents() {
             return supportEvents;
         }
-        [DoNotToLua]
-        public override void OnInitLua(GameLuaObjectHost host)
+        
+        protected override void OnInitLua(GameLuaObjectHost host)
         {
             LuaFunction fun;
             self = host.LuaSelf;

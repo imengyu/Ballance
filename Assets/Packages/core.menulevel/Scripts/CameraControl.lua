@@ -7,53 +7,54 @@ GameSoundManager = GameManager.Instance:GetSystemService("GameSoundManager") ---
 GameSoundType = Ballance2.Sys.Services.GameSoundType
 SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 
+---@class CameraControl
+---@type GameLuaObjectHostClass
+local CameraControl = {
+  I_Zone = nil, ---@type GameObject
+  I_Zone_SuDu = nil, ---@type GameObject
+  I_Zone_NenLi = nil, ---@type GameObject
+  I_Zone_LiLiang = nil, ---@type GameObject
+  I_Dome = nil, ---@type GameObject
+  I_Light_Night = nil, ---@type GameObject
+  I_Light_Day = nil, ---@type GameObject
+  skyBox = nil, ---@type Skybox
+  skyBoxNight = nil, ---@type Material
+  skyBoxDay = nil, ---@type Material
+  menuSound = nil,
+  speed = -6,
+  state = {
+    isInLightZone = false,
+    isRoatateCam = true,
+  },
+  domePosition = nil,
+  transformI_Zone_SuDu = nil,
+  transformI_Zone_NenLi = nil,
+  transformI_Zone_LiLiang = nil,
+}
 
-function CreateClass_CameraComtrol()
-
-  ---@type GameLuaObjectHostClass
-  local CameraComtrol = {
-    I_Zone = nil, ---@type GameObject
-    I_Zone_SuDu = nil, ---@type GameObject
-    I_Zone_NenLi = nil, ---@type GameObject
-    I_Zone_LiLiang = nil, ---@type GameObject
-    I_Dome = nil, ---@type GameObject
-    I_Light_Night = nil, ---@type GameObject
-    I_Light_Day = nil, ---@type GameObject
-    skyBox = nil, ---@type Skybox
-    skyBoxNight = nil, ---@type Material
-    skyBoxDay = nil, ---@type Material
-    menuSound = nil,
-    speed = -6,
-    state = {
-      isInLightZone = false,
-      isRoatateCam = true,
-    },
-    domePosition = nil,
-    transformI_Zone_SuDu = nil,
-    transformI_Zone_NenLi = nil,
-    transformI_Zone_LiLiang = nil,
-  }
-
-  function CameraComtrol:new(o)
+function CreateClass_CameraControl()
+  
+  function CameraControl:new(o)
     o = o or {}
     setmetatable(o, self)
     self.__index = self
     return o
   end
 
-  function CameraComtrol:Start()
-    self.domePosition = self.I_Dome.transform
+  function CameraControl:Start()
+    self.domePosition = self.I_Dome.transform.position
     self.transformI_Zone_SuDu = self.I_Zone_SuDu.transform
     self.transformI_Zone_NenLi = self.I_Zone_NenLi.transform
     self.transformI_Zone_LiLiang = self.I_Zone_LiLiang.transform
+    self.skyBox = self.gameObject:GetComponent(UnityEngine.Skybox)
     self.skyBoxNight = SkyBoxUtils.MakeSkyBox('D')
     self.skyBoxDay = SkyBoxUtils.MakeSkyBox('C')
-    self.menuSound = GameSoundManager:RegisterSoundPlayer(GameSoundType.Background, GameSoundManager:LoadAudioResource('core.sounds.music:Menu_atmo.wav'), false, false, 'MenuSound')
+    self.menuSound = GameSoundManager:RegisterSoundPlayer(GameSoundType.Background, GameSoundManager:LoadAudioResource('core.sounds.music:Menu_atmo.wav'), false, true, 'MenuSound')
     self.menuSound.loop = true
     self.menuSound:Play()
     self:SwitchLightZone(false)
   end
-  function CameraComtrol:Update()
+  function CameraControl:Update()
     if(self.state.isRoatateCam) then
 			self.transform:RotateAround(self.domePosition, Vector3.up, Time.deltaTime * self.speed)
 			self.transform:LookAt(self.domePosition)
@@ -67,14 +68,14 @@ function CreateClass_CameraComtrol()
       self.transformI_Zone_LiLiang.eulerAngles = Vector3(0, self.transformI_Zone_LiLiang.eulerAngles.y, 0)
     end
   end
-  function CameraComtrol:OnDisable()
+  function CameraControl:OnDisable()
     self.menuSound:Stop()
   end
-  function CameraComtrol:OnEnable()
+  function CameraControl:OnEnable()
     self.menuSound:Play()
   end
 
-  function CameraComtrol:SetFog(isLz) 
+  function CameraControl:SetFog(isLz) 
     RenderSettings.fog = true
     RenderSettings.fogDensity = 0.005
     if(isLz) then
@@ -83,9 +84,10 @@ function CreateClass_CameraComtrol()
       RenderSettings.fogColor = Color(0.745, 0.623, 0.384)
     end
   end
-  function CameraComtrol:SwitchLightZone(on) 
+  function CameraControl:SwitchLightZone(on) 
     if(on) 
     then
+      GameSoundManager:PlayFastVoice('core.sounds.music:Music_thunder.wav', GameSoundType.Background)
       GameUIManager:MaskBlackSet(true)
       GameUIManager:MaskBlackFadeOut(1)
       self.I_Light_Night:SetActive(true)
@@ -106,5 +108,5 @@ function CreateClass_CameraComtrol()
     end
   end
 
-  return CameraComtrol:new(nil)
+  return CameraControl:new(nil)
 end

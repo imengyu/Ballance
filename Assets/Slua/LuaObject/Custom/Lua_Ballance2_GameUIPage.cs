@@ -67,6 +67,88 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int CreateContent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+				Ballance2.Sys.Package.GamePackage a1;
+				checkType(l,2,out a1);
+				self.CreateContent(a1);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(argc==3){
+				Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+				Ballance2.Sys.Package.GamePackage a1;
+				checkType(l,2,out a1);
+				System.String a2;
+				checkType(l,3,out a2);
+				self.CreateContent(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function CreateContent to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int SetContent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			UnityEngine.RectTransform a1;
+			checkType(l,2,out a1);
+			self.SetContent(a1);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_ContentHost(IntPtr l) {
 		try {
 			#if DEBUG
@@ -326,6 +408,8 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 		getTypeTable(l,"Ballance2.GameUIPage");
 		addMember(l,Show);
 		addMember(l,Hide);
+		addMember(l,CreateContent);
+		addMember(l,SetContent);
 		addMember(l,"ContentHost",get_ContentHost,set_ContentHost,true);
 		addMember(l,"VerticalLayoutGroup",get_VerticalLayoutGroup,set_VerticalLayoutGroup,true);
 		addMember(l,"HorizontalLayoutGroup",get_HorizontalLayoutGroup,set_HorizontalLayoutGroup,true);

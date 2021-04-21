@@ -5,6 +5,7 @@ namespace SLua {
 	public class BindCustom {
 		public static Action<IntPtr>[] GetBindList() {
 			Action<IntPtr>[] list= {
+				Lua_QuickOutline.reg,
 				Lua_cakeslice_Outline.reg,
 				Lua_cakeslice_OutlineEffect.reg,
 				Lua_Ballance2_DebugCamera.reg,
@@ -22,6 +23,7 @@ namespace SLua {
 				Lua_Ballance2_Sys_Utils_CloneUtils.reg,
 				Lua_Ballance2_Sys_Utils_CustomData.reg,
 				Lua_Ballance2_Sys_Utils_KeyListener.reg,
+				Lua_Ballance2_Sys_UI_GameUIControlMessageSender.reg,
 				Lua_Ballance2_Sys_UI_GameUIControlValueBinder.reg,
 				Lua_Ballance2_Sys_UI_GameUIMessageCenter.reg,
 				Lua_Ballance2_Sys_UI_Progress.reg,

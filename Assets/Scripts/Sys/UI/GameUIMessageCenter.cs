@@ -44,7 +44,7 @@ namespace Ballance2.Sys.UI
         [LuaApiDescription("查找系统中的 UI 消息中心", "找到则返回 UI 消息中心实例，否则返回null")]
         [LuaApiParamDescription("name", "名字")]
         public static GameUIMessageCenter FindGameUIMessageCenter(string name) {
-            if(!messageCenters.ContainsKey(name)) 
+            if(messageCenters.ContainsKey(name)) 
                 return messageCenters[name];
             return null;
         }
@@ -165,7 +165,8 @@ namespace Ballance2.Sys.UI
 
         private void Start() {
             GameLuaObjectHost = GetComponent<GameLuaObjectHost>();
-            messageCenters.Add(Name, this);
+            if(!messageCenters.ContainsKey(Name))
+                messageCenters.Add(Name, this);
             if(GameLuaObjectHost != null) 
                 GameLuaObjectHost.LuaInitFinished = InitLua;
         }

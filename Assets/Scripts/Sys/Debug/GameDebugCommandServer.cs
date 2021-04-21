@@ -43,6 +43,10 @@ namespace Ballance2.Sys.Debug
             public CommandDelegate Callback;
         }
 
+        public GameDebugCommandServer() {
+            RegisterSystemCommands();
+        }
+
         /// <summary>
         /// 运行命令
         /// </summary>
@@ -166,35 +170,14 @@ namespace Ballance2.Sys.Debug
             return true;
         }
 
-        internal void RegisterSystemCommands(GameManager game) {
+        private void RegisterSystemCommands() {
             //注册基础内置命令
-            RegisterCommand("quit", (keyword, fullCmd, args) =>
-            {
-                game.QuitGame();
-                return true;
-            }, 0, "退出游戏");
-            RegisterCommand("echo", (keyword, fullCmd, args) =>
-            {
-                Log.D("echo", fullCmd.Substring(3));
-                return true;
-            }, 1, "[any] 测试");
-            RegisterCommand("lua", (keyword, fullCmd, args) =>
-            {
-                game.GameMainLuaState.doString(fullCmd.Substring(3));
-                return true;
-            }, 1, "[any] 运行 LUA 命令");
-            RegisterCommand("fps", (keyword, fullCmd, args) =>
-            {
-                int fpsVal = 0;
-                if(args.Length >= 1)
-                {
-                    if (int.TryParse(args[0], out fpsVal) && fpsVal > 0 && fpsVal <= 120) Application.targetFrameRate = fpsVal;
-                    else Log.E(TAG, "错误的参数：{0}", args[0]);
-                }
-                Log.D(TAG, "Application.targetFrameRate = {0}", Application.targetFrameRate);
-                return true;
-            }, 0, "[targetFps:number] 获取或设置 targetFrameRate");
             RegisterCommand("help", OnCommandHelp, 1, "显示命令帮助");
+            RegisterCommand("e", (keyword, fullCmd, args) =>
+            {
+                Log.D("echo", fullCmd.Substring(2));
+                return true;
+            }, 1, "[any] 测试命令");
         }
     }
 }

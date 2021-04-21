@@ -147,8 +147,9 @@ namespace Ballance2.Sys.Package
                     case "Dependencies":
                         for (int j = 0, jc = xmlNodeBaseInfo.ChildNodes[i].ChildNodes.Count; j < jc; j++)
                         {
-                            Dependencies.Add(new GamePackageDependencies(
-                                xmlNodeBaseInfo.ChildNodes[i].ChildNodes[j]));
+                            var node = xmlNodeBaseInfo.ChildNodes[i].ChildNodes[j];
+                            if(node.Attributes != null)
+                                Dependencies.Add(new GamePackageDependencies(node));
                         }
                         break;
                 }
@@ -237,21 +238,23 @@ namespace Ballance2.Sys.Package
         [SLua.DoNotToLua]
         public GamePackageDependencies(XmlNode xmlNode)
         {
-            for (int i = 0; i < xmlNode.Attributes.Count; i++)
-            {
-                switch(xmlNode.Attributes[i].Name)
+            if(xmlNode != null) {
+                for (int i = 0; i < xmlNode.Attributes.Count; i++)
                 {
-                    case "name":
-                        Name = xmlNode.Attributes[i].Value;
-                        break;
-                    case "minVer":
-                        MinVersion = ConverUtils.StringToInt(xmlNode.Attributes[i].Value,
-                            0, "Dependencies/minVer");
-                        break;
-                    case "mustLoad":
-                        MustLoad = ConverUtils.StringToBoolean(xmlNode.Attributes[i].Value, 
-                            false, "Dependencies/mustLoad");
-                        break;
+                    switch(xmlNode.Attributes[i].Name)
+                    {
+                        case "name":
+                            Name = xmlNode.Attributes[i].Value;
+                            break;
+                        case "minVer":
+                            MinVersion = ConverUtils.StringToInt(xmlNode.Attributes[i].Value,
+                                0, "Dependencies/minVer");
+                            break;
+                        case "mustLoad":
+                            MustLoad = ConverUtils.StringToBoolean(xmlNode.Attributes[i].Value, 
+                                false, "Dependencies/mustLoad");
+                            break;
+                    }
                 }
             }
         }

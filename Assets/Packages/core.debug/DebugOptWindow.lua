@@ -16,6 +16,7 @@ GameManager = Ballance2.Sys.GameManager
 GamePackage = Ballance2.Sys.Package.GamePackage
 GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 GameActionCallResult = Ballance2.Sys.Bridge.GameActionCallResult
+GameUIPrefabType = Ballance2.Sys.Services.GameUIPrefabType
 
 ---@type GameLuaObjectHostClass
 DebugOptWindow = { 
@@ -81,7 +82,7 @@ function CreateClass_DebugOptWindow()
   end
   function DebugOptWindow:AddToggleItem(name, text) 
     ---@type Toggle
-    local newToggle = CloneUtils.CloneNewObjectWithParent(GameUIManager:GetUIPrefab("CheckBox"), self.ContentView):GetComponent(UnityEngine.UI.Toggle) 
+    local newToggle = CloneUtils.CloneNewObjectWithParent(GameUIManager:GetUIPrefab("CheckBox", GameUIPrefabType.Control), self.ContentView):GetComponent(UnityEngine.UI.Toggle) 
     ---@type Text
     local newToggleText = newToggle.transform:Find('Label'):GetComponent(UnityEngine.UI.Text) 
     newToggleText.text = text

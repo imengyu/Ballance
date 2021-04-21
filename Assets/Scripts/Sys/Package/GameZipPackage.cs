@@ -116,7 +116,12 @@ namespace Ballance2.Sys.Package
             MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
             PackageDef = new XmlDocument();
-            PackageDef.LoadXml(StringUtils.FixUtf8BOM(ms.ToArray()));
+            try {
+                PackageDef.LoadXml(StringUtils.FixUtf8BOM(ms.ToArray()));
+            }  catch(System.Exception e) {
+                GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
+                return false;
+            }
 
             ms.Close();
             ms.Dispose();

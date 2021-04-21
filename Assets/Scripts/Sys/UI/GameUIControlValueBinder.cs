@@ -62,6 +62,9 @@ namespace Ballance2.Sys.UI
             if(SolveInLua) 
                 MessageCenter.CallLuaBinderBegin(this);
         }
+        private void Awake() {
+            MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
+        }
         private void OnDestroy() {
             if(MessageCenter != null)
                 MessageCenter.UnRegisterValueBinder(this);

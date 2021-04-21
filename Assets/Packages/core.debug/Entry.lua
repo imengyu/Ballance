@@ -14,6 +14,7 @@ mengyu
 -- 调试工具类
 GameManager = Ballance2.Sys.GameManager
 CloneUtils = Ballance2.Sys.Utils.CloneUtils
+GameObject = UnityEngine.GameObject
 GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 Log = Ballance2.Utils.Log
 DebugCamera = Ballance2.DebugCamera
@@ -85,6 +86,8 @@ return {
             end
             return false
         end)
+
+        GameObject.Find("GameDebugBeginStats"):SetActive(false);
         return true
     end,
     ---模块卸载前函数

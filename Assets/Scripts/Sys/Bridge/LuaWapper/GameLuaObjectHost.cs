@@ -171,7 +171,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             }
             else
             {
-                LuaInitFinished.Invoke();
+                if(LuaInitFinished != null) LuaInitFinished.Invoke();
 
                 if (awakeCalledBeforeInit && awake != null) awake(self);
                 if (startCalledBeforeInit && start != null) start(self, gameObject);   
@@ -296,9 +296,10 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
             InitLuaInternalVars();
             InitLuaVars(); //初始化引入参数
-            //调用其他Lua初始化脚本
-            SendMessage("OnInitLua", gameObject, SendMessageOptions.DontRequireReceiver);
             InitLuaEvents();
+            //调用其他Lua初始化脚本
+
+            if(OnInitLua != null) OnInitLua.Invoke();
             return true;
         }
         private void InitLuaEvents()
@@ -353,6 +354,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             onGUI = null;
             onDestory = null;
         }
+
+        public VoidDelegate OnInitLua;
 
         /// <summary>
         /// 更新 lua 脚本的所有 InitialVars 至 lua table上
@@ -438,15 +441,13 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// 调用lua无参函数
         /// </summary>
         /// <param name="funName">lua函数名称</param>
-        /// <returns>Lua函数返回的对象，如果调用该函数失败，则返回null</returns>
-        [LuaApiDescription("调用lua无参函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
+        [LuaApiDescription("调用lua无参函数")]
         [LuaApiParamDescription("funName", "lua函数名称")]
-        public object CallLuaFun(string funName)
+        public void CallLuaFun(string funName)
         {
             LuaFunction f = GetLuaFun(funName);
             if (f != null) 
-                return f.call(self);
-            return null;
+                f.call(self);
         }
         /// <summary>
         /// 调用lua函数
@@ -457,7 +458,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [LuaApiDescription("调用lua函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
         [LuaApiParamDescription("funName", "lua函数名称")]
         [LuaApiParamDescription("pararms", "参数")]
-        public object CallLuaFun(string funName, params object[] pararms)
+        public object CallLuaFunWithParam(string funName, params object[] pararms)
         {
             LuaFunction f = GetLuaFun(funName);
             if (f != null) return f.call(self, pararms);

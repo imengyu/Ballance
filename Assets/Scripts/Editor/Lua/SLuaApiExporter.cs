@@ -57,16 +57,18 @@ namespace Slua
     }
     [MenuItem("Ballance/Lua API 定义文件/生成单个类", false, 103)]
     public static void GenClass() {
+      var pathThis = path + SubCustomPath;
       if (EditorApplication.isCompiling) {
         Debug.LogWarning("编辑器正在编译，请等待编译完成再生成");
         return;
       }
-      if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+      if (!Directory.Exists(pathThis)) Directory.CreateDirectory(pathThis);
 
+      disableXmlComment = true;
       var w = ChooseExportClass.ShowWindow();
       w.Chooseed = (types) => {
         foreach(var t in types)
-          GenType(t, true, path);
+          GenType(t, true, pathThis);
         w.Close();
         Debug.Log("生成完成");
       };

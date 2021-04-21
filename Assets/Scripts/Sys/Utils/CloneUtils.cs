@@ -1,4 +1,5 @@
 ﻿using Ballance.LuaHelpers;
+using Ballance2.Sys.Debug;
 using Ballance2.Sys.Res;
 using UnityEngine;
 
@@ -39,6 +40,10 @@ namespace Ballance2.Sys.Utils
         [LuaApiParamDescription("name", "新的对象的名字")]
         public static GameObject CloneNewObject(GameObject prefab, string name)
         {
+            if(prefab == null) {
+                GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, "CloneUtils", "Can not clone {0}, The prefab is null", name);
+                return null;
+            }
             GameObject go = Object.Instantiate(prefab, GameManager.Instance.transform);
             go.name = name;
             return go;
@@ -56,6 +61,10 @@ namespace Ballance2.Sys.Utils
         [LuaApiParamDescription("name", "新的对象的名字")]
         public static GameObject CloneNewObjectWithParent(GameObject prefab, Transform parent, string name)
         {
+            if(prefab == null) {
+                GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, "CloneUtils", "Can not clone {0}, The prefab is null", name);
+                return null;
+            }
             GameObject go = Object.Instantiate(prefab, parent);
             go.name = name;
             return go;
@@ -71,6 +80,10 @@ namespace Ballance2.Sys.Utils
         [LuaApiParamDescription("parent", "父级对象")]
         public static GameObject CloneNewObjectWithParent(GameObject prefab, Transform parent)
         {
+            if(prefab == null) {
+                GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, "CloneUtils", "Can not clone object, The prefab is null");
+                return null;
+            }
             return Object.Instantiate(prefab, parent);
         }
         /// <summary>
@@ -88,6 +101,10 @@ namespace Ballance2.Sys.Utils
         [LuaApiParamDescription("active", "是否激活该对象")]
         public static GameObject CloneNewObjectWithParent(GameObject prefab, Transform parent, string name, bool active)
         {
+            if(prefab == null) {
+                GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, "CloneUtils", "Can not clone {0}, The prefab is null", name);
+                return null;
+            }
             GameObject go = Object.Instantiate(prefab, parent);
             go.name = name;
             go.SetActive(active);

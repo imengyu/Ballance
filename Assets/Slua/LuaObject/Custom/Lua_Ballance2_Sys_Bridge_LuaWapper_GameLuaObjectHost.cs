@@ -225,29 +225,47 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			int argc = LuaDLL.lua_gettop(l);
-			if(argc==2){
-				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				var ret=self.CallLuaFun(a1);
-				pushValue(l,true);
-				pushValue(l,ret);
-				return 2;
-			}
-			else if(argc==3){
-				Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
-				System.String a1;
-				checkType(l,2,out a1);
-				System.Object[] a2;
-				checkParams(l,3,out a2);
-				var ret=self.CallLuaFun(a1,a2);
-				pushValue(l,true);
-				pushValue(l,ret);
-				return 2;
-			}
-			pushValue(l,false);
-			LuaDLL.lua_pushstring(l,"No matched override function CallLuaFun to call");
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			self.CallLuaFun(a1);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int CallLuaFunWithParam(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			System.Object[] a2;
+			checkParams(l,3,out a2);
+			var ret=self.CallLuaFunWithParam(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
 			return 2;
 		}
 		catch(Exception e) {
@@ -1040,6 +1058,7 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 		addMember(l,GetLuaClass);
 		addMember(l,GetLuaFun);
 		addMember(l,CallLuaFun);
+		addMember(l,CallLuaFunWithParam);
 		addMember(l,"TAG",get_TAG,null,false);
 		addMember(l,"Name",get_Name,set_Name,true);
 		addMember(l,"LuaClassName",get_LuaClassName,set_LuaClassName,true);

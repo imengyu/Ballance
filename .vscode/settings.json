@@ -7,5 +7,9 @@
     "**/Logs": true,
     "**/obj": true,
     "**/Library": true,
-  }
+  },
+  "Lua.runtime.plugin": "",
+  "Lua.workspace.library": [
+    "Assets/Scripts/LuaHelpers/LuaDefineApi"
+  ]
 }

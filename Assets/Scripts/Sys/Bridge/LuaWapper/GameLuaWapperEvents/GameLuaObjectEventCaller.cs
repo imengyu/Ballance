@@ -20,10 +20,18 @@
 
 namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
 {
+    [RequireComponent(typeof(GameLuaObjectHost))]
     public class GameLuaObjectEventCaller : MonoBehaviour
     {
+        private void Awake() {
+            var host = GetComponent<GameLuaObjectHost>();
+            host.OnInitLua += () => {
+                OnInitLua(host);
+            };
+        }
+        protected virtual void OnInitLua(GameLuaObjectHost host) { }
+        
         public virtual string[] GetSupportEvents() { return null; }
-        public virtual void OnInitLua(GameLuaObjectHost host) { }
         public virtual GameLuaObjectEventWarps GetEventType() { return GameLuaObjectEventWarps.Unknow; }
     }
 

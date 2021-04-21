@@ -2,6 +2,7 @@
 using Ballance2.Sys.Res;
 using Ballance2.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -49,8 +50,13 @@ namespace Ballance2.Sys.Package
             } 
             else
             {
-                PackageDef = new XmlDocument();
-                PackageDef.Load(defPath);
+                try{
+                    PackageDef = new XmlDocument();
+                    PackageDef.Load(defPath);
+                }  catch(Exception e) {
+                    GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
+                    return false;
+                }
                 UpdateTime = File.GetLastWriteTime(defPath);
                 return ReadInfo(PackageDef);
             }
@@ -60,9 +66,29 @@ namespace Ballance2.Sys.Package
         {
             if(!string.IsNullOrEmpty(BaseInfo.Logo))
                 LoadLogo(PackageFilePath + "/" + BaseInfo.Logo);
+            
+            LoadAllFileNames();
             return await base.LoadPackage();
         }
 
+        private Dictionary<string, string> fileList = new Dictionary<string, string>();
+        private void LoadAllFileNames() {
+            DirectoryInfo theFolder = new DirectoryInfo(PackageFilePath);
+            FileInfo[] thefileInfo = theFolder.GetFiles("*.*", SearchOption.AllDirectories);
+            foreach (FileInfo NextFile in thefileInfo) { //遍历文件
+                string path = NextFile.FullName.Replace("\\", "/");
+                int index = path.IndexOf("Assets/");
+                if(index > 0)
+                    path = path.Substring(index);
+
+                fileList.Add(NextFile.Name, path);
+            }
+        }
+        private string GetFullPathByName(string name) {
+            if(fileList.TryGetValue(name, out string fullpath))
+                return fullpath;
+            return null;
+        } 
         private void LoadLogo(string path)
         {
             try
@@ -93,6 +119,11 @@ namespace Ballance2.Sys.Package
                 string path = PackageFilePath + "/" + pathorname;
                 if (File.Exists(path))
                     return File.ReadAllText(path);
+                else {
+                    string fullPath = GetFullPathByName(pathorname);
+                    if(fullPath != null && File.Exists(path))
+                        return File.ReadAllText(path);
+                }
             }
 
             GameErrorChecker.LastError = GameError.FileNotFound;
@@ -113,14 +144,20 @@ namespace Ballance2.Sys.Package
             }
             return base.LoadCodeCSharp(pathorname);
         }
-
         public override T GetAsset<T>(string pathorname)
         {
 #if UNITY_EDITOR
             if(pathorname.StartsWith("Assets/"))
                 return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(pathorname);
-            else return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(
-                GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + PackageName + "/" + pathorname);
+            else { 
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + PackageName + "/" + pathorname);
+                if(asset == null && !pathorname.Contains("/") && !pathorname.Contains("\\")) {
+                    string fullPath = GetFullPathByName(pathorname);
+                    if(fullPath != null)
+                        asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
+                }
+                return asset;
+            }
 #else
             GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "Package can only use in editor.");
             return false;

@@ -60,6 +60,7 @@ namespace Ballance2.Sys.Services
                 {
                     GamePackageManager = (GamePackageManager)GameSystem.GetSystemService("GamePackageManager");
                     GameSoundManagerObject = CloneUtils.CreateEmptyObjectWithParent(GameManager.Instance.gameObject.transform, "GameSoundManager");
+                    InitCommands();
                     return false;
                 }
             );
@@ -410,6 +411,37 @@ namespace Ballance2.Sys.Services
         }
 
         #endregion
+    
+        #region Command
+
+        private void InitCommands() {
+            var srv = GameManager.Instance.GameDebugCommandServer;
+            srv.RegisterCommand("sg", (keyword, fullCmd, args) => {
+                var type = (string)args[0];
+                switch(type) {
+                    case "play":
+                        if(args.Length >= 2 && !StringUtils.IsNullOrWhiteSpace(args[1])) {
+                            GameSoundType stype = GameSoundType.Normal;
+                            if(args.Length >= 3) System.Enum.TryParse(args[2], out stype);
+                            PlayFastVoice(args[1], stype);
+                            return true;
+                        } else 
+                            Log.E(TAG, "缺少参数 [1]");
+                        break;
+                    case "list":
+                        foreach(var i in audios)
+                            Log.V(TAG, string.Format("{0} => {1}, isPlaying: {2}, loop: {3}", i.Audio.gameObject.name, i.Type, i.Audio.isPlaying, i.Audio.loop));
+                        break;
+                }
+                return false;
+            }, 1, "声音理器命令：sg <play/list>\n" + 
+                    "  play <asset:string> [soundType:GameSoundType] 播放一个音乐，asset路径格式为 “模块包名:音乐文件路径”；soundType指示音乐类型，默认为GameSoundType.Normal\n" + 
+                    "  list 列举出声音理器管理的所有声音实例");
+        }
+
+        #endregion
+
+
     }
 
     /// <summary>

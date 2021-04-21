@@ -10,7 +10,6 @@ using Ballance2.Sys.Utils.Lua;
 using Ballance2.Utils;
 using SLua;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -67,7 +66,7 @@ namespace Ballance2.Sys.Package
         {
             FixBundleShader();
 
-            //模组代码环境初始化
+            //模块代码环境初始化
             if (Type == GamePackageType.Module)
             {
                 if (CodeType == GamePackageCodeType.Lua)
@@ -224,10 +223,10 @@ namespace Ballance2.Sys.Package
                 luaObjects.Add(o);
         }
         /// <summary>
-        /// 获取模组启动代码是否已经执行
+        /// 获取模块启动代码是否已经执行
         /// </summary>
         /// <returns></returns>
-        [LuaApiDescription("获取模组启动代码是否已经执行")]
+        [LuaApiDescription("获取模块启动代码是否已经执行")]
         public bool IsEntryCodeExecuted() { return mainLuaCodeLoaded; }
 
         private bool mainLuaCodeLoaded = false;
@@ -328,7 +327,7 @@ namespace Ballance2.Sys.Package
                         {
                             LuaPackageEntry = PackageLuaState.doString(lua, PackageName + ":Entry") as LuaTable;
                             if(LuaPackageEntry == null) {
-                                Log.E(TAG, "模组 {0} 运行启动代码失败! 启动代码未返回指定结构体。\n请检查代码 ->\n{1}", 
+                                Log.E(TAG, "模块 {0} 运行启动代码失败! 启动代码未返回指定结构体。\n请检查代码 ->\n{1}", 
                                     PackageName, 
                                     DebugUtils.PrintCodeWithLine(lua));
                                 GameErrorChecker.LastError = GameError.ExecutionFailed;
@@ -340,7 +339,7 @@ namespace Ballance2.Sys.Package
                         }
                         catch (Exception e)
                         {
-                            Log.E(TAG, "模组 {0} 运行启动代码失败! {1}\n请检查代码 ->\n{2}", 
+                            Log.E(TAG, "模块 {0} 运行启动代码失败! {1}\n请检查代码 ->\n{2}", 
                                 PackageName, e.Message, 
                                 DebugUtils.PrintCodeWithLine(lua));
                             Log.E(TAG, e.ToString());
@@ -354,7 +353,7 @@ namespace Ballance2.Sys.Package
                             object b = fPackageEntry.call(this);
                             if (b is bool && !((bool)b))
                             {
-                                Log.E(TAG, "模组 {0} PackageEntry 返回了错误", PackageName);
+                                Log.E(TAG, "模块 {0} PackageEntry 返回了错误", PackageName);
                                 GameErrorChecker.LastError = GameError.ExecutionFailed;
                                 return (bool)b;
                             }
@@ -362,13 +361,13 @@ namespace Ballance2.Sys.Package
                         }
                         else
                         {
-                            Log.E(TAG, "模组 {0} 未找到 PackageEntry ", PackageName);
+                            Log.E(TAG, "模块 {0} 未找到 PackageEntry ", PackageName);
                             GameErrorChecker.LastError = GameError.FunctionNotFound;
                         }
                     }
                     else
                     {
-                        Log.E(TAG, "无法重复运行模组启动代码 {0} {1} ", EntryCode, PackageName);
+                        Log.E(TAG, "无法重复运行模块启动代码 {0} {1} ", EntryCode, PackageName);
                         GameErrorChecker.LastError = GameError.AlreadyRegistered;
                     }
                 }
@@ -398,7 +397,7 @@ namespace Ballance2.Sys.Package
                     object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this } );
                     if (b is bool && !((bool)b))
                     {
-                        Log.E(TAG, "模组 PackageEntry 返回了错误");
+                        Log.E(TAG, "模块 PackageEntry 返回了错误");
                         GameErrorChecker.LastError = GameError.ExecutionFailed;
                         return (bool)b;
                     }
@@ -467,20 +466,41 @@ namespace Ballance2.Sys.Package
         private List<string> requiredLuaFiles = null;
         private Dictionary<string, LuaFunction> requiredLuaClasses = null;
 
+        private string TryLoadLuaCodeAsset(string className) {
+            string lua = GetCodeLuaAsset(className);
+
+            if (lua == null) 
+                lua = GetCodeLuaAsset(className + ".lua");
+                
+            if(!className.EndsWith(".lua")) className += ".lua";
+
+            if (lua == null) 
+                lua = GetCodeLuaAsset("Scripts/" + className);
+
+            if(!className.EndsWith(".txt")) className += ".txt";
+            if (lua == null) 
+                lua = GetCodeLuaAsset(className + ".txt");
+            if (lua == null) 
+                lua = GetCodeLuaAsset("Scripts/" + className + ".txt");
+            if (lua == null)
+                throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 未找到该文件");
+            return lua;
+        }
+
         /// <summary>
-        /// 导入 Lua 类到当前模组虚拟机中。
+        /// 导入 Lua 类到当前模块虚拟机中。
         /// 注意，类函数以 “CreateClass_类名” 开头，
         /// 关于 Lua 类，请参考 Docs/LuaClass 。
         /// </summary>
         /// <param name="className">类名</param>
         /// <returns>类创建函数</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模组包中找到类文件或是类创建函数 @* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 @* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("导入 Lua 类到当前模组虚拟机中", "类创建函数")]
+        [LuaApiDescription("导入 Lua 类到当前模块虚拟机中", "类创建函数")]
         [LuaApiParamDescription("className", "类名")]
         public LuaFunction RequireLuaClass(string className)
         {
@@ -495,11 +515,7 @@ namespace Ballance2.Sys.Package
                 return classInit;
             }
 
-            string lua = GetCodeLuaAsset(className);
-            if (lua == null) lua = GetCodeLuaAsset(className + ".lua");
-            if (lua == null) lua = GetCodeLuaAsset(className + ".txt");
-            if (lua == null)
-                throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 未找到该文件");
+            string lua = TryLoadLuaCodeAsset(className);
             if(string.IsNullOrWhiteSpace(lua))
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 该文件为空");
             try
@@ -525,28 +541,24 @@ namespace Ballance2.Sys.Package
             return classInit;
         }
         /// <summary>
-        /// 导入Lua文件到当前模组虚拟机中
+        /// 导入Lua文件到当前模块虚拟机中
         /// </summary>
         /// <param name="fileName">LUA文件名</param>
         /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模组包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("导入Lua文件到当前模组虚拟机中", "如果对应文件已导入，则返回true，否则返回false")]
+        [LuaApiDescription("导入Lua文件到当前模块虚拟机中", "如果对应文件已导入，则返回true，否则返回false")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
         public bool RequireLuaFile(string fileName)
         {
             if (requiredLuaFiles.Contains(fileName))
                 return true;
 
-            string lua = GetCodeLuaAsset(fileName);
-            if (lua == null) lua = GetCodeLuaAsset(fileName + ".lua");
-            if (lua == null) lua = GetCodeLuaAsset(fileName + ".txt");
-            if (lua == null)
-                throw new MissingReferenceException(PackageName + " 无法导入 Lua : " + fileName + " ,未找到该文件");
+            string lua = TryLoadLuaCodeAsset(fileName);
             if (string.IsNullOrWhiteSpace(lua))
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
             try
@@ -631,16 +643,19 @@ namespace Ballance2.Sys.Package
         /// <param name="luaObjectName">lua虚拟脚本名称</param>
         /// <param name="funName">lua函数名称</param>
         /// <param name="pararms">参数</param>
-        [LuaApiDescription("调用指定的lua虚拟脚本中的lua函数")]
+        /// <returns>Lua函数返回的对象，如果调用该函数失败，则返回null</returns>
+        [LuaApiDescription("调用指定的lua虚拟脚本中的lua函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
         [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
         [LuaApiParamDescription("funName", "lua函数名称")]
         [LuaApiParamDescription("pararms", "参数")]
-        public void CallLuaFun(string luaObjectName, string funName, params object[] pararms)
+        public object CallLuaFunWithParam(string luaObjectName, string funName, params object[] pararms)
         {
             GameLuaObjectHost targetObject = null;
             if (FindLuaObject(luaObjectName, out targetObject))
-                targetObject.CallLuaFun(funName, pararms);
-            else Log.E(TAG, "CallLuaFun Failed because object {0} not founnd", luaObjectName);
+                return targetObject.CallLuaFunWithParam(funName, pararms);
+            else 
+                Log.E(TAG, "CallLuaFun Failed because object {0} not founnd", luaObjectName);
+            return null;
         }
 
         #endregion
@@ -678,7 +693,7 @@ namespace Ballance2.Sys.Package
             //Version and PackageName
             PackageName = attributeName.Value;
             PackageVersion = ConverUtils.StringToInt(attributeVersion.Value, 0, "Package/version");
-
+        
             //BaseInfo
             BaseInfo = new GamePackageBaseInfo(nodeBaseInfo);
 
@@ -855,6 +870,7 @@ namespace Ballance2.Sys.Package
 
             return AssetBundle.LoadAsset<T>(pathorname);
         }
+        
         /// <summary>
         /// 读取模块资源包中的文字资源
         /// </summary>
@@ -863,6 +879,7 @@ namespace Ballance2.Sys.Package
         [LuaApiDescription("读取模块资源包中的文字资源", "返回TextAsset实例，如果未找到，则返回null")]
         [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual TextAsset GetTextAsset(string pathorname) { return GetAsset<TextAsset>(pathorname); }
+        
         /// <summary>
         /// 读取模块资源包中的 Prefab 资源
         /// </summary>
@@ -876,6 +893,7 @@ namespace Ballance2.Sys.Package
         public virtual Sprite GetSpriteAsset(string pathorname) { return GetAsset<Sprite>(pathorname); }
         public virtual Material GetMaterialAsset(string pathorname) { return GetAsset<Material>(pathorname); }
         public virtual PhysicMaterial GetPhysicMaterialAsset(string pathorname) { return GetAsset<PhysicMaterial>(pathorname); }
+       
         /// <summary>
         /// 读取模块资源包中的Lua代码资源
         /// </summary>
@@ -892,6 +910,7 @@ namespace Ballance2.Sys.Package
             GameErrorChecker.LastError = GameError.FileNotFound;
             return null;
         }
+        
         /// <summary>
         /// 加载模块资源包中的c#代码资源
         /// </summary>
@@ -901,8 +920,7 @@ namespace Ballance2.Sys.Package
         [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual Assembly LoadCodeCSharp(string pathorname)
         {
-            GameErrorChecker.SetLastErrorAndLog(GameError.NotSupportFileType, 
-                TAG, "当前模块不支持加载 CSharp 代码");
+            GameErrorChecker.SetLastErrorAndLog(GameError.NotSupportFileType, TAG, "当前模块不支持加载 CSharp 代码");
             return null;
         }
 

@@ -66,7 +66,13 @@ namespace Ballance2.Sys.Package
                     else
                     {
                         PackageDef = new XmlDocument();
-                        PackageDef.LoadXml(modDefTextAsset.text);
+
+                        try {
+                            PackageDef.LoadXml(modDefTextAsset.text);
+                        }  catch(System.Exception e) {
+                            GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
+                            return false;
+                        }
 
                         if(StringUtils.IsUrl(filePath)) UpdateTime = System.DateTime.Now;
                         else UpdateTime = System.IO.File.GetLastWriteTime(GamePathManager.FixFilePathScheme(filePath));

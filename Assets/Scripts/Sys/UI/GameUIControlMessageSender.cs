@@ -25,7 +25,7 @@ namespace Ballance2.Sys.UI
     /// UI事件发送器。该绑定器用在需要发送事件的UI控件上。
     /// </summary>
     [SLua.CustomLuaClass]
-    [AddComponentMenu("Ballance/UI/ValueBinder/MessageSender")]
+    [AddComponentMenu("Ballance/UI/MessageSender")]
     [RequireComponent(typeof(RectTransform))]
     [LuaApiDescription("UI事件发送器。该绑定器用在需要发送事件的UI控件上")]
     public class GameUIControlMessageSender : MonoBehaviour
@@ -39,6 +39,9 @@ namespace Ballance2.Sys.UI
 
         public GameUIMessageCenter MessageCenter = null;
 
+        private void Awake() {
+            MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
+        }
         private void Start() {
             MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
         }

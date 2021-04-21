@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2082283682356595528}
   - component: {fileID: 7227543639981663199}
   - component: {fileID: 677034468873747052}
-  - component: {fileID: 972120010369730046}
+  - component: {fileID: 5057437939430856566}
   m_Layer: 5
   m_Name: PageMain
   m_TagString: Untagged
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &972120010369730046
+--- !u!114 &5057437939430856566
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,9 +86,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8917957228750658583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b760a7fee621d94aa0b6318de8849ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 185e65ba4b5982e44896a104b23d37ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MessageCenterName: MenuLevelUICM
+  MessageCenter: {fileID: 0}
 --- !u!1001 &669601529802581396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,7 +117,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 972120010369730046}
+      objectReference: {fileID: 5057437939430856566}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -129,12 +131,12 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIMessageCenter, Assembly-CSharp
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Settings
+      value: BtnSettingsClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
@@ -285,7 +287,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 972120010369730046}
+      objectReference: {fileID: 5057437939430856566}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -299,12 +301,12 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIMessageCenter, Assembly-CSharp
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Start
+      value: BtnStartClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
@@ -455,7 +457,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 972120010369730046}
+      objectReference: {fileID: 5057437939430856566}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -469,12 +471,12 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIMessageCenter, Assembly-CSharp
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: About
+      value: BtnAboutClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
@@ -625,7 +627,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 972120010369730046}
+      objectReference: {fileID: 5057437939430856566}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -639,12 +641,12 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIMessageCenter, Assembly-CSharp
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Highscroll
+      value: BtnHighscrollClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
@@ -795,7 +797,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 972120010369730046}
+      objectReference: {fileID: 5057437939430856566}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -809,12 +811,12 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIMessageCenter, Assembly-CSharp
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Quit
+      value: BtnQuitClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}

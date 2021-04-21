@@ -63,6 +63,11 @@ namespace Ballance2.Sys
         [LuaApiDescription("游戏全局Lua虚拟机")]
         public LuaSvr.MainState GameMainLuaState { get; private set; }
         /// <summary>
+        /// 系统设置实例
+        /// </summary>
+        [LuaApiDescription("系统设置实例")]
+        public GameSettingsActuator GameSettings { get; private set; }
+        /// <summary>
         /// 游戏全局Lua虚拟机
         /// </summary>
         [LuaApiDescription("游戏全局Lua虚拟机")]
@@ -111,11 +116,13 @@ namespace Ballance2.Sys
 
             Application.wantsToQuit += Application_wantsToQuit;
 
+            GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
             GameBaseCamera = gameEntryInstance.GameBaseCamera;
             GameCanvas = gameEntryInstance.GameCanvas;
-
             GameDebugCommandServer = new GameDebugCommandServer();
-            GameDebugCommandServer.RegisterSystemCommands(this);
+
+            LoadBaseSettings();
+            InitCommands();
 
             GameStore = GameMediator.RegisterGlobalDataStore("core");
             GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
@@ -125,7 +132,6 @@ namespace Ballance2.Sys
             GameMainLuaSvr.init(null, () =>
             {
                 GameMainLuaState = LuaSvr.mainState;
-
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
 
                 //Run init
@@ -133,6 +139,15 @@ namespace Ballance2.Sys
             });
         }
 
+        private bool debugMode = false;
+        private void LoadBaseSettings() {
+#if UNITY_EDITOR
+            debugMode = true;
+#else
+            if(GameSettings.GetBool("DebugMode", false)) debugMode = true;
+            else GameObject.Find("GameDebugBeginStats").SetActive(false);
+#endif
+        }
         private IEnumerator InitAsysc()
         {
             //检测lua绑定状态
@@ -252,6 +267,7 @@ namespace Ballance2.Sys
                             continue;
                         }
                         if(loadStepNow != loadStep) continue;
+                        if(packageName == "core.debug" && !debugMode) continue;
 
                         //加载包
                         Task<bool> task = pm.LoadPackage(packageName);
@@ -301,6 +317,29 @@ namespace Ballance2.Sys
             yield return new WaitForSeconds(2);
             //全部加载完毕之后通知所有模块初始化
             pm.NotifyAllPackageRun("*");
+        }
+        private void InitCommands() {
+            var srv = GameManager.Instance.GameDebugCommandServer;
+            srv.RegisterCommand("quit", (keyword, fullCmd, args) => {
+                QuitGame();
+                return false;
+            }, 0, "退出游戏");
+            srv.RegisterCommand("fps", (keyword, fullCmd, args) =>
+            {
+                int fpsVal = 0;
+                if(args.Length >= 1)
+                {
+                    if (int.TryParse(args[0], out fpsVal) && fpsVal > 0 && fpsVal <= 120) Application.targetFrameRate = fpsVal;
+                    else Log.E(TAG, "错误的参数：{0}", args[0]);
+                }
+                Log.D(TAG, "Application.targetFrameRate = {0}", Application.targetFrameRate);
+                return true;
+            }, 0, "[targetFps:number] 获取或设置 targetFrameRate");
+            srv.RegisterCommand("c", (keyword, fullCmd, args) =>
+            {
+                GameMainLuaState.doString(fullCmd.Substring(2));
+                return true;
+            }, 1, "[any] 运行 LUA 命令");
         }
 
         #endregion

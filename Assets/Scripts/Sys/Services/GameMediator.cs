@@ -227,6 +227,31 @@ namespace Ballance2.Sys.Services
         }
 
         /// <summary>
+        /// 检测单一事件是否被接收者附加
+        /// </summary>
+        /// <param name="evtName">事件名称</param>
+        /// <returns>返回是否附加</returns>
+        [LuaApiDescription("检测单一事件是否被接收者附加", "返回是否附加")]
+        [LuaApiParamDescription("evtName", "事件名称")]
+        public bool CheckSingleEventAttatched(string evtName) {
+            if (string.IsNullOrEmpty(evtName))
+            {
+                Log.W(TAG, "NotifySingleEvent evtName 参数未提供");
+                GameErrorChecker.LastError = GameError.ParamNotProvide;
+                return false;
+            }
+            if (singleEvents.TryGetValue(evtName, out GameHandler handler)) {
+                return (handler != null);
+            }
+            else
+            {
+                Log.W(TAG, "事件 {0} 未注册", evtName);
+                GameErrorChecker.LastError = GameError.NotRegister;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 通知单一事件
         /// </summary>
         /// <param name="evtName">事件名称</param>

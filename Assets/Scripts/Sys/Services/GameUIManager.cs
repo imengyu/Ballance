@@ -68,11 +68,12 @@ namespace Ballance2.Sys.Services
                 {
                     UIRoot = GameManager.Instance.GameCanvas;
                     UIFadeManager = UIRoot.gameObject.AddComponent<UIFadeManager>();
-                    GlobalFadeMaskWhite = UIRoot.transform.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
-                    GlobalFadeMaskBlack = UIRoot.transform.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
+                    var GlobalMask = UIRoot.transform.Find("GlobalMask");
+                    GlobalFadeMaskWhite = GlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
+                    GlobalFadeMaskBlack = GlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
 
                     //隐藏遮住初始化的遮罩
-                    var GlobalBlackMask = UIRoot.transform.Find("GlobalBlackMask");
+                    var GlobalBlackMask = GlobalMask.Find("GlobalBlackMask");
                     if(GlobalBlackMask != null) GlobalBlackMask.gameObject.SetActive(false);
 
                     //黑色遮罩
@@ -88,6 +89,9 @@ namespace Ballance2.Sys.Services
                     InitAllObects();
                     InitWindowManagement();
 
+                    var GameDebugBeginStats = GameObject.Find("GameDebugBeginStats");
+                    if(GameDebugBeginStats)
+                        GameDebugBeginStats.transform.SetParent(ViewsRectTransform);
                     
                     //更新主管理器中的Canvas变量
                     GameManager.Instance.GameCanvas = ViewsRectTransform;
@@ -130,6 +134,7 @@ namespace Ballance2.Sys.Services
         private RectTransform PagesRectTransform;
         private RectTransform WindowsRectTransform;
         private RectTransform ViewsRectTransform;
+        private RectTransform OthersRectTransform;
 
         /// <summary>
         /// UI 根 RectTransform
@@ -145,6 +150,7 @@ namespace Ballance2.Sys.Services
             PagesRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIPages").GetComponent<RectTransform>();
             ViewsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameViewsRectTransform").GetComponent<RectTransform>();
             WindowsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIWindow").GetComponent<RectTransform>();
+            OthersRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIOthers").GetComponent<RectTransform>();
 
             InitAllPrefabs();
 
@@ -274,6 +280,7 @@ namespace Ballance2.Sys.Services
                 GameErrorChecker.SetLastErrorAndLog(GameError.ClassNotFound, TAG, "页模板上未找到 GameUIPage 类");
                 return null;
             }
+            page.PageName = name;
             go.SetActive(false);
             pages.Add(name, page);
             return page;
@@ -308,6 +315,12 @@ namespace Ballance2.Sys.Services
         /// <returns></returns>
         [LuaApiDescription("获取当前显示页")]
         public GameUIPage GetCurrentPage() { return currentPage;  }
+        /// <summary>
+        /// 隐藏当前显示页
+        /// </summary>
+        /// <returns></returns>
+        [LuaApiDescription("隐藏当前显示页")]
+        public void HideCurrentPage() { currentPage.Hide(); }
         /// <summary>
         /// 关闭所有显示的页
         /// </summary>
@@ -872,6 +885,23 @@ namespace Ballance2.Sys.Services
             RectTransform view = go.GetComponent<RectTransform>();
             view.SetParent(ViewsRectTransform.gameObject.transform);
             return view;
+        }
+
+        /// <summary>
+        /// 创建一个UI消息中心
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns>返回UI消息中心实例</returns>
+        [LuaApiDescription("创建一个UI消息中心", "返回UI消息中心实例")]
+        [LuaApiParamDescription("name", "名称")]
+        public GameUIMessageCenter CreateUIMessageCenter(string name) {
+            var old = GameUIMessageCenter.FindGameUIMessageCenter(name);
+            if(old == null) {
+                var go = CloneUtils.CreateEmptyObjectWithParent(OthersRectTransform.transform, "GameUIMessageCenter:" + name);
+                old = go.AddComponent<GameUIMessageCenter>();
+                old.Name = name;
+            }
+            return old;
         }
 
         #endregion
