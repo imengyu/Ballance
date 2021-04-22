@@ -652,7 +652,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 16.037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3185664973055313668
 CanvasRenderer:
@@ -684,10 +684,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 6
     m_AlignByGeometry: 0
@@ -731,7 +731,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 16.8296}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8789052988548712369
 CanvasRenderer:
@@ -763,10 +763,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 6
     m_AlignByGeometry: 0
@@ -850,7 +850,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: 0, y: 14.4518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8578087294160237915
 CanvasRenderer:
@@ -882,10 +882,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 6
     m_AlignByGeometry: 0
@@ -944,7 +944,7 @@ PrefabInstance:
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -306.99994
+      value: -307.00003
       objectReference: {fileID: 0}
     - target: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
@@ -1104,7 +1104,7 @@ PrefabInstance:
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9999976
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}

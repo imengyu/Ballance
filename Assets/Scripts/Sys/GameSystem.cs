@@ -8,6 +8,7 @@ using Ballance2.Sys.Services;
 using Ballance2.Sys.Utils;
 using Ballance2.Utils;
 using System.Collections.Generic;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -243,7 +244,13 @@ namespace Ballance2.Sys
                 //Destroy system service
                 List<string> serviceNames = new List<string>(systemService.Keys);
                 for(int i = serviceNames.Count - 1; i >= 0; i--)
-                    systemService[serviceNames[i]].Destroy();
+                {
+                    try{
+                        systemService[serviceNames[i]].Destroy();
+                    } catch(System.Exception e) {
+                        UnityEngine.Debug.LogError("Exception when destroy service " + serviceNames[i] + "," + e.ToString());
+                    }
+                }
                 serviceNames.Clear();
                 systemService.Clear();
 

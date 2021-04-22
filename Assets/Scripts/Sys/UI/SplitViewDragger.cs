@@ -32,6 +32,7 @@ namespace Ballance2.Sys.UI
     /// </summary>
     [CustomLuaClass]
     [LuaApiDescription("拖动托块组件")]
+    [AddComponentMenu("Ballance/UI/Controls/SplitViewDragger")]
     public class SplitViewDragger : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         void Start()

@@ -4,13 +4,14 @@
     <Name>MenuLevel</Name>
     <Author>imengyu</Author>
     <Introduction>菜单关卡与主菜单控制</Introduction>
-    <Description><![CDATA[<color=#f00>菜单关卡与主菜单控制</color>]]></Description>
+    <Description>菜单关卡与主菜单控制</Description>
     <Logo>PackageLogo.png</Logo>
     <Link>https://imengyu.top</Link>
     <AuthorLink>https://imengyu.top</AuthorLink>
     <DocLink>https://imengyu.top</DocLink>
     <VersionName>1.0</VersionName>
     <Dependencies>
+      <Package name="core.ui" minVer="1" mustLoad="true"></Package>
     </Dependencies>
   </BaseInfo>
   <Compatibility>

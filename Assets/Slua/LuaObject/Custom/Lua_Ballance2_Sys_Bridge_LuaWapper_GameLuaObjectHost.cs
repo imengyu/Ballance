@@ -732,6 +732,41 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int set_OnInitLua(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			Ballance2.Sys.Bridge.VoidDelegate v;
+			int op=checkDelegate(l,2,out v);
+			if(op==0) self.OnInitLua=v;
+			else if(op==1) self.OnInitLua+=v;
+			else if(op==2) self.OnInitLua-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_LuaSelf(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1067,6 +1102,7 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 		addMember(l,"CreateStore",get_CreateStore,set_CreateStore,true);
 		addMember(l,"CreateActionStore",get_CreateActionStore,set_CreateActionStore,true);
 		addMember(l,"LuaInitFinished",null,set_LuaInitFinished,true);
+		addMember(l,"OnInitLua",null,set_OnInitLua,true);
 		addMember(l,"LuaSelf",get_LuaSelf,null,true);
 		addMember(l,"LuaState",get_LuaState,set_LuaState,true);
 		addMember(l,"Package",get_Package,set_Package,true);

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3385462688567257967}
   - component: {fileID: 8107185447141835468}
   - component: {fileID: 1419146374566280081}
+  - component: {fileID: 8487188829137402625}
   m_Layer: 5
   m_Name: ButtonSmallPrimary
   m_TagString: Untagged
@@ -125,6 +126,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8487188829137402625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097476638186419396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundName: core.sounds:Menu_click.wav
 --- !u!1 &3475046112221311406
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +205,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0

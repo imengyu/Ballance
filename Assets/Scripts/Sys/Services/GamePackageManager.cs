@@ -657,7 +657,7 @@ namespace Ballance2.Sys.Services
             //Create window
             PackageManageWindow = GameUIManager.CreateWindow("Package manager", 
                 CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("PackageManageWindow"), "PackageManageWindow").GetComponent<RectTransform>(),
-                false, 0, 0, 900, 600);
+                false, 0, 0, 800, 500);
             PackageManageWindow.CloseAsHide = true;
         }
         private void DestroyPackageManageWindow() {   
@@ -673,61 +673,87 @@ namespace Ballance2.Sys.Services
             srv.RegisterCommand("pm", (keyword, fullCmd, args) => {
                 var type = (string)args[0];
                 switch(type) {
-                    case "load": 
-                        if(args.Length >= 2 && !StringUtils.IsNullOrWhiteSpace(args[1])) {
-                            Task<bool> task = LoadPackage(args[1]);
-                            return true;
-                        } else {
-                            Log.E(TAG, "缺少参数 [1]");
-                            return false;
-                        }
-                    case "unload": 
-                        if(args.Length >= 2 && !StringUtils.IsNullOrWhiteSpace(args[1])) {
-                            bool unLoadImmediately = false;
-                            if(args.Length >= 3) bool.TryParse(args[2], out unLoadImmediately);
-                            UnLoadPackage(args[1], unLoadImmediately);
-                            return true;
-                        } else {
-                            Log.E(TAG, "缺少参数 [1]");
-                            return false;
-                        }
-                    case "info": 
-                        if(args.Length >= 2 && !StringUtils.IsNullOrWhiteSpace(args[1])) {
-                            GamePackage p = FindPackage(args[1]);
-                            Log.V(TAG, p.ToString());
-                            return true;
-                        } else {
-                            Log.E(TAG, "缺少参数 [1]");
-                            return false;
-                        }
-                    case "reg": 
-                        if(args.Length >= 2 && !StringUtils.IsNullOrWhiteSpace(args[1])) {
-                            Task<bool> task = RegisterPackage(args[1]);
-                            return true;
-                        } else {
-                            Log.E(TAG, "缺少参数 [1]");
-                            return false;
-                        }
-                    case "list-loaded": 
+                    case "load": {
+                        string packageName = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+                        Task<bool> task = LoadPackage(args[1]);
+                        return true;
+                    }
+                    case "unload": {
+                        string packageName = "";
+                        bool unLoadImmediately;
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+                        DebugUtils.CheckBoolDebugParam(2, args, out unLoadImmediately, false, false);
+
+                        UnLoadPackage(args[1], unLoadImmediately);
+                        return true;
+                    }
+                    case "unload-all": {
+                        UnLoadAllPackages();
+                        return true;
+                    }
+                    case "info": {
+                        string packageName = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+
+                        GamePackage p = FindPackage(packageName);
+                        Log.V(TAG, p.ToString());
+                        return true;
+                    }
+                    case "enable": {
+                        string packageName = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+
+                        SetPackageEnableLoad(args[1], true);
+                        return true;
+                    }
+                    case "disable": {
+                        string packageName = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+
+                        SetPackageEnableLoad(args[1], false);
+                        return true;
+                    }
+                    case "reg": {
+                        string packageName = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+                        
+                        Task<bool> task = RegisterPackage(packageName);
+                        return true;
+                    }
+                    case "list-loaded": {
                         foreach(var i in loadedPackages)
                             Log.V(TAG, string.Format("{0} => {1}", i.Value.PackageName, i.Value.Status));
                         return true;
-                    case "wnd": 
-                        GameManager.Instance.GameStore["DbgShowPackageManageWindow"] = true;
-                        return true;
-                    case "list-reged": 
+                    }
+                    case "list-reged": {
                         foreach(var i in registeredPackages)
                             Log.V(TAG, string.Format("{0} enableLoad: {1}", i.Value.packageName, i.Value.enableLoad));
                         return true;
+                    }
+                    case "wnd": {
+                        GameManager.Instance.GameStore["DbgShowPackageManageWindow"] = true;
+                        return true;
+                    }
+                    case "notify-run": {
+                        string packageNameFilter = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out packageNameFilter)) break;
+
+                        NotifyAllPackageRun(packageNameFilter);
+                        return true;
+                    }
                 }
-                return true;
-            }, 1, "模块管理器命令：pm <reg/load/info/unload/list-loaded/list-reged/wnd> [packageName]\n" + 
+                return false;
+            }, 1, "pm <reg/load/info/unload/list-loaded/list-reged/notify-run/wnd> [packageName] 模块管理器命令\n" + 
                     "  reg <packageName:string> 注册一个模块包\n" +
                     "  load <packageName:string> 加载一个模块包\n" +
                     "  info <packageName:string> 显示一个模块包的信息\n" +
                     "  unload <packageName:string> [unLoadImmediately:boolean] 卸载一个模块包, unLoadImmediately指定是否立即卸载，默认false\n" +
+                    "  enable <packageName:string> 启用模块包启动加载\n" +
+                    "  disable <packageName:string> 禁用模块包启动加载\n" +
                     "  list-loaded 列举出已加载的模块包\n" +
                     "  list-regedad 列举出已注册的模块包\n" +
+                    "  notify-run <packageNameFilter> 通知模块包运行，packageNameFilter为包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。\n" +
                     "  wnd 显示模块管理器窗口");
         }
 

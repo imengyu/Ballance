@@ -61,6 +61,8 @@ namespace Ballance2.Sys.UI
                 MessageCenter.RegisterValueBinder(this);
             if(SolveInLua) 
                 MessageCenter.CallLuaBinderBegin(this);
+            else 
+                BinderBegin();
         }
         private void Awake() {
             MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
@@ -70,9 +72,7 @@ namespace Ballance2.Sys.UI
                 MessageCenter.UnRegisterValueBinder(this);
         }
 
-        protected virtual void BinderBegin() {
-
-        }
+        protected virtual void BinderBegin() {}
         
         /// <summary>
         /// 通知UI更新事件

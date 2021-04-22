@@ -28,6 +28,7 @@ namespace Ballance2.Sys.UI
     [ExecuteInEditMode]
     [SLua.CustomLuaClass]
     [LuaApiDescription("进度条组件")]
+    [AddComponentMenu("Ballance/UI/Controls/Progress")]
     public class Progress : MonoBehaviour
     {
         [SerializeField, HideInInspector]

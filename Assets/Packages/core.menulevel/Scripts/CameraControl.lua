@@ -32,6 +32,8 @@ local CameraControl = {
   transformI_Zone_LiLiang = nil,
 }
 
+EVENT_SWITCH_LIGHTZONE = 'swicth_menulevel_lightzone'
+
 function CreateClass_CameraControl()
   
   function CameraControl:new(o)
@@ -46,13 +48,22 @@ function CreateClass_CameraControl()
     self.transformI_Zone_SuDu = self.I_Zone_SuDu.transform
     self.transformI_Zone_NenLi = self.I_Zone_NenLi.transform
     self.transformI_Zone_LiLiang = self.I_Zone_LiLiang.transform
-    self.skyBox = self.gameObject:GetComponent(UnityEngine.Skybox)
     self.skyBoxNight = SkyBoxUtils.MakeSkyBox('D')
     self.skyBoxDay = SkyBoxUtils.MakeSkyBox('C')
     self.menuSound = GameSoundManager:RegisterSoundPlayer(GameSoundType.Background, GameSoundManager:LoadAudioResource('core.sounds.music:Menu_atmo.wav'), false, true, 'MenuSound')
     self.menuSound.loop = true
     self.menuSound:Play()
-    self:SwitchLightZone(false)
+    self:SwitchLightZone(false, false)
+
+    GameManager.GameMediator:RegisterSingleEvent(EVENT_SWITCH_LIGHTZONE)
+    GameManager.GameMediator:SubscribeSingleEvent(GameMenuLevelPackage, EVENT_SWITCH_LIGHTZONE, "CameraControl", function (evtName, params)
+      if (params[1]) then
+        self:SwitchLightZone(true, true)
+      else
+        self:SwitchLightZone(false, true)
+      end
+      return false
+    end)
   end
   function CameraControl:Update()
     if(self.state.isRoatateCam) then
@@ -84,7 +95,10 @@ function CreateClass_CameraControl()
       RenderSettings.fogColor = Color(0.745, 0.623, 0.384)
     end
   end
-  function CameraControl:SwitchLightZone(on) 
+  ---comment
+  ---@param on boolean
+  ---@param isClick boolean
+  function CameraControl:SwitchLightZone(on, isClick) 
     if(on) 
     then
       GameSoundManager:PlayFastVoice('core.sounds.music:Music_thunder.wav', GameSoundType.Background)
@@ -97,8 +111,10 @@ function CreateClass_CameraControl()
       self.state.isInLightZone = true
       self:SetFog(true)
     else
-      GameUIManager:MaskBlackSet(true)
-      GameUIManager:MaskBlackFadeOut(1)
+      if isClick then
+        GameUIManager:MaskBlackSet(true)
+        GameUIManager:MaskBlackFadeOut(1)
+      end
       self.I_Light_Day:SetActive(true)
       self.I_Light_Night:SetActive(false)
       self.I_Zone:SetActive(false)

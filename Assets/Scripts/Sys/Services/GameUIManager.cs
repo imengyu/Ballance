@@ -8,7 +8,9 @@ using Ballance2.Sys.UI.Parts;
 using Ballance2.Sys.UI.Utils;
 using Ballance2.Sys.Utils;
 using Ballance2.Utils;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,7 +74,7 @@ namespace Ballance2.Sys.Services
                     GlobalFadeMaskWhite = GlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
                     GlobalFadeMaskBlack = GlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
 
-                    //隐藏遮住初始化的遮罩
+                    //隐藏遮住初始化的遮罩  
                     var GlobalBlackMask = GlobalMask.Find("GlobalBlackMask");
                     if(GlobalBlackMask != null) GlobalBlackMask.gameObject.SetActive(false);
 
@@ -88,6 +90,7 @@ namespace Ballance2.Sys.Services
                     //Init all
                     InitAllObects();
                     InitWindowManagement();
+                    InitCommands();
 
                     var GameDebugBeginStats = GameObject.Find("GameDebugBeginStats");
                     if(GameDebugBeginStats)
@@ -95,6 +98,16 @@ namespace Ballance2.Sys.Services
                     
                     //更新主管理器中的Canvas变量
                     GameManager.Instance.GameCanvas = ViewsRectTransform;
+
+                    GameManager.GameMediator.RegisterSingleEvent("intro_finish_for_ui_resort");
+                    GameManager.GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "intro_finish_for_ui_resort", TAG, (evtName, param) => {
+                        GlobalMask.SetAsLastSibling();
+                        ViewsRectTransform.SetAsLastSibling();
+                        WindowsRectTransform.SetAsLastSibling();
+                        GlobalWindowRectTransform.SetAsLastSibling();
+                        UIToast.SetAsLastSibling();
+                        return false;
+                    });
 
                     //发送就绪事件
                     GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "*");
@@ -281,10 +294,16 @@ namespace Ballance2.Sys.Services
                 return null;
             }
             page.PageName = name;
-            go.SetActive(false);
             pages.Add(name, page);
+            GameManager.Instance.StartCoroutine(LateHidePage(go));
             return page;
         }
+
+        private IEnumerator LateHidePage(GameObject go) {
+            yield return new WaitForSeconds(0.3f);
+            go.SetActive(false);
+        }
+
         /// <summary>
         /// 跳转到页
         /// </summary>
@@ -413,6 +432,7 @@ namespace Ballance2.Sys.Services
         [LuaApiParamDescription("showSec", "显示时长（秒）")]
         public void GlobalToast(string text, float showSec)
         {
+            if(showSec <= 0.5f) showSec = 0.5f;
             if (toastTimeTick <= 0) ShowToast(text, showSec);
             else toastDatas.Add(new ToastData(text, showSec));
         }
@@ -902,6 +922,149 @@ namespace Ballance2.Sys.Services
                 old.Name = name;
             }
             return old;
+        }
+        /// <summary>
+        /// 销毁一个UI消息中心
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns>返回是否成功</returns>
+        [LuaApiDescription("销毁一个UI消息中心", "返回是否成功")]
+        [LuaApiParamDescription("name", "名称")]
+        public bool DestroyUIMessageCenter(string name) {
+            var old = GameUIMessageCenter.FindGameUIMessageCenter(name);
+            if(old == null) {
+                Object.Destroy(old);
+                return true;
+            }
+            return false;
+        }
+        #endregion
+
+        #region 调试命令
+
+        private void InitCommands() {
+            GameManager.Instance.GameDebugCommandServer.RegisterCommand("um", (keyword, full, args) => {
+                switch(args[0]) { 
+                    case "window": {
+                        switch(args[1]) {
+                            case "all":
+                                StringBuilder sb = new StringBuilder("All window: {0}");
+                                sb.Append(managedWindows.Count);
+                                sb.Append("\n");
+                                sb.AppendLine("Id Title WindowState WindowType");
+                                foreach(var w in managedWindows) 
+                                    sb.AppendLine(string.Format("{0} => {1} > {2} {3}", 
+                                        w.Value.windowId, w.Value.Title, w.Value.WindowState, w.Value.WindowType));
+                                Log.V(TAG, sb.ToString());
+                                break;
+                            case "current":
+                                Log.V(TAG, "Current window: {0}", currentActiveWindow == null ? "null" : currentActiveWindow.windowId.ToString());
+                                break;
+                            default:
+                                if(int.TryParse(args[1], out int windowId)) {
+
+                                    string act = "";
+                                    if(!DebugUtils.CheckDebugParam(2, args, out act)) break;
+                                    Window w = FindWindowById(windowId);
+                                    if(w == null) {
+                                        Log.E(TAG, "未找到指定窗口id", windowId);
+                                        break;
+                                    }
+
+                                    switch(act) {
+                                        case "show":
+                                            ShowWindow(w);
+                                            Log.V(TAG, "OK");
+                                            break;
+                                        case "hide":
+                                            HideWindow(w);
+                                            Log.V(TAG, "OK");
+                                            break;
+                                        case "close":
+                                            CloseWindow(w);
+                                            Log.V(TAG, "OK");
+                                            break;
+                                        case "active":
+                                            ActiveWindow(w);
+                                            Log.V(TAG, "OK");
+                                            break; 
+                                        default:
+                                            Log.E(TAG, "参数 [3] 不是有效的操作类型", act);
+                                            break;       
+                                    }
+                                } else Log.E(TAG, "参数 [2] 不是有效的窗口id", args[1]);
+                                break;
+                        }
+                        break;
+                    }
+                    case "page": {
+                        switch(args[1]) {
+                            case "current":
+                                Log.V(TAG, "CurrentPage: {0}", currentPage == null ? "null" : currentPage.PageName);
+                                break;
+                            case "stack": {
+                                StringBuilder sb = new StringBuilder("CurrentPage: Stack {0}");
+                                sb.Append(pageStack.Count);
+                                sb.Append("\n");
+                                foreach(var p in pageStack) 
+                                    sb.AppendLine(string.Format("{0} => Visible: {1}", p.PageName, p.gameObject.activeInHierarchy));
+                                Log.V(TAG, sb.ToString());
+                                break;
+                            }
+                            case "hide-cur":
+                                HideCurrentPage();
+                                Log.V(TAG, "OK");
+                                break;
+                            case "close-all":
+                                CloseAllPage();
+                                Log.V(TAG, "OK");
+                                break;
+                            case "back":
+                                Log.V(TAG, BackPreviusPage() ? "OK" : "No page can back");
+                                break;
+                            case "go":
+                                string name = "";
+                                if(!DebugUtils.CheckDebugParam(2, args, out name)) break;
+                                if(GoPage(name)) Log.V(TAG, "OK");
+                                break;
+                        }
+                        break;
+                    }
+                    case "toast": {
+                        string text; float sec;
+                        if(!DebugUtils.CheckDebugParam(1, args, out text)) return false;
+                        DebugUtils.CheckFloatDebugParam(2, args, out sec, false, 1);
+                        GlobalToast(text, sec);
+                        return true;
+                    }
+                    case "alert": {
+                        string text; 
+                        string title; 
+                        if(!DebugUtils.CheckDebugParam(1, args, out text)) return false;
+                        if(!DebugUtils.CheckDebugParam(2, args, out title)) return false;
+                        GlobalAlertWindow(text, title);
+                        return true;
+                    }
+                }
+                return false;
+            }, 2, "um <window/page/toast/alert>\n" + 
+                    "  window\n" +
+                    "    all 显示所有受管理的窗口\n" +
+                    "    <windowId:number>\n" +
+                    "      show 显示指定窗口\n" +
+                    "      hide 隐藏指定窗口\n" +
+                    "      close 关闭指定窗口\n" +
+                    "      active 激活指定窗口\n" +
+                    "  page\n" +
+                    "    current 显示当前显示的页\n" +
+                    "    stack 显示当前显示页的栈\n" +
+                    "    go <name:string> 跳转到指定页\n" +
+                    "    hide-cur 隐藏当前页\n" +
+                    "    close-all 关闭所有显示的页\n" +
+                    "    back 返回上一页\n" +
+                    "  toast <text:string> [showSecond:number] 测试全局弹出土司提示\n" +
+                    "  alert <text:string> <title:string> 测试全局弹出提示窗口"
+            );
         }
 
         #endregion

@@ -219,8 +219,9 @@ public class GamePackageManageWindow : MonoBehaviour {
         ImageStatus.sprite = SpriteLoadFaild;
       } else {
         TextLoadStatus.text = "";
-        CheckBoxEnableLoad.isOn = GamePackageManager.IsPackageEnableLoad(packageName);
+        CheckBoxEnableLoad.isOn = Package.SystemPackage || GamePackageManager.IsPackageEnableLoad(packageName) ;
         CheckBoxEnableLoad.onValueChanged.AddListener((v) => GamePackageManager.SetPackageEnableLoad(packageName, v));
+        CheckBoxEnableLoad.interactable = !Package.SystemPackage;
       }
     
       switch(Package._Status) {

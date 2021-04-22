@@ -20,7 +20,7 @@ using UnityEngine.UI;
 
 namespace Ballance2.Sys.UI.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/InputField")]
+    [AddComponentMenu("Ballance/UI/ValueBinder/InputFieldValueBinder")]
     [RequireComponent(typeof(InputField))]
     public class InputFieldValueBinder : GameUIControlValueBinder
     {

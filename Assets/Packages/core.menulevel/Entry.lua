@@ -16,25 +16,25 @@ GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 GameMenuLevel = nil
 GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 MenuLevelEventUiEntryHandler = nil
-MenuLevelControl = nil ---@type CameraControl
+GameMenuLevelPackage = nil ---@type GamePackage
 
 return {
   ---模块入口函数
   ---@param thisGamePackage GamePackage
   ---@return boolean
   PackageEntry = function(thisGamePackage)
+    GameMenuLevelPackage = thisGamePackage
     MenuLevelEventUiEntryHandler = GameManager.GameMediator:SubscribeSingleEvent(thisGamePackage, 'event_ui_entry', 'MenuLevel', function ()
+
+      GameUIManager:MaskBlackSet(true)
       Log.D(thisGamePackage.TAG, "Enter menulevel")
-      thisGamePackage:RequireLuaFile('UIControl.lua')
 
       GameManager.Instance:SetGameBaseCameraVisible(false)
       GameMenuLevel = CloneUtils.CloneNewObject(thisGamePackage:GetPrefabAsset('GameMenuLevel.prefab'), 'GameMenuLevel')
 
-      local I_CameraGameLuaObjectHost = GameMenuLevel.transform:Find('I_Camera').gameObject:GetComponent(GameLuaObjectHost) ---@type GameLuaObjectHost
-      MenuLevelControl = I_CameraGameLuaObjectHost.LuaSelf
       
-      CreateMenuLevelUI(thisGamePackage)
-      GameUIManager:MaskBlackFadeOut(1)
+      CreateMenuLevelUI(GameUIPackage)
+      CreateSettingsUI(GameUIPackage)
       return true
     end)
     return true

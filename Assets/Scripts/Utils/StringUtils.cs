@@ -193,29 +193,56 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("arr", "要转换的字符串数组")]
         public static object[] TryConvertStringArrayToValueArray(string[] arr)
         {
+            return TryConvertStringArrayToValueArray(arr, 0);
+        }
+
+        /// <summary>
+        /// 尝试把字符串数组转为参数数组
+        /// </summary>
+        /// <param name="arr">要转换的字符串数组</param>
+        /// <param name="startIndex">数组转换起始索引</param>
+        /// <returns></returns>
+        [LuaApiDescription("尝试把字符串数组转为参数数组", "")]
+        [LuaApiParamDescription("arr", "要转换的字符串数组")]
+        [LuaApiParamDescription("startIndex", "数组转换起始索引")]
+        public static object[] TryConvertStringArrayToValueArray(string[] arr, int startIndex)
+        {
             object[] rs = new object[arr.Length];
             if(arr==null) return rs;
 
-            for (int i = 0; i < arr.Length; i++)
+            for (int i = startIndex, ix = 0; i < arr.Length; i++, ix++)
+                rs[ix] = TryConvertStringToValue(arr[i]);
+            
+            return rs;
+        }
+        
+        /// <summary>
+        /// 尝试转换字符串为参数
+        /// </summary>
+        /// <param name="value">要转换的字符串</param>
+        /// <returns>如果转换失败则返回原字符串</returns>
+        [LuaApiDescription("尝试转换字符串为参数", "如果转换失败则返回原字符串")]
+        [LuaApiParamDescription("arr", "要转换的字符串")]
+        public static object TryConvertStringToValue(string value)
+        {
+            object rs = null;
+            if (IsFloatNumber(value))
             {
-                string s = arr[i];
-                if (IsFloatNumber(s))
-                {
-                    if (s.EndsWith("f")) { float v = 0; if (float.TryParse(s, out v)) rs[i] = v; }
-                    else { double v = 0; if (double.TryParse(s, out v)) rs[i] = v; }
-                }
-                else if (IsNumber(s))
-                {
-                    int v = 0;
-                    if (int.TryParse(s, out v)) rs[i] = v;
-                }
-                else if (s.ToLower() == "true")
-                    rs[i] = true;
-                else if (s.ToLower() == "false")
-                    rs[i] = false;
-                else
-                    rs[i] = s;
+                float v = 0; 
+                if (float.TryParse(value, out v)) rs = v; 
             }
+            else if (IsNumber(value))
+            {
+                int v = 0;
+                if (int.TryParse(value, out v)) rs = v;
+            }
+            else if (value.ToLower() == "true")
+                rs = true;
+            else if (value.ToLower() == "false")
+                rs = false;
+            else
+                rs = value;
+            
             return rs;
         }
 

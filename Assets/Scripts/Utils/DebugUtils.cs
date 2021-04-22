@@ -162,5 +162,81 @@ namespace Ballance2.Utils
         public static string PrintArrVar(object[] any) {
             return StringUtils.ValueArrayToString(any);
         }
+
+        public static bool CheckDebugParam(int index, string[] arr, out string value, bool required = true, string defaultValue = "") {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                value = defaultValue;
+                return false;
+            }
+            value = arr[index];
+            return true; 
+        }
+        public static bool CheckIntDebugParam(int index, string[] arr, out int value, bool required = true, int defaultValue = 0) {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                value = defaultValue;
+                return false;
+            }
+            if(!int.TryParse(arr[index], out value)) {
+                Log.E("Debug", "参数 [{0}] 不是有效的 int", index);
+                return false;
+            } 
+            return true;
+        }
+        public static bool CheckFloatDebugParam(int index, string[] arr, out float value, bool required = true, float defaultValue = 0) {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                value = defaultValue;
+                return false;
+            }
+            if(!float.TryParse(arr[index], out value)) {
+                Log.E("Debug", "参数 [{0}] 不是有效的 float", index);
+                return false;
+            } 
+            return true;
+        }
+        public static bool CheckBoolDebugParam(int index, string[] arr, out bool value, bool required = true, bool defaultValue = false) {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                value = defaultValue;
+                return false;
+            }
+            if(!bool.TryParse(arr[index], out value)) {
+                Log.E("Debug", "参数 [{0}] 不是有效的 bool", index);
+                return false;
+            } 
+            return true;
+        }
+        public static bool CheckDoubleDebugParam(int index, string[] arr, out double value, bool required = true, double defaultValue = 0) {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                value = defaultValue;
+                return false;
+            }
+            if(!double.TryParse(arr[index], out value)) {
+                Log.E("Debug", "参数 [{0}] 不是有效的 double", index);
+                return false;
+            } 
+            return true;
+        }
+        public static bool CheckEnumDebugParam<T>(int index, string[] arr, out T value, bool required = true, T defaultValue = default(T)) where T : struct {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                value = defaultValue;
+                return false;
+            }
+            if(!System.Enum.TryParse<T>(arr[index], out value)) {
+                Log.E("Debug", "参数 [{0}] 不是有效的 {1}", index, typeof(T).Name);
+                return false;
+            } 
+            return true;
+        }
     }
 }

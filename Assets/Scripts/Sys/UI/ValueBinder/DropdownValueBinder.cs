@@ -20,7 +20,7 @@ using UnityEngine.UI;
 
 namespace Ballance2.Sys.UI.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/Dropdown")]
+    [AddComponentMenu("Ballance/UI/ValueBinder/DropdownValueBinder")]
     [RequireComponent(typeof(Dropdown))]
     public class DropdownValueBinder : GameUIControlValueBinder
     {

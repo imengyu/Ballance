@@ -31,6 +31,7 @@ namespace Ballance2.Sys.UI
     [SLua.CustomLuaClass]
     [ExecuteInEditMode]
     [LuaApiDescription("基础 UI 窗口")]
+    [AddComponentMenu("Ballance/UI/Controls/Window")]
     public class Window : MonoBehaviour
     {
         internal int windowId = 0;

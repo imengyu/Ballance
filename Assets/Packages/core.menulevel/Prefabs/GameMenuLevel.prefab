@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 3930975311625927562}
   - component: {fileID: 6957025844643067998}
   - component: {fileID: 4661095878732422176}
+  - component: {fileID: 294369723842469551}
   m_Layer: 0
   m_Name: I_Zone_SuDu_Innen
   m_TagString: Untagged
@@ -293,7 +294,7 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-    color: {r: 0, g: 0.2901961, b: 0.8901961, a: 0}
+    color: {r: 0, g: 0.2901961, b: 0.8901961, a: 1}
     boundsInt:
       m_Position: {x: 0, y: 0, z: 0}
       m_Size: {x: 0, y: 0, z: 0}
@@ -362,7 +363,7 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-    color: {r: 0.23113209, g: 0.48177624, b: 1, a: 0}
+    color: {r: 0.23113209, g: 0.48177624, b: 1, a: 1}
     boundsInt:
       m_Position: {x: 0, y: 0, z: 0}
       m_Size: {x: 0, y: 0, z: 0}
@@ -461,8 +462,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185e65ba4b5982e44896a104b23d37ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: MenuLevelUICM
+  MessageCenterName: GameUIGloobalMessageCenter
   MessageCenter: {fileID: 0}
+--- !u!114 &294369723842469551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110593800132292937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1336ceccf73ff5a4d8aa75ce0fd504f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &162136552686541708
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +491,7 @@ GameObject:
   - component: {fileID: 9208712823726032010}
   - component: {fileID: 2107590965113832502}
   - component: {fileID: 7929217714686500916}
+  - component: {fileID: 4991528339262541636}
   m_Layer: 0
   m_Name: I_Zone_NenLi_Innen
   m_TagString: Untagged
@@ -723,7 +737,7 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-    color: {r: 0.8113208, g: 0.48604473, b: 0, a: 0}
+    color: {r: 0.8113208, g: 0.48604473, b: 0, a: 1}
     boundsInt:
       m_Position: {x: 0, y: 0, z: 0}
       m_Size: {x: 0, y: 0, z: 0}
@@ -792,7 +806,7 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-    color: {r: 1, g: 0.6577037, b: 0.1462264, a: 0}
+    color: {r: 1, g: 0.6577037, b: 0.1462264, a: 1}
     boundsInt:
       m_Position: {x: 0, y: 0, z: 0}
       m_Size: {x: 0, y: 0, z: 0}
@@ -891,8 +905,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185e65ba4b5982e44896a104b23d37ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: MenuLevelUICM
+  MessageCenterName: GameUIGloobalMessageCenter
   MessageCenter: {fileID: 0}
+--- !u!114 &4991528339262541636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162136552686541708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1336ceccf73ff5a4d8aa75ce0fd504f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &176612183018112596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,7 +1197,7 @@ GameObject:
   - component: {fileID: 6457049790994743627}
   m_Layer: 0
   m_Name: I_Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2703,7 +2729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 0.019449472, g: 1, b: 0, a: 1}
+  outlineColor: {r: 0.015686275, g: 0.81960785, b: 0, a: 1}
   outlineWidth: 7
   precomputeOutline: 0
   bakeKeys: []
@@ -2860,7 +2886,7 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-    color: {r: 0.016093375, g: 0.8207547, b: 0, a: 0}
+    color: {r: 0.016093375, g: 0.8207547, b: 0, a: 1}
     boundsInt:
       m_Position: {x: 0, y: 0, z: 0}
       m_Size: {x: 0, y: 0, z: 0}
@@ -2929,7 +2955,7 @@ MonoBehaviour:
       m_PreInfinity: 0
       m_PostInfinity: 0
       m_RotationOrder: 0
-    color: {r: 0.1273585, g: 1, b: 0.23991318, a: 0}
+    color: {r: 0.1273585, g: 1, b: 0.23991318, a: 1}
     boundsInt:
       m_Position: {x: 0, y: 0, z: 0}
       m_Size: {x: 0, y: 0, z: 0}
@@ -3040,7 +3066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185e65ba4b5982e44896a104b23d37ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: MenuLevelUICM
+  MessageCenterName: GameUIGloobalMessageCenter
   MessageCenter: {fileID: 0}
 --- !u!1 &5714747961306901104
 GameObject:

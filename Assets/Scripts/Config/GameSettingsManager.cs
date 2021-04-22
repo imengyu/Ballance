@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Ballance.LuaHelpers;
+using Ballance2.Utils;
 using UnityEngine;
 
 /*
@@ -65,8 +67,15 @@ namespace Ballance2.Config
         public static void ResetDefaultSettings()
         {
             PlayerPrefs.DeleteAll();
+            
+            foreach(var actuator in settingsActuators) 
+                actuator.Value.NotifyAll();
         }
 
+        internal static void ListActuators() {
+            foreach(var i in settingsActuators)
+                Log.V("GameSettingsManager", string.Format("{0} => {1}", i.Key, i.Value.ListCallbacks()));
+        }
         internal static void Init()
         {
             settingsActuators = new Dictionary<string, GameSettingsActuator>();
@@ -181,6 +190,20 @@ namespace Ballance2.Config
             }
         }
 
+        internal void NotifyAll() {
+            foreach(var v in settingUpdateCallbacks)
+                v.callback(v.groupName, ACTION_UPDATE);
+        } 
+        internal string ListCallbacks() {
+            StringBuilder sb = new StringBuilder("Callbacks: ");
+            sb.Append(settingUpdateCallbacks.Count);
+            sb.Append(" => ");
+            foreach(var v in settingUpdateCallbacks) {
+                sb.Append(",");
+                sb.Append(v.groupName);
+            }
+            return sb.ToString();
+        }
         internal void Destroy()
         {
             if (settingUpdateCallbacks != null)
@@ -193,24 +216,32 @@ namespace Ballance2.Config
         /// <summary>
         /// 通知设置组加载更新
         /// </summary>
-        /// <param name="groupName">组名称</param>
+        /// <param name="groupName">组名称，为*表示所有</param>
         [LuaApiDescription("通知设置组加载更新")]
-        [LuaApiParamDescription("groupName", "组名称")]
+        [LuaApiParamDescription("groupName", "组名称，为*表示所有")]
         public void RequireSettingsLoad(string groupName)
         {
-            foreach (var d in settingUpdateCallbacks)
+            if(groupName == "*") {
+                foreach (var d in settingUpdateCallbacks)
+                    if (d.callback(d.groupName, ACTION_LOAD)) break;
+            }
+            else foreach (var d in settingUpdateCallbacks)
                 if (d.groupName == groupName)
                     if (d.callback(groupName, ACTION_LOAD)) break;
         }
         /// <summary>
         /// 通知设置组更新
         /// </summary>
-        /// <param name="groupName">组名称</param>
+        /// <param name="groupName">组名称，为*表示所有</param>
         [LuaApiDescription("通知设置组更新")]
-        [LuaApiParamDescription("groupName", "组名称")]
+        [LuaApiParamDescription("groupName", "组名称，为*表示所有")]
         public void NotifySettingsUpdate(string groupName)
         {
-            foreach (var d in settingUpdateCallbacks)
+            if(groupName == "*") {
+                foreach (var d in settingUpdateCallbacks)
+                    if (d.callback(d.groupName, ACTION_UPDATE)) break;
+            }
+            else foreach (var d in settingUpdateCallbacks)
                 if (d.groupName == groupName)
                     d.callback(groupName, ACTION_UPDATE);
         }

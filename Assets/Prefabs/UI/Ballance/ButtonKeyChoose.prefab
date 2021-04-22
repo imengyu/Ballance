@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2418910925883428594}
   - component: {fileID: 2418910925883428493}
   - component: {fileID: 2418910925883428492}
+  - component: {fileID: 1062885534646730962}
+  - component: {fileID: 8988347313774322043}
   m_Layer: 5
   m_Name: ButtonKeyChoose
   m_TagString: Untagged
@@ -108,14 +110,13 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: -472048025614868537, guid: 9814f4b7d8952a849bef0dee4b3ce9d3,
+    m_HighlightedSprite: {fileID: 3989991476810995488, guid: 9814f4b7d8952a849bef0dee4b3ce9d3,
       type: 3}
-    m_PressedSprite: {fileID: -472048025614868537, guid: e2f9d30c74a7aa3489c29325248f5b87,
+    m_PressedSprite: {fileID: 3989991476810995488, guid: e2f9d30c74a7aa3489c29325248f5b87,
       type: 3}
-    m_SelectedSprite: {fileID: -472048025614868537, guid: 9814f4b7d8952a849bef0dee4b3ce9d3,
+    m_SelectedSprite: {fileID: 3989991476810995488, guid: 9814f4b7d8952a849bef0dee4b3ce9d3,
       type: 3}
-    m_DisabledSprite: {fileID: 1854267412275217757, guid: bfda2609231a9784c9eca0cedf2e62aa,
-      type: 3}
+    m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -127,6 +128,34 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1062885534646730962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2418910925883428494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 412783b5751e8304ca44de3b1dbaa7cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 2418910926143550807}
+  TextValue: {fileID: 3089993239056822043}
+  _value: 0
+--- !u!114 &8988347313774322043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2418910925883428494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundName: core.sounds:Menu_click.wav
 --- !u!1 &2418910926143550801
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +222,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -272,7 +301,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -284,4 +313,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Backspace

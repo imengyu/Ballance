@@ -20,7 +20,7 @@ using UnityEngine.UI;
 
 namespace Ballance2.Sys.UI.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/Text")]
+    [AddComponentMenu("Ballance/UI/ValueBinder/TextValueBinder")]
     [RequireComponent(typeof(Text))]
     public class TextValueBinder : GameUIControlValueBinder
     {

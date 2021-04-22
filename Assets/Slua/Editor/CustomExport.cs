@@ -44,6 +44,15 @@ namespace SLua
             // .net 4.6 export class not match used class on runtime, so skip it
             //add(typeof(Dictionary<int, string>), "DictIntStr");
             add(typeof(string), "String");
+            //Xml
+            add(typeof(System.Xml.XmlAttribute), null);
+            add(typeof(System.Xml.XmlDocument), null);
+            add(typeof(System.Xml.XmlNode), null);
+            add(typeof(System.Xml.XmlElement), null);
+            add(typeof(System.Xml.XmlReader), null);
+            add(typeof(System.Xml.XmlWriter), null);
+            add(typeof(System.Xml.XmlReaderSettings), null);
+            add(typeof(System.Xml.XmlWriterSettings), null);
             
             // add your custom class here
             // add( type, typename)
@@ -88,6 +97,10 @@ namespace SLua
             "UnityEngine.Texture.get_imageContentsHash",
             "UnityEngine.Texture.set_imageContentsHash",
             "UnityEngine.Texture.imageContentsHash",
+            "UnityEngine.MeshRenderer.scaleInLightmap",
+            "UnityEngine.MeshRenderer.receiveGI",
+            "UnityEngine.MeshRenderer.stitchLightmapSeams",
+            "UnityEngine.UI.DefaultControls.factory",
 
         };
         // black list if white list not given
@@ -115,7 +128,6 @@ namespace SLua
                 "BitStream",
                 "HostData",
                 "ConnectionTesterStatus",
-                "GUI",
                 "EventType",
                 "EventModifiers",
                 "FontStyle",
@@ -133,6 +145,7 @@ namespace SLua
                 "iPhone",
                 "iOS",
                 "Windows",
+                "GUIStyleState",
                 "CalendarIdentifier",
                 "CalendarUnit",
                 "CalendarUnit",

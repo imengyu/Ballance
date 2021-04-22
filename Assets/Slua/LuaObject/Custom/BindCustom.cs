@@ -26,10 +26,12 @@ namespace SLua {
 				Lua_Ballance2_Sys_UI_GameUIControlMessageSender.reg,
 				Lua_Ballance2_Sys_UI_GameUIControlValueBinder.reg,
 				Lua_Ballance2_Sys_UI_GameUIMessageCenter.reg,
+				Lua_Ballance2_Sys_UI_KeyChoose.reg,
 				Lua_Ballance2_Sys_UI_Progress.reg,
 				Lua_Ballance2_Sys_UI_SplitView.reg,
 				Lua_Ballance2_Sys_UI_SplitViewDragger.reg,
 				Lua_Ballance2_Sys_UI_ToggleEx.reg,
+				Lua_Ballance2_Sys_UI_Updown.reg,
 				Lua_Ballance2_Sys_UI_Window.reg,
 				Lua_Ballance2_Sys_UI_WindowState.reg,
 				Lua_Ballance2_Sys_UI_WindowType.reg,
@@ -88,6 +90,15 @@ namespace SLua {
 				Lua_Ballance2_Sys_UI_Utils_UIFadeManager_FadeObject.reg,
 				Lua_System_Collections_Generic_List_1_int.reg,
 				Lua_System_String.reg,
+				Lua_System_Xml_XmlNode.reg,
+				Lua_System_Xml_XmlAttribute.reg,
+				Lua_System_Xml_XmlDocument.reg,
+				Lua_System_Xml_XmlElement.reg,
+				Lua_System_Xml_XmlNodeList.reg,
+				Lua_System_Xml_XmlReader.reg,
+				Lua_System_Xml_XmlWriter.reg,
+				Lua_System_Xml_XmlReaderSettings.reg,
+				Lua_System_Xml_XmlWriterSettings.reg,
 			};
 			return list;
 		}

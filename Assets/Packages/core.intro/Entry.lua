@@ -20,7 +20,8 @@ Log = Ballance2.Utils.Log
 Yield = UnityEngine.Yield
 WaitForSeconds = UnityEngine.WaitForSeconds
 
-UI_ENTRY_EVENT = 'event_ui_entry'
+EVENT_UI_ENTRY_EVENT = 'event_ui_entry'
+
 local introFinished = false
 local baseFinished = false
 
@@ -30,10 +31,10 @@ return {
   ---@return boolean
   PackageEntry = function(thisGamePackage)
     Log.D('Intro', 'Into intro ui')
-    GameManager.GameMediator:RegisterSingleEvent(UI_ENTRY_EVENT)
+    GameManager.GameMediator:RegisterSingleEvent(EVENT_UI_ENTRY_EVENT)
     GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "Intro", function ()
       if introFinished then
-        GameManager.GameMediator:NotifySingleEvent(UI_ENTRY_EVENT, nil)
+        GameManager.GameMediator:NotifySingleEvent(EVENT_UI_ENTRY_EVENT, nil)
       end
       baseFinished = true
       return false
@@ -51,6 +52,7 @@ return {
       Yield(WaitForSeconds(5))
       Log.D('Intro', 'Quit intro ui')
 
+      GameManager.GameMediator:NotifySingleEvent('intro_finish_for_ui_resort')
       --黑色渐变进入
       GameUIManager:MaskBlackFadeIn(1)
       Yield(WaitForSeconds(1))
@@ -58,7 +60,7 @@ return {
       IntroUI.gameObject:SetActive(false)
       introFinished = true
       if baseFinished then
-        GameManager.GameMediator:NotifySingleEvent(UI_ENTRY_EVENT, nil)
+        GameManager.GameMediator:NotifySingleEvent(EVENT_UI_ENTRY_EVENT, nil)
       end
     end))
     return true

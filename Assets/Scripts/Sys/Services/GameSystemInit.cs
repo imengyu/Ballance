@@ -63,12 +63,6 @@ namespace Ballance2.Sys.Services {
             }
             else if (act == GameSystem.ACTION_DESTROY)
             {
-                if (gameManagerInstance != null)
-                {
-                    gameManagerInstance.Destroy();
-                    Destroy(gameManagerInstance);
-                    gameManagerInstance = null;
-                }
                 if (gameInitInstance != null)
                 {
                     Destroy(gameInitInstance);

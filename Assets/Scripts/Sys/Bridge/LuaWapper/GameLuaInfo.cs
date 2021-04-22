@@ -101,7 +101,15 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             { 
                 case "UnityEngine.Transform": return gameObjectVal.GetComponent<Transform>();
                 case "UnityEngine.RectTransform": return gameObjectVal.GetComponent<RectTransform>();
-                default: return gameObjectVal.GetComponent(componentClassVal);
+                case "UnityEngine.Skybox": return gameObjectVal.GetComponent<UnityEngine.Skybox>();
+                default: { 
+                    var c = gameObjectVal.GetComponent(componentClassVal);
+                    if(c == null)
+                        UnityEngine.Debug.Log("Can't get component: " + 
+                            componentClassVal + " " + (c == null ? "(null)" : (c + "(" + c.GetType().Name + ")"))
+                            + "\nMay be should add reference in LuaVarObjectInfo");
+                    return c;
+                }
             }
         }
         public Vector2 Vector2() { return vector2; }

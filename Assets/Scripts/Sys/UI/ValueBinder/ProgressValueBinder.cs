@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace Ballance2.Sys.UI.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/Progress")]
+    [AddComponentMenu("Ballance/UI/ValueBinder/ProgressValueBinder")]
     [RequireComponent(typeof(Progress))]
     public class ProgressValueBinder : GameUIControlValueBinder
     {
@@ -28,7 +28,14 @@ namespace Ballance2.Sys.UI.ValueBinder
         protected override void BinderBegin() {
             progress = GetComponent<Progress>();
             BinderSupplierCallback = (value) => {
-                progress.value = (float)value;
+                if(value.GetType() == typeof(int))
+                    progress.value = (float)value;
+                else if(value.GetType() == typeof(float)) 
+                    progress.value = (float)(int)value;
+                else if(value.GetType() == typeof(double)) 
+                    progress.value = (float)(double)value;
+                else
+                    UnityEngine.Debug.Log("Unknow type:  " + value.GetType().Name + " " + value);
                 return true;
             };
         }

@@ -39,6 +39,7 @@ namespace Ballance2.Sys.Package
             PackageFilePath = filePath;
 #if !UNITY_EDITOR
             GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "This package can only use in editor.");
+            await base.LoadPackage();
             return false;
 #else
             string defPath = filePath + "/PackageDef.xml";
@@ -160,7 +161,7 @@ namespace Ballance2.Sys.Package
             }
 #else
             GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "Package can only use in editor.");
-            return false;
+            return null;
 #endif
         }
     }

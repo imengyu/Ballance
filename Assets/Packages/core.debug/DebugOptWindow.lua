@@ -71,7 +71,7 @@ function CreateClass_DebugOptWindow()
   ---添加和删除条目
   function DebugOptWindow:AddButtonItem(name, text) 
     ---@type Button
-    local newButton = CloneUtils.CloneNewObjectWithParent(GameUIManager:GetUIPrefab("Button"), self.ContentView):GetComponent(UnityEngine.UI.Button) 
+    local newButton = CloneUtils.CloneNewObjectWithParent(GameUIManager:GetUIPrefab("Button", GameUIPrefabType.Control), self.ContentView):GetComponent(UnityEngine.UI.Button) 
     ---@type Text
     local newButtonText = newButton.transform:Find('Text'):GetComponent(UnityEngine.UI.Text) 
     newButtonText.text = text

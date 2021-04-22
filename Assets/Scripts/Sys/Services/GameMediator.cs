@@ -7,6 +7,7 @@ using Ballance2.Utils;
 using SLua;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -57,6 +58,12 @@ namespace Ballance2.Sys.Services
             InitAllEvents();
             InitAllActions();
             InitStore();
+            RegisterEventHandler(GamePackage.GetSystemPackage(),
+                GameEventNames.EVENT_BASE_INIT_FINISHED, TAG, (evtName, param) =>
+                {
+                    InitCommands();
+                    return false;
+                });
             return true;
         }
 
@@ -954,5 +961,215 @@ namespace Ballance2.Sys.Services
 
         #endregion
 
+        #region 调试命令
+
+        private void InitCommands() {
+            GameManager.Instance.GameDebugCommandServer.RegisterCommand("gm", (keyword, full, args) => {
+                switch(args[0]) {
+                    case "single_event":
+                        return HandleSingleEventCommand(args);
+                    case "event":
+                        return HandleEventCommand(args);
+                    case "action":
+                        return HandleActionCommand(args);
+                    case "store":
+                        return HandleStoreCommand(args);
+                }
+                return false;
+            }, 1, "gm <single_event/event/action/store>\n" + 
+                    "  single_event\n" +
+                    "    all 显示所有单一事件\n" +
+                    "    notify <eventName:string> [params:any[]] 通知一个单一事件\n" +
+                    "  event\n" +
+                    "    all 显示所有全局事件\n" +
+                    "    dispatch <eventName:string> <handleFilter:string> [params:any[]] 进行全局事件分发。handleFilter为“*”时表示所有，为正则使用正则匹配。\n" +
+                    "  action\n" +
+                    "    stores 显示所有全局操作仓库\n" +
+                    "    list <storeName:string> 显示指定操作仓库的所有操作\n" +
+                    "    call <storeName:string> <actionName:string> [params:any[]] 调用指定操作\n" +
+                    "  store\n" +
+                    "    all 显示所有全局数据仓库\n" +
+                    "    data <storeName:string> 显示指定据仓仓库的所有共享数据\n" +
+                    "    get <storeName:string> <dataKey:string> 显示指定据仓仓库的所有共享数据\n" +
+                    "    set <storeName:string> <dataKey:string> <newValue> 显示指定据仓仓库的所有共享数据");
+        }
+        private bool HandleSingleEventCommand(string[] args) {
+            string act = "";
+            if(!DebugUtils.CheckDebugParam(1, args, out act)) return false;
+            switch(act) {
+                case "all": {
+                    StringBuilder stringBuilder = new StringBuilder("Single events: ");
+                    stringBuilder.AppendLine(events.Count.ToString());
+                    foreach(var i in singleEvents)
+                        stringBuilder.AppendLine(string.Format("{0} => {1}", i.Key, i.Value == null ? "(null)" : i.Value.Name));
+                    Log.V(TAG, stringBuilder.ToString());
+                    return true;
+                }
+                case "notify": {
+                    string name = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out name)) return false;
+                    if(NotifySingleEvent(name, StringUtils.TryConvertStringArrayToValueArray(args, 3)))  
+                        Log.V(TAG, "NotifySingleEvent success");
+                    else
+                        Log.V(TAG, "NotifySingleEvent failed");
+                    return true;
+                }
+            }
+            return false;
+        }        
+        private bool HandleEventCommand(string[] args) {
+            string act = "";
+            if(!DebugUtils.CheckDebugParam(1, args, out act)) return false;
+            switch(act) {
+                case "all": {
+                    StringBuilder stringBuilder = new StringBuilder("Events: ");
+                    stringBuilder.AppendLine(events.Count.ToString());
+                    foreach(var i in events) {
+                        stringBuilder.AppendLine(string.Format("{0} => Handlers: {1}", i.Key, i.Value.EventHandlers.Count));
+                        foreach(var h in i.Value.EventHandlers) {
+                            stringBuilder.Append("  ");
+                            stringBuilder.AppendLine(h.Name);
+                        }
+                    }
+                    Log.V(TAG, stringBuilder.ToString());
+                    return true;
+                }
+                case "dispatch": {
+                    string name = "";
+                    string filter = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out name)) return false;
+                    if(!DebugUtils.CheckDebugParam(3, args, out filter)) return false;
+                    
+                    int handlers = DispatchGlobalEvent(name, filter, StringUtils.TryConvertStringArrayToValueArray(args, 4));
+                    Log.V(TAG, "DispatchGlobalEvent finish > {0}", handlers);
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool HandleStoreCommand(string[] args) {
+            string act = "";
+            if(!DebugUtils.CheckDebugParam(1, args, out act)) return false;
+            switch(act) {
+                case "all": {
+                    StringBuilder stringBuilder = new StringBuilder("Stores: ");
+                    stringBuilder.AppendLine(globalStore.Count.ToString());
+                    foreach(var i in globalStore) {
+                        stringBuilder.AppendLine(string.Format("{0} => {2} > Datas: {3}", 
+                            i.Key, i.Value.PoolName, i.Value.PoolDatas.Count));
+                    }
+                    Log.V(TAG, stringBuilder.ToString());
+                    return true;
+                }
+                case "data": {
+                    string name = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out name)) return false;
+
+                    if(!globalStore.TryGetValue(name, out var store)) {
+                        Log.E(TAG, "未找到指定 Store {0}", name);
+                        return false;
+                    }
+
+                    StringBuilder stringBuilder = new StringBuilder(store.PoolName);
+                    stringBuilder.Append("Actions: ");
+                    stringBuilder.AppendLine(store.PoolDatas.Count.ToString());
+                    foreach(var i in store.PoolDatas)
+                        stringBuilder.AppendLine(string.Format("{0} => {1}", i.Key, i.Value.ToString()));
+                    Log.V(TAG, stringBuilder.ToString());
+                    return true;
+                }
+                case "get": {
+                    string storename = "";
+                    string name = "";
+                    string newVal = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out storename)) return false;
+                    if(!DebugUtils.CheckDebugParam(3, args, out name)) return false;
+                    if(!DebugUtils.CheckDebugParam(4, args, out newVal)) return false;
+                    if(!globalStore.TryGetValue(storename, out var store)) {
+                        Log.E(TAG, "未找到指定 Store {0}", storename);
+                        return false;
+                    }
+                    if(!store.PoolDatas.ContainsKey(name)) {
+                        Log.E(TAG, "Store {0} 中不存在键值 {1}", storename, name);
+                        return false;
+                    }
+
+                    var oldV = store[name];
+                    store[name] = StringUtils.TryConvertStringToValue(newVal);
+                    
+                    Log.V(TAG, "Value of data {0} is {1}", name, store[name]);
+                    return true;
+                }
+                case "set": {
+                    string storename = "";
+                    string name = "";
+                    string newVal = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out storename)) return false;
+                    if(!DebugUtils.CheckDebugParam(3, args, out name)) return false;
+                    if(!DebugUtils.CheckDebugParam(4, args, out newVal)) return false;
+                    if(!globalStore.TryGetValue(storename, out var store)) {
+                        Log.E(TAG, "未找到指定 Store {0}", storename);
+                        return false;
+                    }
+                    if(!store.PoolDatas.ContainsKey(name)) {
+                        Log.E(TAG, "Store {0} 中不存在键值 {1}", storename, name);
+                        return false;
+                    }
+
+                    var oldV = store[name];
+                    store[name] = StringUtils.TryConvertStringToValue(newVal);
+                    
+                    Log.V(TAG, "Set success > old data of {0} is {1}", name, oldV);
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool HandleActionCommand(string[] args) {
+            string act = "";
+            if(!DebugUtils.CheckDebugParam(1, args, out act)) return false;
+            switch(act) {
+                case "stores": {
+                    StringBuilder stringBuilder = new StringBuilder("ActionStores: ");
+                    stringBuilder.AppendLine(actionStores.Count.ToString());
+                    foreach(var i in actionStores) {
+                        stringBuilder.AppendLine(string.Format("{0} => {2} > Package: {1} Actions: {3}", 
+                            i.Key, i.Value.Package.PackageName, i.Value.Name, i.Value.Actions.Count));
+                    }
+                    Log.V(TAG, stringBuilder.ToString());
+                    return true;
+                }
+                case "list": {
+                    string name = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out name)) return false;
+
+                    if(!actionStores.TryGetValue(name, out var actionStore)) {
+                        Log.E(TAG, "未找到指定 ActionStore {0}", name);
+                        return false;
+                    }
+
+                    StringBuilder stringBuilder = new StringBuilder(actionStore.Name);
+                    stringBuilder.Append("Actions: ");
+                    stringBuilder.AppendLine(actionStore.Actions.Count.ToString());
+                    foreach(var i in actionStore.Actions) {
+                        stringBuilder.AppendLine(string.Format("{0} => Handler: {1}", i.Value.Name, i.Value.GameHandler.Name));
+                    }
+                    Log.V(TAG, stringBuilder.ToString());
+                    return true;
+                }
+                case "call": {
+                    string storename = "";
+                    string name = "";
+                    if(!DebugUtils.CheckDebugParam(2, args, out storename)) return false;
+                    if(!DebugUtils.CheckDebugParam(3, args, out name)) return false;
+
+                    CallAction(GamePackage.GetSystemPackage(), storename, name, StringUtils.TryConvertStringArrayToValueArray(args, 4));
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
     }
 }

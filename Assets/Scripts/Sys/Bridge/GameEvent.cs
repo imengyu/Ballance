@@ -176,5 +176,17 @@ namespace Ballance2.Sys.Bridge
         /// </remarks>
         [LuaApiDescription("模块卸载事件")]
         public const string EVENT_PACKAGE_UNLOAD = "e:package:package_unload";
+
+        /// <summary>
+        /// 屏幕分辨率更改事件
+        /// </summary>
+        /// <remarks>
+        /// 事件参数：
+        /// 【0】新的屏幕宽度
+        /// 【1】新的屏幕高度
+        /// 【2】新的屏幕刷新率
+        /// </remarks>
+        [LuaApiDescription("屏幕分辨率更改事件")]
+        public const string EVENT_SCREEN_SIZE_CHANGED = "e:screen:size_changed";
     }
 }

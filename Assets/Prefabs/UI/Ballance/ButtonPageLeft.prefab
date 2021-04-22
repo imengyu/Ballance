@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4714191544567231865}
   - component: {fileID: 4714191544567231750}
   - component: {fileID: 4714191544567231751}
+  - component: {fileID: 6619744191741127750}
   m_Layer: 5
   m_Name: ButtonPageLeft
   m_TagString: Untagged
@@ -124,3 +125,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6619744191741127750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4714191544567231749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundName: core.sounds:Menu_click.wav

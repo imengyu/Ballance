@@ -94,6 +94,7 @@ function CreateClass_DebugWindow()
         local text = newEle:AddComponent(UnityEngine.UI.Text)
         text.text = t
         text.font = self.logFont
+        text.fontSize = 12
         UIAnchorPosUtils.SetUIAnchor(newEle.transform, UIAnchor.Stretch, UIAnchor.Top)
         UIAnchorPosUtils.SetUIPivot(newEle.transform, UIPivot.TopLeft)
 
@@ -216,6 +217,10 @@ function CreateClass_DebugWindow()
   function DebugWindow:OnFilterInputEndInput()
     self.logFilter = self.FilterLogInputField.text
     self:RelayoutLogContent()
+  end
+  function DebugWindow:CopyStacktrace()
+    UnityEngine.GUIUtility.systemCopyBuffer = self.LogStacktraceText.text
+    GameUIManager:GlobalToast('已复制到剪贴板', 1)
   end
   ---执行命令
   function DebugWindow:ExecCommand()

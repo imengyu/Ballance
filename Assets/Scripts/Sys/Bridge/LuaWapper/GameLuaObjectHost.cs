@@ -157,6 +157,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         private bool luaInited = false;
         private bool awakeCalledBeforeInit = false;
         private bool startCalledBeforeInit = false;
+        private bool startCalled = false;
 
         public System.Action LuaInitFinished;
 
@@ -171,31 +172,38 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             }
             else
             {
-                if(LuaInitFinished != null) LuaInitFinished.Invoke();
-
+                if (LuaInitFinished != null) LuaInitFinished.Invoke();
                 if (awakeCalledBeforeInit && awake != null) awake(self);
-                if (startCalledBeforeInit && start != null) start(self, gameObject);   
+                if (startCalledBeforeInit && start != null && !startCalled) { 
+                    startCalled = true;
+                    start(self, gameObject);
+                }
             }
         }
 
         private void Start()
         {
-            if (!luaInited) awakeCalledBeforeInit = true;
-            if (start != null) start(self, gameObject);
+            if (!luaInited) startCalledBeforeInit = true;
+            else if (start != null && !startCalled) {
+                startCalled = true;
+                start(self, gameObject);
+            }
         }
         private void Awake()
         {
             if (ExecuteOrder == 0) DoInit();
             if (!luaInited) awakeCalledBeforeInit = true;
-            if (awake != null) awake(self);
+            else if (awake != null) awake(self);
         }
         private void Update()
         {
             if (ExecuteOrder >= 0)
             {
                 ExecuteOrder--;
-                if (ExecuteOrder == 0)
+                if (ExecuteOrder <= 0) {
                     DoInit();
+                    ExecuteOrder = -1;
+                }
             }
             if (update != null) update(self);
         }

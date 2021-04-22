@@ -1,4 +1,5 @@
 ﻿using Ballance.LuaHelpers;
+using Ballance.Sys.Debug;
 using Ballance2.Config;
 using Ballance2.Config.Settings;
 using Ballance2.Sys.Bridge;
@@ -10,7 +11,6 @@ using Ballance2.Sys.Services;
 using Ballance2.Utils;
 using SLua;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -123,6 +123,7 @@ namespace Ballance2.Sys
 
             LoadBaseSettings();
             InitCommands();
+            InitVideoSettings();
 
             GameStore = GameMediator.RegisterGlobalDataStore("core");
             GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
@@ -140,14 +141,7 @@ namespace Ballance2.Sys
         }
 
         private bool debugMode = false;
-        private void LoadBaseSettings() {
-#if UNITY_EDITOR
-            debugMode = true;
-#else
-            if(GameSettings.GetBool("DebugMode", false)) debugMode = true;
-            else GameObject.Find("GameDebugBeginStats").SetActive(false);
-#endif
-        }
+        
         private IEnumerator InitAsysc()
         {
             //检测lua绑定状态
@@ -238,6 +232,16 @@ namespace Ballance2.Sys
             
             var pm = GetSystemService<GamePackageManager>();
 
+            XmlNode nodeDebugMode = systemInit.SelectSingleNode("System/DebugMode");
+            if(nodeDebugMode!=null&&nodeDebugMode.InnerText.ToLower() == "true") {
+                GameSettings.SetBool("DebugMode", true);
+                debugMode = true;
+            }
+
+            XmlNode LogToFileEnabled = systemInit.SelectSingleNode("System/LogToFileEnabled");
+            if(nodeDebugMode!=null && nodeDebugMode.InnerText.ToLower() == "true") {
+            }
+
             //加载SystemPackages中定义的包
             XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
 
@@ -290,7 +294,7 @@ namespace Ballance2.Sys
                                     packageName, package.PackageVersion, minVer));
                                 yield break;
                             }
-                            package.SystemPackage = mustLoad;
+                            package.SystemPackage = true;
                         }
                         else
                         {
@@ -318,29 +322,294 @@ namespace Ballance2.Sys
             //全部加载完毕之后通知所有模块初始化
             pm.NotifyAllPackageRun("*");
         }
+        private void LoadBaseSettings() {
+#if UNITY_EDITOR
+            debugMode = true;
+#else
+            if(GameSettings.GetBool("DebugMode", false)) debugMode = true;
+            else GameObject.Find("GameDebugBeginStats").SetActive(false);
+#endif
+        }
+        
+        #region 系统调试命令
+        
         private void InitCommands() {
             var srv = GameManager.Instance.GameDebugCommandServer;
             srv.RegisterCommand("quit", (keyword, fullCmd, args) => {
                 QuitGame();
                 return false;
-            }, 0, "退出游戏");
-            srv.RegisterCommand("fps", (keyword, fullCmd, args) =>
+            }, 0, "quit 退出游戏");
+            srv.RegisterCommand("s", (keyword, fullCmd, args) =>
             {
-                int fpsVal = 0;
-                if(args.Length >= 1)
-                {
-                    if (int.TryParse(args[0], out fpsVal) && fpsVal > 0 && fpsVal <= 120) Application.targetFrameRate = fpsVal;
-                    else Log.E(TAG, "错误的参数：{0}", args[0]);
+                var type = (string)args[0];
+                switch(type) {
+                    case "set": {
+                        if(args.Length == 4) {
+                            string setName = ""; 
+                            string setType = "";
+                            string setVal = "";
+                            if(!DebugUtils.CheckDebugParam(1, args, out setName)) break;
+                            if(!DebugUtils.CheckDebugParam(2, args, out setType)) break;
+                            if(!DebugUtils.CheckDebugParam(3, args, out setVal)) break;
+
+                            switch(setType) {
+                                case "bool": 
+                                    GameSettings.SetBool(setName, bool.Parse(setVal));
+                                    return true;
+                                case "string": 
+                                    GameSettings.SetString(setName, setVal);
+                                    return true;
+                                case "float": 
+                                    GameSettings.SetFloat(setName, float.Parse(setVal));
+                                    return true;
+                                case "int": 
+                                    GameSettings.SetInt(setName, int.Parse(setVal));
+                                    return true;
+                                default:
+                                    Log.E(TAG, "未知设置类型 {0}", setType);
+                                    break;
+                            }
+                        } else if(args.Length >= 5) {
+                            string setName = ""; 
+                            string setPackage = "";
+                            string setType = "";
+                            string setVal = "";
+                            if(!DebugUtils.CheckDebugParam(1, args, out setPackage)) break;
+                            if(!DebugUtils.CheckDebugParam(2, args, out setName)) break;
+                            if(!DebugUtils.CheckDebugParam(3, args, out setType)) break;
+                            if(!DebugUtils.CheckDebugParam(4, args, out setVal)) break;
+
+                            var settings = GameSettingsManager.GetSettings(setPackage);
+                            if(settings == null) {
+                                Log.E(TAG, "未找到指定设置包 {0}", setPackage);
+                                break;
+                            }
+
+                            switch(setType) {
+                                case "bool": 
+                                    settings.SetBool(setName, bool.Parse(setVal));
+                                    return true;
+                                case "string": 
+                                    settings.GetString(setName, setVal);
+                                    return true;
+                                case "float": 
+                                    settings.GetFloat(setName, float.Parse(setVal));
+                                    return true;
+                                case "int": 
+                                    settings.GetInt(setName, int.Parse(setVal));
+                                    return true;
+                                default:
+                                    Log.E(TAG, "未知设置类型 {0}", setType);
+                                    break;
+                            }
+                        }
+                        break;
+                    }
+                    case "get": {
+                        if(args.Length == 3) {
+                            string setName = ""; 
+                            string setType = "";
+                            if(!DebugUtils.CheckDebugParam(1, args, out setName)) break;
+                            if(!DebugUtils.CheckDebugParam(2, args, out setType)) break;
+
+                            switch(setType) {
+                                case "bool": 
+                                    Log.V(TAG, GameSettings.GetBool(setName, false).ToString());
+                                    return true;
+                                case "string": 
+                                    Log.V(TAG, GameSettings.GetString(setName, ""));
+                                    return true;
+                                case "float": 
+                                    Log.V(TAG, GameSettings.GetFloat(setName, 0).ToString());
+                                    return true;
+                                case "int": 
+                                    Log.V(TAG, GameSettings.GetInt(setName, 0).ToString());
+                                    return true;
+                                default:
+                                    Log.E(TAG, "未知设置类型 {0}", setType);
+                                    break;
+                            }
+                        } else if(args.Length >= 4) {
+                            string setName = ""; 
+                            string setPackage = "";
+                            string setType = "";
+                            if(!DebugUtils.CheckDebugParam(1, args, out setPackage)) break;
+                            if(!DebugUtils.CheckDebugParam(2, args, out setName)) break;
+                            if(!DebugUtils.CheckDebugParam(3, args, out setType)) break;
+
+                            var settings = GameSettingsManager.GetSettings(setPackage);
+                            if(settings == null) {
+                                Log.E(TAG, "未找到指定设置包 {0}", setPackage);
+                                break;
+                            }
+
+                            switch(setType) {
+                                case "bool": 
+                                    Log.V(TAG, settings.GetBool(setName, false).ToString());
+                                    return true;
+                                case "string": 
+                                    Log.V(TAG, settings.GetString(setName, ""));
+                                    return true;
+                                case "float": 
+                                    Log.V(TAG, settings.GetFloat(setName, 0).ToString());
+                                    return true;
+                                case "int": 
+                                    Log.V(TAG, settings.GetInt(setName, 0).ToString());
+                                    return true;
+                                default:
+                                    Log.E(TAG, "未知设置类型 {0}", setType);
+                                    break;
+                            }
+                        }
+                        break;
+                    }
+                    case "reset": {
+                        GameSettingsManager.ResetDefaultSettings();
+                        return true;
+                    }
+                    case "list": {
+                        GameSettingsManager.ListActuators();
+                        return true;
+                    }
+                    case "notify": {
+                        string setPackage = "";
+                        string setGroup = "";
+                        if(!DebugUtils.CheckDebugParam(1, args, out setPackage)) break;
+                        if(!DebugUtils.CheckDebugParam(2, args, out setGroup)) break;
+
+                        var settings = GameSettingsManager.GetSettings(setPackage);
+                        if(settings == null) {
+                            Log.E(TAG, "未找到指定设置包 {0}", setPackage);
+                            break;
+                        }
+
+                        settings.NotifySettingsUpdate(setGroup);
+                        return true;
+                    }
                 }
-                Log.D(TAG, "Application.targetFrameRate = {0}", Application.targetFrameRate);
-                return true;
-            }, 0, "[targetFps:number] 获取或设置 targetFrameRate");
+                return false;
+            }, 0, "s <set/get/reset/list/notify> 系统设置命令\n" +
+                    "  set <packageName:string> <setKey:string> <bool/string/float/int> <newValue> 设置指定执行器的某个设置\n" +
+                    "  set <setKey:string> <bool/string/float/int> <newValue> 设置系统执行器的某个设置\n" +
+                    "  get <packageName:string> <setKey:string> <bool/string/float/int> 获取指定执行器的某个设置值\n" +
+                    "  get <setKey:string> <bool/string/float/int> 获取系统执行器的某个设置值\n" +
+                    "  reset <packageName:string> 重置所有设置为默认值\n" +
+                    "  notify <packageName:string> <group:string> 通知指定组设置已更新\n" +
+                    "  list 列举出所有子模块的设置执行器"
+            );
+            srv.RegisterCommand("r", (keyword, fullCmd, args) =>
+            {
+                var type = (string)args[0];
+                switch(type) {
+                    case "fps": {
+                        int fpsVal;
+                        if(DebugUtils.CheckIntDebugParam(1, args, out fpsVal, false, 0)) {
+                            if (fpsVal <= 0 && fpsVal > 120) { Log.E(TAG, "错误的参数：{0}", args[0]); break; }
+                            Application.targetFrameRate = fpsVal;
+                        } 
+                        Log.V(TAG, "TargetFrameRate is {0}", Application.targetFrameRate);
+                        return true;
+                    }
+                    case "resolution": {
+                        if(args.Length >= 3) {
+                            int width, height, mode;
+                            if(!DebugUtils.CheckIntDebugParam(1, args, out width)) break;
+                            if(!DebugUtils.CheckIntDebugParam(2, args, out height)) break;
+                            DebugUtils.CheckIntDebugParam(1, args, out mode, false, (int)Screen.fullScreenMode);
+
+                            Screen.SetResolution(width, height, (FullScreenMode)mode);
+                        }
+                        Log.V(TAG, "Screen resolution is {0}x{1} {2}", Screen.width, Screen.height, Screen.fullScreenMode);
+                        return true;
+                    }
+                    case "full": {
+                        int mode;
+                        if(!DebugUtils.CheckIntDebugParam(1, args, out mode)) break;
+                        Screen.SetResolution(Screen.width, Screen.height, (FullScreenMode)mode);
+                        return true;
+                    }
+                    case "vsync": {
+                        int mode;
+                        if(!DebugUtils.CheckIntDebugParam(1, args, out mode)) break;
+                        if (mode < 0 && mode > 2) { Log.E(TAG, "错误的参数：{0}", args[0]); break; }
+                        QualitySettings.vSyncCount = mode;
+                        return true;
+                    }
+                    case "device": {
+                        Log.V(TAG, SystemInfo.deviceName + " (" + SystemInfo.deviceModel + ")");
+                        Log.V(TAG, SystemInfo.operatingSystem + " (" + SystemInfo.processorCount + "/" + SystemInfo.processorType + "/" + SystemInfo.processorFrequency + ")");
+                        Log.V(TAG, SystemInfo.graphicsDeviceName + " " + SystemInfo.graphicsDeviceVendor + " /" + 
+                            FileUtils.GetBetterFileSize(SystemInfo.graphicsMemorySize) + " (" + SystemInfo.graphicsDeviceID + ")" );
+                        break;
+                    }
+                }
+                return false;
+            }, 0, "r <fps/resolution/full/device>\n" + 
+                    "  fps [packageName:nmber:number(1-120)] 获取或者设置游戏的目标帧率\n" +
+                    "  resolution <width:nmber> <height:nmber> [fullScreenMode:number(0-3)] 设置游戏的分辨率或全屏\n" +
+                    "  vsync <fullScreenMode:number(0-2)> 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
+                    "  full <fullScreenMode::number(0-3)> 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
+                    "  device 获取当前设备信息");
             srv.RegisterCommand("c", (keyword, fullCmd, args) =>
             {
                 GameMainLuaState.doString(fullCmd.Substring(2));
                 return true;
-            }, 1, "[any] 运行 LUA 命令");
+            }, 1, "c [any] 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
+            srv.RegisterCommand("le", (keyword, fullCmd, args) =>
+            {
+                Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
+                return true;
+            }, 1, "le 获取LastError");
         }
+       
+        #endregion
+
+        #region 视频设置
+
+        private Resolution[] resolutions = null;
+        private int defaultResolution = 0;
+
+        private void InitVideoSettings()
+        {
+            //屏幕大小事件
+            GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED);
+
+            resolutions = Screen.resolutions;
+
+            for (int i = 0; i < resolutions.Length; i++)
+                if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                {
+                    defaultResolution = i;
+                    break;
+                }
+
+            //设置更新事件
+            GameSettings.RegisterSettingsUpdateCallback("video", OnVideoSettingsUpdated);
+            GameSettings.RequireSettingsLoad("video");
+        }
+
+        private bool OnVideoSettingsUpdated(string groupName, int action)
+        {
+            int resolutionsSet = GameSettings.GetInt("video.resolution", defaultResolution);
+            bool fullScreen = GameSettings.GetBool("video.fullScreen", Screen.fullScreen);
+            int quality = GameSettings.GetInt("video.quality", QualitySettings.GetQualityLevel());
+            int vSync = GameSettings.GetInt("video.vsync", QualitySettings.vSyncCount);
+
+            Log.V(TAG, "OnVideoSettingsUpdated:\nresolutionsSet: {0}\nfullScreen: {1}" +
+                "\nquality: {2}\nvSync : {3}", resolutionsSet, fullScreen, quality, vSync);
+
+            Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, true);
+            Screen.fullScreen = fullScreen;
+            Screen.fullScreenMode = fullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+            QualitySettings.SetQualityLevel(quality, true);
+            QualitySettings.vSyncCount = vSync;
+            
+            GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, "*",
+                resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
+            return true;
+        }
+
+        #endregion
 
         #endregion
 
@@ -383,9 +652,7 @@ namespace Ballance2.Sys
         internal void Destroy()
         {
             Log.D(TAG, "Destroy");
-
-            if (GameMainLuaState != null)
-                GameMainLuaState = null;
+            if (GameMainLuaState != null) GameMainLuaState = null;
         }
 
         /// <summary>
@@ -409,12 +676,16 @@ namespace Ballance2.Sys
             return true;
         }
         private void DoQuit() 
-        {
+        {            
+            GameBaseCamera.clearFlags = CameraClearFlags.Color;
+            GameBaseCamera.backgroundColor = Color.black;
+
+            Application.wantsToQuit -= Application_wantsToQuit;
+            
             var pm = GetSystemService<GamePackageManager>();
             pm.SavePackageRegisterInfo();
 
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
-            
             ReqGameQuit();
         }
 
@@ -429,18 +700,18 @@ namespace Ballance2.Sys
         /// </summary>
         private void ReqGameQuit()
         {
-            nextGameQuitTick = 50;
+            nextGameQuitTick = 80;
         }
         private void Update() {
             if (nextGameQuitTick >= 0)
             {
                 nextGameQuitTick--;
-                if (nextGameQuitTick == 10)
+                if (nextGameQuitTick == 50)
                     ClearScense();
-                if (nextGameQuitTick == 0) {
+                if (nextGameQuitTick == 30)
                     GameSystem.Destroy();
+                if (nextGameQuitTick <= 10) 
                     GameSystem.QuitPlayer();
-                }
             }
         }
 
@@ -474,6 +745,8 @@ namespace Ballance2.Sys
         
         #region 其他方法
 
+        private Camera lastActiveCam = null;
+
         /// <summary>
         /// 设置基础摄像机状态
         /// </summary>
@@ -482,7 +755,19 @@ namespace Ballance2.Sys
         [LuaApiParamDescription("visible", "是否显示")]
         public void SetGameBaseCameraVisible(bool visible)
         {
+            if(visible) {
+                foreach(var c in Camera.allCameras)
+                    if(c.gameObject.activeSelf && c.gameObject.tag == "MainCamera") {
+                        lastActiveCam = c;
+                        lastActiveCam.gameObject.SetActive(false);
+                        break;
+                    }
+            }
             GameBaseCamera.gameObject.SetActive(visible);
+            if(!visible && lastActiveCam != null) {
+                lastActiveCam.gameObject.SetActive(true);
+                lastActiveCam = null;
+            }
         }
 
         /// <summary>

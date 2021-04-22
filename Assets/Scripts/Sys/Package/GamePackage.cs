@@ -82,6 +82,7 @@ namespace Ballance2.Sys.Package
                     if (CSharpAssembly != null)
                         baseInited = true;
                 }
+                else Log.W(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
             }
 
             return true;
@@ -107,6 +108,7 @@ namespace Ballance2.Sys.Package
                 AssetBundle = null;
             }
 
+            
             DestroyLuaState();
 
             //Lua释放
@@ -231,6 +233,8 @@ namespace Ballance2.Sys.Package
 
         private bool mainLuaCodeLoaded = false;
         private bool luaStateInited = false;
+        private bool luaStateIniting = false;
+        private bool runExecutionCodeWhenLuaStateInit = false;
         protected bool baseInited = false;
 
         //初始化LUA虚拟机
@@ -266,12 +270,18 @@ namespace Ballance2.Sys.Package
             PackageLuaServer = new PackageLuaServer(PackageName);
             PackageLuaState = PackageLuaServer.getLuaState();
             PackageLuaServer.init(null, SetLuaStateInitFinished);
+            luaStateIniting = true;
 
             await new WaitUntil(IsLuaStateInitFinished);
 
             return true;
         }
-        private void SetLuaStateInitFinished() { luaStateInited = true; }
+        private void SetLuaStateInitFinished() { 
+            luaStateInited = true; 
+            luaStateIniting = false;
+            if(runExecutionCodeWhenLuaStateInit) 
+                RunPackageExecutionCode();
+        }
 
         /// <summary>
         /// 获取Lua虚拟机是否初始化完成
@@ -297,9 +307,13 @@ namespace Ballance2.Sys.Package
             }
             if (!baseInited)
             {
-                Log.E(TAG, "RunPackageExecutionCode failed, package not load");
-                GameErrorChecker.LastError = GameError.NotLoad;
-                return false;
+                if(luaStateIniting) 
+                    runExecutionCodeWhenLuaStateInit = true;
+                else {
+                    Log.E(TAG, "RunPackageExecutionCode failed, package not load, status {0}", Status);
+                    GameErrorChecker.LastError = GameError.NotLoad;
+                    return false;
+                }
             }
 
             if (CodeType == GamePackageCodeType.Lua)
@@ -420,7 +434,7 @@ namespace Ballance2.Sys.Package
             }
             if (CodeType == GamePackageCodeType.Lua)
             {
-                if (mainLuaCodeLoaded)
+                if (mainLuaCodeLoaded && !PackageLuaState.Destroyed)
                 {
                     LuaFunction fPackageBeforeUnLoad = LuaPackageEntry["PackageBeforeUnLoad"] as LuaFunction;
                     if (fPackageBeforeUnLoad != null)
@@ -458,7 +472,8 @@ namespace Ballance2.Sys.Package
             }
             if (PackageLuaState != null)
             {
-                PackageLuaState.Dispose();
+                if(!PackageLuaState.Destroyed && PackageLuaState != LuaState.main)
+                    PackageLuaState.Dispose();
                 PackageLuaState = null;
             }
         }

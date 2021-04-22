@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Ballance2.Sys.UI.Utils;
+using UnityEngine.UI;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -27,22 +28,30 @@ namespace Ballance2.Sys.UI {
     [ExecuteInEditMode]
     [SLua.CustomLuaClass]
     [Ballance.LuaHelpers.LuaApiDescription("一个开关组件")]
+    [AddComponentMenu("Ballance/UI/Controls/ToggleEx")]
     public class ToggleEx : MonoBehaviour
     {
         public RectTransform Drag;
         public RectTransform Background;
-        public UnityEngine.UI.Image DragImage;
+        public Image DragImage;
         public Sprite ActiveImage;
         public Sprite DeactiveImage;
+        public Image CheckedButton;
+        public Image UnCheckedButton;
 
-        public UnityEngine.UI.Toggle.ToggleEvent onValueChanged;
+        public Toggle.ToggleEvent onValueChanged;
+        public bool UseButtonStyle = false;
 
         void Start()
         {
-            EventTriggerListener.Get(Background.gameObject).onClick = (go) =>
-            {
-                isOn = !isOn;
-            };
+            if(Background != null)
+                EventTriggerListener.Get(Background.gameObject).onClick = (go) => { isOn = !isOn; };
+            if(CheckedButton != null) {
+                var btn = UnCheckedButton.gameObject.GetComponent<Button>();
+                if(btn != null) btn.onClick.AddListener(() => isOn = false);
+                btn = CheckedButton.gameObject.GetComponent<Button>();
+                if(btn != null) btn.onClick.AddListener(() => isOn = true);
+            }
             UpdateOn();
         }
 
@@ -51,11 +60,16 @@ namespace Ballance2.Sys.UI {
 
         public void UpdateOn()
         {
-            DragImage.sprite = on ? ActiveImage : DeactiveImage;
-            Drag.anchoredPosition = new Vector2(
-                on ? 31.6f : 10.5f,
-                Drag.anchoredPosition.y
-            );
+            if(!UseButtonStyle) {
+                DragImage.sprite = on ? ActiveImage : DeactiveImage;
+                Drag.anchoredPosition = new Vector2(
+                    on ? 31.6f : 10.5f,
+                    Drag.anchoredPosition.y
+                );
+            } else {
+                CheckedButton.sprite = on ? ActiveImage : DeactiveImage;
+                UnCheckedButton.sprite = on ? DeactiveImage : ActiveImage;
+            }
         }
 
         public bool isOn
@@ -66,7 +80,7 @@ namespace Ballance2.Sys.UI {
                 if(on != value)
                 {
                     on = value;
-                    if(!Application.isEditor)
+                    if(!Application.isEditor && onValueChanged!=null) 
                         onValueChanged.Invoke(on);
                     UpdateOn();
                 }

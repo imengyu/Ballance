@@ -58,6 +58,7 @@ namespace Ballance2.Sys.Entry
         public Toggle CheckBoxAllowUserAgreement = null;
         public GameObject LinkPrivacyPolicy = null;
         public GameObject LinkUserAgreement = null;
+        public Text GameDebugBeginStats;
 
         private bool GlobalGamePermissionTipDialogClosed = false;
         private bool GlobalGameUserAgreementTipDialogClosed = false;
@@ -69,6 +70,8 @@ namespace Ballance2.Sys.Entry
 
             InitCommandLine();
             InitUI();
+
+            GameDebugBeginStats.text = string.Format("Ballance Version {0} ({1})", GameConst.GameVersion, GameConst.GameBulidDate);
 
             StartCoroutine(InitMain());
         }
@@ -160,7 +163,7 @@ namespace Ballance2.Sys.Entry
                 for (int i = 0; i < len; i++)
                 {
                     if (CommandLineArgs[i] == "-debug")
-                        PlayerPrefs.SetString("core.debug", "true");
+                        PlayerPrefs.SetInt("core.DebugMode", 1);
                 }
             }
         }

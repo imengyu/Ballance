@@ -941,7 +941,10 @@ return dumpstack
             {
                 Close();
             }
+            Destroyed = true;
         }
+
+        public bool Destroyed { get ; private set; }
 
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         public static int errorReport(IntPtr L)

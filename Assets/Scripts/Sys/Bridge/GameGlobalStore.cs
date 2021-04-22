@@ -279,6 +279,8 @@ namespace Ballance2.Sys.Bridge
         /// <returns></returns>
         [LuaApiDescription("获取数据的值")]
         public object GetData() {
+            if(DataType == StoreDataType.Array)
+                return DataArray;
             return DataRaw;
         }
 
@@ -297,6 +299,9 @@ namespace Ballance2.Sys.Bridge
                 StoreDataProvider(false, data);
                 NotificationDataObserver(old, data);
             } 
+            else if(DataType == StoreDataType.Array) {
+                //TODO: DATA ARRAY
+            }
             else if (_DataRaw != data)
             {
                 object old = _DataRaw;
@@ -589,7 +594,7 @@ namespace Ballance2.Sys.Bridge
             set {
                 var prop = this.GetParameter(key);
                 if(prop != null) 
-                     prop.SetData(value);
+                    prop.SetData(value);
                 else
                     GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, "StoreData Set", "未找到参数 {0}", key);
             }

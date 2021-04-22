@@ -24,6 +24,7 @@ namespace Ballance2.Editor.Modding
         private int modVersion = 1;
         private bool GenEntryCodeTemplate = true;
         private GamePackageType PackageType = GamePackageType.Module;
+        private GamePackageCodeType CodeType = GamePackageCodeType.Lua;
         private string EntryCode = "Entry.lua";
 
         private SerializedObject serializedObject;
@@ -79,7 +80,6 @@ namespace Ballance2.Editor.Modding
             modVersion = EditorGUILayout.IntField("模组版本（默认1）", modVersion);
             modUserVersion = EditorGUILayout.TextField("模组版本（显示用户看）", modUserVersion);
 
-
             PackageType = (GamePackageType)EditorGUILayout.EnumPopup("模组类型", PackageType);
             if (PackageType == GamePackageType.Module)
             {
@@ -94,6 +94,7 @@ namespace Ballance2.Editor.Modding
                     }
                 }
             }
+            CodeType = (GamePackageCodeType)EditorGUILayout.EnumPopup("代码类型", CodeType);
 
             EditorGUILayout.Space(20);
 
@@ -150,14 +151,11 @@ namespace Ballance2.Editor.Modding
             TargetVersion.InnerText = GameConst.GameBulidVersion.ToString();
 
             XmlNode EntryCode = xml.SelectSingleNode("Package/EntryCode");
+            XmlNode CodeType = xml.SelectSingleNode("Package/CodeType");
             XmlNode PackageType = xml.SelectSingleNode("Package/Type");
 
-            //if (!this.EntryCode.Contains("."))
-            //    this.EntryCode += ".lua.txt";
-            //if (!this.EntryCode.EndsWith(".txt"))
-            //    this.EntryCode += ".txt";
-
             EntryCode.InnerText = this.EntryCode;
+            CodeType.InnerText = this.PackageType == GamePackageType.Module ? this.CodeType.ToString() : "None";
             PackageType.InnerText = this.PackageType.ToString();
 
             xml.Save(folderPath + "/PackageDef.xml");

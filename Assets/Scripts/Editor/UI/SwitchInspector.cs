@@ -2,39 +2,42 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ToggleEx), true)]
-class SwitchInspector : Editor
+[CustomEditor(typeof(Updown), true)]
+class UpdownInspector : Editor
 {
-    private ToggleEx myScript;
-    private SerializedProperty pIsOn;
+    private Updown myScript;
+    private SerializedProperty pValue;
+    private SerializedProperty pMinValue;
+    private SerializedProperty pMaxValue;
     
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
-        myScript = (ToggleEx)target;
+        myScript = (Updown)target;
 
         EditorGUI.BeginChangeCheck();
 
-        bool newState = EditorGUILayout.Toggle(new GUIContent("IsOn", pIsOn.tooltip), 
-            pIsOn.boolValue);
-        if (newState != pIsOn.boolValue)
+        float newValue = EditorGUILayout.Slider(new GUIContent("Value", pValue.tooltip), pValue.floatValue, pMinValue.floatValue, pMaxValue.floatValue);
+        if (newValue != pValue.floatValue)
         {
             GUI.changed = true;
-            pIsOn.boolValue = newState;
+            pValue.floatValue = newValue;
         }
 
         if (EditorGUI.EndChangeCheck())
         {
             serializedObject.ApplyModifiedProperties();
-            myScript.UpdateOn();
+            myScript.UpdateValue();
         }
 
         base.OnInspectorGUI();
     }
     private void OnEnable()
     {
-        pIsOn = serializedObject.FindProperty("on");
+        pValue = serializedObject.FindProperty("_value");
+        pMinValue = serializedObject.FindProperty("MinValue");
+        pMaxValue = serializedObject.FindProperty("MaxValue");
     }
     private void OnDisable()
     {

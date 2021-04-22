@@ -24,7 +24,7 @@ function CreateClass_MouseSelect()
     return o
   end
 
-  function MouseSelect:Start()
+  function MouseSelect:Start(go)
     self.MessageSender = self.gameObject:GetComponent(GameUIControlMessageSender)
   end
   function MouseSelect:OnMouseEnter()

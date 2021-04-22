@@ -100,6 +100,19 @@ namespace Ballance2.Sys.UI
         }
         
         /// <summary>
+        /// 使用数据更新器获取控件实例
+        /// </summary>
+        /// <param name="binderName">数据更新器名称</param>
+        /// <returns></returns>
+        [LuaApiDescription("使用数据更新器获取控件实例", "")]
+        [LuaApiParamDescription("binderName", "数据更新器名称")]
+        public GameObject GetComponentInstance(string binderName) {
+            if(valueBinders.TryGetValue(binderName, out GameUIControlValueBinder binder))
+                return binder.gameObject;
+            return null;
+        }
+
+        /// <summary>
         /// 取消订阅数据更新器
         /// </summary>
         /// <param name="binderName">数据更新器名称</param>
@@ -122,7 +135,7 @@ namespace Ballance2.Sys.UI
         /// <param name="evtName">消息名称</param>
         /// <param name="callBack">消息回调</param>
         [LuaApiDescription("订阅单一消息", "")]
-        [LuaApiParamDescription("evtName", "消息名称")]
+        [LuaApiParamDescription("evtName", "消息名称")] 
         [LuaApiParamDescription("callBack", "消息回调")]
         public void SubscribeEvent(string evtName, VoidDelegate callBack) {
             if(!events.TryGetValue(evtName, out var handlers)) {

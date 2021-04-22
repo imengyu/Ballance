@@ -366,68 +366,6 @@ public class Lua_UnityEngine_UI_DefaultControls : LuaObject {
 		}
 		#endif
 	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_factory(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			pushValue(l,true);
-			pushValue(l,UnityEngine.UI.DefaultControls.factory);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_factory(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			UnityEngine.UI.DefaultControls.IFactoryControls v;
-			checkType(l,2,out v);
-			UnityEngine.UI.DefaultControls.factory=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.UI.DefaultControls");
@@ -442,7 +380,6 @@ public class Lua_UnityEngine_UI_DefaultControls : LuaObject {
 		addMember(l,CreateInputField_s);
 		addMember(l,CreateDropdown_s);
 		addMember(l,CreateScrollView_s);
-		addMember(l,"factory",get_factory,set_factory,false);
 		createTypeMetatable(l,null, typeof(UnityEngine.UI.DefaultControls));
 	}
 }

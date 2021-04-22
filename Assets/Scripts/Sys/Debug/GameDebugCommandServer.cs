@@ -56,10 +56,8 @@ namespace Ballance2.Sys.Debug
         [LuaApiParamDescription("cmd", "命令字符串")]
         public bool ExecuteCommand(string cmd)
         {
-            if (string.IsNullOrEmpty(cmd)) {
-                Log.W(TAG, "请输入要执行的命令");
+            if (string.IsNullOrEmpty(cmd))
                 return false;
-            }
 
             StringSpliter sp = new StringSpliter(cmd, ' ', true);
             if (sp.Count >= 1)
@@ -166,18 +164,18 @@ namespace Ballance2.Sys.Debug
             string helpText = "命令帮助：\n";
             foreach (CmdItem cmdItem in commands)
                 helpText += cmdItem.Keyword + " <color=#adadad>" + cmdItem.HelpText + "</color>\n";
-            Log.D(TAG, helpText);
+            Log.V(TAG, helpText);
             return true;
         }
 
         private void RegisterSystemCommands() {
             //注册基础内置命令
-            RegisterCommand("help", OnCommandHelp, 1, "显示命令帮助");
+            RegisterCommand("help", OnCommandHelp, 1, "help 显示命令帮助");
             RegisterCommand("e", (keyword, fullCmd, args) =>
             {
-                Log.D("echo", fullCmd.Substring(2));
+                Log.V("echo", fullCmd.Substring(2));
                 return true;
-            }, 1, "[any] 测试命令");
+            }, 1, "e [any] 测试命令");
         }
     }
 }

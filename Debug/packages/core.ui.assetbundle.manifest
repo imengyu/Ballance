@@ -1,0 +1,71 @@
+ManifestFileVersion: 0
+CRC: 1513634686
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 28791ce38d4c03e97334b1b69ccaa281
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5a38fe57fa520def4a2f08232f452b95
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe6b540e8622c814fb7e25c0ef43e978, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: bb59fe04efd5a5d44b668d796470ba23, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8888da6e7f87167479269e69cc72c5e9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 185e65ba4b5982e44896a104b23d37ae, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f8cb77ce1395a52409f430b0188a3058, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 412783b5751e8304ca44de3b1dbaa7cd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e0337be15161693458eb6fe8dd58797b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Packages/core.ui/PackageLogo.png
+- Assets/Packages/core.ui/Prefabs/PageSettingsControls.prefab
+- Assets/Packages/core.ui/Prefabs/PageMain.prefab
+- Assets/Packages/core.ui/Prefabs/PageAbout.prefab
+- Assets/Packages/core.ui/Prefabs/PageSettingsGraphics.prefab
+- Assets/Packages/core.ui/Prefabs/PageHighscore.prefab
+- Assets/Packages/core.ui/PackageDef.xml
+- Assets/Packages/core.ui/Prefabs/PageQuit.prefab
+- Assets/Packages/core.ui/Prefabs/ItemHighscore.prefab
+- Assets/Packages/core.ui/Prefabs/PageSettings.prefab
+- Assets/Packages/core.ui/Prefabs/PageStart.prefab
+- Assets/Packages/core.ui/Prefabs/PageSettingsAudio.prefab
+- Assets/Packages/core.ui/Prefabs/PageLightZone.prefab
+Dependencies: []

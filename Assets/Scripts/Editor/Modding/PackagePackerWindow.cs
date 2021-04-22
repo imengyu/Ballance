@@ -1,11 +1,7 @@
 ﻿using Ballance2.Config.Settings;
 using Ballance2.Sys.Res;
-using Ballance2.Utils;
-using ICSharpCode.SharpZipLib.Checksum;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,7 +28,7 @@ namespace Ballance2.Editor.Modding
     {
         public PackagePackerWindow()
         {
-            titleContent = new GUIContent("打包 Ballance 模组包");
+            titleContent = new GUIContent("打包 Ballance 模块包");
         }
 
         private SerializedObject serializedObject;
@@ -51,7 +47,7 @@ namespace Ballance2.Editor.Modding
 
         private GUIStyle groupBox = null;
         private int tab = 0;
-        private string[] tabText = new string[] {  "选择 Packages 下的模组", "选择 PackageDef.xml" };
+        private string[] tabText = new string[] {  "选择 Packages 下的模块", "选择 PackageDef.xml" };
         private int selectedMod = 0;
         private Vector2 scrollRect = new Vector2();
 
@@ -81,8 +77,8 @@ namespace Ballance2.Editor.Modding
             EditorGUILayout.BeginVertical(groupBox);
 
             EditorGUILayout.Space(20);
-            EditorGUILayout.HelpBox(new GUIContent(@"使用这个工具来打包你的模组包，
-你需要先使用“生成”工具来在 Assets/Packages 下生成你的模组包。"), true);
+            EditorGUILayout.HelpBox(new GUIContent(@"使用这个工具来打包你的模块包，
+你需要先使用“生成”工具来在 Assets/Packages 下生成你的模块包。"), true);
             EditorGUILayout.Space(15);
 
             tab = GUILayout.Toolbar(tab, tabText);
@@ -99,7 +95,7 @@ namespace Ballance2.Editor.Modding
             else
             {
                 EditorGUILayout.BeginHorizontal();
-                selectedMod = EditorGUILayout.Popup(new GUIContent("选择一个模组文件夹 "), selectedMod, packsPathArr);
+                selectedMod = EditorGUILayout.Popup(new GUIContent("选择一个模块文件夹 "), selectedMod, packsPathArr);
                 if (GUILayout.Button("刷新", GUILayout.Width(80)))
                     LoadModsPath();
                 EditorGUILayout.EndHorizontal();
@@ -150,7 +146,6 @@ namespace Ballance2.Editor.Modding
         private List<string> packsPath = new List<string>();
         private string[] packsPathArr = null;
         private string packPackageName = "";
-        private string packLogoName = "";
 
         private void LoadDefConfig()
         {
@@ -191,11 +186,6 @@ namespace Ballance2.Editor.Modding
             packDefFile = Selection.activeObject as TextAsset;
         }
 
-        private string projPath = "";
-        private string projModDefFile = "";
-        private string projModDirPath = "";
-        private string projLogoFile = "";
-
         private void DoPack(bool chooseFolder)
         {
             isError = false;
@@ -206,7 +196,7 @@ namespace Ballance2.Editor.Modding
                 if (selectedMod == 0)
                 {
                     isError = true;
-                    errStr = "请选择你的模组";
+                    errStr = "请选择你的模块";
                     return;
                 }
                 if (selectedMod > 0 && selectedMod < packsPathArr.Length)
@@ -241,87 +231,29 @@ namespace Ballance2.Editor.Modding
                 errStr = "你的 Unity 似乎不支持目标平台 "  + packTarget + " 的编译，可能你没有安装对应模块";
                 return;
             }
-            string path = "";
+            string dir = "";
             if (chooseFolder)
-                path = EditorUtility.SaveFilePanel("保存模组包",
-                   EditorPrefs.GetString("ModMakerDefSaveDir", GamePathManager.DEBUG_PATH),
-                   packsPathArr[selectedMod], "ballance");
+                dir = EditorUtility.OpenFolderPanel("保存模块包", EditorPrefs.GetString("ModMakerDefSaveDir", GamePathManager.DEBUG_PATH), "");
             else
             {
-                string dir = DebugSettings.Instance.DebugFolder + "/packages/";
+                dir = DebugSettings.Instance.DebugFolder + "/packages/";
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-
-                path = dir + packsPathArr[selectedMod] + ".ballance";
             }
-
-            if (!string.IsNullOrEmpty(path))
+            if (!string.IsNullOrEmpty(dir))
             {
-                if (path != GamePathManager.DEBUG_PATH)
+                if (dir != GamePathManager.DEBUG_PATH)
                     EditorPrefs.SetString("ModMakerDefSaveDir", GamePathManager.DEBUG_PATH);
-                EditorPrefs.SetString("ModMakerDefFileName", Path.GetFileNameWithoutExtension(path));
 
-                DoSolvePackageDef();
-
-                if(string.IsNullOrEmpty(packPackageName))
+                string err = PackagePacker.DoPackPackage(packTarget, packDefFile, packsPathArr[selectedMod], dir);
+                if(!string.IsNullOrEmpty(err))
                 {
                     isError = true;
-                    errStr = "PackageDef.xml 必须填写包名 packageName";
+                    errStr = err;
                     return;
-                }
-
-                allAssetsPath.Clear();
-                allLuaPath.Clear();
-                string dirTargetPath = Path.GetDirectoryName(path);
-                if (!string.IsNullOrEmpty(projModDirPath))
-                {
-                    //遍历文件夹的内容
-                    if (Directory.Exists(projModDirPath))
-                    {
-                        DirectoryInfo direction = new DirectoryInfo(projModDirPath);
-                        FileInfo[] files = direction.GetFiles("*", SearchOption.AllDirectories);
-                        for (int i = 0; i < files.Length; i++)
-                        {
-                            if (files[i].Name.EndsWith(".meta")) continue;
-                            //将lua代码取出来，打包到zip中
-                            if (files[i].Name.EndsWith(".lua"))
-                            {
-                                allLuaPath.Add(files[i].FullName.Replace("\\", "/").Replace(projPath, ""));
-                                continue;
-                            }
-
-                            allAssetsPath.Add(files[i].FullName.Replace("\\", "/").Replace(projPath, ""));
-                        }
-                        isResult = true;
-                    }
-
-                    string name = Path.GetFileNameWithoutExtension(path);
-
-                    EditorUtility.DisplayProgressBar("正在打包", "正在打包，请稍后...", 0);
-
-                    //打包
-                    AssetBundleBuild assetBundleBuild = new AssetBundleBuild();
-                    assetBundleBuild.assetBundleName = packPackageName;
-                    assetBundleBuild.assetBundleVariant = "assetbundle";
-                    assetBundleBuild.assetNames = allAssetsPath.ToArray();
-
-                    //打包
-                    BuildPipeline.BuildAssetBundles(dirTargetPath, new AssetBundleBuild[]{
-                        assetBundleBuild
-                    }, BuildAssetBundleOptions.None, packTarget);
-
-                    EditorUtility.DisplayProgressBar("正在打包", "正在打包，请稍后...", 0.6f);
-
-                    //ballance 包处理
-                    DoSolveBallancePack(dirTargetPath, dirTargetPath + "/" + name, path);
-
-                    EditorUtility.ClearProgressBar();
-                    EditorUtility.DisplayDialog("提示", "打包成功！\n" + path, "好的");
-                }
-                else
-                {
-                    isError = true;
-                    errStr = "选择的 PackageDef.xml 不在本项目中 ";
+                } else {
+                    isError = false;
+                    EditorUtility.DisplayDialog("提示", "打包成功！", "好的");
                 }
             }
             else
@@ -329,69 +261,6 @@ namespace Ballance2.Editor.Modding
                 isError = true;
                 errStr = "您取消了保存 ";
             }
-        }
-        private void DoSolvePackageDef()
-        {
-            projPath = Directory.GetCurrentDirectory().Replace("\\", "/") + "/";
-            projModDefFile = projPath + AssetDatabase.GetAssetPath(packDefFile);
-            projModDirPath = projPath + Path.GetDirectoryName(AssetDatabase.GetAssetPath(packDefFile));
-            packPackageName = "";
-
-            //模组信息处理
-            XmlDocument packDefXmlDoc = new XmlDocument();
-            packDefXmlDoc.LoadXml(packDefFile.text);
-            XmlNode nodePackage = packDefXmlDoc.SelectSingleNode("Package");
-            
-            if(nodePackage.Attributes["name"] != null)
-                packPackageName = nodePackage.Attributes["name"].Value;
-
-            foreach (XmlNode node in nodePackage.ChildNodes)
-            {
-                if (node.Name == "BaseInfo")
-                {
-                    foreach (XmlAttribute attribute in node.Attributes)
-                    {
-                        if (attribute.Name == "packageName")
-                            packPackageName = attribute.Value;
-                    }
-                    foreach (XmlNode nodec in node.ChildNodes)
-                    {
-                        if (nodec.Name == "Logo")
-                        {
-                            packLogoName = nodec.InnerText;
-                            projLogoFile = projModDirPath + Path.DirectorySeparatorChar + nodec.InnerText;
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-        private void DoSolveBallancePack(string dirTargetPath, string bundlePath, string targetPath)
-        {
-            Crc32 crc = new Crc32();
-            ZipOutputStream zipStream = ZipUtils.CreateZipFile(targetPath);
-            string basePath = projModDirPath.Replace(projPath, "").Replace("\\", "/");
-
-            //添加到包里
-            ZipUtils.AddFileToZip(zipStream, 
-                bundlePath + ".assetbundle", 
-                "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle", crc);
-            ZipUtils.AddFileToZip(zipStream, 
-                bundlePath + ".assetbundle.manifest", 
-                "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle.manifest", crc);
-            ZipUtils.AddFileToZip(zipStream, projModDefFile, projModDirPath.Length, crc);
-
-            //添加logo图片
-            if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, crc);
-            else Debug.LogWarning("模组的 Logo 没有找到：" + projLogoFile);
-
-            //添加lua代码
-            foreach (string path in allLuaPath)
-                ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), crc);
-
-            zipStream.Finish();
-            zipStream.Close();
         }
     }
 }

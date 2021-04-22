@@ -30,6 +30,7 @@ namespace Ballance2.Sys.UI
     [ExecuteInEditMode]
     [LuaApiDescription("分割两个视图控件，用户可以手动拖动调整两个视图的大小")]
     [CustomLuaClass]
+    [AddComponentMenu("Ballance/UI/Controls/SplitView")]
     public class SplitView : UIBehaviour
     {
         protected override void Start()

@@ -1,4 +1,6 @@
 using System.Collections;
+using Ballance.Sys.Debug;
+using Ballance2.Sys;
 using Ballance2.Sys.UI;
 using Ballance2.Utils;
 using RuntimeGizmos;
@@ -56,6 +58,7 @@ namespace Ballance2
         public Window GameDebugInspectorWindow;
         [HideInInspector]
         public Window GameDebugHierarchyWindow;
+        public DebugControl DebugControl;
 
         public enum DebugCameraTool {
             Drag,
@@ -67,8 +70,11 @@ namespace Ballance2
         private bool _Audio = true;
         private bool _Fog = true;
         private bool _SkyBox = true;
+        
         private void UpdateEnableDebug() {
             _EnableDebug = EnableDebug;
+            if(GameManager.Instance != null)
+                GameManager.Instance.SetGameBaseCameraVisible(EnableDebug);
             SceneGizmoRenderer.gameObject.SetActive(_EnableDebug);
             GameGrid.SetActive(_EnableDebug);
             TransformGizmo.enabled = _EnableDebug;
@@ -128,7 +134,6 @@ namespace Ballance2
         }
 		private void Update()
 		{
-            if(EnableDebug != _EnableDebug) UpdateEnableDebug();
             if(Wireframe != _Wireframe) UpdateWireframe();
             if(Audio != _Audio) UpdateAudio();
             if(Fog != _Fog) UpdateFog();
@@ -287,7 +292,11 @@ namespace Ballance2
                 transform.LookAt(moveCamTargetLookPos);
             }
         }
-
+        
+        [DoNotToLua]
+        public void UpdateEnableDebugZ() {
+            if(EnableDebug != _EnableDebug) UpdateEnableDebug();
+        }
         public void AddObjectToTransformGizmo(Transform t) {
             TransformGizmo.AddTarget(t);
         }
@@ -303,9 +312,7 @@ namespace Ballance2
         }
 
         public void PrepareWindow() {
-            GameDebugInspectorWindow.onShow += (w) => { EnableDebug = true; };
-            GameDebugInspectorWindow.onHide += (w) => { EnableDebug = false; };
-            GameDebugInspectorWindow.onClose += (w) => { EnableDebug = false; };
+            DebugControl.PrepareWindow();
         }
 
         private void OnPreRender() {
