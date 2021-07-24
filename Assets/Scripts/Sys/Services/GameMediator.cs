@@ -378,6 +378,8 @@ namespace Ballance2.Sys.Services
             //注册内置事件
             RegisterGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED);
             RegisterGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT);
+            RegisterGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_ENTER);
+            RegisterGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_QUIT);
         }
 
         /// <summary>

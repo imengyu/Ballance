@@ -1,7 +1,9 @@
 ﻿using Ballance2.Sys.Bridge.LuaWapper;
 using Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents;
+using Ballance2.Sys.Res;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -16,6 +18,7 @@ class GameLuaObjectHostInspector : Editor
     private SerializedProperty pLuaInitialVars;
     private SerializedProperty pName;
     private SerializedProperty pLuaClassName;
+    private SerializedProperty pLuaFileName;
     private SerializedProperty pLuaPackageName;
     private SerializedProperty pExecuteOrder;
     private SerializedProperty pCreateStore;
@@ -27,6 +30,7 @@ class GameLuaObjectHostInspector : Editor
 
     private bool bDrawVarsInspector = false;
     private bool bDrawEventCallerInspector = false;
+    private bool bDrawPropsInspector = false;
 
     public override void OnInspectorGUI()
     {
@@ -42,6 +46,10 @@ class GameLuaObjectHostInspector : Editor
 
         DrawMinInspector();
 
+        bDrawPropsInspector = EditorGUILayout.Foldout(bDrawPropsInspector, "Lua 类属性", true);
+        if (bDrawPropsInspector)
+            DrawPropsInspector();
+
         bDrawVarsInspector = EditorGUILayout.Foldout(bDrawVarsInspector, "Lua 引入参数", true);
         if (bDrawVarsInspector)
             DrawVarsInspector();
@@ -49,7 +57,6 @@ class GameLuaObjectHostInspector : Editor
         bDrawEventCallerInspector = EditorGUILayout.Foldout(bDrawEventCallerInspector, "Lua 类 On * 事件接收器", true);
         if (bDrawEventCallerInspector)
             DrawEventCallerInspector();
-        
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -60,25 +67,48 @@ class GameLuaObjectHostInspector : Editor
     {
         bDrawVarsInspector = EditorPrefs.GetBool("GameLuaObjectHostInspector_bDrawVarsInspector", false);
         bDrawEventCallerInspector = EditorPrefs.GetBool("GameLuaObjectHostInspector_bDrawEventCallerInspector", false);
+        bDrawPropsInspector = EditorPrefs.GetBool("GameLuaObjectHostInspector_bDrawPropsInspector", false);
 
         pName = serializedObject.FindProperty("Name");
         pLuaClassName = serializedObject.FindProperty("LuaClassName");
+        pLuaFileName = serializedObject.FindProperty("LuaFileName");
         pLuaPackageName = serializedObject.FindProperty("LuaPackageName");
         pLuaInitialVars = serializedObject.FindProperty("LuaInitialVars");
         pExecuteOrder = serializedObject.FindProperty("ExecuteOrder");
         pCreateStore = serializedObject.FindProperty("CreateStore");
         pCreateActionStore = serializedObject.FindProperty("CreateActionStore");
 
+        //自动设置名称
+        if(myScript != null && pName.stringValue == "")
+            pName.stringValue = myScript.gameObject.name;
+
         InitVarsList();
+        InitPackageNames();
     }
     private void OnDisable()
     {
         EditorPrefs.SetBool("GameLuaObjectHostInspector_bDrawVarsInspector", bDrawVarsInspector);
         EditorPrefs.SetBool("GameLuaObjectHostInspector_bDrawEventCallerInspector", bDrawEventCallerInspector);
+        EditorPrefs.SetBool("GameLuaObjectHostInspector_bDrawPropsInspector", bDrawPropsInspector);
         styleCNBox = null;
         styleHighlight = null;
     }
+    
+    private List<string> packsPath = new List<string>();
+    private string[] packsPathArr = null;
+    private bool directLoad = false;
+    
+    private void InitPackageNames() {
+        packsPath.Clear();
+        packsPath.Add("");
 
+        DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
+        DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
+        for (int i = 0; i < dirs.Length; i++)
+            packsPath.Add(dirs[i].Name);
+
+        packsPathArr = packsPath.ToArray();
+    }
     private void InitVarsList()
     {
         reorderableList = new ReorderableList(serializedObject, pLuaInitialVars, true, true, true, true);
@@ -243,10 +273,24 @@ class GameLuaObjectHostInspector : Editor
     private void DrawMinInspector()
     {
         EditorGUILayout.BeginVertical(styleCNBox);
-
         EditorGUILayout.PropertyField(pName);
-        EditorGUILayout.PropertyField(pLuaClassName);
-        EditorGUILayout.PropertyField(pLuaPackageName);
+
+        directLoad = EditorGUILayout.Toggle("DirectLoad", directLoad);
+        if(directLoad) {
+            EditorGUILayout.PropertyField(pLuaPackageName);
+            EditorGUILayout.PropertyField(pLuaFileName);
+            EditorGUILayout.PropertyField(pLuaClassName);
+        } else {
+            int chooseIndex = EditorGUILayout.Popup(pLuaPackageName.name, packsPath.IndexOf(pLuaPackageName.stringValue), packsPathArr);
+            pLuaPackageName.stringValue = chooseIndex >= 0 ? packsPathArr[chooseIndex] : "";
+            EditorGUILayout.LabelField(pLuaFileName.name, pLuaFileName.stringValue);
+            EditorGUILayout.LabelField(pLuaClassName.name, pLuaClassName.stringValue);
+            
+            if(GUILayout.Button("选择Lua类")) {
+
+            }
+        }
+
         EditorGUILayout.PropertyField(pExecuteOrder);
         EditorGUILayout.PropertyField(pCreateStore);
         EditorGUILayout.PropertyField(pCreateActionStore);
@@ -325,6 +369,15 @@ class GameLuaObjectHostInspector : Editor
             AddEventCaller();
 
         EditorGUILayout.EndHorizontal();//e添加事件接收器
+
+        EditorGUILayout.Space(5);
+        EditorGUILayout.EndVertical();
+    }
+    private void DrawPropsInspector() {
+        EditorGUILayout.BeginVertical(styleCNBox);
+        EditorGUILayout.Space(5);
+
+
 
         EditorGUILayout.Space(5);
         EditorGUILayout.EndVertical();

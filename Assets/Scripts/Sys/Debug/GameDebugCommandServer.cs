@@ -67,7 +67,7 @@ namespace Ballance2.Sys.Debug
                     if (cmdItem.Keyword == sp.Result[0])
                     {
                         //arg
-                        if (cmdItem.LimitArgCount > 0 && sp.Count < cmdItem.LimitArgCount - 1)
+                        if (cmdItem.LimitArgCount > 0 && sp.Count - 1 < cmdItem.LimitArgCount)
                         {
                             Log.E(TAG, "命令 {0} 至少需要 {1} 个参数", sp.Result[0], cmdItem.LimitArgCount);
                             return false;

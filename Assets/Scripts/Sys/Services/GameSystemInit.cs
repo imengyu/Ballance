@@ -68,6 +68,11 @@ namespace Ballance2.Sys.Services {
                     Destroy(gameInitInstance);
                     gameInitInstance = null;
                 }
+                if (gameManagerInstance != null)
+                {
+                    Destroy(gameManagerInstance);
+                    gameManagerInstance = null;
+                }
 
                 GameStaticResourcesPool.ReleaseAll();
             }

@@ -11,6 +11,7 @@ using Ballance2.Sys.Services;
 using Ballance2.Utils;
 using SLua;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -99,6 +100,9 @@ namespace Ballance2.Sys
         [LuaApiDescription("游戏内核ActionStore")]
         public GameActionStore GameActionStore { get; private set; }
 
+        [LuaApiDescription("实例")]
+        public static bool DebugMode { get; private set; }
+
         private readonly string TAG = "GameManager";
 
         #endregion
@@ -112,16 +116,22 @@ namespace Ballance2.Sys
         {
             Log.D(TAG, "Initialize");
 
+            GameBaseCamera = gameEntryInstance.GameBaseCamera;
+            GameCanvas = gameEntryInstance.GameCanvas;
+            DebugMode = gameEntryInstance.DebugMode;
+
+            InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
+        }
+        
+        private void InitBase(GameEntry gameEntryInstance, System.Action finish) {
             Instance = this;
 
             Application.wantsToQuit += Application_wantsToQuit;
 
             GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-            GameBaseCamera = gameEntryInstance.GameBaseCamera;
-            GameCanvas = gameEntryInstance.GameCanvas;
             GameDebugCommandServer = new GameDebugCommandServer();
 
-            LoadBaseSettings();
+            InitDebugConfig(gameEntryInstance);
             InitCommands();
             InitVideoSettings();
 
@@ -134,15 +144,28 @@ namespace Ballance2.Sys
             {
                 GameMainLuaState = LuaSvr.mainState;
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
-
-                //Run init
-                StartCoroutine(InitAsysc());
+                finish.Invoke();
             });
         }
 
-        private bool debugMode = false;
-        
-        private IEnumerator InitAsysc()
+        private bool sLoadUserPackages = true;
+        private bool sEnablePackageLoadFilter = false;
+        private string sCustomDebugName = "";
+        private List<string> sLoadCustomPackages = new List<string>();
+
+        private void InitDebugConfig(GameEntry gameEntryInstance) {
+            //根据GameEntry中调试信息赋值到当前类变量，供加载使用
+            sLoadUserPackages = !DebugMode || gameEntryInstance.DebugLoadCustomPackages;
+            sCustomDebugName = DebugMode ? gameEntryInstance.DebugCustomEntryEvent : "";
+            sEnablePackageLoadFilter = DebugMode && gameEntryInstance.DebugType != GameDebugType.FullDebug;
+            if(DebugMode) {
+                foreach(var package in gameEntryInstance.DebugInitPackages) {
+                    if(package.Enable) sLoadCustomPackages.Add(package.PackageName);
+                }
+            }
+        }
+
+        private IEnumerator InitAsysc() 
         {
             //检测lua绑定状态
             object o = GameMainLuaState.doString("return Ballance2.Sys.GameManager.LuaBindingCallback()");
@@ -165,13 +188,26 @@ namespace Ballance2.Sys
             }
 
             //加载系统 packages
-            yield return StartCoroutine(LoadSystemInit());
+            yield return StartCoroutine(LoadSystemCore());
 
             //加载用户选择的模块
-            yield return StartCoroutine(LoadUserPackages());
+            if(sLoadUserPackages)
+                yield return StartCoroutine(LoadUserPackages());
 
-            //通知初始化完成
-            GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
+            //全部加载完毕之后通知所有模块初始化
+            GetSystemService<GamePackageManager>().NotifyAllPackageRun("*");
+
+            if(string.IsNullOrEmpty(sCustomDebugName)) {
+                //通知初始化完成
+                GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
+                //进入场景
+                if(firstScense != "")
+                    RequestEnterLogicScense(firstScense);
+            }
+            else {
+                GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
+                RequestEnterLogicScense("GameDebug");
+            }
         }
         private IEnumerator LoadUserPackages() {
             var pm = GetSystemService<GamePackageManager>();
@@ -185,6 +221,8 @@ namespace Ballance2.Sys
 
             foreach(var info in list) {
 
+                if(sEnablePackageLoadFilter && !sLoadCustomPackages.Contains(info.packageName)) continue;
+
                 var task = pm.RegisterPackage((info.enableLoad ? "Enable:" : "") + info.package);
                 yield return task;
 
@@ -193,20 +231,22 @@ namespace Ballance2.Sys
             }
    
             yield return new WaitForSeconds(1);
-
-            //全部加载完毕之后通知所有模块初始化
-            pm.NotifyAllPackageRun("*");
         }
-        private IEnumerator LoadSystemInit()
+        private IEnumerator LoadSystemCore()
         {
-            //读取读取SystemInit文件
+            UnityWebRequest request = null;
+            var pm = GetSystemService<GamePackageManager>();
+            var corePackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
+            
+            #region 读取读取SystemInit文件
+
             XmlDocument systemInit = new XmlDocument();
 #if UNITY_EDITOR
             if (DebugSettings.Instance.SystemInitLoadWay == LoadResWay.InUnityEditorProject
-                && File.Exists("Assets/Packages/system_SystemInit.xml"))
+                && File.Exists("Assets/Packages/SystemInit.xml"))
             {
                 Log.D(TAG, "Load SystemInit in editor.");
-                systemInit.Load("Assets/Packages/system_SystemInit.xml");
+                systemInit.Load("Assets/Packages/SystemInit.xml");
             }
             else
 #else
@@ -214,7 +254,7 @@ namespace Ballance2.Sys
 #endif
             {
                 string url = GamePathManager.GetResRealPath("systeminit", "");
-                UnityWebRequest request = UnityWebRequest.Get(url);
+                request = UnityWebRequest.Get(url);
                 yield return request.SendWebRequest();
                 if (!string.IsNullOrEmpty(request.error))
                 {
@@ -228,21 +268,71 @@ namespace Ballance2.Sys
                 }
                 systemInit.LoadXml(request.downloadHandler.text);
             }
-
             
-            var pm = GetSystemService<GamePackageManager>();
+            #endregion
 
-            XmlNode nodeDebugMode = systemInit.SelectSingleNode("System/DebugMode");
-            if(nodeDebugMode!=null&&nodeDebugMode.InnerText.ToLower() == "true") {
-                GameSettings.SetBool("DebugMode", true);
-                debugMode = true;
+            #region 系统配置
+
+            XmlNode CorePackageName = systemInit.SelectSingleNode("System/SystemOptions/CorePackageName");
+            if(CorePackageName != null && !string.IsNullOrWhiteSpace(CorePackageName.InnerText))
+                corePackageName = CorePackageName.InnerText;
+            XmlNode LogToFileEnabled = systemInit.SelectSingleNode("System/SystemOptions/LogToFileEnabled");
+            if(LogToFileEnabled!=null && LogToFileEnabled.InnerText.ToLower() == "true") {
+
             }
 
-            XmlNode LogToFileEnabled = systemInit.SelectSingleNode("System/LogToFileEnabled");
-            if(nodeDebugMode!=null && nodeDebugMode.InnerText.ToLower() == "true") {
+            #endregion
+
+            #region 系统逻辑场景配置
+            
+            XmlNode SystemScenses = systemInit.SelectSingleNode("System/SystemScenses");
+            if(SystemScenses != null) {
+                foreach(XmlNode node in SystemScenses.ChildNodes) {
+                    if(node.NodeType == XmlNodeType.Element && node.Name == "Scense" && !StringUtils.isNullOrEmpty(node.InnerText))
+                        logicScenses.Add(node.InnerText);
+                }
+            }
+            XmlNode FirstEnterScense = systemInit.SelectSingleNode("System/SystemOptions/FirstEnterScense");
+            if(FirstEnterScense != null && !StringUtils.isNullOrEmpty(FirstEnterScense.InnerText))
+                firstScense = FirstEnterScense.InnerText;
+            if(!logicScenses.Contains(firstScense)) {
+                GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "FirstEnterScense 配置不正确");
+                StopAllCoroutines();
+                yield break;
             }
 
-            //加载SystemPackages中定义的包
+            #endregion
+
+            #region 加载系统内核包
+
+#if !UNITY_EDITOR
+            string coreUrl = GamePathManager.GetResRealPath("core", corePackageName + ".assetbundle");
+            request = UnityWebRequest.Get(coreUrl);
+            yield return request.SendWebRequest();
+            if (!string.IsNullOrEmpty(request.error))
+            {
+                //加载失败
+                StopAllCoroutines();
+                if (request.responseCode == 404)
+                    GameErrorChecker.ThrowGameError(GameError.FileNotFound, "未找到 “" + corePackageName + "”\n您可尝试重新安装游戏");
+                else
+                    GameErrorChecker.ThrowGameError(GameError.FileNotFound, "读取 “" + corePackageName + "” 失败：" + request.responseCode + "\n您可尝试重新安装游戏");
+                yield break;
+            }
+
+            var systemPackage = GamePackage.GetSystemPackage() as GameSystemPackage;
+
+            AssetBundleCreateRequest createRequest = AssetBundle.LoadFromMemoryAsync(request.downloadHandler.data);
+            yield return createRequest;
+
+            systemPackage.SetCoreAssetbundle(createRequest.assetBundle);
+            systemPackage.RequireLuaFile("CoreInit.lua");
+            systemPackage.CallLuaFun("CoreInit");
+#endif
+            #endregion
+
+            #region 加载SystemPackages中定义的包
+            
             XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
 
             for(int loadStepNow = 0; loadStepNow < 2; loadStepNow++) {
@@ -271,7 +361,8 @@ namespace Ballance2.Sys
                             continue;
                         }
                         if(loadStepNow != loadStep) continue;
-                        if(packageName == "core.debug" && !debugMode) continue;
+                        if(packageName == "core.debug" && !DebugMode) continue;
+                        if(sEnablePackageLoadFilter && !sLoadCustomPackages.Contains(packageName)) continue;
 
                         //加载包
                         Task<bool> task = pm.LoadPackage(packageName);
@@ -313,22 +404,23 @@ namespace Ballance2.Sys
                 //第一次加载基础包，等待其运行
                 if(loadStepNow == 0) {
                     yield return new WaitForSeconds(1);
+
                     pm.NotifyAllPackageRun("*");
+
                     yield return new WaitForSeconds(2);
+
+                    //进入Intro
+                    RequestEnterLogicScense(firstScense);
+                    firstScense = "";
                 }
             }
 
             yield return new WaitForSeconds(2);
+
             //全部加载完毕之后通知所有模块初始化
             pm.NotifyAllPackageRun("*");
-        }
-        private void LoadBaseSettings() {
-#if UNITY_EDITOR
-            debugMode = true;
-#else
-            if(GameSettings.GetBool("DebugMode", false)) debugMode = true;
-            else GameObject.Find("GameDebugBeginStats").SetActive(false);
-#endif
+
+            #endregion
         }
         
         #region 系统调试命令
@@ -598,9 +690,7 @@ namespace Ballance2.Sys
             Log.V(TAG, "OnVideoSettingsUpdated:\nresolutionsSet: {0}\nfullScreen: {1}" +
                 "\nquality: {2}\nvSync : {3}", resolutionsSet, fullScreen, quality, vSync);
 
-            Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, true);
-            Screen.fullScreen = fullScreen;
-            Screen.fullScreenMode = fullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+            Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, fullScreen);
             QualitySettings.SetQualityLevel(quality, true);
             QualitySettings.vSyncCount = vSync;
             
@@ -652,7 +742,8 @@ namespace Ballance2.Sys
         internal void Destroy()
         {
             Log.D(TAG, "Destroy");
-            if (GameMainLuaState != null) GameMainLuaState = null;
+            if (GameMainLuaState != null) 
+                GameMainLuaState = null;
         }
 
         /// <summary>
@@ -682,7 +773,10 @@ namespace Ballance2.Sys
 
             Application.wantsToQuit -= Application_wantsToQuit;
             
+            var systemPackage = GamePackage.GetSystemPackage() as GameSystemPackage;
             var pm = GetSystemService<GamePackageManager>();
+
+            systemPackage.CallLuaFun("CoreUnload");
             pm.SavePackageRegisterInfo();
 
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
@@ -779,6 +873,42 @@ namespace Ballance2.Sys
         {
             return GameConst.GameBulidVersion;
         }
+
+        #endregion
+    
+        #region Logic Scense
+
+        private List<string> logicScenses = new List<string>();
+        private int currentScense = -1;
+        private string firstScense = "";
+
+        /// <summary>
+        /// 进入指定逻辑场景
+        /// </summary>
+        /// <param name="name">场景名字</param>
+        /// <returns>返回是否成功</returns>
+        [LuaApiDescription("进入指定逻辑场景", "返回是否成功")]
+        [LuaApiParamDescription("name", "场景名字")]
+        public bool RequestEnterLogicScense(string name) {
+            int curIndex = logicScenses.IndexOf(name);
+            if(curIndex < 0) {
+                GameErrorChecker.LastError = GameError.NotRegister;
+                Log.E(TAG, "Scense {0} not register! ", name);
+                return false;
+            }
+            if(curIndex == currentScense)
+                return true;
+            if(currentScense >= 0)
+                GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_QUIT, "*", logicScenses[currentScense]);
+            currentScense = curIndex;
+            GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_ENTER, "*", logicScenses[currentScense]);
+            return true;
+        }
+        /// <summary>
+        /// 获取所有逻辑场景
+        /// </summary>
+        [LuaApiDescription("获取所有逻辑场景")]
+        public string[] GetLogicScenses() { return logicScenses.ToArray(); }
 
         #endregion
     }

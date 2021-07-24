@@ -996,6 +996,70 @@ public class Lua_Ballance2_DebugCamera : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_DebugControl(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.DebugCamera self=(Ballance2.DebugCamera)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.DebugControl);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_DebugControl(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.DebugCamera self=(Ballance2.DebugCamera)checkSelf(l);
+			Ballance.Sys.Debug.DebugControl v;
+			checkType(l,2,out v);
+			self.DebugControl=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_cameraSpeed(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1654,6 +1718,7 @@ public class Lua_Ballance2_DebugCamera : LuaObject {
 		addMember(l,"GameDebugHierarchy",get_GameDebugHierarchy,set_GameDebugHierarchy,true);
 		addMember(l,"GameDebugInspectorWindow",get_GameDebugInspectorWindow,set_GameDebugInspectorWindow,true);
 		addMember(l,"GameDebugHierarchyWindow",get_GameDebugHierarchyWindow,set_GameDebugHierarchyWindow,true);
+		addMember(l,"DebugControl",get_DebugControl,set_DebugControl,true);
 		addMember(l,"cameraSpeed",get_cameraSpeed,set_cameraSpeed,true);
 		addMember(l,"m_moveSensitivityX",get_m_moveSensitivityX,set_m_moveSensitivityX,true);
 		addMember(l,"m_moveSensitivityY",get_m_moveSensitivityY,set_m_moveSensitivityY,true);

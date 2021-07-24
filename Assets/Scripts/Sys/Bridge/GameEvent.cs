@@ -84,7 +84,7 @@ namespace Ballance2.Sys.Bridge
         /// 事件参数：无
         /// </remarks>
         [LuaApiDescription("全局（基础管理器）全部初始化完成时触发该事件")]
-        public const string EVENT_BASE_INIT_FINISHED = "e:base_init_finished";
+        public const string EVENT_BASE_INIT_FINISHED = "EVENT_BASE_INIT_FINISHED";
 
         /// <summary>
         /// GameManager初始化完成时触发该事件，在这个事件后子模块接管控制流程，游戏主逻辑开始运行
@@ -93,7 +93,7 @@ namespace Ballance2.Sys.Bridge
         /// 事件参数：无
         /// </remarks>
         [LuaApiDescription("GameManager初始化完成时触发该事件，在这个事件后子模块接管控制流程，游戏主逻辑开始运行")]
-        public const string EVENT_GAME_MANAGER_INIT_FINISHED = "e:gamemgr_init_finished";
+        public const string EVENT_GAME_MANAGER_INIT_FINISHED = "EVENT_GAME_MANAGER_INIT_FINISHED";
 
         /// <summary>
         /// 全局（UI管理器）全部初始化完成时触发该事件
@@ -102,7 +102,7 @@ namespace Ballance2.Sys.Bridge
         /// 事件参数：无
         /// </remarks>
         [LuaApiDescription("全局（UI管理器）全部初始化完成时触发该事件")]
-        public const string EVENT_UI_MANAGER_INIT_FINISHED = "e:ui_manager_init_finished";
+        public const string EVENT_UI_MANAGER_INIT_FINISHED = "EVENT_UI_MANAGER_INIT_FINISHED";
 
         /// <summary>
         /// 全局对话框（Alert，Confirm）关闭时触发该事件
@@ -113,7 +113,7 @@ namespace Ballance2.Sys.Bridge
         /// 【1】用户是否选择了 Confirm（对于 Alert 永远是false）
         /// </remarks>
         [LuaApiDescription("全局对话框（Alert，Confirm）关闭时触发该事件")]
-        public const string EVENT_GLOBAL_ALERT_CLOSE = "e:ui:global_alert_close";
+        public const string EVENT_GLOBAL_ALERT_CLOSE = "EVENT_GLOBAL_ALERT_CLOSE";
 
         /// <summary>
         /// 游戏即将退出时触发该事件
@@ -122,7 +122,7 @@ namespace Ballance2.Sys.Bridge
         /// 事件参数：无
         /// </remarks>
         [LuaApiDescription("游戏即将退出时触发该事件")]
-        public const string EVENT_BEFORE_GAME_QUIT = "e:before_game_quit";
+        public const string EVENT_BEFORE_GAME_QUIT = "EVENT_BEFORE_GAME_QUIT";
 
         /// <summary>
         /// 模块加载成功事件
@@ -133,7 +133,7 @@ namespace Ballance2.Sys.Bridge
         /// 【1】对应模块对象
         /// </remarks>
         [LuaApiDescription("模块加载成功事件")]
-        public const string EVENT_PACKAGE_LOAD_SUCCESS = "e:package:package_load_success";
+        public const string EVENT_PACKAGE_LOAD_SUCCESS = "EVENT_PACKAGE_LOAD_SUCCESS";
 
         /// <summary>
         /// 模块加载失败事件
@@ -145,7 +145,7 @@ namespace Ballance2.Sys.Bridge
         /// 【2】错误信息
         /// </remarks>
         [LuaApiDescription("模块加载失败事件")]
-        public const string EVENT_PACKAGE_LOAD_FAILED = "e:package:package_load_failed";
+        public const string EVENT_PACKAGE_LOAD_FAILED = "EVENT_PACKAGE_LOAD_FAILED";
 
         /// <summary>
         /// 模块注册事件
@@ -155,7 +155,7 @@ namespace Ballance2.Sys.Bridge
         /// 【0】对应模块包名
         /// </remarks>
         [LuaApiDescription("模块注册事件")]
-        public const string EVENT_PACKAGE_REGISTERED = "e:package:package_registered";
+        public const string EVENT_PACKAGE_REGISTERED = "EVENT_PACKAGE_REGISTERED";
         /// <summary>
         /// 模块已注销事件
         /// </summary>
@@ -164,7 +164,7 @@ namespace Ballance2.Sys.Bridge
         /// 【0】对应模块包名
         /// </remarks>
         [LuaApiDescription("模块已注销事件")]
-        public const string EVENT_PACKAGE_UNREGISTERED = "e:package:package_unregistered";
+        public const string EVENT_PACKAGE_UNREGISTERED = "EVENT_PACKAGE_UNREGISTERED";
 
         /// <summary>
         /// 模块卸载事件
@@ -175,7 +175,7 @@ namespace Ballance2.Sys.Bridge
         /// 【1】对应模块对象
         /// </remarks>
         [LuaApiDescription("模块卸载事件")]
-        public const string EVENT_PACKAGE_UNLOAD = "e:package:package_unload";
+        public const string EVENT_PACKAGE_UNLOAD = "EVENT_PACKAGE_UNLOAD";
 
         /// <summary>
         /// 屏幕分辨率更改事件
@@ -187,6 +187,26 @@ namespace Ballance2.Sys.Bridge
         /// 【2】新的屏幕刷新率
         /// </remarks>
         [LuaApiDescription("屏幕分辨率更改事件")]
-        public const string EVENT_SCREEN_SIZE_CHANGED = "e:screen:size_changed";
+        public const string EVENT_SCREEN_SIZE_CHANGED = "EVENT_SCREEN_SIZE_CHANGED";
+
+        /// <summary>
+        /// 进入逻辑场景事件
+        /// </summary>
+        /// <remarks>
+        /// 事件参数：
+        /// 【0】场景名称
+        /// </remarks>
+        [LuaApiDescription("进入逻辑场景事件")]
+        public const string EVENT_LOGIC_SECNSE_ENTER = "EVENT_LOGIC_SECNSE_ENTER";
+
+        /// <summary>
+        /// 退出逻辑场景事件
+        /// </summary>
+        /// <remarks>
+        /// 事件参数：
+        /// 【0】场景名称
+        /// </remarks>
+        [LuaApiDescription("退出逻辑场景事件")]
+        public const string EVENT_LOGIC_SECNSE_QUIT = "EVENT_LOGIC_SECNSE_QUIT";
     }
 }

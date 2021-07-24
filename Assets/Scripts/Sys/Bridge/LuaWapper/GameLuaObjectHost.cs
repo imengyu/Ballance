@@ -70,11 +70,17 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [LuaApiDescription("Lua 对象名字")]
         public string Name;
         /// <summary>
-        /// 获取或设置 Lua类的文件名（eg MenuLevel）
+        /// 获取或设置 Lua的类名（eg MenuLevel）
         /// </summary>
-        [Tooltip("设置 Lua类的文件名（eg MenuLevel）")]
-        [LuaApiDescription("Lua类的文件名")]
+        [Tooltip("设置 Lua的类名（eg MenuLevel）")]
+        [LuaApiDescription("Lua的类名")]
         public string LuaClassName;
+        /// <summary>
+        /// 获取或设置 Lua类的文件名（eg MenuLevel.lua）
+        /// </summary>
+        [Tooltip("设置 Lua类的文件名（eg MenuLevel.lua）")]
+        [LuaApiDescription("Lua类的文件名")]
+        public string LuaFileName;
         /// <summary>
         /// 获取或设置 Lua 类所在的模块包名（该模块类型必须是 Module 并可运行）。设置后该对象会自动注册到 LuaObject 中
         /// </summary>
@@ -92,11 +98,10 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [LuaApiDescription("Lua 初始参数")]
         [SerializeField]
         public List<LuaVarObjectInfo> LuaInitialVars = new List<LuaVarObjectInfo>();
-        /// <summary>
-        /// 设置 Lua 脚本执行顺序，这个值越大，脚本越晚被执行。(仅在加载时有效)
-        /// </summary>
+        [SerializeField]
+        public List<LuaVarObjectInfo> LuaPublicVars = new List<LuaVarObjectInfo>();
         [DoNotToLua]
-        [Tooltip("设置 Lua 脚本执行顺序，这个值越大，脚本越晚被执行。")]
+        [Tooltip("设置 Lua 脚本执行顺序，等于0时立即初始化。这个值越大，脚本越晚被执行。请设置为大于等于0的值。")]
         [SerializeField]
         public int ExecuteOrder = 0;
         [Tooltip("是否创建 GlobalStore，勾选后会创建此Lua脚本的共享数据仓库(仓库名字是 包名:Name)，可以使用 self.store 或 GameLuaObjectHost.Store 访问 ")]
@@ -107,6 +112,14 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [LuaApiDescription("是否自动创建共享操作仓库")]
         [SerializeField]
         public bool CreateActionStore = false;
+        [Tooltip("调试")]
+        [DoNotToLua]
+        [SerializeField]
+        public string DebugScript = "";
+        [Tooltip("调试加载脚本")]
+        [DoNotToLua]
+        [SerializeField]
+        public bool DebugLoadScript = false;
 
         /// <summary>
         /// 获取lua self
@@ -348,6 +361,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             LuaSelf["gameObject"] = gameObject;
             LuaSelf["store"] = Store;
             LuaSelf["actionStore"] = ActionStore;
+            LuaSelf["package"] = Package;
         }
         private void InitLuaVars()
         {

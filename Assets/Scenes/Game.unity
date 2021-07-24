@@ -535,19 +535,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f931593acbaa5da4bb73a9d8f20a3f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BreakAtStart: 0
-  TargetFrameRate: 60
-  SetFrameRate: 1
+  DebugMode: 0
+  DebugTargetFrameRate: 60
+  DebugSetFrameRate: 1
+  DebugType: 0
+  DebugInitPackages:
+  - Enable: 0
+    PackageName: 
+  DebugCustomEntryEvent: DebugEntry
+  DebugLoadCustomPackages: 1
   GameBaseCamera: {fileID: 108933074}
   GameCanvas: {fileID: 1391487607}
   GameGlobalErrorUI: {fileID: 1799846637}
+  GameDebugBeginStats: {fileID: 778058211}
   GlobalGamePermissionTipDialog: {fileID: 922320739}
   GlobalGameUserAgreementTipDialog: {fileID: 621616156}
   ButtonUserAgreementAllow: {fileID: 1111377379}
   CheckBoxAllowUserAgreement: {fileID: 1545408399}
   LinkPrivacyPolicy: {fileID: 137638280}
   LinkUserAgreement: {fileID: 850017664}
-  GameDebugBeginStats: {fileID: 778058211}
 --- !u!4 &97512622
 Transform:
   m_ObjectHideFlags: 0

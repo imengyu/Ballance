@@ -182,7 +182,7 @@ namespace Ballance2.Sys.Package
         [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
         [LuaApiParamDescription("gameObject", "要附加的物体")]
         [LuaApiParamDescription("className", "目标代码类名")]
-        public void RegisterLuaObject(string name, GameObject gameObject, string className)
+        public GameLuaObjectHost RegisterLuaObject(string name, GameObject gameObject, string className)
         {
             GameLuaObjectHost newGameLuaObjectHost = gameObject.AddComponent<GameLuaObjectHost>();
             newGameLuaObjectHost.Name = name;
@@ -190,6 +190,7 @@ namespace Ballance2.Sys.Package
             newGameLuaObjectHost.LuaState = PackageLuaState;
             newGameLuaObjectHost.LuaClassName = className;
             luaObjects.Add(newGameLuaObjectHost);
+            return newGameLuaObjectHost;
         }
         /// <summary>
         /// 查找lua虚拟脚本

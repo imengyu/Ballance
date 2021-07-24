@@ -21,5 +21,7 @@ namespace Ballance2.Config
     public class ConstStrings
     {
         public const string DEFAULT_PACKAGE_STATUS_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?><PackageConfig><PackageList></PackageList><NoPackageMode>False</NoPackageMode></PackageConfig>";
+        public const string EDITOR_LOAD_PREFAB_PATH = "Assets/Prefabs/Game/";
+        public const string EDITOR_LOAD_SCRIPT_PATH = "Assets/Scripts/Game/";
     }
 }

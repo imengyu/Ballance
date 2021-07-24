@@ -56,7 +56,7 @@ function CreateClass_CameraControl()
     self:SwitchLightZone(false, false)
 
     GameManager.GameMediator:RegisterSingleEvent(EVENT_SWITCH_LIGHTZONE)
-    GameManager.GameMediator:SubscribeSingleEvent(GameMenuLevelPackage, EVENT_SWITCH_LIGHTZONE, "CameraControl", function (evtName, params)
+    GameManager.GameMediator:SubscribeSingleEvent(self.package, EVENT_SWITCH_LIGHTZONE, "CameraControl", function (evtName, params)
       if (params[1]) then
         self:SwitchLightZone(true, true)
       else
@@ -95,9 +95,9 @@ function CreateClass_CameraControl()
       RenderSettings.fogColor = Color(0.745, 0.623, 0.384)
     end
   end
-  ---comment
-  ---@param on boolean
-  ---@param isClick boolean
+  ---切换主菜单关卡LightZone模式
+  ---@param on boolean 是否是LightZone模式
+  ---@param isClick boolean 是否是用户点击所触发的
   function CameraControl:SwitchLightZone(on, isClick) 
     if(on) 
     then

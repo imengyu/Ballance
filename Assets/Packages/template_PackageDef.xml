@@ -23,12 +23,9 @@
       <![CDATA[这是<color=#f00>一个模块</color>]]>
     </Description>
     <Logo>PackageLogo.png</Logo>
-    <!--模块主页URL-->
-    <Link>https://yourwebsite.com</Link>
-    <!--模块作者主页URL-->
-    <AuthorLink>https://yourwebsite.com</AuthorLink>
-    <!--模块文档URL-->
-    <DocLink>https://yourwebsite.com</DocLink>
+    <Link>https://yourwebsite.com</Link> <!--模块主页URL-->
+    <AuthorLink>https://yourwebsite.com</AuthorLink><!--模块作者主页URL-->
+    <DocLink>https://yourwebsite.com</DocLink><!--模块文档URL-->
 
     <VersionName>1.0.DEV</VersionName>
     <!--模块依赖-->
@@ -71,27 +68,14 @@
   -->
   <CodeType>None</CodeType>
   <!--
-    模块运行时机, 默认 GameBase
-    
-        MenuLevel: 仅在MenuLevel运行（适用于主菜单的扩展模块）
-        Level : 仅在关卡加载器和关卡运行（适用于机关模块）
-        LevelLoader: 仅在关卡加载器运行，加载完毕后卸载（适用于加载器扩展模块）
-        LevelEditor : 仅在关卡编辑器运行（适用于关卡编辑器扩展模块）
-        GameCore: 仅在内核运行（适用于游戏内核模块）
-        GameBase: 整个游戏都运行（适用于整个游戏的扩展模块）
-  -->
-  <RunType>GameBase</RunType>
-  <!--
     模块共享lua虚拟机，
     如果填写 core 表示共享模块到全局Lua虚拟机，
+    如果不填写 ShareLuaState 或为空白，则默认情况下每个模块会生成相互独立的虚拟机，不能互相访问。
     否则，模块将寻找依赖模块的虚拟机，
     如果找到则当前模块的lua代码全部在对应依赖模块的虚拟机中运行，可以共享变量和函数等等。
     
     例如，如果你的模块分成多个模块，你可以仅用一个模块来运行代码，其他的模块作为附属模块，
     填写 ShareLuaState 为主模块包名，这样子模块可以和主模块共享运行环境。
-    
-    如果不填写 ShareLuaState 或为空，则默认情况下每个模块会生成相互独立的虚拟机，不能互相访问。
-    
   -->
   <ShareLuaState>core</ShareLuaState>
 </Package>

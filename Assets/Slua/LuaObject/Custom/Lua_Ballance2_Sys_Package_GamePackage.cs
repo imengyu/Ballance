@@ -55,9 +55,10 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 			checkType(l,3,out a2);
 			System.String a3;
 			checkType(l,4,out a3);
-			self.RegisterLuaObject(a1,a2,a3);
+			var ret=self.RegisterLuaObject(a1,a2,a3);
 			pushValue(l,true);
-			return 1;
+			pushValue(l,ret);
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);

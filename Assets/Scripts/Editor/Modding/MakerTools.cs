@@ -23,8 +23,8 @@ namespace Ballance2.Editor.Modding
                 if (!Directory.Exists(debugFolder + "/core"))
                     Directory.CreateDirectory(debugFolder + "/core");
 
-                File.Copy("Assets/Packages/system_SystemInit.xml", debugFolder + "/core/system.init.xml", true);
-                File.Copy("Assets/Packages/game_GameInit.xml", debugFolder + "/core/game.init.xml", true);
+                File.Copy("Assets/Packages/SystemInit.xml", debugFolder + "/core/system.init.xml", true);
+                File.Copy("Assets/Packages/GameInit.xml", debugFolder + "/core/game.init.xml", true);
 
                 EditorUtility.DisplayDialog("提示", "复制成功", "确定");
             }

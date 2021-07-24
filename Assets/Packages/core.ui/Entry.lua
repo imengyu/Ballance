@@ -12,6 +12,8 @@ return {
     MessageCenter = GameUIManager:CreateUIMessageCenter('GameUIGloobalMessageCenter')
     thisGamePackage:RequireLuaFile('MenuLevelUIControl.lua')
     thisGamePackage:RequireLuaFile('SettingsUIControl.lua')
+    CreateSettingsUI(thisGamePackage)
+    CreateMenuLevelUI(thisGamePackage)
     return true
   end,
   ---模块卸载前函数

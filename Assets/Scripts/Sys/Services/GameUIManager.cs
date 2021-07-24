@@ -99,8 +99,8 @@ namespace Ballance2.Sys.Services
                     //更新主管理器中的Canvas变量
                     GameManager.Instance.GameCanvas = ViewsRectTransform;
 
-                    GameManager.GameMediator.RegisterSingleEvent("intro_finish_for_ui_resort");
-                    GameManager.GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "intro_finish_for_ui_resort", TAG, (evtName, param) => {
+                    GameManager.GameMediator.RegisterSingleEvent("INTRO_FINISH_FOR_UI_RESORT");
+                    GameManager.GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "INTRO_FINISH_FOR_UI_RESORT", TAG, (evtName, param) => {
                         GlobalMask.SetAsLastSibling();
                         ViewsRectTransform.SetAsLastSibling();
                         WindowsRectTransform.SetAsLastSibling();

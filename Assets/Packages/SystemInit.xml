@@ -8,6 +8,16 @@
         <Package name="core.ui" minVer="1" mustLoad="true" loadStep="1"></Package>
         <Package name="core.menulevel" minVer="1" mustLoad="true" loadStep="1"></Package>
     </SystemPackages>
-    <DebugMode>True</DebugMode>
-    <LogToFileEnabled>True</LogToFileEnabled>
+    <SystemScenses>
+        <Scense>Intro</Scense>
+        <Scense>MenuLevel</Scense>
+        <Scense>Level</Scense>
+        <Scense>GameDebug</Scense>
+        <Scense>Editor</Scense>
+    </SystemScenses>
+    <SystemOptions>
+        <CorePackageName>core</CorePackageName>
+        <LogToFileEnabled>True</LogToFileEnabled>
+        <FirstEnterScense>Intro</FirstEnterScense>
+    </SystemOptions>
 </System>

@@ -16,6 +16,7 @@ local UnityGlobalNamespace={ }
 ---@field public gameObject GameObject 获取GameObject
 ---@field public store Store 访问GlobalStore
 ---@field public actionStore GameActionStore 访问ActionStore
+---@field public package GamePackage 访问当前脚本所在模块包
 local GameLuaObjectHostClass={ }
 
 ---Ballance2 C# 全局命名空间

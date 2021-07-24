@@ -109,16 +109,6 @@ namespace Ballance2.Sys.Package
         [LuaApiDescription("已经注册但未加载")]
         Registered = 6,
     }
-    /// <summary>
-    /// 模块运行时机
-    /// </summary>
-    [SLua.CustomLuaClass]
-    [LuaApiDescription("模块运行时机")]
-    public enum GamePackageRunTime
-    {
-
-    }
-
 
     /// <summary>
     /// 模块基础信息
@@ -136,14 +126,14 @@ namespace Ballance2.Sys.Package
                 switch (xmlNodeBaseInfo.ChildNodes[i].Name)
                 {
                     case "Name": Name = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-                    case "Author": Author = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-                    case "Introduction": Introduction = xmlNodeBaseInfo.ChildNodes[i].InnerXml; break;
+                    case "Author": Author = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+                    case "Introduction": Introduction = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerXml); break;
                     case "Logo": Logo = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
                     case "Link": Link = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
                     case "DocLink": DocLink = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
                     case "AuthorLink": AuthorLink = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-                    case "Description": Description = xmlNodeBaseInfo.ChildNodes[i].InnerXml; break;
-                    case "VersionName": VersionName = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
+                    case "Description": Description = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+                    case "VersionName": VersionName = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
                     case "Dependencies":
                         for (int j = 0, jc = xmlNodeBaseInfo.ChildNodes[i].ChildNodes.Count; j < jc; j++)
                         {
@@ -170,6 +160,12 @@ namespace Ballance2.Sys.Package
                 Name = "InternalPackage";
                 LogoTexture = GameStaticResourcesPool.FindStaticAssets<Sprite>("PackageDefaultLogo");
             }
+        }
+
+        private string FixCdData(string x) {
+            if(x.Length > 12 && x.StartsWith("<![CDATA[") && x.EndsWith("]]>"))
+                return x.Substring(9, x.Length - 12);
+            return x;
         }
 
         /// <summary>

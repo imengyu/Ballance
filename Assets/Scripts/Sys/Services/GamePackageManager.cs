@@ -189,6 +189,8 @@ namespace Ballance2.Sys.Services
 
         #endregion
 
+        #region 模块包管理API
+
         /// <summary>
         /// 注册模块
         /// </summary>
@@ -544,7 +546,7 @@ namespace Ballance2.Sys.Services
         /// 将等待至依赖它的模块全部卸载之后才会卸载
         /// </param>
         /// <returns>返回是否成功</returns>
-        [LuaApiDescription("卸载模块", "bbb")]
+        [LuaApiDescription("卸载模块", "返回加载是否成功")]
         [LuaApiParamDescription("packageName", "模块包名")]
         [LuaApiParamDescription("unLoadImmediately", "是否立即卸载，如果为false，此模块将等待至依赖它的模块全部卸载之后才会卸载")]
         public bool UnLoadPackage(string packageName, bool unLoadImmediately)
@@ -631,10 +633,13 @@ namespace Ballance2.Sys.Services
         {
             systemPackage = GamePackage.GetSystemPackage();
             systemPackage._Status = GamePackageStatus.LoadSuccess;
+            
             registeredPackages.Add(systemPackage.PackageName, new GamePackageRegisterInfo(systemPackage));
             loadedPackages.Add(systemPackage.PackageName, systemPackage);
         }
         
+        #endregion
+
         #region 模块管理窗口
 
         private Window PackageManageWindow;

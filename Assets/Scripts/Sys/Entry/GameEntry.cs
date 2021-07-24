@@ -3,6 +3,7 @@ using Ballance2.Sys.Debug;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.UI.Utils;
 using Ballance2.UI.Parts;
+using SubjectNerd.Utilities;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -26,25 +27,34 @@ using UnityEngine.Android;
 *
 * 更改历史：
 * 2021-1-14 创建
-*
+* 2021-4-12 mengyu 修改调试相关配置
 */
 
 namespace Ballance2.Sys.Entry
-{
+{        
     class GameEntry : MonoBehaviour
     {
-        /// <summary>
-        /// 启动时暂停游戏，在控制台中继续（通常用于调试）
-        /// </summary>
-        public bool BreakAtStart = false;
-        /// <summary>
-        /// 目标帧率
-        /// </summary>
-        public int TargetFrameRate = 60;
-        /// <summary>
-        /// 是否设置帧率
-        /// </summary>
-        public bool SetFrameRate = true;
+        #region 全局静态配置属性
+
+        [Tooltip("启用调试模式。Editor下默认为调试模式")]
+        public bool DebugMode = false;
+        [Tooltip("目标帧率")]
+        public int DebugTargetFrameRate = 60;
+        [Tooltip("是否设置固定帧率")]
+        public bool DebugSetFrameRate = true;
+        [Tooltip("调试类型")]
+        public GameDebugType DebugType = GameDebugType.FullDebug;
+        [Reorderable("DebugInitPackages", true, "PackageName")]
+        [Tooltip("当前调试中需要初始化的包名")]
+        public System.Collections.Generic.List<GameDebugPackageInfo> DebugInitPackages = null;
+        [Tooltip("自定义调试用例入口事件名称。进入调试之后会发送一个指定的全局事件，自定义调试用例可以根据这个事件作为调试入口。")]
+        public string DebugCustomEntryEvent = "DebugEntry";
+        [Tooltip("是否在系统或自定义调试模式中加载用户自定义模块包")]
+        public bool DebugLoadCustomPackages = true;
+
+        #endregion
+
+        #region 静态引入
 
         public static GameEntry Instance { get; private set;}
 
@@ -52,26 +62,30 @@ namespace Ballance2.Sys.Entry
         public RectTransform GameCanvas = null;
 
         public GameGlobalErrorUI GameGlobalErrorUI = null;
+        public Text GameDebugBeginStats;
+
         public GameObject GlobalGamePermissionTipDialog = null;
         public GameObject GlobalGameUserAgreementTipDialog = null;
         public Button ButtonUserAgreementAllow = null;
         public Toggle CheckBoxAllowUserAgreement = null;
         public GameObject LinkPrivacyPolicy = null;
         public GameObject LinkUserAgreement = null;
-        public Text GameDebugBeginStats;
 
         private bool GlobalGamePermissionTipDialogClosed = false;
         private bool GlobalGameUserAgreementTipDialogClosed = false;
 
+        #endregion
+
         void Start()
         {
             Instance = this;
-            if (SetFrameRate) Application.targetFrameRate = TargetFrameRate;
+            GameDebugBeginStats.text = string.Format("Ballance Version {0} ({1})", GameConst.GameVersion, GameConst.GameBulidDate);
 
+            InitBaseSettings();
             InitCommandLine();
             InitUI();
 
-            GameDebugBeginStats.text = string.Format("Ballance Version {0} ({1})", GameConst.GameVersion, GameConst.GameBulidDate);
+            if (DebugMode && DebugSetFrameRate) Application.targetFrameRate = DebugTargetFrameRate;
 
             StartCoroutine(InitMain());
         }
@@ -82,6 +96,8 @@ namespace Ballance2.Sys.Entry
         public static void Destroy() {
             UnityEngine.Object.Destroy(Instance.gameObject);
         }
+
+        #region 用户许可相关
 
         /// <summary>
         /// 显示许可对话框
@@ -151,9 +167,8 @@ namespace Ballance2.Sys.Entry
 #endif
         }
 
-        /// <summary>
-        /// 初始化命令行
-        /// </summary>
+        #endregion
+
         private void InitCommandLine()
         {
             string[] CommandLineArgs = Environment.GetCommandLineArgs();
@@ -175,12 +190,19 @@ namespace Ballance2.Sys.Entry
                 Application.OpenURL(GameConst.BallancePrivacyPolicy);
             EventTriggerListener.Get(LinkUserAgreement).onClick += (go) =>
                 Application.OpenURL(GameConst.BallanceUserAgreement);
+        }           
+        private void InitBaseSettings() {
+#if UNITY_EDITOR
+            DebugMode = true;
+#else
+            if(GameSettings.GetBool("DebugMode", false)) DebugMode = true;
+            else {
+                DebugMode = false;
+                GameObject.Find("GameDebugBeginStats").SetActive(false);
+            }
+#endif
         }
 
-        /// <summary>
-        /// 运行
-        /// </summary>
-        /// <returns></returns>
         private IEnumerator InitMain()
         {
             if (TestAndroidPermission())
@@ -197,9 +219,38 @@ namespace Ballance2.Sys.Entry
 
             GameErrorChecker.SetGameErrorUI(GameGlobalErrorUI);
             GameSystemInit.FillStartParameters(this);
-            GameSystem.RegSysDebugProvider(GameSystemDebugTests.RequestDebug);
-            GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
-            GameSystem.Init();
+
+            if(DebugMode && DebugType == GameDebugType.SystemDebug)
+                GameSystem.RegSysDebugProvider(GameSystemDebugTests.RequestDebug);
+
+            if(!DebugMode || DebugType == GameDebugType.FullDebug || DebugType == GameDebugType.CustomDebug) {
+                GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
+                GameSystem.Init();
+            }
         }
+    }
+    /// <summary>
+    /// 调试类型
+    /// </summary>
+    public enum GameDebugType {
+        /// <summary>
+        /// 完整的调试，包括系统调试和自定义调试，包含完整的游戏运行环境。
+        /// </summary>
+        FullDebug,
+        /// <summary>
+        /// 自定义调试。不包含系统测试，包含半完整的游戏运行环境。
+        /// </summary>
+        CustomDebug,
+        /// <summary>
+        /// 系统调试。此模式不会加载游戏运行环境。
+        /// </summary>
+        SystemDebug
+    }
+    [Serializable]
+    public class GameDebugPackageInfo
+    {
+        public bool Enable;
+        public string PackageName;
+        public override string ToString() { return PackageName; }
     }
 }

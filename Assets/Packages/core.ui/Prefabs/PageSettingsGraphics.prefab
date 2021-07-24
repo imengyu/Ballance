@@ -893,6 +893,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5705238403932930756, guid: 943dd3c0e7cff344b94a30d9844d13cb,
         type: 3}
+      propertyPath: StepValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705238403932930756, guid: 943dd3c0e7cff344b94a30d9844d13cb,
+        type: 3}
       propertyPath: AppendText
       value: 
       objectReference: {fileID: 0}

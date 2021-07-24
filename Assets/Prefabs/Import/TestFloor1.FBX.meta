@@ -3,7 +3,92 @@ guid: 7bc2df9f23303eb41a53e63631ac8ae8
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor_Side
+    second: {fileID: 2100000, guid: 4a77c6b62c438c14f8e7040842b7c5e8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Boderless
+    second: {fileID: 2100000, guid: 8427ddf69b7db6b409e802f2a4f2d429, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Flat
+    second: {fileID: 2100000, guid: 6d81fdf80018df14a92d0bbe1c9cff83, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Profile
+    second: {fileID: 2100000, guid: a375790238b44454f8e2b592c85de8d5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_ProfileFlat
+    second: {fileID: 2100000, guid: 921dad925fb220049aae776db6144336, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #26
+    second: {fileID: 2100000, guid: 687daa500d73bc54384efe1563046a10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #38
+    second: {fileID: 2100000, guid: 03587989100fce2489bbc66d29e7bfc3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #51
+    second: {fileID: 2100000, guid: 518c8864ce62aef48a9214de903ba1e9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #63
+    second: {fileID: 2100000, guid: a900f7d7cc381834690307a5a3cd60f4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #67
+    second: {fileID: 2100000, guid: 0134773435fff4e4dbfd02c305242d48, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Floor_Side
+    second: {fileID: 2800000, guid: 18fa43b24d80c8348ab05519b589a903, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Borderless
+    second: {fileID: 2800000, guid: a3e16097f776c414695e90bcb99532df, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Checkpoint
+    second: {fileID: 2800000, guid: 5bfd1db5d47338142aa4bb6e64ed7211, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Flat
+    second: {fileID: 2800000, guid: 5c94676e482621e489739862a685fdd5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_Profil
+    second: {fileID: 2800000, guid: 0e85ff7d34728db4ca033750083e4d33, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Floor_Top_ProfilFlat
+    second: {fileID: 2800000, guid: 9cba49f88bfaa2e478e2d72761f3a25e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Wood_Plain2
+    second: {fileID: 2800000, guid: 17ce78d87fd1c14449168dace32610d4, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -31,7 +116,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
