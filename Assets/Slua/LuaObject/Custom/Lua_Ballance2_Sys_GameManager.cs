@@ -506,6 +506,36 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_DebugMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushValue(l,Ballance2.Sys.GameManager.DebugMode);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.GameManager");
@@ -525,6 +555,7 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 		addMember(l,"GameDebugCommandServer",get_GameDebugCommandServer,null,true);
 		addMember(l,"GameStore",get_GameStore,null,true);
 		addMember(l,"GameActionStore",get_GameActionStore,null,true);
+		addMember(l,"DebugMode",get_DebugMode,null,false);
 		createTypeMetatable(l,null, typeof(Ballance2.Sys.GameManager),typeof(UnityEngine.MonoBehaviour));
 	}
 }

@@ -898,6 +898,8 @@ namespace Ballance2.Sys
             }
             if(curIndex == currentScense)
                 return true;
+            
+            Log.I(TAG, "Enter logic scense {0} ", name);
             if(currentScense >= 0)
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_QUIT, "*", logicScenses[currentScense]);
             currentScense = curIndex;

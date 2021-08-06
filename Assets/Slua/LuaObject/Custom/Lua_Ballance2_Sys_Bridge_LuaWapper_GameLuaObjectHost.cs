@@ -441,6 +441,70 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_LuaFileName(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.LuaFileName);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_LuaFileName(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.String v;
+			checkType(l,2,out v);
+			self.LuaFileName=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_LuaPackageName(IntPtr l) {
 		try {
 			#if DEBUG
@@ -551,6 +615,70 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 			System.Collections.Generic.List<Ballance2.Sys.Bridge.LuaWapper.LuaVarObjectInfo> v;
 			checkType(l,2,out v);
 			self.LuaInitialVars=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_LuaPublicVars(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.LuaPublicVars);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_LuaPublicVars(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.Collections.Generic.List<Ballance2.Sys.Bridge.LuaWapper.LuaVarObjectInfo> v;
+			checkType(l,2,out v);
+			self.LuaPublicVars=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -1097,8 +1225,10 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 		addMember(l,"TAG",get_TAG,null,false);
 		addMember(l,"Name",get_Name,set_Name,true);
 		addMember(l,"LuaClassName",get_LuaClassName,set_LuaClassName,true);
+		addMember(l,"LuaFileName",get_LuaFileName,set_LuaFileName,true);
 		addMember(l,"LuaPackageName",get_LuaPackageName,set_LuaPackageName,true);
 		addMember(l,"LuaInitialVars",get_LuaInitialVars,set_LuaInitialVars,true);
+		addMember(l,"LuaPublicVars",get_LuaPublicVars,set_LuaPublicVars,true);
 		addMember(l,"CreateStore",get_CreateStore,set_CreateStore,true);
 		addMember(l,"CreateActionStore",get_CreateActionStore,set_CreateActionStore,true);
 		addMember(l,"LuaInitFinished",null,set_LuaInitFinished,true);

@@ -535,14 +535,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f931593acbaa5da4bb73a9d8f20a3f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugMode: 0
+  DebugMode: 1
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugType: 0
-  DebugInitPackages:
-  - Enable: 0
-    PackageName: 
-  DebugCustomEntryEvent: DebugEntry
+  DebugInitPackages: []
+  DebugCustomEntryEvent: 
   DebugLoadCustomPackages: 1
   GameBaseCamera: {fileID: 108933074}
   GameCanvas: {fileID: 1391487607}
