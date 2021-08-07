@@ -4,6 +4,7 @@ using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Bridge.Handler;
 using Ballance2.Sys.Bridge.LuaWapper;
 using Ballance2.Sys.Debug;
+using Ballance2.Sys.Language;
 using Ballance2.Sys.Res;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.Utils.Lua;
@@ -65,15 +66,15 @@ namespace Ballance2.Sys.Package
         public virtual async Task<bool> LoadPackage()
         {
             FixBundleShader();
+            LoadI18NResource();
 
             //模块代码环境初始化
-            if (Type == GamePackageType.Module)
+            if (!SystemPackage && Type == GamePackageType.Module)
             {
                 if (CodeType == GamePackageCodeType.Lua)
                 {
                     //启动LUA 虚拟机
                     await InitLuaState();
-                    baseInited = true;
                 }
                 else if (CodeType == GamePackageCodeType.CSharp)
                 {
@@ -82,7 +83,9 @@ namespace Ballance2.Sys.Package
                     if (CSharpAssembly != null)
                         baseInited = true;
                 }
-                else Log.W(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
+                else {
+                    Log.W(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
+                }
             }
 
             return true;
@@ -277,9 +280,19 @@ namespace Ballance2.Sys.Package
 
             return true;
         }
+        protected void SystemPackageSetInitFinished() { 
+            baseInited = true;
+            luaStateInited = true; 
+            luaStateIniting = false;
+            mainLuaCodeLoaded = false;
+            requiredLuaFiles = new List<string>();
+            requiredLuaClasses = new Dictionary<string, LuaFunction>();
+            RunPackageExecutionCode();
+        }
         private void SetLuaStateInitFinished() { 
             luaStateInited = true; 
             luaStateIniting = false;
+            baseInited = true;
             if(runExecutionCodeWhenLuaStateInit) 
                 RunPackageExecutionCode();
         }
@@ -567,19 +580,17 @@ namespace Ballance2.Sys.Package
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("导入Lua文件到当前模块虚拟机中", "如果对应文件已导入，则返回true，否则返回false")]
+        [LuaApiDescription("导入Lua文件到当前模块虚拟机中", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
-        public bool RequireLuaFile(string fileName)
+        public object RequireLuaFile(string fileName)
         {
-            if (requiredLuaFiles.Contains(fileName))
-                return true;
-
+            object rs = null;
             string lua = TryLoadLuaCodeAsset(fileName);
             if (string.IsNullOrWhiteSpace(lua))
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
             try
             {
-                PackageLuaState.doString(lua, PackageName + ":" + GamePathManager.GetFileNameWithoutExt(fileName));
+                rs = PackageLuaState.doString(lua, PackageName + ":" + GamePathManager.GetFileNameWithoutExt(fileName));
                 requiredLuaFiles.Add(fileName);
             }
             catch (Exception e)
@@ -590,7 +601,7 @@ namespace Ballance2.Sys.Package
                 throw new Exception(PackageName + " 无法导入 Lua : " + e.Message);
             }
 
-            return true;
+            return rs;
         }
 
         #region LUA 函数调用
@@ -623,6 +634,22 @@ namespace Ballance2.Sys.Package
             LuaFunction f = GetLuaFun(funName);
             if (f != null) f.call();
             else Log.E(TAG, "CallLuaFun Failed because function {0} not founnd", funName);
+        }
+        /// <summary>
+        /// 尝试调用模块主代码的lua无参函数
+        /// </summary>
+        /// <param name="funName">lua函数名称</param>
+        /// <returns>如果调用成功则返回true，否则返回false</returns>
+        [LuaApiDescription("尝试调用模块主代码的lua无参函数", "如果调用成功则返回true，否则返回false")]
+        [LuaApiParamDescription("funName", "lua函数名称")]
+        public bool TryCallLuaFun(string funName)
+        {
+            LuaFunction f = GetLuaFun(funName);
+            if (f != null) {
+                f.call();
+                return true;
+            }
+            return false;
         }
         /// <summary>
         /// 调用模块主代码的lua函数
@@ -680,6 +707,12 @@ namespace Ballance2.Sys.Package
 
         #region 模块信息
 
+        private int VerConverter(string s) {
+            if(s == "{internal.core.version}")
+                return GameConst.GameBulidVersion;
+            return ConverUtils.StringToInt(s, 0, "Package/version");
+        }
+
         protected bool ReadInfo(XmlDocument xml)
         {
             XmlNode nodePackage = xml.SelectSingleNode("Package");
@@ -708,7 +741,7 @@ namespace Ballance2.Sys.Package
 
             //Version and PackageName
             PackageName = attributeName.Value;
-            PackageVersion = ConverUtils.StringToInt(attributeVersion.Value, 0, "Package/version");
+            PackageVersion = VerConverter(attributeVersion.Value);
         
             //BaseInfo
             BaseInfo = new GamePackageBaseInfo(nodeBaseInfo);
@@ -985,6 +1018,16 @@ namespace Ballance2.Sys.Package
                 }
             }
 #endif
+        }
+        /// <summary>
+        /// 加载模块的国际化语言资源
+        /// </summary>
+        private void LoadI18NResource() {
+            var res = GetTextAsset("I18n.xml");
+            if(res != null) {
+                if(!I18NProvider.LoadLanguageResources(res.text))
+                    Log.E(TAG, "Failed to load I18n.xml for package " + PackageName);
+            }
         }
 
         //自定义数据,方便LUA层操作

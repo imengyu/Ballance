@@ -189,7 +189,7 @@ namespace Slua
       if (!CheckType(t, custom))
         return;
       var sb = new StringBuilder(
-        "---@diagnostic disable: duplicate-set-field, undefined-doc-class, undefined-doc-name, duplicate-doc-field" +
+        //"---@diagnostic disable: duplicate-set-field, undefined-doc-class, undefined-doc-name, duplicate-doc-field" +
         "\n"
       );
       if (!CheckType(t.BaseType, custom))
@@ -201,7 +201,8 @@ namespace Slua
       sb.AppendFormat("local {0}={{ }}\n", t.Name);
       GenTypeMethod(t, sb);
       sb.Append("---" + GetSummaryByType(t) + "\n");
-      sb.AppendFormat("{0}.{1} = {2}", t.Namespace, t.Name, t.Name);
+      if(string.IsNullOrEmpty(t.Namespace)) sb.AppendFormat("{0} = {1}", t.Name, t.Name);
+      else sb.AppendFormat("{0}.{1} = {2}", t.Namespace, t.Name, t.Name);
 
       File.WriteAllText(path + t.FullName + ".lua", sb.ToString(), Encoding.UTF8);
     }
@@ -345,7 +346,7 @@ namespace Slua
       }
     }
     private static string AppendParamOrgType(string paramOrgType, string comment) {
-      return (paramOrgType != "" ? ("[" + paramOrgType + "] ") : "") + comment;
+      return comment + (paramOrgType != "" ? (" 原类型 " + paramOrgType + "") : "") ;
     }
     private static string GetLuaType(Type t, out string paramOrgType)
     {
@@ -380,7 +381,11 @@ namespace Slua
         "then","true","until","while"
       };
     private static string ReplaceLuaKeyWord(string word) {
-      return luaKeywords.Contains(word) ? ("_"+word) : word;
+      var str = luaKeywords.Contains(word) ? ("_"+word) : word;
+      if(str.Contains("'")) str = str.Replace('\'', ' ');
+      if(str.Contains("&")) str = str.Replace('&', ' ');
+      if(str.Contains("`")) str = str.Substring(0, str.IndexOf('`'));
+      return str;
     }
   }
 }

@@ -95,8 +95,6 @@ namespace Ballance2.Sys.Services
                     return false;
                 });
 
-            //初始化系统包
-            InitSystemPackage();
             return true;
         }
 
@@ -222,11 +220,25 @@ namespace Ballance2.Sys.Services
 
             string realPackagePath = null;
             GamePackage gamePackage = null;
+
+#if UNITY_EDITOR
+            realPackagePath = GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + packageName;
+            if(packageName == SYSTEM_PACKAGE_NAME) {
+                realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
+                if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
+                    gamePackage = GamePackage.GetSystemPackage();
+                else 
+#else
+                if(true) 
+#endif
+                {
+                    gamePackage = GamePackage.GetSystemPackage();
+                    ((GameSystemPackage)gamePackage).SetDisableLoadFileInUnity();
+                }
+            }
 #if UNITY_EDITOR
             //在编辑器中加载
-            realPackagePath = GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + packageName;
-            if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject
-                && Directory.Exists(realPackagePath))
+            else if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
             {
                 gamePackage = new GameEditorDebugPackage();
                 Log.D(TAG, "Load package in editor : {0}", realPackagePath);
@@ -412,7 +424,7 @@ namespace Ballance2.Sys.Services
         [LuaApiParamDescription("packageName", "模块包名")]
         public async Task<bool> LoadPackage(string packageName)
         {
-            if(!StringUtils.IsPackageName(packageName))
+            if(!StringUtils.IsPackageName(packageName) && packageName != SYSTEM_PACKAGE_NAME)
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.InvalidPackageName, TAG, 
                     "Invalid packageName {0}", packageName);
@@ -551,13 +563,6 @@ namespace Ballance2.Sys.Services
         [LuaApiParamDescription("unLoadImmediately", "是否立即卸载，如果为false，此模块将等待至依赖它的模块全部卸载之后才会卸载")]
         public bool UnLoadPackage(string packageName, bool unLoadImmediately)
         {
-            if (packageName == systemPackage.PackageName)
-            {
-                GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG,
-                    "Package {0} can not unload", packageName);
-                return false;
-            }
-
             GamePackage package = FindPackage(packageName);
             if (package == null)
             {
@@ -628,14 +633,6 @@ namespace Ballance2.Sys.Services
                 if (key != SYSTEM_PACKAGE_NAME)
                     UnLoadPackage(key, true);
             packageNames.Clear();
-        }
-        private void InitSystemPackage()
-        {
-            systemPackage = GamePackage.GetSystemPackage();
-            systemPackage._Status = GamePackageStatus.LoadSuccess;
-            
-            registeredPackages.Add(systemPackage.PackageName, new GamePackageRegisterInfo(systemPackage));
-            loadedPackages.Add(systemPackage.PackageName, systemPackage);
         }
         
         #endregion

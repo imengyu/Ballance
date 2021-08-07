@@ -147,11 +147,7 @@ namespace Ballance2.Sys.Services
                 return null;
             }
             if (IsGlobalEventRegistered(evtName, out gameEvent))
-            {
-                Log.W(TAG, "事件 {0} 已注册", evtName);
-                GameErrorChecker.LastError = GameError.AlreadyRegistered;
                 return gameEvent;
-            }
 
             gameEvent = new GameEvent(evtName);
             events.Add(evtName, gameEvent);
@@ -480,18 +476,12 @@ namespace Ballance2.Sys.Services
                 return null;
             }
 
-            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
-            {
-                GameHandler gameHandler = GameHandler.CreateLuaHandler(package, name, luaFunction, luaSelf);
-                gameEvent.EventHandlers.Add(gameHandler);
-                return gameHandler;
-            }
-            else
-            {
-                Log.W(TAG, "事件 {0} 未注册", evtName);
-                GameErrorChecker.LastError = GameError.NotRegister;
-            }
-            return null;
+            if (!IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
+                gameEvent = RegisterGlobalEvent(evtName);
+
+            GameHandler gameHandler = GameHandler.CreateLuaHandler(package, name, luaFunction, luaSelf);
+            gameEvent.EventHandlers.Add(gameHandler);
+            return gameHandler;
         }
         /// <summary>
         /// 注册全局事件接收器（Delegate）
@@ -516,18 +506,12 @@ namespace Ballance2.Sys.Services
                 return null;
             }
 
-            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
-            {
-                GameHandler gameHandler = GameHandler.CreateCsEventHandler(package, name, gameHandlerDelegate);
-                gameEvent.EventHandlers.Add(gameHandler);
-                return gameHandler;
-            }
-            else
-            {
-                Log.W(TAG, "事件 {0} 未注册", evtName);
-                GameErrorChecker.LastError = GameError.NotRegister;
-            }
-            return null;
+            if (!IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
+                gameEvent = RegisterGlobalEvent(evtName);
+
+            GameHandler gameHandler = GameHandler.CreateCsEventHandler(package, name, gameHandlerDelegate);
+            gameEvent.EventHandlers.Add(gameHandler);
+            return gameHandler;
         }
         /// <summary>
         /// 注册全局事件接收器
@@ -552,18 +536,12 @@ namespace Ballance2.Sys.Services
                 return null;
             }
 
-            if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
-            {
-                GameHandler gameHandler = GameHandler.CreateLuaStaticHandler(package, name, luaModulHandler);
-                gameEvent.EventHandlers.Add(gameHandler);
-                return gameHandler;
-            }
-            else
-            {
-                Log.W(TAG, "事件 {0} 未注册", evtName);
-                GameErrorChecker.LastError = GameError.NotRegister;
-            }
-            return null;
+            if (!IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
+                gameEvent = RegisterGlobalEvent(evtName);
+
+            GameHandler gameHandler = GameHandler.CreateLuaStaticHandler(package, name, luaModulHandler);
+            gameEvent.EventHandlers.Add(gameHandler);
+            return gameHandler;
         }
         /// <summary>
         /// 取消注册全局事件接收器

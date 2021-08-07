@@ -120,6 +120,9 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [DoNotToLua]
         [SerializeField]
         public bool DebugLoadScript = false;
+        [DoNotToLua]
+        [SerializeField]
+        public bool ManualInputScript = false;
 
         /// <summary>
         /// 获取lua self

@@ -511,10 +511,8 @@ MonoBehaviour:
       type: 3}
     Name: GameUIPageBallanceTransparent
   GameAssets:
-  - Object: {fileID: 12800000, guid: 1e8e467ff6bba96438cb72b95c335b1e, type: 3}
+  - Object: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     Name: FontConsole
-  - Object: {fileID: 12800000, guid: c8733fdbdb32a2243ae2a7a17f3ddbaf, type: 3}
-    Name: FontEngr
   - Object: {fileID: 21300000, guid: fbfad2606c633834397d7e2581ce731a, type: 3}
     Name: GameLogo
   - Object: {fileID: 21300000, guid: 31659e0c79ee2fb49891bf78fa1f0bf3, type: 3}
@@ -538,9 +536,14 @@ MonoBehaviour:
   DebugMode: 1
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugType: 0
-  DebugInitPackages: []
-  DebugCustomEntryEvent: 
+  DebugEnableLuaDebugger: 1
+  DebugType: 2
+  DebugInitPackages:
+  - Enable: 1
+    PackageName: core.debug
+  - Enable: 1
+    PackageName: core.sounds
+  DebugCustomEntryEvent: CoreDebugGamePlayEntry
   DebugLoadCustomPackages: 1
   GameBaseCamera: {fileID: 108933074}
   GameCanvas: {fileID: 1391487607}
@@ -5927,7 +5930,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 1e8e467ff6bba96438cb72b95c335b1e, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 13
     m_FontStyle: 0
     m_BestFit: 0

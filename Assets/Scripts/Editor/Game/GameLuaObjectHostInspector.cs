@@ -1,4 +1,5 @@
-﻿using Ballance2.Sys.Bridge.LuaWapper;
+﻿using Ballance2.Config;
+using Ballance2.Sys.Bridge.LuaWapper;
 using Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents;
 using Ballance2.Sys.Res;
 using System;
@@ -23,6 +24,7 @@ class GameLuaObjectHostInspector : Editor
     private SerializedProperty pExecuteOrder;
     private SerializedProperty pCreateStore;
     private SerializedProperty pCreateActionStore;
+    private SerializedProperty pManualInputScript;
 
     private ReorderableList reorderableList;
     private GUIStyle styleHighlight = null;
@@ -77,6 +79,7 @@ class GameLuaObjectHostInspector : Editor
         pExecuteOrder = serializedObject.FindProperty("ExecuteOrder");
         pCreateStore = serializedObject.FindProperty("CreateStore");
         pCreateActionStore = serializedObject.FindProperty("CreateActionStore");
+        pManualInputScript = serializedObject.FindProperty("ManualInputScript");
 
         //自动设置名称
         if(myScript != null && pName.stringValue == "")
@@ -96,11 +99,11 @@ class GameLuaObjectHostInspector : Editor
     
     private List<string> packsPath = new List<string>();
     private string[] packsPathArr = null;
-    private bool directLoad = false;
     
     private void InitPackageNames() {
         packsPath.Clear();
         packsPath.Add("");
+        packsPath.Add("core");
 
         DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
         DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -275,8 +278,8 @@ class GameLuaObjectHostInspector : Editor
         EditorGUILayout.BeginVertical(styleCNBox);
         EditorGUILayout.PropertyField(pName);
 
-        directLoad = EditorGUILayout.Toggle("DirectLoad", directLoad);
-        if(directLoad) {
+        pManualInputScript.boolValue = EditorGUILayout.Toggle("手动输入", pManualInputScript.boolValue);
+        if(pManualInputScript.boolValue) {
             EditorGUILayout.PropertyField(pLuaPackageName);
             EditorGUILayout.PropertyField(pLuaFileName);
             EditorGUILayout.PropertyField(pLuaClassName);
@@ -286,9 +289,21 @@ class GameLuaObjectHostInspector : Editor
             EditorGUILayout.LabelField(pLuaFileName.name, pLuaFileName.stringValue);
             EditorGUILayout.LabelField(pLuaClassName.name, pLuaClassName.stringValue);
             
+            var valLuaPackageName = pLuaPackageName.stringValue;
+            EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(valLuaPackageName));
             if(GUILayout.Button("选择Lua类")) {
-
+                var dirPath = valLuaPackageName == "core" ? ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH : 
+                    GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + valLuaPackageName;
+                var w = ChooseLuaFile.ShowWindow(dirPath);
+                w.Chooseed = (path) => {
+                    serializedObject.Update();
+                    pLuaFileName.stringValue = path;
+                    pLuaClassName.stringValue = GamePathManager.GetFileNameWithoutExt(path);
+                    w.Close();
+                    serializedObject.ApplyModifiedProperties();
+                };
             }
+            EditorGUI.EndDisabledGroup();
         }
 
         EditorGUILayout.PropertyField(pExecuteOrder);

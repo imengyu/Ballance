@@ -36,10 +36,11 @@ public class Lua_Ballance2_Sys_Debug_GameError : LuaObject {
 		addMember(l,28,"AccessDenined");
 		addMember(l,29,"IsLoading");
 		addMember(l,30,"SystemPackageNotLoad");
-		addMember(l,31,"UnKnowType");
-		addMember(l,32,"LuaBindCheckFailed");
-		addMember(l,33,"OnlyCanUseInEditor");
-		addMember(l,34,"PrefabNotFound");
+		addMember(l,31,"SystemPackageLoadFailed");
+		addMember(l,32,"UnKnowType");
+		addMember(l,33,"LuaBindCheckFailed");
+		addMember(l,34,"OnlyCanUseInEditor");
+		addMember(l,35,"PrefabNotFound");
 		LuaDLL.lua_pop(l, 1);
 	}
 }

@@ -133,7 +133,10 @@ namespace Ballance2.Sys.Package
                     case "DocLink": DocLink = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
                     case "AuthorLink": AuthorLink = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
                     case "Description": Description = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
-                    case "VersionName": VersionName = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+                    case "VersionName": 
+                        VersionName = xmlNodeBaseInfo.ChildNodes[i].InnerText == "{internal.core.versionName}" ? GameConst.GameVersion :
+                            FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); 
+                        break;
                     case "Dependencies":
                         for (int j = 0, jc = xmlNodeBaseInfo.ChildNodes[i].ChildNodes.Count; j < jc; j++)
                         {
@@ -143,22 +146,6 @@ namespace Ballance2.Sys.Package
                         }
                         break;
                 }
-            }
-        }
-        [SLua.DoNotToLua]
-        public GamePackageBaseInfo(bool isSystemPackage) {
-            if(isSystemPackage) {
-                Name = "Ballance";
-                Author = "";
-                Introduction = "基础游戏系统";
-                Description = "游戏的基础系统，承载游戏的基础代码";
-                Link = GameConst.BallanceHomePage;
-                DocLink = GameConst.BallanceDocPage;
-                AuthorLink = GameConst.MengyuHomePage;
-                LogoTexture = GameStaticResourcesPool.FindStaticAssets<Sprite>("GameLogo");
-            } else {
-                Name = "InternalPackage";
-                LogoTexture = GameStaticResourcesPool.FindStaticAssets<Sprite>("PackageDefaultLogo");
             }
         }
 

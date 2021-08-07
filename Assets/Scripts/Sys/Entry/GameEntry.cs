@@ -42,8 +42,10 @@ namespace Ballance2.Sys.Entry
         public int DebugTargetFrameRate = 60;
         [Tooltip("是否设置固定帧率")]
         public bool DebugSetFrameRate = true;
+        [Tooltip("是否启用Lua调试器")]
+        public bool DebugEnableLuaDebugger = true;
         [Tooltip("调试类型")]
-        public GameDebugType DebugType = GameDebugType.FullDebug;
+        public GameDebugType DebugType = GameDebugType.NoDebug;
         [Reorderable("DebugInitPackages", true, "PackageName")]
         [Tooltip("当前调试中需要初始化的包名")]
         public System.Collections.Generic.List<GameDebugPackageInfo> DebugInitPackages = null;
@@ -222,17 +224,22 @@ namespace Ballance2.Sys.Entry
 
             if(DebugMode && DebugType == GameDebugType.SystemDebug)
                 GameSystem.RegSysDebugProvider(GameSystemDebugTests.RequestDebug);
-
-            if(!DebugMode || DebugType == GameDebugType.FullDebug || DebugType == GameDebugType.CustomDebug) {
+            else if(!DebugMode || DebugType != GameDebugType.SystemDebug) {
                 GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
                 GameSystem.Init();
             }
+            else
+                GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "DebugMode not right.");
         }
     }
     /// <summary>
     /// 调试类型
     /// </summary>
     public enum GameDebugType {
+        /// <summary>
+        /// 正常运行。
+        /// </summary>
+        NoDebug,
         /// <summary>
         /// 完整的调试，包括系统调试和自定义调试，包含完整的游戏运行环境。
         /// </summary>

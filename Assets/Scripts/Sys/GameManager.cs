@@ -305,30 +305,44 @@ namespace Ballance2.Sys
 
             #region 加载系统内核包
 
-#if !UNITY_EDITOR
-            string coreUrl = GamePathManager.GetResRealPath("core", corePackageName + ".assetbundle");
-            request = UnityWebRequest.Get(coreUrl);
-            yield return request.SendWebRequest();
-            if (!string.IsNullOrEmpty(request.error))
             {
-                //加载失败
-                StopAllCoroutines();
-                if (request.responseCode == 404)
-                    GameErrorChecker.ThrowGameError(GameError.FileNotFound, "未找到 “" + corePackageName + "”\n您可尝试重新安装游戏");
-                else
-                    GameErrorChecker.ThrowGameError(GameError.FileNotFound, "读取 “" + corePackageName + "” 失败：" + request.responseCode + "\n您可尝试重新安装游戏");
-                yield break;
+                //加载系统内核包
+                Task<bool> task = pm.LoadPackage(corePackageName);
+                yield return new WaitUntil(() => task.IsCompleted);
+                if(!task.Result) {
+                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包 “" + corePackageName + "” 加载失败：" + GameErrorChecker.LastError + "\n您可尝试重新安装游戏");
+                    yield break;
+                }
+
+                //检查系统包版本是否与内核版本一致
+                var systemPackage = pm.FindPackage(GamePackageManager.SYSTEM_PACKAGE_NAME);
+
+                LuaFunction f = systemPackage.GetLuaFun("CoreVersion");
+                if(f == null) {
+                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package");
+                    yield break;
+                }
+                object ver = f.call();
+                if(ver == null) {
+                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package");
+                    yield break;
+                }
+                if((double)(ver) != GameConst.GameBulidVersion) {
+                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包版本与游戏内核版本不符（"+ver+"!=" +GameConst.GameBulidVersion+"）\n您可尝试重新安装游戏");
+                    yield break;
+                }
+            }
+            
+            if(GameEntry.Instance.DebugEnableLuaDebugger)
+            {
+                //初始化lua调试器
+                GameMainLuaState.doString(@"
+                    local SystemPackage = Ballance2.Sys.Package.GamePackage.GetSystemPackage()
+                    local mobdebug = SystemPackage:RequireLuaFile('mobdebug');
+                    mobdebug.start();
+                ");
             }
 
-            var systemPackage = GamePackage.GetSystemPackage() as GameSystemPackage;
-
-            AssetBundleCreateRequest createRequest = AssetBundle.LoadFromMemoryAsync(request.downloadHandler.data);
-            yield return createRequest;
-
-            systemPackage.SetCoreAssetbundle(createRequest.assetBundle);
-            systemPackage.RequireLuaFile("CoreInit.lua");
-            systemPackage.CallLuaFun("CoreInit");
-#endif
             #endregion
 
             #region 加载SystemPackages中定义的包
@@ -751,7 +765,7 @@ namespace Ballance2.Sys
         /// </summary>
         public void QuitGame()
         {
-            Log.D(TAG, "quit");
+            Log.D(TAG, "QuitGame");
             if(!gameIsQuitEmitByGameManager) {
                 gameIsQuitEmitByGameManager = true;
                 DoQuit();
@@ -773,10 +787,7 @@ namespace Ballance2.Sys
 
             Application.wantsToQuit -= Application_wantsToQuit;
             
-            var systemPackage = GamePackage.GetSystemPackage() as GameSystemPackage;
             var pm = GetSystemService<GamePackageManager>();
-
-            systemPackage.CallLuaFun("CoreUnload");
             pm.SavePackageRegisterInfo();
 
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
@@ -794,18 +805,16 @@ namespace Ballance2.Sys
         /// </summary>
         private void ReqGameQuit()
         {
-            nextGameQuitTick = 80;
+            nextGameQuitTick = 40;
         }
         private void Update() {
             if (nextGameQuitTick >= 0)
             {
                 nextGameQuitTick--;
-                if (nextGameQuitTick == 50)
-                    ClearScense();
                 if (nextGameQuitTick == 30)
+                    ClearScense();
+                if (nextGameQuitTick == 0)
                     GameSystem.Destroy();
-                if (nextGameQuitTick <= 10) 
-                    GameSystem.QuitPlayer();
             }
         }
 

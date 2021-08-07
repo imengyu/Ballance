@@ -60,6 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: DebugOptWindow
   LuaClassName: DebugOptWindow
+  LuaFileName: 
   LuaPackageName: core.debug
   LuaInitialVars:
   - Type: 16
@@ -614,9 +615,12 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     componentClassVal: UnityEngine.UI.Toggle
+  LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
+  DebugScript: 
+  DebugLoadScript: 0
 --- !u!1 &3351661133029981067
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +948,7 @@ PrefabInstance:
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -307.00003
+      value: -272.50003
       objectReference: {fileID: 0}
     - target: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
@@ -1104,7 +1108,7 @@ PrefabInstance:
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_Size
-      value: 0.9999976
+      value: 0.99927026
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
@@ -1303,6 +1307,16 @@ PrefabInstance:
       propertyPath: m_Text
       value: Disable fog
       objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: m_Name
@@ -1477,6 +1491,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: Show System info
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
@@ -1663,6 +1687,16 @@ PrefabInstance:
       propertyPath: m_Text
       value: Mute audio
       objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: m_Name
@@ -1838,6 +1872,16 @@ PrefabInstance:
       propertyPath: m_Text
       value: Show Game stats
       objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: m_Name
@@ -2012,6 +2056,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: Show PackageManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
@@ -2189,6 +2243,16 @@ PrefabInstance:
       value: 'Wireframe render mode
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
@@ -2374,6 +2438,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: Disable skybox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7135501762556911439, guid: 4f5f0df7282ad944e8674e115a3a2820,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}

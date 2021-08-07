@@ -41,7 +41,6 @@ class DebugStat : MonoBehaviour
     private string allocatedMemoryForGraphicsDriver;
 
     public Text StatText = null;
-    public DebugFPSStat DebugFPSStat = null;
 
     private StringBuilder sb = new StringBuilder();
 
@@ -152,7 +151,6 @@ class DebugStat : MonoBehaviour
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.AppendLine("FPS: " + DebugFPSStat.fps.ToString("0.00"));
         sb.AppendLine("ProfilerEnabled : " + Profiler.enabled.ToString());
         sb.AppendLine("ProfilerSupported : " + Profiler.supported.ToString());
         sb.AppendLine("MaxUsedMemory: " + maxUsedMemory);

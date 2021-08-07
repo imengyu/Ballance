@@ -770,8 +770,11 @@ namespace PhysicsRT
                 fTemp.Add(new StartTemForce(StartTemForceType.AngularImpulse, imp, Vector3.zero));
         }
 
+        [SLua.CustomLuaClass]
         public delegate void OnBodyTiggerCollCallback(PhysicsBody body, PhysicsBody other);
+        [SLua.CustomLuaClass]
         public delegate void OnBodyCollisionCallback(PhysicsBody body, PhysicsBody other, PhysicsBodyCollisionInfo info);
+        [SLua.CustomLuaClass]
         public delegate void OnBodyCollisionLeaveCallback(PhysicsBody body, PhysicsBody other);
 
         /// <summary>

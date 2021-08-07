@@ -57,6 +57,7 @@ namespace Ballance2.Sys.Debug
 
             GameSystem.ForceInterruptGame();
             gameGlobalErrorUI.ShowErrorUI(stringBuilder.ToString());
+            UnityEngine.Debug.LogError(stringBuilder.ToString());
         }
 
         /// <summary>

@@ -1,10 +1,11 @@
-GameManager = Ballance2.Sys.GameManager
-GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
-GameSettingsManager = Ballance2.Config.GameSettingsManager
-Log = Ballance2.Utils.Log
-Screen = UnityEngine.Screen
-QualitySettings = UnityEngine.QualitySettings
-KeyCode = UnityEngine.KeyCode
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
+local GameSettingsManager = Ballance2.Config.GameSettingsManager
+local Screen = UnityEngine.Screen
+local QualitySettings = UnityEngine.QualitySettings
+local KeyCode = UnityEngine.KeyCode
+local WaitForSeconds = UnityEngine.WaitForSeconds
+local Yield = UnityEngine.Yield
 
 ---创建主设置菜单UI
 ---@param package GamePackage
@@ -119,9 +120,9 @@ function BindSettingsUI(MessageCenter)
     GameUIManager:GoPage('PageSettingsControls') 
   end)
   MessageCenter:SubscribeEvent('BtnSettingsAudioClick', function () 
-    updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 100));
-    updateVoiceMain:Invoke(GameSettings:GetFloat("voice.main", 100));
-    updateVoiceUI:Invoke(GameSettings:GetFloat("voice.ui", 100));
+    updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 100))
+    updateVoiceMain:Invoke(GameSettings:GetFloat("voice.main", 100))
+    updateVoiceUI:Invoke(GameSettings:GetFloat("voice.ui", 100))
     GameUIManager:GoPage('PageSettingsAudio') 
   end)
   MessageCenter:SubscribeEvent('BtnSettingsPackageClick', function () 

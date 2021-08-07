@@ -20,14 +20,10 @@ KeyCode = UnityEngine.KeyCode
 DebugTools = {
   
   DebugLogText = nil,---@type Text
-  DebugErrText = nil,---@type Text
-  DebugWarnText = nil,---@type Text
 
   logObserver = nil,
   logFastItems = {},
   logCount = 0,
-  logWarnCount = 0,
-  logErrorCount = 0,
 }
 
 function CreateClass_DebugTools()
@@ -57,14 +53,6 @@ function CreateClass_DebugTools()
         self.logCount = self.logCount + 1
         self.logFastItems[self.logCount] = table.concat(t)
         self:FlushLogFast()
-
-        if level == LogLevel.Warning then
-          self.logWarnCount = self.logWarnCount + 1
-          self:FlushLogCount()
-        elseif level == LogLevel.Error then
-          self.logErrorCount = self.logErrorCount + 1
-          self:FlushLogCount()
-        end
       end,
       LogLevel.All
     )
@@ -96,18 +84,10 @@ function CreateClass_DebugTools()
     local str = table.concat(self.logFastItems, '\n')
     self.DebugLogText.text = str
   end
-  ---刷新日志数量
-  function DebugTools:FlushLogCount() 
-    self.DebugWarnText.text = self.logWarnCount
-    self.DebugErrText.text = self.logErrorCount
-  end
   ---清空
   function DebugTools:Clear() 
-    self.logWarnCount = 0
-    self.logErrorCount = 0
     self.logFastItems = {}
     self.DebugLogText.text = ''
-    self:FlushLogCount()
   end
   ---日志文字提取
   ---@param message string

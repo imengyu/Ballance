@@ -191,8 +191,8 @@ function CreateClass_DebugWindow()
   function DebugWindow:ShowLogStackTrace(index)
     local data = self.logItems[index]
     self.LogStacktraceText.text = table.concat({ data.message, '\n= StackTrace ====\n', data.stackTrace })
-    LayoutRebuilder.ForceRebuildLayoutImmediate(self.LogStacktraceText.rectTransform);
-    local size = self.LogStacktraceText.rectTransform.sizeDelta;
+    LayoutRebuilder.ForceRebuildLayoutImmediate(self.LogStacktraceText.rectTransform)
+    local size = self.LogStacktraceText.rectTransform.sizeDelta
     self.LogStacktraceView.sizeDelta = Vector2(size.x + 40, size.y + 40)
     self.LogStacktraceScrollView.normalizedPosition = Vector2(0, 1)
   end

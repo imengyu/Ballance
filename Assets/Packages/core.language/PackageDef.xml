@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="core.language" version="1">
+  <BaseInfo>
+    <Name>系统语言包</Name>
+    <Author>imengyu</Author>
+    <Introduction>系统语言包，包含系统国际化所需的语言文字资源</Introduction>
+    <Description>系统语言包，包含系统国际化所需的语言文字资源</Description>
+    <Logo>PackageLogo.png</Logo>
+    <Link>https://imengyu.top/ballcnceProject</Link>
+    <AuthorLink>https://imengyu.top/ballcnceProject</AuthorLink>
+    <DocLink>https://imengyu.top/ballcnceProject</DocLink>
+    <VersionName>1.0</VersionName>
+    <Dependencies>
+    </Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>1</MinVersion>
+    <TargetVersion>1</TargetVersion>
+  </Compatibility>
+  <EntryCode>Entry.lua</EntryCode>
+  <Type>Asset</Type>
+  <CodeType>None</CodeType>
+  <ShareLuaState>core</ShareLuaState>
+</Package>

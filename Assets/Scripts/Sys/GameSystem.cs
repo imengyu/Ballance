@@ -2,6 +2,7 @@
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Entry;
+using Ballance2.Sys.Language;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.Res;
 using Ballance2.Sys.Services;
@@ -191,12 +192,15 @@ namespace Ballance2.Sys
 
                 //Init system
                 UnityLogCatcher.Init();
+
                 //初始化静态资源入口
                 GameStaticResourcesPool.InitStaticPrefab(
                     gameStaticResEntryInstance.GamePrefab,
                     gameStaticResEntryInstance.GameAssets);
                 //初始化设置
                 GameSettingsManager.Init();
+                //I18N
+                I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
                 
                 //Call game init
                 if(sysHandler == null) {
@@ -258,9 +262,8 @@ namespace Ballance2.Sys
                 GameSettingsManager.Destroy();
                 UnityLogCatcher.Destroy();
 
-            } else {
-                Log.W(TAG, "System already destroyed");
-            }
+                QuitPlayer();
+            } 
         }
         /// <summary>
         /// 强制停止游戏

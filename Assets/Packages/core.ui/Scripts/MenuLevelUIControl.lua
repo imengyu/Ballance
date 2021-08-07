@@ -1,10 +1,7 @@
-GameManager = Ballance2.Sys.GameManager
-GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
-GameSettingsManager = Ballance2.Config.GameSettingsManager
-Log = Ballance2.Utils.Log
-Screen = UnityEngine.Screen
-QualitySettings = UnityEngine.QualitySettings
-KeyCode = UnityEngine.KeyCode
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
+local WaitForSeconds = UnityEngine.WaitForSeconds
+local Yield = UnityEngine.Yield
 
 ---创建主菜单UI
 ---@param package GamePackage

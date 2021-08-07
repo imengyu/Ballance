@@ -221,7 +221,10 @@ public class GamePackageManageWindow : MonoBehaviour {
         TextLoadStatus.text = "";
         CheckBoxEnableLoad.isOn = Package.SystemPackage || GamePackageManager.IsPackageEnableLoad(packageName) ;
         CheckBoxEnableLoad.onValueChanged.AddListener((v) => GamePackageManager.SetPackageEnableLoad(packageName, v));
-        CheckBoxEnableLoad.interactable = !Package.SystemPackage;
+        if(Package.SystemPackage) {
+          CheckBoxEnableLoad.transform.Find("Label").GetComponent<Text>().text = "系统依赖";
+          CheckBoxEnableLoad.interactable = false;
+        }
       }
     
       switch(Package._Status) {

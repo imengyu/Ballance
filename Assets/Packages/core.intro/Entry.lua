@@ -10,17 +10,17 @@ mengyu
 2021-4-18 创建
 ]]--
 
-GameManager = Ballance2.Sys.GameManager
-GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
-GameSoundManager = GameManager.Instance:GetSystemService('GameSoundManager') ---@type GameSoundManager
-GameEventNames = Ballance2.Sys.Bridge.GameEventNames
-GameSoundType = Ballance2.Sys.Services.GameSoundType
-CloneUtils = Ballance2.Sys.Utils.CloneUtils
-Log = Ballance2.Utils.Log
-Yield = UnityEngine.Yield
-WaitForSeconds = UnityEngine.WaitForSeconds
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
+local GameSoundManager = GameManager.Instance:GetSystemService('GameSoundManager') ---@type GameSoundManager
+local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
+local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local Log = Ballance2.Utils.Log
+local Yield = UnityEngine.Yield
+local WaitForSeconds = UnityEngine.WaitForSeconds
 
-local IntroUI = nil;
+local IntroUI = nil
 local introFinished = false
 local baseFinished = false
 local TAG = 'Intro:Entry'

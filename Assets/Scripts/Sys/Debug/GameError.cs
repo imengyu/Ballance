@@ -61,6 +61,7 @@ namespace Ballance2.Sys.Debug
         AccessDenined,
         IsLoading,
         SystemPackageNotLoad,
+        SystemPackageLoadFailed,
         UnKnowType,
         LuaBindCheckFailed,
         OnlyCanUseInEditor,
@@ -85,7 +86,6 @@ namespace Ballance2.Sys.Debug
         {
             switch(err)
             {
-                default: return "未知错误: " + err.ToString();
                 case GameError.None: return "无错误。";
                 case GameError.InvalidPackageName: return "无效的包名。";
                 case GameError.LuaBindCheckFailed: return "Lua绑定检测失败。";
@@ -118,7 +118,9 @@ namespace Ballance2.Sys.Debug
                 case GameError.AlreadyRegistered: return "指定资源已注册。";
                 case GameError.NotRegister: return "指定资源未注册。";
                 case GameError.ConfigueNotRight: return "游戏配置存在错误，这可能是当前版本存在非正式的修改，尝试下载最新版本解决问题。";
-                
+                case GameError.SystemPackageNotLoad: return "系统包未加载。";
+                case GameError.SystemPackageLoadFailed: return "系统包加载失败，这可能是当前版本存在非正式的修改，尝试下载最新版本解决问题。";
+                default: return "未知错误: " + err.ToString();
             }
         }
     }

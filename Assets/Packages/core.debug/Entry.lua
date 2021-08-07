@@ -49,7 +49,7 @@ return {
         local DebugWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugWindow.prefab')
         GlobalDebugWindow = GameUIManager:CreateWindow('Console', 
             CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, 'DebugWindow').transform, 
-            true, 9, -180, 540, 400)
+            false, 9, -140, 600, 400)
         GlobalDebugWindow.CloseAsHide = true
         GlobalDebugWindow.gameObject.tag = 'DebugWindow'
         local DebugOptWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugOptWindow.prefab')
@@ -89,7 +89,7 @@ return {
 
         local GameDebugBeginStats = GameObject.Find("GameDebugBeginStats")
         if(GameDebugBeginStats ~= nil) then
-            GameDebugBeginStats:SetActive(false);
+            GameDebugBeginStats:SetActive(false)
         end
         return true
     end,

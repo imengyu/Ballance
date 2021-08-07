@@ -183,6 +183,27 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("stackTrace", "堆栈信息")]
         public static void LogWrite(LogLevel level, string tag, string message, string stackTrace)
         {
+            if(logWriteLock) {
+                logWriteLock = false;
+                return;
+            }
+
+            //如果在 Editor 中就把日志输出到控制台显示
+            #if UNITY_EDITOR
+            logWriteLock = true;
+
+            var str = string.Format("[{0}] {1}", tag, message);
+            switch(level) {
+                case LogLevel.Debug:
+                case LogLevel.Verbose:
+                case LogLevel.Info: UnityEngine.Debug.Log(str); break;
+                case LogLevel.Warning: UnityEngine.Debug.LogWarning(str); break;
+                case LogLevel.Error: UnityEngine.Debug.LogError(str); break;
+            }
+
+            logWriteLock = false;
+            #endif
+
             if(!logTemporaryForeachLock) {
                 LogTemporaryData data = new LogTemporaryData();
                 data.level = level;
@@ -312,6 +333,7 @@ namespace Ballance2.Utils
         private static List<LogObserverInternal> observers = new List<LogObserverInternal>();
         private static List<LogTemporaryData> logTemporary = new List<LogTemporaryData>();
         private static bool logTemporaryForeachLock = false;
+        private static bool logWriteLock = false;
 
         /// <summary>
         /// 内部观察者保存类

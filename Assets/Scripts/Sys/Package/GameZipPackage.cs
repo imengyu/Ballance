@@ -77,8 +77,13 @@ namespace Ballance2.Sys.Package
 
             return defFileLoadSuccess;
         }
+
+        protected bool disableZipLoad = false;
+
         public override async Task<bool> LoadPackage()
         {
+            if(disableZipLoad)
+                return await base.LoadPackage();
             //从zip读取AssetBundle
             ZipInputStream zip = ZipUtils.OpenZipFile(GamePathManager.FixFilePathScheme(PackageFilePath));
             if (zip == null)
