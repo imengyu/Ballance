@@ -16,9 +16,6 @@ using Ballance.LuaHelpers;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2018-7-27 创建
-*
 */
 
 namespace Ballance2.Sys.UI.Utils

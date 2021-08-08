@@ -991,7 +991,7 @@ local function debugger_loop(sev, svars, sfile, sline)
       -- as it requires yielding back to debug_hook it cannot be executed
       -- if we have not seen the hook yet as happens after start().
       -- in this case we simply return an empty result
-      local vars, ev = {}
+      local vars, ev = {}, {}
       if seen_hook then
         ev, vars = coroyield("stack")
       end

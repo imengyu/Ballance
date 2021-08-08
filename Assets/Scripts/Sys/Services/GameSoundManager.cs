@@ -22,9 +22,6 @@ using UnityEngine.Audio;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-4-18 创建
-*
 */
 
 namespace Ballance2.Sys.Services

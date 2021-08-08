@@ -14,10 +14,6 @@ using UnityEngine;
  * 
  * 作者：
  * mengyu
- * 
- * 更改历史：
- * 2020-8-7 创建
- * 2021-1-16 修改事件 mengyu
  *
  */
 

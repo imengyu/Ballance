@@ -13,8 +13,8 @@ using UnityEngine.EventSystems;
  * 作者：
  * mengyu
  * 
- * 更改历史：
- * 2021-1-22 创建
+ * 
+ * 
  *
  */
 namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents

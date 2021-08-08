@@ -29,8 +29,8 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-14 创建
+* 
+* 
 *
 */
 
@@ -69,7 +69,7 @@ namespace Ballance2.Sys.Package
             LoadI18NResource();
 
             //模块代码环境初始化
-            if (!SystemPackage && Type == GamePackageType.Module)
+            if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
             {
                 if (CodeType == GamePackageCodeType.Lua)
                 {
@@ -342,7 +342,7 @@ namespace Ballance2.Sys.Package
                         return false;
                     }
 
-                    string lua = GetCodeLuaAsset(EntryCode);
+                    string lua = GetCodeLuaAsset(EntryCode, out var realpath);
                     if (lua == null) 
                         Log.E(TAG, "Run package EntryCode failed, function {0} not found", EntryCode);
                     else if(string.IsNullOrWhiteSpace(lua))
@@ -353,7 +353,7 @@ namespace Ballance2.Sys.Package
                         
                         try
                         {
-                            LuaPackageEntry = PackageLuaState.doString(lua, PackageName + ":Entry") as LuaTable;
+                            LuaPackageEntry = PackageLuaState.doString(lua, realpath) as LuaTable;
                             if(LuaPackageEntry == null) {
                                 Log.E(TAG, "模块 {0} 运行启动代码失败! 启动代码未返回指定结构体。\n请检查代码 ->\n{1}", 
                                     PackageName, 
@@ -495,22 +495,22 @@ namespace Ballance2.Sys.Package
         private List<string> requiredLuaFiles = null;
         private Dictionary<string, LuaFunction> requiredLuaClasses = null;
 
-        private string TryLoadLuaCodeAsset(string className) {
-            string lua = GetCodeLuaAsset(className);
+        private string TryLoadLuaCodeAsset(string className, out string realPath) {
+            string lua = GetCodeLuaAsset(className, out realPath);
 
             if (lua == null) 
-                lua = GetCodeLuaAsset(className + ".lua");
+                lua = GetCodeLuaAsset(className + ".lua", out realPath);
                 
             if(!className.EndsWith(".lua")) className += ".lua";
 
             if (lua == null) 
-                lua = GetCodeLuaAsset("Scripts/" + className);
+                lua = GetCodeLuaAsset("Scripts/" + className, out realPath);
 
             if(!className.EndsWith(".txt")) className += ".txt";
             if (lua == null) 
-                lua = GetCodeLuaAsset(className + ".txt");
+                lua = GetCodeLuaAsset(className + ".txt", out realPath);
             if (lua == null) 
-                lua = GetCodeLuaAsset("Scripts/" + className + ".txt");
+                lua = GetCodeLuaAsset("Scripts/" + className + ".txt", out realPath);
             if (lua == null)
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 未找到该文件");
             return lua;
@@ -544,12 +544,12 @@ namespace Ballance2.Sys.Package
                 return classInit;
             }
 
-            string lua = TryLoadLuaCodeAsset(className);
+            string lua = TryLoadLuaCodeAsset(className, out var realPath);
             if(string.IsNullOrWhiteSpace(lua))
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 该文件为空");
             try
             {
-                PackageLuaState.doString(lua, PackageName + ":" + className);
+                PackageLuaState.doString(lua, realPath/*PackageName + ":" + className*/);
             }
             catch (Exception e)
             {
@@ -585,12 +585,12 @@ namespace Ballance2.Sys.Package
         public object RequireLuaFile(string fileName)
         {
             object rs = null;
-            string lua = TryLoadLuaCodeAsset(fileName);
+            string lua = TryLoadLuaCodeAsset(fileName, out var realPath);
             if (string.IsNullOrWhiteSpace(lua))
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
             try
             {
-                rs = PackageLuaState.doString(lua, PackageName + ":" + GamePathManager.GetFileNameWithoutExt(fileName));
+                rs = PackageLuaState.doString(lua, realPath);
                 requiredLuaFiles.Add(fileName);
             }
             catch (Exception e)
@@ -950,13 +950,16 @@ namespace Ballance2.Sys.Package
         /// <returns>如果读取成功则返回代码内容，否则返回null</returns>
         [LuaApiDescription("读取模块资源包中的Lua代码资源", "如果读取成功则返回代码内容，否则返回null")]
         [LuaApiParamDescription("pathorname", "文件名称或路径")]
-        public virtual string GetCodeLuaAsset(string pathorname)
+        public virtual string GetCodeLuaAsset(string pathorname, out string realPath)
         {
             TextAsset textAsset = GetTextAsset(pathorname);
-            if (textAsset != null)
+            if (textAsset != null) {
+                realPath = pathorname;
                 return textAsset.text;
+            }
 
             GameErrorChecker.LastError = GameError.FileNotFound;
+            realPath = "";
             return null;
         }
         

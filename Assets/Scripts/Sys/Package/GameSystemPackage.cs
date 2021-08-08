@@ -22,8 +22,8 @@ using Ballance2.Sys.Debug;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-17 创建
+* 
+* 
 * 2021-4-17 Add BaseInfo for GameSystemPackage
 *
 */
@@ -151,23 +151,30 @@ namespace Ballance2.Sys.Package
             return base.GetAsset<T>(pathorname);
 #endif
         }
-        public override string GetCodeLuaAsset(string pathorname)
+        public override string GetCodeLuaAsset(string pathorname, out string realPath)
         {
 #if UNITY_EDITOR
             if(disableLoadFileInUnity) {
-                return base.GetCodeLuaAsset(pathorname);
+                return base.GetCodeLuaAsset(pathorname, out realPath);
             } else {
                 //绝对路径
-                if(GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets")) 
+                if(GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets")) {
+                    realPath = pathorname;
                     return new StreamReader(pathorname, System.Text.Encoding.UTF8).ReadToEnd();
+                }
                 //直接拼接路径
                 var scriptPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH + pathorname;
-                if(File.Exists(scriptPath)) 
+                if(File.Exists(scriptPath)) {
+                    realPath = scriptPath;
                     return new StreamReader(scriptPath, System.Text.Encoding.UTF8).ReadToEnd();
+                }
                 //尝试使用路径列表里的路径
-                if(packageCodeAsset.TryGetValue(pathorname, out var path))
+                if(packageCodeAsset.TryGetValue(pathorname, out var path)) {
+                    realPath = path;
                     return new StreamReader(path, System.Text.Encoding.UTF8).ReadToEnd();
+                }
                 
+                realPath = "";
                 return null;
             } 
 #else

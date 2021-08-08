@@ -21,9 +21,6 @@ using UnityEngine.EventSystems;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-4-15 创建
-*
 */
 
 namespace Ballance2

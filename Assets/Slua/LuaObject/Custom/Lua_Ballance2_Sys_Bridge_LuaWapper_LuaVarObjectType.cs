@@ -27,6 +27,7 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_LuaVarObjectType : LuaObject {
 		addMember(l,19,"String");
 		addMember(l,20,"Double");
 		addMember(l,21,"Bool");
+		addMember(l,22,"Float");
 		LuaDLL.lua_pop(l, 1);
 	}
 }

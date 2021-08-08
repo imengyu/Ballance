@@ -1,11 +1,12 @@
-Vector3 = UnityEngine.Vector3
-Time = UnityEngine.Time
-RenderSettings = UnityEngine.RenderSettings
-Color = UnityEngine.Color
-GameUIManager = GameManager.Instance:GetSystemService("GameUIManager") ---@type GameUIManager
-GameSoundManager = GameManager.Instance:GetSystemService("GameSoundManager") ---@type GameSoundManager
-GameSoundType = Ballance2.Sys.Services.GameSoundType
-SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
+local Vector3 = UnityEngine.Vector3
+local Time = UnityEngine.Time
+local RenderSettings = UnityEngine.RenderSettings
+local Color = UnityEngine.Color
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService("GameUIManager") ---@type GameUIManager
+local GameSoundManager = GameManager.Instance:GetSystemService("GameSoundManager") ---@type GameSoundManager
+local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 
 ---@class CameraControl
 ---@type GameLuaObjectHostClass

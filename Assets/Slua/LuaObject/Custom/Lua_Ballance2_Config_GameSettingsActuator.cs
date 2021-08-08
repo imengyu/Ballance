@@ -405,7 +405,41 @@ public class Lua_Ballance2_Config_GameSettingsActuator : LuaObject {
 			checkType(l,2,out a1);
 			Ballance2.Config.GameSettingsCallback a2;
 			checkDelegate(l,3,out a2);
-			self.RegisterSettingsUpdateCallback(a1,a2);
+			var ret=self.RegisterSettingsUpdateCallback(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int UnRegisterSettingsUpdateCallback(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Config.GameSettingsActuator self=(Ballance2.Config.GameSettingsActuator)checkSelf(l);
+			System.Int32 a1;
+			checkType(l,2,out a1);
+			self.UnRegisterSettingsUpdateCallback(a1);
 			pushValue(l,true);
 			return 1;
 		}
@@ -496,6 +530,7 @@ public class Lua_Ballance2_Config_GameSettingsActuator : LuaObject {
 		addMember(l,RequireSettingsLoad);
 		addMember(l,NotifySettingsUpdate);
 		addMember(l,RegisterSettingsUpdateCallback);
+		addMember(l,UnRegisterSettingsUpdateCallback);
 		addMember(l,"ACTION_UPDATE",get_ACTION_UPDATE,null,false);
 		addMember(l,"ACTION_LOAD",get_ACTION_LOAD,null,false);
 		createTypeMetatable(l,constructor, typeof(Ballance2.Config.GameSettingsActuator));

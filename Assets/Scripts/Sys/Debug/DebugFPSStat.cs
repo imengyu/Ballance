@@ -14,8 +14,8 @@ using UnityEngine.UI;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-10 创建
+* 
+* 
 *
 */
 

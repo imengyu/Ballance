@@ -20,9 +20,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 * 
-* 更改历史：
-* 2020-1-12 创建
-* 
 */
 
 namespace Ballance2.Config
@@ -177,14 +174,17 @@ namespace Ballance2.Config
             return bool.Parse(PlayerPrefs.GetString(basePackName + "." + key, defaultValue.ToString()));
         }
 
+        private static int settingUpdateCallbackID = 0;
         private List<SettingUpdateCallbackData> settingUpdateCallbacks = new List<SettingUpdateCallbackData>();
         private struct SettingUpdateCallbackData
         {
             public string groupName;
             public GameSettingsCallback callback;
+            public int id;
 
             public SettingUpdateCallbackData(string groupName, GameSettingsCallback callback)
             {
+                this.id = settingUpdateCallbackID++;
                 this.groupName = groupName;
                 this.callback = callback;
             }
@@ -250,12 +250,26 @@ namespace Ballance2.Config
         /// </summary>
         /// <param name="groupName">组名称</param>
         /// <param name="handler">回调</param>
-        [LuaApiDescription("注册设置组更新回调")]
+        [LuaApiDescription("注册设置组更新回调", "返回回调ID,可用于取消注册回调")]
         [LuaApiParamDescription("groupName", "组名称")]
         [LuaApiParamDescription("handler", "回调")]
-        public void RegisterSettingsUpdateCallback(string groupName, GameSettingsCallback callback)
+        public int RegisterSettingsUpdateCallback(string groupName, GameSettingsCallback callback)
         {
-            settingUpdateCallbacks.Add(new SettingUpdateCallbackData(groupName, callback));
+            var v = new SettingUpdateCallbackData(groupName, callback);
+            settingUpdateCallbacks.Add(v);
+            return v.id;
+        }
+        [LuaApiDescription("取消注册设置组更新回调")]
+        [LuaApiParamDescription("id", "回调ID")]
+        public void UnRegisterSettingsUpdateCallback(int id)
+        {
+            for (var i = 0; i < settingUpdateCallbacks.Count; i++)
+            {
+                if(settingUpdateCallbacks[i].id == id) {
+                    settingUpdateCallbacks.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }

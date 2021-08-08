@@ -25,8 +25,8 @@ using UnityEngine.Android;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-14 创建
+* 
+* 
 * 2021-4-12 mengyu 修改调试相关配置
 */
 

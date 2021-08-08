@@ -2,10 +2,10 @@
 using SLua;
 using System.Collections.Generic;
 [UnityEngine.Scripting.Preserve]
-public class Lua_System_Xml_XmlNodeList : LuaObject {
+public class Lua_Ballance2_Utils_ActiveInTime : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int Item(IntPtr l) {
+	static public int get_ActiveTime(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -16,12 +16,9 @@ public class Lua_System_Xml_XmlNodeList : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			System.Xml.XmlNodeList self=(System.Xml.XmlNodeList)checkSelf(l);
-			System.Int32 a1;
-			checkType(l,2,out a1);
-			var ret=self.Item(a1);
+			Ballance2.Utils.ActiveInTime self=(Ballance2.Utils.ActiveInTime)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,ret);
+			pushValue(l,self.ActiveTime);
 			return 2;
 		}
 		catch(Exception e) {
@@ -39,7 +36,7 @@ public class Lua_System_Xml_XmlNodeList : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_Count(IntPtr l) {
+	static public int set_ActiveTime(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -50,10 +47,12 @@ public class Lua_System_Xml_XmlNodeList : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			System.Xml.XmlNodeList self=(System.Xml.XmlNodeList)checkSelf(l);
+			Ballance2.Utils.ActiveInTime self=(Ballance2.Utils.ActiveInTime)checkSelf(l);
+			System.Single v;
+			checkType(l,2,out v);
+			self.ActiveTime=v;
 			pushValue(l,true);
-			pushValue(l,self.Count);
-			return 2;
+			return 1;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -70,9 +69,8 @@ public class Lua_System_Xml_XmlNodeList : LuaObject {
 	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
-		getTypeTable(l,"System.Xml.XmlNodeList");
-		addMember(l,Item);
-		addMember(l,"Count",get_Count,null,true);
-		createTypeMetatable(l,null, typeof(System.Xml.XmlNodeList));
+		getTypeTable(l,"Ballance2.Utils.ActiveInTime");
+		addMember(l,"ActiveTime",get_ActiveTime,set_ActiveTime,true);
+		createTypeMetatable(l,null, typeof(Ballance2.Utils.ActiveInTime),typeof(UnityEngine.MonoBehaviour));
 	}
 }

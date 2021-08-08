@@ -6,15 +6,18 @@ DebugTools.lua
 调试顶部条的主逻辑
 * 作者：
 mengyu
-* 更改历史：
-2021-1-12 创建
+* 
+
 ]]--
 
 
-Log = Ballance2.Utils.Log
-LogLevel = Ballance2.Utils.LogLevel
-KeyListener = Ballance2.Sys.Utils.KeyListener
-KeyCode = UnityEngine.KeyCode
+local Log = Ballance2.Utils.Log
+local LogLevel = Ballance2.Utils.LogLevel
+local KeyListener = Ballance2.Sys.Utils.KeyListener
+local KeyCode = UnityEngine.KeyCode
+local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
+local GameManager = Ballance2.Sys.GameManager
+local GamePackage = Ballance2.Sys.Package.GamePackage
 
 ---@type GameLuaObjectHostClass
 DebugTools = {

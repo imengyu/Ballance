@@ -1,9 +1,4 @@
-
-Vector3 = UnityEngine.Vector3
-Time = UnityEngine.Time
-RenderSettings = UnityEngine.RenderSettings
-Color = UnityEngine.Color
-GameUIControlMessageSender = Ballance2.Sys.UI.GameUIControlMessageSender
+local GameUIControlMessageSender = Ballance2.Sys.UI.GameUIControlMessageSender
 
 ---@class MouseSelect
 ---@type GameLuaObjectHostClass
@@ -24,7 +19,7 @@ function CreateClass_MouseSelect()
     return o
   end
 
-  function MouseSelect:Start(go)
+  function MouseSelect:Start()
     self.MessageSender = self.gameObject:GetComponent(GameUIControlMessageSender)
   end
   function MouseSelect:OnMouseEnter()

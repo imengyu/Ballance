@@ -694,10 +694,12 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
 			System.String a1;
 			checkType(l,2,out a1);
-			var ret=self.GetCodeLuaAsset(a1);
+			System.String a2;
+			var ret=self.GetCodeLuaAsset(a1,out a2);
 			pushValue(l,true);
 			pushValue(l,ret);
-			return 2;
+			pushValue(l,a2);
+			return 3;
 		}
 		catch(Exception e) {
 			return error(l,e);

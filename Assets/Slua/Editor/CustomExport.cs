@@ -53,6 +53,8 @@ namespace SLua
             add(typeof(System.Xml.XmlWriter), null);
             add(typeof(System.Xml.XmlReaderSettings), null);
             add(typeof(System.Xml.XmlWriterSettings), null);
+
+            add(typeof(UnityEngine.Input), null);
             
             // add your custom class here
             // add( type, typename)
@@ -162,7 +164,6 @@ namespace SLua
                 "TouchScreenKeyboardType",
                 "TouchScreenKeyboard",
                 "MovieTexture",
-                "UnityEngineInternal",
                 "Terrain",                            
                 "Tree",
                 "SplatPrototype",
@@ -200,7 +201,6 @@ namespace SLua
                 "UnityEngine.AudioSettings",
                 "UnityEngine.DrivenRectTransformTracker",
                 "UnityEngine.tvOS",
-                "UnityEngine.Light",
                 "UnityEngine.LightProbeGroup",
                 "UnityEngine.Playables",
                 "UnityEngine.Rendering",

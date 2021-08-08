@@ -246,6 +246,10 @@ class GameLuaObjectHostInspector : Editor
                             pVal = ptargetElement.FindPropertyRelative("boolVal");
                             pVal.boolValue = EditorGUI.Toggle(rect, "boolVal", pVal.boolValue);
                             break;
+                        case LuaVarObjectType.Float:
+                            pVal = ptargetElement.FindPropertyRelative("floatVal");
+                            pVal.floatValue = EditorGUI.FloatField(rect, "floatVal", pVal.floatValue);
+                            break;
                     }
                     rect.y += 20;
 

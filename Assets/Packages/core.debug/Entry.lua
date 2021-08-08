@@ -6,30 +6,32 @@ Entry.lua
 调试包入口
 * 作者：
 mengyu
-* 更改历史：
-2021-1-11 创建
+* 
+
 ]]--
 
 
 -- 调试工具类
-GameManager = Ballance2.Sys.GameManager
-CloneUtils = Ballance2.Sys.Utils.CloneUtils
-GameObject = UnityEngine.GameObject
-GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
-Log = Ballance2.Utils.Log
-DebugCamera = Ballance2.DebugCamera
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
+local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local GameObject = UnityEngine.GameObject
+local DebugCamera = Ballance2.DebugCamera
+local GameStaticResourcesPool = Ballance2.Sys.Res.GameStaticResourcesPool
 
 GlobalDebugToolbar = nil ---@type GameLuaObjectHost
 GlobalDebugWindow = nil ---@type Window|MonoBehaviour
 GlobalDebugOptWindow = nil ---@type Window|MonoBehaviour
-GlobalRuntimeHierarchyWindow = nil ---@type Window|MonoBehaviour
-GlobalRuntimeInspectorWindow = nil ---@type Window|MonoBehaviour
+local GlobalRuntimeHierarchyWindow = nil ---@type Window|MonoBehaviour
+local GlobalRuntimeInspectorWindow = nil ---@type Window|MonoBehaviour
 
 DebugOptEvent = 'core.debug.OptNotify'
 DebugOptStandByEvent = 'core.debug.OptStandByNotify'
 
 local PackageEntryDebugOptStandByHandler = nil
 local PackageDebugOptEntryHandler = nil
+
+
 
 return {
     ---模块入口函数

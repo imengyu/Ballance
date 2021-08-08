@@ -21,9 +21,6 @@ using UnityEngine.UI;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-4-20 创建
-*
 */
 
 namespace Ballance2

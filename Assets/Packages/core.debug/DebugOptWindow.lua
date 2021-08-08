@@ -6,17 +6,15 @@ DebugOptWindow.lua
 调试功能列表窗口
 * 作者：
 mengyu
-* 更改历史：
-2021-4-16 创建
 ]]--
 
-Log = Ballance2.Utils.Log
-LogLevel = Ballance2.Utils.LogLevel
-GameManager = Ballance2.Sys.GameManager
-GamePackage = Ballance2.Sys.Package.GamePackage
-GameEventNames = Ballance2.Sys.Bridge.GameEventNames
-GameActionCallResult = Ballance2.Sys.Bridge.GameActionCallResult
-GameUIPrefabType = Ballance2.Sys.Services.GameUIPrefabType
+local GameManager = Ballance2.Sys.GameManager
+local GamePackage = Ballance2.Sys.Package.GamePackage
+local GameActionCallResult = Ballance2.Sys.Bridge.GameActionCallResult
+local GameUIPrefabType = Ballance2.Sys.Services.GameUIPrefabType
+local DebugCamera = Ballance2.DebugCamera
+local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
 ---@type GameLuaObjectHostClass
 DebugOptWindow = { 
@@ -28,7 +26,7 @@ DebugOptWindow = {
   CheckBoxDisableFog = nil,---@type Toggle
   CheckBoxDisableSkyBox = nil,---@type Toggle
   ContentView = nil,---@type RectTransform
-
+  LogContentView = nil,---@type RectTransform
 
 }
 

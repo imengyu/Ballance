@@ -21,8 +21,8 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-21 创建
+* 
+* 
 *
 */
 
@@ -108,26 +108,33 @@ namespace Ballance2.Sys.Package
             }
         }
 
-        public override string GetCodeLuaAsset(string pathorname)
+        public override string GetCodeLuaAsset(string pathorname, out string realPath)
         {
             if (GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
             {
-                if (File.Exists(pathorname))
+                if (File.Exists(pathorname)) {
+                    realPath = pathorname;
                     return File.ReadAllText(pathorname);
+                }
             }
             else
             {
                 string path = PackageFilePath + "/" + pathorname;
-                if (File.Exists(path))
+                if (File.Exists(path)) {
+                    realPath = path;
                     return File.ReadAllText(path);
+                }
                 else {
                     string fullPath = GetFullPathByName(pathorname);
-                    if(fullPath != null && File.Exists(path))
-                        return File.ReadAllText(path);
+                    if(fullPath != null && File.Exists(fullPath)) {
+                        realPath = fullPath;
+                        return File.ReadAllText(fullPath);
+                    }
                 }
             }
 
             GameErrorChecker.LastError = GameError.FileNotFound;
+            realPath = "";
             return null;
         }
         public override Assembly LoadCodeCSharp(string pathorname)

@@ -17,9 +17,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-2-1 创建
-*
 */
 
 namespace Ballance2.Sys.Utils.Lua

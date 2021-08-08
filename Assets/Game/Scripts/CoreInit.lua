@@ -28,6 +28,7 @@ function CoreInit()
   --调试入口
   GameManager.GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", 'Core', function ()
     CoreDebugGameGamePlay()
+    return false
   end)
 end
 function CoreUnload()

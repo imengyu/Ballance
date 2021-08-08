@@ -22,8 +22,8 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-14 创建
+* 
+* 
 *
 */
 
@@ -31,7 +31,15 @@ namespace Ballance2.Sys.Package
 {
     public class GameZipPackage: GamePackage
     {
-        private Dictionary<string, string> packageCodeAsset = new Dictionary<string, string>();
+        private struct CodeAsset {
+            public string asset;
+            public string fullPath;
+            public CodeAsset(string asset, string fullPath) {
+                this.asset = asset;
+                this.fullPath = fullPath;
+            }
+        }
+        private Dictionary<string, CodeAsset> packageCodeAsset = new Dictionary<string, CodeAsset>();
 
         public override void Destroy()
         {
@@ -188,7 +196,7 @@ namespace Ballance2.Sys.Package
         {
             MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
-            packageCodeAsset.Add(theEntry.Name, StringUtils.FixUtf8BOM(ms.ToArray()));
+            packageCodeAsset.Add(theEntry.Name, new CodeAsset(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name));
 
             //Log.D(TAG, "LoadCodeAsset: {0} -> \n{1}", theEntry.Name, LuaUtils.PrintBytes(ms.ToArray()));
 
@@ -196,18 +204,22 @@ namespace Ballance2.Sys.Package
             ms.Dispose();
         }
 
-        public override string GetCodeLuaAsset(string pathorname)
+        public override string GetCodeLuaAsset(string pathorname, out string realPath)
         {
             foreach (string key in packageCodeAsset.Keys)
             {
                 if (key == pathorname
                         || key == "class" + pathorname
                         || key == "class/" + pathorname
-                        || Path.GetFileName(key) == pathorname)
-                    return packageCodeAsset[key];
+                        || Path.GetFileName(key) == pathorname) {
+                    var k = packageCodeAsset[key];
+                    realPath = k.fullPath;
+                    return k.asset;
+                }
             }
 
             GameErrorChecker.LastError = GameError.FileNotFound;
+            realPath = "";
             return null;
         }
         public override Assembly LoadCodeCSharp(string pathorname)

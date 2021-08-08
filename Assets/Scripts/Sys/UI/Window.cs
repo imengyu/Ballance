@@ -17,8 +17,8 @@ using UnityEngine.UI;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-13 创建
+* 
+* 
 * 2021-4-17 imengyu 修复窗口居中问题
 *
 */

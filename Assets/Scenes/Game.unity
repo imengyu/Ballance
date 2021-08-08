@@ -543,6 +543,10 @@ MonoBehaviour:
     PackageName: core.debug
   - Enable: 1
     PackageName: core.sounds
+  - Enable: 1
+    PackageName: core.sounds.music
+  - Enable: 1
+    PackageName: core.assets.skys
   DebugCustomEntryEvent: CoreDebugGamePlayEntry
   DebugLoadCustomPackages: 1
   GameBaseCamera: {fileID: 108933074}

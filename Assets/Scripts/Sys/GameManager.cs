@@ -30,8 +30,8 @@ using UnityEngine.Networking;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-15 创建
+* 
+* 
 * 2021-4-13 mengyu 添加了退出方法
 *
 */
@@ -168,7 +168,11 @@ namespace Ballance2.Sys
         private IEnumerator InitAsysc() 
         {
             //检测lua绑定状态
-            object o = GameMainLuaState.doString("return Ballance2.Sys.GameManager.LuaBindingCallback()");
+            object o = GameMainLuaState.doString(@"
+            import 'Ballance2'
+            import 'UnityEngine'
+            return Ballance2.Sys.GameManager.LuaBindingCallback()
+            ", "GameManagerSystemInit");
             if (o != null &&  (
                     (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
                     || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
@@ -229,8 +233,6 @@ namespace Ballance2.Sys
                 if(task.Result && info.enableLoad) 
                     yield return pm.LoadPackage(info.packageName);
             }
-   
-            yield return new WaitForSeconds(1);
         }
         private IEnumerator LoadSystemCore()
         {
@@ -316,6 +318,7 @@ namespace Ballance2.Sys
 
                 //检查系统包版本是否与内核版本一致
                 var systemPackage = pm.FindPackage(GamePackageManager.SYSTEM_PACKAGE_NAME);
+                systemPackage.SystemPackage = true;
 
                 LuaFunction f = systemPackage.GetLuaFun("CoreVersion");
                 if(f == null) {
@@ -338,9 +341,9 @@ namespace Ballance2.Sys
                 //初始化lua调试器
                 GameMainLuaState.doString(@"
                     local SystemPackage = Ballance2.Sys.Package.GamePackage.GetSystemPackage()
-                    local mobdebug = SystemPackage:RequireLuaFile('mobdebug');
-                    mobdebug.start();
-                ");
+                    SystemPackage:RequireLuaFile('debugger');
+                    StartVscodeDebuggee();
+                ", "GameManagerStartDebugger");
             }
 
             #endregion
@@ -417,11 +420,11 @@ namespace Ballance2.Sys
 
                 //第一次加载基础包，等待其运行
                 if(loadStepNow == 0) {
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(0.6f);
 
                     pm.NotifyAllPackageRun("*");
 
-                    yield return new WaitForSeconds(2);
+                    yield return new WaitForSeconds(1.2f);
 
                     //进入Intro
                     RequestEnterLogicScense(firstScense);
@@ -429,7 +432,7 @@ namespace Ballance2.Sys
                 }
             }
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.9f);
 
             //全部加载完毕之后通知所有模块初始化
             pm.NotifyAllPackageRun("*");
@@ -658,7 +661,7 @@ namespace Ballance2.Sys
                     "  device 获取当前设备信息");
             srv.RegisterCommand("c", (keyword, fullCmd, args) =>
             {
-                GameMainLuaState.doString(fullCmd.Substring(2));
+                GameMainLuaState.doString(fullCmd.Substring(2), "GameManagerLuaConsole");
                 return true;
             }, 1, "c [any] 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
             srv.RegisterCommand("le", (keyword, fullCmd, args) =>

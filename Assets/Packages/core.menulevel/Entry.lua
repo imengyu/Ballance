@@ -6,15 +6,14 @@ Entry.lua
 主菜单进入入口
 * 作者：
 mengyu
-* 更改历史：
-2021-4-18 创建
 ]]--
 
-GameManager = Ballance2.Sys.GameManager
-Log = Ballance2.Utils.Log
-GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
-GameMenuLevel = nil
-GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
+local GameManager = Ballance2.Sys.GameManager
+local Log = Ballance2.Utils.Log
+local GameMenuLevel = nil
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
+local CloneUtils = Ballance2.Sys.Utils
+local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 
 local GameMenuLevelEnterHandler = nil
 local GameMenuLevelQuitHandler = nil

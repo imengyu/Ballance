@@ -1,5 +1,5 @@
-GameManager = Ballance2.Sys.GameManager
-Log = Ballance2.Utils.Log
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
 GameUIPackage = nil ---@type GamePackage
 

@@ -21,8 +21,8 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-20 创建
+* 
+* 
 *
 */
 

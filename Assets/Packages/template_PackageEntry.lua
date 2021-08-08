@@ -1,8 +1,8 @@
 --- Lua 模组示例入口代码
 
 -- 这里来导入C#类定义（一个模块定义一次即可）
-GameManager = Ballance2.Sys.GameManager
-Log = Ballance2.Utils.Log
+local GameManager = Ballance2.Sys.GameManager
+local Log = Ballance2.Utils.Log
 
 --[[
   使用slua的 
@@ -14,7 +14,7 @@ Log = Ballance2.Utils.Log
   另外，如果你的模组要在低版本游戏上运行，你也必须知道那些版本有没有对应函数导出，要做兼容。。
 ]]
 
-GamePackage = nil -- 这是你的模组实例，可以通过它来操作你的模组
+MyPackage = nil -- 这是你的模组实例，可以通过它来操作你的模组
 local TAG = "MyMod:Main" -- 
 
 return {
@@ -22,6 +22,7 @@ return {
   ---@param thisGamePackage GamePackage
   ---@return boolean
   PackageEntry = function(thisGamePackage)
+    MyPackage = thisGamePackage
     Log.D(TAG, "这是模块入口 !")
 
     --[[

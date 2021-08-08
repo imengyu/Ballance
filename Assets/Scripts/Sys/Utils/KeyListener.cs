@@ -14,9 +14,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2018-8-16 创建
-*
 */
 
 namespace Ballance2.Sys.Utils

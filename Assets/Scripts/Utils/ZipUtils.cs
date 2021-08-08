@@ -17,9 +17,6 @@ using System.Threading.Tasks;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2020-11-28 创建
-*
 */
 namespace Ballance2.Utils
 {

@@ -6,8 +6,6 @@ Entry.lua
 游戏进入动画入口
 * 作者：
 mengyu
-* 更改历史：
-2021-4-18 创建
 ]]--
 
 local GameManager = Ballance2.Sys.GameManager

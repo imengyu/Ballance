@@ -13,9 +13,6 @@ using UnityEngine;
  * 
  * 作者：
  * mengyu
- * 
- * 更改历史：
- * 2020-1-1 创建
  *
  */
 

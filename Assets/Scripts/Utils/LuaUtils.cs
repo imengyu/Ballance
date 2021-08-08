@@ -1,5 +1,6 @@
 ﻿using Ballance.LuaHelpers;
 using SLua;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -13,8 +14,8 @@ using SLua;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-15 创建
+* 
+* 
 *
 */
 
@@ -57,6 +58,17 @@ namespace Ballance2.Utils
         {
             return param ? "true" : "false";
         }
+
+        public static bool StringToBool(string param)
+        {
+            return param == "true";
+        }
+
+        public static KeyCode StringToKeyCode(string param)
+        {
+           return (KeyCode)System.Enum.Parse(typeof(KeyCode), param);
+        }
+
         public static LuaTable ToLuaTableForCS(object param)
         {
             return param as LuaTable;
@@ -65,6 +77,7 @@ namespace Ballance2.Utils
         {
             return param as LuaFunction;
         }
+
     }
     
 }

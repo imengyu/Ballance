@@ -15,8 +15,8 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-21 创建
+* 
+* 
 *
 */
 
@@ -94,6 +94,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [HideInInspector, SerializeField, DoNotToLua]
         public bool boolVal;
         [HideInInspector, SerializeField, DoNotToLua]
+        public float floatVal;
+        [HideInInspector, SerializeField, DoNotToLua]
         public string componentClassVal;
 
         public Component ComponentClass() {
@@ -102,6 +104,11 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 case "UnityEngine.Transform": return gameObjectVal.GetComponent<Transform>();
                 case "UnityEngine.RectTransform": return gameObjectVal.GetComponent<RectTransform>();
                 case "UnityEngine.Skybox": return gameObjectVal.GetComponent<UnityEngine.Skybox>();
+                case "UnityEngine.Light": return gameObjectVal.GetComponent<UnityEngine.Light>();
+                case "UnityEngine.Animation": return gameObjectVal.GetComponent<UnityEngine.Animation>();
+                case "UnityEngine.Camera": return gameObjectVal.GetComponent<UnityEngine.Camera>();
+                case "UnityEngine.MeshRenderer": return gameObjectVal.GetComponent<UnityEngine.MeshRenderer>();
+                case "UnityEngine.MeshFilter": return gameObjectVal.GetComponent<UnityEngine.MeshFilter>();
                 default: { 
                     var c = gameObjectVal.GetComponent(componentClassVal);
                     if(c == null)
@@ -132,6 +139,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         public int Int() { return intVal; }
         public double Double() { return doubleVal; }
         public bool Bool() { return boolVal; }
+        public float Float() { return floatVal; }
 
         /// <summary>
         /// 更新数据到 Lua
@@ -164,6 +172,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 case LuaVarObjectType.String: LuaSelf[Name] = String(); break;
                 case LuaVarObjectType.Double: LuaSelf[Name] = Double(); break;
                 case LuaVarObjectType.Bool: LuaSelf[Name] = Bool(); break;
+                case LuaVarObjectType.Float: LuaSelf[Name] = Float(); break;
                 case LuaVarObjectType.ComponentClass: LuaSelf[Name] = ComponentClass(); break;
             }
         }
@@ -197,6 +206,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 case LuaVarObjectType.String: stringVal = (string)LuaSelf[Name]; break;
                 case LuaVarObjectType.Double: doubleVal = (double)LuaSelf[Name]; break;
                 case LuaVarObjectType.Bool: boolVal = (bool)LuaSelf[Name]; break;
+                case LuaVarObjectType.Float: floatVal = (float)LuaSelf[Name]; break;
             }
         }
     }
@@ -232,6 +242,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         String,
         Double,
         Bool,
+        Float,
     }
 
 

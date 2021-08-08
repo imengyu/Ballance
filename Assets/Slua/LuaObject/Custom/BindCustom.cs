@@ -34,6 +34,7 @@ namespace SLua {
 				Lua_PhysicsRT_PhysicsWorld.reg,
 				Lua_Ballance2_DebugCamera.reg,
 				Lua_Ballance2_GameUIPage.reg,
+				Lua_Ballance2_Game_Utils_SkyBoxUtils.reg,
 				Lua_Ballance2_Utils_CommonUtils.reg,
 				Lua_Ballance2_Utils_ConverUtils.reg,
 				Lua_Ballance2_Utils_DebugUtils.reg,
@@ -41,6 +42,7 @@ namespace SLua {
 				Lua_Ballance2_Utils_Log.reg,
 				Lua_Ballance2_Utils_LogLevel.reg,
 				Lua_Ballance2_Utils_LuaUtils.reg,
+				Lua_Ballance2_Utils_ActiveInTime.reg,
 				Lua_Ballance2_Utils_StringSpliter.reg,
 				Lua_Ballance2_Utils_StringUtils.reg,
 				Lua_Ballance2_Sys_GameManager.reg,
@@ -110,7 +112,6 @@ namespace SLua {
 				Lua_Ballance2_Config_GameConst.reg,
 				Lua_Ballance2_Config_GameSettingsManager.reg,
 				Lua_Ballance2_Config_GameSettingsActuator.reg,
-				Lua_Ballance2_Game_Utils_SkyBoxUtils.reg,
 				Lua_Ballance2_Sys_UI_Utils_UIFadeManager_FadeType.reg,
 				Lua_Ballance2_Sys_UI_Utils_UIFadeManager_FadeObject.reg,
 				Lua_System_Collections_Generic_List_1_int.reg,
@@ -123,6 +124,7 @@ namespace SLua {
 				Lua_System_Xml_XmlWriter.reg,
 				Lua_System_Xml_XmlReaderSettings.reg,
 				Lua_System_Xml_XmlWriterSettings.reg,
+				Lua_UnityEngine_Input.reg,
 			};
 			return list;
 		}

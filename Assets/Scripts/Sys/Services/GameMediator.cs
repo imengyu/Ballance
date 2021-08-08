@@ -23,8 +23,8 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 更改历史：
-* 2021-1-12 创建
+* 
+* 
 *
 */
 
@@ -475,7 +475,7 @@ namespace Ballance2.Sys.Services
                 GameErrorChecker.LastError = GameError.ParamNotProvide;
                 return null;
             }
-
+            
             if (!IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
                 gameEvent = RegisterGlobalEvent(evtName);
 

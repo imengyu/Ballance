@@ -16,9 +16,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 * 
-* 更改历史：
-* 2020-6-12 创建
-* 
 */
 
 namespace Ballance2.Config.Settings

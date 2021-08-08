@@ -18,7 +18,7 @@ local GamePlay = {
 function GamePlayInit()
 
   BallsManagerGameObject = CloneUtils.CloneNewObject(SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/BallManager.prefab'), 'GameBallsManager')
-  BallCameraGameObject = BallsManagerGameObject.transform:FindChild('Ball_CameraHost/CameraOverlook/MainCamera').gameObject
+  BallCameraGameObject = BallsManagerGameObject.transform:Find('Ball_CameraHost/CameraOverlook/MainCamera').gameObject
 
   GamePlay.BallManager = GameObjectToLuaClass(BallsManagerGameObject)
   GamePlay.CamManager = GameObjectToLuaClass(BallCameraGameObject)

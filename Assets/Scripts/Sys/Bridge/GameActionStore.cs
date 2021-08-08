@@ -18,10 +18,6 @@ using System.Collections.Generic;
  * 作者：
  * mengyu
  * 
- * 更改历史：
- * 2020-1-1 创建
- * 2021-1-17 imengyu 修改Store使GamePackage逻辑分离
- * 
  */
 
 namespace Ballance2.Sys.Bridge

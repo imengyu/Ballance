@@ -6,25 +6,24 @@ DebugWindow.lua
 调试命令窗口的逻辑
 * 作者：
 mengyu
-* 更改历史：
-2021-1-11 创建
+* 
+
 ]]--
 
-Vector2 = UnityEngine.Vector2
-InputField = UnityEngine.UI.InputField
-Text = UnityEngine.UI.Text
-LayoutRebuilder = UnityEngine.UI.LayoutRebuilder
-RectTransform = UnityEngine.RectTransform
-Log = Ballance2.Utils.Log
-LogLevel = Ballance2.Utils.LogLevel
-CloneUtils = Ballance2.Sys.Utils.CloneUtils
-UIAnchorPosUtils = Ballance2.Sys.UI.Utils.UIAnchorPosUtils
-UIAnchor = Ballance2.Sys.UI.Utils.UIAnchor
-UIPivot = Ballance2.Sys.UI.Utils.UIPivot
-EventTriggerListener = Ballance2.Sys.UI.Utils.EventTriggerListener
-GameStaticResourcesPool = Ballance2.Sys.Res.GameStaticResourcesPool
-GameEventNames = Ballance2.Sys.Bridge.GameEventNames
-GamePackage = Ballance2.Sys.Package.GamePackage
+local Vector2 = UnityEngine.Vector2
+local LayoutRebuilder = UnityEngine.UI.LayoutRebuilder
+local Log = Ballance2.Utils.Log
+local LogLevel = Ballance2.Utils.LogLevel
+local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local UIAnchorPosUtils = Ballance2.Sys.UI.Utils.UIAnchorPosUtils
+local UIAnchor = Ballance2.Sys.UI.Utils.UIAnchor
+local UIPivot = Ballance2.Sys.UI.Utils.UIPivot
+local EventTriggerListener = Ballance2.Sys.UI.Utils.EventTriggerListener
+local GameStaticResourcesPool = Ballance2.Sys.Res.GameStaticResourcesPool
+local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
+local GamePackage = Ballance2.Sys.Package.GamePackage
+local GameManager = Ballance2.Sys.GameManager
+local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
 ---@type GameLuaObjectHostClass
 DebugWindow = {

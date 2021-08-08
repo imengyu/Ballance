@@ -1,7 +1,9 @@
 ---@type GameLuaObjectHostClass
 ---@class CamManager
 CamManager = {
-  
+  CameraOverlook = nil, ---@type GameObject
+  CameraRotateHost = nil, ---@type GameObject
+  SkyBox = nil, ---@type Skybox
 }
 
 function CreateClass_CamManager()
@@ -19,6 +21,11 @@ function CreateClass_CamManager()
   end
   function CamManager:OnDestroy()
 
+  end
+  ---设置主摄像机天空盒材质
+  ---@param mat Material
+  function CamManager:SetSkyBox(mat)
+    self.SkyBox.material = mat
   end
 
   return CamManager:new(nil)
