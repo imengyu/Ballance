@@ -7,8 +7,10 @@ namespace PhysicsRT
     public static class PhysicsApi
     {
         #region 基础定义
-        
-#if UNITY_IPHONE && !UNITY_EDITOR
+
+#if UNITY_EDITOR
+        private const string DLL_NNAME = "Physics_RTd";
+#elif UNITY_IPHONE
 	    private const string DLL_NNAME = "_Internal";
 #else
         private const string DLL_NNAME = "Physics_RT";

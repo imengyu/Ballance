@@ -111,34 +111,35 @@ namespace PhysicsRT
         }
 
         [SerializeField]
-        MotionType m_MotionType = MotionType.Fixed;
+        private MotionType m_MotionType = MotionType.Fixed;
         [SerializeField]
         [Tooltip("The quality type, used to specify when to use continuous physics.")]
-        CollidableQualityType m_CollidableQualityType = CollidableQualityType.Default;
+        private CollidableQualityType m_CollidableQualityType = CollidableQualityType.Default;
         [SerializeField]
-        float m_Mass = 1.0f;
+        private float m_Mass = 1.0f;
         [SerializeField]
         [Tooltip("这适用于物体的线速度，随时间减小。")]
-        float m_LinearDamping = 0.0f;
+        private float m_LinearDamping = 0.0f;
         [SerializeField]
         [Tooltip("这适用于物体的角速度，随时间减小角速度。")]
-        float m_AngularDamping = 0.05f;
+        private float m_AngularDamping = 0.05f;
         [SerializeField]
         [Tooltip("物体在世界空间中的初始线速度")]
-        Vector3 m_InitialLinearVelocity = Vector3.zero;
+        private Vector3 m_InitialLinearVelocity = Vector3.zero;
         [SerializeField]
         [Tooltip("这表示在身体的局部运动空间（即围绕质心）中围绕每个轴的初始旋转速度")]
-        Vector3 m_InitialAngularVelocity = Vector3.zero;
+        private Vector3 m_InitialAngularVelocity = Vector3.zero;
         [SerializeField]
         [Tooltip("此实体的重力量缩放系数。")]
-        float m_GravityFactor = 1f;
+        private float m_GravityFactor = 1f;
         [SerializeField]
-        public Vector3 m_CenterOfMass;
+        private Vector3 m_CenterOfMass;
         [SerializeField]
-        CustomPhysicsBodyTags m_CustomTags = CustomPhysicsBodyTags.Nothing;
+        private CustomPhysicsBodyTags m_CustomTags = CustomPhysicsBodyTags.Nothing;
         [Range(0, 1)]
+        [SerializeField]
         [Tooltip("使用此值可以指定刚体的初始摩擦力值。实体的“摩擦力”值指示其表面有多光滑，从而指示它沿其他实体滑动的容易程度。一般摩擦力值的范围在0和1之间，但可以更高（最大值为255）。默认值为0.5。")]
-        public float m_Friction = 0.5f;
+        private float m_Friction = 0.5f;
         [Range(0, 1.99f)]
         [Tooltip("这表明物体有多“弹性”——换句话说，物体与物体碰撞后有多少能量。值为1表示对象在碰撞后恢复其所有能量，值为0表示对象将完全停止移动。默认值为0.4。恢复的实现只是一个粗略的近似值，因此您可能希望在游戏中使用不同的值进行实验，以获得所需的效果。")]
         [SerializeField]
@@ -161,13 +162,20 @@ namespace PhysicsRT
         private bool m_AddContactListener = false;
         [Tooltip("在 Awake 时不自动创建刚体，设置为 false 后您需要手动调用 ForceReCreateShape 来创建刚体")]
         [SerializeField]
-        public bool m_DoNotAutoCreateAtAwake = false;
+        private bool m_DoNotAutoCreateAtAwake = false;
         [Tooltip("自动计算 CenterOfMass ")]
         [SerializeField]
-        public bool m_AutoComputeCenterOfMass = true;
+        private bool m_AutoComputeCenterOfMass = true;
+        [Tooltip("是否在gameObject激活时自动切换刚体的激活状态")]
+        [SerializeField]
+        private bool m_AutoControlActive = true;
 
         private IntPtr ptr = IntPtr.Zero;
 
+        /// <summary>
+        /// 是否在gameObject激活时自动切换刚体的激活状态
+        /// </summary>
+        public bool AutoControlActive { get => m_AutoControlActive; set { m_AutoControlActive = value; } }
         /// <summary>
         /// 在 Awake 时不自动创建刚体，设置为 false 后您需要手动调用 ForceReCreateShape 来创建刚体
         /// </summary>
@@ -379,6 +387,21 @@ namespace PhysicsRT
             yield return new WaitForSeconds(0.05f); 
             if(!m_DoNotAutoCreateAtAwake)
                 CreateBody();
+        }
+
+        /// <summary>
+        /// 强制激活刚体
+        /// </summary>
+        public void ForceActive() {
+            if(ptr != IntPtr.Zero)
+                PhysicsApi.API.ActiveRigidBody(ptr);
+        }
+        /// <summary>
+        /// 强制设置刚体非激活态（不设置GameObject）
+        /// </summary>
+        public void ForceDeactive() {
+            if(ptr != IntPtr.Zero)
+                PhysicsApi.API.DeactiveRigidBody(ptr);
         }
 
         private void OnEnable()

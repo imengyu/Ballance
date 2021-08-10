@@ -16,7 +16,7 @@ local DebugCamera = Ballance2.DebugCamera
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
----@type GameLuaObjectHostClass
+---@class DebugOptWindow : GameLuaObjectHostClass
 DebugOptWindow = { 
   CheckBoxShowSystemInfo = nil,---@type Toggle
   CheckBoxShowStats = nil,---@type Toggle

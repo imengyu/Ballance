@@ -36,6 +36,68 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int ForceActive(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			self.ForceActive();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int ForceDeactive(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			self.ForceDeactive();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetPtr(IntPtr l) {
 		try {
 			#if DEBUG
@@ -462,262 +524,6 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_m_CenterOfMass(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.m_CenterOfMass);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_m_CenterOfMass(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			UnityEngine.Vector3 v;
-			checkType(l,2,out v);
-			self.m_CenterOfMass=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_m_Friction(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.m_Friction);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_m_Friction(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			System.Single v;
-			checkType(l,2,out v);
-			self.m_Friction=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_m_DoNotAutoCreateAtAwake(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.m_DoNotAutoCreateAtAwake);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_m_DoNotAutoCreateAtAwake(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			System.Boolean v;
-			checkType(l,2,out v);
-			self.m_DoNotAutoCreateAtAwake=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_m_AutoComputeCenterOfMass(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.m_AutoComputeCenterOfMass);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_m_AutoComputeCenterOfMass(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			System.Boolean v;
-			checkType(l,2,out v);
-			self.m_AutoComputeCenterOfMass=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int set_onTiggerEnter(IntPtr l) {
 		try {
 			#if DEBUG
@@ -875,6 +681,70 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 			if(op==0) self.onCollisionStay=v;
 			else if(op==1) self.onCollisionStay+=v;
 			else if(op==2) self.onCollisionStay-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_AutoControlActive(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.AutoControlActive);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_AutoControlActive(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			bool v;
+			checkType(l,2,out v);
+			self.AutoControlActive=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -2462,6 +2332,8 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsRT.PhysicsBody");
 		addMember(l,ForceReCreateShape);
+		addMember(l,ForceActive);
+		addMember(l,ForceDeactive);
 		addMember(l,GetPtr);
 		addMember(l,BackUpRuntimeCanModifieProperties);
 		addMember(l,ApplyModifiedProperties);
@@ -2475,15 +2347,12 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 		addMember(l,ApplyLinearImpulse);
 		addMember(l,ApplyPointImpulse);
 		addMember(l,ApplyAngularImpulse);
-		addMember(l,"m_CenterOfMass",get_m_CenterOfMass,set_m_CenterOfMass,true);
-		addMember(l,"m_Friction",get_m_Friction,set_m_Friction,true);
-		addMember(l,"m_DoNotAutoCreateAtAwake",get_m_DoNotAutoCreateAtAwake,set_m_DoNotAutoCreateAtAwake,true);
-		addMember(l,"m_AutoComputeCenterOfMass",get_m_AutoComputeCenterOfMass,set_m_AutoComputeCenterOfMass,true);
 		addMember(l,"onTiggerEnter",null,set_onTiggerEnter,true);
 		addMember(l,"onTiggerLeave",null,set_onTiggerLeave,true);
 		addMember(l,"onCollisionEnter",null,set_onCollisionEnter,true);
 		addMember(l,"onCollisionLeave",null,set_onCollisionLeave,true);
 		addMember(l,"onCollisionStay",null,set_onCollisionStay,true);
+		addMember(l,"AutoControlActive",get_AutoControlActive,set_AutoControlActive,true);
 		addMember(l,"DoNotAutoCreateAtAwake",get_DoNotAutoCreateAtAwake,set_DoNotAutoCreateAtAwake,true);
 		addMember(l,"AutoComputeCenterOfMass",get_AutoComputeCenterOfMass,set_AutoComputeCenterOfMass,true);
 		addMember(l,"Layer",get_Layer,set_Layer,true);

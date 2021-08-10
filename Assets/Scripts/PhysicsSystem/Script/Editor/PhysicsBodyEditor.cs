@@ -40,6 +40,7 @@ class PhysicsBodyEditor : Editor
         pDoNotAutoCreateAtAwake = serializedObject.FindProperty("m_DoNotAutoCreateAtAwake");
         pAddContactListener = serializedObject.FindProperty("m_AddContactListener"); 
         pAutoComputeCenterOfMass = serializedObject.FindProperty("m_AutoComputeCenterOfMass"); 
+        pAutoControlActive = serializedObject.FindProperty("m_AutoControlActive"); 
 
         var names = AssetDatabase.LoadAssetAtPath<PhysicsLayerNames>("Assets/Resources/PhysicsLayerNames.asset");
         var tags = PhysicsLayerTags.Everything;
@@ -69,6 +70,7 @@ class PhysicsBodyEditor : Editor
     private SerializedProperty pAddContactListener;
     private SerializedProperty pDoNotAutoCreateAtAwake;
     private SerializedProperty pAutoComputeCenterOfMass;
+    private SerializedProperty pAutoControlActive;
 
     public override void OnInspectorGUI()
     {
@@ -80,6 +82,8 @@ class PhysicsBodyEditor : Editor
         EditorGUI.BeginChangeCheck();
 
         EditorGUILayout.PropertyField(pMotionType);
+        EditorGUILayout.PropertyField(pAutoControlActive);
+
         if(EditorApplication.isPlaying)
             EditorGUILayout.HelpBox("Some values can't change at runtime.", MessageType.Warning);
 

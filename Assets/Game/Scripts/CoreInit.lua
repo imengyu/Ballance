@@ -4,13 +4,16 @@ local SystemPackage = GamePackage.GetSystemPackage()
 
 ---游戏功能索引
 Game = {
-  Manager = GameManager,
-  Mediator = nil, ---@type GameMediator
+  Manager = GameManager, --获取系统包 [R]
+  Mediator = nil, ---@type GameMediator 获取获取系统中介者 [R]
+  --获取系统包管理器 [R]
   PackageManager = nil, ---@type GamePackageManager
+  --获取UI管理器 [R]
   UIManager = nil, ---@type GameUIManager
-  SoundManager = nil, ---@type GameSoundManager
-  SystemPackage = SystemPackage,
-  GamePlay = nil,
+  --获取声音管理器 [R]
+  SoundManager = nil, ---@type GameSoundManager 
+  SystemPackage = SystemPackage, --获取系统包 [R]
+  GamePlay = nil, --获取游戏玩模块 [R]
 }
 
 function CoreInit()
@@ -34,7 +37,6 @@ end
 function CoreUnload()
   
 end
-
 function CoreVersion()
   return 1
 end

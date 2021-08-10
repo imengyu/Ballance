@@ -30,7 +30,8 @@ public sealed class PhysicsLayerNames : ScriptableObject, ITagNames
         //对角线上的数据是重复的，直接拷贝一下
         for(int i = 1; i < 32; i++) {
             for(int j = 31 - i; j >= 0; j--) 
-                m_GroupFilter[i].m_GroupFilter[j] = m_GroupFilter[i - 1].m_GroupFilter[j - 1];
+                if(i > 0 && j > 0)
+                    m_GroupFilter[i].m_GroupFilter[j] = m_GroupFilter[i - 1].m_GroupFilter[j - 1];
         }
         return Enumerable.Range(0, 32).Select(i => m_GroupFilter[i].GetMask()).ToArray();
     }

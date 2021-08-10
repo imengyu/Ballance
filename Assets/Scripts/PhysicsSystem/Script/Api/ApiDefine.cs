@@ -115,7 +115,7 @@ namespace PhysicsRT
   public delegate IntPtr fnCreatePhysicsWorld(IntPtr gravity,
       int solverIterationCount, float broadPhaseWorldSize, float collisionTolerance,
       bool bContinuous, bool bVisualDebugger, uint layerMask, IntPtr layerToMask, int stableSolverOn,
-      IntPtr onConstraintBreakingCallback, IntPtr onBodyTriggerEventCallback, IntPtr onBodyContactEventCallback);
+      IntPtr onConstraintBreakingCallback, IntPtr onBodyTriggerEventCallback, IntPtr onBodyContactEventCallback, IntPtr onPhantomOverlapCallback);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnDestroyPhysicsWorld(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -207,8 +207,22 @@ namespace PhysicsRT
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fnGetVersion();
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fnSetName([MarshalAs(UnmanagedType.LPStr)] string name);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate IntPtr fnCreateBvCompressedMeshShape(IntPtr vertices, int numVertices, IntPtr triangles, int numTriangles, float convexRadius);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fnCreateSimpleMeshShape(IntPtr vertices, int numVertices, IntPtr triangles, int numTriangles, float convexRadius);
-    
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate IntPtr fnCreateAabbPhantom(IntPtr world, IntPtr min, IntPtr max, int enableListener, int layer);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fnSetAabbPhantomMinMax(IntPtr phantom, IntPtr min, IntPtr max);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate IntPtr fnGetAabbPhantomOverlappingCollidables(IntPtr phantom, ref int outLen);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fnDestroyPhantom(IntPtr ptr);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate int fnGetPhantomId(IntPtr ptr);
+
   /// Return Type: void
   ///constraint: sPhysicsConstraints*
   ///forceMagnitude: float
@@ -219,6 +233,8 @@ namespace PhysicsRT
   public delegate void fnOnBodyTriggerEventCallback(IntPtr body, IntPtr bodyOther, int id, int otherId, int type);
   [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
   public delegate void fnOnBodyContactEventCallback(IntPtr body, IntPtr bodyOther, int id, int otherId, IntPtr data);
+  [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
+  public delegate void fnOnPhantomOverlapCallback(IntPtr phantom, IntPtr bodyOther, int id, int otherId, int type);
 
   #endregion
 
@@ -248,6 +264,7 @@ namespace PhysicsRT
       Marshal.Copy(apiArrayPtr, apiArray, 0, len);
 
       _GetVersion = Marshal.GetDelegateForFunctionPointer<fnGetVersion>(apiArray[254]);
+      _SetName = Marshal.GetDelegateForFunctionPointer<fnSetName>(apiArray[255]);
 
       var v = _GetVersion();
       if(v != Version)
@@ -448,7 +465,15 @@ namespace PhysicsRT
     private fnPhysicsWorldRayCastBody _PhysicsWorldRayCastBody;
     private fnPhysicsWorldRayCastHit _PhysicsWorldRayCastHit;
     private fnGetVersion _GetVersion;
+    private fnCreateBvCompressedMeshShape _CreateBvCompressedMeshShape;
+    private fnCreateAabbPhantom _CreateAabbPhantom;
+    private fnSetAabbPhantomMinMax _SetAabbPhantomMinMax;
+    private fnGetAabbPhantomOverlappingCollidables _GetAabbPhantomOverlappingCollidables;
+    private fnDestroyPhantom _DestroyPhantom;
+    private fnGetPhantomId _GetPhantomId;
+    private fnSetName _SetName;
 
+    public void SetName(string name) { _SetName(name); }
     public int GetVersion() { return _GetVersion(); }
     public int BoolToInt(bool a) {
       return a ? 1 : 0;
@@ -1500,6 +1525,34 @@ namespace PhysicsRT
       ApiExceptionCheck();
       return rs;
     }
+    public IntPtr CreateBvCompressedMeshShape(Vector3[] vertices, int[] triangles, float convexRadius) {
+      if (_CreateBvCompressedMeshShape == null)
+        throw new ApiNotFoundException("CreateBvCompressedMeshShape");
+      
+      float[] verticesArr = new float[vertices.Length * 3];
+      for (int i = 0; i < vertices.Length; i++)
+      {
+          verticesArr[i * 3 + 0] = vertices[i].x;
+          verticesArr[i * 3 + 1] = vertices[i].y;
+          verticesArr[i * 3 + 2] = vertices[i].z;
+      }
+      
+      int bufferSize = Marshal.SizeOf<float>() * verticesArr.Length;
+      IntPtr verticesBuffer = Marshal.AllocHGlobal(bufferSize);
+      Marshal.Copy(verticesArr, 0, verticesBuffer, verticesArr.Length);
+
+      bufferSize = Marshal.SizeOf<int>() * triangles.Length;
+      IntPtr trianglesBuffer = Marshal.AllocHGlobal(bufferSize);
+      Marshal.Copy(triangles, 0, trianglesBuffer, triangles.Length);
+
+      var rs = _CreateBvCompressedMeshShape(verticesBuffer, verticesArr.Length, trianglesBuffer, triangles.Length, convexRadius);
+
+      Marshal.FreeHGlobal(trianglesBuffer);
+      Marshal.FreeHGlobal(verticesBuffer);
+
+      ApiExceptionCheck();
+      return rs;
+    }
     public IntPtr CreateConvexTranslateShape(IntPtr child, Vector3 translation)
     {
       if (_CreateConvexTranslateShape == null)
@@ -1582,9 +1635,60 @@ namespace PhysicsRT
 
       ApiExceptionCheck();
     }
+    public IntPtr CreateAabbPhantom(IntPtr world, Vector3 min, Vector3 max, bool enableListener, int layer) {
+      if (_CreateAabbPhantom == null)
+        throw new ApiNotFoundException("CreateAabbPhantom");
+
+      var minPtr = Vector3ToNative3(min);
+      var maxPtr = Vector3ToNative3(max);
+      var rs = _CreateAabbPhantom(world, minPtr, maxPtr, BoolToInt(enableListener), layer);
+      FreeNativeVector3(minPtr);
+      FreeNativeVector3(maxPtr);
+      ApiExceptionCheck();
+      return rs;
+    }
+    public void SetAabbPhantomMinMax(IntPtr phantom, Vector3 min, Vector3 max) {
+      if (_SetAabbPhantomMinMax == null)
+        throw new ApiNotFoundException("SetAabbPhantomMinMax");
+
+      var minPtr = Vector3ToNative3(min);
+      var maxPtr = Vector3ToNative3(max);
+      _SetAabbPhantomMinMax(phantom, minPtr, maxPtr);
+      FreeNativeVector3(minPtr);
+      FreeNativeVector3(maxPtr);
+      ApiExceptionCheck();
+    }
+    public int[] GetAabbPhantomOverlappingCollidables(IntPtr phantom, ref int outLen) {
+      if (_GetAabbPhantomOverlappingCollidables == null)
+        throw new ApiNotFoundException("GetAabbPhantomOverlappingCollidables");
+
+      var rsPtr = _GetAabbPhantomOverlappingCollidables(phantom, ref outLen);
+      var rs = new int[outLen];
+      Marshal.Copy(rsPtr, rs, 0, outLen);
+
+      CommonDelete(rsPtr);
+      ApiExceptionCheck();
+      return rs;
+    }
+    public void DestroyPhantom(IntPtr ptr) 
+    {
+      if (_DestroyPhantom == null)
+        throw new ApiNotFoundException("DestroyPhantom");
+      _DestroyPhantom(ptr);
+      ApiExceptionCheck();
+    }
+    public int GetPhantomId(IntPtr ptr)
+    {
+      if (_GetPhantomId == null)
+        throw new ApiNotFoundException("GetPhantomId");
+      var rs = _GetPhantomId(ptr);
+      ApiExceptionCheck();
+      return rs; 
+    }
     public IntPtr CreatePhysicsWorld(Vector3 gravity, int solverIterationCount, float broadPhaseWorldSize, float collisionTolerance,
       bool bContinuous, bool bVisualDebugger, uint layerMask, uint[] layerToMask, bool stableSolverOn,
-      fnOnConstraintBreakingCallback onConstraintBreakingCallback, fnOnBodyTriggerEventCallback onBodyTriggerEventCallback, fnOnBodyContactEventCallback onBodyContactEventCallback)
+      fnOnConstraintBreakingCallback onConstraintBreakingCallback, fnOnBodyTriggerEventCallback onBodyTriggerEventCallback, 
+      fnOnBodyContactEventCallback onBodyContactEventCallback, fnOnPhantomOverlapCallback onPhantomOverlapCallback)
     {
       if (_CreatePhysicsWorld == null)
         throw new ApiNotFoundException("CreatePhysicsWorld");
@@ -1602,9 +1706,10 @@ namespace PhysicsRT
       var onConstraintBreakingCallbackPtr = Marshal.GetFunctionPointerForDelegate(onConstraintBreakingCallback);
       var onBodyTriggerEnterCallbackPtr = Marshal.GetFunctionPointerForDelegate(onBodyTriggerEventCallback);
       var onBodyTriggerLeaveCallbackPtr = Marshal.GetFunctionPointerForDelegate(onBodyContactEventCallback);
+      var onPhantomOverlapCallbackPtr = Marshal.GetFunctionPointerForDelegate(onPhantomOverlapCallback);
 
       var rs = _CreatePhysicsWorld(pGravity, solverIterationCount, broadPhaseWorldSize, collisionTolerance, bContinuous, bVisualDebugger, layerMask, layerToMaskPtr, BoolToInt(stableSolverOn),
-        onConstraintBreakingCallbackPtr, onBodyTriggerEnterCallbackPtr, onBodyTriggerLeaveCallbackPtr);
+        onConstraintBreakingCallbackPtr, onBodyTriggerEnterCallbackPtr, onBodyTriggerLeaveCallbackPtr, onPhantomOverlapCallbackPtr);
 
       FreeNativeVector4(pGravity);
       Marshal.FreeHGlobal(layerToMaskPtr);

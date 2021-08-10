@@ -59,6 +59,7 @@ namespace PhysicsRT
 
         private SimpleLinkedList<PhysicsBody> bodysList = new SimpleLinkedList<PhysicsBody>();
         private Dictionary<int, PhysicsBody> bodysDict = new Dictionary<int, PhysicsBody>();
+        private Dictionary<int, PhysicsPhantom> phantomsList = new Dictionary<int, PhysicsPhantom>();
         private Dictionary<int, PhysicsConstraint> constraintDict = new Dictionary<int, PhysicsConstraint>();
         private Dictionary<int, PhysicsBody> bodysDictAddContactListener = new Dictionary<int, PhysicsBody>();
         private PhysicsBody bodyCurrent = null;
@@ -93,7 +94,8 @@ namespace PhysicsRT
                     StableSolverOn,
                     _OnConstraintBreakingCallback,
                     _OnBodyTriggerEventCallback,
-                    _OnBodyContactEventCallback);
+                    _OnBodyContactEventCallback,
+                    _OnPhantomOverlapCallback);
                 bodysUpdateBuffer = Marshal.AllocHGlobal(Marshal.SizeOf<float>() * 8 * updateBufferSize);
             }
         }
@@ -182,6 +184,24 @@ namespace PhysicsRT
                 body.FlushPhysicsBodyContactDataTick();
         }
 
+
+
+        /// <summary>
+        /// [由PhysicsPhantom自动调用，请勿手动调用]
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="body"></param>
+        internal void AddPhantom(int id, PhysicsPhantom phantom) {
+            phantomsList.Add(id, phantom);
+            
+        }
+        /// <summary>
+        /// [由PhysicsPhantom自动调用，请勿手动调用]
+        /// </summary>
+        /// <param name="body"></param>
+        internal void RemovePhantom(PhysicsPhantom phantom) {
+            phantomsList.Remove(phantom.Id);
+        }      
         /// <summary>
         /// [由PhysicsBody自动调用，请勿手动调用]
         /// </summary>
@@ -226,6 +246,16 @@ namespace PhysicsRT
         /// <returns>如果未找到则返回null</returns>
         public PhysicsConstraint GetConstraintById(int id) {
             if(constraintDict.TryGetValue(id, out var r))
+                return r;
+            return null;
+        }
+        /// <summary>
+        /// 通过ID查找世界中的幻影
+        /// </summary>
+        /// <param name="phantomId">ID</param>
+        /// <returns>如果未找到则返回null</returns>
+        public PhysicsPhantom GetPhantomById(int phantomId) {
+            if(phantomsList.TryGetValue(phantomId, out var r))
                 return r;
             return null;
         }
@@ -315,6 +345,7 @@ namespace PhysicsRT
         private fnOnBodyContactEventCallback _OnBodyContactEventCallback;
         private fnOnConstraintBreakingCallback _OnConstraintBreakingCallback;
         private fnOnBodyTriggerEventCallback _OnBodyTriggerEventCallback;
+        private fnOnPhantomOverlapCallback _OnPhantomOverlapCallback;
 
         private void OnConstraintBreakingCallback(IntPtr constraint, int id, float forceMagnitude, int removed) {
             var c = GetConstraintById(id);
@@ -338,6 +369,12 @@ namespace PhysicsRT
             PhysicsBody sbody = GetBodyById(id), sbodyOther = GetBodyById(otherId);
             if(sbody != null && sbodyOther != null && sbodyOther != sbody)
                 sbody.OnBodyPointContactCallback(sbodyOther, Marshal.PtrToStructure<sPhysicsBodyContactData>(dataPtr));
+        }
+        private void OnPhantomOverlapCallback(IntPtr phantom, IntPtr bodyOther, int id, int otherId, int ty) {
+            PhysicsPhantom sphantom = GetPhantomById(id);
+            PhysicsBody sbodyOther = GetBodyById(otherId);
+            if(sphantom != null && sbodyOther != null)
+                sphantom.OnPhantomOverlapCallback(sbodyOther, ty);
         }
     }
 }

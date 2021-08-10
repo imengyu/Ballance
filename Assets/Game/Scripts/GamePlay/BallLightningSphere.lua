@@ -14,8 +14,8 @@ local Time = UnityEngine.Time
 local Color = UnityEngine.Color
 local WaitForSeconds = UnityEngine.WaitForSeconds
 
----@type GameLuaObjectHostClass
----@class BallLightningSphere
+---闪电球动画控制脚本
+---@class BallLightningSphere : GameLuaObjectHostClass
 BallLightningSphere = {
     -- public:
     Ball_Light = nil, ---@type Light
@@ -50,8 +50,7 @@ BallLightningSphere = {
     ballLightningMusic = nil, ---@type AudioSource
 }
 
----闪电球动画控制脚本
----@return any
+---@return BallLightningSphere
 function CreateClass_BallLightningSphere()
 
   function BallLightningSphere:new(o)

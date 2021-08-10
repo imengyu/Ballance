@@ -1,7 +1,7 @@
 local GameUIControlMessageSender = Ballance2.Sys.UI.GameUIControlMessageSender
 
----@class MouseSelect
----@type GameLuaObjectHostClass
+---鼠标外框选择小工具
+---@class MouseSelect : GameLuaObjectHostClass
 local MouseSelect = {
   QuickOutline = nil,---@type QuickOutline
   NormalColor = nil,---@type Color

@@ -19,7 +19,7 @@ local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 local GameManager = Ballance2.Sys.GameManager
 local GamePackage = Ballance2.Sys.Package.GamePackage
 
----@type GameLuaObjectHostClass
+---@class DebugTools : GameLuaObjectHostClass
 DebugTools = {
   
   DebugLogText = nil,---@type Text

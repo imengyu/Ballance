@@ -5,10 +5,11 @@
 function GameObjectToLuaClass(go)
   if (not Slua.IsNull(go)) then 
     local host = go:GetComponent(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost) ---@type GameLuaObjectHost
-    return host == nil and nil or host.LuaSelf
-  else
-    return nil
+    if(host ~= nil) then
+			return host:GetLuaClass()
+		end 
   end
+	return nil
 end
 ---返回绑定在 GameObject 上的第一个 GameLuaObjectHost 组件
 ---@param go GameObject 要获取的实体

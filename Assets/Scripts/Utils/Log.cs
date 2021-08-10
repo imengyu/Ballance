@@ -60,7 +60,7 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("param", "格式化参数")]
         public static void V(string tag, string format, params object[] param)
         {
-            V(tag, string.Format(format, param));
+            V(tag, string.Format(format, LuaUtils.AutoCheckParamIsLuaTableAndConver(param)));
         }
         /// <summary>
         /// 打印一些调试信息
@@ -86,7 +86,7 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("param", "格式化参数")]
         public static void D(string tag, string format, params object[] param)
         {
-            D(tag, string.Format(format, param));
+            D(tag, string.Format(format, LuaUtils.AutoCheckParamIsLuaTableAndConver(param)));
         }
         /// <summary>
         /// 打印一些信息字符串
@@ -112,7 +112,7 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("param", "格式化参数")]
         public static void I(string tag, string format, params object[] param)
         {
-            I(tag, string.Format(format, param));
+            I(tag, string.Format(format, LuaUtils.AutoCheckParamIsLuaTableAndConver(param)));
         }
         /// <summary>
         /// 打印一些警告信息
@@ -135,7 +135,7 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("param", "格式化参数")]
         public static void W(string tag, string format, params object[] param)
         {
-            W(tag, string.Format(format, param));
+            W(tag, string.Format(format, LuaUtils.AutoCheckParamIsLuaTableAndConver(param)));
         }
         /// <summary>
         /// 打印错误信息
@@ -161,7 +161,7 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("param", "格式化参数")]
         public static void E(string tag, string format, params object[] param)
         {
-            E(tag, string.Format(format, param));
+            E(tag, string.Format(format, LuaUtils.AutoCheckParamIsLuaTableAndConver(param)));
         }
 
         private static void LogInternal(LogLevel level, string tag, string message) 

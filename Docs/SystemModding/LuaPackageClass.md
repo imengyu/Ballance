@@ -1,12 +1,13 @@
-﻿## Lua 类组件
+﻿# Lua 类组件
 
 Lua 类提供了一种类似于MonoBehaviour的lua组件。
 
-### 定义 Lua 类组件
+## 定义 Lua 类组件
 
 通过下面的代码你可以定义一个 Lua 组件类，它可以被 GameLuaObjectHost 加载并执行Lua代码。
+
 ```lua
----@type GameLuaObjectHostClass
+---@class MyClass : GameLuaObjectHostClass
 MyClass = {
   var = nil,
   --自定义属性
@@ -33,7 +34,7 @@ function CreateClass_MyClass()
 end
 ```
 
-### 使用 Lua 类组件
+## 使用 Lua 类组件
 
 * 可使用代码手动导入 Lua 类组件
 
@@ -47,7 +48,7 @@ thisGamePackage:RegisterLuaObject('ObjectName', gameObject, 'MyClass')
 
 在组件上输入名称、类名、包名，以及其他参数，在其被加载至场景中后会自动加载Lua代码并执行。
 
-### Lua 类事件接收器
+## Lua 类事件接收器
 
 默认为了兼顾性能，MonoBehaviour 里面的 On* 这类函数，GameLuaObjectHost 默认不会接收，如果你的脚本需要某些函数，
 可以添加对应的事件接收器，需要什么就加什么，lua类中就可以使用这些函数了。

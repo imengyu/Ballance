@@ -8,8 +8,8 @@ local GameSoundManager = GameManager.Instance:GetSystemService("GameSoundManager
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 
----@class CameraControl
----@type GameLuaObjectHostClass
+---Menu level 摄像机控制类
+---@class CameraControl : GameLuaObjectHostClass
 local CameraControl = {
   I_Zone = nil, ---@type GameObject
   I_Zone_SuDu = nil, ---@type GameObject

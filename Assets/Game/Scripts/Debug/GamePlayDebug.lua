@@ -13,11 +13,12 @@ function CoreDebugGameGamePlay()
   --Hide base floor
   GameManager.Instance:SetGameBaseCameraVisible(false)
 
-  GamePlayInit()
+  GamePlayInit(function ()
+    --Init sky
+    Game.GamePlay.CamManager:SetSkyBox(SkyBoxUtils.MakeSkyBox('A'))
 
-  --Init sky
-  Game.GamePlay.CamManager:SetSkyBox(SkyBoxUtils.MakeSkyBox('A'))
+    --Hide black
+    GameUIManager:MaskBlackFadeOut(1)
+  end)
 
-  --Hide black
-  GameUIManager:MaskBlackFadeOut(1)
 end

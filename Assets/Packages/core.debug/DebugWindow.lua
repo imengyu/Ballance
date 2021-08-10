@@ -25,7 +25,7 @@ local GamePackage = Ballance2.Sys.Package.GamePackage
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
----@type GameLuaObjectHostClass
+---@class DebugWindow : GameLuaObjectHostClass
 DebugWindow = {
   --Initvars
   CommandInputField = nil,---@type InputField

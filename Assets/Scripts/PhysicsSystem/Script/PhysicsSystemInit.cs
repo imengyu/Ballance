@@ -6,10 +6,12 @@ namespace PhysicsRT
     {
         public static void Init()
         {
+            #if !UNITY_EDITOR
             DoInit();
             Application.quitting += () => {
                 DoDestroy();
             };
+            #endif
         }
 
         public static void DoDestroy()
