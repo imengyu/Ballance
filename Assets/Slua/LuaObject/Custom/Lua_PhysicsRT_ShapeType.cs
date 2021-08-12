@@ -12,8 +12,9 @@ public class Lua_PhysicsRT_ShapeType : LuaObject {
 		addMember(l,4,"Plane");
 		addMember(l,5,"ConvexHull");
 		addMember(l,6,"Mesh");
-		addMember(l,7,"List");
-		addMember(l,8,"StaticCompound");
+		addMember(l,7,"BvCompressedMesh");
+		addMember(l,8,"List");
+		addMember(l,9,"StaticCompound");
 		LuaDLL.lua_pop(l, 1);
 	}
 }

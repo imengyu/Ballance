@@ -116,7 +116,9 @@ public class Lua_PhysicsRT_PhysicsShape : LuaObject {
 			PhysicsRT.PhysicsShape self=(PhysicsRT.PhysicsShape)checkSelf(l);
 			System.Boolean a1;
 			checkType(l,2,out a1);
-			var ret=self.GetShapeBody(a1);
+			System.Int32 a2;
+			checkType(l,3,out a2);
+			var ret=self.GetShapeBody(a1,a2);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;

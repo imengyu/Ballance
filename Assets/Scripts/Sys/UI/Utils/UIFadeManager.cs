@@ -170,7 +170,11 @@ namespace Ballance2.Sys.UI.Utils
             fadeObject.gameObject = gameObject;
             fadeObject.timeInSecond = timeInSecond;
             fadeObject.alpha = 1;
-            fadeObject.material = material;
+            if(material == null) {
+                var meshRender = gameObject.GetComponent<MeshRenderer>();
+                fadeObject.material = meshRender.material;
+            }
+            else fadeObject.material = material;
             fadeObject.fadeType = FadeType.FadeOut;
             if (material != null)
                 material.color = new Color(material.color.r, material.color.g, material.color.b, 1);
@@ -198,7 +202,11 @@ namespace Ballance2.Sys.UI.Utils
             fadeObject.gameObject = gameObject;
             fadeObject.timeInSecond = timeInSecond;
             fadeObject.alpha = 0;
-            fadeObject.material = material;
+            if(material == null) {
+                var meshRender = gameObject.GetComponent<MeshRenderer>();
+                fadeObject.material = meshRender.material;
+            }
+            else fadeObject.material = material;
             fadeObject.fadeType = FadeType.FadeIn;
             if (material != null)
                 material.color = new Color(material.color.r, material.color.g, material.color.b, 0);
@@ -220,7 +228,7 @@ namespace Ballance2.Sys.UI.Utils
         [LuaApiParamDescription("timeInSecond", "执行时间")]
         [LuaApiParamDescription("material", "执行材质")]
         [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
-        public FadeObject AddFadeOut(GameObject gameObject, float timeInSecond, bool hidden, Material[] materials)
+        public FadeObject AddFadeOut2(GameObject gameObject, float timeInSecond, bool hidden, Material[] materials)
         {
             FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeOut);
             if (fadeObject != null)
@@ -230,7 +238,11 @@ namespace Ballance2.Sys.UI.Utils
             fadeObject.gameObject = gameObject;
             fadeObject.timeInSecond = timeInSecond;
             fadeObject.alpha = 1;
-            fadeObject.materials = materials;
+            if(materials == null) {
+                var meshRender = gameObject.GetComponent<MeshRenderer>();
+                fadeObject.materials = meshRender.materials;
+            }
+            else fadeObject.materials = materials;
             fadeObject.fadeType = FadeType.FadeOut;
             if (materials != null && materials.Length > 0)
                 foreach (Material m in materials)
@@ -249,7 +261,7 @@ namespace Ballance2.Sys.UI.Utils
         [LuaApiParamDescription("gameObject", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
         [LuaApiParamDescription("material", "执行材质")]
-        public FadeObject AddFadeIn(GameObject gameObject, float timeInSecond, Material[] materials)
+        public FadeObject AddFadeIn2(GameObject gameObject, float timeInSecond, Material[] materials)
         {
             FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeIn);
             if (fadeObject != null)
@@ -259,7 +271,11 @@ namespace Ballance2.Sys.UI.Utils
             fadeObject.gameObject = gameObject;
             fadeObject.timeInSecond = timeInSecond;
             fadeObject.alpha = 0;
-            fadeObject.materials = materials;
+            if(materials == null) {
+                var meshRender = gameObject.GetComponent<MeshRenderer>();
+                fadeObject.materials = meshRender.materials;
+            }
+            else fadeObject.materials = materials;
             fadeObject.fadeType = FadeType.FadeIn;
             if (materials != null && materials.Length > 0)
                 foreach (Material m in materials)

@@ -322,6 +322,7 @@ class PhysicsShapeEditor : Editor
                 break;
             case ShapeType.ConvexHull:
             case ShapeType.Mesh:
+            case ShapeType.BvCompressedMesh:
                 pShapeMesh.objectReferenceValue = EditorGUILayout.ObjectField("Mesh", pShapeMesh.objectReferenceValue, typeof(Mesh), false);
                 pShapeConvexRadius.floatValue = EditorGUILayout.FloatField("Convex radius", pShapeConvexRadius.floatValue);
                 break;

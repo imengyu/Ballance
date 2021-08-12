@@ -4,9 +4,12 @@ local KeyListener = Ballance2.Sys.Utils.KeyListener
 local Vector3 = UnityEngine.Vector3
 local GameSettingsManager = Ballance2.Config.GameSettingsManager
 local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
+local GameManager = Ballance2.Sys.GameManager
 local GameError = Ballance2.Sys.Debug.GameError
 local LuaUtils = Ballance2.Utils.LuaUtils
 local MotionType = PhysicsRT.MotionType
+local GUI = UnityEngine.GUI
+local Rect = UnityEngine.Rect
 
 ---球推动定义
 ---@class BallPushType
@@ -53,6 +56,7 @@ BallManager = {
   _BallStone = nil, ---@type GameObject
   _BallPaper = nil, ---@type GameObject
   _BallSmoke = nil, ---@type GameObject
+  _DebugMode = false, 
   -- private
   _private = {
     BallLightningSphere = nil, ---@type BallLightningSphere
@@ -85,10 +89,11 @@ BallManager = {
       keyUp = KeyCode.Q,
       keyDown = KeyCode.E,
     }, 
+    rect = Rect(20,100,200,20),
   },
 
   CurrentBall = nil, ---@type Ball --获取当前的球 [R]
-  PushType = BallPushType.None, --获取或者设置当前用户是否可以控制球 [RW]
+  PushType = BallPushType.None, --获取或者设置当前球的推动方向 [RW]
   CanControll = false, --获取当前用户是否可以控制球 [R]
   CanControllCamera = false, --获取当前用户是否可以控制摄像机 [R]
   ShiftPressed = false, --获取当前用户是否按下Shift键 [R]
@@ -118,6 +123,7 @@ function CreateClass_BallManager()
       return false
     end)
     self._private.GameSettings = GameSettings
+    self._DebugMode = GameManager.DebugMode
 
     --初始化键盘侦听
     self._private.keyListener = KeyListener.Get(self.gameObject)
@@ -128,11 +134,38 @@ function CreateClass_BallManager()
     self._private.GameSettings:UnRegisterSettingsUpdateCallback(self._private.settingsCallbackId)
     self._private.keyListener:ClearKeyListen()
   end
-  function BallManager:FixUpdate()
+  function BallManager:FixedUpdate()
     if self.CanControll then
-      self.CurrentBall:Push()
+      self.CurrentBall:Push(self.PushType)
     end
   end
+  --[[
+  function BallManager:OnGUI()
+    if(self._DebugMode) then
+      local rect = self._private.rect
+      local ball = self._private.currentBall rect.y = 100
+      
+      GUI.Label(rect, "ControlState: "..self._private.controllingStatus) rect.y = rect.y + 16
+      if(ball ~= nil) then
+        GUI.Label(rect, "CurrentBall: "..ball.name) rect.y = rect.y + 16
+        GUI.Label(rect, "Pos: "..LuaUtils.Vector3ToString(ball.ball.transform.position)) rect.y = rect.y + 16
+        GUI.Label(rect, "Rot: "..LuaUtils.Vector3ToString(ball.ball.transform.eulerAngles)) rect.y = rect.y + 16
+        GUI.Label(rect, "LinearVelocity : "..LuaUtils.Vector3ToString(ball.rigidbody.LinearVelocity)) rect.y = rect.y + 16
+        GUI.Label(rect, "AngularVelocity : "..LuaUtils.Vector3ToString(ball.rigidbody.AngularVelocity)) rect.y = rect.y + 16
+      else
+        GUI.Label(rect, "CurrentBall: nil") rect.y = rect.y + 16
+      end
+      GUI.Label(rect, "PushType: "..self.PushType) rect.y = rect.y + 16
+
+      local cam = GamePlay.CamManager
+      if(cam ~= nil) then
+        GUI.Label(rect, "CameraDirection: "..cam.CamRotateValue) rect.y = rect.y + 16
+        GUI.Label(rect, "CameraFollow: "..LuaUtils.BooleanToString(cam.FollowEnable)) rect.y = rect.y + 16
+        GUI.Label(rect, "CameraLook: "..LuaUtils.BooleanToString(cam.LookEnable)) rect.y = rect.y + 16
+      end
+    end
+  end
+  ]]--
 
   --#region 球基础控制方法
 
@@ -157,6 +190,9 @@ function CreateClass_BallManager()
     gameObject:SetActive(false)
 
     local ball = GameObjectToLuaClass(gameObject)
+    if(ball == nil) then
+      GameErrorChecker.SetLastErrorAndLog(GameError.ClassNotFound, TAG, 'Not found Ball class on {0} !', { name })
+    end
 
     table.insert(self._private.registerBalls, {
       name = name,
@@ -253,24 +289,23 @@ function CreateClass_BallManager()
     local current = self._private.currentActiveBall
     if current ~= nil then
       --取消激活
-      current.ball.gameObject.activeSelf = false
+      current.rigidbody:ForceDePhysics()
+      current.ball.gameObject:SetActive(false)
       current.ball:Deactive()
-      current.rigidbody:ForceDeactive()
-      --设置速度为0
-      self:_ZeroSpeedRigidbody(current.rigidbody)
       --清空摄像机跟随对象
       GamePlay.CamManager:SetTarget(nil)
-      self._private.currentBall = nil
+      self._private.currentActiveBall = nil
     end
   end
   function BallManager:_ActiveCurrentBall() 
     local current = self._private.currentActiveBall
     if current == nil then
-      self._private.currentActiveBall = self._private.currentBall
       current = self._private.currentBall
+      self._private.currentActiveBall = self._private.currentBall
 
       --激活
-      current.ball.gameObject.activeSelf = false
+      current.ball.gameObject:SetActive(true)
+      current.rigidbody:ForcePhysics()
       current.ball:Active()
       if self._private.controllingStatus ~= BallControlStatus.LockMode then
         current.rigidbody:ForceActive()
@@ -333,40 +368,20 @@ function CreateClass_BallManager()
     local keyListener = self._private.keyListener
     local keySets = self._private.keySets
     keyListener:ClearKeyListen()
-    keyListener:AddKeyListen(keySets.keyFront, keySets.keyFront2, function (key, down)
-      self:_UpArrow_Key(key, down)
-    end)
-    keyListener:AddKeyListen(keySets.keyBack, keySets.keyBack2, function (key, down)
-      self:_DownArrow_Key(key, down)
-    end)
-    keyListener:AddKeyListen(keySets.keyUp, function (key, down)
-      self:_Up_Key(key, down)
-    end)
-    keyListener:AddKeyListen(keySets.keyDown,function (key, down)
-      self:_Down_Key(key, down)
-    end)
-    keyListener:AddKeyListen(keySets.keyUpCamera, function (key, down)
-      self:_Space_Key(key, down)
-    end)
-    keyListener:AddKeyListen(keySets.keyRoateCamera, keySets.keyRoateCamera2, function (key, down)
-      self:_Shift_Key(key, down)
-    end)
+    keyListener:AddKeyListen(keySets.keyFront, keySets.keyFront2, function (key, down) self:_UpArrow_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyBack, keySets.keyBack2, function (key, down) self:_DownArrow_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyUp, function (key, down) self:_Up_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyDown,function (key, down) self:_Down_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyUpCamera, function (key, down) self:_Space_Key(key, down)  end)
+    keyListener:AddKeyListen(keySets.keyRoateCamera, keySets.keyRoateCamera2, function (key, down) self:_Shift_Key(key, down)  end)
 
     --是否反向控制  
     if(self._private.reverseControl) then
-      keyListener:AddKeyListen(keySets.keyLeft, keySets.keyLeft2, function (key, down)
-        self:_RightArrow_Key(key, down)
-      end)
-      keyListener:AddKeyListen(keySets.keyRight, keySets.keyRight2, function (key, down)
-        self:_LeftArrow_Key(key, down)
-      end)
+      keyListener:AddKeyListen(keySets.keyLeft, keySets.keyLeft2, function (key, down) self:_RightArrow_Key(key, down) end)
+      keyListener:AddKeyListen(keySets.keyRight, keySets.keyRight2, function (key, down) self:_LeftArrow_Key(key, down) end)
     else
-      keyListener:AddKeyListen(keySets.keyLeft, keySets.keyLeft2, function (key, down)
-        self:_LeftArrow_Key(key, down)
-      end)
-      keyListener:AddKeyListen(keySets.keyRight, keySets.keyRight2, function (key, down)
-        self:_RightArrow_Key(key, down)
-      end)
+      keyListener:AddKeyListen(keySets.keyLeft, keySets.keyLeft2, function (key, down) self:_LeftArrow_Key(key, down) end)
+      keyListener:AddKeyListen(keySets.keyRight, keySets.keyRight2, function (key, down) self:_RightArrow_Key(key, down) end)
     end
 
     --测试按扭
@@ -395,6 +410,21 @@ function CreateClass_BallManager()
         self:SetControllingStatus(BallControlStatus.NoControl)
       end
     end)
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha6, function (key, downed)
+      if(downed) then
+        self._private.registerBalls[0].ball:ThrowPieces()
+      end
+    end)
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha7, function (key, downed)
+      if(downed) then
+        self._private.registerBalls[1].ball:ThrowPieces()
+      end
+    end)
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha8, function (key, downed)
+      if(downed) then
+        self._private.registerBalls[2].ball:ThrowPieces()
+      end
+    end)
 
   end
   function BallManager:_OnControlSettingsChanged()
@@ -413,6 +443,7 @@ function CreateClass_BallManager()
     keySets.keyRight2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.right2", "D"))
     keySets.keyRoateCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.roate", "LeftShift"))
     keySets.keyRoateCamera2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.roate2", "RightShift"))
+    keySets.keyUpCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up_cam", "Space"))
     keySets.keyUpCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up_cam", "Space"))
 
     self._private.reverseControl = GameSettings:GetBool("control.reverse", false)
@@ -460,14 +491,14 @@ function CreateClass_BallManager()
     end
   end
   function BallManager:_Down_Key(key, down)
-    if (down) then
+    if (self._DebugMode and down) then
       self:AddBallPush(BallPushType.Down)
     else
       self:RemoveBallPush(BallPushType.Down)
     end
   end
   function BallManager:_Up_Key(key, down)
-    if (down) then
+    if (self._DebugMode and down) then
       self:AddBallPush(BallPushType.Up)
     else
       self:RemoveBallPush(BallPushType.Up)
@@ -487,9 +518,7 @@ function CreateClass_BallManager()
   ---添加球推动方向
   ---@param t BallPushType 推动方向
   function BallManager:AddBallPush(t)
-    if ((self.PushType and t) ~= t) then
-      self.PushType = LuaUtils.And(self.PushType, t)
-    end
+    self.PushType = LuaUtils.Or(self.PushType, t)
   end
   ---去除球推动方向
   ---@param t BallPushType 推动方向

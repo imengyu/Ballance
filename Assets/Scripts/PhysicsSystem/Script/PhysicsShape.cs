@@ -15,6 +15,7 @@ namespace PhysicsRT
         Plane,
         ConvexHull,
         Mesh,
+        BvCompressedMesh,
         List,
         StaticCompound,
     }
@@ -160,6 +161,7 @@ namespace PhysicsRT
                         break;
                     }
                 case ShapeType.Mesh:
+                case ShapeType.BvCompressedMesh:
                 case ShapeType.StaticCompound:
                     break;
             }
@@ -174,7 +176,7 @@ namespace PhysicsRT
             public int staticCompoundShapeRetIdsCount;
         };
 
-        private void CreateShape(bool forceRecreate) {
+        private void CreateShape(bool forceRecreate, int layout) {
 
             //Create base shape
             switch (m_ShapeType)
@@ -230,11 +232,23 @@ namespace PhysicsRT
                         shapeRealPtr = PhysicsApi.API.CreateSimpleMeshShape(mesh.vertices, mesh.triangles, ShapeConvexRadius);
                         break;
                     }
+                case ShapeType.BvCompressedMesh:
+                    {
+                        Mesh mesh = ShapeMesh;
+                        if (mesh == null)
+                        {
+                            Debug.LogWarning("Shape need a mesh");
+                            return;
+                        }
+
+                        shapeRealPtr = PhysicsApi.API.CreateBvCompressedMeshShape(mesh.vertices, mesh.triangles, ShapeConvexRadius);
+                        break;
+                    }
                 case ShapeType.List:
                     {
                         List<IntPtr> childernTransforms = null;
                         IntPtr childTransforms = IntPtr.Zero;
-                        IntPtr childs = GetChildernShapes(forceRecreate, false, out int childCount, ref childTransforms, ref childernTransforms);
+                        IntPtr childs = GetChildernShapes(forceRecreate, layout, false, out int childCount, ref childTransforms, ref childernTransforms);
                         shapeRealPtr = PhysicsApi.API.CreateListShape(childs, childCount);
                         Marshal.FreeHGlobal(childs);
                         break;
@@ -243,8 +257,8 @@ namespace PhysicsRT
                     {
                         List<IntPtr> childernTransforms = new List<IntPtr>();
                         IntPtr childTransforms = IntPtr.Zero;
-                        IntPtr childs = GetChildernShapes(forceRecreate, true, out int childCount, ref childTransforms, ref childernTransforms);
-                        IntPtr retStruct = PhysicsApi.API.CreateStaticCompoundShape(childs, childTransforms, childCount);
+                        IntPtr childs = GetChildernShapes(forceRecreate, layout, true, out int childCount, ref childTransforms, ref childernTransforms);
+                        IntPtr retStruct = PhysicsApi.API.CreateStaticCompoundShape(childs, childTransforms, childCount, layout);
                         shapeRealPtr = retStruct;
                         //更新ID至每个shape
                         sPhysicsShape str = (sPhysicsShape)Marshal.PtrToStructure(retStruct, typeof(sPhysicsShape));
@@ -358,7 +372,7 @@ namespace PhysicsRT
             }
         }
         //获取子级Shape
-        private IntPtr GetChildernShapes(bool forceRecreate, bool withChildTransforms, out int childCount, ref IntPtr outChildTransforms, ref List<IntPtr> childernTransforms)
+        private IntPtr GetChildernShapes(bool forceRecreate, int layout, bool withChildTransforms, out int childCount, ref IntPtr outChildTransforms, ref List<IntPtr> childernTransforms)
         {
             //获取子级 PhysicsShape 的指针
 
@@ -368,7 +382,7 @@ namespace PhysicsRT
                 var shape = child.gameObject.GetComponent<PhysicsShape>();
                 if (shape != null)
                 {
-                    childernShapes.Add(shape.GetShapeBody(forceRecreate));
+                    childernShapes.Add(shape.GetShapeBody(forceRecreate, layout));
 
                     if (withChildTransforms)// Child Transforms
                     {
@@ -408,12 +422,14 @@ namespace PhysicsRT
                         shape.ReleaseShapeBody();
                 }
         }
-        public IntPtr GetShapeBody(bool forceRecreate)
+        public IntPtr GetShapeBody(bool forceRecreate, int layout)
         {
             if (forceRecreate && ptr != IntPtr.Zero)
                 DestroyShape(true);
             if (ptr == IntPtr.Zero)
-                CreateShape(forceRecreate);
+                CreateShape(forceRecreate, layout);
+            if(ptr == IntPtr.Zero)
+                throw new Exception("ptr == IntPtr.Zero!");
             return ptr;
         }
         public void FitToEnabledRenderMeshes(float f) {

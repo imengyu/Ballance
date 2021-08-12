@@ -57,18 +57,8 @@ namespace Ballance2.Sys.Utils
         }
 
         private List<KeyListenerItem> items = new List<KeyListenerItem>();
-        private int updateInterval = 0;
         private bool isListenKey = true;
 
-        /// <summary>
-        /// 检测延迟
-        /// </summary>
-        [LuaApiDescription("检测延迟")]
-        public int UpdateInterval
-        {
-            set { updateInterval = value; }
-            get { return updateInterval;  }
-        }
         /// <summary>
         /// 是否开启监听
         /// </summary>
@@ -118,40 +108,34 @@ namespace Ballance2.Sys.Utils
             items.Clear();
         }
 
-        private int updateTick = 0;
         private void Update()
         {
             if (isListenKey)
             {
-                if (updateTick < updateInterval) updateTick++;
-                else
+                for (int i = 0; i < items.Count; i++)
                 {
-                    updateTick = 0;
-                    for (int i = 0; i < items.Count; i++)
+                    if (items[i].has2key)
                     {
-                        if (items[i].has2key)
-                        {
-                            if (Input.GetKeyDown(items[i].key2) && !items[i].downed)
-                            {
-                                items[i].downed = true;
-                                items[i].callBack(items[i].key2, true);
-                            }
-                            else if (Input.GetKeyUp(items[i].key2) && items[i].downed)
-                            {
-                                items[i].callBack(items[i].key2, false);
-                                items[i].downed = false;
-                            }
-                        }
-                        if (Input.GetKeyDown(items[i].key) && !items[i].downed)
+                        if (Input.GetKeyDown(items[i].key2) && !items[i].downed)
                         {
                             items[i].downed = true;
-                            items[i].callBack(items[i].key, true);
+                            items[i].callBack(items[i].key2, true);
                         }
-                        else if (Input.GetKeyUp(items[i].key) && items[i].downed)
+                        if (Input.GetKeyUp(items[i].key2) && items[i].downed)
                         {
-                            items[i].callBack(items[i].key, false);
                             items[i].downed = false;
+                            items[i].callBack(items[i].key2, false);
                         }
+                    }
+                    if (Input.GetKeyDown(items[i].key) && !items[i].downed)
+                    {
+                        items[i].downed = true;
+                        items[i].callBack(items[i].key, true);
+                    }
+                    if (Input.GetKeyUp(items[i].key) && items[i].downed)
+                    {
+                        items[i].downed = false;
+                        items[i].callBack(items[i].key, false);
                     }
                 }
             }

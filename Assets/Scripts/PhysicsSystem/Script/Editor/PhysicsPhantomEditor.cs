@@ -57,6 +57,8 @@ class PhysicsPhantomEditor : Editor
             instance.BackUpRuntimeCanModifieProperties();
         EditorGUI.BeginChangeCheck();
 
+         EditorGUILayout.EditorToolbarForTarget(EditorGUIUtility.TrTempContent("Edit Collider"), base.target);
+
         EditorGUILayout.PropertyField(pMin);
         EditorGUILayout.PropertyField(pMax);
 

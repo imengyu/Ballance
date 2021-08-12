@@ -157,6 +157,7 @@ public class PhysicsShapeEditorTool : EditorTool
             break;
           }
         case ShapeType.ConvexHull:
+        case ShapeType.BvCompressedMesh:
         case ShapeType.Mesh:
           {
             if (Event.current.type != EventType.Repaint)
@@ -265,7 +266,7 @@ public class PhysicsShapeEditorTool : EditorTool
 
           //Convert to lines
           GenerateEdges(verticesVArrResult, trianglesArrResult);
-        } else if(lastGenerateMeshShapeType == ShapeType.Mesh) {
+        } else if(lastGenerateMeshShapeType == ShapeType.Mesh || lastGenerateMeshShapeType == ShapeType.BvCompressedMesh) {
           GenerateEdges(lastGenerateMesh.vertices, lastGenerateMesh.triangles);
         }
       }
@@ -278,7 +279,7 @@ public class PhysicsShapeEditorTool : EditorTool
 
   public PreviewMeshData GetPreviewData(PhysicsShape shape)
   {
-    if (shape.ShapeType != ShapeType.ConvexHull && shape.ShapeType != ShapeType.Mesh)
+    if (shape.ShapeType != ShapeType.ConvexHull && shape.ShapeType != ShapeType.Mesh && shape.ShapeType != ShapeType.BvCompressedMesh)
       return null;
 
     if (!m_PreviewData.TryGetValue(shape, out var preview))

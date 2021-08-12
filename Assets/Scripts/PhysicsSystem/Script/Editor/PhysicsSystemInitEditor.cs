@@ -12,7 +12,10 @@ namespace PhysicsRT
         {
             EditorApplication.pauseStateChanged += PauseStateChanged;
             EditorApplication.quitting += Quitting;
-
+            EditorApplication.wantsToQuit += () => {
+                PhysicsSystemInit.DoPreDestroy();
+                return true;
+            };
             if(EditorApplication.isPlayingOrWillChangePlaymode)
                 PauseStateChanged(PauseState.Unpaused);
         }
@@ -20,9 +23,7 @@ namespace PhysicsRT
         static void PauseStateChanged(PauseState state)
         {
             if (firstPlay)
-            {
                 return;
-            }
             firstPlay = true;
             PhysicsSystemInit.DoInit();
         }

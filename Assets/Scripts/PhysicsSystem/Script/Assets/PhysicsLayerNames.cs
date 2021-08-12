@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ballance2.Utils;
 using UnityEngine;
 
 [SLua.CustomLuaClass]
@@ -26,27 +27,23 @@ public sealed class PhysicsLayerNames : ScriptableObject, ITagNames
             Array.Resize(ref m_LayerNames, 32);
     }
 
-    public uint[] GetGroupFilterMasks() {
-        //对角线上的数据是重复的，直接拷贝一下
-        for(int i = 1; i < 32; i++) {
-            for(int j = 31 - i; j >= 0; j--) 
-                if(i > 0 && j > 0)
-                    m_GroupFilter[i].m_GroupFilter[j] = m_GroupFilter[i - 1].m_GroupFilter[j - 1];
-        }
-        return Enumerable.Range(0, 32).Select(i => m_GroupFilter[i].GetMask()).ToArray();
+    public int[] GetGroupFilterMasks() {
+        return Enumerable.Range(0, 32).Select(i => {
+            return m_GroupFilter[i].GetMask();
+        }).ToArray();
     }
 }
 
 [Serializable]
 public class GroupFilter {
     [SerializeField]
-    public bool[] m_GroupFilter = new bool[32];
+    public bool[] m_GroupFilter = Enumerable.Range(0, 32).Select(i => true).ToArray();
 
-    public uint GetMask() {
-        uint rs = 0;
-        for(int i = 0; i < 32; i++) {
+    public int GetMask() {
+        int rs = 0x1;
+        for(int i = 1; i < 32; i++) {
             if(m_GroupFilter[i])
-                rs &= (uint)(1 << i);
+                rs |= (1 << i);
         }
         return rs;
     }

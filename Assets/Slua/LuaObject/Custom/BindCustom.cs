@@ -28,6 +28,8 @@ namespace SLua {
 				Lua_PhysicsRT_CollidableQualityType.reg,
 				Lua_PhysicsRT_PhysicsBody.reg,
 				Lua_PhysicsRT_PhysicsBodyCollisionInfo.reg,
+				Lua_PhysicsRT_PhysicsPhantomType.reg,
+				Lua_PhysicsRT_PhysicsPhantom.reg,
 				Lua_PhysicsRT_ShapeType.reg,
 				Lua_PhysicsRT_ShapeWrap.reg,
 				Lua_PhysicsRT_PhysicsShape.reg,

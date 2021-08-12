@@ -13,6 +13,7 @@ local BallCameraGameObject = nil
 ---@class GamePlay
 GamePlay = {
   BallManager = nil, ---@type BallManager
+  BallPiecesControll = nil, ---@type BallPiecesControll
   CamManager = nil, ---@type CamManager
 }
 

@@ -56,6 +56,7 @@ CamManager = {
     y = 0,
     z = 0
   },
+  _CamOutSpeed = Vector3.zero,
 
   _CamRotate = 0,
   _CamRotateStartDegree = 0,
@@ -79,7 +80,8 @@ function CreateClass_CamManager()
     if self.Target ~= nil then
       --摄像机跟随
       if self.FollowEnable then
-        self._CameraHostTransform.position = Vector3.SmoothDamp(self._CameraHostTransform.position, self.Target.position, nil, self.CamFollowSpeed);
+        self._CameraHostTransform.position = self.Target.position
+        --self._CameraHostTransform.position, self._CamOutSpeed = Vector3.SmoothDamp(self._CameraHostTransform.position, self.Target.position, self._CamOutSpeed, self.CamFollowSpeed);
       end
       --摄像机看着
       if self.LookEnable then

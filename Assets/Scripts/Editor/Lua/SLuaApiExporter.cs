@@ -336,7 +336,7 @@ namespace Slua
           paramstr.Append(ReplaceLuaKeyWord(param.Name));
         }
 
-        if(method.ReturnType != null)
+        if(method.ReturnType != null && method.ReturnType != typeof(void))
           sb.AppendFormat("---@return {0} {1}\n", GetLuaType(method.ReturnType, out paramOrgType), AppendParamOrgType(paramOrgType, methodRetComment));
 
         if (method.IsStatic)      

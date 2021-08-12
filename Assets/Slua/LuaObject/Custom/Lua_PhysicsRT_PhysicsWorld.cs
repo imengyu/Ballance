@@ -101,6 +101,40 @@ public class Lua_PhysicsRT_PhysicsWorld : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int GetPhantomById(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsWorld self=(PhysicsRT.PhysicsWorld)checkSelf(l);
+			System.Int32 a1;
+			checkType(l,2,out a1);
+			var ret=self.GetPhantomById(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetBodyById(IntPtr l) {
 		try {
 			#if DEBUG
@@ -539,6 +573,7 @@ public class Lua_PhysicsRT_PhysicsWorld : LuaObject {
 		addMember(l,StepPhysicsWorld);
 		addMember(l,UpdateAllBodys);
 		addMember(l,GetConstraintById);
+		addMember(l,GetPhantomById);
 		addMember(l,GetBodyById);
 		addMember(l,GetPtr);
 		addMember(l,SetGravity);

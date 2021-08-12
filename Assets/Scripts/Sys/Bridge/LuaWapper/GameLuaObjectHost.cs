@@ -152,6 +152,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [LuaApiDescription("获取该 Lua 脚本所属包包名")]
         public string PackageName { get { return _PackageName; } }
 
+        private int _ExecuteOrder = 0;
+
         private GamePackageManager GamePackageManager;
         private string _PackageName = null;
 
@@ -204,18 +206,19 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         }
         private void Awake()
         {
+            _ExecuteOrder = ExecuteOrder;
             if (ExecuteOrder == 0) DoInit();
             if (!luaInited) awakeCalledBeforeInit = true;
             else if (awake != null) awake(self);
         }
         private void Update()
         {
-            if (ExecuteOrder >= 0)
+            if (_ExecuteOrder >= 0)
             {
-                ExecuteOrder--;
-                if (ExecuteOrder <= 0) {
+                _ExecuteOrder--;
+                if (_ExecuteOrder <= 0) {
                     DoInit();
-                    ExecuteOrder = -1;
+                    _ExecuteOrder = -1;
                 }
             }
             if (update != null) update(self);

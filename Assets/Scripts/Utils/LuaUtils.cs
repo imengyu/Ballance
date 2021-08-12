@@ -88,6 +88,9 @@ namespace Ballance2.Utils
         {
             return param ? "true" : "false";
         }
+        public static string Vector3ToString(Vector3 param) { return param.ToString(); }
+        public static string Vector4ToString(Vector4 param) { return param.ToString(); }
+        public static string Vector2ToString(Vector2 param) { return param.ToString(); }
         [LuaApiDescription("字符串转为布尔值")]
         [LuaApiParamDescription("param", "字符串 \"true\" 或者 \"false\"")]
         public static bool StringToBool(string param)

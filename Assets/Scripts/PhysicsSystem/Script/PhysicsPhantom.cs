@@ -67,7 +67,17 @@ namespace PhysicsRT
                 m_EnableListener = value; 
             } 
         }
-        
+        /// <summary>
+        /// 获取幻影包围盒最小坐标。创建以后设置请使用 SetAabb 方法
+        /// </summary>
+        /// <value></value>
+        public Vector3 Min { get => m_Min; set => m_Max = value; }
+        /// <summary>
+        /// 获取幻影包围盒最大坐标。创建以后设置请使用 SetAabb 方法
+        /// </summary>
+        /// <value></value>
+        public Vector3 Max { get => m_Max; set => m_Max = value; }
+
         /// <summary>
         /// ID
         /// </summary>
@@ -82,7 +92,6 @@ namespace PhysicsRT
         /// </summary>
         public void ForceReCreate()
         {
-            nextCreateForce = true;
             Destroy();
             Create();
         }
@@ -101,7 +110,6 @@ namespace PhysicsRT
         }
 
         private PhysicsWorld CurrentPhysicsWorld = null;
-        private bool nextCreateForce = false;
 
         public IntPtr GetPtr() { return ptr; }
         /// <summary>
@@ -150,15 +158,13 @@ namespace PhysicsRT
 
             Id = PhysicsApi.API.GetPhantomId(ptr);
             CurrentPhysicsWorld.AddPhantom(Id, this);
-
-            nextCreateForce = false;
         }
         private void Destroy() {
             if(CurrentPhysicsWorld == null || ptr == IntPtr.Zero)
                 return;
 
             CurrentPhysicsWorld.RemovePhantom(this);
-            PhysicsApi.API.DestroyRigidBody(ptr);
+            PhysicsApi.API.DestroyPhantom(ptr); 
             ptr = IntPtr.Zero;
         }
 
@@ -184,12 +190,14 @@ namespace PhysicsRT
         private Vector3 oldMin = Vector3.zero;
         private Vector3 oldMax = Vector3.zero;
 
-        internal void BackUpRuntimeCanModifieProperties() {
+        [SLua.DoNotToLua]
+        public void BackUpRuntimeCanModifieProperties() {
             oldPosition = transform.position;
             oldMin = m_Min;
             oldMax = m_Max;
         }
-        internal void ApplyModifiedProperties() {
+        [SLua.DoNotToLua]
+        public void ApplyModifiedProperties() {
             if(oldPosition != transform.position || oldMin != m_Min || oldMax != m_Max) {
                 BackUpRuntimeCanModifieProperties();
                 SetAabb(m_Min, m_Max);

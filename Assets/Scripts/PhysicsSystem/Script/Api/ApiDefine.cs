@@ -102,7 +102,7 @@ namespace PhysicsRT
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fnCreateListShape(IntPtr childs, int childCount);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateStaticCompoundShape(IntPtr childs, IntPtr transforms, int childCount);
+  public delegate IntPtr fnCreateStaticCompoundShape(IntPtr childs, IntPtr transforms, int childCount, int layout);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnStaticCompoundShapeSetInstanceEnabled(IntPtr pStaticCompoundShape, int id, int enabled);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -365,6 +365,12 @@ namespace PhysicsRT
       _SetConstraintEnable = Marshal.GetDelegateForFunctionPointer<fnSetConstraintEnable>(apiArray[i++]);
       _PhysicsWorldRayCastBody = Marshal.GetDelegateForFunctionPointer<fnPhysicsWorldRayCastBody>(apiArray[i++]);
       _PhysicsWorldRayCastHit = Marshal.GetDelegateForFunctionPointer<fnPhysicsWorldRayCastHit>(apiArray[i++]);
+      _CreateBvCompressedMeshShape = Marshal.GetDelegateForFunctionPointer<fnCreateBvCompressedMeshShape>(apiArray[i++]);
+      _CreateAabbPhantom = Marshal.GetDelegateForFunctionPointer<fnCreateAabbPhantom>(apiArray[i++]);
+      _SetAabbPhantomMinMax = Marshal.GetDelegateForFunctionPointer<fnSetAabbPhantomMinMax>(apiArray[i++]);
+      _GetAabbPhantomOverlappingCollidables = Marshal.GetDelegateForFunctionPointer<fnGetAabbPhantomOverlappingCollidables>(apiArray[i++]);
+      _DestroyPhantom = Marshal.GetDelegateForFunctionPointer<fnDestroyPhantom>(apiArray[i++]);
+      _GetPhantomId = Marshal.GetDelegateForFunctionPointer<fnGetPhantomId>(apiArray[i++]);
 
       InitSuccess = true;
     }
@@ -1588,12 +1594,12 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateStaticCompoundShape(IntPtr childs, IntPtr transforms, int childCount)
+    public IntPtr CreateStaticCompoundShape(IntPtr childs, IntPtr transforms, int childCount, int layout)
     {
       if (_CreateStaticCompoundShape == null)
         throw new ApiNotFoundException("CreateStaticCompoundShape");
 
-      var rs = _CreateStaticCompoundShape(childs, transforms, childCount);
+      var rs = _CreateStaticCompoundShape(childs, transforms, childCount, layout);
       ApiExceptionCheck();
 
       return rs;
@@ -1686,20 +1692,15 @@ namespace PhysicsRT
       return rs; 
     }
     public IntPtr CreatePhysicsWorld(Vector3 gravity, int solverIterationCount, float broadPhaseWorldSize, float collisionTolerance,
-      bool bContinuous, bool bVisualDebugger, uint layerMask, uint[] layerToMask, bool stableSolverOn,
+      bool bContinuous, bool bVisualDebugger, uint layerMask, int[] layerToMask, bool stableSolverOn,
       fnOnConstraintBreakingCallback onConstraintBreakingCallback, fnOnBodyTriggerEventCallback onBodyTriggerEventCallback, 
       fnOnBodyContactEventCallback onBodyContactEventCallback, fnOnPhantomOverlapCallback onPhantomOverlapCallback)
     {
       if (_CreatePhysicsWorld == null)
         throw new ApiNotFoundException("CreatePhysicsWorld");
 
-      //uint[] to native
       IntPtr layerToMaskPtr = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * 32);
-      IntPtr layerToMaskPtr2 = new IntPtr(layerToMaskPtr.ToInt64());
-      for(int i = 0; i < layerToMask.Length && i < 32; i++){
-        Marshal.WriteInt32(layerToMaskPtr, (int)layerToMask[i]);
-        layerToMaskPtr2 = new IntPtr(layerToMaskPtr2.ToInt64() + i);
-      }
+      Marshal.Copy(layerToMask, 0, layerToMaskPtr, layerToMask.Length);
 
       var pGravity = Vector3ToNative3(gravity);
 

@@ -98,7 +98,7 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int GetPtr(IntPtr l) {
+	static public int ForcePhysics(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -110,7 +110,69 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			var ret=self.GetPtr();
+			self.ForcePhysics();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int ForceDePhysics(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			self.ForceDePhysics();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int IsPhysicsed(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			var ret=self.IsPhysicsed();
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;
@@ -130,7 +192,7 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int BackUpRuntimeCanModifieProperties(IntPtr l) {
+	static public int GetPtr(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -142,40 +204,10 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			self.BackUpRuntimeCanModifieProperties();
+			var ret=self.GetPtr();
 			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int ApplyModifiedProperties(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			self.ApplyModifiedProperties();
-			pushValue(l,true);
-			return 1;
+			pushValue(l,ret);
+			return 2;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -2334,9 +2366,10 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 		addMember(l,ForceReCreateShape);
 		addMember(l,ForceActive);
 		addMember(l,ForceDeactive);
+		addMember(l,ForcePhysics);
+		addMember(l,ForceDePhysics);
+		addMember(l,IsPhysicsed);
 		addMember(l,GetPtr);
-		addMember(l,BackUpRuntimeCanModifieProperties);
-		addMember(l,ApplyModifiedProperties);
 		addMember(l,UpdateTransformToPhysicsEngine);
 		addMember(l,UpdatePositionToPhysicsEngine);
 		addMember(l,GetPointVelocity);

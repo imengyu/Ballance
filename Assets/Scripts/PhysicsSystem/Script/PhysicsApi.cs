@@ -19,6 +19,7 @@ namespace PhysicsRT
         private const CallingConvention _CallingConvention = CallingConvention.Cdecl;
 
         public delegate void ErrorReportCallback([MarshalAs(UnmanagedType.LPStr)] string msg);
+        public delegate void InitFinishCallback();
 
         [DllImport(DLL_NNAME, CallingConvention = _CallingConvention)]
         private static extern IntPtr init(IntPtr pInitStruct);
@@ -51,6 +52,8 @@ namespace PhysicsRT
         #endregion
         
         #region API定义
+
+        public static InitFinishCallback InitFinish;
 
         /// <summary>
         /// 释放
@@ -89,6 +92,9 @@ namespace PhysicsRT
 
             if(assertMsgBuffer == IntPtr.Zero) 
                 assertMsgBuffer = Marshal.AllocHGlobal(1024);
+
+            if(InitFinish != null)
+                InitFinish.Invoke();
         }
         /// <summary>
         /// 所有的API

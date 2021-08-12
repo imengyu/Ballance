@@ -136,7 +136,6 @@ namespace PhysicsRT
         private Vector3 m_CenterOfMass;
         [SerializeField]
         private CustomPhysicsBodyTags m_CustomTags = CustomPhysicsBodyTags.Nothing;
-        [Range(0, 1)]
         [SerializeField]
         [Tooltip("使用此值可以指定刚体的初始摩擦力值。实体的“摩擦力”值指示其表面有多光滑，从而指示它沿其他实体滑动的容易程度。一般摩擦力值的范围在0和1之间，但可以更高（最大值为255）。默认值为0.5。")]
         private float m_Friction = 0.5f;
@@ -381,7 +380,8 @@ namespace PhysicsRT
             StartCoroutine(LateCreate());
         }
         private void OnDestroy() {
-            DestroyBody();
+            if(ptr != IntPtr.Zero) 
+                DestroyBody();
         }
         private IEnumerator LateCreate() {
             yield return new WaitForSeconds(0.05f); 
@@ -394,25 +394,45 @@ namespace PhysicsRT
         /// </summary>
         public void ForceActive() {
             if(ptr != IntPtr.Zero)
-                PhysicsApi.API.ActiveRigidBody(ptr);
+               PhysicsApi.API.ActiveRigidBody(ptr);
         }
         /// <summary>
         /// 强制设置刚体非激活态（不设置GameObject）
         /// </summary>
         public void ForceDeactive() {
-            if(ptr != IntPtr.Zero)
-                PhysicsApi.API.DeactiveRigidBody(ptr);
+            if(ptr != IntPtr.Zero) 
+               PhysicsApi.API.DeactiveRigidBody(ptr);
         }
+        /// <summary>
+        /// 强制从物理世界中创建刚体
+        /// </summary>
+        public void ForcePhysics() {
+            if(ptr == IntPtr.Zero)
+                CreateBody();
+        }
+        /// <summary>
+        /// 强制从物理世界中移除刚体
+        /// </summary>
+        public void ForceDePhysics() {
+            if(ptr != IntPtr.Zero) 
+               DestroyBody(false);
+        }
+        /// <summary>
+        /// 检查当前刚体是否创建
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPhysicsed() {
+            return (ptr != IntPtr.Zero);
+        }
+
 
         private void OnEnable()
         {
-            if(ptr != IntPtr.Zero)
-                PhysicsApi.API.ActiveRigidBody(ptr);
+            if(m_AutoControlActive) ForceActive();
         }
         private void OnDisable() 
         {
-            if(ptr != IntPtr.Zero)
-                PhysicsApi.API.DeactiveRigidBody(ptr);
+            if(m_AutoControlActive) ForceDeactive();
         }
         private void OnValidate()
         {
@@ -423,28 +443,30 @@ namespace PhysicsRT
 
         private PhysicsWorld CurrentPhysicsWorld = null;
         private IntPtr currentShapeMassProperties = IntPtr.Zero;
+        private IntPtr shapeBodyPtr = IntPtr.Zero;
         private bool nextCreateForce = false;
 
         public IntPtr GetPtr() { return ptr; }
         private IntPtr GetShapeBody() {
+            if(shapeBodyPtr == IntPtr.Zero) {
+                var shape = GetComponent<PhysicsShape>();
+                if(shape == null)
+                {
+                    Debug.LogWarning("Not found PhysicsShape on this gameObject, physical function has been disabled.");
+                    return IntPtr.Zero;
+                }
 
-            var shape = GetComponent<PhysicsShape>();
-            if(shape == null)
-            {
-                Debug.LogWarning("Not found PhysicsShape on this gameObject, physical function has been disabled.");
-                return IntPtr.Zero;
+                shapeBodyPtr = shape.GetShapeBody(nextCreateForce, m_Layer);
+                if(CenterOfMass != Vector3.zero)
+                    currentShapeMassProperties = shape.ComputeMassProperties(m_Mass);
             }
-
-            var s = shape.GetShapeBody(nextCreateForce);
-            if(CenterOfMass != Vector3.zero)
-                currentShapeMassProperties = shape.ComputeMassProperties(m_Mass);
-            return s;
+            return shapeBodyPtr;
         }
         private void ReleaseShapeBody() {
-
             var shape = GetComponent<PhysicsShape>();
             if(shape != null)
                 shape.ReleaseShapeBody();
+            shapeBodyPtr = IntPtr.Zero;
         }
         private void CreateBody() {
             if(ptr != IntPtr.Zero) {
@@ -489,7 +511,7 @@ namespace PhysicsRT
 
             nextCreateForce = false;
         }
-        private void DestroyBody() {
+        private void DestroyBody(bool destroyShape = true) {
             if(CurrentPhysicsWorld == null || ptr == IntPtr.Zero)
                 return;
 
@@ -499,7 +521,8 @@ namespace PhysicsRT
                 currentShapeMassProperties = IntPtr.Zero;
             }
 
-            ReleaseShapeBody();
+            if(destroyShape)
+                ReleaseShapeBody();
 
             CurrentPhysicsWorld.RemoveBody(this);
             PhysicsApi.API.DestroyRigidBody(ptr);
@@ -530,6 +553,7 @@ namespace PhysicsRT
         private Vector3 oldPosition = Vector3.zero;
         private Quaternion oldRotation = Quaternion.identity;
 
+        [SLua.DoNotToLua]
         public void BackUpRuntimeCanModifieProperties() {
             oldMotionType = m_MotionType;
             oldMass = m_Mass;
@@ -543,6 +567,7 @@ namespace PhysicsRT
             oldPosition = transform.position;
             oldRotation = transform.rotation;
         }
+        [SLua.DoNotToLua]
         public void ApplyModifiedProperties() {
             if(oldMotionType != m_MotionType) {
                 var newVal = m_MotionType; m_MotionType = oldMotionType;
@@ -585,6 +610,7 @@ namespace PhysicsRT
             else if(oldPosition != transform.position)
                 UpdatePositionToPhysicsEngine();
         }
+        
         /// <summary>
         /// 同步位置和旋转至物理引擎
         /// </summary>
@@ -624,14 +650,15 @@ namespace PhysicsRT
         /// </summary>
         /// <value></value>
         public Vector3 AngularVelocity {
-            get {
+            /*get {
                 if(ptr == IntPtr.Zero)
                     return InitialAngularVelocity;
                 else {
                     PhysicsApi.API.GetRigidBodyAngularVelocity(ptr, out var v);
                     return v;
                 }
-            }
+            }*/
+            get { return Vector3.zero; }
             set {
                 if(ptr == IntPtr.Zero) throw new PhysicsBodyNotCreateException();
                 PhysicsApi.API.SetRigidBodyAngularVelocity(ptr, value);
@@ -642,14 +669,15 @@ namespace PhysicsRT
         /// </summary>
         /// <value></value>
         public Vector3 LinearVelocity {
-            get {
+            get { return Vector3.zero;  }
+            /*get {
                 if(ptr == IntPtr.Zero)
                     return InitialLinearVelocity;
                 else {
                     PhysicsApi.API.GetRigidBodyLinearVelocity(ptr, out var v);
                     return v;
                 }
-            }
+            }*/
             set {
                 if(ptr == IntPtr.Zero) throw new PhysicsBodyNotCreateException();
                 PhysicsApi.API.SetRigidBodyLinearVelocity(ptr, value);
@@ -866,7 +894,7 @@ namespace PhysicsRT
                 }
                 d = d.next;
             }
-        }
+        }      
         internal void OnBodyPointContactCallback(PhysicsBody other, sPhysicsBodyContactData data) {
             if(currentFramEnterBodies.TryGetValue(other.Id, out var d)) {
                 if(data.isRemoved == 1) {
