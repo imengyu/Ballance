@@ -11,7 +11,7 @@ namespace Ballance2.Sys.UI
     /// 一个键盘按键选择组件
     /// </summary>
     [SLua.CustomLuaClass]
-    [Ballance.LuaHelpers.LuaApiDescription("一个键盘按键选择组件")]
+    [Ballance2.LuaHelpers.LuaApiDescription("一个键盘按键选择组件")]
     [AddComponentMenu("Ballance/UI/Controls/KeyChoose")]
     public class KeyChoose : MonoBehaviour
     {

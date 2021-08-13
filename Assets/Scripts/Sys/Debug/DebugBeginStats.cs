@@ -2,7 +2,7 @@ using Ballance2.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ballance.Sys.Debug
+namespace Ballance2.Sys.Debug
 {
     public class DebugBeginStats : MonoBehaviour 
     {

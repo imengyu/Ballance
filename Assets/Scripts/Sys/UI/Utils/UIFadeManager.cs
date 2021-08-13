@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
+using Ballance2.Sys.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -88,6 +89,12 @@ namespace Ballance2.Sys.UI.Utils
                                     if (fadeObject.gameObject != null)
                                         fadeObject.gameObject.SetActive(false);
                                 }
+
+                                //恢复材质渲染模式为原来的
+                                if(fadeObject.material != null && fadeObject.oldMatRenderMode != MaterialUtils.RenderingMode.Fade) {
+                                    MaterialUtils.SetMaterialRenderingMode(fadeObject.material, fadeObject.oldMatRenderMode);
+                                    fadeObject.oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
+                                }
                                 fadeObject.runEnd = true;
                             }
                         }
@@ -117,6 +124,7 @@ namespace Ballance2.Sys.UI.Utils
             public float timeInSecond;
             public bool endReactive;
             public bool runEnd = false;
+            public MaterialUtils.RenderingMode oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
             public FadeType fadeType;
         }
 
@@ -176,8 +184,17 @@ namespace Ballance2.Sys.UI.Utils
             }
             else fadeObject.material = material;
             fadeObject.fadeType = FadeType.FadeOut;
-            if (material != null)
-                material.color = new Color(material.color.r, material.color.g, material.color.b, 1);
+            if (fadeObject.material != null) {
+
+                fadeObject.material.color = new Color(fadeObject.material.color.r, fadeObject.material.color.g, fadeObject.material.color.b, 1);
+
+                //设置材质渲染模式为Fade
+                var oldRenderMode = MaterialUtils.GetMaterialRenderingMode(fadeObject.material);
+                if(oldRenderMode != MaterialUtils.RenderingMode.Fade) {
+                    fadeObject.oldMatRenderMode = oldRenderMode;
+                    MaterialUtils.SetMaterialRenderingMode(fadeObject.material, MaterialUtils.RenderingMode.Fade);
+                }
+            }
             fadeObject.endReactive = hidden;
             fadeObjects.Add(fadeObject);
             return fadeObject;
@@ -208,8 +225,17 @@ namespace Ballance2.Sys.UI.Utils
             }
             else fadeObject.material = material;
             fadeObject.fadeType = FadeType.FadeIn;
-            if (material != null)
-                material.color = new Color(material.color.r, material.color.g, material.color.b, 0);
+            if (fadeObject.material != null) {
+                fadeObject.material.color = new Color(fadeObject.material.color.r, fadeObject.material.color.g, fadeObject.material.color.b, 0);
+
+                //设置材质渲染模式为Fade
+                var oldRenderMode = MaterialUtils.GetMaterialRenderingMode(fadeObject.material);
+                if(oldRenderMode != MaterialUtils.RenderingMode.Fade) {
+                    fadeObject.oldMatRenderMode = oldRenderMode;
+                    MaterialUtils.SetMaterialRenderingMode(fadeObject.material, MaterialUtils.RenderingMode.Fade);
+                }
+            }
+            
             if (!gameObject.activeSelf)
                 gameObject.SetActive(true);
             fadeObjects.Add(fadeObject);
@@ -244,8 +270,8 @@ namespace Ballance2.Sys.UI.Utils
             }
             else fadeObject.materials = materials;
             fadeObject.fadeType = FadeType.FadeOut;
-            if (materials != null && materials.Length > 0)
-                foreach (Material m in materials)
+            if (fadeObject.materials != null && fadeObject.materials.Length > 0)
+                foreach (Material m in fadeObject.materials)
                     m.color = new Color(m.color.r, m.color.g, m.color.b, 1);
             fadeObject.endReactive = hidden;
             fadeObjects.Add(fadeObject);
@@ -277,8 +303,8 @@ namespace Ballance2.Sys.UI.Utils
             }
             else fadeObject.materials = materials;
             fadeObject.fadeType = FadeType.FadeIn;
-            if (materials != null && materials.Length > 0)
-                foreach (Material m in materials)
+            if (fadeObject.materials != null && fadeObject.materials.Length > 0)
+                foreach (Material m in fadeObject.materials)
                     m.color = new Color(m.color.r, m.color.g, m.color.b, 0);
             if (!gameObject.activeSelf)
                 gameObject.SetActive(true);

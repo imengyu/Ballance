@@ -2,7 +2,7 @@ using Ballance2.Sys;
 using Ballance2.Sys.Services;
 using UnityEngine.EventSystems;
 
-namespace Ballance.Sys.UI
+namespace Ballance2.Sys.UI
 {
     public class ClickSound : UIBehaviour, IPointerDownHandler {
         public string SoundName = "";

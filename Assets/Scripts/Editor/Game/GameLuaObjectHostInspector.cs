@@ -25,6 +25,8 @@ class GameLuaObjectHostInspector : Editor
     private SerializedProperty pCreateStore;
     private SerializedProperty pCreateActionStore;
     private SerializedProperty pManualInputScript;
+    private SerializedProperty pUpdateDelta;
+    private SerializedProperty pFixUpdateDelta;
 
     private ReorderableList reorderableList;
     private GUIStyle styleHighlight = null;
@@ -47,6 +49,8 @@ class GameLuaObjectHostInspector : Editor
         EditorGUI.BeginChangeCheck();
 
         DrawMinInspector();
+
+
 
         bDrawPropsInspector = EditorGUILayout.Foldout(bDrawPropsInspector, "Lua 类属性", true);
         if (bDrawPropsInspector)
@@ -80,7 +84,9 @@ class GameLuaObjectHostInspector : Editor
         pCreateStore = serializedObject.FindProperty("CreateStore");
         pCreateActionStore = serializedObject.FindProperty("CreateActionStore");
         pManualInputScript = serializedObject.FindProperty("ManualInputScript");
-
+        pUpdateDelta = serializedObject.FindProperty("UpdateDelta");
+        pFixUpdateDelta = serializedObject.FindProperty("FixUpdateDelta");
+        
         //自动设置名称
         if(myScript != null && pName.stringValue == "")
             pName.stringValue = myScript.gameObject.name;
@@ -314,6 +320,9 @@ class GameLuaObjectHostInspector : Editor
         EditorGUILayout.PropertyField(pCreateStore);
         EditorGUILayout.PropertyField(pCreateActionStore);
 
+        EditorGUILayout.PropertyField(pUpdateDelta);
+        EditorGUILayout.PropertyField(pFixUpdateDelta);
+
         if (string.IsNullOrEmpty(myScript.LuaClassName))
             EditorGUILayout.HelpBox("必须提供 Lua 类名，否则该 Lua 组件不会运行", MessageType.Warning);
         if (string.IsNullOrEmpty(myScript.LuaPackageName))
@@ -441,6 +450,9 @@ class GameLuaObjectHostInspector : Editor
                 break;
             case GameLuaObjectEventWarps.Other:
                 myScript.gameObject.AddComponent<GameLuaObjectOtherEventCaller>();
+                break;
+            case GameLuaObjectEventWarps.OnGUI:
+                myScript.gameObject.AddComponent<GameLuaObjecOnGUICaller>();
                 break;
         }
     }

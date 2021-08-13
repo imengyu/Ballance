@@ -12,7 +12,7 @@
 * 
 */
 
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 
 namespace Ballance2.Config
 {

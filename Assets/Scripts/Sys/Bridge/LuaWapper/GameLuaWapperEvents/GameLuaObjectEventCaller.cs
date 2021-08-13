@@ -45,5 +45,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents
         Particle,
         EventTrigger,
         Other,
+        OnGUI,
     }
 }

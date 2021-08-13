@@ -1,5 +1,5 @@
 using System.Collections;
-using Ballance.Sys.Debug;
+using Ballance2.Sys.Debug;
 using Ballance2.Sys;
 using Ballance2.Sys.UI;
 using Ballance2.Utils;

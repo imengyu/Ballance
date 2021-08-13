@@ -825,6 +825,134 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_UpdateDelta(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.UpdateDelta);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_UpdateDelta(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.Int32 v;
+			checkType(l,2,out v);
+			self.UpdateDelta=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_FixUpdateDelta(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.FixUpdateDelta);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_FixUpdateDelta(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost self=(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)checkSelf(l);
+			System.Int32 v;
+			checkType(l,2,out v);
+			self.FixUpdateDelta=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int set_LuaInitFinished(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1231,6 +1359,8 @@ public class Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaObjectHost : LuaObject {
 		addMember(l,"LuaPublicVars",get_LuaPublicVars,set_LuaPublicVars,true);
 		addMember(l,"CreateStore",get_CreateStore,set_CreateStore,true);
 		addMember(l,"CreateActionStore",get_CreateActionStore,set_CreateActionStore,true);
+		addMember(l,"UpdateDelta",get_UpdateDelta,set_UpdateDelta,true);
+		addMember(l,"FixUpdateDelta",get_FixUpdateDelta,set_FixUpdateDelta,true);
 		addMember(l,"LuaInitFinished",null,set_LuaInitFinished,true);
 		addMember(l,"OnInitLua",null,set_OnInitLua,true);
 		addMember(l,"LuaSelf",get_LuaSelf,null,true);

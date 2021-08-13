@@ -12,7 +12,7 @@ namespace Ballance2.Sys.UI
     /// </summary>
     [ExecuteInEditMode]
     [SLua.CustomLuaClass]
-    [Ballance.LuaHelpers.LuaApiDescription("一个上下数值组件")]
+    [Ballance2.LuaHelpers.LuaApiDescription("一个上下数值组件")]
     [AddComponentMenu("Ballance/UI/Controls/Updown")]
     public class Updown : UIBehaviour
     {

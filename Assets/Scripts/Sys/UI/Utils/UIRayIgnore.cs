@@ -26,7 +26,7 @@ namespace Ballance2.Sys.UI.Utils
     /// </summary>
     [SLua.CustomLuaClass]
     [AddComponentMenu("Ballance/UI/UIRayIgnore")]
-    [Ballance.LuaHelpers.LuaApiDescription("UII 穿透脚本。添加此脚本至UI从而使控件穿透事件")]
+    [Ballance2.LuaHelpers.LuaApiDescription("UII 穿透脚本。添加此脚本至UI从而使控件穿透事件")]
     public class UIRayIgnore : UIBehaviour, ICanvasRaycastFilter
     {
         private bool isEnabled = true;

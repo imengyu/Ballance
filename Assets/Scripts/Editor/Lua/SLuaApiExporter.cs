@@ -8,7 +8,7 @@ using System.IO;
 using UnityEngine;
 using JimBlackler.DocsByReflection;
 using System.Xml;
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 
 namespace Slua
 {

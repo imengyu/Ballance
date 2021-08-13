@@ -1,5 +1,5 @@
 ﻿using System;
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 using SLua;
 using UnityEngine;
 

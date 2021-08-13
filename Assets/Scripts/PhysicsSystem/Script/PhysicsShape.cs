@@ -124,8 +124,6 @@ namespace PhysicsRT
         public IntPtr GetPtr() { return ptr; }
         public IntPtr ComputeMassProperties(float mass)
         {
-            Debug.Assert(ptr != IntPtr.Zero, "ptr is null !");
-
             IntPtr result = IntPtr.Zero;
             switch (ShapeType)
             {
@@ -211,7 +209,7 @@ namespace PhysicsRT
                         Mesh mesh = ShapeMesh;
                         if (mesh == null)
                         {
-                            Debug.LogWarning("ConvexHull need a mesh");
+                            Debug.LogWarning("ConvexHull need a mesh! " + name);
                             return;
                         }
 
@@ -225,7 +223,7 @@ namespace PhysicsRT
                         Mesh mesh = ShapeMesh;
                         if (mesh == null)
                         {
-                            Debug.LogWarning("Shape need a mesh");
+                            Debug.LogWarning("Shape " + name + " need a mesh");
                             return;
                         }
 
@@ -237,7 +235,7 @@ namespace PhysicsRT
                         Mesh mesh = ShapeMesh;
                         if (mesh == null)
                         {
-                            Debug.LogWarning("Shape need a mesh");
+                            Debug.LogWarning("Shape " + name + " need a mesh");
                             return;
                         }
 
@@ -382,7 +380,10 @@ namespace PhysicsRT
                 var shape = child.gameObject.GetComponent<PhysicsShape>();
                 if (shape != null)
                 {
-                    childernShapes.Add(shape.GetShapeBody(forceRecreate, layout));
+                    var ptr = shape.GetShapeBody(forceRecreate, layout);
+                    if(ptr == IntPtr.Zero)
+                        continue;
+                    childernShapes.Add(ptr);
 
                     if (withChildTransforms)// Child Transforms
                     {
@@ -428,8 +429,6 @@ namespace PhysicsRT
                 DestroyShape(true);
             if (ptr == IntPtr.Zero)
                 CreateShape(forceRecreate, layout);
-            if(ptr == IntPtr.Zero)
-                throw new Exception("ptr == IntPtr.Zero!");
             return ptr;
         }
         public void FitToEnabledRenderMeshes(float f) {

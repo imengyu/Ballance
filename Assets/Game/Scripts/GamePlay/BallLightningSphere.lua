@@ -44,8 +44,8 @@ BallLightningSphere = {
     lighingControlTick = 0,
     ballLightningSphereMaterialA = nil, ---@type Material
     ballLightningSphereMaterialB = nil, ---@type Material
-    ballLightingRoateSpeed1 = 700,
-    ballLightingRoateSpeed2 = 700,
+    ballLightingRoateSpeed1 = 300,
+    ballLightingRoateSpeed2 = 300,
     ballLightningSphereTextureCurrent = 1,
     ballLightningMusic = nil, ---@type AudioSource
 }
@@ -81,8 +81,8 @@ function CreateClass_BallLightningSphere()
     if (self.lighing) then
         if (Ball_LightningSphereInnernA.transform.localEulerAngles.z > 360) then Ball_LightningSphereInnernA.transform.localEulerAngles = Vector3(0, 0, 0) end
         if (Ball_LightningSphereInnernB.transform.localEulerAngles.z < -360) then Ball_LightningSphereInnernB.transform.localEulerAngles = Vector3(0, 0, 0) end
-        Ball_LightningSphereInnernA.transform.localEulerAngles = Vector3(-90, Ball_LightningSphereInnernA.transform.localEulerAngles.y + self.ballLightingRoateSpeed1 * Time.deltaTime, 0)
-        Ball_LightningSphereInnernB.transform.localEulerAngles = Vector3(-90, Ball_LightningSphereInnernB.transform.localEulerAngles.y - self.ballLightingRoateSpeed2 * Time.deltaTime, 0)
+        Ball_LightningSphereInnernA.transform.localEulerAngles = Vector3(0, Ball_LightningSphereInnernA.transform.localEulerAngles.y + self.ballLightingRoateSpeed1 * Time.deltaTime, 0)
+        Ball_LightningSphereInnernB.transform.localEulerAngles = Vector3(0, Ball_LightningSphereInnernB.transform.localEulerAngles.y - self.ballLightingRoateSpeed2 * Time.deltaTime, 0)
 
         --更换闪电球贴图
         if (self.lighingControlTick < 0.1) then self.lighingControlTick = self.lighingControlTick + Time.deltaTime

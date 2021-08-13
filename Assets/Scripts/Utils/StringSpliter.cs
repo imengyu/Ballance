@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 
 /*
 * Copyright(c) 2021  mengyu

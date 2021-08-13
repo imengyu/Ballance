@@ -1039,7 +1039,7 @@ public class Lua_Ballance2_DebugCamera : LuaObject {
 			#endif
 			#endif
 			Ballance2.DebugCamera self=(Ballance2.DebugCamera)checkSelf(l);
-			Ballance.Sys.Debug.DebugControl v;
+			Ballance2.Sys.Debug.DebugControl v;
 			checkType(l,2,out v);
 			self.DebugControl=v;
 			pushValue(l,true);

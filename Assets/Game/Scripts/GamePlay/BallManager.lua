@@ -1,6 +1,7 @@
 local KeyCode = UnityEngine.KeyCode
 local Log = Ballance2.Utils.Log
 local KeyListener = Ballance2.Sys.Utils.KeyListener
+local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 local Vector3 = UnityEngine.Vector3
 local GameSettingsManager = Ballance2.Config.GameSettingsManager
 local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
@@ -192,6 +193,10 @@ function CreateClass_BallManager()
     local ball = GameObjectToLuaClass(gameObject)
     if(ball == nil) then
       GameErrorChecker.SetLastErrorAndLog(GameError.ClassNotFound, TAG, 'Not found Ball class on {0} !', { name })
+    end
+    local pieces = ball:GetPieces()
+    if(pieces ~= nil) then
+      ObjectStateBackupUtils.BackUpObjectAndChilds(pieces) --备份碎片的状态
     end
 
     table.insert(self._private.registerBalls, {
@@ -412,17 +417,17 @@ function CreateClass_BallManager()
     end)
     self._private.keyListener:AddKeyListen(KeyCode.Alpha6, function (key, downed)
       if(downed) then
-        self._private.registerBalls[0].ball:ThrowPieces()
+        self._private.registerBalls[1].ball:ThrowPieces()
       end
     end)
     self._private.keyListener:AddKeyListen(KeyCode.Alpha7, function (key, downed)
       if(downed) then
-        self._private.registerBalls[1].ball:ThrowPieces()
+        self._private.registerBalls[2].ball:ThrowPieces()
       end
     end)
     self._private.keyListener:AddKeyListen(KeyCode.Alpha8, function (key, downed)
       if(downed) then
-        self._private.registerBalls[2].ball:ThrowPieces()
+        self._private.registerBalls[3].ball:ThrowPieces()
       end
     end)
 

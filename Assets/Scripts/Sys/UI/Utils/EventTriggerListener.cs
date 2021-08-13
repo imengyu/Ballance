@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using SLua;
 using Ballance2.Sys.Bridge;
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 
 /*
 * Copyright(c) 2021  mengyu

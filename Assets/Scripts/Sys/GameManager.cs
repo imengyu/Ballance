@@ -1,9 +1,8 @@
-﻿using Ballance.LuaHelpers;
-using Ballance.Sys.Debug;
+﻿using Ballance2.LuaHelpers;
+using Ballance2.Sys.Debug;
 using Ballance2.Config;
 using Ballance2.Config.Settings;
 using Ballance2.Sys.Bridge;
-using Ballance2.Sys.Debug;
 using Ballance2.Sys.Entry;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.Res;
@@ -17,6 +16,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.Networking;
+using Ballance2.Sys.Utils;
 
 /*
 * Copyright(c) 2021 imengyu
@@ -792,6 +792,8 @@ namespace Ballance2.Sys
             
             var pm = GetSystemService<GamePackageManager>();
             pm.SavePackageRegisterInfo();
+
+            ObjectStateBackupUtils.ClearAll();
 
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
             ReqGameQuit();

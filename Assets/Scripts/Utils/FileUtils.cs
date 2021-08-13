@@ -1,5 +1,5 @@
 ﻿
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 using Ballance2.Sys.Res;
 using System.IO;
 using System.Text;

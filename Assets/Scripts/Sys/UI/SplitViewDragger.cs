@@ -1,4 +1,4 @@
-﻿using Ballance.LuaHelpers;
+﻿using Ballance2.LuaHelpers;
 using Ballance2.Utils;
 using SLua;
 using UnityEngine;

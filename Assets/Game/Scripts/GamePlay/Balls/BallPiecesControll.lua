@@ -1,6 +1,7 @@
 local PhysicsBody = PhysicsRT.PhysicsBody
 local Vector3 = UnityEngine.Vector3
 local GameManager = Ballance2.Sys.GameManager
+local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
@@ -13,8 +14,7 @@ BallPiecesControll = {
   _Force = 0,
   _UpForce = 0,
   _DownForce = 0,
-  
-  _TickTime = 0,
+
   _PieceThrown = {}, ---@type BallPiecesTimeStorage[]
 } 
 
@@ -36,15 +36,12 @@ function CreateClass_BallPiecesControll()
   function BallPiecesControll:Start()
     GamePlay.BallPiecesControll = self
   end
-  function BallPiecesControll:Update()
-    if self._TickTime < 65536 then self._TickTime = self._TickTime + 1 else self._TickTime = 0 end
-    if self._TickTime % 30 == 0 then
-      --超时恢复碎片
-      for k, v in ipairs(self._PieceThrown) do
-        v.TimeLive = v.TimeLive - 1
-        if v.TimeLive <= 0 then
-          self:ResetPieces(v.GameObject)
-        end
+  function BallPiecesControll:FixedUpdate()
+    --超时恢复碎片
+    for _, v in ipairs(self._PieceThrown) do
+      v.TimeLive = v.TimeLive - 1
+      if v.TimeLive <= 0 then
+        self:ResetPieces(v.GameObject)
       end
     end
   end
@@ -59,17 +56,24 @@ function CreateClass_BallPiecesControll()
     if not parent.activeSelf then
       parent:SetActive(true)
 
+      --还原初始状态
+      ObjectStateBackupUtils.RestoreObjectAndChilds(parent)
+      --设置位置
+      parent.transform.position = pos
+
       --添加数据，让碎片自动消失
       table.insert(self._PieceThrown, {
         GameObject = parent,
-        TimeLive = timeLive,
+        TimeLive = timeLive or 20,
       })
 
-      for i = 0, parent.transform:GetChildCount() do
+      for i = 0, parent.transform.childCount - 1 do
         local child = parent.transform:GetChild(i)
         local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
+        local forceDir = child.position
+        forceDir:Normalize() --力的方向是从原点向碎片位置
         body:ForcePhysics() --物理
-        body:ApplyPointImpulse(Vector3.up * math.random(minForce, maxForce), Vector3.up) --施加力
+        body:ApplyPointImpulse(forceDir * math.random(minForce, maxForce), Vector3.up) --施加力
       end
 
     end
@@ -87,23 +91,22 @@ function CreateClass_BallPiecesControll()
         end
       end
 
-      --隐藏其材质
-      for i = 0, parent.transform:GetChildCount() do
-        GameUIManager.UIFadeManager:AddFadeOut2(parent.transform:GetChild(i), 2, false, nil)
+      --去除物理
+      for i = 0, parent.transform.childCount - 1 do
+        local child = parent.transform:GetChild(i)
+        local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
+        body:ForceDePhysics() 
+      end
+
+      --渐变淡出隐藏其材质
+      for i = 0, parent.transform.childCount - 1 do
+        GameUIManager.UIFadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 2.2, false, nil)
       end
 
       --延时
       coroutine.resume(coroutine.create(function()
         Yield(WaitForSeconds(2))
-
-        --去除物理
-        for i = 0, parent.transform:GetChildCount() do
-          local child = parent.transform:GetChild(i)
-          local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
-          body:ForceDeactive() 
-        end
-
-        parent:SetActive(false)
+        parent:SetActive(false) --隐藏
       end))
 
     end

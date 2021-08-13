@@ -14,7 +14,7 @@ using System;
  *
  */
 
-namespace Ballance.LuaHelpers
+namespace Ballance2.LuaHelpers
 {
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
     public sealed class LuaApiDescription : Attribute

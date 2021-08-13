@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Ballance.LuaHelpers;
+using Ballance2.LuaHelpers;
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Bridge.LuaWapper;
 using Ballance2.Utils;

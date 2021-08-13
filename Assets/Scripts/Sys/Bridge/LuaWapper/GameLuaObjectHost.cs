@@ -1,4 +1,4 @@
-﻿using Ballance.LuaHelpers;
+﻿using Ballance2.LuaHelpers;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.Services;
@@ -120,6 +120,13 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [DoNotToLua]
         [SerializeField]
         public bool ManualInputScript = false;
+        [SerializeField]
+        [Tooltip("Update和LateUpdate函数调用的间隔，为0时则不限制，小于0时禁用，大于0时每指定的Tick调用一次")]
+        [LuaApiDescription("Update和LateUpdate函数调用的间隔，为0时则不限制，小于0时禁用，大于0时每指定的Tick调用一次")]
+        public int UpdateDelta = 0;
+        [Tooltip("FixUpdate函数调用的间隔，为0时则不限制，小于0时禁用，大于0时每指定的Tick调用一次")]
+        [LuaApiDescription("FixUpdate函数调用的间隔，为0时则不限制，小于0时禁用，大于0时每指定的Tick调用一次")]
+        public int FixUpdateDelta = 0;
 
         /// <summary>
         /// 获取lua self
@@ -163,7 +170,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         private LuaVoidDelegate lateUpdate = null;
         private LuaStartDelegate start = null;
         private LuaVoidDelegate awake = null;
-        private LuaVoidDelegate onGUI = null;
         private LuaVoidDelegate onDestory = null;
         private LuaVoidDelegate onEnable = null;
         private LuaVoidDelegate onDisable = null;
@@ -175,6 +181,10 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         private bool startCalled = false;
 
         public System.Action LuaInitFinished;
+
+        private int updateTick = 0;
+        private int fixUpdateTick = 0;
+        private int lateUpdateTick = 0;
 
         private void DoInit()
         {
@@ -221,21 +231,38 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                     _ExecuteOrder = -1;
                 }
             }
-            if (update != null) update(self);
+            if (UpdateDelta >= 0) {
+                if(updateTick > 0) 
+                    updateTick--;
+                else {
+                    updateTick = UpdateDelta;
+                    if (update != null) update(self);
+                }
+            }
         }
         private void FixedUpdate()
         {
-            if (fixedUpdate != null) fixedUpdate(self);
+            if (FixUpdateDelta >= 0) {
+                if(fixUpdateTick > 0) 
+                    fixUpdateTick--;
+                else {
+                    fixUpdateTick = FixUpdateDelta;
+                    if (fixedUpdate != null) fixedUpdate(self);
+                }
+            }
         }
         private void LateUpdate()
         {
-            if (lateUpdate != null) lateUpdate(self);
+            if (UpdateDelta >= 0) {
+                if(lateUpdateTick > 0) 
+                    lateUpdateTick--;
+                else {
+                    lateUpdateTick = UpdateDelta;
+                    if (lateUpdate != null) lateUpdate(self);
+                }
+            }
         }
 
-        private void OnGUI()
-        {
-            if (onGUI != null) onGUI(self);
-        }
         private void OnDestroy()
         {
             if (onDestory != null) onDestory(self);
@@ -339,9 +366,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             fun = self["Awake"] as LuaFunction;
             if (fun != null) awake = fun.cast<LuaVoidDelegate>();
 
-            fun = self["OnGUI"] as LuaFunction;
-            if (fun != null) onGUI = fun.cast<LuaVoidDelegate>();
-
             fun = self["FixedUpdate"] as LuaFunction;
             if (fun != null) fixedUpdate = fun.cast<LuaVoidDelegate>();
 
@@ -376,7 +400,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             update = null;
             start = null;
             awake = null;
-            onGUI = null;
             onDestory = null;
         }
 
@@ -443,7 +466,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// 获取当前 Lua 类
         /// </summary>
         /// <returns></returns>
-        [LuaApiDescription("获取当前 Lua 类")]
+        [LuaApiDescription("获取当前 Lua 类(等于LuaSelf)")]
         public LuaTable GetLuaClass()
         {
             return self;

@@ -1,4 +1,4 @@
-﻿using Ballance.LuaHelpers;
+﻿using Ballance2.LuaHelpers;
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Bridge.Handler;
 using Ballance2.Sys.Debug;
