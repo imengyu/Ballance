@@ -9,7 +9,7 @@ local JetBrainsGlobalNamespace={ }
 local UnityGlobalNamespace={ }
 
 ---GameLuaObjectHost的自定义lua类固定结构
----@class GameLuaObjectHostClass : Object
+---@class GameLuaObjectHostClass : ClassicObject
 ---@field public transform Transform 获取Transform
 ---@field public monoBehaviour GameLuaObjectHost 获取当前GameLuaObjectHost
 ---@field public luaClass table 获取当前GameLuaObjectHost上绑定的lua类table

@@ -420,11 +420,11 @@ namespace Ballance2.Sys
 
                 //第一次加载基础包，等待其运行
                 if(loadStepNow == 0) {
-                    yield return new WaitForSeconds(0.6f);
+                    yield return new WaitForSeconds(0.3f);
 
                     pm.NotifyAllPackageRun("*");
 
-                    yield return new WaitForSeconds(1.2f);
+                    yield return new WaitForSeconds(0.2f);
 
                     //进入Intro
                     RequestEnterLogicScense(firstScense);
@@ -432,7 +432,7 @@ namespace Ballance2.Sys
                 }
             }
 
-            yield return new WaitForSeconds(0.9f);
+            yield return new WaitForSeconds(0.2f);
 
             //全部加载完毕之后通知所有模块初始化
             pm.NotifyAllPackageRun("*");

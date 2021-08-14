@@ -71,6 +71,7 @@ function CreateClass_BallPiecesControll()
         local child = parent.transform:GetChild(i)
         local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
         local forceDir = child.position
+        child.gameObject:SetActive(true)
         forceDir:Normalize() --力的方向是从原点向碎片位置
         body:ForcePhysics() --物理
         body:ApplyPointImpulse(forceDir * math.random(minForce, maxForce), Vector3.up) --施加力
@@ -100,7 +101,7 @@ function CreateClass_BallPiecesControll()
 
       --渐变淡出隐藏其材质
       for i = 0, parent.transform.childCount - 1 do
-        GameUIManager.UIFadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 2.2, false, nil)
+        GameUIManager.UIFadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 2, true, nil)
       end
 
       --延时

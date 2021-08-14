@@ -105,6 +105,14 @@ namespace Ballance2.Utils
         }
 
         [LuaApiDescription("Lua按位与函数")]
+        public static Color HTMLStringToColor(string htmlColor)
+        {
+            if(!ColorUtility.TryParseHtmlString(htmlColor, out var color))
+                color = Color.black;
+            return color;
+        }  
+
+        [LuaApiDescription("Lua按位与函数")]
         public static int And(int a, int b)
         {
             return a & b;

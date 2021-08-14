@@ -7,16 +7,16 @@
 -- the terms of the MIT license. See LICENSE for details.
 --
 
----@class Object
-local Object = {}
-Object.__index = Object
+---@class ClassicObject
+local ClassicObject = {}
+ClassicObject.__index = ClassicObject
 
-function Object:new()
+function ClassicObject:new()
 end
 
 ---扩展类
----@return Object
-function Object:extend()
+---@return ClassicObject
+function ClassicObject:extend()
   local cls = {}
   for k, v in pairs(self) do
     if k:find("__") == 1 then
@@ -29,7 +29,7 @@ function Object:extend()
   return cls
 end
 
-function Object:implement(...)
+function ClassicObject:implement(...)
   for _, cls in pairs({...}) do
     for k, v in pairs(cls) do
       if self[k] == nil and type(v) == "function" then
@@ -39,7 +39,7 @@ function Object:implement(...)
   end
 end
 
-function Object:is(T)
+function ClassicObject:is(T)
   local mt = getmetatable(self)
   while mt do
     if mt == T then
@@ -50,14 +50,14 @@ function Object:is(T)
   return false
 end
 
-function Object:__tostring()
-  return "Object"
+function ClassicObject:__tostring()
+  return "ClassicObject"
 end
 
-function Object:__call(...)
+function ClassicObject:__call(...)
   local obj = setmetatable({}, self)
   obj:new(...)
   return obj
 end
 
-return Object
+return ClassicObject

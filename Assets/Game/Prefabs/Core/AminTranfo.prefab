@@ -373,6 +373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4735434002976212013}
   - component: {fileID: 5403321808286146198}
+  - component: {fileID: 1533227851290511551}
   m_Layer: 0
   m_Name: AminTranfo
   m_TagString: Untagged
@@ -414,6 +415,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1533227851290511551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403321808286146199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a1624f4fefb6fd45aa49fe116903639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AminTranfo
+  LuaClassName: TranfoAminControl
+  LuaFileName: Assets/Game/Scripts/GamePlay/Tranfo/TranfoAminControl.lua
+  LuaPackageName: core
+  LuaInitialVars: []
+  LuaPublicVars: []
+  ExecuteOrder: 0
+  CreateStore: 0
+  CreateActionStore: 0
+  DebugScript: 
+  DebugLoadScript: 0
+  ManualInputScript: 0
+  UpdateDelta: 5
+  FixUpdateDelta: 0
 --- !u!1 &6968145990066538840
 GameObject:
   m_ObjectHideFlags: 0

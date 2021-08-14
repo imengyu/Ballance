@@ -2,7 +2,7 @@ local GameManager = Ballance2.Sys.GameManager
 local GamePackage = Ballance2.Sys.Package.GamePackage
 local SystemPackage = GamePackage.GetSystemPackage()
 
-Classic = SystemPackage:RequireLuaFile("classic") ---@type Object
+ClassicObject = SystemPackage:RequireLuaFile("classic") ---@type ClassicObject
 
 ---游戏功能索引
 Game = {

@@ -650,15 +650,14 @@ namespace PhysicsRT
         /// </summary>
         /// <value></value>
         public Vector3 AngularVelocity {
-            /*get {
+            get {
                 if(ptr == IntPtr.Zero)
                     return InitialAngularVelocity;
                 else {
                     PhysicsApi.API.GetRigidBodyAngularVelocity(ptr, out var v);
                     return v;
                 }
-            }*/
-            get { return Vector3.zero; }
+            }
             set {
                 if(ptr == IntPtr.Zero) throw new PhysicsBodyNotCreateException();
                 PhysicsApi.API.SetRigidBodyAngularVelocity(ptr, value);
@@ -669,15 +668,14 @@ namespace PhysicsRT
         /// </summary>
         /// <value></value>
         public Vector3 LinearVelocity {
-            get { return Vector3.zero;  }
-            /*get {
+            get {
                 if(ptr == IntPtr.Zero)
                     return InitialLinearVelocity;
                 else {
                     PhysicsApi.API.GetRigidBodyLinearVelocity(ptr, out var v);
                     return v;
                 }
-            }*/
+            }
             set {
                 if(ptr == IntPtr.Zero) throw new PhysicsBodyNotCreateException();
                 PhysicsApi.API.SetRigidBodyLinearVelocity(ptr, value);

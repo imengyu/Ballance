@@ -11891,8 +11891,8 @@ MonoBehaviour:
   m_MotionType: 0
   m_CollidableQualityType: -1
   m_Mass: 1.9
-  m_LinearDamping: 0.9
-  m_AngularDamping: 0.1
+  m_LinearDamping: 2.5
+  m_AngularDamping: 0.5
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1
@@ -11907,7 +11907,7 @@ MonoBehaviour:
     Tag06: 0
     Tag07: 0
   m_Friction: 0.8
-  m_Restitution: 0.2
+  m_Restitution: 0.5
   m_Layer: 6
   m_InertiaTensor:
     e00: 1
@@ -12228,7 +12228,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 43
+    floatVal: 1.4
     componentClassVal: 
   - Type: 22
     Name: _UpForce
@@ -12298,7 +12298,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 65
+    floatVal: 3
     componentClassVal: 
   - Type: 22
     Name: _DownForce
@@ -12368,7 +12368,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 25
+    floatVal: 0.43
     componentClassVal: 
   LuaPublicVars: []
   ExecuteOrder: 5
