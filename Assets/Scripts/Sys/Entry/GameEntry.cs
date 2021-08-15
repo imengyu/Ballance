@@ -6,6 +6,7 @@ using Ballance2.UI.Parts;
 using SubjectNerd.Utilities;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_ANDROID
@@ -32,13 +33,16 @@ using UnityEngine.Android;
 
 namespace Ballance2.Sys.Entry
 {        
-    class GameEntry : MonoBehaviour
+    public class GameEntry : MonoBehaviour
     {
+        public static GameEntry Instance { get; private set;}
+
         #region 全局静态配置属性
 
         [Tooltip("启用调试模式。Editor下默认为调试模式")]
         public bool DebugMode = false;
         [Tooltip("目标帧率")]
+        [Range(10, 120)]
         public int DebugTargetFrameRate = 60;
         [Tooltip("是否设置固定帧率")]
         public bool DebugSetFrameRate = true;
@@ -48,17 +52,19 @@ namespace Ballance2.Sys.Entry
         public GameDebugType DebugType = GameDebugType.NoDebug;
         [Reorderable("DebugInitPackages", true, "PackageName")]
         [Tooltip("当前调试中需要初始化的包名")]
-        public System.Collections.Generic.List<GameDebugPackageInfo> DebugInitPackages = null;
+        public List<GameDebugPackageInfo> DebugInitPackages = null;
         [Tooltip("自定义调试用例入口事件名称。进入调试之后会发送一个指定的全局事件，自定义调试用例可以根据这个事件作为调试入口。")]
         public string DebugCustomEntryEvent = "DebugEntry";
+        [SerializeField]
+        [Tooltip("自定义调试用例入口事件名称预设")]
+        [Reorderable("DebugCustomEntries", true, "", true, true)]
+        public List<string> DebugCustomEntries = new List<string>();
         [Tooltip("是否在系统或自定义调试模式中加载用户自定义模块包")]
         public bool DebugLoadCustomPackages = true;
 
         #endregion
 
         #region 静态引入
-
-        public static GameEntry Instance { get; private set;}
 
         public Camera GameBaseCamera = null;
         public RectTransform GameCanvas = null;
@@ -83,7 +89,7 @@ namespace Ballance2.Sys.Entry
             Instance = this;
             GameDebugBeginStats.text = string.Format("Ballance Version {0} ({1})", GameConst.GameVersion, GameConst.GameBulidDate);
 
-            InitBaseSettings();
+            InitBaseSettings(); 
             InitCommandLine();
             InitUI();
 
@@ -197,7 +203,7 @@ namespace Ballance2.Sys.Entry
 #if UNITY_EDITOR
             DebugMode = true;
 #else
-            if(GameSettings.GetBool("DebugMode", false)) DebugMode = true;
+            if(PlayerPrefs.GetInt("core.DebugMode", 0) > 0) DebugMode = true;
             else {
                 DebugMode = false;
                 GameObject.Find("GameDebugBeginStats").SetActive(false);

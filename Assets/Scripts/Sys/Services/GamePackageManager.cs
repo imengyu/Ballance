@@ -221,9 +221,9 @@ namespace Ballance2.Sys.Services
             string realPackagePath = null;
             GamePackage gamePackage = null;
 
-#if UNITY_EDITOR
             realPackagePath = GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + packageName;
             if(packageName == SYSTEM_PACKAGE_NAME) {
+#if UNITY_EDITOR
                 realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
                 if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
                     gamePackage = GamePackage.GetSystemPackage();
@@ -234,6 +234,7 @@ namespace Ballance2.Sys.Services
                 {
                     gamePackage = GamePackage.GetSystemPackage();
                     ((GameSystemPackage)gamePackage).SetDisableLoadFileInUnity();
+                    realPackagePath = GamePathManager.GetResRealPath("core", "core.ballance");
                 }
             }
 #if UNITY_EDITOR
@@ -245,7 +246,7 @@ namespace Ballance2.Sys.Services
             }
             else 
 #else
-            if(true) 
+            else if(true) 
 #endif
             {
                 //路径转换
@@ -301,6 +302,8 @@ namespace Ballance2.Sys.Services
                 GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED, "*", packageName);
 
                 return true;
+            } else {
+                Log.E(TAG, "Package {0} failed LoadInfo", packageName);
             }
 
             packagesLoadStatus.Remove(packageName);
@@ -447,9 +450,10 @@ namespace Ballance2.Sys.Services
                 {
                     packagesLoadStatus.Remove(packageName);
 
+                    var msg = string.Format("Package {0} could not load, because RegisterPackage failed", packageName);
                     //通知事件
-                    GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, 
-                        string.Format("Package {0} could not load, because RegisterPackage failed", packageName));
+                    GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, msg);
+                    Log.E(TAG, msg);
                     return false;
                 }
 

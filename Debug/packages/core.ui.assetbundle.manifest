@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1513634686
+CRC: 3525569824
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 28791ce38d4c03e97334b1b69ccaa281
+    Hash: da8cebb3f5651b1f9f1c9eddde8dd5ff
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5a38fe57fa520def4a2f08232f452b95
+    Hash: 6e42852921ee7f43e4426d6f0a7420d1
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,6 +28,10 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 2161c5ae768511a42be3612a796c62c5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fe6b540e8622c814fb7e25c0ef43e978, type: 3}
@@ -39,6 +43,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 185e65ba4b5982e44896a104b23d37ae, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f8cb77ce1395a52409f430b0188a3058, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 36f0d6b7316145c438a4f44767b1b2f2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 412783b5751e8304ca44de3b1dbaa7cd, type: 3}
 - Class: 114
@@ -62,10 +68,13 @@ Assets:
 - Assets/Packages/core.ui/Prefabs/PageSettingsGraphics.prefab
 - Assets/Packages/core.ui/Prefabs/PageHighscore.prefab
 - Assets/Packages/core.ui/PackageDef.xml
-- Assets/Packages/core.ui/Prefabs/PageQuit.prefab
+- Assets/Packages/core.ui/Prefabs/PageGameFail.prefab
 - Assets/Packages/core.ui/Prefabs/ItemHighscore.prefab
+- Assets/Packages/core.ui/Prefabs/PageQuit.prefab
 - Assets/Packages/core.ui/Prefabs/PageSettings.prefab
 - Assets/Packages/core.ui/Prefabs/PageStart.prefab
+- Assets/Packages/core.ui/Prefabs/PageGamePause.prefab
 - Assets/Packages/core.ui/Prefabs/PageSettingsAudio.prefab
 - Assets/Packages/core.ui/Prefabs/PageLightZone.prefab
+- Assets/Packages/core.ui/Prefabs/PanelScrollCaption.prefab
 Dependencies: []

@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412783b5751e8304ca44de3b1dbaa7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Text: {fileID: 2418910926143550807}
+  Text: {fileID: 0}
   TextValue: {fileID: 3089993239056822043}
   _value: 0
 --- !u!114 &8988347313774322043
@@ -166,7 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2418910926143550806}
   - component: {fileID: 2418910926143550804}
-  - component: {fileID: 2418910926143550807}
+  - component: {fileID: 5911698741121930408}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -201,7 +201,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2418910926143550801}
   m_CullTransparentMesh: 1
---- !u!114 &2418910926143550807
+--- !u!114 &5911698741121930408
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2418910926143550801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -234,7 +234,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Key
+  m_ResourceKey: 
+  m_DefaultString: Key
+  m_I18N: 1
 --- !u!1 &5977513772216337844
 GameObject:
   m_ObjectHideFlags: 0

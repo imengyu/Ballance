@@ -102,6 +102,7 @@ function BallManager:new()
       keyUp = KeyCode.Q,
       keyDown = KeyCode.E,
     }, 
+    nextRecoverPos = Vector3.zero, ---@type Vector3
     rect = Rect(20,100,200,20),
   }
 
@@ -255,6 +256,11 @@ end
 function BallManager:RestoreCurrentBallSpeed()
   self:_RestoreRigidbodySpeed(self._private.currentBall.rigidbody)
 end
+---设置下一次球出生位置
+---@param pos Vector3
+function BallManager:SetNextRecoverPos(pos)
+  self._private.nextRecoverPos = pos
+end
 
   --#region 球状态工作方法
 
@@ -306,6 +312,8 @@ function BallManager:_ActiveCurrentBall()
     current = self._private.currentBall
     self._private.currentActiveBall = self._private.currentBall
 
+    ---设置位置
+    current.ball.transform.position = self._private.nextRecoverPos
     --激活
     current.ball.gameObject:SetActive(true)
     current.rigidbody:ForcePhysics()
@@ -411,21 +419,22 @@ function BallManager:_InitKeyEvents()
   self._private.keyListener:AddKeyListen(KeyCode.Alpha4, function (key, downed)
     if(downed) then
       self:SetControllingStatus(BallControlStatus.NoControl)
+      self:SetNextRecoverPos(Vector3.zero)
     end
   end)
   self._private.keyListener:AddKeyListen(KeyCode.Alpha6, function (key, downed)
     if(downed) then
-      self._private.registerBalls[1].ball:ThrowPieces()
+      self._private.registerBalls[1].ball:ThrowPieces(self._private.nextRecoverPos)
     end
   end)
   self._private.keyListener:AddKeyListen(KeyCode.Alpha7, function (key, downed)
     if(downed) then
-      self._private.registerBalls[2].ball:ThrowPieces()
+      self._private.registerBalls[2].ball:ThrowPieces(self._private.nextRecoverPos)
     end
   end)
   self._private.keyListener:AddKeyListen(KeyCode.Alpha8, function (key, downed)
     if(downed) then
-      self._private.registerBalls[3].ball:ThrowPieces()
+      self._private.registerBalls[3].ball:ThrowPieces(self._private.nextRecoverPos)
     end
   end)
 

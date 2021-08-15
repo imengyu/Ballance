@@ -157,6 +157,7 @@ namespace Ballance2.Editor.Modding
         {
             packsPath.Clear();
             packsPath.Add("请选择");
+            packsPath.Add("core");
 
             DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
             DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -198,8 +199,12 @@ namespace Ballance2.Editor.Modding
                     isError = true;
                     errStr = "请选择你的模块";
                     return;
+                } 
+                else if (selectedMod == 1)
+                {
+                    packDefFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Game/PackageDef.xml");
                 }
-                if (selectedMod > 0 && selectedMod < packsPathArr.Length)
+                else if (selectedMod > 1 && selectedMod < packsPathArr.Length)
                 {
                     string p = GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + 
                         packsPathArr[selectedMod] + "/PackageDef.xml";
@@ -232,11 +237,11 @@ namespace Ballance2.Editor.Modding
                 return;
             }
             string dir = "";
-            if (chooseFolder)
+            if (selectedMod != 1 && chooseFolder)
                 dir = EditorUtility.OpenFolderPanel("保存模块包", EditorPrefs.GetString("ModMakerDefSaveDir", GamePathManager.DEBUG_PATH), "");
             else
             {
-                dir = DebugSettings.Instance.DebugFolder + "/packages/";
+                dir = selectedMod != 1 ? (DebugSettings.Instance.DebugFolder + "/packages/") : (DebugSettings.Instance.DebugFolder + "/core/");
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
             }

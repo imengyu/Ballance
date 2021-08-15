@@ -1,8 +1,59 @@
 <I18n>
   <Language name="ChineseSimplified">
-    <Text name="start">开始</Text>
+    <Text name="ui.yes">是</Text>
+    <Text name="ui.no">否</Text>
+    <Text name="ui.cancel">取消</Text>
+    <Text name="ui.main.start">开始</Text>
+    <Text name="ui.main.highscore">高分</Text>
+    <Text name="ui.main.settings">设置</Text>
+    <Text name="ui.main.about">关于</Text>
+    <Text name="ui.main.quit">退出游戏</Text>
+    <Text name="ui.main.back">返回</Text>
+    <Text name="ui.pause.back">返回游戏</Text>
+    <Text name="ui.pause.restart">重新开始</Text>
+    <Text name="ui.settings">设置</Text>
+    <Text name="ui.settings.video">视频设置</Text>
+    <Text name="ui.settings.graphics">视频设置</Text>
+    <Text name="ui.settings.screen.resolution">屏幕分辨率</Text>
+    <Text name="ui.settings.fullscreen">全屏？</Text>
+    <Text name="ui.settings.cloud">开启云层？</Text>
+    <Text name="ui.settings.vsync">开启垂直同步？</Text>
+    <Text name="ui.settings.audio">声音设置</Text>
+    <Text name="ui.settings.voice.main">主音量</Text>
+    <Text name="ui.settings.voice.ui">界面声音音量</Text>
+    <Text name="ui.settings.voice.background">背景音乐音量</Text>
+    <Text name="ui.settings.packagemgr">模组管理器</Text>
+    <Text name="ui.settings.language">语言</Text>
+    <Text name="ui.settings.control">控制设置</Text>
+    <Text name="ui.settings.control.reverse">反向控制 ？</Text>
+    <Text name="ui.settings.control.forwred">前进</Text>
+    <Text name="ui.settings.control.back">后退</Text>
+    <Text name="ui.settings.control.left">向左</Text>
+    <Text name="ui.settings.control.right">向右</Text>
+    <Text name="ui.settings.control.rotate">旋转摄像机辅助</Text>
+    <Text name="ui.settings.control.overlook">俯视摄像机</Text>
+    <Text name="ui.quit.title">要退出游戏吗？</Text>
+    <Text name="ui.about.about.proj">关于Ballance重制版项目</Text>
+    <Text name="ui.about.about.go.ballanceba">前往 百度Ballance吧 </Text>
+    <Text name="ui.about.about.go.github">前往 Github</Text>
+    <Text name="ui.about.about.content">
+这是 2004年的游戏 Ballance 重制版，
+由快乐的梦鱼制作，
+我力求做到和原游戏一样完美，
+使用 Unity 制作，物理引擎使用havok。
+我花了巨大的精力用来构建整个游戏框架，内核代码设计时就考虑了MOD、关卡、热更等等问题，
+虽然游戏目前仅有原版内容，但支持你通过MOD添加任何自己的创意。
+这是一个开源项目，欢迎访问 Github 查看项目源代码，
+了解开发MOD、关卡的方法。
+欢迎访问 百度Ballance吧 与吧友们一起讨论游戏！
+    </Text>
   </Language>
   <Language name="English">
-    <Text name="start">Start</Text>
+    <Text name="ui.main.start">Start</Text>
+    <Text name="ui.main.highscore">High Score</Text>
+    <Text name="ui.main.settings">Settings</Text>
+    <Text name="ui.main.about">About</Text>
+    <Text name="ui.main.quit">Quit</Text>
+    <Text name="ui.quit.title">Exit the game ?</Text>
   </Language>
 </I18n>

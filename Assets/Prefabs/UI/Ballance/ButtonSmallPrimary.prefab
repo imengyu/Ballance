@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1491144055407831146}
   - component: {fileID: 5585580631710478114}
-  - component: {fileID: 3536096446443017483}
+  - component: {fileID: 5596769292205562676}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -184,7 +184,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3475046112221311406}
   m_CullTransparentMesh: 1
---- !u!114 &3536096446443017483
+--- !u!114 &5596769292205562676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3475046112221311406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -206,7 +206,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
-    m_FontSize: 14
+    m_FontSize: 13
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -218,3 +218,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+  m_ResourceKey: 
+  m_DefaultString: Button
+  m_I18N: 1

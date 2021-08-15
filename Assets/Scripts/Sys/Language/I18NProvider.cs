@@ -26,6 +26,7 @@ namespace Ballance2.Sys.Language
             else {
                 v = new I18NLanguagePack();
                 v.Language = language;
+                languagePacks[language] = v;
                 return v;
             }
         }
@@ -47,8 +48,8 @@ namespace Ballance2.Sys.Language
                             foreach(XmlElement nodeText in nodeLanguage.ChildNodes) {
                                 var nodeTextName = nodeText.Attributes["name"];
                                 if(nodeText.Name == "Text" && nodeTextName != null 
-                                    && !string.IsNullOrEmpty(nodeTextName.Value) && !string.IsNullOrEmpty(nodeText.InnerText)) {
-                                    languagePack.LanguageValues[nodeTextName.Value] = nodeText.InnerText;
+                                    && !string.IsNullOrEmpty(nodeTextName.Value) && !string.IsNullOrEmpty(nodeText.InnerXml)) {
+                                    languagePack.LanguageValues[nodeTextName.Value] = nodeText.InnerXml;
                                 }
                             }
                         } else
@@ -86,7 +87,7 @@ namespace Ballance2.Sys.Language
         [LuaApiParamDescription("xmlAssets", "语言定义XML文件")]
         public static string GetLanguageString(string key, SystemLanguage lang) {
             if(lang == currentLanguage)
-                if(currentLanguagePack.LanguageValues.TryGetValue(key, out var s)) return s;
+                if(currentLanguagePack != null && currentLanguagePack.LanguageValues.TryGetValue(key, out var s)) return s;
             else {
                 var pack = GetOrAddLanguagePack(lang);
                 if(pack.LanguageValues.TryGetValue(key, out var s1)) return s1;

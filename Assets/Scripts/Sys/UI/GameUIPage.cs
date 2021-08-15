@@ -32,6 +32,7 @@ namespace Ballance2
     [LuaApiDescription("UI页实例")]
     public class GameUIPage : MonoBehaviour
     {
+        public RectTransform Content;
         public RectTransform ContentHost;
         public VerticalLayoutGroup VerticalLayoutGroup;
         public HorizontalLayoutGroup HorizontalLayoutGroup;
@@ -60,6 +61,7 @@ namespace Ballance2
             }
             var content = go.GetComponent<RectTransform>();
             if(content != null) {
+                Content = content;
                 UIAnchorPosUtils.SetUIAnchor(content, UIAnchor.Stretch, UIAnchor.Stretch);
                 UIAnchorPosUtils.SetUIPos(content, 0, 0, 0, 0);
             }

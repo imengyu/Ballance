@@ -103,6 +103,11 @@ namespace SLua
             "UnityEngine.MeshRenderer.receiveGI",
             "UnityEngine.MeshRenderer.stitchLightmapSeams",
             "UnityEngine.UI.DefaultControls.factory",
+            "UnityEngine.Light.SetLightDirty",
+            "UnityEngine.Light.get_shadowAngle",
+            "UnityEngine.Light.set_shadowAngle",
+            "UnityEngine.Light.get_shadowRadius",
+            "UnityEngine.Light.set_shadowRadius",
 
         };
         // black list if white list not given
@@ -189,6 +194,7 @@ namespace SLua
 			    "EventProvider",
 			    "Apple",
 			    "ClusterInput",
+			    "LightingSettings",
 				"Motion",
                 "UnityEngine.UI.ReflectionMethodsCache",
 				"NativeLeakDetection",

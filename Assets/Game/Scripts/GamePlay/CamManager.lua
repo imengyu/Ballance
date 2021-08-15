@@ -2,6 +2,7 @@ local Vector3 = UnityEngine.Vector3
 local Quaternion = UnityEngine.Quaternion
 local Time = UnityEngine.Time
 local Log = Ballance2.Utils.Log
+local CamFollow = Ballance2.Game.CamFollow
 
 CamRotateType = {
   North = 0,
@@ -29,9 +30,7 @@ CamRotateType = {
 ---@field CamFollowSpeed number 摄像机跟随速度 [RW]
 ---@field CamIsSpaced boolean 获取摄像机是否空格键升高了 [R]
 ---@field CamRotateValue number 获取当前摄像机方向（0-3, CamRotateType） [R] @see CamRotateType 设置请使用 RotateTo 方法
----@field FollowEnable boolean 指定摄像机跟随球是否开启 [RW]
----@field LookEnable number 指定摄像机看着球是否开启 [RW]
----@field Target Transform 指定当前跟踪的目标 [RW]
+---@field CamFollow CamFollow 获取摄像机跟随脚本 [R]
 CamManager = ClassicObject:extend()
 
 function CamManager:new()
@@ -73,24 +72,11 @@ function CamManager:new()
 end
 
 function CamManager:Start()
+  self.CamFollow = self._CameraHost:GetComponent(CamFollow) ---@type CamFollow
   self.transform.localPosition = Vector3(0,  self._CameraNormalY,  self._CameraNormalZ)
   self.transform:LookAt(Vector3.zero)
 end
-function CamManager:OnDestroy()
-  self.Target = nil
-end
 function CamManager:FixedUpdate()
-  if self.Target ~= nil then
-    --摄像机跟随
-    if self.FollowEnable then
-      self._CameraHostTransform.position = self.Target.position
-      --self._CameraHostTransform.position, self._CamOutSpeed = Vector3.SmoothDamp(self._CameraHostTransform.position, self.Target.position, self._CamOutSpeed, self.CamFollowSpeed);
-    end
-    --摄像机看着
-    if self.LookEnable then
-      self.transform:LookAt(self.Target);
-    end
-  end
   --摄像机水平旋转
   if self._CamIsRotateing then
     self._CamRotateTick = self._CamRotateTick + Time.deltaTime
@@ -215,25 +201,25 @@ end
 ---指定摄像机跟随球是否开启
 ---@param enable boolean
 function CamManager:SetCamFollow(enable)
-  self.FollowEnable = enable
+  self.CamFollow.Follow = enable
   return self
 end
 ---指定摄像机看着球是否开启
 ---@param enable boolean
 function CamManager:SetCamLook(enable)
-  self.LookEnable = enable
+  self.CamFollow.Look = enable
   return self
 end
 ---指定当前跟踪的目标
 ---@param target Transform
 function CamManager:SetTarget(target)
-  self.Target = target
+  self.CamFollow.Target = target
   return self
 end
 function CamManager:DisbleAll()
-  self.FollowEnable = false
-  self.LookEnable = false
-  self.Target = nil
+  self.CamFollow.Follow = false
+  self.CamFollow.Look = false
+  self.CamFollow.Target = nil
   return self
 end
 

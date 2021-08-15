@@ -18,10 +18,10 @@ namespace PhysicsRT
         private PhysicsPhantomType m_Type = PhysicsPhantomType.Aabb;
         [SerializeField]
         [Tooltip("The minimum boundary of the AABB (local)")]
-        private Vector3 m_Min = Vector3.zero;
+        private Vector3 m_Min = new Vector3(-0.5f,-0.5f,-0.5f);
         [SerializeField]
         [Tooltip("The maximum boundary of the AABB (local)")]
-        private Vector3 m_Max = Vector3.one;
+        private Vector3 m_Max = new Vector3(0.5f,0.5f,0.5f);
         [SerializeField]
         private int m_Layer = 0;
         [Tooltip("是否添加 Listener，只有开启了才可使用OnCollision事件")]

@@ -457,7 +457,7 @@ MonoBehaviour:
   PrependText: 
   AppendText: ' %'
   ToStringFormat: 00
-  UnknowOptionString: "\u672A\u77E5"
+  UnknowOptionString: Unknow
   UseOptions: 0
   _value: 50
   options: []
@@ -474,7 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8225218335005782618}
   - component: {fileID: 8225218335005782616}
-  - component: {fileID: 8225218335005782619}
+  - component: {fileID: 3753059738812413574}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -509,7 +509,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8225218335005782621}
   m_CullTransparentMesh: 1
---- !u!114 &8225218335005782619
+--- !u!114 &3753059738812413574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8225218335005782621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -531,7 +531,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
-    m_FontSize: 12
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -542,4 +542,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: ButtonUpdown
+  m_ResourceKey: 
+  m_DefaultString: ButtonUpdown
+  m_I18N: 1

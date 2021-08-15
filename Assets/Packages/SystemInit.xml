@@ -2,6 +2,7 @@
     <SystemPackages>
         <Package name="core.intro" minVer="1" mustLoad="true" loadStep="0"></Package>
         <Package name="core.debug" minVer="1" mustLoad="false" loadStep="1"></Package>
+        <Package name="core.language" minVer="1" mustLoad="false" loadStep="1"></Package>
         <Package name="core.assets.skys" minVer="1" mustLoad="false" loadStep="1"></Package>
         <Package name="core.sounds" minVer="1" mustLoad="true" loadStep="1"></Package>
         <Package name="core.sounds.music" minVer="1" mustLoad="true" loadStep="1"></Package>

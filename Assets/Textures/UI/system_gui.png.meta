@@ -178,7 +178,7 @@ TextureImporter:
     second: IconArrowRight
   - first:
       213: -8983623551252004834
-    second: system_gui_64
+    second: PoweredByHavok
   - first:
       213: -5823949816416637721
     second: IconCheck
@@ -215,6 +215,9 @@ TextureImporter:
   - first:
       213: 8438798086717914939
     second: IconDrag
+  - first:
+      213: -7630727215154562521
+    second: MadeWithVirtools
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1099,7 +1102,7 @@ TextureImporter:
         x: 164
         y: 233
         width: 219
-        height: 39
+        height: 37
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1781,6 +1784,48 @@ TextureImporter:
       bones: []
       spriteID: b3f31123622ac1570800000000000000
       internalID: 8438798086717914939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PoweredByHavok
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 61
+        width: 144
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e108ac73af1c35380800000000000000
+      internalID: -8983623551252004834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MadeWithVirtools
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 0
+        width: 247
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72a7ec2f6063a1690800000000000000
+      internalID: -7630727215154562521
       vertices: []
       indices: 
       edges: []

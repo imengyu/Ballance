@@ -40,7 +40,9 @@ public class PhysicsOptions : ScriptableObject
             return _instance;
         }
     }
+    
     #if UNITY_EDITOR
+    [SLua.DoNotToLua]
     [MenuItem("PhysicsRT/Settings")]
     public static void Open() {
         Selection.activeObject = Instance;

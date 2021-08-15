@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 
 namespace PhysicsRT
@@ -38,6 +39,8 @@ namespace PhysicsRT
         public bool Simulating = true;
         [Tooltip("是否自动更新物理物体的变换数据")]
         public bool AutoSyncTransforms = true;
+        [Tooltip("是否启用Unity Profiler ")]
+        public bool EnableProfiler = true;
 
         /// <summary>
         /// 所有物理场景
@@ -136,27 +139,37 @@ namespace PhysicsRT
                 bodysUpdateBuffer = IntPtr.Zero;
             }
         }
-        private void Start()
-        {
-            
-        }
         private void FixedUpdate() {
             if(Simulating) {
+
+                if(EnableProfiler)
+                    Profiler.BeginSample("StepPhysicsWorld");
 
                 //StepWorld
                 StepPhysicsWorld();
 
+                if(EnableProfiler) 
+                    Profiler.EndSample();
+   
                 //Update all bodys position
-                if(AutoSyncTransforms) UpdateAllBodys();
+                if(EnableProfiler) 
+                    Profiler.BeginSample("UpdateAllBodys");
+
+                if(AutoSyncTransforms) 
+                    UpdateAllBodys();
+                UpdateContactListenerState();
+
+                if(EnableProfiler)
+                    Profiler.EndSample();
             }
         }
-        
+    
+
         /// <summary>
         /// 执行物理事件模拟
         /// </summary>
         public void StepPhysicsWorld() {
-            PhysicsApi.API.StepPhysicsWorld(physicsWorldPtr, Time.deltaTime);
-            UpdateContactListenerState();
+            PhysicsApi.API.StepPhysicsWorld(physicsWorldPtr, Time.fixedDeltaTime);
         }
         /// <summary>
         /// 更新所有刚体位置旋转信息
@@ -169,25 +182,23 @@ namespace PhysicsRT
             while(bodyCurrent != bodysList.getEnd() && bodyCurrent != null)
             {
                 PhysicsApi.API.ReadPhysicsWorldBodys(physicsWorldPtr, bodysUpdateBuffer, updateBufferSize);
-                Marshal.Copy(bodysUpdateBuffer, dat, 0, 7 * updateBufferSize);
+                Marshal.Copy(bodysUpdateBuffer, dat, 0, 8 * updateBufferSize);
 
                 int count = 0;
                 while(bodyCurrent != null && count < updateBufferSize)
                 {
-                    if(bodyCurrent.gameObject.activeSelf) {
-                        if(bodyCurrent.MotionType != MotionType.Keyframed) {
-                            bodyCurrent.transform.position = new Vector3(
-                                dat[count * 7 + 0],
-                                dat[count * 7 + 1],
-                                dat[count * 7 + 2]
-                            );
-                            bodyCurrent.transform.rotation = new Quaternion(
-                                dat[count * 7 + 3], 
-                                dat[count * 7 + 4], 
-                                dat[count * 7 + 5], 
-                                dat[count * 7 + 6]
-                            );
-                        }
+                    if(bodyCurrent.gameObject.activeSelf && bodyCurrent.MotionType != MotionType.Keyframed) {
+                        bodyCurrent.transform.position = new Vector3(
+                            dat[count * 8 + 0],
+                            dat[count * 8 + 1],
+                            dat[count * 8 + 2]
+                        );
+                        bodyCurrent.transform.rotation = new Quaternion(
+                            dat[count * 8 + 3], 
+                            dat[count * 8 + 4], 
+                            dat[count * 8 + 5], 
+                            dat[count * 8 + 6]
+                        );
                     }
 
                     count++;
@@ -201,8 +212,6 @@ namespace PhysicsRT
             foreach(var body in  bodysDictAddContactListener.Values)
                 body.FlushPhysicsBodyContactDataTick();
         }
-
-
 
         /// <summary>
         /// [由PhysicsPhantom自动调用，请勿手动调用]

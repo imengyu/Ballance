@@ -156,9 +156,9 @@ namespace Ballance2.Sys
         private void InitDebugConfig(GameEntry gameEntryInstance) {
             //根据GameEntry中调试信息赋值到当前类变量，供加载使用
             sLoadUserPackages = !DebugMode || gameEntryInstance.DebugLoadCustomPackages;
-            sCustomDebugName = DebugMode ? gameEntryInstance.DebugCustomEntryEvent : "";
-            sEnablePackageLoadFilter = DebugMode && gameEntryInstance.DebugType != GameDebugType.FullDebug;
-            if(DebugMode) {
+            sCustomDebugName = DebugMode &&  gameEntryInstance.DebugType == GameDebugType.CustomDebug ? gameEntryInstance.DebugCustomEntryEvent : "";
+            sEnablePackageLoadFilter = DebugMode && gameEntryInstance.DebugType != GameDebugType.FullDebug && gameEntryInstance.DebugType != GameDebugType.NoDebug;
+            if(DebugMode &&  gameEntryInstance.DebugType != GameDebugType.NoDebug) {
                 foreach(var package in gameEntryInstance.DebugInitPackages) {
                     if(package.Enable) sLoadCustomPackages.Add(package.PackageName);
                 }
@@ -322,12 +322,12 @@ namespace Ballance2.Sys
 
                 LuaFunction f = systemPackage.GetLuaFun("CoreVersion");
                 if(f == null) {
-                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package");
+                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package (1)");
                     yield break;
                 }
                 object ver = f.call();
                 if(ver == null) {
-                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package");
+                    GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package (2)");
                     yield break;
                 }
                 if((double)(ver) != GameConst.GameBulidVersion) {

@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4688839804644025957}
   - component: {fileID: 8654809794313839697}
-  - component: {fileID: 5598414701405270175}
+  - component: {fileID: 876812741504292964}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -151,7 +151,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3733452726522562908}
   m_CullTransparentMesh: 1
---- !u!114 &5598414701405270175
+--- !u!114 &876812741504292964
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3733452726522562908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
-    m_FontSize: 12
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -184,33 +184,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
---- !u!114 &516108066907580500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3814407818929445082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SoundName: core.sounds:Menu_click.wav
---- !u!114 &3375090182452733919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7988236759650601866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ca1de3f43c8b846a4df230d5aabd8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SoundName: core.sounds:Menu_click.wav
+  m_Text: ButtonToogle
+  m_ResourceKey: 
+  m_DefaultString: ButtonToogle
+  m_I18N: 1
 --- !u!1001 &3461242514826742460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,14 +316,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1699761057477749831, guid: 63e5a5e31183c354cae28c651e1834b3,
+        type: 3}
+      propertyPath: m_Text
+      value: No
+      objectReference: {fileID: 0}
+    - target: {fileID: 1699761057477749831, guid: 63e5a5e31183c354cae28c651e1834b3,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.no
+      objectReference: {fileID: 0}
+    - target: {fileID: 1699761057477749831, guid: 63e5a5e31183c354cae28c651e1834b3,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: No
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
---- !u!1 &3814407818929445082 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 353446848343134822, guid: 63e5a5e31183c354cae28c651e1834b3,
-    type: 3}
-  m_PrefabInstance: {fileID: 3461242514826742460}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3814407818929445083 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 353446848343134823, guid: 63e5a5e31183c354cae28c651e1834b3,
@@ -359,7 +345,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3461242514826742460}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3814407818929445082}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -487,6 +473,21 @@ PrefabInstance:
       propertyPath: m_Text
       value: Yes
       objectReference: {fileID: 0}
+    - target: {fileID: 5596769292205562676, guid: b94854c9d45074544b75efdc7da4a57a,
+        type: 3}
+      propertyPath: m_Text
+      value: Yes
+      objectReference: {fileID: 0}
+    - target: {fileID: 5596769292205562676, guid: b94854c9d45074544b75efdc7da4a57a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.yes
+      objectReference: {fileID: 0}
+    - target: {fileID: 5596769292205562676, guid: b94854c9d45074544b75efdc7da4a57a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: Yes
+      objectReference: {fileID: 0}
     - target: {fileID: 8107185447141835468, guid: b94854c9d45074544b75efdc7da4a57a,
         type: 3}
       propertyPath: m_Sprite
@@ -495,12 +496,6 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b94854c9d45074544b75efdc7da4a57a, type: 3}
---- !u!1 &7988236759650601866 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2097476638186419396, guid: b94854c9d45074544b75efdc7da4a57a,
-    type: 3}
-  m_PrefabInstance: {fileID: 8340755440937287502}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7896643085034508721 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2186167688005414655, guid: b94854c9d45074544b75efdc7da4a57a,
@@ -513,7 +508,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 8340755440937287502}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7988236759650601866}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}

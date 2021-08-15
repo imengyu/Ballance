@@ -613,6 +613,70 @@ public class Lua_Ballance2_Sys_UI_Utils_UIFadeManager_FadeObject : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_oldMatRenderMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Utils.UIFadeManager.FadeObject self=(Ballance2.Sys.UI.Utils.UIFadeManager.FadeObject)checkSelf(l);
+			pushValue(l,true);
+			pushEnum(l,(int)self.oldMatRenderMode);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_oldMatRenderMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.UI.Utils.UIFadeManager.FadeObject self=(Ballance2.Sys.UI.Utils.UIFadeManager.FadeObject)checkSelf(l);
+			Ballance2.Sys.Utils.MaterialUtils.RenderingMode v;
+			v = (Ballance2.Sys.Utils.MaterialUtils.RenderingMode)LuaDLL.luaL_checkinteger(l, 2);
+			self.oldMatRenderMode=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_fadeType(IntPtr l) {
 		try {
 			#if DEBUG
@@ -687,6 +751,7 @@ public class Lua_Ballance2_Sys_UI_Utils_UIFadeManager_FadeObject : LuaObject {
 		addMember(l,"timeInSecond",get_timeInSecond,set_timeInSecond,true);
 		addMember(l,"endReactive",get_endReactive,set_endReactive,true);
 		addMember(l,"runEnd",get_runEnd,set_runEnd,true);
+		addMember(l,"oldMatRenderMode",get_oldMatRenderMode,set_oldMatRenderMode,true);
 		addMember(l,"fadeType",get_fadeType,set_fadeType,true);
 		createTypeMetatable(l,constructor, typeof(Ballance2.Sys.UI.Utils.UIFadeManager.FadeObject));
 	}

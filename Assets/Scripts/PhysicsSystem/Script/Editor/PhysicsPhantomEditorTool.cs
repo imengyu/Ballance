@@ -18,8 +18,8 @@ public class PhysicsPhantomEditorTool : EditorTool
 			if (!((Object)val == (Object)null))
 			{
 				var size2 = val.Max - val.Min;
-				var oldCenter = size2 / 2;
-				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, Quaternion.identity, Vector3.one)))
+				var oldCenter = val.Min + size2 / 2;
+				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, Quaternion.identity, val.transform.lossyScale)))
 				{
 					Handles.DrawWireCube(oldCenter, size2);
 				}

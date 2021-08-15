@@ -67,11 +67,12 @@ function Ball:GetPieces()
   return self._Pieces
 end
 ---丢出此作类的碎片时
-function Ball:ThrowPieces()
-  GamePlay.BallPiecesControll:ThrowPieces(self._Pieces, self.transform.position, self._PiecesMinForce, self._PiecesMaxForce)
+---@param pos Vector3
+function Ball:ThrowPieces(pos)
+  GamePlay.BallPiecesControll:ThrowPieces(self._Pieces, pos, self._PiecesMinForce, self._PiecesMaxForce)
 end
 ---回收此作类的碎片时
-function Ball:ResetPieces()
+function Ball:ResetPieces() 
   GamePlay.BallPiecesControll:ResetPieces(self._Pieces)
 end
 

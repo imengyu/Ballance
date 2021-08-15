@@ -189,7 +189,7 @@ namespace Ballance2.Utils
             }
 
             //如果在 Editor 中就把日志输出到控制台显示
-            #if UNITY_EDITOR
+            //#if UNITY_EDITOR
             logWriteLock = true;
 
             var str = string.Format("[{0}] {1}", tag, message);
@@ -202,7 +202,7 @@ namespace Ballance2.Utils
             }
 
             logWriteLock = false;
-            #endif
+            //#endif
 
             if(!logTemporaryForeachLock) {
                 LogTemporaryData data = new LogTemporaryData();

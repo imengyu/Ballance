@@ -35,36 +35,7 @@ public class Lua_PhysicsOptions : LuaObject {
 		}
 		#endif
 	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int Open_s(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsOptions.Open();
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
+
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
 	static public int get_EnableMultithreaded(IntPtr l) {
@@ -290,7 +261,6 @@ public class Lua_PhysicsOptions : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsOptions");
-		addMember(l,Open_s);
 		addMember(l,"EnableMultithreaded",get_EnableMultithreaded,set_EnableMultithreaded,true);
 		addMember(l,"SmallPoolSize",get_SmallPoolSize,set_SmallPoolSize,true);
 		addMember(l,"UpdateBufferSize",get_UpdateBufferSize,set_UpdateBufferSize,true);

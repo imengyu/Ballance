@@ -35,11 +35,6 @@ namespace Ballance2.Sys.Package
         public override async Task<bool> LoadInfo(string filePath)
         {
             PackageFilePath = filePath;
-#if !UNITY_EDITOR
-            GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "This package can only use in editor.");
-            await base.LoadPackage();
-            return false;
-#else
             if(disableLoadFileInUnity) {
                 return await base.LoadInfo(filePath);
             } else {
@@ -63,12 +58,13 @@ namespace Ballance2.Sys.Package
                     return ReadInfo(PackageDef);
                 }
             }
-#endif
         }
         public override async Task<bool> LoadPackage()
         {
             if(disableLoadFileInUnity) {
-                return await base.LoadPackage();
+                var rs = await base.LoadPackage();
+                SystemPackageSetInitFinished();
+                return rs;
             } else {
                 if(!string.IsNullOrEmpty(BaseInfo.Logo))
                     LoadLogo(PackageFilePath + "/" + BaseInfo.Logo);
@@ -178,7 +174,7 @@ namespace Ballance2.Sys.Package
                 return null;
             } 
 #else
-            return base.GetCodeLuaAsset(pathorname);
+            return base.GetCodeLuaAsset(pathorname, out realPath);
 #endif
         }
     }

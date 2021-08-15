@@ -12,7 +12,7 @@ local GameManager = Ballance2.Sys.GameManager
 local Log = Ballance2.Utils.Log
 local GameMenuLevel = nil
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
-local CloneUtils = Ballance2.Sys.Utils
+local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 
 local GameMenuLevelEnterHandler = nil

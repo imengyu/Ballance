@@ -98,6 +98,8 @@ namespace Ballance2.Editor.Modding
         private void LoadModsPath()
         {
             packsPath.Clear();
+            packsPath.Add("core");
+
             DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
             DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
             for (int i = 0; i < dirs.Length; i++)
@@ -124,14 +126,21 @@ namespace Ballance2.Editor.Modding
                 return;
             }
 
-            string dir = DebugSettings.Instance.DebugFolder + "/packages/";
+            string dir = "";
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
             EditorUtility.DisplayProgressBar("正在打包", "正在打包，请稍后...", 0);
 
             foreach(string path in packsPath) {
-                TextAsset packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + 
-                       path + "/PackageDef.xml");
+                TextAsset packageDef = null;
+                if(path == "core") {
+                    packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Game/PackageDef.xml");
+                    dir = DebugSettings.Instance.DebugFolder + "/core/";
+                }
+                else {
+                    packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + path + "/PackageDef.xml");
+                    dir = DebugSettings.Instance.DebugFolder + "/packages/";
+                }
                 if(packageDef  == null)
                 {
                     isError = true;

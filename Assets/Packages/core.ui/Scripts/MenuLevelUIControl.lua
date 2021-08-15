@@ -2,6 +2,7 @@ local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local Yield = UnityEngine.Yield
+local Application = UnityEngine.Application
 
 ---创建主菜单UI
 ---@param package GamePackage
@@ -39,6 +40,31 @@ function CreateMenuLevelUI(package)
   MessageCenter:SubscribeEvent('BtnStartLightZoneClick', function () 
     GameManager.GameMediator:NotifySingleEvent(EVENT_SWITCH_LIGHTZONE, { true })
     GameUIManager:GoPage('PageLightZone') 
+  end)
+
+  local PanelScrollCaption = PageAbout.Content.transform:Find("PanelScrollCaption").gameObject
+  local PanelMyAbout = PageAbout.Content.transform:Find("PanelMyAbout").gameObject
+ 
+  MessageCenter:SubscribeEvent('ButtonOpenSourceLicenseClick', function () 
+
+  end)
+  MessageCenter:SubscribeEvent('ButtonProjectClick', function () 
+    PanelScrollCaption:SetActive(false)
+    PanelMyAbout:SetActive(true)
+  end)
+  MessageCenter:SubscribeEvent('BtnAboutBackClick', function () 
+    if PanelMyAbout.activeSelf then
+      PanelScrollCaption:SetActive(true)
+      PanelMyAbout:SetActive(false)
+    else
+      GameUIManager:BackPreviusPage()
+    end
+  end)
+  MessageCenter:SubscribeEvent('BtnGoBallanceBaClick', function () 
+    Application.OpenURL('https://tieba.baidu.com/f?kw=%E5%B9%B3%E8%A1%A1%E7%90%83')
+  end)
+  MessageCenter:SubscribeEvent('BtnGoGithubClick', function () 
+    Application.OpenURL('https://github.com/imengyu/Ballance')
   end)
 
   coroutine.resume(coroutine.create(function ()

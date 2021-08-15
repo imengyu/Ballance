@@ -539,6 +539,70 @@ public class Lua_PhysicsRT_PhysicsWorld : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_EnableProfiler(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsWorld self=(PhysicsRT.PhysicsWorld)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.EnableProfiler);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_EnableProfiler(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsWorld self=(PhysicsRT.PhysicsWorld)checkSelf(l);
+			System.Boolean v;
+			checkType(l,2,out v);
+			self.EnableProfiler=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_PhysicsWorlds(IntPtr l) {
 		try {
 			#if DEBUG
@@ -583,6 +647,7 @@ public class Lua_PhysicsRT_PhysicsWorld : LuaObject {
 		addMember(l,GetCurrentScensePhysicsWorld_s);
 		addMember(l,"Simulating",get_Simulating,set_Simulating,true);
 		addMember(l,"AutoSyncTransforms",get_AutoSyncTransforms,set_AutoSyncTransforms,true);
+		addMember(l,"EnableProfiler",get_EnableProfiler,set_EnableProfiler,true);
 		addMember(l,"PhysicsWorlds",get_PhysicsWorlds,null,false);
 		createTypeMetatable(l,null, typeof(PhysicsRT.PhysicsWorld),typeof(UnityEngine.MonoBehaviour));
 	}

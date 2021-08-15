@@ -191,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6766412154173210631}
   - component: {fileID: 6234366984643424135}
-  - component: {fileID: 3106350477988980049}
+  - component: {fileID: 2707061740416395127}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -216,7 +216,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6234366984643424135
 CanvasRenderer:
@@ -226,7 +226,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3863744442651165473}
   m_CullTransparentMesh: 1
---- !u!114 &3106350477988980049
+--- !u!114 &2707061740416395127
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3863744442651165473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -259,7 +259,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u63A7\u5236\u8BBE\u7F6E"
+  m_Text: ui.settings.control
+  m_ResourceKey: ui.settings.control
+  m_DefaultString: ui.settings.control
+  m_I18N: 1
 --- !u!114 &902861522844686652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,6 +519,21 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u540E\u9000"
       objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.back
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.back
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.back
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
 --- !u!1 &3088570242889306506 stripped
@@ -652,6 +670,21 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u5411\u5DE6"
       objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.left
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.left
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.left
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
 --- !u!224 &4524877708506749953 stripped
@@ -673,6 +706,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3813222730679796894}
     m_Modifications:
+    - target: {fileID: 876812741504292964, guid: f97307d9f747d494182e650eca2e3312,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.reverse
+      objectReference: {fileID: 0}
+    - target: {fileID: 876812741504292964, guid: f97307d9f747d494182e650eca2e3312,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.reverse
+      objectReference: {fileID: 0}
+    - target: {fileID: 876812741504292964, guid: f97307d9f747d494182e650eca2e3312,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.reverse
+      objectReference: {fileID: 0}
     - target: {fileID: 1977096574704402867, guid: f97307d9f747d494182e650eca2e3312,
         type: 3}
       propertyPath: m_Pivot.x
@@ -933,6 +981,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: "\u5411\u53F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.right
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.right
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.right
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
@@ -1240,6 +1303,21 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u524D\u8FDB"
       objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.forwred
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.forwred
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.forwred
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
 --- !u!224 &8290092543629738417 stripped
@@ -1376,6 +1454,21 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u4FEF\u89C6"
       objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.overlook
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.overlook
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.overlook
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
 --- !u!1 &6886008258722789764 stripped
@@ -1511,6 +1604,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: "\u65CB\u8F6C\u65B9\u5411\u8F85\u52A9"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_Text
+      value: ui.settings.control.rotate
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_ResourceKey
+      value: ui.settings.control.rotate
+      objectReference: {fileID: 0}
+    - target: {fileID: 5911698741121930408, guid: 08cd00bd10b452844a2abfbf8bb17e2a,
+        type: 3}
+      propertyPath: m_DefaultString
+      value: ui.settings.control.rotate
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}

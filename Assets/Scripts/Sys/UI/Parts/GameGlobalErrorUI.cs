@@ -20,7 +20,7 @@ using UnityEngine.UI;
 
 namespace Ballance2.UI.Parts
 {
-    class GameGlobalErrorUI : MonoBehaviour
+    public class GameGlobalErrorUI : MonoBehaviour
     {
         public Text TextGameErrorTitle = null;
         public Text TextGameErrorHelp = null;

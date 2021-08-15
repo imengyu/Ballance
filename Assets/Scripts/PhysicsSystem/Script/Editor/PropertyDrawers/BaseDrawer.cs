@@ -16,8 +16,6 @@ abstract class BaseDrawer : PropertyDrawer
     {
         if (IsCompatible(property))
             DoGUI(position, property, label);
-        else
-            EditorGUIControls.DisplayCompatibilityWarning(position, label, ObjectNames.NicifyVariableName(GetType().Name));
     }
 
     protected abstract void DoGUI(Rect position, SerializedProperty property, GUIContent label);

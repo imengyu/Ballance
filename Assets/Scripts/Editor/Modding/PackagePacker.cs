@@ -22,7 +22,7 @@ namespace Ballance2.Editor.Modding
         private static List<string> allLuaPath = new List<string>();
 
         public static string DoPackPackage(BuildTarget packTarget, TextAsset packDefFile, string sourceName, string targetDir) {
-            string targetPath = targetDir + sourceName + ".ballance";
+            string targetPath = targetDir + "/" + sourceName + ".ballance";
             if (!string.IsNullOrEmpty(targetPath))
             {
                 DoSolvePackageDef(packDefFile);
