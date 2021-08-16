@@ -138,7 +138,7 @@ namespace Ballance2.Sys
             GameStore = GameMediator.RegisterGlobalDataStore("core");
             GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
             GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-
+            
             GameMainLuaSvr = new LuaSvr();
             GameMainLuaSvr.init(null, () =>
             {
@@ -164,12 +164,35 @@ namespace Ballance2.Sys
                 }
             }
         }
+        private void InitDebugAction() {
+            GameActionStore.RegisterAction(GameSystemPackage.GetSystemPackage(), "EnableDebugMode", "", (pararms) => {
+                DebugMode = true;
+                PlayerPrefs.SetInt("core.DebugMode", 1);
+
+                //加载core.debug包
+                var pm = GetSystemService<GamePackageManager>();
+                if(!pm.IsPackageLoaded("core.debug")) 
+                #pragma warning disable 4014
+                    pm.LoadPackage("core.debug");
+                #pragma warning restore 4014
+                return GameActionCallResult.SuccessResult;
+            }, null);
+            GameActionStore.RegisterAction(GameSystemPackage.GetSystemPackage(), "DisableDebugMode", "", (pararms) => {
+                DebugMode = false;
+                PlayerPrefs.SetInt("core.DebugMode", 0);
+
+                //卸载core.debug包
+                var pm = GetSystemService<GamePackageManager>();
+                if(pm.IsPackageLoaded("core.debug")) 
+                    pm.UnLoadPackage("core.debug", true);
+                return GameActionCallResult.SuccessResult;
+            }, null);
+        }
 
         private IEnumerator InitAsysc() 
         {
             //检测lua绑定状态
             object o = GameMainLuaState.doString(@"
-            import 'Ballance2'
             import 'UnityEngine'
             return Ballance2.Sys.GameManager.LuaBindingCallback()
             ", "GameManagerSystemInit");
@@ -773,8 +796,16 @@ namespace Ballance2.Sys
                 gameIsQuitEmitByGameManager = true;
                 DoQuit();
             }
+            GameSystem.IsRestart = false;
         }
-        
+        /// <summary>
+        /// 重启游戏
+        /// </summary>
+        public void RestartGame() {
+            QuitGame();
+            GameSystem.IsRestart = true;
+        }
+
         private static bool gameIsQuitEmitByGameManager = false;
 
         private bool Application_wantsToQuit()

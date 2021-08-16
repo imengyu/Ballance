@@ -220,12 +220,80 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
-			System.String a1;
-			checkType(l,2,out a1);
-			var ret=self.RequireLuaFile(a1);
-			pushValue(l,true);
-			pushValue(l,ret);
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				var ret=self.RequireLuaFile(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==3){
+				Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+				Ballance2.Sys.Package.GamePackage a1;
+				checkType(l,2,out a1);
+				System.String a2;
+				checkType(l,3,out a2);
+				var ret=self.RequireLuaFile(a1,a2);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function RequireLuaFile to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int RequireLuaFileOnce(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				var ret=self.RequireLuaFileOnce(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==3){
+				Ballance2.Sys.Package.GamePackage self=(Ballance2.Sys.Package.GamePackage)checkSelf(l);
+				Ballance2.Sys.Package.GamePackage a1;
+				checkType(l,2,out a1);
+				System.String a2;
+				checkType(l,3,out a2);
+				var ret=self.RequireLuaFileOnce(a1,a2);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function RequireLuaFileOnce to call");
 			return 2;
 		}
 		catch(Exception e) {
@@ -1548,6 +1616,7 @@ public class Lua_Ballance2_Sys_Package_GamePackage : LuaObject {
 		addMember(l,IsLuaStateInitFinished);
 		addMember(l,RequireLuaClass);
 		addMember(l,RequireLuaFile);
+		addMember(l,RequireLuaFileOnce);
 		addMember(l,GetLuaFun);
 		addMember(l,CallLuaFun);
 		addMember(l,TryCallLuaFun);

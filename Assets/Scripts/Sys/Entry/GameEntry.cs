@@ -89,8 +89,8 @@ namespace Ballance2.Sys.Entry
             Instance = this;
             GameDebugBeginStats.text = string.Format("Ballance Version {0} ({1})", GameConst.GameVersion, GameConst.GameBulidDate);
 
-            InitBaseSettings(); 
             InitCommandLine();
+            InitBaseSettings(); 
             InitUI();
 
             if (DebugMode && DebugSetFrameRate) Application.targetFrameRate = DebugTargetFrameRate;
@@ -173,6 +173,13 @@ namespace Ballance2.Sys.Entry
 #else
             Application.Quit();
 #endif
+        }
+        /// <summary>
+        /// 不同意Android权限
+        /// </summary>
+        public void DisallowAndroidPermission() {
+            GlobalGameUserAgreementTipDialogClosed = true;
+            GlobalGamePermissionTipDialog.SetActive(false);
         }
 
         #endregion

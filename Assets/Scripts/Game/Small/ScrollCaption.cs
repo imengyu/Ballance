@@ -22,6 +22,7 @@ namespace Ballance2.Game.Small
 
         public float PageShowTime = 5.0f;
 
+        public bool startLock = true;
         public int currIndex = 0;
         public int currTick = 0;
         public bool currFadeing = true;
@@ -32,6 +33,9 @@ namespace Ballance2.Game.Small
             GetNext(true);
             for (int i = 0; i < PanelImages.transform.childCount; i++)
                 PanelImages.transform.GetChild(i).gameObject.SetActive(false);
+            TextHeader.color = new Color(TextHeader.color.r, TextHeader.color.g, TextHeader.color.b, 0);
+            TextContent.color = new Color(TextContent.color.r, TextContent.color.g, TextContent.color.b, 0);
+            startLock = false;
         }
 
         private void GetNext(bool start = false) {
@@ -102,7 +106,8 @@ namespace Ballance2.Game.Small
         } 
 
         private void OnEnable() {
-            GetNext(true);
+            if(!startLock)
+                GetNext(true);
         }
     }
 }

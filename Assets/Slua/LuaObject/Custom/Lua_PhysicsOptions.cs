@@ -35,7 +35,6 @@ public class Lua_PhysicsOptions : LuaObject {
 		}
 		#endif
 	}
-
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
 	static public int get_EnableMultithreaded(IntPtr l) {

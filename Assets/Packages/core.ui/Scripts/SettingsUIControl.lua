@@ -6,6 +6,9 @@ local QualitySettings = UnityEngine.QualitySettings
 local KeyCode = UnityEngine.KeyCode
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local Yield = UnityEngine.Yield
+local SystemLanguage = UnityEngine.SystemLanguage
+
+
 
 ---创建主设置菜单UI
 ---@param package GamePackage
@@ -14,11 +17,15 @@ function CreateSettingsUI(package)
   local PageSettingsAudio = GameUIManager:RegisterPage('PageSettingsAudio', 'PageCommon')
   local PageSettingsControls = GameUIManager:RegisterPage('PageSettingsControls', 'PageCommon')
   local PageSettingsGraphics = GameUIManager:RegisterPage('PageSettingsGraphics', 'PageCommon')
+  local PageLanguage = GameUIManager:RegisterPage('PageLanguage', 'PageCommon')
+  local PageApplyLangDialog = GameUIManager:RegisterPage('PageApplyLangDialog', 'PageCommon')
 
   PageSettings:CreateContent(package)
   PageSettingsAudio:CreateContent(package)
   PageSettingsControls:CreateContent(package)
   PageSettingsGraphics:CreateContent(package)
+  PageLanguage:CreateContent(package)
+  PageApplyLangDialog:CreateContent(package)
 
   coroutine.resume(coroutine.create(function ()
     Yield(WaitForSeconds(0.5))
@@ -129,6 +136,21 @@ function BindSettingsUI(MessageCenter)
     GameManager.Instance.GameStore['DbgShowPackageManageWindow'] = true
   end)
 
+  --语言
+  local applyLanguage = function (lang)
+    GameSettingsManager.GetSettings("core"):SetInt("language", lang)
+    GameUIManager:GoPage('PageApplyLangDialog')
+  end
+
+  MessageCenter:SubscribeEvent('BtnChineseSimplified', function () applyLanguage(SystemLanguage.ChineseSimplified) end)
+  MessageCenter:SubscribeEvent('BtnChineseTraditional', function () applyLanguage(SystemLanguage.ChineseTraditional) end)
+  MessageCenter:SubscribeEvent('BtnEnglish', function () applyLanguage(SystemLanguage.English) end)
+
+  MessageCenter:SubscribeEvent('BtnLangBackClick', function () 
+    GameUIManager:BackPreviusPage()
+    GameUIManager:BackPreviusPage()
+  end) 
+
   --设置保存
   MessageCenter:SubscribeEvent('BtnSettingsGraphicsBackClick', function () 
     GameSettings:NotifySettingsUpdate("video")
@@ -142,5 +164,9 @@ function BindSettingsUI(MessageCenter)
     GameSettings:NotifySettingsUpdate("voice")
     GameUIManager:BackPreviusPage()
   end)
+
+  --重启游戏
+  MessageCenter:SubscribeEvent('BtnRestartGameClick', function () GameManager.Instance:RestartGame() end)
+  
 
 end

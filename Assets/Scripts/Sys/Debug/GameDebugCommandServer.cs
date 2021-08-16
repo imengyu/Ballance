@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Ballance2.LuaHelpers;
 using Ballance2.Sys.Bridge;
+using Ballance2.Sys.Package;
 using Ballance2.Utils;
 using SLua;
-using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -16,9 +16,6 @@ using UnityEngine;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
 *
 */
 
@@ -176,6 +173,11 @@ namespace Ballance2.Sys.Debug
                 Log.V("echo", fullCmd.Substring(2));
                 return true;
             }, 1, "e [any] 测试命令");
+            RegisterCommand("quit-debug-mode", (keyword, fullCmd, args) =>
+            {
+                GameManager.GameMediator.CallAction(GamePackage.GetSystemPackage(), "System", "DisableDebugMode");
+                return true;
+            }, 1, "quit-debug-mode 关闭开发者模式");
         }
     }
 }

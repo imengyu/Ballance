@@ -2,6 +2,8 @@
   <Language name="ChineseSimplified">
     <Text name="ui.yes">是</Text>
     <Text name="ui.no">否</Text>
+    <Text name="ui.notNow">不是现在</Text>
+    <Text name="ui.restartGame">重启游戏</Text>
     <Text name="ui.cancel">取消</Text>
     <Text name="ui.main.start">开始</Text>
     <Text name="ui.main.highscore">高分</Text>
@@ -9,6 +11,7 @@
     <Text name="ui.main.about">关于</Text>
     <Text name="ui.main.quit">退出游戏</Text>
     <Text name="ui.main.back">返回</Text>
+    <Text name="ui.level.customLevel">自定义关卡</Text>
     <Text name="ui.pause.back">返回游戏</Text>
     <Text name="ui.pause.restart">重新开始</Text>
     <Text name="ui.settings">设置</Text>
@@ -24,6 +27,7 @@
     <Text name="ui.settings.voice.background">背景音乐音量</Text>
     <Text name="ui.settings.packagemgr">模组管理器</Text>
     <Text name="ui.settings.language">语言</Text>
+    <Text name="ui.settings.language.applyDlgText">更改的语言设置将会在下一次重启游戏时生效，您想现在重启游戏吗？</Text>
     <Text name="ui.settings.control">控制设置</Text>
     <Text name="ui.settings.control.reverse">反向控制 ？</Text>
     <Text name="ui.settings.control.forwred">前进</Text>
@@ -36,6 +40,8 @@
     <Text name="ui.about.about.proj">关于Ballance重制版项目</Text>
     <Text name="ui.about.about.go.ballanceba">前往 百度Ballance吧 </Text>
     <Text name="ui.about.about.go.github">前往 Github</Text>
+    <Text name="ui.about.about.creators">Creators</Text>
+    <Text name="ui.about.about.version">版本: {0}</Text>
     <Text name="ui.about.about.content">
 这是 2004年的游戏 Ballance 重制版，
 由快乐的梦鱼制作，
@@ -47,6 +53,8 @@
 了解开发MOD、关卡的方法。
 欢迎访问 百度Ballance吧 与吧友们一起讨论游戏！
     </Text>
+    <Text name="str.tip.click.debug">再点击 {0} 次可开启开发者模式！</Text>
+    <Text name="str.tip.in.debug">你已经处于开发者模式！</Text>
   </Language>
   <Language name="English">
     <Text name="ui.main.start">Start</Text>

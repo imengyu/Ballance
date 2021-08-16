@@ -245,7 +245,7 @@ namespace Ballance2.Sys.Package
         private async Task<bool> InitLuaState()
         {
             mainLuaCodeLoaded = false;
-            requiredLuaFiles = new List<string>();
+            requiredLuaFiles = new Dictionary<string, object>();
             requiredLuaClasses = new Dictionary<string, LuaFunction>();
 
             if (!string.IsNullOrEmpty(ShareLuaState))
@@ -285,7 +285,7 @@ namespace Ballance2.Sys.Package
             luaStateInited = true; 
             luaStateIniting = false;
             mainLuaCodeLoaded = false;
-            requiredLuaFiles = new List<string>();
+            requiredLuaFiles = new Dictionary<string, object>();
             requiredLuaClasses = new Dictionary<string, LuaFunction>();
             RunPackageExecutionCode();
         }
@@ -362,7 +362,7 @@ namespace Ballance2.Sys.Package
                                 return false;
                             } else {
                                 mainLuaCodeLoaded = true;
-                                requiredLuaFiles.Add(EntryCode);
+                                requiredLuaFiles.Add(EntryCode, LuaPackageEntry);
                             }
                         }
                         catch (Exception e)
@@ -492,7 +492,7 @@ namespace Ballance2.Sys.Package
             }
         }
 
-        private List<string> requiredLuaFiles = null;
+        private Dictionary<string, object> requiredLuaFiles = null;
         private Dictionary<string, LuaFunction> requiredLuaClasses = null;
 
         private string TryLoadLuaCodeAsset(string className, out string realPath) {
@@ -582,16 +582,64 @@ namespace Ballance2.Sys.Package
         /// </exception>
         [LuaApiDescription("导入Lua文件到当前模块虚拟机中", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
-        public object RequireLuaFile(string fileName)
+        public object RequireLuaFile(string fileName) { return RequireLuaFileInternal(this, fileName, false); }
+        /// <summary>
+        /// 导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
+        /// </summary>
+        /// <param name="fileName">LUA文件名</param>
+        /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+        /// <exception cref="MissingReferenceException">
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// </exception>
+        /// <exception cref="Exception">
+        /// 如果Lua执行失败，则抛出此异常。
+        /// </exception>
+        [LuaApiDescription("导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入", "返回执行结果")]
+        [LuaApiParamDescription("fileName", "LUA文件名")]
+        public object RequireLuaFileOnce(string fileName) { return RequireLuaFileInternal(this, fileName, true); }
+        /// <summary>
+        /// 从其他模块导入Lua文件到当前模块虚拟机中
+        /// </summary>
+        /// <param name="fileName">LUA文件名</param>
+        /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+        /// <exception cref="MissingReferenceException">
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// </exception>
+        /// <exception cref="Exception">
+        /// 如果Lua执行失败，则抛出此异常。
+        /// </exception>
+        [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中", "返回执行结果")]
+        [LuaApiParamDescription("fileName", "LUA文件名")]
+        public object RequireLuaFile(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, false); }
+        /// <summary>
+        /// 从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
+        /// </summary>
+        /// <param name="fileName">LUA文件名</param>
+        /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+        /// <exception cref="MissingReferenceException">
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// </exception>
+        /// <exception cref="Exception">
+        /// 如果Lua执行失败，则抛出此异常。
+        /// </exception>
+        [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入", "返回执行结果")]
+        [LuaApiParamDescription("fileName", "LUA文件名")]
+        public object RequireLuaFileOnce(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, true); }
+
+        private object RequireLuaFileInternal(GamePackage pack, string fileName, bool once)
         {
             object rs = null;
-            string lua = TryLoadLuaCodeAsset(fileName, out var realPath);
+            string lua = pack.TryLoadLuaCodeAsset(fileName, out var realPath);
             if (string.IsNullOrWhiteSpace(lua))
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
             try
             {
+                //不重复导入
+                if(once && requiredLuaFiles.TryGetValue(fileName, out var lastRet)) 
+                    return lastRet;
+
                 rs = PackageLuaState.doString(lua, realPath);
-                requiredLuaFiles.Add(fileName);
+                requiredLuaFiles.Add(fileName, rs);
             }
             catch (Exception e)
             {

@@ -1,6 +1,4 @@
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
-local GamePackage = Ballance2.Sys.Package.GamePackage
-local SystemPackage = GamePackage.GetSystemPackage()
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass
@@ -29,7 +27,7 @@ function GamePlayManager:CreateSkyAndLight(skyBoxPre, customSkyMat, lightColor)
   Game.GamePlay.CamManager:SetSkyBox(customSkyMat or SkyBoxUtils.MakeSkyBox(skyBoxPre)) --Init sky
 
   if self.GameLightGameObject == nil then
-    self.GameLightGameObject = CloneUtils.CloneNewObject(SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GameLight.prefab'), 'GameLight')
+    self.GameLightGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GameLight.prefab'), 'GameLight')
     self.GameLightA = self.GameLightGameObject.transform:Find('Light'):GetComponent(UnityEngine.Light) ---@type Light
     self.GameLightB = self.GameLightGameObject.transform:Find('LightSecond'):GetComponent(UnityEngine.Light) ---@type Light
   end

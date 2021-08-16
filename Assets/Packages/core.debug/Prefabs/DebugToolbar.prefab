@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Status Texts
+  m_Text: 
 --- !u!1 &6501224125525866488
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'FPS: XX (XXXms)'
+  m_Text: 
 --- !u!1 &6501224125918381496
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +293,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: UnityEngine.UI.Text
   LuaPublicVars: []
   ExecuteOrder: 0
@@ -300,6 +301,9 @@ MonoBehaviour:
   CreateActionStore: 1
   DebugScript: 
   DebugLoadScript: 0
+  ManualInputScript: 0
+  UpdateDelta: 0
+  FixUpdateDelta: 0
 --- !u!114 &2674840441809398414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,7 +317,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StatText: {fileID: 3108331966930382063}
-  DebugFPSStat: {fileID: 0}
 --- !u!114 &1761886242550718034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,18 +410,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 0.83
-  m_Text: 'LogTexts
-
-    LogTexts
-
-    LogTexts
-
-    LogTexts
-
-    LogTexts
-
-    LogTexts
-
-    LogTexts
-
-    LogTexts'
+  m_Text: 

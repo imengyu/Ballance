@@ -26,9 +26,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys
@@ -183,6 +180,8 @@ namespace Ballance2.Sys
 
         private static GameStaticResEntry gameStaticResEntryInstance = null;
 
+        public static bool IsRestart = false;
+
         /// <summary>
         /// 初始化
         /// </summary> 
@@ -200,8 +199,9 @@ namespace Ballance2.Sys
                     gameStaticResEntryInstance.GameAssets);
                 //初始化设置
                 GameSettingsManager.Init();
-                //I18N
+                //初始化I18N 和系统字符串资源
                 I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
+                I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLang/I18N").text);
                 
                 //Call game init
                 if(sysHandler == null) {
@@ -266,7 +266,8 @@ namespace Ballance2.Sys
                 GameSettingsManager.Destroy();
                 UnityLogCatcher.Destroy();
 
-                QuitPlayer();
+                if(IsRestart) Init();
+                else QuitPlayer();
             } 
         }
         /// <summary>

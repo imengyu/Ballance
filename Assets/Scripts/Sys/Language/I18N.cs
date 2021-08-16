@@ -1,4 +1,5 @@
 using Ballance2.LuaHelpers;
+using Ballance2.Utils;
 
 namespace Ballance2.Sys.Language
 {
@@ -29,7 +30,7 @@ namespace Ballance2.Sys.Language
         public static string TrF(string key, params object[] formatParams) {
             var str = I18NProvider.GetLanguageString(key);
             if(str != null)
-                return string.Format(str, formatParams);
+                return string.Format(str, LuaUtils.AutoCheckParamIsLuaTableAndConver(formatParams));
             return string.Format("[Key {0} not found!]", key);
         }
         [LuaApiDescription("获取国际化字符串并自定义格式化参数")]
@@ -38,7 +39,7 @@ namespace Ballance2.Sys.Language
         [LuaApiParamDescription("formatParams", "要自定义格式化的参数")]
         public static string TrF(string key, string defaultString, params object[] formatParams) {
             var str = I18NProvider.GetLanguageString(key);
-            return string.Format(str != null ? str : defaultString, formatParams);
+            return string.Format(str != null ? str : defaultString, LuaUtils.AutoCheckParamIsLuaTableAndConver(formatParams));
         }
     }
 }
