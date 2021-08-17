@@ -26,6 +26,12 @@ TextureImporter:
   - first:
       213: -7737099801466784621
     second: UIScoreBaseboardHighlight
+  - first:
+      213: -8126972389678458915
+    second: UILifeBall9
+  - first:
+      213: 5817284486412995110
+    second: UILifeBallInf
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -177,7 +183,7 @@ TextureImporter:
         width: 256
         height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 28, y: 0, z: 18, w: 0}
       outline: []
       physicsShape: []
@@ -198,7 +204,7 @@ TextureImporter:
         width: 15
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -219,7 +225,7 @@ TextureImporter:
         width: 27
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -240,7 +246,7 @@ TextureImporter:
         width: 58
         height: 61
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -261,7 +267,7 @@ TextureImporter:
         width: 175
         height: 66
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -282,7 +288,7 @@ TextureImporter:
         width: 143
         height: 52
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -290,6 +296,48 @@ TextureImporter:
       bones: []
       spriteID: 394b3d539bc40a490800000000000000
       internalID: -7737099801466784621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UILifeBall9
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 64
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd7decd8ba1373f80800000000000000
+      internalID: -8126972389678458915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UILifeBallInf
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 46
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62a890a4b652bb050800000000000000
+      internalID: 5817284486412995110
       vertices: []
       indices: 
       edges: []

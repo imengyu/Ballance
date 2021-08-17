@@ -217,6 +217,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         private void Awake()
         {
             _ExecuteOrder = ExecuteOrder;
+            if (string.IsNullOrEmpty(Name)) Name = gameObject.name;
             if (ExecuteOrder == 0) DoInit();
             if (!luaInited) awakeCalledBeforeInit = true;
             else if (awake != null) awake(self);

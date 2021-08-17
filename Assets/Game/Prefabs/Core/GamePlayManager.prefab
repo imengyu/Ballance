@@ -52,6 +52,7 @@ MonoBehaviour:
   StableSolverOn: 1
   Simulating: 1
   AutoSyncTransforms: 1
+  EnableProfiler: 1
 --- !u!1 &6175279464452074422
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,4 +110,4 @@ MonoBehaviour:
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
-  FixUpdateDelta: 0
+  FixUpdateDelta: 30

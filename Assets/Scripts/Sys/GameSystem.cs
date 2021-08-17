@@ -263,10 +263,14 @@ namespace Ballance2.Sys
                 systemService.Clear();
 
                 //释放其他组件
+                I18NProvider.ClearAllLanguageResources();
                 GameSettingsManager.Destroy();
                 UnityLogCatcher.Destroy();
 
-                if(IsRestart) Init();
+                if(IsRestart) {
+                    System.GC.Collect();
+                    Init();
+                }
                 else QuitPlayer();
             } 
         }

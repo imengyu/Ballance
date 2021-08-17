@@ -38,6 +38,7 @@ function CoreInit()
   SystemPackage:RequireLuaFile('GamePlayDebug.lua')
   SystemPackage:RequireLuaFile('LevelBuilderDebug.lua')
   SystemPackage:RequireLuaClass('ModulBase')
+  SystemPackage:RequireLuaClass('ModulSingalPhysics')
   SystemPackage:RequireLuaClass('Ball')
   
   --调试入口
@@ -51,6 +52,12 @@ function CoreInit()
     return false
   end)
 
+  --加载关卡入口
+  GameManager.GameMediator:RegisterEventHandler(SystemPackage, "CoreStartLoadLevel", 'Core', function ()
+    GameManager.Instance.RequestEnterLogicScense('Level')
+
+    return false
+  end)
 end
 function CoreUnload()
   GamePlayUnload()
@@ -58,4 +65,8 @@ function CoreUnload()
 end
 function CoreVersion()
   return 1
+end
+
+function CoreStartLoadLevel() 
+
 end

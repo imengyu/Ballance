@@ -396,48 +396,29 @@ function BallManager:_InitKeyEvents()
   end
 
   --测试按扭
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha5, function (key, downed)
-    if(downed) then
-      self._private.BallLightningSphere:PlayLighting(Vector3.zero, true, true)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha1, function (key, downed)
-    if(downed) then
-      self:SetCurrentBall('BallWood', BallControlStatus.Control)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha2, function (key, downed)
-    if(downed) then
-      self:SetCurrentBall('BallStone', BallControlStatus.Control)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha3, function (key, downed)
-    if(downed) then
-      self:SetCurrentBall('BallPaper', BallControlStatus.Control)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha4, function (key, downed)
-    if(downed) then
-      self:SetControllingStatus(BallControlStatus.NoControl)
-      self:SetNextRecoverPos(Vector3.zero)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha6, function (key, downed)
-    if(downed) then
-      self._private.registerBalls[1].ball:ThrowPieces(self._private.nextRecoverPos)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha7, function (key, downed)
-    if(downed) then
-      self._private.registerBalls[2].ball:ThrowPieces(self._private.nextRecoverPos)
-    end
-  end)
-  self._private.keyListener:AddKeyListen(KeyCode.Alpha8, function (key, downed)
-    if(downed) then
-      self._private.registerBalls[3].ball:ThrowPieces(self._private.nextRecoverPos)
-    end
-  end)
-
+  if self._DebugMode then
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha1, function (key, downed)
+      if(downed) then
+        self:SetCurrentBall('BallWood', BallControlStatus.Control)
+      end
+    end)
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha2, function (key, downed)
+      if(downed) then
+        self:SetCurrentBall('BallStone', BallControlStatus.Control)
+      end
+    end)
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha3, function (key, downed)
+      if(downed) then
+        self:SetCurrentBall('BallPaper', BallControlStatus.Control)
+      end
+    end)
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha4, function (key, downed)
+      if(downed) then
+        self:SetControllingStatus(BallControlStatus.NoControl)
+        self:SetNextRecoverPos(Vector3.zero)
+      end
+    end)     
+  end
 end
 function BallManager:_OnControlSettingsChanged()
   --当设置更改时或加载时，更新设置到当前变量

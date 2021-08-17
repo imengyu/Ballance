@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: BtnAboutClick
+      value: BtnGameQuitClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
@@ -751,7 +751,7 @@ PrefabInstance:
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: BtnStartClick
+      value: BtnGameRestartClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9,
         type: 3}
@@ -912,6 +912,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ResourceKey
       value: ui.pause.back
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1965637779615336776}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnBackClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2,
         type: 3}

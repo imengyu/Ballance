@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Threading.Tasks;
 
 /*
@@ -25,12 +26,12 @@ namespace Ballance2.Utils
     /// </summary>
     public class ZipUtils
     {
-        public static void AddFileToZip(ZipOutputStream zipStream, string file, int subIndex, Crc32 crc)
+        public static void AddFileToZip(ZipOutputStream zipStream, string file, int subIndex, ref Crc32 crc)
         {
             string fileName = file.Substring(subIndex);
-            AddFileToZip(zipStream, file, fileName, crc);
+            AddFileToZip(zipStream, file, fileName, ref crc);
         }
-        public static void AddFileToZip(ZipOutputStream zipStream, string file, string inZipFilePath, Crc32 crc)
+        public static void AddFileToZip(ZipOutputStream zipStream, string file, string inZipFilePath, ref Crc32 crc)
         {
             FileStream fileStream = File.OpenRead(file);
             byte[] buffer = new byte[fileStream.Length];

@@ -10,10 +10,13 @@ return {
   PackageEntry = function(thisGamePackage)
     GameUIPackage = thisGamePackage
     MessageCenter = GameUIManager:CreateUIMessageCenter('GameUIGloobalMessageCenter')
-    thisGamePackage:RequireLuaFile('MenuLevelUIControl.lua')
+    MessageCenter:SubscribeEvent('BtnBackClick', function () GameUIManager:BackPreviusPage() end)
+    thisGamePackage:RequireLuaFile('GamePlayUIControl.lua')
+    thisGamePackage:RequireLuaFile('SettingsUIControl.lua')
     thisGamePackage:RequireLuaFile('SettingsUIControl.lua')
     CreateSettingsUI(thisGamePackage)
     CreateMenuLevelUI(thisGamePackage)
+    CreateGamePlayUI(thisGamePackage)
     return true
   end,
   ---模块卸载前函数

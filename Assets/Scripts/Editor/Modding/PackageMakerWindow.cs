@@ -161,9 +161,9 @@ namespace Ballance2.Editor.Modding
             xml.Save(folderPath + "/PackageDef.xml");
 
             if(this.PackageType == GamePackageType.Module &&  GenEntryCodeTemplate)
-                File.Copy("Assets/Packages/template_PackageEntry.lua", folderPath + "/" + this.EntryCode);
+                File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.lua", folderPath + "/" + this.EntryCode);
 
-            File.Copy("Assets/Packages/template_PackageLogo.png", folderPath + "/PackageLogo.png");
+            File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageLogo.png", folderPath + "/PackageLogo.png");
 
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("提示", "生成模板成功！", "好的");

@@ -135,11 +135,11 @@ namespace Ballance2.Editor.Modding
                 TextAsset packageDef = null;
                 if(path == "core") {
                     packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Game/PackageDef.xml");
-                    dir = DebugSettings.Instance.DebugFolder + "/core/";
+                    dir = DebugSettings.Instance.DebugFolder + "/Core/";
                 }
                 else {
                     packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + path + "/PackageDef.xml");
-                    dir = DebugSettings.Instance.DebugFolder + "/packages/";
+                    dir = DebugSettings.Instance.DebugFolder + "/Packages/";
                 }
                 if(packageDef  == null)
                 {

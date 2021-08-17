@@ -241,7 +241,7 @@ namespace Ballance2.Editor.Modding
                 dir = EditorUtility.OpenFolderPanel("保存模块包", EditorPrefs.GetString("ModMakerDefSaveDir", GamePathManager.DEBUG_PATH), "");
             else
             {
-                dir = selectedMod != 1 ? (DebugSettings.Instance.DebugFolder + "/packages/") : (DebugSettings.Instance.DebugFolder + "/core/");
+                dir = selectedMod != 1 ? (DebugSettings.Instance.DebugFolder + "/Packages/") : (DebugSettings.Instance.DebugFolder + "/Core/");
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
             }

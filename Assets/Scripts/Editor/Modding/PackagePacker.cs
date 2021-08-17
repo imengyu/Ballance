@@ -121,21 +121,17 @@ namespace Ballance2.Editor.Modding
             string basePath = projModDirPath.Replace(projPath, "").Replace("\\", "/");
 
             //添加到包里
-            ZipUtils.AddFileToZip(zipStream, 
-                bundlePath + ".assetbundle", 
-                "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle", crc);
-            ZipUtils.AddFileToZip(zipStream, 
-                bundlePath + ".assetbundle.manifest", 
-                "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle.manifest", crc);
-            ZipUtils.AddFileToZip(zipStream, projModDefFile, projModDirPath.Length, crc);
+            ZipUtils.AddFileToZip(zipStream,bundlePath + ".assetbundle",  "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle", ref crc);
+            ZipUtils.AddFileToZip(zipStream, bundlePath + ".assetbundle.manifest", "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle.manifest", ref crc);
+            ZipUtils.AddFileToZip(zipStream, projModDefFile, projModDirPath.Length, ref crc);
 
             //添加logo图片
-            if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, crc);
+            if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, ref crc);
             else Debug.LogWarning("模块的 Logo 没有找到：" + projLogoFile);
 
             //添加lua代码
             foreach (string path in allLuaPath)
-                ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), crc);
+                ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
 
             zipStream.Finish();
             zipStream.Close();

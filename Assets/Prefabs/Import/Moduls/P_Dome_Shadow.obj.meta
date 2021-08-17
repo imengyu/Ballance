@@ -3,7 +3,12 @@ guid: d1252af7cceafbd40a1af178e2458287
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Dome_ShadowMat
+    second: {fileID: 2100000, guid: c492201075737c2489ed68aa9a464f3f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

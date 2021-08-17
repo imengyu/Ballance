@@ -1,5 +1,12 @@
 function InitBulitInModuls()
-  Game.LevelBuilder:RegisterModul('', Game.SystemPackage:GetPrefabAsset(''))
-
-  
+  Game.LevelBuilder:RegisterModul('P_Ball_Paper', Game.SystemPackage:GetPrefabAsset('P_Ball_Paper.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Ball_Stone', Game.SystemPackage:GetPrefabAsset('P_Ball_Stone.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Ball_Wood', Game.SystemPackage:GetPrefabAsset('P_Ball_Wood.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Box', Game.SystemPackage:GetPrefabAsset('P_Box.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Dome', Game.SystemPackage:GetPrefabAsset('P_Dome.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Modul_01', Game.SystemPackage:GetPrefabAsset('P_Modul_01.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Modul_34', Game.SystemPackage:GetPrefabAsset('P_Modul_34.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Trafo_Paper', Game.SystemPackage:GetPrefabAsset('P_Trafo_Paper.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Trafo_Stone', Game.SystemPackage:GetPrefabAsset('P_Trafo_Stone.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Trafo_Wood', Game.SystemPackage:GetPrefabAsset('P_Trafo_Wood.prefab'))
 end

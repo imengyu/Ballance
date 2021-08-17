@@ -2,13 +2,13 @@ local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local GamePackage = Ballance2.Sys.Package.GamePackage
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local I18N = Ballance2.Sys.Language.I18N
 local SystemPackage = GamePackage.GetSystemPackage()
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local Yield = UnityEngine.Yield
 local Application = UnityEngine.Application
 local Time = UnityEngine.Time
 local Text = UnityEngine.UI.Text
-local I18N = Ballance2.Sys.Language.I18N
 
 ---创建主菜单UI
 ---@param package GamePackage
@@ -32,7 +32,6 @@ function CreateMenuLevelUI(package)
   PageAboutCreators:CreateContent(package)
   PageAboutProject:CreateContent(package)
 
-  MessageCenter:SubscribeEvent('BtnBackClick', function () GameUIManager:BackPreviusPage() end)
   MessageCenter:SubscribeEvent('BtnStartClick', function () GameUIManager:GoPage('PageStart') end)
   MessageCenter:SubscribeEvent('BtnHighscrollClick', function () GameUIManager:GoPage('PageHighscore') end)
   MessageCenter:SubscribeEvent('BtnAboutClick', function () GameUIManager:GoPage('PageAbout') end)

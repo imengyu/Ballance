@@ -16,8 +16,8 @@ function P_Modul_01:Active()
 end
 function P_Modul_01:Deactive()
   self.gameObject:SetActive(false)
-  self._P_Modul_01_Pusher_PhysicsBody:ForceDeactive()
-  self._P_Modul_01_Filter_PhysicsBody:ForceDeactive()
+  self._P_Modul_01_Pusher_PhysicsBody:ForceDePhysics()
+  self._P_Modul_01_Filter_PhysicsBody:ForceDePhysics()
 end
 function P_Modul_01:Reset()
   ObjectStateBackupUtils.RestoreObject(self._P_Modul_01_Pusher)

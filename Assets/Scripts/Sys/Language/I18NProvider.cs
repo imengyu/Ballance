@@ -31,6 +31,14 @@ namespace Ballance2.Sys.Language
             }
         }
 
+        public static void ClearAllLanguageResources() {
+            currentLanguage = SystemLanguage.ChineseSimplified;
+            currentLanguagePack = null;
+            foreach(var v in languagePacks)
+                v.Value.LanguageValues.Clear();
+            languagePacks.Clear();
+        }
+
         [LuaApiDescription("加载语言定义文件")]
         [LuaApiParamDescription("xmlAssets", "语言定义XML文件")]
         public static bool LoadLanguageResources(string xmlAssets) {

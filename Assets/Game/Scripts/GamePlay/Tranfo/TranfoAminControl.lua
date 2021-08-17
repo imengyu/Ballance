@@ -82,6 +82,7 @@ function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
   coroutine.resume(coroutine.create(function()
     Yield(WaitForSeconds(1.33))
 
+    self._AnimTrafo_Animation:Stop('TranfoAnimation');
     self._AnimTrafo_Flashfield:SetActive(false)
     self._Flashfield = false;
 
