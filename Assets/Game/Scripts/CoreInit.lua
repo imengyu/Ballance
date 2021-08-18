@@ -23,9 +23,8 @@ Game = {
 }
 
 function CoreInit()
-  local GameManagerInstance = Ballance2.Sys.GameManager.Instance
+  local GameManagerInstance = GameManager.Instance
 
-  Game.Mediator = GameManagerInstance:GetSystemService('GameMediator')
   Game.PackageManager = GameManagerInstance:GetSystemService('GamePackageManager')
   Game.UIManager = GameManagerInstance:GetSystemService('GameUIManager')
   Game.SoundManager = GameManagerInstance:GetSystemService('GameSoundManager')
@@ -39,6 +38,7 @@ function CoreInit()
   SystemPackage:RequireLuaFile('LevelBuilderDebug.lua')
   SystemPackage:RequireLuaClass('ModulBase')
   SystemPackage:RequireLuaClass('ModulSingalPhysics')
+  SystemPackage:RequireLuaClass('ModulComplexPhysics')
   SystemPackage:RequireLuaClass('Ball')
   
   --调试入口

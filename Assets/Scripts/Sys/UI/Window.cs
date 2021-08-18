@@ -35,6 +35,7 @@ namespace Ballance2.Sys.UI
     public class Window : MonoBehaviour
     {
         internal int windowId = 0;
+        private bool firstShow = true;
 
         /// <summary>
         /// 获取窗口是否显示
@@ -53,13 +54,19 @@ namespace Ballance2.Sys.UI
         [LuaApiParamDescription("visible", "是否显示")]
         public void SetVisible(bool visible)
         {
+
             if(gameObject.activeSelf != visible) {
                 gameObject.SetActive(visible);
                 if (visible) onShow?.Invoke(windowId);
                 else onHide?.Invoke(windowId);
             }
-            if(visible && UIManager != null)
+            if(visible && UIManager != null) {
+                if(firstShow) {
+                    firstShow = false;
+                    UIManager.WindowFirshAdd(this);
+                }
                 UIManager.ActiveWindow(this);
+            }
         }
         /// <summary>
         /// 销毁窗口
@@ -93,7 +100,14 @@ namespace Ballance2.Sys.UI
         public RectTransform WindowTitle;
         public UISizeDrag SizeDrag;
 
-        private GameUIManager UIManager;
+        private GameUIManager _UIManager;
+        private GameUIManager UIManager {
+            get {
+                if(_UIManager == null)
+                    _UIManager = (GameUIManager)GameManager.Instance.GetSystemService("GameUIManager");
+                return _UIManager;
+            }
+        }
         private Vector2 minSize = new Vector2(150, 32);
 
         private void Awake()
@@ -103,9 +117,6 @@ namespace Ballance2.Sys.UI
         }
         private void Start()
         {
-            if (GameManager.Instance != null)
-                UIManager = (GameUIManager)GameManager.Instance.GetSystemService("GameUIManager");
-
             WindowButtonClose.onClick.AddListener(() =>
             {
                 if (CloseAsHide) Hide();
@@ -497,6 +508,11 @@ namespace Ballance2.Sys.UI
         /// </summary>
         [LuaApiDescription("正常窗口")]
         Normal,
+        /// <summary>
+        /// 置顶窗口
+        /// </summary>
+        [LuaApiDescription("置顶窗口")]
+        TopWindow,
         /// <summary>
         /// 全局弹出窗口
         /// </summary>

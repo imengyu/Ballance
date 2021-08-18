@@ -115,6 +115,7 @@ namespace SLua {
 				Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaWapperEvents_GameLuaObjectPhysics2DEventCaller.reg,
 				Lua_Ballance2_Sys_Bridge_LuaWapper_GameLuaWapperEvents_GameLuaObjectPhysicsEventCaller.reg,
 				Lua_Ballance2_Sys_Bridge_Handler_GameHandler.reg,
+				Lua_Ballance2_Game_GameLevelLoaderNative.reg,
 				Lua_Ballance2_Game_CamFollow.reg,
 				Lua_Ballance2_Game_Utils_SkyBoxUtils.reg,
 				Lua_Ballance2_Config_GameConst.reg,

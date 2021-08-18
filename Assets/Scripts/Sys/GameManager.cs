@@ -918,6 +918,20 @@ namespace Ballance2.Sys
         {
             return GameConst.GameBulidVersion;
         }
+        
+        [LuaApiDescription("实例化预制体", "返回新对象")]
+        [LuaApiParamDescription("prefab", "预制体")]
+        [LuaApiParamDescription("name", "新对象名称")]
+        public GameObject InstancePrefab(GameObject prefab, string name) {
+            return CloneUtils.CloneNewObject(prefab, name);
+        }
+        [LuaApiDescription("实例化预制体", "返回新对象")]
+        [LuaApiParamDescription("prefab", "预制体")]
+        [LuaApiParamDescription("parent", "父级")]
+        [LuaApiParamDescription("name", "新对象名称")]
+        public GameObject InstancePrefab(GameObject prefab, Transform parent, string name) {
+            return CloneUtils.CloneNewObjectWithParent(prefab, parent, name);
+        }
 
         #endregion
     

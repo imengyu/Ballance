@@ -15,9 +15,11 @@ mengyu
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
-local GameObject = UnityEngine.GameObject
 local DebugCamera = Ballance2.DebugCamera
+local WindowType = Ballance2.Sys.UI.WindowType
 local GameStaticResourcesPool = Ballance2.Sys.Res.GameStaticResourcesPool
+
+local GameObject = UnityEngine.GameObject
 
 GlobalDebugToolbar = nil ---@type GameLuaObjectHost
 GlobalDebugWindow = nil ---@type Window|MonoBehaviour
@@ -44,15 +46,16 @@ return {
         GameManager.GameMediator:RegisterGlobalEvent(DebugOptStandByEvent)
     
         --创建窗口
-        GlobalDebugToolbar = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugToolbar.prefab')
-        GlobalDebugToolbar = CloneUtils.CloneNewObjectWithParent(GlobalDebugToolbar, GameManager.Instance.GameCanvas, 'DebugToolbar')
-        GlobalDebugToolbar.transform:SetAsLastSibling()
-        GlobalDebugToolbar = GlobalDebugToolbar:GetComponent(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)
+        GlobalDebugToolbar = GameUIManager:InitViewToCanvas(thisGamePackage:GetPrefabAsset('DebugToolbar.prefab'), 'DebugToolbar', true)
+        GlobalDebugToolbar:SetAsLastSibling()
+        GlobalDebugToolbar = GlobalDebugToolbar.gameObject:GetComponent(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost)
+
         local DebugWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugWindow.prefab')
         GlobalDebugWindow = GameUIManager:CreateWindow('Console', 
             CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, 'DebugWindow').transform, 
             false, 9, -140, 600, 400)
         GlobalDebugWindow.CloseAsHide = true
+        GlobalDebugWindow.WindowType = WindowType.TopWindow
         GlobalDebugWindow.gameObject.tag = 'DebugWindow'
         local DebugOptWindow = thisGamePackage:GetPrefabAsset('Assets/Packages/core.debug/Prefabs/DebugOptWindow.prefab')
         GlobalDebugOptWindow = GameUIManager:CreateWindow('Debug options', 
@@ -68,6 +71,7 @@ return {
             CloneUtils.CloneNewObjectWithParent(GameStaticResourcesPool.FindStaticPrefabs('DebugInspector'), GameManager.Instance.GameCanvas, 'DebugInspector').transform, 
             false, 925, -90, 350, 500)
         GlobalRuntimeInspectorWindow.CloseAsHide = true
+        GlobalRuntimeInspectorWindow.WindowType = WindowType.TopWindow
     
         DebugCamera.Instance.GameDebugInspectorWindow = GlobalRuntimeInspectorWindow
         DebugCamera.Instance.GameDebugHierarchyWindow = GlobalRuntimeHierarchyWindow

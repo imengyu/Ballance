@@ -5,8 +5,6 @@
 
 ]]--
 
-local GameManager = Ballance2.Sys.GameManager
-local GameSoundManager = GameManager.Instance:GetSystemService('GameSoundManager') ---@type GameSoundManager
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local Vector3 = UnityEngine.Vector3
 local Yield = UnityEngine.Yield
@@ -63,8 +61,8 @@ function CreateClass_BallLightningSphere()
   ---@param self table
   ---@param thisGameObject GameObject
   function BallLightningSphere:Start(thisGameObject)
-    self.ballLightningMusic = GameSoundManager:RegisterSoundPlayer(GameSoundType.BallEffect,
-        GameSoundManager:LoadAudioResource('core.sounds:Misc_Lightning.wav'), false, true, 'Misc_Lightning')
+    self.ballLightningMusic = Game.SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect,
+        Game.SoundManager:LoadAudioResource('core.sounds:Misc_Lightning.wav'), false, true, 'Misc_Lightning')
     local meshRenderer = self.Ball_LightningSphereInnernA.gameObject:GetComponent(UnityEngine.MeshRenderer) ---@type MeshRenderer
     self.ballLightningSphereMaterialA = meshRenderer.material
     meshRenderer = self.Ball_LightningSphereInnernB.gameObject:GetComponent(UnityEngine.MeshRenderer) ---@type MeshRenderer

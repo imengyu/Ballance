@@ -1,8 +1,9 @@
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local KeyListener = Ballance2.Sys.Utils.KeyListener
 local GameManager = Ballance2.Sys.GameManager
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
-local GameSoundManager = GameManager.Instance:GetSystemService('GameSoundManager') ---@type GameSoundManager
+local KeyCode = UnityEngine.KeyCode
 
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass
@@ -19,13 +20,15 @@ function GamePlayManager:new()
   self.CurrentSector = 0 ---当前小节
 
   
+  self._IsGamePlaying = false
   self._IsCountDownScore = false
 
   GamePlay.GamePlayManager = self
 end
 function GamePlayManager:Start()
-  self._SoundBallFall = GameSoundManager:RegisterSoundPlayer(GameSoundType.Normal, GameSoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Lightning')
-  self._SoundAddLife = GameSoundManager:RegisterSoundPlayer(GameSoundType.Normal, GameSoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_Lightning')
+  self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Lightning')
+  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_Lightning')
+  self:_InitKeyEvents()
 end
 function GamePlayManager:OnDestroy()
   if (not Slua.IsNull(self.GameLightGameObject)) then UnityEngine.Object.Destroy(self.GameLightGameObject) end 
@@ -37,6 +40,30 @@ function GamePlayManager:FixedUpdate()
     self.CurrentScore = self.CurrentScore - 1
     GamePlay.GamePlayUI:SetScoreText(self.CurrentScore)
   end
+end
+
+function GamePlayManager:_InitKeyEvents() 
+  self.keyListener = KeyListener.Get(self.gameObject)
+  --ESC键
+  self.keyListener:AddKeyListen(KeyCode.Escape, function (key, down)
+    if down then
+      if self._IsGamePlaying then
+        self:PauseLevel()
+      else
+        if Game.UIManager:GetCurrentPage().PageName == 'PageGamePause' then
+          self:ResumeLevel()
+        end
+      end
+    end
+  end)
+end
+function GamePlayManager:_Stop() 
+  self._IsGamePlaying = false
+  self._IsCountDownScore = false
+end
+function GamePlayManager:_Start() 
+  self._IsGamePlaying = true
+  self._IsCountDownScore = true
 end
 
 ---初始化灯光和天空盒
@@ -58,13 +85,39 @@ end
 
 ---重新开始关卡
 function GamePlayManager:RestartLevel() 
+  --黑色进入
+  Game.UIManager:MaskBlackFadeIn(1)
 end
 ---退出关卡
 function GamePlayManager:QuitLevel() 
+
 end
 ---开始关卡
 function GamePlayManager:StartLevel() 
+  --播放开始音乐
+  Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Background)
 
+  --UI
+  Game.UIManager:CloseAllPage()
+  GamePlay.GamePlayUI.gameObject:SetActive(true)
+  --Hide black
+  Game.UIManager:MaskBlackFadeOut(1)
+
+  self:_Start()
+end
+---暂停关卡
+function GamePlayManager:PauseLevel() 
+  Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
+
+  self:_Stop()
+  Game.UIManager:GoPage('PageGamePause')
+end
+---继续关卡
+function GamePlayManager:ResumeLevel() 
+  Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
+
+  Game.UIManager:CloseAllPage()
+  self:_Start()
 end
 
 ---球坠落

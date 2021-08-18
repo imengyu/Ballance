@@ -9,7 +9,18 @@ function ModulComplexPhysics:new()
   self._PhysicsBody3 = nil ---@type PhysicsBody
   self._PhysicsBody4 = nil ---@type PhysicsBody
 end
-
+function ModulComplexPhysics:GamePause()
+  self._PhysicsBody1:ForceDeactive()
+  self._PhysicsBody2:ForceDeactive()
+  if self._PhysicsBody3 ~= nil then self._PhysicsBody3:ForceDeactive() end
+  if self._PhysicsBody4 ~= nil then self._PhysicsBody4:ForceDeactive() end
+end
+function ModulComplexPhysics:GameResume()
+  self._PhysicsBody1:ForceActive()
+  self._PhysicsBody2:ForceActive()
+  if self._PhysicsBody3 ~= nil then self._PhysicsBody3:ForceActive() end
+  if self._PhysicsBody4 ~= nil then self._PhysicsBody4:ForceActive() end
+end
 function ModulComplexPhysics:Active()
   self.gameObject:SetActive(true)
   self._PhysicsBody1:ForcePhysics()

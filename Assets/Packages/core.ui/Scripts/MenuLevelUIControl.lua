@@ -4,8 +4,6 @@ local GamePackage = Ballance2.Sys.Package.GamePackage
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local I18N = Ballance2.Sys.Language.I18N
 local SystemPackage = GamePackage.GetSystemPackage()
-local WaitForSeconds = UnityEngine.WaitForSeconds
-local Yield = UnityEngine.Yield
 local Application = UnityEngine.Application
 local Time = UnityEngine.Time
 local Text = UnityEngine.UI.Text
@@ -91,11 +89,4 @@ function CreateMenuLevelUI(package)
   --加载版本完整信息
   local ButtonVersionText = PageAbout.Content.transform:Find('ButtonVersion/Text'):GetComponent(Text) ---@type Text
   ButtonVersionText.text = I18N.TrF('ui.about.about.version', { Ballance2.Config.GameConst.GameVersion })
-
-  coroutine.resume(coroutine.create(function ()
-    Yield(WaitForSeconds(0.5))
-    GameUIManager:GoPage('PageMain')
-    Yield(WaitForSeconds(1))
-    GameUIManager:MaskBlackFadeOut(1)
-  end))
 end

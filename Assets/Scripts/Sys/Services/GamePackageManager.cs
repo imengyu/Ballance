@@ -630,6 +630,22 @@ namespace Ballance2.Sys.Services
             return outPackage;
         }
 
+        /// <summary>
+        /// 检查指定需求的模块是否加载
+        /// </summary>
+        /// <param name="packageName">模块包名</param>
+        /// <param name="ver">模块所须最小版本</param>
+        /// <returns>如果已加载并且版本符合</returns>
+        [LuaApiDescription("检查指定需求的模块是否加载", "如果已加载并且版本符合")]
+        [LuaApiParamDescription("packageName", "模块包名")]
+        [LuaApiParamDescription("ver", "模块所须最小版本")]
+        public bool CheckRequiredPackage(string packageName, int ver)
+        {
+            if(loadedPackages.TryGetValue(packageName, out var outPackage))
+                return outPackage.PackageVersion >= ver;
+            return false;
+        }
+
         private void UnLoadAllPackages()
         {
             List<string> packageNames = new List<string>(loadedPackages.Keys);

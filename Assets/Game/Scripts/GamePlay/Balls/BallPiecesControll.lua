@@ -1,10 +1,9 @@
 local PhysicsBody = PhysicsRT.PhysicsBody
 local Vector3 = UnityEngine.Vector3
-local GameManager = Ballance2.Sys.GameManager
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
-local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
+local FadeManager = Game.UIManager.UIFadeManager
 
 ---球碎片回收器
 ---@class BallPiecesControll : GameLuaObjectHostClass
@@ -101,7 +100,7 @@ function CreateClass_BallPiecesControll()
 
       --渐变淡出隐藏其材质
       for i = 0, parent.transform.childCount - 1 do
-        GameUIManager.UIFadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 2, true, nil)
+        FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 2, true, nil)
       end
 
       --延时

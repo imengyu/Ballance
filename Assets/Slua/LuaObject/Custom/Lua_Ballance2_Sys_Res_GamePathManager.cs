@@ -341,6 +341,36 @@ public class Lua_Ballance2_Sys_Res_GamePathManager : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_DEBUG_LEVEL_FOLDER(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushValue(l,Ballance2.Sys.Res.GamePathManager.DEBUG_LEVEL_FOLDER);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_ANDROID_FOLDER_PATH(IntPtr l) {
 		try {
 			#if DEBUG
@@ -532,6 +562,7 @@ public class Lua_Ballance2_Sys_Res_GamePathManager : LuaObject {
 		addMember(l,Exists_s);
 		addMember(l,FixFilePathScheme_s);
 		addMember(l,"DEBUG_PACKAGE_FOLDER",get_DEBUG_PACKAGE_FOLDER,null,false);
+		addMember(l,"DEBUG_LEVEL_FOLDER",get_DEBUG_LEVEL_FOLDER,null,false);
 		addMember(l,"ANDROID_FOLDER_PATH",get_ANDROID_FOLDER_PATH,null,false);
 		addMember(l,"ANDROID_PACKAGES_PATH",get_ANDROID_PACKAGES_PATH,null,false);
 		addMember(l,"ANDROID_LEVELS_PATH",get_ANDROID_LEVELS_PATH,null,false);

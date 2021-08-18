@@ -12,6 +12,12 @@ function ModulSingalPhysics:Start()
   end
 end
 
+function ModulSingalPhysics:GamePause() 
+  self._PhysicsBody:ForceDeactive()
+end
+function ModulSingalPhysics:GameResume()
+  self._PhysicsBody:ForceActive()
+end
 function ModulSingalPhysics:Active()
   self.gameObject:SetActive(true)
   self._PhysicsBody:ForcePhysics()

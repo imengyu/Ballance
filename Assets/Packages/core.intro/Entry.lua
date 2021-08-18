@@ -30,8 +30,8 @@ local function OnEnterIntro(thisGamePackage)
   Log.D(TAG, 'Into intro ui')
 
   if IntroUI == nil then
-    IntroUI = CloneUtils.CloneNewObjectWithParent(thisGamePackage:GetPrefabAsset('Assets/Packages/core.intro/Prefabs/IntroUI.prefab'), GameManager.Instance.GameCanvas, 'IntroUI')
-    IntroUI.transform:SetAsFirstSibling()    
+    IntroUI = GameUIManager:InitViewToCanvas(thisGamePackage:GetPrefabAsset('IntroUI.prefab'), 'IntroUI', false)
+    IntroUI:SetAsFirstSibling()    
   end
 
   GameUIManager:MaskBlackFadeIn(0.3)
@@ -48,8 +48,6 @@ local function OnEnterIntro(thisGamePackage)
  
     --黑色渐变进入
     GameUIManager:MaskBlackFadeIn(1)
-    ---初始化UI重载
-    GameManager.GameMediator:NotifySingleEvent('INTRO_FINISH_FOR_UI_RESORT')
     Yield(WaitForSeconds(1))
 
     if not baseFinished then introFinished = true else
@@ -91,7 +89,7 @@ return {
   ---@param thisGamePackage GamePackage
   ---@return boolean
   PackageBeforeUnLoad = function(thisGamePackage)
-    if (not Slua.IsNull(IntroUI)) then UnityEngine.Object.Destroy(IntroUI) end 
+    if (not Slua.IsNull(IntroUI)) then UnityEngine.Object.Destroy(IntroUI.gameObject) end 
     return true
   end
 }

@@ -1058,7 +1058,9 @@ public class Lua_Ballance2_Sys_Services_GameUIManager : LuaObject {
 			checkType(l,2,out a1);
 			System.String a2;
 			checkType(l,3,out a2);
-			var ret=self.InitViewToCanvas(a1,a2);
+			System.Boolean a3;
+			checkType(l,4,out a3);
+			var ret=self.InitViewToCanvas(a1,a2,a3);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;

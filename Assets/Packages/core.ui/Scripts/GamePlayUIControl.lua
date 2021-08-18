@@ -1,9 +1,13 @@
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local UIAnchorPosUtils = Ballance2.Sys.UI.Utils.UIAnchorPosUtils
 local Image = UnityEngine.UI.Image
+local Color = UnityEngine.Color
 local Vector2 = UnityEngine.Vector2
 local Yield = UnityEngine.Yield
+local Mathf = UnityEngine.Mathf
+local Time = UnityEngine.Time
 local WaitForSeconds = UnityEngine.WaitForSeconds
 
 ---创建主游戏菜单UI
@@ -20,14 +24,17 @@ function CreateGamePlayUI(package)
   PageGamePause:CreateContent(package)
 
   MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
-  MessageCenter:SubscribeEvent('PageGameQuitAsk', function () GameUIManager:GoPage('PageGameQuitAsk') end)
-  MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()   
+  MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
+  MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
     GameUIManager:HideCurrentPage()
     Game.GamePlay.GamePlayManager:RestartLevel()
   end)
-  MessageCenter:SubscribeEvent('BtnGameFailQuitClick', function ()   
+  MessageCenter:SubscribeEvent('BtnGameFailQuitClick', function ()
     GameUIManager:HideCurrentPage()
     Game.GamePlay.GamePlayManager:QuitLevel()
+  end)
+  MessageCenter:SubscribeEvent('BtnResumeClick', function () 
+    Game.GamePlay.GamePlayManager:ResumeLevel()
   end)
 end
 
@@ -39,22 +46,25 @@ end
 ---@field _LifeBoardBallPrefab GameObject
 ---@field _LifeBoardBallInfPrefab GameObject
 ---@field _LifeBalls RectTransform
-local GamePlayUIControl = ClassicObject:extend()
+GamePlayUIControl = ClassicObject:extend()
 
 function GamePlayUIControl:new() 
   self._CurrentShowLifeBallCount = 0
-  self._CurrentIsMoveLifeLeftBaffle = false
-  self._CurrentMoveBaffleCoroutine = nil
-  self._CurrentMoveBaffleCurrentVelocity = Vector2.zero
-  self._CurrentMoveBaffleTarget = Vector2.zero
+  self._CurrentMoveBaffleTick = 0.3
+  self._MoveBaffleSec = 0.3
+  self._CurrentMoveBaffleStart = 0
+  self._CurrentMoveBaffleTarget = 0
 end
 function GamePlayUIControl:Start() 
   self._ScoreBoardActive.gameObject:SetActive(false)
+  GamePlay.GamePlayUI = self
 end
-function GamePlayUIControl:FixedUpdate()
-  if self._CurrentIsMoveLifeLeftBaffle then
-    self._LifeBoardLeftBaffle.rectTransform.anchoredPosition, self._CurrentMoveBaffleCurrentVelocity = Vector2.SmoothDamp(
-      self._LifeBoardLeftBaffle.rectTransform.anchoredPosition, self._CurrentMoveBaffleTarget, self._CurrentMoveBaffleCurrentVelocity, 1
+function GamePlayUIControl:Update()
+  if self._CurrentMoveBaffleTick < self._MoveBaffleSec then
+    self._CurrentMoveBaffleTick = self._CurrentMoveBaffleTick + Time.deltaTime
+    self._LifeBoardLeftBaffle.rectTransform.anchoredPosition = Vector2(
+      Mathf.Lerp(self._CurrentMoveBaffleStart, self._CurrentMoveBaffleTarget, self._CurrentMoveBaffleTick / self._MoveBaffleSec),
+      0
     )
   end
 end
@@ -62,7 +72,7 @@ end
 ---闪烁分数面板
 function GamePlayUIControl:TwinkleScore() 
   self._ScoreBoardActive.gameObject:SetActive(true)
-  GameUIManager.UIFadeManager:AddFadeOut(self._ScoreBoardActive, 1, true, nil)
+  GameUIManager.UIFadeManager:AddFadeOut(self._ScoreBoardActive, 1, true)
 end
 ---设置分数面板文字
 ---@param score number|string 分数面板文字
@@ -79,8 +89,14 @@ function GamePlayUIControl:AddLifeBall()
   if self._CurrentShowLifeBallCount ~= -1 then
     self._CurrentShowLifeBallCount = self._CurrentShowLifeBallCount + 1
 
-    local ball = CloneUtils.CloneNewObjectWithParent(self._LifeBoardBallPrefab, self._LifeBalls)
-    GameUIManager.UIFadeManager:AddFadeIn(ball:GetComponent(Image), 1)
+    local ball = CloneUtils.CloneNewObjectWithParent(self._LifeBoardBallPrefab, self._LifeBalls):GetComponent(Image) ---@type Image
+    ball.rectTransform:SetAsFirstSibling()
+    ball.color = Color(1,1,1,0)
+    coroutine.resume(coroutine.create(function()
+      self:_MoveLifeLeftBaffle()
+      Yield(WaitForSeconds(0.4))
+      GameUIManager.UIFadeManager:AddFadeIn(ball, 0.4)
+    end))
   end
 end
 ---当前显示的生命球数 -1
@@ -89,10 +105,11 @@ function GamePlayUIControl:RemoveLifeBall()
     self._CurrentShowLifeBallCount = self._CurrentShowLifeBallCount - 1
 
     local ball = self._LifeBalls:GetChild(self._LifeBalls.childCount - 1 - self._CurrentShowLifeBallCount)
-    GameUIManager.UIFadeManager:AddFadeOut(ball:GetComponent(Image), 1, true)
+    GameUIManager.UIFadeManager:AddFadeOut(ball:GetComponent(Image), 0.4, true)
     coroutine.resume(coroutine.create(function()
-      Yield(WaitForSeconds(1))
-      UnityEngine.Object.Destroy(ball)
+      Yield(WaitForSeconds(0.4))
+      self:_MoveLifeLeftBaffle()
+      UnityEngine.Object.Destroy(ball.gameObject)
     end))
   end
 end
@@ -127,19 +144,13 @@ function GamePlayUIControl:SetLifeBallCount(count)
 end
 
 function GamePlayUIControl:_MoveLifeLeftBaffle() 
-  if self._CurrentMoveBaffleCoroutine ~= nil then
-    coroutine.close(self._CurrentMoveBaffleCoroutine)
+  if self._CurrentShowLifeBallCount < 0 then
+    self._CurrentMoveBaffleTarget =  -27
+  else
+    self._CurrentMoveBaffleTarget =  -(self._CurrentShowLifeBallCount * 27)
   end
-
-  self._CurrentMoveBaffleTarget = Vector2(self._LifeBalls.childCount * -27, 0)
-  self._CurrentIsMoveLifeLeftBaffle = true
-  self._CurrentMoveBaffleCoroutine = coroutine.create(function()
-    Yield(WaitForSeconds(1))
-    self._CurrentIsMoveLifeLeftBaffle = false
-    self._CurrentMoveBaffleCoroutine = nil
-  end)
-
-  coroutine.resume(self._CurrentMoveBaffleCoroutine)
+  self._CurrentMoveBaffleTick = 0
+  self._CurrentMoveBaffleStart = self._LifeBoardLeftBaffle.rectTransform.anchoredPosition.x
 end
 
 function CreateClass_GamePlayUIControl() 

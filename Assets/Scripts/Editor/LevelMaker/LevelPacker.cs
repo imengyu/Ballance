@@ -16,7 +16,6 @@ namespace Ballance2.Editor.LevelMaker
         private static string projModDirPath = "";
         private static string projModDefFile = "";
         private static string projPath = "";
-        private static string projLogoFile = "";
 
         public static string DoPackPackage(BuildTarget packTarget, TextAsset packDefFile, string sourceName, string targetDir) {
             string targetPath = targetDir + "/" + sourceName + ".ballance";
@@ -27,7 +26,6 @@ namespace Ballance2.Editor.LevelMaker
                 projPath = Directory.GetCurrentDirectory().Replace("\\", "/") + "/";
                 projModDefFile = projPath + AssetDatabase.GetAssetPath(packDefFile);
                 projModDirPath = projPath + Path.GetDirectoryName(AssetDatabase.GetAssetPath(packDefFile));
-                projLogoFile = projModDirPath + "/LevelLogo.png";
 
                 string dirTargetPath = Path.GetDirectoryName(targetPath);
                 if (!string.IsNullOrEmpty(projModDirPath))
@@ -44,12 +42,14 @@ namespace Ballance2.Editor.LevelMaker
                         }
                     }
 
+                    allAssetsPath.Add(projModDirPath + "/LevelLogo.png");
+
                     string name = Path.GetFileNameWithoutExtension(targetPath);
 
                     //打包
                     AssetBundleBuild assetBundleBuild = new AssetBundleBuild();
                     assetBundleBuild.assetBundleName = sourceName;
-                    assetBundleBuild.assetBundleVariant = "assetbundle";
+                    assetBundleBuild.assetBundleVariant = "ballance";
                     assetBundleBuild.assetNames = allAssetsPath.ToArray();
 
                     //打包
@@ -57,32 +57,10 @@ namespace Ballance2.Editor.LevelMaker
                         assetBundleBuild
                     }, BuildAssetBundleOptions.None, packTarget);
 
-                    EditorUtility.DisplayProgressBar("正在打包", "正在打包，请稍后...", 0.6f);
-
-                    //ballance 包处理
-                    DoSolveBallancePack(dirTargetPath, dirTargetPath + "/" + name, targetPath);
-
                     EditorUtility.ClearProgressBar();
                 }
             }
             return "";
-        }
-        private static void DoSolveBallancePack(string dirTargetPath, string bundlePath, string targetPath)
-        {
-            Crc32 crc = new Crc32();
-            ZipOutputStream zipStream = ZipUtils.CreateZipFile(targetPath);
-            string basePath = projModDirPath.Replace(projPath, "").Replace("\\", "/");
-
-            //添加到包里
-            ZipUtils.AddFileToZip(zipStream, bundlePath + ".assetbundle", "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle", ref crc);
-            ZipUtils.AddFileToZip(zipStream, bundlePath + ".assetbundle.manifest", "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle.manifest", ref crc);
-            ZipUtils.AddFileToZip(zipStream, projModDefFile, projModDirPath.Length, ref crc);
-
-            //添加logo图片
-            if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, ref crc);
-
-            zipStream.Finish();
-            zipStream.Close();
         }
     }
 }

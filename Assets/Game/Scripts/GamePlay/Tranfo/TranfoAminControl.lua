@@ -2,9 +2,6 @@ local Vector2 = UnityEngine.Vector2
 local Renderer = UnityEngine.Renderer
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
-
-local GameManager = Ballance2.Sys.GameManager
-local GameSoundManager = GameManager.Instance:GetSystemService('GameSoundManager') ---@type GameSoundManager
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 
 ---变球器控制器
@@ -23,8 +20,8 @@ function TranfoAminControl:new()
   self._Flashfield_Tick = false;
 end
 function TranfoAminControl:Start()
-  self._Misc_Trafo = GameSoundManager:RegisterSoundPlayer(GameSoundType.BallEffect,
-    GameSoundManager:LoadAudioResource('core.sounds:Misc_Trafo.wav'), false, true, 'Misc_Trafo')
+  self._Misc_Trafo = Game.SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect,
+    Game.SoundManager:LoadAudioResource('core.sounds:Misc_Trafo.wav'), false, true, 'Misc_Trafo')
   
   --获取变球器的颜色点材质
   local renderer = self._AnimTrafo_Ringpart1:GetComponent(Renderer) ---@type Renderer

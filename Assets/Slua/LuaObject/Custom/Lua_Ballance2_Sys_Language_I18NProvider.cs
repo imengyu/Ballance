@@ -5,6 +5,36 @@ using System.Collections.Generic;
 public class Lua_Ballance2_Sys_Language_I18NProvider : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int ClearAllLanguageResources_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Language.I18NProvider.ClearAllLanguageResources();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int LoadLanguageResources_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -165,6 +195,7 @@ public class Lua_Ballance2_Sys_Language_I18NProvider : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Language.I18NProvider");
+		addMember(l,ClearAllLanguageResources_s);
 		addMember(l,LoadLanguageResources_s);
 		addMember(l,SetCurrentLanguage_s);
 		addMember(l,GetCurrentLanguage_s);

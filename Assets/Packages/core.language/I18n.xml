@@ -47,13 +47,14 @@
 这是 2004年的游戏 Ballance 重制版，
 由快乐的梦鱼制作，
 我力求做到和原游戏一样完美，
-使用 Unity 制作，物理引擎使用havok。
+使用 Unity 制作，物理引擎使用 Havok Physics。
 我花了巨大的精力用来构建整个游戏框架，内核代码设计时就考虑了MOD、关卡、热更等等问题，
 虽然游戏目前仅有原版内容，但支持你通过MOD添加任何自己的创意。
-这是一个开源项目，欢迎访问 Github 查看项目源代码，
-了解开发MOD、关卡的方法。
+这是一个开源项目，欢迎访问 Github 查看项目源代码，了解如何开发MOD、关卡。
 欢迎访问 百度Ballance吧 与吧友们一起讨论游戏！
     </Text>
+    <Text name="ui.loader.loadLevelFailed">加载关卡失败</Text>
+    <Text name="ui.loader.backToMenu">返回主菜单</Text>
     <Text name="str.tip.click.debug">再点击 {0} 次可开启开发者模式！</Text>
     <Text name="str.tip.in.debug">你已经处于开发者模式！</Text>
   </Language>

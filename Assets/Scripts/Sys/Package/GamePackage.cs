@@ -639,7 +639,12 @@ namespace Ballance2.Sys.Package
                     return lastRet;
 
                 rs = PackageLuaState.doString(lua, realPath);
-                requiredLuaFiles.Add(fileName, rs);
+
+                //添加结果
+                if(requiredLuaFiles.ContainsKey(fileName))
+                    requiredLuaFiles[fileName] = rs;
+                else
+                    requiredLuaFiles.Add(fileName, rs);
             }
             catch (Exception e)
             {

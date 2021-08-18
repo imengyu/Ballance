@@ -29,10 +29,11 @@ function GamePlayInit(callback)
     InitBulitInModuls()
 
     --GamePlayUI
-    GamePlayUIGameObject = CloneUtils.CloneNewObjectWithParent(Game.SystemPackage:GetPrefabAsset('GamePlayUI.prefab'), Game.Manager.GameCanvas, 'GamePlayUI')
-    GamePlayUIGameObject:SetActive(false)
+    local uiPackage = Game.PackageManager:FindPackage('core.ui')
+    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(uiPackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false)
     Yield(WaitForSeconds(0.1))
-    Game.GamePlay.GamePlayUI = GameObjectToLuaClass(GamePlayUIGameObject) ---@type GamePlayUIControl
+    GamePlayUIGameObject.gameObject:SetActive(false)
+
 
     --初始化基础对象
     GamePlayManagerGameObjec = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GamePlayManager.prefab'), 'GamePlayManager')

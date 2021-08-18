@@ -94,20 +94,15 @@ namespace Ballance2.Sys.Services
 
                     var GameDebugBeginStats = GameObject.Find("GameDebugBeginStats");
                     if(GameDebugBeginStats)
-                        GameDebugBeginStats.transform.SetParent(ViewsRectTransform);
+                        GameDebugBeginStats.transform.SetParent(TopViewsRectTransform);
                     
                     //更新主管理器中的Canvas变量
                     GameManager.Instance.GameCanvas = ViewsRectTransform;
-
-                    GameManager.GameMediator.RegisterSingleEvent("INTRO_FINISH_FOR_UI_RESORT");
-                    GameManager.GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "INTRO_FINISH_FOR_UI_RESORT", TAG, (evtName, param) => {
-                        GlobalMask.SetAsLastSibling();
-                        ViewsRectTransform.SetAsLastSibling();
-                        WindowsRectTransform.SetAsLastSibling();
-                        GlobalWindowRectTransform.SetAsLastSibling();
-                        UIToast.SetAsLastSibling();
-                        return false;
-                    });
+                    GlobalMask.SetAsLastSibling();
+                    TopViewsRectTransform.SetAsLastSibling();
+                    TopWindowsRectTransform.SetAsLastSibling();
+                    GlobalWindowRectTransform.SetAsLastSibling();
+                    UIToast.SetAsLastSibling();
 
                     //发送就绪事件
                     GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "*");
@@ -146,7 +141,9 @@ namespace Ballance2.Sys.Services
         private RectTransform GlobalWindowRectTransform;
         private RectTransform PagesRectTransform;
         private RectTransform WindowsRectTransform;
+        private RectTransform TopWindowsRectTransform;
         private RectTransform ViewsRectTransform;
+        private RectTransform TopViewsRectTransform;
         private RectTransform OthersRectTransform;
 
         /// <summary>
@@ -162,11 +159,15 @@ namespace Ballance2.Sys.Services
             GlobalWindowRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIGlobalWindow").GetComponent<RectTransform>();
             PagesRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIPages").GetComponent<RectTransform>();
             ViewsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameViewsRectTransform").GetComponent<RectTransform>();
+            TopViewsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameTopViewsRectTransform").GetComponent<RectTransform>();
             WindowsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIWindow").GetComponent<RectTransform>();
+            TopWindowsRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameTopUIWindow").GetComponent<RectTransform>();
             OthersRectTransform = CloneUtils.CreateEmptyUIObjectWithParent(UIRoot.transform, "GameUIOthers").GetComponent<RectTransform>();
 
             InitAllPrefabs();
 
+            UIAnchorPosUtils.SetUIAnchor(TopViewsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
+            UIAnchorPosUtils.SetUIPos(TopViewsRectTransform, 0, 0, 0, 0);
             UIAnchorPosUtils.SetUIAnchor(ViewsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
             UIAnchorPosUtils.SetUIPos(ViewsRectTransform, 0, 0, 0, 0);
             UIAnchorPosUtils.SetUIAnchor(PagesRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
@@ -175,6 +176,8 @@ namespace Ballance2.Sys.Services
             UIAnchorPosUtils.SetUIPos(GlobalWindowRectTransform, 0, 0, 0, 0);
             UIAnchorPosUtils.SetUIAnchor(WindowsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
             UIAnchorPosUtils.SetUIPos(WindowsRectTransform, 0, 0, 0, 0);
+            UIAnchorPosUtils.SetUIAnchor(TopWindowsRectTransform, UIAnchor.Stretch, UIAnchor.Stretch);
+            UIAnchorPosUtils.SetUIPos(TopWindowsRectTransform, 0, 0, 0, 0);
 
             UIToast = CloneUtils.CloneNewObjectWithParent(GameStaticResourcesPool.FindStaticPrefabs("PrefabToast"), UIRoot.transform, "GlobalUIToast").GetComponent<RectTransform>();
             UIToastImage = UIToast.GetComponent<Image>();
@@ -339,7 +342,10 @@ namespace Ballance2.Sys.Services
         /// </summary>
         /// <returns></returns>
         [LuaApiDescription("隐藏当前显示页")]
-        public void HideCurrentPage() { currentPage.Hide(); }
+        public void HideCurrentPage() { 
+            if(currentPage != null)
+                currentPage.Hide(); 
+        }
         /// <summary>
         /// 关闭所有显示的页
         /// </summary>
@@ -724,6 +730,32 @@ namespace Ballance2.Sys.Services
             return w;
         }
 
+        private IEnumerator LateShowWindow(Window w) {
+            yield return new WaitForSeconds(0.1f);
+            w.Show();
+        }
+
+        internal void WindowFirshAdd(Window window) {
+            switch (window.WindowType)
+            {
+                case WindowType.GlobalAlert:
+                    window.GetRectTransform().transform.SetParent(GlobalWindowRectTransform.transform);
+                    PagesRectTransform.gameObject.SetActive(false);
+                    WindowsRectTransform.gameObject.SetActive(false);
+                    WindowsRectTransform.SetAsLastSibling();
+                    currentVisibleWindowAlert = window;
+                    break;
+                case WindowType.Normal:
+                    window.GetRectTransform().transform.SetParent(WindowsRectTransform.transform);
+                    WindowsRectTransform.SetAsLastSibling();
+                    break;
+                case WindowType.TopWindow:
+                    window.GetRectTransform().transform.SetParent(TopWindowsRectTransform.transform);
+                    WindowsRectTransform.SetAsLastSibling();
+                    break;
+            }
+        }
+
         private Window currentVisibleWindowAlert = null;
         private Window currentActiveWindow = null;
 
@@ -741,21 +773,7 @@ namespace Ballance2.Sys.Services
         [LuaApiParamDescription("window", "窗口实例")]
         public void ShowWindow(Window window)
         {
-            switch (window.WindowType)
-            {
-                case WindowType.GlobalAlert:
-                    window.GetRectTransform().transform.SetParent(GlobalWindowRectTransform.transform);
-                    PagesRectTransform.gameObject.SetActive(false);
-                    WindowsRectTransform.gameObject.SetActive(false);
-                    WindowsRectTransform.SetAsLastSibling();
-                    currentVisibleWindowAlert = window;
-                    break;
-                case WindowType.Normal:
-                    window.GetRectTransform().transform.SetParent(WindowsRectTransform.transform);
-                    WindowsRectTransform.SetAsLastSibling();
-                    break;
-            }
-            window.SetVisible(true);
+            window.Show();
         }
         /// <summary>
         /// 隐藏窗口
@@ -898,12 +916,12 @@ namespace Ballance2.Sys.Services
         [LuaApiDescription("使用Prefab初始化一个对象并附加到主Canvas", "返回新对象的RectTransform")]
         [LuaApiParamDescription("prefab", "Prefab")]
         [LuaApiParamDescription("name", "新对象名称")]
-        public RectTransform InitViewToCanvas(GameObject prefab, string name)
+        [LuaApiParamDescription("topMost", "是否置顶，置顶后会在遮罩层上出现，不会被遮挡")]
+        public RectTransform InitViewToCanvas(GameObject prefab, string name, bool topMost)
         {
-            GameObject go = CloneUtils.CloneNewObjectWithParent(prefab,
-                ViewsRectTransform.transform, name);
+            GameObject go = CloneUtils.CloneNewObjectWithParent(prefab, (topMost ? TopViewsRectTransform : ViewsRectTransform).transform, name);
             RectTransform view = go.GetComponent<RectTransform>();
-            view.SetParent(ViewsRectTransform.gameObject.transform);
+            view.SetParent((topMost ? TopViewsRectTransform : ViewsRectTransform).gameObject.transform);
             return view;
         }
 

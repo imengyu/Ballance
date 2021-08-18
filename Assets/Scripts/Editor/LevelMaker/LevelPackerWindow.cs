@@ -101,7 +101,6 @@ namespace Ballance2.Editor.LevelMaker
 
         private List<string> packsPath = new List<string>();
         private string[] packsPathArr = null;
-        private string packPackageName = "";
 
         private void LoadDefConfig()
         {

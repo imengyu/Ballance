@@ -15,6 +15,9 @@ local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 
+local WaitForSeconds = UnityEngine.WaitForSeconds
+local Yield = UnityEngine.Yield
+
 local GameMenuLevelEnterHandler = nil
 local GameMenuLevelQuitHandler = nil
 
@@ -23,17 +26,25 @@ local GameMenuLevelQuitHandler = nil
 local function OnEnterMenuLevel(thisGamePackage)
   Log.D(thisGamePackage.TAG, 'Enter menuLevel')
 
-  GameUIManager:MaskBlackFadeOut(1)
   GameManager.Instance:SetGameBaseCameraVisible(false)
 
   if(GameMenuLevel == nil) then
     GameMenuLevel = CloneUtils.CloneNewObject(thisGamePackage:GetPrefabAsset('GameMenuLevel.prefab'), 'GameMenuLevel')
   end
+
+  coroutine.resume(coroutine.create(function ()
+    Yield(WaitForSeconds(0.5))
+    GameUIManager:GoPage('PageMain')
+    Yield(WaitForSeconds(1))
+    GameUIManager:MaskBlackFadeOut(1)
+  end))
 end
 ---退出MenuLevel场景
 ---@param thisGamePackage GamePackage
 local function OnQuitMenuLevel(thisGamePackage)
   Log.D(thisGamePackage.TAG, 'Quit menuLevel')
+
+  GameUIManager:CloseAllPage()
 
   if (not Slua.IsNull(GameMenuLevel)) then 
     GameMenuLevel:SetActive(false)

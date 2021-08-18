@@ -550,6 +550,10 @@ MonoBehaviour:
     PackageName: core.sounds.music
   - Enable: 1
     PackageName: core.assets.skys
+  - Enable: 1
+    PackageName: core.ui
+  - Enable: 1
+    PackageName: core.language
   DebugCustomEntryEvent: CoreDebugGamePlayEntry
   DebugCustomEntries:
   - CoreDebugGamePlayEntry

@@ -70,7 +70,7 @@ function CreateClass_DebugTools()
     --注册控制台按键事件
     local k = KeyListener.Get(self.gameObject)
     k:AddKeyListen(KeyCode.F12, function (key, downed)
-      if(not downed) then
+      if(downed) then
         if(GlobalDebugWindow:GetVisible()) then GlobalDebugWindow:Hide() 
         else GlobalDebugWindow:Show() end
       end

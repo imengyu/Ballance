@@ -1,5 +1,3 @@
-local GameManager = Ballance2.Sys.GameManager
-local GameSoundManager = GameManager.Instance:GetSystemService('GameSoundManager') ---@type GameSoundManager
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 
 ---纸球定义
@@ -14,8 +12,8 @@ end
 
 function BallPaper:Start()
   Ball.Start(self)
-  self._PaperPiecesSound = GameSoundManager:RegisterSoundPlayer(GameSoundType.BallEffect,
-    GameSoundManager:LoadAudioResource('core.sounds:Pieces_Paper.wav'), false, true, 'Pieces_Paper')
+  self._PaperPiecesSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect,
+    Game.SoundManager:LoadAudioResource('core.sounds:Pieces_Paper.wav'), false, true, 'Pieces_Paper')
 end
 
 function BallPaper:ThrowPieces()
