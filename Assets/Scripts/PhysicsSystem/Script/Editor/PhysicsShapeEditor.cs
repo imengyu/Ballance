@@ -11,11 +11,13 @@ using UnityEngine;
 class PhysicsShapeEditor : Editor
 {
     private PhysicsShape instance;
+    private bool instanceMeshChecked = true;
     
     [NonSerialized]
     FitToRenderMeshesDropDown m_DropDown;
 
     private void OnEnable() {
+
         bDrawMaterialInspector = EditorPrefs.GetBool("PhysicsShapeEditor_bDrawMaterialInspector", false);
 
         pShapeType = serializedObject.FindProperty("m_ShapeType");
@@ -31,6 +33,7 @@ class PhysicsShapeEditor : Editor
         pShapeSideCount = serializedObject.FindProperty("m_ShapeSideCount");
         pMinimumSkinnedVertexWeight = serializedObject.FindProperty("m_MinimumSkinnedVertexWeight");
         pCustomMaterialTags = serializedObject.FindProperty("m_CustomMaterialTags");
+        instanceMeshChecked = false;
     }
     private void OnDisable() {
         EditorPrefs.SetBool("PhysicsShapeEditor_bDrawMaterialInspector", bDrawMaterialInspector);
@@ -212,10 +215,16 @@ class PhysicsShapeEditor : Editor
 
         serializedObject.Update();
 
-        if (instance.ShapeMesh == null)
-        {
-            var m = instance.GetComponent<MeshFilter>();
-            if (m != null) instance.ShapeMesh = m.sharedMesh;
+        if (!instanceMeshChecked) {
+            foreach(var v in targets) {
+                var vp = (PhysicsShape)v;
+                if (vp.ShapeMesh == null)
+                {
+                    var m = vp.GetComponent<MeshFilter>();
+                    if (m != null) vp.ShapeMesh = m.sharedMesh;
+                }
+            }
+            instanceMeshChecked = true;
         }
 
         EditorGUILayout.PropertyField(pShapeType);

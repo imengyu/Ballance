@@ -23,6 +23,13 @@ function SectorManager:Start()
   GamePlay.SectorManager = self
 end
 
+---进入下一小节
+function SectorManager:NextSector() 
+
+
+
+end
+
 function CreateClass_SectorManager() 
   return SectorManager()
 end

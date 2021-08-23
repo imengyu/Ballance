@@ -109,22 +109,22 @@ namespace PhysicsRT
             int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
             Simulating = false;
 
-            var list = new List<PhysicsBody>(bodysDict.Values);
-            for(int i = list.Count - 1; i >= 0; i--)
-                DestroyImmediate(list[i]);
-            bodysList.clear();
-            bodysDict.Clear();
-            bodysDictAddContactListener.Clear();
+            var list3 = new List<PhysicsConstraint>(constraintDict.Values);
+            for(int i = list3.Count - 1; i >= 0; i--)
+                DestroyImmediate(list3[i]);
+            constraintDict.Clear();
 
             var list2 = new List<PhysicsPhantom>(phantomsList.Values);
             for(int i = list2.Count - 1; i >= 0; i--) 
                 DestroyImmediate(list2[i]);
             phantomsList.Clear();
 
-            var list3 = new List<PhysicsConstraint>(constraintDict.Values);
-            for(int i = list3.Count - 1; i >= 0; i--)
-                DestroyImmediate(list3[i]);
-            constraintDict.Clear();
+            var list = new List<PhysicsBody>(bodysDict.Values);
+            for(int i = list.Count - 1; i >= 0; i--)
+                DestroyImmediate(list[i]);
+            bodysList.clear();
+            bodysDict.Clear();
+            bodysDictAddContactListener.Clear();
 
             if(PhysicsWorlds.ContainsKey(currentScenseIndex)) 
                 PhysicsWorlds.Remove(currentScenseIndex);

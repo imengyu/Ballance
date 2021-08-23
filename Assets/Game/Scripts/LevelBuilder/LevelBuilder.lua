@@ -49,7 +49,7 @@ function LevelBuilder:_UpdateErrStatus(err, statuaCode, errMessage)
   self._LevelBuilderUIPanelFailed.gameObject:SetActive(err)
   if err then
     self._LevelBuilderUITextErrorContent.text = 'Code: '..statuaCode..'\n'..errMessage
-    Game.SoundManager:PlayFastVoice('', GameSoundType.Normal)
+    Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal)
   end
 end
 
@@ -63,7 +63,7 @@ function LevelBuilder:LoadLevel(name)
   self:_UpdateErrStatus(false, nil)
   Game.UIManager:MaskBlackSet(false)
 
-  --加载文件
+  --由C#代码加载文件
   self._LevelLoaderNative:LoadLevel(name, 
     ---加载文件就绪回调
     ---@param prefab GameObject
@@ -81,13 +81,16 @@ function LevelBuilder:LoadLevel(name)
 
       self._CurrentLevelJson = res
       self._CurrentLevelPrefab = prefab
+      Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED', '*', { self._CurrentLevelJson })
 
       --检查基础适配
       local missedPackages = ''
       local requiredPackages = self._CurrentLevelJson.requiredPackages
       if type(requiredPackages) == "table" and #requiredPackages > 0 then
         for k, v in pairs(requiredPackages) do
-          if not Game.PackageManager.CheckRequiredPackage(v.name. v.minVersion) then missedPackages = missedPackages + '\n包名： '..v.name..' 版本：'..v.minVersion end
+          if v.name ~= nil and not Game.PackageManager.CheckRequiredPackage(v.name. v.minVersion or 0) then 
+            missedPackages = missedPackages + '\n包名： '..v.name..' 版本：'..v.minVersion 
+          end
         end
       end
       --模组适配
@@ -96,9 +99,14 @@ function LevelBuilder:LoadLevel(name)
       end
 
       --载入Prefab
-      self._CurrentLevelObject = Game.Manager:InstancePrefab(self._CurrentLevelPrefab, 'GameLevelMain')
+      self._CurrentLevelObject = Game.Manager:InstancePrefab(self._CurrentLevelPrefab, self.gameObject.transform, 'GameLevelMain')
+      Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY', '*', { self._CurrentLevelObject })
+
       --加载
-      self:_LoadLevelInternal()
+      local status, rs = pcall(function () self:_LoadLevelInternal() end)
+      if ~status then
+        self:_UpdateErrStatus(true, 'LOADER_EXPECTION', '加载失败，异常信息: '..rs)
+      end
     end, 
     function (code, err)
       self:_UpdateErrStatus(true, code, err)
@@ -106,8 +114,14 @@ function LevelBuilder:LoadLevel(name)
 end
 function LevelBuilder:_LoadLevelInternal()
 
+  --发送开始事件
+  Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_START', '*')
   --加载基础设置
+  local level = self._CurrentLevelJson.level
   
+
+
+  --加载基础设置
 
   coroutine.resume(coroutine.create(function()
     Yield(WaitForSeconds(5))
@@ -141,4 +155,3 @@ end
 ---获取注册的机关，如果没有注册，则返回nil
 ---@param name string 机关名称
 function LevelBuilder:FindRegisterModul(name) return self._RegisteredModuls[name] end
-

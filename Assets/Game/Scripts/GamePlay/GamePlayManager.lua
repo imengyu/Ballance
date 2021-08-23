@@ -95,7 +95,7 @@ end
 ---开始关卡
 function GamePlayManager:StartLevel() 
   --播放开始音乐
-  Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Background)
+  Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal)
 
   --UI
   Game.UIManager:CloseAllPage()

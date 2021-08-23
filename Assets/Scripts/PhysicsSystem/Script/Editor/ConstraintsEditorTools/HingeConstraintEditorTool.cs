@@ -22,13 +22,13 @@ public class HingeConstraintEditorTool : EditorTool
 			if (!((Object)val == (Object)null))
 			{
 				EditorGUI.BeginChangeCheck();
-				var pos = Vector3.Scale(new Vector3(val.Povit.y, val.Povit.x, -val.Povit.z), val.transform.lossyScale); 
-				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, Quaternion.FromToRotation(Vector3.right, val.Axis), Vector3.one)))
+				var pos = Vector3.Scale(val.Povit, val.transform.lossyScale); 
+				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, Quaternion.FromToRotation(Vector3.zero, val.Axis), Vector3.one)))
 				{
           Handles.color = Color.yellow;
-					Handles.SphereHandleCap(122, pos, Quaternion.Euler(0,0,0), 0.2f, EventType.Repaint);
+					Handles.SphereHandleCap(122, pos, Quaternion.identity, 0.2f, EventType.Repaint);
           Handles.color = Color.red;
-          Handles.ArrowHandleCap(123, pos, Quaternion.Euler(0,90,0), 2, EventType.Repaint);
+          Handles.ArrowHandleCap(123, pos, Quaternion.identity, 2, EventType.Repaint);
 				}
 				if (EditorGUI.EndChangeCheck())
 				{

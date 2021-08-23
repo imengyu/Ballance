@@ -192,6 +192,7 @@ namespace Slua
         //"---@diagnostic disable: duplicate-set-field, undefined-doc-class, undefined-doc-name, duplicate-doc-field" +
         "\n"
       );
+
       if (!CheckType(t.BaseType, custom))
         sb.AppendFormat("---@class {0}\n", t.Name);
       else
@@ -221,8 +222,6 @@ namespace Slua
       if (t == typeof(Coroutine))
         return false;
       if (t.IsNested)
-        return false;
-      if (custom && !t.IsDefined(typeof(CustomLuaClassAttribute), false))
         return false;
       return true;
     }
