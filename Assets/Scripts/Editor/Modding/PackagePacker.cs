@@ -6,6 +6,7 @@ using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Xml;
 using System.Collections.Generic;
+using Ballance2.Editor.Lua;
 
 namespace Ballance2.Editor.Modding
 {
@@ -17,6 +18,7 @@ namespace Ballance2.Editor.Modding
         private static string projLogoFile = "";        
         private static string packPackageName = "";
         private static string packLogoName = "";
+        private static bool packShouldCompile = true;
         
         private static List<string> allAssetsPath = new List<string>();
         private static List<string> allLuaPath = new List<string>();
@@ -112,6 +114,10 @@ namespace Ballance2.Editor.Modding
                     }
                     break;
                 }
+                else if (node.Name == "CompileLuaCode")
+                {
+                    bool.TryParse(node.InnerText, out packShouldCompile);
+                }
             }
         }
         private static void DoSolveBallancePack(string dirTargetPath, string bundlePath, string targetPath)
@@ -130,8 +136,21 @@ namespace Ballance2.Editor.Modding
             else Debug.LogWarning("模块的 Logo 没有找到：" + projLogoFile);
 
             //添加lua代码
-            foreach (string path in allLuaPath)
-                ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
+            int i = 0, len = allLuaPath.Count;
+            foreach (string path in allLuaPath) {
+                if(packShouldCompile) { //编译为字节码
+                    var outPath = "";
+                    if(LuaCompiler.CompileLuaFile(path, false, out outPath)) {
+                        EditorUtility.DisplayProgressBar("正在打包", path, i / (float)len);
+                        ZipUtils.AddFileToZip(zipStream, outPath, "/class" + path.Substring(basePath.Length, path.Length - basePath.Length - 4) + ".luac", ref crc);
+                        File.Delete(outPath);
+                    } else {
+                        Debug.LogError("编译 " + path + " 失败, 将lua文件原样打包至zip中。");
+                        ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
+                    }
+                } else ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
+                i++;
+            }
 
             zipStream.Finish();
             zipStream.Close();

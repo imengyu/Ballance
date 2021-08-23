@@ -214,6 +214,8 @@ namespace Ballance2.Sys
                 yield break;
             }
 
+            SecurityUtils.FixLuaSecure(GameMainLuaState);
+
             //加载系统 packages
             yield return StartCoroutine(LoadSystemCore());
 

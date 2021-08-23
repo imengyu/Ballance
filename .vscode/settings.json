@@ -11,5 +11,10 @@
   "Lua.runtime.plugin": "",
   "Lua.workspace.library": [
     "Assets/Scripts/LuaHelpers/LuaDefineApi"
-  ]
+  ],
+  "files.associations": {
+    "lua.h": "c",
+    "luasandbox.h": "c",
+    "lauxlib.h": "c"
+  }
 }

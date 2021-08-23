@@ -306,8 +306,9 @@ class GameLuaObjectHostInspector : Editor
                     GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + valLuaPackageName;
                 var w = ChooseLuaFile.ShowWindow(dirPath);
                 w.Chooseed = (path) => {
+                    path = Path.ChangeExtension(path, "");
                     serializedObject.Update();
-                    pLuaFileName.stringValue = path;
+                    pLuaFileName.stringValue = path.Substring(0, path.Length - 1);
                     pLuaClassName.stringValue = GamePathManager.GetFileNameWithoutExt(path);
                     w.Close();
                     serializedObject.ApplyModifiedProperties();

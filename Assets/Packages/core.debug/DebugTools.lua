@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 Copyright(c) 2021  mengyu
 * 模块名：     
 DebugTools.lua

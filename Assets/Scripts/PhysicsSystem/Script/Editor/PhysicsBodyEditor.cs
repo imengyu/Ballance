@@ -108,7 +108,9 @@ class PhysicsBodyEditor : Editor
         EditorGUILayout.PropertyField(pFriction);
         EditorGUILayout.PropertyField(pRestitution);
         pLayer.intValue = EditorGUILayout.IntPopup("Layer", pLayer.intValue, m_LayerNames, m_LayerValues);
-
+      
+        if(EditorApplication.isPlaying) EditorGUILayout.LabelField("Ptr: 0x" + instance.GetPtr().ToString("X"));
+        
         if (EditorGUI.EndChangeCheck())
         {
             serializedObject.ApplyModifiedProperties();

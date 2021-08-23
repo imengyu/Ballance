@@ -3,7 +3,7 @@ return {
   ---@param thisGamePackage GamePackage
   ---@return boolean
   PackageEntry = function(thisGamePackage)
-    thisGamePackage:RequireLuaFile("CoreInit.lua")
+    thisGamePackage:RequireLuaFile("InitCore")
     CoreInit()
     return true
   end,

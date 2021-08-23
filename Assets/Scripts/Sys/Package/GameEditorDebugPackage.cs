@@ -108,13 +108,13 @@ namespace Ballance2.Sys.Package
             }
         }
 
-        public override string GetCodeLuaAsset(string pathorname, out string realPath)
+        public override byte[] GetCodeLuaAsset(string pathorname, out string realPath)
         {
             if (GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
             {
                 if (File.Exists(pathorname)) {
                     realPath = pathorname;
-                    return File.ReadAllText(pathorname);
+                    return FileUtils.ReadAllToBytes(pathorname);
                 }
             }
             else
@@ -122,13 +122,13 @@ namespace Ballance2.Sys.Package
                 string path = PackageFilePath + "/" + pathorname;
                 if (File.Exists(path)) {
                     realPath = path;
-                    return File.ReadAllText(path);
+                    return FileUtils.ReadAllToBytes(path);
                 }
                 else {
                     string fullPath = GetFullPathByName(pathorname);
                     if(fullPath != null && File.Exists(fullPath)) {
                         realPath = fullPath;
-                        return File.ReadAllText(fullPath);
+                        return FileUtils.ReadAllToBytes(fullPath);
                     }
                 }
             }

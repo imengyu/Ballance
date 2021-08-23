@@ -30,7 +30,7 @@ local function OnEnterIntro(thisGamePackage)
   Log.D(TAG, 'Into intro ui')
 
   if IntroUI == nil then
-    IntroUI = GameUIManager:InitViewToCanvas(thisGamePackage:GetPrefabAsset('IntroUI.prefab'), 'IntroUI', false)
+    IntroUI = GameUIManager:InitViewToCanvas(thisGamePackage:GetPrefabAsset('IntroUI.prefab'), 'IntroUI', true)
     IntroUI:SetAsFirstSibling()    
   end
 

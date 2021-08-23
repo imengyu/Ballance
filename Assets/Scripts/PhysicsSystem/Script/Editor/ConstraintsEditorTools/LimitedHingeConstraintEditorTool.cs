@@ -40,16 +40,14 @@ public class LimitedHingeConstraintEditorTool : EditorTool
 			if (!((Object)val == (Object)null))
 			{
 				EditorGUI.BeginChangeCheck();
-				using (new Handles.DrawingScope(Matrix4x4.TRS(
-					val.transform.position + Vector3.Scale(new Vector3(-val.Povit.x, val.Povit.y, -val.Povit.z), 
-						new Vector3(val.transform.lossyScale.y, val.transform.lossyScale.x, val.transform.lossyScale.z)), 
+				using (new Handles.DrawingScope(Matrix4x4.TRS(val.Povit,
 					Quaternion.FromToRotation(Vector3.right, val.Axis), Vector3.one)))
 					DoAngularLimitHandles(val);
-				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, Quaternion.FromToRotation(Vector3.right, val.Axis), Vector3.one)))
+				using (new Handles.DrawingScope(Matrix4x4.TRS(val.Povit, Quaternion.FromToRotation(Vector3.right, val.Axis), Vector3.one)))
 				{
-          Handles.color = Color.red;
-          Handles.ArrowHandleCap(123, Vector3.Scale(new Vector3(val.Povit.y, val.Povit.x, -val.Povit.z), val.transform.lossyScale), Quaternion.Euler(0,90,0), 2, EventType.Repaint);
-				}
+					Handles.color = Color.red;
+          Handles.ArrowHandleCap(123, val.Povit, Quaternion.Euler(0,90,0), 2, EventType.Repaint);
+        }
 				if (EditorGUI.EndChangeCheck())
 				{
 				}

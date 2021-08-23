@@ -25,7 +25,7 @@ namespace PhysicsRT {
                 throw new Exception("This body hasn't been created yet");
             if(otherPtr == IntPtr.Zero)
                 throw new Exception("ConnectedBody hasn't been created yet");
-            CreateLastStep(PhysicsApi.API.CreateWheelConstraint(ptr, otherPtr, transform.TransformPoint(Povit), Axle, Suspension,
+            CreateLastStep(PhysicsApi.API.CreateWheelConstraint(ptr, otherPtr, (Povit), Axle, Suspension,
                 Steering, SuspensionLimitMin, SuspensionLimitMax, SuspensionStrength, SuspensionDamping, GetConstraintBreakData()));
         }
     }

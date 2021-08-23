@@ -15,7 +15,7 @@ namespace PhysicsRT {
             var otherPtr = ConnectedBody.GetPtr();
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            CreateLastStep(PhysicsApi.API.CreateHingeConstraint(ptr, otherPtr, transform.TransformPoint(Povit), Axis, GetConstraintBreakData()));
+            CreateLastStep(PhysicsApi.API.CreateHingeConstraint(ptr, otherPtr, Povit, Axis, GetConstraintBreakData()));
         }
     }
 }

@@ -72,6 +72,15 @@ namespace Ballance2.Utils
             fs.Read(temp, 0, head.Length);
             fs.Close();
             return StringUtils.TestBytesMatch(temp, head);
+        }        
+        
+        public static byte[] ReadAllToBytes(string file)
+        {
+            FileStream fs = new FileStream(GamePathManager.FixFilePathScheme(file), FileMode.Open);
+            byte[] temp = new byte[fs.Length];
+            fs.Read(temp, 0, temp.Length);
+            fs.Close();
+            return temp;
         }
 
         /// <summary>

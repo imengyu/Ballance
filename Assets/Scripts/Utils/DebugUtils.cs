@@ -151,6 +151,10 @@ namespace Ballance2.Utils
 
             return sb.ToString();
         }
+        public static string PrintCodeWithLine(byte[] code)
+        {
+            return PrintCodeWithLine(Encoding.UTF8.GetString(code));
+        }
     
         /// <summary>
         /// 打印出数组的代码

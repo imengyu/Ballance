@@ -32,9 +32,9 @@ namespace Ballance2.Sys.Package
     public class GameZipPackage: GamePackage
     {
         private struct CodeAsset {
-            public string asset;
+            public byte[] asset;
             public string fullPath;
-            public CodeAsset(string asset, string fullPath) {
+            public CodeAsset(byte[] asset, string fullPath) {
                 this.asset = asset;
                 this.fullPath = fullPath;
             }
@@ -130,7 +130,7 @@ namespace Ballance2.Sys.Package
 
             PackageDef = new XmlDocument();
             try {
-                PackageDef.LoadXml(StringUtils.FixUtf8BOM(ms.ToArray()));
+                PackageDef.LoadXml(StringUtils.GetUtf8Bytes(StringUtils.FixUtf8BOM(ms.ToArray())));
             }  catch(System.Exception e) {
                 GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
                 return false;
@@ -204,7 +204,7 @@ namespace Ballance2.Sys.Package
             ms.Dispose();
         }
 
-        public override string GetCodeLuaAsset(string pathorname, out string realPath)
+        public override byte[] GetCodeLuaAsset(string pathorname, out string realPath)
         {
             foreach (string key in packageCodeAsset.Keys)
             {

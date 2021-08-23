@@ -62,6 +62,7 @@ namespace Ballance2.Sys.Debug
         IsLoading,
         SystemPackageNotLoad,
         SystemPackageLoadFailed,
+        SystemNotInit,
         UnKnowType,
         LuaBindCheckFailed,
         OnlyCanUseInEditor,
@@ -119,6 +120,7 @@ namespace Ballance2.Sys.Debug
                 case GameError.NotRegister: return "指定资源未注册。";
                 case GameError.ConfigueNotRight: return "游戏配置存在错误，这可能是当前版本存在非正式的修改，尝试下载最新版本解决问题。";
                 case GameError.SystemPackageNotLoad: return "系统包未加载。";
+                case GameError.SystemNotInit: return "系统未初始化。";
                 case GameError.SystemPackageLoadFailed: return "系统包加载失败，这可能是当前版本存在非正式的修改，尝试下载最新版本解决问题。";
                 default: return "未知错误: " + err.ToString();
             }

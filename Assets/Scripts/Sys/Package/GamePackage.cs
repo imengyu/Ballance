@@ -16,6 +16,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
+using Ballance2.Sys.Bridge.Lua;
+using Ballance2.Sys.Utils;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -278,6 +280,7 @@ namespace Ballance2.Sys.Package
 
             await new WaitUntil(IsLuaStateInitFinished);
 
+            SecurityUtils.FixLuaSecure(PackageLuaState);
             return true;
         }
         protected void SystemPackageSetInitFinished() { 
@@ -293,6 +296,7 @@ namespace Ballance2.Sys.Package
             luaStateInited = true; 
             luaStateIniting = false;
             baseInited = true;
+
             if(runExecutionCodeWhenLuaStateInit) 
                 RunPackageExecutionCode();
         }
@@ -342,27 +346,28 @@ namespace Ballance2.Sys.Package
                         return false;
                     }
 
-                    string lua = GetCodeLuaAsset(EntryCode, out var realpath);
+                    byte[] lua = TryLoadLuaCodeAsset(EntryCode, out var realpath);
                     if (lua == null) 
                         Log.E(TAG, "Run package EntryCode failed, function {0} not found", EntryCode);
-                    else if(string.IsNullOrWhiteSpace(lua))
-                        Log.E(TAG, "Run package EntryCode failed, EntryCode is null", EntryCode);
                     else if (!mainLuaCodeLoaded)
                     {
                         Log.D(TAG, "Run package EntryCode {0} ", EntryCode);
                         
                         try
                         {
-                            LuaPackageEntry = PackageLuaState.doString(lua, realpath) as LuaTable;
-                            if(LuaPackageEntry == null) {
+                            if(PackageLuaState.doBuffer(lua, realpath, out var ret)) {
+                                mainLuaCodeLoaded = true;
+                                LuaPackageEntry = ret as LuaTable;
+                                requiredLuaFiles.Add(EntryCode, LuaPackageEntry);
+                            }
+                            else if (ret == null) {
                                 Log.E(TAG, "模块 {0} 运行启动代码失败! 启动代码未返回指定结构体。\n请检查代码 ->\n{1}", 
-                                    PackageName, 
-                                    DebugUtils.PrintCodeWithLine(lua));
+                                    PackageName, DebugUtils.PrintCodeWithLine(lua));
                                 GameErrorChecker.LastError = GameError.ExecutionFailed;
                                 return false;
                             } else {
-                                mainLuaCodeLoaded = true;
-                                requiredLuaFiles.Add(EntryCode, LuaPackageEntry);
+                                Log.E(TAG, "模块 {0} 运行启动代码失败! \n请检查代码 ->\n{1}", 
+                                    PackageName, DebugUtils.PrintCodeWithLine(lua));
                             }
                         }
                         catch (Exception e)
@@ -492,30 +497,6 @@ namespace Ballance2.Sys.Package
             }
         }
 
-        private Dictionary<string, object> requiredLuaFiles = null;
-        private Dictionary<string, LuaFunction> requiredLuaClasses = null;
-
-        private string TryLoadLuaCodeAsset(string className, out string realPath) {
-            string lua = GetCodeLuaAsset(className, out realPath);
-
-            if (lua == null) 
-                lua = GetCodeLuaAsset(className + ".lua", out realPath);
-                
-            if(!className.EndsWith(".lua")) className += ".lua";
-
-            if (lua == null) 
-                lua = GetCodeLuaAsset("Scripts/" + className, out realPath);
-
-            if(!className.EndsWith(".txt")) className += ".txt";
-            if (lua == null) 
-                lua = GetCodeLuaAsset(className + ".txt", out realPath);
-            if (lua == null) 
-                lua = GetCodeLuaAsset("Scripts/" + className + ".txt", out realPath);
-            if (lua == null)
-                throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 未找到该文件");
-            return lua;
-        }
-
         /// <summary>
         /// 导入 Lua 类到当前模块虚拟机中。
         /// 注意，类函数以 “CreateClass_类名” 开头，
@@ -544,12 +525,12 @@ namespace Ballance2.Sys.Package
                 return classInit;
             }
 
-            string lua = TryLoadLuaCodeAsset(className, out var realPath);
-            if(string.IsNullOrWhiteSpace(lua))
+            byte[] lua = TryLoadLuaCodeAsset(className, out var realPath);
+            if(lua.Length == 0)
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 该文件为空");
             try
             {
-                PackageLuaState.doString(lua, realPath/*PackageName + ":" + className*/);
+                PackageLuaState.doBuffer(lua, realPath/*PackageName + ":" + className*/, out var v);
             }
             catch (Exception e)
             {
@@ -625,20 +606,43 @@ namespace Ballance2.Sys.Package
         [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
         public object RequireLuaFileOnce(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, true); }
+        
+        private Dictionary<string, object> requiredLuaFiles = null;
+        private Dictionary<string, LuaFunction> requiredLuaClasses = null;
 
+        private byte[] TryLoadLuaCodeAsset(string className, out string realPath) {
+
+            byte[] lua = GetCodeLuaAsset(className, out realPath);
+            if (lua == null) 
+                lua = GetCodeLuaAsset(className + ".lua", out realPath);
+            if (lua == null) 
+                lua = GetCodeLuaAsset(className + ".luac", out realPath);
+            if (lua == null) 
+                lua = GetCodeLuaAsset("Scripts/" + className, out realPath);
+            if (lua == null) 
+                lua = GetCodeLuaAsset("Scripts/" + className + ".lua", out realPath);
+            if (lua == null) 
+                lua = GetCodeLuaAsset("Scripts/" + className + ".luac", out realPath);
+            if (lua == null)
+                throw new MissingReferenceException(PackageName + " 无法导入 " + className + " , 未找到文件");
+            return lua;
+        }
         private object RequireLuaFileInternal(GamePackage pack, string fileName, bool once)
         {
             object rs = null;
-            string lua = pack.TryLoadLuaCodeAsset(fileName, out var realPath);
-            if (string.IsNullOrWhiteSpace(lua))
-                throw new MissingReferenceException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
+            byte[] lua = pack.TryLoadLuaCodeAsset(fileName, out var realPath);
+            if (lua.Length == 0)
+                throw new EmptyFileException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
             try
             {
                 //不重复导入
                 if(once && requiredLuaFiles.TryGetValue(fileName, out var lastRet)) 
                     return lastRet;
 
-                rs = PackageLuaState.doString(lua, realPath);
+                if(PackageLuaState.doBuffer(lua, realPath, out var v))
+                    rs = v;
+                else
+                    throw new Exception(PackageName + " 无法导入 Lua : 执行失败");
 
                 //添加结果
                 if(requiredLuaFiles.ContainsKey(fileName))
@@ -1003,12 +1007,12 @@ namespace Ballance2.Sys.Package
         /// <returns>如果读取成功则返回代码内容，否则返回null</returns>
         [LuaApiDescription("读取模块资源包中的Lua代码资源", "如果读取成功则返回代码内容，否则返回null")]
         [LuaApiParamDescription("pathorname", "文件名称或路径")]
-        public virtual string GetCodeLuaAsset(string pathorname, out string realPath)
+        public virtual byte[] GetCodeLuaAsset(string pathorname, out string realPath)
         {
             TextAsset textAsset = GetTextAsset(pathorname);
             if (textAsset != null) {
                 realPath = pathorname;
-                return textAsset.text;
+                return textAsset.bytes;
             }
 
             GameErrorChecker.LastError = GameError.FileNotFound;

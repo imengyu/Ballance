@@ -17,11 +17,13 @@ class PhysicsConstraintEditor : Editor
         pThreshold = serializedObject.FindProperty("m_Threshold");
         pMaximumAngularImpulse = serializedObject.FindProperty("m_MaximumAngularImpulse");
         pMaximumLinearImpulse = serializedObject.FindProperty("m_MaximumLinearImpulse");
+        pPovit = serializedObject.FindProperty("Povit");
     }
     private void OnDisable() {
 
     }
 
+    private SerializedProperty pPovit;
     private SerializedProperty pBreakable;
     private SerializedProperty pThreshold;
     private SerializedProperty pMaximumAngularImpulse;
@@ -44,6 +46,11 @@ class PhysicsConstraintEditor : Editor
         EditorGUI.EndDisabledGroup();        
         
         EditorGUILayout.EditorToolbarForTarget(EditorGUIUtility.TrTempContent("Edit"), base.target);
+
+        if(pPovit != null) {
+            if(GUILayout.Button("设置为物体位置"))
+                pPovit.vector3Value = instance.transform.position;
+        }
 
         bBreakableFoldout = EditorGUILayout.Foldout(bBreakableFoldout, "Breakable");
         if(bBreakableFoldout) {        

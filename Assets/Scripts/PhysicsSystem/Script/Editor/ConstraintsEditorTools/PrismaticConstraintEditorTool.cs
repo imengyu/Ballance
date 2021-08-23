@@ -22,18 +22,15 @@ public class PrismaticConstraintEditorTool : EditorTool
 			if (!((Object)val == (Object)null))
 			{
 				EditorGUI.BeginChangeCheck();
-				var pos = Vector3.Scale(val.Povit, val.transform.lossyScale); 
+				var pos = val.Povit; 
         var rot = Quaternion.FromToRotation(Vector3.right, val.Axis).eulerAngles;
-				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, Quaternion.Euler(rot), Vector3.one)))
-				{
-          Handles.color = Color.yellow;
-					Handles.SphereHandleCap(122, pos, Quaternion.Euler(0,0,0), 0.2f, EventType.Repaint);
-          Handles.color = Color.red;
-          Handles.ArrowHandleCap(123, pos, Quaternion.Euler(new Vector3(0,90,0) + val.transform.eulerAngles), 1, EventType.Repaint);
-				}
-				if (EditorGUI.EndChangeCheck()) 
-				{
-				}
+				
+				Handles.color = Color.yellow;
+				Handles.SphereHandleCap(122, pos, Quaternion.Euler(0,0,0), 0.6f, EventType.Repaint);
+				Handles.color = Color.red;
+				Handles.ArrowHandleCap(123, pos, Quaternion.Euler(rot), 6, EventType.Repaint);
+
+				if (EditorGUI.EndChangeCheck()) {}
 			}
 		}
 	}

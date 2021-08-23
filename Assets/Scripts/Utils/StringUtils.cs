@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ballance2.LuaHelpers;
@@ -301,24 +302,73 @@ namespace Ballance2.Utils
         /// 修复UTF8的BOM头
         /// </summary>
         /// <param name="buffer">内容数组</param>
-        /// <returns>返回处理完成的字符串</returns>
-        [LuaApiDescription("修复UTF8的BOM头", "返回处理完成的字符串")]
+        /// <returns>返回处理完成的数组</returns>
+        [LuaApiDescription("修复UTF8的BOM头", "返回处理完成的数组")]
         [LuaApiParamDescription("buffer", "内容数组")]
-        public static string FixUtf8BOM(byte[] buffer)
+        public static byte[] FixUtf8BOM(byte[] buffer)
         {
-            string xmlStr;
             byte[] bomBuffer = new byte[] { 0xef, 0xbb, 0xbf };
             if (buffer.Length > 3 && buffer[0] == bomBuffer[0]
                 && buffer[1] == bomBuffer[1]
                 && buffer[2] == bomBuffer[2])
             {
-                xmlStr = Encoding.UTF8.GetString(buffer, 3, buffer.Length - 3);
+                byte[] bomBufferFixed = new byte[bomBuffer.Length - 3];
+                for(int i = 0; i < bomBuffer.Length - 3; i++)
+                    bomBufferFixed[i] = bomBuffer[i + 3];
+                return bomBufferFixed;
             }
-            else
+            return buffer;
+        }
+
+        /// <summary>
+        /// 计算字符串的MD5值
+        /// </summary>
+        /// <param name="buffer">字符串</param>
+        /// <returns>返回MD5</returns>
+        [LuaApiDescription("计算字符串的MD5值", "返回MD5")]
+        [LuaApiParamDescription("input", "字符串")]
+        public static string MD5String(string input) {
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            return MD5(inputBytes);
+        }
+        /// <summary>
+        /// 计算字节数组的MD5值
+        /// </summary>
+        /// <param name="inputBytes">字节数组</param>
+        /// <returns>返回MD5</returns>
+        [LuaApiDescription("计算字节数组的MD5值", "返回MD5")]
+        [LuaApiParamDescription("inputBytes", "字节数组")]
+        public static string MD5(byte[] inputBytes) {
+            // Step 1, calculate MD5 hash from input
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+            // Step 2, convert byte array to hex string
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
             {
-                xmlStr = Encoding.UTF8.GetString(buffer);
+                sb.Append(hashBytes[i].ToString("X2"));
             }
-            return xmlStr;
+            return sb.ToString();
+        }
+
+        public static string GetASCIIBytes(byte[] inputBytes) {
+            return Encoding.ASCII.GetString(inputBytes);
+        }
+        public static string GetUtf8Bytes(byte[] inputBytes) {
+            return Encoding.UTF8.GetString(inputBytes);
+        }
+        public static string GetUnicodeBytes(byte[] inputBytes) {
+            return Encoding.Unicode.GetString(inputBytes);
+        }
+        public static byte[] StringToASCIIBytes(string input) {
+            return Encoding.ASCII.GetBytes(input);
+        }
+        public static byte[] StringToUtf8Bytes(string input) {
+            return Encoding.UTF8.GetBytes(input);
+        }
+        public static byte[] StringToUnicodeBytes(string input) {
+            return Encoding.Unicode.GetBytes(input);
         }
     }
 }

@@ -147,7 +147,7 @@ namespace Ballance2.Sys.Package
             return base.GetAsset<T>(pathorname);
 #endif
         }
-        public override string GetCodeLuaAsset(string pathorname, out string realPath)
+        public override byte[] GetCodeLuaAsset(string pathorname, out string realPath)
         {
 #if UNITY_EDITOR
             if(disableLoadFileInUnity) {
@@ -156,18 +156,18 @@ namespace Ballance2.Sys.Package
                 //绝对路径
                 if(GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets")) {
                     realPath = pathorname;
-                    return new StreamReader(pathorname, System.Text.Encoding.UTF8).ReadToEnd();
+                    return FileUtils.ReadAllToBytes(pathorname);
                 }
                 //直接拼接路径
                 var scriptPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH + pathorname;
                 if(File.Exists(scriptPath)) {
                     realPath = scriptPath;
-                    return new StreamReader(scriptPath, System.Text.Encoding.UTF8).ReadToEnd();
+                    return FileUtils.ReadAllToBytes(scriptPath);
                 }
                 //尝试使用路径列表里的路径
                 if(packageCodeAsset.TryGetValue(pathorname, out var path)) {
                     realPath = path;
-                    return new StreamReader(path, System.Text.Encoding.UTF8).ReadToEnd();
+                    return FileUtils.ReadAllToBytes(path);
                 }
                 
                 realPath = "";

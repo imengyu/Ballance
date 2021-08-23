@@ -236,6 +236,8 @@ class PhysicsShapeEditor : Editor
         if (bDrawMaterialInspector)
             DrawMaterialInspector();
 
+        if(EditorApplication.isPlaying) EditorGUILayout.LabelField("Ptr: 0x" + instance.GetPtr().ToString("X"));
+
         if (EditorGUI.EndChangeCheck())
         {
             serializedObject.ApplyModifiedProperties();
@@ -328,6 +330,9 @@ class PhysicsShapeEditor : Editor
                 break;
             case ShapeType.Plane:
                 pShapeSize.vector3Value = new Vector3(EditorGUILayout.FloatField("Width", pShapeSize.vector3Value.x), pShapeSize.vector3Value.y, EditorGUILayout.FloatField("Height", pShapeSize.vector3Value.z));
+                break;
+            case ShapeType.List:
+                pShapeConvexRadius.floatValue = EditorGUILayout.FloatField("Convex radius", pShapeConvexRadius.floatValue);
                 break;
             case ShapeType.ConvexHull:
             case ShapeType.Mesh:

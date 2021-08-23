@@ -23,8 +23,8 @@ namespace PhysicsRT {
             if(otherPtr == IntPtr.Zero)
                 throw new Exception("ConnectedBody hasn't been created yet");
             CreateLastStep(PhysicsApi.API.CreatePulleyConstraint(ptr, otherPtr, 
-                transform.TransformPoint(pivotAW), transform.TransformPoint(pivotBW),
-                transform.TransformPoint(pulleyPivotAW), transform.TransformPoint(pulleyPivotBW), 
+                (pivotAW), (pivotBW),
+                (pulleyPivotAW), (pulleyPivotBW), 
                 leverageRatio, GetConstraintBreakData()));
         }
     }

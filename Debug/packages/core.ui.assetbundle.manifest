@@ -1,15 +1,17 @@
 ManifestFileVersion: 0
-CRC: 3525569824
+CRC: 52698814
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: da8cebb3f5651b1f9f1c9eddde8dd5ff
+    Hash: 2659d4f617333050d4cb194d658d0fa1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6e42852921ee7f43e4426d6f0a7420d1
+    Hash: f0c562f56ddc453b8f9685b5ae406fc2
 HashAppended: 0
 ClassTypes:
 - Class: 1
+  Script: {instanceID: 0}
+- Class: 4
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
@@ -26,9 +28,25 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 659d44270857472428f8fadb3e7f6ec8, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 2161c5ae768511a42be3612a796c62c5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a60cdefcf0dadb1459a1cbbb6264182f, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4a1624f4fefb6fd45aa49fe116903639, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: bd309c2b72222684684b0a59a2c724db, type: 3}
 - Class: 114
@@ -37,6 +55,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: fe6b540e8622c814fb7e25c0ef43e978, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: bb59fe04efd5a5d44b668d796470ba23, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 8888da6e7f87167479269e69cc72c5e9, type: 3}
 - Class: 114
@@ -62,19 +82,30 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Packages/core.ui/PackageLogo.png
-- Assets/Packages/core.ui/Prefabs/PageSettingsControls.prefab
-- Assets/Packages/core.ui/Prefabs/PageMain.prefab
-- Assets/Packages/core.ui/Prefabs/PageAbout.prefab
-- Assets/Packages/core.ui/Prefabs/PageSettingsGraphics.prefab
-- Assets/Packages/core.ui/Prefabs/PageHighscore.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageGameRestartAsk.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageSettingsControls.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageMain.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageLanguage.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageGameQuitAsk.prefab
+- Assets/Packages/core.ui/Prefabs/Game/GamePlayUI.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageAboutProject.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageAbout.prefab
+- Assets/Packages/core.ui/Prefabs/Game/LifeBoardBall.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageSettingsGraphics.prefab
+- Assets/Packages/core.ui/Prefabs/Game/LevelBuilderUI.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageApplyLangDialog.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageHighscore.prefab
 - Assets/Packages/core.ui/PackageDef.xml
-- Assets/Packages/core.ui/Prefabs/PageGameFail.prefab
-- Assets/Packages/core.ui/Prefabs/ItemHighscore.prefab
-- Assets/Packages/core.ui/Prefabs/PageQuit.prefab
-- Assets/Packages/core.ui/Prefabs/PageSettings.prefab
-- Assets/Packages/core.ui/Prefabs/PageStart.prefab
-- Assets/Packages/core.ui/Prefabs/PageGamePause.prefab
-- Assets/Packages/core.ui/Prefabs/PageSettingsAudio.prefab
-- Assets/Packages/core.ui/Prefabs/PageLightZone.prefab
-- Assets/Packages/core.ui/Prefabs/PanelScrollCaption.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageGameFail.prefab
+- Assets/Packages/core.ui/Prefabs/Comps/ItemHighscore.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageQuit.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageSettings.prefab
+- Assets/Packages/core.ui/Prefabs/Game/LifeBoardBallInf.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageAboutCreators.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageStart.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageGamePause.prefab
+- Assets/Packages/core.ui/Prefabs/Comps/LicensesView.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageSettingsAudio.prefab
+- Assets/Packages/core.ui/Prefabs/Pages/PageLightZone.prefab
+- Assets/Packages/core.ui/Prefabs/Comps/PanelScrollCaption.prefab
 Dependencies: []

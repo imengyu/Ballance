@@ -2,7 +2,7 @@ local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
 local GameError = Ballance2.Sys.Debug.GameError
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
-local json = Game.SystemPackage:RequireLuaFile('json.lua') ---@type json
+local json = Game.SystemPackage:RequireLuaFile('json') ---@type json
 
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
@@ -104,7 +104,7 @@ function LevelBuilder:LoadLevel(name)
 
       --加载
       local status, rs = pcall(function () self:_LoadLevelInternal() end)
-      if ~status then
+      if not status then
         self:_UpdateErrStatus(true, 'LOADER_EXPECTION', '加载失败，异常信息: '..rs)
       end
     end, 

@@ -22,15 +22,11 @@ public class BallAndSocketConstraintEditorTool : EditorTool
 			if (!((Object)val == (Object)null))
 			{
 				EditorGUI.BeginChangeCheck();
-				var pos = Vector3.Scale(val.Povit, val.transform.lossyScale); 
-				using (new Handles.DrawingScope(Matrix4x4.TRS(val.transform.position, val.transform.rotation, val.transform.localScale)))
-				{
-          Handles.color = Color.yellow;
-					Handles.SphereHandleCap(122, pos, Quaternion.Euler(0,0,0), 0.2f, EventType.Repaint);
-				}
-				if (EditorGUI.EndChangeCheck())
-				{
-				}
+				
+				Handles.color = Color.yellow;
+				Handles.SphereHandleCap(122, val.Povit, Quaternion.Euler(0,0,0), 0.6f, EventType.Repaint);
+
+				if (EditorGUI.EndChangeCheck()) {}
 			}
 		}
 	}

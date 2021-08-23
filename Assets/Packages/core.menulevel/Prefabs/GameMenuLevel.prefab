@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: I_Zone_LiLiang_Innen
   LuaClassName: MouseSelect
+  LuaFileName: 
   LuaPackageName: core.menulevel
   LuaInitialVars:
   - Type: 19
@@ -239,6 +240,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 11
     Name: NormalColor
@@ -308,6 +310,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 11
     Name: HoverColor
@@ -377,6 +380,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 16
     Name: QuickOutline
@@ -446,10 +450,17 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: QuickOutline
+  LuaPublicVars: []
   ExecuteOrder: 100
   CreateStore: 0
   CreateActionStore: 0
+  DebugScript: 
+  DebugLoadScript: 0
+  ManualInputScript: 0
+  UpdateDelta: 0
+  FixUpdateDelta: 0
 --- !u!114 &4661095878732422176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,6 +623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: I_Zone_LiLiang_Innen
   LuaClassName: MouseSelect
+  LuaFileName: 
   LuaPackageName: core.menulevel
   LuaInitialVars:
   - Type: 19
@@ -682,6 +694,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 11
     Name: NormalColor
@@ -751,6 +764,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 11
     Name: HoverColor
@@ -820,6 +834,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 16
     Name: QuickOutline
@@ -889,10 +904,17 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: QuickOutline
+  LuaPublicVars: []
   ExecuteOrder: 100
   CreateStore: 0
   CreateActionStore: 0
+  DebugScript: 
+  DebugLoadScript: 0
+  ManualInputScript: 0
+  UpdateDelta: 0
+  FixUpdateDelta: 0
 --- !u!114 &7929217714686500916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,6 +1303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: CameraControl
   LuaClassName: CameraControl
+  LuaFileName: 
   LuaPackageName: core.menulevel
   LuaInitialVars:
   - Type: 15
@@ -1351,6 +1374,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 15
     Name: I_Zone_SuDu
@@ -1420,6 +1444,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 15
     Name: I_Zone_NenLi
@@ -1489,6 +1514,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 15
     Name: I_Zone_LiLiang
@@ -1558,6 +1584,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 15
     Name: I_Dome
@@ -1627,6 +1654,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 15
     Name: I_Light_Night
@@ -1696,6 +1724,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 15
     Name: I_Light_Day
@@ -1765,6 +1794,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 16
     Name: skyBox
@@ -1834,10 +1864,17 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: UnityEngine.Skybox
+  LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
+  DebugScript: 
+  DebugLoadScript: 0
+  ManualInputScript: 0
+  UpdateDelta: 0
+  FixUpdateDelta: 0
 --- !u!45 &6457049790994743627
 Skybox:
   m_ObjectHideFlags: 0
@@ -2195,7 +2232,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: ccc886496f0b01b4182dc49c53a6a6c2, type: 2}
   - {fileID: 2100000, guid: c0afadb9a5e72e44bab0100af6b0724a, type: 2}
   - {fileID: 2100000, guid: f43392ce4e49f8a42afea694c4f24221, type: 2}
-  - {fileID: 2100000, guid: 1c4bf29771c88dd4688ee4b48294a3c9, type: 2}
+  - {fileID: 2100000, guid: c361ef40a1c0ad24a937226da554e6b3, type: 2}
   - {fileID: 2100000, guid: dfdbf6b88917baf4a8268d4474f026a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -2761,6 +2798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: I_Zone_LiLiang_Innen
   LuaClassName: MouseSelect
+  LuaFileName: 
   LuaPackageName: core.menulevel
   LuaInitialVars:
   - Type: 19
@@ -2831,6 +2869,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 11
     Name: NormalColor
@@ -2900,6 +2939,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 11
     Name: HoverColor
@@ -2969,6 +3009,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: 
   - Type: 16
     Name: QuickOutline
@@ -3038,10 +3079,17 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
+    floatVal: 0
     componentClassVal: QuickOutline
+  LuaPublicVars: []
   ExecuteOrder: 100
   CreateStore: 0
   CreateActionStore: 0
+  DebugScript: 
+  DebugLoadScript: 0
+  ManualInputScript: 0
+  UpdateDelta: 0
+  FixUpdateDelta: 0
 --- !u!114 &6402741334266002474
 MonoBehaviour:
   m_ObjectHideFlags: 0

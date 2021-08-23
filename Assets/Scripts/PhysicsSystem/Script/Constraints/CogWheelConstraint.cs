@@ -24,8 +24,8 @@ namespace PhysicsRT {
             if(otherPtr == IntPtr.Zero)
                 throw new Exception("ConnectedBody hasn't been created yet");
             CreateLastStep(PhysicsApi.API.CreateCogWheelConstraint(ptr, otherPtr, 
-                transform.TransformPoint(rotationPivotA), rotationAxisA, radiusA,
-                transform.TransformPoint(rotationPivotB), rotationAxisB, radiusB,
+                rotationPivotA, rotationAxisA, radiusA,
+                rotationPivotB, rotationAxisB, radiusB,
                 GetConstraintBreakData()));
         }
     }

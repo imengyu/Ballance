@@ -31,7 +31,7 @@ return {
       提示：你可以查看开发帮助 “模组开发” 这个文档合集 来了解如何写你的模组。
       
       提示：使用 
-      GamePackage:RequireLuaFile("xxx.lua.txt") 
+      GamePackage:RequireLuaFile("xxx") 相当于lua的require函数
       可以引入其他Lua文件，然后就可以调用其他lua文件的函数。
 
       提示：使用 

@@ -39,7 +39,7 @@ function TranfoAminControl:Start()
 end
 function TranfoAminControl:Update()
   if self._Flashfield then
-    self._Flashfield_Tick = ~self._Flashfield_Tick
+    self._Flashfield_Tick = not self._Flashfield_Tick
     if self._Flashfield_Tick then
       self._AnimTrafo_FlashfieldMat:SetTextureOffset("_MainTex", Vector2.zero);
     else

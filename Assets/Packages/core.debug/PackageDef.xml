@@ -16,9 +16,10 @@
     <MinVersion>1</MinVersion>
     <TargetVersion>1</TargetVersion>
   </Compatibility>
-  <EntryCode>Entry.lua</EntryCode>
+  <EntryCode>Entry</EntryCode>
   <Type>Module</Type>
   <CodeType>Lua</CodeType>
   <RunType>GameBase</RunType>
   <ShareLuaState>core</ShareLuaState>
+  <CompileLuaCode>True</CompileLuaCode>
 </Package>

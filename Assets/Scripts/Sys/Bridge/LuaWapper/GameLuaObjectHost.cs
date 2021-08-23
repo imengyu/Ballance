@@ -188,12 +188,13 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
         private void DoInit()
         {
-            GamePackageManager = GameManager.Instance.GetSystemService<GamePackageManager>();
+            if(GameManager.Instance != null)
+                GamePackageManager = GameManager.Instance.GetSystemService<GamePackageManager>();
 
             if (!LuaInit())
             {
                 enabled = false;
-                Log.E(TAG + ":" + Name, "LuaObject {0} disabled because load error", Name);
+                Log.W(TAG + ":" + Name, "LuaObject {0} disabled because load error", Name);
             }
             else
             {
@@ -289,7 +290,11 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
         private bool LuaInit()
         {
-            if(Package ==  null)
+            if(GamePackageManager == null) {
+                GameErrorChecker.LastError = GameError.SystemNotInit;
+                return false;
+            }
+            if(Package == null)
             {
                 if(string.IsNullOrEmpty(LuaPackageName))
                 {

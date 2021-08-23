@@ -29,3 +29,5 @@ public class Package
 ```
 
 请将此 dll 命名为 程序名称.dll.bytes, 并在 PackageDef.xml 中定义 EntryCode 为 **“程序名称.dll.bytes”**，请一并打包进入 AssetBundle，包管理器会自动加载你的程序集并运行。
+
+注：C# Dll 加载之后无法通过卸载模块的方式立即进行卸载，无法加载相同名称的DLL。

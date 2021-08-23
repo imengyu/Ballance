@@ -1869,7 +1869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Ball_PiecesControl
   LuaClassName: BallPiecesControll
-  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/BallPiecesControll.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/BallPiecesControll
   LuaPackageName: core
   LuaInitialVars: []
   LuaPublicVars: []
@@ -2933,7 +2933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BallManager
   LuaClassName: BallManager
-  LuaFileName: Assets/Game/Scripts/GamePlay/BallManager.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/BallManager
   LuaPackageName: core
   LuaInitialVars:
   - Type: 16
@@ -4804,7 +4804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Ball_Stone
   LuaClassName: Ball
-  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/Ball.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/Ball
   LuaPackageName: core
   LuaInitialVars:
   - Type: 15
@@ -6777,7 +6777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BallLightningSphere
   LuaClassName: BallLightningSphere
-  LuaFileName: Assets/Game/Scripts/GamePlay/BallLightningSphere.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/BallLightningSphere
   LuaPackageName: core
   LuaInitialVars:
   - Type: 14
@@ -9932,7 +9932,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BallPaperPiecesWind
   LuaClassName: BallPaperPiecesWind
-  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/BallPaperPiecesWind.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/BallPaperPiecesWind
   LuaPackageName: core
   LuaInitialVars: []
   LuaPublicVars: []
@@ -10208,7 +10208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Ball_Paper
   LuaClassName: BallPaper
-  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/BallPaper.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/BallPaper
   LuaPackageName: core
   LuaInitialVars:
   - Type: 15
@@ -11947,7 +11947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Ball_Wood
   LuaClassName: Ball
-  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/Ball.lua
+  LuaFileName: Assets/Game/Scripts/GamePlay/Balls/Ball
   LuaPackageName: core
   LuaInitialVars:
   - Type: 15

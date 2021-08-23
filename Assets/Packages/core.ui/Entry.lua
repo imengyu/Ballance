@@ -11,9 +11,9 @@ return {
     GameUIPackage = thisGamePackage
     MessageCenter = GameUIManager:CreateUIMessageCenter('GameUIGloobalMessageCenter')
     MessageCenter:SubscribeEvent('BtnBackClick', function () GameUIManager:BackPreviusPage() end)
-    thisGamePackage:RequireLuaFile('GamePlayUIControl.lua')
-    thisGamePackage:RequireLuaFile('MenuLevelUIControl.lua')
-    thisGamePackage:RequireLuaFile('SettingsUIControl.lua')
+    thisGamePackage:RequireLuaFile('GamePlayUIControl')
+    thisGamePackage:RequireLuaFile('MenuLevelUIControl')
+    thisGamePackage:RequireLuaFile('SettingsUIControl')
     CreateSettingsUI(thisGamePackage)
     CreateMenuLevelUI(thisGamePackage)
     CreateGamePlayUI(thisGamePackage)

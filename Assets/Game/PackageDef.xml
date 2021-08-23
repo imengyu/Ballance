@@ -12,8 +12,9 @@
     <VersionName>{internal.core.versionName}</VersionName>
     <Dependencies></Dependencies>
   </BaseInfo>
-  <EntryCode>PackageEntry.lua</EntryCode>
+  <EntryCode>PackageEntry</EntryCode>
   <Type>Module</Type>
   <CodeType>Lua</CodeType>
   <ShareLuaState>core</ShareLuaState>
+  <CompileLuaCode>True</CompileLuaCode>
 </Package>

@@ -52,7 +52,7 @@
   </Compatibility>
   <!--
     模块入口代码
-    ★ Lua ：入口Lua代码，文本文件（例如 Entry.lua.txt），参考示例template_PackageEntry.lua
+    ★ Lua ：入口Lua代码文件名（例如 Entry），参考示例template_PackageEntry.lua
     ☆ CSharp：你的模块DLL文件名（例如 xx.dll.bytes）
   -->
   <EntryCode></EntryCode>
@@ -78,4 +78,8 @@
     填写 ShareLuaState 为主模块包名，这样子模块可以和主模块共享运行环境。
   -->
   <ShareLuaState>core</ShareLuaState>
+  <!--
+    是否使用luac编译lua代码为字节码，可保护代码
+  -->
+  <CompileLuaCode>True</CompileLuaCode>
 </Package>
