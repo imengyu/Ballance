@@ -28,7 +28,10 @@ namespace PhysicsRT
   public delegate IntPtr fnCreateRigidBody(
       IntPtr world,
       IntPtr shape, IntPtr position, IntPtr rot,
-      int motionType, int qualityType, float friction, float restitution, float mass, int active, int layer, int isTiggerVolume, int addContactListener,
+	    IntPtr name,
+      int motionType, int qualityType, float friction, float restitution, float mass, int active, 
+      int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, 
+      int isTiggerVolume, int addContactListener,
       float gravityFactor, float linearDamping, float angularDamping, IntPtr centerOfMass, IntPtr inertiaTensor,
       IntPtr linearVelocity, IntPtr angularVelocity, float maxLinearVelocity, float maxAngularVelocity, IntPtr massProperties);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -175,7 +178,7 @@ namespace PhysicsRT
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fnCreatePulleyConstraint(IntPtr body, IntPtr otherBody, IntPtr bodyPivot0, IntPtr bodyPivots1, IntPtr worldPivots0, IntPtr worldPivots1, float leverageRatio, IntPtr breakable);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreatePrismaticConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, IntPtr breakable, IntPtr motorData);
+  public delegate IntPtr fnCreatePrismaticConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, int allowRotationAroundAxis, float mmax, float mmin, float mag, IntPtr breakable, IntPtr motorData);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fnCreateCogWheelConstraint(IntPtr body, IntPtr otherBody, IntPtr rotationPivotA, IntPtr rotationAxisA, float radiusA, IntPtr rotationPivotB, IntPtr rotationAxisB, float radiusB, IntPtr breakable);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -222,6 +225,16 @@ namespace PhysicsRT
   public delegate void fnDestroyPhantom(IntPtr ptr);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fnGetPhantomId(IntPtr ptr);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate IntPtr fnCreateSpringAction(IntPtr world, IntPtr body1, IntPtr body2, IntPtr position1, IntPtr position2, float springConstant, float springDamping, float springRestLength);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fnDestroySpringAction(IntPtr world, IntPtr spring);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate int fnGetRigidBodyCollisionFilterInfo(IntPtr body);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fnSetRigidBodyCollisionFilterInfo(IntPtr body, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate int fnGetNewSystemGroup(IntPtr world);
 
   /// Return Type: void
   ///constraint: sPhysicsConstraints*
@@ -371,6 +384,11 @@ namespace PhysicsRT
       _GetAabbPhantomOverlappingCollidables = Marshal.GetDelegateForFunctionPointer<fnGetAabbPhantomOverlappingCollidables>(apiArray[i++]);
       _DestroyPhantom = Marshal.GetDelegateForFunctionPointer<fnDestroyPhantom>(apiArray[i++]);
       _GetPhantomId = Marshal.GetDelegateForFunctionPointer<fnGetPhantomId>(apiArray[i++]);
+      _CreateSpringAction = Marshal.GetDelegateForFunctionPointer<fnCreateSpringAction>(apiArray[i++]);
+      _DestroySpringAction = Marshal.GetDelegateForFunctionPointer<fnDestroySpringAction>(apiArray[i++]);
+      _GetRigidBodyCollisionFilterInfo = Marshal.GetDelegateForFunctionPointer<fnGetRigidBodyCollisionFilterInfo>(apiArray[i++]);
+      _SetRigidBodyCollisionFilterInfo = Marshal.GetDelegateForFunctionPointer<fnSetRigidBodyCollisionFilterInfo>(apiArray[i++]);
+      _GetNewSystemGroup = Marshal.GetDelegateForFunctionPointer<fnGetNewSystemGroup>(apiArray[i++]);
 
       InitSuccess = true;
     }
@@ -478,6 +496,32 @@ namespace PhysicsRT
     private fnDestroyPhantom _DestroyPhantom;
     private fnGetPhantomId _GetPhantomId;
     private fnSetName _SetName;
+    private fnCreateSpringAction _CreateSpringAction;
+    private fnGetRigidBodyCollisionFilterInfo _GetRigidBodyCollisionFilterInfo;
+    private fnSetRigidBodyCollisionFilterInfo _SetRigidBodyCollisionFilterInfo;
+    private fnDestroySpringAction _DestroySpringAction;
+    private fnGetNewSystemGroup _GetNewSystemGroup;
+
+    public int GetRigidBodyCollisionFilterInfo(IntPtr body) {
+      if (_GetRigidBodyCollisionFilterInfo == null)
+        throw new ApiNotFoundException("GetRigidBodyCollisionFilterInfo");
+      var rs = _GetRigidBodyCollisionFilterInfo(body);
+      ApiExceptionCheck();
+      return rs;
+    }
+    public void SetRigidBodyCollisionFilterInfo(IntPtr body, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith) {
+      if (_SetRigidBodyCollisionFilterInfo == null)
+        throw new ApiNotFoundException("SetRigidBodyCollisionFilterInfo");
+       _SetRigidBodyCollisionFilterInfo(body, layer, systemGroup, subSystemId, subSystemDontCollideWith);
+      ApiExceptionCheck();
+    }
+    public int GetNewSystemGroup(IntPtr world) {
+      if (_GetNewSystemGroup == null)
+        throw new ApiNotFoundException("GetNewSystemGroup");
+      var rs = _GetNewSystemGroup(world);
+      ApiExceptionCheck();
+      return rs;
+    }
 
     public void SetName(string name) { _SetName(name); }
     public int GetVersion() { return _GetVersion(); }
@@ -756,7 +800,7 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreatePrismaticConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, sConstraintBreakData breakable, sConstraintMotorData motorData) {
+    public IntPtr CreatePrismaticConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, bool allowRotationAroundAxis, float mmax, float mmin, float mag, sConstraintBreakData breakable, sConstraintMotorData motorData) {
       if (_CreatePrismaticConstraint == null)
         throw new ApiNotFoundException("CreatePrismaticConstraint");
 
@@ -765,7 +809,7 @@ namespace PhysicsRT
       
       var breakablePtr = ConstraintBreakDataToNative(breakable);
       var motoDataPtr = ConstraintMotorDataToNative(motorData);
-      var rs = _CreatePrismaticConstraint(body, otherBody, povitPtr, axisPtr, breakablePtr, motoDataPtr);
+      var rs = _CreatePrismaticConstraint(body, otherBody, povitPtr, axisPtr, BoolToInt(allowRotationAroundAxis), mmax, mmin, mag, breakablePtr, motoDataPtr);
       FreeNativeVector3(povitPtr);
       FreeNativeVector3(axisPtr);
       Marshal.FreeHGlobal(breakablePtr);
@@ -791,9 +835,32 @@ namespace PhysicsRT
       FreeNativeVector3(rotationAxisBPtr);
       Marshal.FreeHGlobal(breakablePtr);
 
-
+      ApiExceptionCheck();
 
       return rs;
+    }
+
+    public IntPtr CreateSpringAction(IntPtr world, IntPtr body1, IntPtr body2, Vector3 position1, Vector3 position2, float springConstant, float springDamping, float springRestLength) {
+      if (_CreateSpringAction == null)
+        throw new ApiNotFoundException("CreateSpringAction");
+
+      var position1Ptr = Vector3ToNative3(position1);
+      var position2Ptr = Vector3ToNative3(position2);
+      var rs = _CreateSpringAction(world, body1, body1, position1Ptr, position2Ptr, springConstant, springDamping, springRestLength);
+      FreeNativeVector3(position1Ptr);
+      FreeNativeVector3(position2Ptr);
+
+      ApiExceptionCheck();
+
+      return rs;
+    }
+    public void DestroySpringAction(IntPtr world, IntPtr spring) {
+      if (_DestroySpringAction == null)
+        throw new ApiNotFoundException("DestroySpringAction");
+
+      _DestroySpringAction(world, spring);
+
+      ApiExceptionCheck();
     }
 
     public int GetRigidBodyId(IntPtr body) {
@@ -1062,8 +1129,9 @@ namespace PhysicsRT
         throw new ApiNotFoundException("DeactiveRigidBody");
       _DeactiveRigidBody(ptr);
     }
-    public IntPtr CreateRigidBody(IntPtr world, IntPtr shape, Vector3 position, Quaternion rot, int motionType, int qualityType, float friction, 
-      float restitution, float mass, int active, int layer, bool isTiggerVolume, bool addContactListener, float gravityFactor, float linearDamping, float angularDamping, 
+    public IntPtr CreateRigidBody(IntPtr world, IntPtr shape, Vector3 position, Quaternion rot, 
+	    string name, int motionType, int qualityType, float friction, 
+      float restitution, float mass, int active, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, bool isTiggerVolume, bool addContactListener, float gravityFactor, float linearDamping, float angularDamping, 
       Vector3 centerOfMass, Matrix4x4 inertiaTensor, Vector3 linearVelocity, Vector3 angularVelocity, float maxLinearVelocity, float maxAngularVelocity, IntPtr massProperties)
     {
       if (_CreateRigidBody == null)
@@ -1075,10 +1143,12 @@ namespace PhysicsRT
       var nPtrCenterOfMass = Vector3ToNative3(centerOfMass);
       var nPtrLinearVelocity = Vector3ToNative3(linearVelocity);
       var nPtrAngularVelocity = Vector3ToNative3(angularVelocity);
+      var nPtrName = Marshal.StringToHGlobalAnsi(name);
 
       var rs = _CreateRigidBody( 
-        world, shape, nPtrPosition, nPtrRot, motionType, qualityType,
-        friction, restitution, mass, active, layer, BoolToInt(isTiggerVolume), BoolToInt(addContactListener), gravityFactor, linearDamping, 
+        world, shape, nPtrPosition, nPtrRot, nPtrName, motionType, qualityType,
+        friction, restitution, mass, active, layer,  systemGroup, subSystemId, subSystemDontCollideWith,
+        BoolToInt(isTiggerVolume), BoolToInt(addContactListener), gravityFactor, linearDamping, 
         angularDamping, nPtrCenterOfMass, nPtrInertiaTensor, nPtrLinearVelocity, nPtrAngularVelocity, 
         maxLinearVelocity, maxAngularVelocity,
         massProperties);
@@ -1090,6 +1160,7 @@ namespace PhysicsRT
       FreeNativeVector3(nPtrCenterOfMass);
       FreeNativeVector3(nPtrLinearVelocity);
       FreeNativeVector3(nPtrAngularVelocity);
+      Marshal.FreeHGlobal(nPtrName);
       
       ApiExceptionCheck();
 

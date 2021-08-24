@@ -168,8 +168,21 @@ namespace PhysicsRT
         [Tooltip("是否在gameObject激活时自动切换刚体的激活状态")]
         [SerializeField]
         private bool m_AutoControlActive = true;
+        [Tooltip("指定当前碰撞组的名称，为空则不设置。创建之后再修改则必须调用 ForceUpdateCollisionFilterInfo 才能生效")]
+        [SerializeField]
+        private string m_SystemGroupName = "";
+        [Tooltip("指定当前碰撞子组的ID，同一个碰撞组中子组的ID不能重复，默认为0。创建之后再修改则必须调用 ForceUpdateCollisionFilterInfo 才能生效")]
+        [SerializeField]
+        private int m_SubSystemId = 0;
+        [Tooltip("指定当前碰撞组不与那个子组碰撞，默认为0。创建之后再修改则必须调用 ForceUpdateCollisionFilterInfo 才能生效")]
+        [SerializeField]
+        private int m_SubSystemDontCollideWith = 0;
 
         private IntPtr ptr = IntPtr.Zero;
+
+        public string SystemGroupName  { get => m_SystemGroupName; set { m_SystemGroupName = value; } }
+        public int SubSystemId  { get => m_SubSystemId; set { m_SubSystemId = value; } }
+        public int SubSystemDontCollideWith  { get => m_SubSystemDontCollideWith; set { m_SubSystemDontCollideWith = value; } }
 
         /// <summary>
         /// 是否在gameObject激活时自动切换刚体的激活状态
@@ -362,7 +375,9 @@ namespace PhysicsRT
         /// <value></value>
         public int Id { get; private set; }
 
+        [SLua.DoNotToLua]
         public PhysicsBody prev { get; set; }
+        [SLua.DoNotToLua]
         public PhysicsBody next { get; set; }
 
         /// <summary>
@@ -424,7 +439,18 @@ namespace PhysicsRT
         public bool IsPhysicsed() {
             return (ptr != IntPtr.Zero);
         }
-
+        /// <summary>
+        /// 强制更新刚体的碰撞信息
+        /// </summary>
+        public void ForceUpdateCollisionFilterInfo() {
+            if(ptr != IntPtr.Zero) 
+                PhysicsApi.API.SetRigidBodyCollisionFilterInfo(
+                    ptr,
+                    m_Layer,
+                    CurrentPhysicsWorld.GetSystemGroup(m_SystemGroupName),
+                    m_SubSystemId,
+                    m_SubSystemDontCollideWith);
+        }
 
         private void OnEnable()
         {
@@ -482,6 +508,7 @@ namespace PhysicsRT
                 GetShapeBody(), 
                 transform.position, 
                 transform.rotation,
+                gameObject.name,
                 Convert(m_MotionType),
                 (int)m_CollidableQualityType,
                 m_Friction,
@@ -489,6 +516,9 @@ namespace PhysicsRT
                 m_Mass, 
                 PhysicsApi.API.BoolToInt(gameObject.activeSelf), 
                 m_Layer,
+                CurrentPhysicsWorld.GetSystemGroup(m_SystemGroupName),
+                m_SubSystemId,
+                m_SubSystemDontCollideWith,
                 m_IsTigger,
                 m_AddContactListener,
                 m_GravityFactor,
@@ -502,6 +532,7 @@ namespace PhysicsRT
                 m_MaxAngularVelocity,
                 currentShapeMassProperties);
 
+            TryCreateSpring();
             TryCreateConstant();
 
             Id = PhysicsApi.API.GetRigidBodyId(ptr);
@@ -521,6 +552,9 @@ namespace PhysicsRT
                 currentShapeMassProperties = IntPtr.Zero;
             }
 
+            TryDestroyConstant();
+            TryDestroySpring();
+
             if(destroyShape)
                 ReleaseShapeBody();
 
@@ -528,7 +562,7 @@ namespace PhysicsRT
             PhysicsApi.API.DestroyRigidBody(ptr);
             ptr = IntPtr.Zero;
         }
-    
+
         //创建当前刚体的约束
         private void TryCreateConstant() {
             var constants = GetComponents<PhysicsConstraint>();
@@ -538,6 +572,24 @@ namespace PhysicsRT
                 c.TryCreate();
             pendingCreateConstant.Clear();
         }
+        private void TryDestroyConstant() {
+            var constants = GetComponents<PhysicsConstraint>();
+            for(int i = 0; i < constants.Length; i++) 
+                constants[i].Destroy();
+        }
+        
+        private void TryCreateSpring() {
+            var constants = GetComponents<PhysicsSpring>();
+            for(int i = 0; i < constants.Length; i++) 
+                if(!constants[i].DoNotAutoCreateAtAwake)
+                    constants[i].Create();
+        }
+        private void TryDestroySpring() {
+            var constants = GetComponents<PhysicsSpring>();
+            for(int i = 0; i < constants.Length; i++) 
+                constants[i].Destroy();
+        }
+
         private List<PhysicsConstraint> pendingCreateConstant = new List<PhysicsConstraint>();
         internal void AddPendingCreateConstant(PhysicsConstraint c) { pendingCreateConstant.Add(c); }
 

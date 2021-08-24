@@ -17,14 +17,15 @@ namespace PhysicsRT {
         public float SuspensionDamping;
 
         public override void Create() {
-            if(ConnectedBody == null) 
-                throw new Exception("ConnectedBody is null");
             var ptr = CreatePre();
-            var otherPtr = ConnectedBody.GetPtr();
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            if(otherPtr == IntPtr.Zero)
-                throw new Exception("ConnectedBody hasn't been created yet");
+            var otherPtr = IntPtr.Zero; 
+            if(ConnectedBody != null) {
+                otherPtr = ConnectedBody.GetPtr();
+                if(otherPtr == IntPtr.Zero)
+                    throw new Exception("ConnectedBody hasn't been created yet");
+            }
             CreateLastStep(PhysicsApi.API.CreateWheelConstraint(ptr, otherPtr, (Povit), Axle, Suspension,
                 Steering, SuspensionLimitMin, SuspensionLimitMax, SuspensionStrength, SuspensionDamping, GetConstraintBreakData()));
         }

@@ -22,14 +22,18 @@ namespace Slua
     /// </summary>
     const string unityDocPath = @"E:\Program Files\Unity\Editor\Data\Managed\UnityEngine\";
 
-    private static bool PreCheck() {
-      if (EditorApplication.isCompiling) {
+    private static bool PreCheck() 
+    {
+      if (EditorApplication.isCompiling) 
+      {
         Debug.LogWarning("编辑器正在编译，请等待编译完成再生成");
         return false;
       }
 
-      if (!Directory.Exists(path))
+      if (!Directory.Exists(path)) 
+      {
         Directory.CreateDirectory(path);
+      }
       return true;
     }
 

@@ -36,7 +36,7 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_PovitAW(IntPtr l) {
+	static public int get_PovitAWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -49,7 +49,7 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 			#endif
 			PhysicsRT.StiffSpringConstraint self=(PhysicsRT.StiffSpringConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.PovitAW);
+			pushValue(l,self.PovitAWRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -67,7 +67,7 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_PovitAW(IntPtr l) {
+	static public int set_PovitAWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -79,9 +79,9 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.StiffSpringConstraint self=(PhysicsRT.StiffSpringConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.PovitAW=v;
+			self.PovitAWRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -100,7 +100,7 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_PovitBW(IntPtr l) {
+	static public int get_PovitBWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -113,7 +113,7 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 			#endif
 			PhysicsRT.StiffSpringConstraint self=(PhysicsRT.StiffSpringConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.PovitBW);
+			pushValue(l,self.PovitBWRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -131,7 +131,7 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_PovitBW(IntPtr l) {
+	static public int set_PovitBWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -143,9 +143,9 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.StiffSpringConstraint self=(PhysicsRT.StiffSpringConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.PovitBW=v;
+			self.PovitBWRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -294,8 +294,8 @@ public class Lua_PhysicsRT_StiffSpringConstraint : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsRT.StiffSpringConstraint");
 		addMember(l,Create);
-		addMember(l,"PovitAW",get_PovitAW,set_PovitAW,true);
-		addMember(l,"PovitBW",get_PovitBW,set_PovitBW,true);
+		addMember(l,"PovitAWRef",get_PovitAWRef,set_PovitAWRef,true);
+		addMember(l,"PovitBWRef",get_PovitBWRef,set_PovitBWRef,true);
 		addMember(l,"SpringMin",get_SpringMin,set_SpringMin,true);
 		addMember(l,"SpringMax",get_SpringMax,set_SpringMax,true);
 		createTypeMetatable(l,null, typeof(PhysicsRT.StiffSpringConstraint),typeof(PhysicsRT.PhysicsConstraint));

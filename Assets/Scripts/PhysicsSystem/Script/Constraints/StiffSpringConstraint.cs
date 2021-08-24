@@ -7,21 +7,23 @@ namespace PhysicsRT {
     [SLua.CustomLuaClass]
     public class StiffSpringConstraint : PhysicsConstraint {
 
-        public Vector3 PovitAW;
-        public Vector3 PovitBW;
+        public GameObject PovitAWRef;
+        public GameObject PovitBWRef;
         public float SpringMin;
         public float SpringMax;
 
         public override void Create() {
-            if(ConnectedBody == null) 
-                throw new Exception("ConnectedBody is null");
             var ptr = CreatePre();
-            var otherPtr = ConnectedBody.GetPtr();
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            if(otherPtr == IntPtr.Zero)
-                throw new Exception("ConnectedBody hasn't been created yet");
-            CreateLastStep(PhysicsApi.API.CreateStiffSpringConstraint(ptr, otherPtr, (PovitAW), (PovitBW), SpringMin, SpringMax, GetConstraintBreakData()));
+            var otherPtr = IntPtr.Zero; 
+            if(ConnectedBody != null) {
+                otherPtr = ConnectedBody.GetPtr();
+                if(otherPtr == IntPtr.Zero)
+                    throw new Exception("ConnectedBody hasn't been created yet");
+            }
+            CreateLastStep(PhysicsApi.API.CreateStiffSpringConstraint(ptr, otherPtr, PovitAWRef.transform.position, PovitBWRef.transform.position, 
+                SpringMin, SpringMax, GetConstraintBreakData()));
         }
     }
 }

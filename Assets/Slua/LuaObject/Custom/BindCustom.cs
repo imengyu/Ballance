@@ -28,11 +28,13 @@ namespace SLua {
 				Lua_PhysicsRT_CollidableQualityType.reg,
 				Lua_PhysicsRT_PhysicsBody.reg,
 				Lua_PhysicsRT_PhysicsBodyCollisionInfo.reg,
+				Lua_PhysicsRT_PhysicsForce.reg,
 				Lua_PhysicsRT_PhysicsPhantomType.reg,
 				Lua_PhysicsRT_PhysicsPhantom.reg,
 				Lua_PhysicsRT_ShapeType.reg,
 				Lua_PhysicsRT_ShapeWrap.reg,
 				Lua_PhysicsRT_PhysicsShape.reg,
+				Lua_PhysicsRT_PhysicsSpring.reg,
 				Lua_PhysicsRT_PhysicsWorld.reg,
 				Lua_Ballance2_DebugCamera.reg,
 				Lua_Ballance2_GameUIPage.reg,
@@ -135,6 +137,7 @@ namespace SLua {
 				Lua_System_Xml_XmlReaderSettings.reg,
 				Lua_System_Xml_XmlWriterSettings.reg,
 				Lua_UnityEngine_Input.reg,
+				Lua_UnityEngine_AssetBundle.reg,
 			};
 			return list;
 		}

@@ -7,24 +7,25 @@ namespace PhysicsRT {
     [SLua.CustomLuaClass]
     public class PulleyConstraint : PhysicsConstraint {
 
-        public Vector3 pivotAW;
-        public Vector3 pivotBW;
-        public Vector3 pulleyPivotAW;
-        public Vector3 pulleyPivotBW;
+        public GameObject pivotAWRef;
+        public GameObject pivotBWRef;
+        public GameObject pulleyPivotAWRef;
+        public GameObject pulleyPivotBWRef;
         public float leverageRatio = 0;
 
         public override void Create() {
-            if(ConnectedBody == null) 
-                throw new Exception("ConnectedBody is null");
             var ptr = CreatePre();
-            var otherPtr = ConnectedBody.GetPtr();
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            if(otherPtr == IntPtr.Zero)
-                throw new Exception("ConnectedBody hasn't been created yet");
+            var otherPtr = IntPtr.Zero; 
+            if(ConnectedBody != null) {
+                otherPtr = ConnectedBody.GetPtr();
+                if(otherPtr == IntPtr.Zero)
+                    throw new Exception("ConnectedBody hasn't been created yet");
+            }
             CreateLastStep(PhysicsApi.API.CreatePulleyConstraint(ptr, otherPtr, 
-                (pivotAW), (pivotBW),
-                (pulleyPivotAW), (pulleyPivotBW), 
+                pivotAWRef.transform.position, pivotBWRef.transform.position,
+                pulleyPivotAWRef.transform.position, pulleyPivotBWRef.transform.position, 
                 leverageRatio, GetConstraintBreakData()));
         }
     }

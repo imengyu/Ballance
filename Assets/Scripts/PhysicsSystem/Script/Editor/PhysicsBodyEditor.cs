@@ -41,6 +41,11 @@ class PhysicsBodyEditor : Editor
         pAddContactListener = serializedObject.FindProperty("m_AddContactListener"); 
         pAutoComputeCenterOfMass = serializedObject.FindProperty("m_AutoComputeCenterOfMass"); 
         pAutoControlActive = serializedObject.FindProperty("m_AutoControlActive"); 
+        pSystemGroupName = serializedObject.FindProperty("m_SystemGroupName"); 
+        pSubSystemId = serializedObject.FindProperty("m_SubSystemId"); 
+        pSubSystemDontCollideWith = serializedObject.FindProperty("m_SubSystemDontCollideWith");   
+
+        bOpenCollisionFilterInfo = EditorPrefs.GetBool("PhysicsBodyEditor_bOpenCollisionFilterInfo", false);
 
         var names = AssetDatabase.LoadAssetAtPath<PhysicsLayerNames>("Assets/Resources/PhysicsLayerNames.asset");
         var tags = PhysicsLayerTags.Everything;
@@ -50,7 +55,7 @@ class PhysicsBodyEditor : Editor
         m_LayerValues[32] = -1;
     }
     private void OnDisable() {
-
+        EditorPrefs.SetBool("PhysicsBodyEditor_bOpenCollisionFilterInfo", bOpenCollisionFilterInfo);
     }
 
     private SerializedProperty pMotionType;
@@ -65,12 +70,18 @@ class PhysicsBodyEditor : Editor
     private SerializedProperty pCustomTags;
     private SerializedProperty pFriction;
     private SerializedProperty pRestitution;
-    private SerializedProperty pLayer;
     private SerializedProperty pTigger;
     private SerializedProperty pAddContactListener;
     private SerializedProperty pDoNotAutoCreateAtAwake;
     private SerializedProperty pAutoComputeCenterOfMass;
     private SerializedProperty pAutoControlActive;
+
+    private SerializedProperty pLayer;
+    private SerializedProperty pSystemGroupName;
+    private SerializedProperty pSubSystemId;
+    private SerializedProperty pSubSystemDontCollideWith;
+
+    private bool bOpenCollisionFilterInfo = false;
 
     public override void OnInspectorGUI()
     {
@@ -107,7 +118,19 @@ class PhysicsBodyEditor : Editor
         EditorGUILayout.PropertyField(pGravityFactor);
         EditorGUILayout.PropertyField(pFriction);
         EditorGUILayout.PropertyField(pRestitution);
-        pLayer.intValue = EditorGUILayout.IntPopup("Layer", pLayer.intValue, m_LayerNames, m_LayerValues);
+
+        bOpenCollisionFilterInfo = EditorGUILayout.Foldout(bOpenCollisionFilterInfo, "CollisionFilterInfo");
+        if(bOpenCollisionFilterInfo) {
+            pLayer.intValue = EditorGUILayout.IntPopup("Layer", pLayer.intValue, m_LayerNames, m_LayerValues);
+            
+            EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying);
+
+            EditorGUILayout.PropertyField(pSystemGroupName);
+            EditorGUILayout.PropertyField(pSubSystemId);
+            EditorGUILayout.PropertyField(pSubSystemDontCollideWith);
+
+            EditorGUI.EndDisabledGroup();
+        }
       
         if(EditorApplication.isPlaying) EditorGUILayout.LabelField("Ptr: 0x" + instance.GetPtr().ToString("X"));
         

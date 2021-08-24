@@ -7,15 +7,20 @@ namespace PhysicsRT {
     [SLua.CustomLuaClass]
     public class HingeConstraint : PhysicsConstraint {
 
-        public Vector3 Povit;
-        public Vector3 Axis = Vector3.forward;
+        public GameObject PovitRef;
+        public GameObject AxisRef;
 
         public override void Create() {
             var ptr = CreatePre();
-            var otherPtr = ConnectedBody.GetPtr();
+            var otherPtr = IntPtr.Zero; 
+            if(ConnectedBody != null) {
+                otherPtr = ConnectedBody.GetPtr();
+                if(otherPtr == IntPtr.Zero)
+                    throw new Exception("ConnectedBody hasn't been created yet");
+            }
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            CreateLastStep(PhysicsApi.API.CreateHingeConstraint(ptr, otherPtr, Povit, Axis, GetConstraintBreakData()));
+            CreateLastStep(PhysicsApi.API.CreateHingeConstraint(ptr, otherPtr, PovitRef.transform.position, AxisRef.transform.forward.normalized, GetConstraintBreakData()));
         }
     }
 }

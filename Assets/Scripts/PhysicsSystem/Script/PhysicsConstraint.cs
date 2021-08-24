@@ -30,11 +30,7 @@ namespace PhysicsRT
             
         }
         protected virtual void OnDestroy() {
-            if(CurrentPhysicsWorld == null || ptr == IntPtr.Zero)
-                return;
-            CurrentPhysicsWorld.RemoveConstraint(this);
-            PhysicsApi.API.DestoryConstraints(ptr);
-            ptr = IntPtr.Zero;
+            Destroy();
         }
         protected virtual void OnEnable() {
             if(ptr != IntPtr.Zero)
@@ -75,15 +71,27 @@ namespace PhysicsRT
         /// 手动创建
         /// </summary>
         public virtual void Create() {}
+        /// <summary>
+        /// 手动销毁
+        /// </summary>
+        public virtual void Destroy() {
+            if(CurrentPhysicsWorld == null || ptr == IntPtr.Zero)
+                return;
+            if(CurrentPhysicsWorld.RemoveConstraint(this))
+                PhysicsApi.API.DestoryConstraints(ptr);
+            ptr = IntPtr.Zero;
+        }
 
         internal bool TryCreate() {
-            if(ptr == IntPtr.Zero && ConnectedBody != null) {
+            if(!enabled)
+                return false;
+            if(ptr == IntPtr.Zero) {
                 var thisBody = GetComponent<PhysicsBody>();
-                if(thisBody.GetPtr() != IntPtr.Zero && ConnectedBody.GetPtr() != IntPtr.Zero) {
+                if(thisBody.GetPtr() != IntPtr.Zero && (ConnectedBody == null || ConnectedBody.GetPtr() != IntPtr.Zero)) {
                     Create();
                     return true;
                 }
-                else if(ConnectedBody.GetPtr() == IntPtr.Zero) 
+                else if(ConnectedBody != null && ConnectedBody.GetPtr() == IntPtr.Zero) 
                     ConnectedBody.AddPendingCreateConstant(this);
             }
             return false;

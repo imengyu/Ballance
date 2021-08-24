@@ -64,12 +64,16 @@ class PhysicsLayerNamesEditor : BaseEditor
                     if(string.IsNullOrEmpty(tagNames[31 - j]))
                         continue;
 
-                    EditorGUI.BeginDisabledGroup(i == 0 || j == 0);
-                    var item = arr.GetArrayElementAtIndex(31 - j);
-                    item.boolValue = GUI.Toggle(rectTop, item.boolValue, "");
+                    if(i == 0 || j == 0) {
+                        GUI.Toggle(rectTop, true, "");
+                        EditorGUI.BeginDisabledGroup(true);
+                        EditorGUI.EndDisabledGroup();
+                    } else {
+                        var item = arr.GetArrayElementAtIndex(31 - j);
+                        item.boolValue = GUI.Toggle(rectTop, item.boolValue, "");
+                    }
                     rectTop.x += textGroupFilterHeight;
                     jr++;
-                    EditorGUI.EndDisabledGroup();
                 }
                 
                 rectLeft.y += textGroupFilterHeight;

@@ -32,6 +32,9 @@ namespace Ballance2.Game
       if(assetBundle) 
         assetBundle.Unload(true);
     }
+    public Texture GetTextureAsset(AssetBundle assetBundle, string name) {
+      return assetBundle.LoadAsset<Texture>(name);
+    }
 
     private IEnumerator Loader(string path, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {

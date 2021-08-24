@@ -84,9 +84,6 @@ namespace PhysicsRT
         /// <value></value>
         public int Id { get; private set; }
 
-        public PhysicsBody prev { get; set; }
-        public PhysicsBody next { get; set; }
-
         /// <summary>
         /// 重新创建幻影
         /// </summary>

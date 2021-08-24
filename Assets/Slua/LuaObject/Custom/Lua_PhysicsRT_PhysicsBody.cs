@@ -192,6 +192,37 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int ForceUpdateCollisionFilterInfo(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			self.ForceUpdateCollisionFilterInfo();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetPtr(IntPtr l) {
 		try {
 			#if DEBUG
@@ -713,6 +744,198 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 			if(op==0) self.onCollisionStay=v;
 			else if(op==1) self.onCollisionStay+=v;
 			else if(op==2) self.onCollisionStay-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_SystemGroupName(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.SystemGroupName);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_SystemGroupName(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			string v;
+			checkType(l,2,out v);
+			self.SystemGroupName=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_SubSystemId(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.SubSystemId);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_SubSystemId(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			int v;
+			checkType(l,2,out v);
+			self.SubSystemId=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_SubSystemDontCollideWith(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.SubSystemDontCollideWith);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_SubSystemDontCollideWith(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			int v;
+			checkType(l,2,out v);
+			self.SubSystemDontCollideWith=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -1978,134 +2201,6 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_prev(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.prev);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_prev(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			PhysicsRT.PhysicsBody v;
-			checkType(l,2,out v);
-			self.prev=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_next(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			pushValue(l,true);
-			pushValue(l,self.next);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int set_next(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
-			PhysicsRT.PhysicsBody v;
-			checkType(l,2,out v);
-			self.next=v;
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int get_AngularVelocity(IntPtr l) {
 		try {
 			#if DEBUG
@@ -2369,6 +2464,7 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 		addMember(l,ForcePhysics);
 		addMember(l,ForceDePhysics);
 		addMember(l,IsPhysicsed);
+		addMember(l,ForceUpdateCollisionFilterInfo);
 		addMember(l,GetPtr);
 		addMember(l,UpdateTransformToPhysicsEngine);
 		addMember(l,UpdatePositionToPhysicsEngine);
@@ -2385,6 +2481,9 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 		addMember(l,"onCollisionEnter",null,set_onCollisionEnter,true);
 		addMember(l,"onCollisionLeave",null,set_onCollisionLeave,true);
 		addMember(l,"onCollisionStay",null,set_onCollisionStay,true);
+		addMember(l,"SystemGroupName",get_SystemGroupName,set_SystemGroupName,true);
+		addMember(l,"SubSystemId",get_SubSystemId,set_SubSystemId,true);
+		addMember(l,"SubSystemDontCollideWith",get_SubSystemDontCollideWith,set_SubSystemDontCollideWith,true);
 		addMember(l,"AutoControlActive",get_AutoControlActive,set_AutoControlActive,true);
 		addMember(l,"DoNotAutoCreateAtAwake",get_DoNotAutoCreateAtAwake,set_DoNotAutoCreateAtAwake,true);
 		addMember(l,"AutoComputeCenterOfMass",get_AutoComputeCenterOfMass,set_AutoComputeCenterOfMass,true);
@@ -2405,8 +2504,6 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 		addMember(l,"Friction",get_Friction,set_Friction,true);
 		addMember(l,"Restitution",get_Restitution,set_Restitution,true);
 		addMember(l,"Id",get_Id,null,true);
-		addMember(l,"prev",get_prev,set_prev,true);
-		addMember(l,"next",get_next,set_next,true);
 		addMember(l,"AngularVelocity",get_AngularVelocity,set_AngularVelocity,true);
 		addMember(l,"LinearVelocity",get_LinearVelocity,set_LinearVelocity,true);
 		addMember(l,"MaxAngularVelocity",get_MaxAngularVelocity,set_MaxAngularVelocity,true);

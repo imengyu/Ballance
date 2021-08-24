@@ -18,7 +18,7 @@ function GamePlayManager:new()
   self.CurrentScore = 0 ---当前分数
   self.CurrentLife = 0 ---当前生命数
   self.CurrentSector = 0 ---当前小节
-
+  self.CurrentLevelPass = false
   
   self._IsGamePlaying = false
   self._IsCountDownScore = false
@@ -26,8 +26,7 @@ function GamePlayManager:new()
   GamePlay.GamePlayManager = self
 end
 function GamePlayManager:Start()
-  self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Lightning')
-  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_Lightning')
+  self:_InitSounds()
   self:_InitKeyEvents()
 end
 function GamePlayManager:OnDestroy()
@@ -42,6 +41,15 @@ function GamePlayManager:FixedUpdate()
   end
 end
 
+function GamePlayManager:_InitSounds() 
+  self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Lightning')
+  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_Lightning')
+  self._SoundLastSector = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Music_EndCheckpoint.wav'), false, true, 'Misc_Lightning')
+  self._SoundFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Music_Final.wav'), false, true, 'Misc_Lightning')
+  self._SoundLastFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Music_LastFinal.wav'), false, true, 'Misc_Lightning')
+  self._SoundLastSector.loop = true
+  self._SoundLastSector.maxDistance = 100
+end
 function GamePlayManager:_InitKeyEvents() 
   self.keyListener = KeyListener.Get(self.gameObject)
   --ESC键
@@ -50,20 +58,27 @@ function GamePlayManager:_InitKeyEvents()
       if self._IsGamePlaying then
         self:PauseLevel()
       else
-        if Game.UIManager:GetCurrentPage().PageName == 'PageGamePause' then
+        if self.CurrentLevelPass then
+          --跳过最后的分数UI
+          --TODO: 分数UI
+        elseif Game.UIManager:GetCurrentPage().PageName == 'PageGamePause' then
           self:ResumeLevel()
         end
       end
     end
   end)
 end
-function GamePlayManager:_Stop() 
+function GamePlayManager:_Stop(controlStatus) 
   self._IsGamePlaying = false
   self._IsCountDownScore = false
+  --禁用控制
+  GamePlay.BallManager:SetControllingStatus(controlStatus)
 end
 function GamePlayManager:_Start() 
   self._IsGamePlaying = true
   self._IsCountDownScore = true
+
+
 end
 
 ---初始化灯光和天空盒
@@ -79,18 +94,30 @@ function GamePlayManager:CreateSkyAndLight(skyBoxPre, customSkyMat, lightColor)
     self.GameLightB = self.GameLightGameObject.transform:Find('LightSecond'):GetComponent(UnityEngine.Light) ---@type Light
   end
 
+  self.GameLightGameObject:SetActive(true)
   self.GameLightA.color = lightColor
   self.GameLightB.color = lightColor
+end
+--隐藏天空盒和关卡灯光
+function GamePlayManager:HideSkyAndLight()
+  Game.GamePlay.CamManager:SetSkyBox(nil)
+  self.GameLightGameObject:SetActive(false)
 end
 
 ---重新开始关卡
 function GamePlayManager:RestartLevel() 
   --黑色进入
   Game.UIManager:MaskBlackFadeIn(1)
+
+  --TODO: 重新开始关卡
+
 end
 ---退出关卡
 function GamePlayManager:QuitLevel() 
+  --黑色进入
+  Game.UIManager:MaskBlackFadeIn(1)
 
+  --TODO: 退出关卡
 end
 ---开始关卡
 function GamePlayManager:StartLevel() 
@@ -109,7 +136,7 @@ end
 function GamePlayManager:PauseLevel() 
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
 
-  self:_Stop()
+  self:_Stop(BallControlStatus.LockMode)
   Game.UIManager:GoPage('PageGamePause')
 end
 ---继续关卡
@@ -123,8 +150,10 @@ end
 ---球坠落
 function GamePlayManager:Fall() 
 
+  if self.CurrentLevelPass then return end
+
   --禁用控制
-  GamePlay.BallManager:SetControllingStatus(BallControlStatus.UnleashingMode)
+  self:_Stop(BallControlStatus.UnleashingMode)
   --下落音乐
   self._SoundBallFall:Play()
 
@@ -133,9 +162,32 @@ function GamePlayManager:Fall()
     GamePlay.GamePlayUI:RemoveLifeBall()
     Game.UIManager:MaskWhiteFadeIn(1)
 
+    --TODO: 重生
   else
-    
+    --TODO: 失败
   end
+end
+---过关
+function GamePlayManager:Pass() 
+
+  if self.CurrentLevelPass then
+    return
+  end
+
+  self.CurrentLevelPass = true
+  self._SoundLastSector:Stop() --停止最后一小节的音乐
+  self:_Stop(BallControlStatus.UnleashingMode)
+
+  if Game.LevelBuilder._CurrentLevelJson.level.endWithUFO then --播放结尾的UFO动画
+    self._SoundLastFinnal:Play() --播放音乐
+
+    --TODO: UFO动画
+  else
+    self._SoundFinnal:Play() --播放音乐
+
+    --TODO: 过关
+  end
+
 end
 
 ---添加生命

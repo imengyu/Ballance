@@ -126,6 +126,8 @@ namespace PhysicsRT
             bodysDict.Clear();
             bodysDictAddContactListener.Clear();
 
+            dictSystemGroup.Clear();
+
             if(PhysicsWorlds.ContainsKey(currentScenseIndex)) 
                 PhysicsWorlds.Remove(currentScenseIndex);
             if (physicsWorldPtr != IntPtr.Zero)
@@ -262,8 +264,10 @@ namespace PhysicsRT
         /// [由PhysicsBody自动调用，请勿手动调用]
         /// </summary>
         /// <param name="body"></param>
-        internal void RemoveConstraint(PhysicsConstraint constraint) {
+        internal bool RemoveConstraint(PhysicsConstraint constraint) {
+            bool rs = constraintDict.ContainsKey(constraint.Id);
             constraintDict.Remove(constraint.Id);
+            return rs;
         }
 
         /// <summary>
@@ -317,7 +321,23 @@ namespace PhysicsRT
         public Vector3 GetGravity() {
             return Gravity;
         }
-    
+        /// <summary>
+        /// 通过名称获取碰撞组信息
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int GetSystemGroup(string name) {
+            if(physicsWorldPtr == IntPtr.Zero || string.IsNullOrEmpty(name))
+                return 0;
+            if(dictSystemGroup.TryGetValue(name, out var i))
+                return i;
+            i = PhysicsApi.API.GetNewSystemGroup(physicsWorldPtr);
+            dictSystemGroup[name] = i;
+            return i;
+        }
+
+        private Dictionary<string, int> dictSystemGroup = new Dictionary<string, int>();
+
         public bool CastRay(Vector3 from, Vector3 to, out PhysicsRayCastResult result) {
             return CastRay(from, to, out result);
         }

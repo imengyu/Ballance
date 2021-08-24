@@ -36,7 +36,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_rotationPivotA(IntPtr l) {
+	static public int get_rotationPivotARef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -49,7 +49,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.rotationPivotA);
+			pushValue(l,self.rotationPivotARef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -67,7 +67,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_rotationPivotA(IntPtr l) {
+	static public int set_rotationPivotARef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -79,9 +79,9 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.rotationPivotA=v;
+			self.rotationPivotARef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -100,7 +100,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_rotationAxisA(IntPtr l) {
+	static public int get_rotationAxisARef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -113,7 +113,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.rotationAxisA);
+			pushValue(l,self.rotationAxisARef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -131,7 +131,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_rotationAxisA(IntPtr l) {
+	static public int set_rotationAxisARef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -143,9 +143,9 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.rotationAxisA=v;
+			self.rotationAxisARef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -228,7 +228,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_rotationPivotB(IntPtr l) {
+	static public int get_rotationPivotBRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -241,7 +241,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.rotationPivotB);
+			pushValue(l,self.rotationPivotBRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -259,7 +259,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_rotationPivotB(IntPtr l) {
+	static public int set_rotationPivotBRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -271,9 +271,9 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.rotationPivotB=v;
+			self.rotationPivotBRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -292,7 +292,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_rotationAxisB(IntPtr l) {
+	static public int get_rotationAxisBRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -305,7 +305,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.rotationAxisB);
+			pushValue(l,self.rotationAxisBRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -323,7 +323,7 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_rotationAxisB(IntPtr l) {
+	static public int set_rotationAxisBRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -335,9 +335,9 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.CogWheelConstraint self=(PhysicsRT.CogWheelConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.rotationAxisB=v;
+			self.rotationAxisBRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -422,11 +422,11 @@ public class Lua_PhysicsRT_CogWheelConstraint : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsRT.CogWheelConstraint");
 		addMember(l,Create);
-		addMember(l,"rotationPivotA",get_rotationPivotA,set_rotationPivotA,true);
-		addMember(l,"rotationAxisA",get_rotationAxisA,set_rotationAxisA,true);
+		addMember(l,"rotationPivotARef",get_rotationPivotARef,set_rotationPivotARef,true);
+		addMember(l,"rotationAxisARef",get_rotationAxisARef,set_rotationAxisARef,true);
 		addMember(l,"radiusA",get_radiusA,set_radiusA,true);
-		addMember(l,"rotationPivotB",get_rotationPivotB,set_rotationPivotB,true);
-		addMember(l,"rotationAxisB",get_rotationAxisB,set_rotationAxisB,true);
+		addMember(l,"rotationPivotBRef",get_rotationPivotBRef,set_rotationPivotBRef,true);
+		addMember(l,"rotationAxisBRef",get_rotationAxisBRef,set_rotationAxisBRef,true);
 		addMember(l,"radiusB",get_radiusB,set_radiusB,true);
 		createTypeMetatable(l,null, typeof(PhysicsRT.CogWheelConstraint),typeof(PhysicsRT.PhysicsConstraint));
 	}

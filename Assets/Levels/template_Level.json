@@ -14,17 +14,31 @@
     "firstBall": "BallWood",
     "musicTheme": 1,
     "skyBox": "A",
+    "customMusicTheme": {
+      "id": 8,
+      "baseInterval": 5,
+      "maxInterval": 15,
+      "musics": [
+        "xxx.wav",
+        "yyy.wav"
+      ],
+      "atmos": [
+        "xxx.wav",
+        "yyy.wav"
+      ]
+    },
     "customSkyBox": {
       "B": "BackResourceName.jpg",
       "F": "FrontResourceName.jpg",
       "L": "LeftResourceName.jpg",
       "R": "RightResourceName.jpg",
       "T": "TopResourceName.jpg",
-      "O": "BottomResourceName.jpg"
+      "D": "DownResourceName.jpg"
     },
     "lightColor": "#ffffff",
     "customModEventName": "",
     "sectorCount": 2,
+    "endWithUFO": false,
     "internalObjects": {
       "PS_LevelStart": "PS_FourFlames_01",
       "PE_LevelEnd": "PE_Balloon_01",

@@ -7,15 +7,26 @@ namespace PhysicsRT {
     [SLua.CustomLuaClass]
     public class PrismaticConstraint : MotorConstraint {
  
-        public Vector3 Povit;
-        public Vector3 Axis = Vector3.forward;
+        public GameObject PovitRef;
+        public GameObject AxisRef;
+        public bool AllowRotationAroundAxis = false;
+        public float MaxLinearLimit = 100;
+        public float MinLinearLimit = 0;
+        public float MaxFrictionForce = 1000;
 
         public override void Create() {
             var ptr = CreatePre();
-            var otherPtr = ConnectedBody.GetPtr();
+            var otherPtr = IntPtr.Zero; 
+            if(ConnectedBody != null) {
+                otherPtr = ConnectedBody.GetPtr();
+                if(otherPtr == IntPtr.Zero)
+                    throw new Exception("ConnectedBody hasn't been created yet");
+            }
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            CreateLastStep(PhysicsApi.API.CreatePrismaticConstraint(ptr, otherPtr, Povit, Axis, GetConstraintBreakData(), GetConstraintMotorData()));
+            CreateLastStep(PhysicsApi.API.CreatePrismaticConstraint(ptr, otherPtr, PovitRef.transform.position, AxisRef.transform.forward.normalized, 
+                AllowRotationAroundAxis, MaxLinearLimit, MinLinearLimit, MaxFrictionForce,
+                GetConstraintBreakData(), GetConstraintMotorData()));
         }
     }
 }

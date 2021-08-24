@@ -36,7 +36,7 @@ public class Lua_PhysicsRT_FixedConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_Povit(IntPtr l) {
+	static public int get_PovitRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -49,7 +49,7 @@ public class Lua_PhysicsRT_FixedConstraint : LuaObject {
 			#endif
 			PhysicsRT.FixedConstraint self=(PhysicsRT.FixedConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.Povit);
+			pushValue(l,self.PovitRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -67,7 +67,7 @@ public class Lua_PhysicsRT_FixedConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_Povit(IntPtr l) {
+	static public int set_PovitRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -79,9 +79,9 @@ public class Lua_PhysicsRT_FixedConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.FixedConstraint self=(PhysicsRT.FixedConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.Povit=v;
+			self.PovitRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -102,7 +102,7 @@ public class Lua_PhysicsRT_FixedConstraint : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsRT.FixedConstraint");
 		addMember(l,Create);
-		addMember(l,"Povit",get_Povit,set_Povit,true);
+		addMember(l,"PovitRef",get_PovitRef,set_PovitRef,true);
 		createTypeMetatable(l,null, typeof(PhysicsRT.FixedConstraint),typeof(PhysicsRT.PhysicsConstraint));
 	}
 }

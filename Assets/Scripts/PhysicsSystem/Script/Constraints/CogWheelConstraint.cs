@@ -7,11 +7,11 @@ namespace PhysicsRT {
     [SLua.CustomLuaClass]
     public class CogWheelConstraint : PhysicsConstraint {
 
-        public Vector3 rotationPivotA;
-        public Vector3 rotationAxisA = Vector3.forward;
+        public GameObject rotationPivotARef;
+        public GameObject rotationAxisARef;
         public float radiusA;
-        public Vector3 rotationPivotB;
-        public Vector3 rotationAxisB = Vector3.forward;
+        public GameObject rotationPivotBRef;
+        public GameObject rotationAxisBRef;
         public float radiusB;
 
         public override void Create() {
@@ -24,8 +24,8 @@ namespace PhysicsRT {
             if(otherPtr == IntPtr.Zero)
                 throw new Exception("ConnectedBody hasn't been created yet");
             CreateLastStep(PhysicsApi.API.CreateCogWheelConstraint(ptr, otherPtr, 
-                rotationPivotA, rotationAxisA, radiusA,
-                rotationPivotB, rotationAxisB, radiusB,
+                rotationPivotARef.transform.position, rotationAxisARef.transform.forward.normalized, radiusA,
+                rotationPivotBRef.transform.position, rotationAxisBRef.transform.forward.normalized, radiusB,
                 GetConstraintBreakData()));
         }
     }

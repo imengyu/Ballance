@@ -36,7 +36,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_pivotAW(IntPtr l) {
+	static public int get_pivotAWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -49,7 +49,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.pivotAW);
+			pushValue(l,self.pivotAWRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -67,7 +67,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_pivotAW(IntPtr l) {
+	static public int set_pivotAWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -79,9 +79,9 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.pivotAW=v;
+			self.pivotAWRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -100,7 +100,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_pivotBW(IntPtr l) {
+	static public int get_pivotBWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -113,7 +113,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.pivotBW);
+			pushValue(l,self.pivotBWRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -131,7 +131,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_pivotBW(IntPtr l) {
+	static public int set_pivotBWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -143,9 +143,9 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.pivotBW=v;
+			self.pivotBWRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -164,7 +164,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_pulleyPivotAW(IntPtr l) {
+	static public int get_pulleyPivotAWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -177,7 +177,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.pulleyPivotAW);
+			pushValue(l,self.pulleyPivotAWRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -195,7 +195,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_pulleyPivotAW(IntPtr l) {
+	static public int set_pulleyPivotAWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -207,9 +207,9 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.pulleyPivotAW=v;
+			self.pulleyPivotAWRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -228,7 +228,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_pulleyPivotBW(IntPtr l) {
+	static public int get_pulleyPivotBWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -241,7 +241,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.pulleyPivotBW);
+			pushValue(l,self.pulleyPivotBWRef);
 			return 2;
 		}
 		catch(Exception e) {
@@ -259,7 +259,7 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_pulleyPivotBW(IntPtr l) {
+	static public int set_pulleyPivotBWRef(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -271,9 +271,9 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PulleyConstraint self=(PhysicsRT.PulleyConstraint)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.GameObject v;
 			checkType(l,2,out v);
-			self.pulleyPivotBW=v;
+			self.pulleyPivotBWRef=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -358,10 +358,10 @@ public class Lua_PhysicsRT_PulleyConstraint : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsRT.PulleyConstraint");
 		addMember(l,Create);
-		addMember(l,"pivotAW",get_pivotAW,set_pivotAW,true);
-		addMember(l,"pivotBW",get_pivotBW,set_pivotBW,true);
-		addMember(l,"pulleyPivotAW",get_pulleyPivotAW,set_pulleyPivotAW,true);
-		addMember(l,"pulleyPivotBW",get_pulleyPivotBW,set_pulleyPivotBW,true);
+		addMember(l,"pivotAWRef",get_pivotAWRef,set_pivotAWRef,true);
+		addMember(l,"pivotBWRef",get_pivotBWRef,set_pivotBWRef,true);
+		addMember(l,"pulleyPivotAWRef",get_pulleyPivotAWRef,set_pulleyPivotAWRef,true);
+		addMember(l,"pulleyPivotBWRef",get_pulleyPivotBWRef,set_pulleyPivotBWRef,true);
 		addMember(l,"leverageRatio",get_leverageRatio,set_leverageRatio,true);
 		createTypeMetatable(l,null, typeof(PhysicsRT.PulleyConstraint),typeof(PhysicsRT.PhysicsConstraint));
 	}

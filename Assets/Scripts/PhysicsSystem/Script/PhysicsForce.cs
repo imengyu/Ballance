@@ -12,11 +12,14 @@ namespace PhysicsRT
     public class PhysicsForce : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("指定恒力的方向和大小")]
-        public Vector3 Force;
+        [Tooltip("指定恒力的大小")]
+        public float Force;
         [SerializeField]
         [Tooltip("指定是否启用恒力")]
         public bool Enable;
+        [SerializeField]
+        [Tooltip("指定恒力的方向")]
+        public Transform ForceRef;
 
         private PhysicsBody body;
 
@@ -25,7 +28,7 @@ namespace PhysicsRT
         }
         private void FixedUpdate() {
             if(Enable)
-                body.ApplyForce(Force);
+                body.ApplyForce(ForceRef != null ? (ForceRef.forward.normalized * Force) : (Vector3.forward * Force));
         }
     }
 
