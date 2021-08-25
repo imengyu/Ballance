@@ -14,6 +14,7 @@
     "firstBall": "BallWood",
     "musicTheme": 1,
     "skyBox": "A",
+    "skyLayer": "SkyLayer",
     "customMusicTheme": {
       "id": 8,
       "baseInterval": 5,
@@ -42,8 +43,13 @@
     "internalObjects": {
       "PS_LevelStart": "PS_FourFlames_01",
       "PE_LevelEnd": "PE_Balloon_01",
-      "PC_CheckPoints": [ "PC_TwoFlames_01" ],
-      "PR_ResetPoints": [ "PR_Resetpoint_01", "PR_Resetpoint_02" ]
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01"
+      },
+      "PR_ResetPoints": { 
+        "1": "PR_Resetpoint_01", 
+        "2": "PR_Resetpoint_02"
+      }
     },
     "sectors": {
       "1": [ "objectName", "objectName" ],

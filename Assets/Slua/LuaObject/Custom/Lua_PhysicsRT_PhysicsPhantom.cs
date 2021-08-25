@@ -68,6 +68,37 @@ public class Lua_PhysicsRT_PhysicsPhantom : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetAabbBySelf(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsPhantom self=(PhysicsRT.PhysicsPhantom)checkSelf(l);
+			self.SetAabbBySelf();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int SetAabb(IntPtr l) {
 		try {
 			#if DEBUG
@@ -658,6 +689,7 @@ public class Lua_PhysicsRT_PhysicsPhantom : LuaObject {
 		getTypeTable(l,"PhysicsRT.PhysicsPhantom");
 		addMember(l,ForceReCreate);
 		addMember(l,GetPtr);
+		addMember(l,SetAabbBySelf);
 		addMember(l,SetAabb);
 		addMember(l,GetOverlappingBodies);
 		addMember(l,OnPhantomOverlapCallback);

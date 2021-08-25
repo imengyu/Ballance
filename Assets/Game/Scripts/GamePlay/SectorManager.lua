@@ -7,8 +7,8 @@ SectorManager = ClassicObject:extend()
 SectorDataStorage = {}
 
 ---@class RestPointsDataStorage
----@field points GameObject[]
----@field flames ModulBase[]
+---@field point GameObject
+---@field flame ModulBase
 RestPointsDataStorage = {}
 
 function SectorManager:new() 
@@ -22,6 +22,22 @@ function SectorManager:Start()
 
   GamePlay.SectorManager = self
 end
+
+function SectorManager:DoInitAllModuls() 
+
+
+
+end
+function SectorManager:DoUnInitAllModuls() 
+  --Do nothing.
+end
+function SectorManager:ClearAll() 
+  self.CurrentLevelSectorCount = 0
+  self.CurrentLevelSectors = {}
+  self.CurrentLevelRestPoints = {}
+  self.CurrentLevelEndBalloon = nil
+end
+
 ---进入下一小节
 function SectorManager:NextSector() 
 

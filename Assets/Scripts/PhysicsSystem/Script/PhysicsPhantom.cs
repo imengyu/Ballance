@@ -109,6 +109,15 @@ namespace PhysicsRT
         private PhysicsWorld CurrentPhysicsWorld = null;
 
         public IntPtr GetPtr() { return ptr; }
+
+        /// <summary>
+        /// 设置当前幻影的Aabb包围盒为当前物体数据
+        /// </summary>
+        public void SetAabbBySelf() {
+            Renderer renderer = GetComponent<Renderer>();
+            if(renderer != null) 
+                SetAabb(transform.TransformPoint(renderer.bounds.min), transform.TransformPoint(renderer.bounds.max));
+        }
         /// <summary>
         /// 更新当前幻影的Aabb包围盒（相对）
         /// </summary>
@@ -180,8 +189,7 @@ namespace PhysicsRT
         public void OnPhantomOverlapCallback(PhysicsBody sbodyOther, int ty) {
             if(ty == 1) onOverlappingCollidableAdd?.Invoke(this, sbodyOther);
             else onOverlappingCollidableRemove?.Invoke(this, sbodyOther);
-        }
-    
+        }    
     
         private Vector3 oldPosition = Vector3.zero;
         private Vector3 oldMin = Vector3.zero;

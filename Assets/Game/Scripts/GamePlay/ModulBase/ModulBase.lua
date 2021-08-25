@@ -14,6 +14,9 @@ end
 function ModulBase:Deactive()
   self.gameObject:SetActive(false)
 end
+---关卡卸载时发出此事件
+function ModulBase:GameUnLoad()
+end
 ---游戏暂停时发出此事件
 function ModulBase:GamePause()
 end

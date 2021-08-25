@@ -56,7 +56,7 @@ function GamePlayManager:_InitKeyEvents()
   self.keyListener:AddKeyListen(KeyCode.Escape, function (key, down)
     if down then
       if self._IsGamePlaying then
-        self:PauseLevel()
+        self:PauseLevel(true)
       else
         if self.CurrentLevelPass then
           --跳过最后的分数UI
@@ -79,6 +79,11 @@ function GamePlayManager:_Start()
   self._IsCountDownScore = true
 
 
+end
+
+---LevelBuilder 就绪，现在GamePlayManager进行初始化
+function GamePlayManager:Init() 
+  
 end
 
 ---初始化灯光和天空盒
@@ -133,11 +138,14 @@ function GamePlayManager:StartLevel()
   self:_Start()
 end
 ---暂停关卡
-function GamePlayManager:PauseLevel() 
-  Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
-
+---@param showPauseUI boolean 是否显示暂停界面
+function GamePlayManager:PauseLevel(showPauseUI) 
   self:_Stop(BallControlStatus.LockMode)
-  Game.UIManager:GoPage('PageGamePause')
+
+  if showPauseUI then
+    Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
+    Game.UIManager:GoPage('PageGamePause') 
+  end
 end
 ---继续关卡
 function GamePlayManager:ResumeLevel() 

@@ -186,6 +186,50 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         private int fixUpdateTick = 0;
         private int lateUpdateTick = 0;
 
+        /// <summary>
+        /// 立即创建类，如果类已创建，则返回已创建的类
+        /// </summary>
+        /// <returns>返回类的table，如果创建失败，则返回null</returns>
+        [LuaApiDescription("立即创建类，如果类已创建，则返回已创建的类", "返回类的table，如果创建失败，则返回nil")]
+        public LuaTable CreateClass() {
+
+            if(Package == null && !InitPackage()) 
+                return null;
+            if(self == null && Package != null) {
+                LuaFunction classInit = Package.RequireLuaClass(LuaClassName);
+                if (classInit == null)
+                {
+                    Log.E(TAG + ":" + Name, "LuaObject {0} create error : class not found : {1}", Name, LuaClassName);
+                    GameErrorChecker.LastError = GameError.ClassNotFound;
+                    return null;
+                }
+
+                object o = classInit.call();
+                if (o != null && o is LuaTable) self = o as LuaTable;
+                else
+                {
+                    Log.E(TAG + ":" + Name, "LuaObject {0} create error : table not return ", Name);
+                    GameErrorChecker.LastError = GameError.NotReturn;
+                    return null;
+                }
+            }
+            
+            return self;
+        }
+        /// <summary>
+        /// 从已附加 GameLuaObjectHost 的 GameObject 上获取Lua类table
+        /// </summary>
+        /// <param name="go">已附加 GameLuaObjectHost 的 GameObject</param>
+        /// <returns>如果找到，则返回类table，如果没找到则返回null</returns>
+        [LuaApiDescription("从已附加 GameLuaObjectHost 的 GameObject 上获取Lua类table", "如果找到，则返回类table，如果没找到则返回nIl")]
+        [LuaApiParamDescription("go", "已附加 GameLuaObjectHost 的 GameObject")]
+        public static LuaTable GetLuaClassFromGameObject(GameObject go) {
+            var cls = go.GetComponent<GameLuaObjectHost>();
+            if(cls != null)
+                return cls.CreateClass();
+            return null;
+        }   
+
         private void DoInit()
         {
             if(GameManager.Instance != null)
@@ -269,6 +313,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         {
             if (onDestory != null) onDestory(self);
             StopLuaEvents();
+            self = null;
             if (Package != null) Package.RemoveLuaObject(this);
         }
         private void OnDisable()
@@ -287,10 +332,23 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
         // Init and get
         // ===========================
-
+        
         private bool LuaInit()
         {
-            if(GamePackageManager == null) {
+            if(CreateClass() == null)
+                return false;
+            InitLuaInternalVars();
+            InitLuaVars(); //初始化引入参数
+            InitLuaEvents();
+            //调用其他Lua初始化脚本
+
+            if(OnInitLua != null) OnInitLua.Invoke();
+            return true;
+        }
+        private bool InitPackage()
+        {
+            if(GamePackageManager == null) 
+            {
                 GameErrorChecker.LastError = GameError.SystemNotInit;
                 return false;
             }
@@ -304,7 +362,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 }
 
                 Package = GamePackageManager.FindPackage(LuaPackageName); 
-
                 if (Package == null)
                 {
                     Log.E(TAG + ":" + Name, "LuaObject {0} load error :  LuaPackageName not found : {1}", Name, LuaPackageName);
@@ -333,32 +390,8 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                     return false;
                 }
             }
-
-            LuaFunction classInit = Package.RequireLuaClass(LuaClassName);
-            if (classInit == null)
-            {
-                Log.E(TAG + ":" + Name, "LuaObject {0} load error : class not found : {1}", Name, LuaClassName);
-                GameErrorChecker.LastError = GameError.ClassNotFound;
-                return false;
-            }
-
-            object o = classInit.call();
-            if (o != null && o is LuaTable) self = o as LuaTable;
-            else
-            {
-                Log.E(TAG + ":" + Name, "LuaObject {0} load error : table not return ", Name);
-                GameErrorChecker.LastError = GameError.NotReturn;
-                return false;
-            }
-
-            InitLuaInternalVars();
-            InitLuaVars(); //初始化引入参数
-            InitLuaEvents();
-            //调用其他Lua初始化脚本
-
-            if(OnInitLua != null) OnInitLua.Invoke();
             return true;
-        }
+        }    
         private void InitLuaEvents()
         {
             LuaFunction fun;

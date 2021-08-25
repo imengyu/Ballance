@@ -186,7 +186,7 @@ function BallManager:RegisterBall(name, gameObject)
     GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, TAG, 'Not fuoud PhysicsBody on Ball {0} , please add it before call RegisterBall', { name })
     return
   end
-
+  
   gameObject:SetActive(false)
 
   local ball = GameObjectToLuaClass(gameObject)

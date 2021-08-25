@@ -15,6 +15,7 @@ namespace Ballance2.Sys.Utils
         };
 
         public static void FixLuaSecure(LuaState state) {
+            
             LuaGlobalApi.SetRequire(state.getFunction("require"));
             state.doString(@"
                 io = nil
@@ -34,7 +35,12 @@ namespace Ballance2.Sys.Utils
                 os.remove = nil
                 os.rename = nil
                 os.setlocale = nil
-                require = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require
+                if UnityEngine ~= nil and UnityEngine.Application.Quit ~= nil then
+                    UnityEngine.Application.Quit = nil
+                end
+                if Ballance2 ~= nil and Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require ~= nil then
+                    require = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require
+                end
             ");
         }
         public static bool CheckRequire(string pathOrName) {
