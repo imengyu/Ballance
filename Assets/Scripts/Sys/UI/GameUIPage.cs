@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ballance2.LuaHelpers;
+using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
 using Ballance2.Sys.UI.Utils;
@@ -37,12 +38,17 @@ namespace Ballance2
         public VerticalLayoutGroup VerticalLayoutGroup;
         public HorizontalLayoutGroup HorizontalLayoutGroup;
         public string PageName;
+        public bool CanEscBack = true;
+        public VoidDelegate OnShow;
+        public VoidDelegate OnHide;
 
         public void Show() {
             gameObject.SetActive(true);
+            OnShow?.Invoke();
         }
         public void Hide() {
             gameObject.SetActive(false);
+            OnHide?.Invoke();
         }
         
         /// <summary>

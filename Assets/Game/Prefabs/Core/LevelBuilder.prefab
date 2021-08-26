@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4560854176241737318}
   - component: {fileID: 4560854176241737317}
+  - component: {fileID: 8733746497081609871}
   m_Layer: 0
   m_Name: LevelBuilder
   m_TagString: Untagged
@@ -57,3 +58,15 @@ MonoBehaviour:
   ManualInputScript: 0
   UpdateDelta: 0
   FixUpdateDelta: 0
+--- !u!114 &8733746497081609871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4560854176241737316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bacd6581ff1fdbd4c8594b49fc9df063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

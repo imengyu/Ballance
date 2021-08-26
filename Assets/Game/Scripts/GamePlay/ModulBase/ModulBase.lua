@@ -15,13 +15,7 @@ function ModulBase:Deactive()
   self.gameObject:SetActive(false)
 end
 ---关卡卸载时发出此事件
-function ModulBase:GameUnLoad()
-end
----游戏暂停时发出此事件
-function ModulBase:GamePause()
-end
----游戏继续时发出此事件
-function ModulBase:GameResume()
+function ModulBase:UnLoad()
 end
 ---机关重置为初始状态时发出此事件（玩家失败，重新开始一节）。Reset在Deactive之后发出
 function ModulBase:Reset()

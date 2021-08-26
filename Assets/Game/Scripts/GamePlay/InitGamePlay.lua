@@ -1,4 +1,5 @@
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
+local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 
@@ -6,6 +7,9 @@ local BallsManagerGameObject = nil
 local GamePlayManagerGameObjec = nil
 local GamePlayUIGameObject = nil
 local GameSectorManagerGameObject = nil
+local GameMusicManagerGameObject = nil
+local GameTranfoManagerGameObject = nil
+local GameLevelBrizGameObject = nil
 
 ---模块全局索引
 ---@class GamePlay
@@ -14,8 +18,10 @@ GamePlay = {
   BallPiecesControll = nil, ---@type BallPiecesControll
   CamManager = nil, ---@type CamManager
   GamePlayManager = nil, ---@type GamePlayManager
-  GamePlayUI = nil, ---@type GamePlayUIControl
   SectorManager = nil, ---@type SectorManager
+  MusicManager = nil, ---@type MusicManager
+  TranfoManager = nil, ---@type TranfoAminControl
+  HighscoreManager = nil, ---@type HighscoreManager
 }
 
 ---游戏玩模块初始化
@@ -25,23 +31,27 @@ function GamePlayInit(callback)
     --初始化关卡加载器
     local LevelBuilderGameObject = LevelBuilderInit()
     Yield(WaitForSeconds(0.1))
-    Game.LevelBuilder = GameObjectToLuaClass(LevelBuilderGameObject) ---@type LevelBuilder
+    Game.LevelBuilder = GameLuaObjectHost.GetLuaClassFromGameObject(LevelBuilderGameObject) ---@type LevelBuilder
     InitBulitInModuls()
 
     --GamePlayUI
     local uiPackage = Game.PackageManager:FindPackage('core.ui')
     GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(uiPackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false)
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.05))
     GamePlayUIGameObject.gameObject:SetActive(false)
-
 
     --初始化基础对象
     GamePlayManagerGameObjec = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GamePlayManager.prefab'), 'GamePlayManager')
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.05))
     BallsManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/BallManager.prefab'), 'GameBallsManager')
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.05))
     GameSectorManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/SectorManager.prefab'), 'GameSectorManager')
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.05))
+    GameMusicManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/MusicManager.prefab'), 'GameMusicManager')
+    Yield(WaitForSeconds(0.05))
+    GameTranfoManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/AminTranfo.prefab'), 'GameTranfoManager')
+    Yield(WaitForSeconds(0.05))
+    GameLevelBrizGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Others/LevelBriz.prefab'), 'GameLevelBriz')
 
     Game.GamePlay = GamePlay
 
@@ -51,12 +61,25 @@ function GamePlayInit(callback)
 end
 ---游戏玩模块卸载
 function GamePlayUnload()
-
+  GamePlay.BallManager = nil
+  GamePlay.BallPiecesControll = nil
+  GamePlay.CamManager = nil
+  GamePlay.GamePlayManager = nil
+  GamePlay.SectorManager = nil
+  GamePlay.MusicManager = nil
+  GamePlay.TranfoManager = nil
+  
   if (not Slua.IsNull(BallsManagerGameObject)) then UnityEngine.Object.Destroy(BallsManagerGameObject) end 
   if (not Slua.IsNull(GamePlayManagerGameObjec)) then UnityEngine.Object.Destroy(GamePlayManagerGameObjec) end 
   if (not Slua.IsNull(GamePlayUIGameObject)) then UnityEngine.Object.Destroy(GamePlayUIGameObject) end 
   if (not Slua.IsNull(GameSectorManagerGameObject)) then UnityEngine.Object.Destroy(GameSectorManagerGameObject) end 
+  if (not Slua.IsNull(GameMusicManagerGameObject)) then UnityEngine.Object.Destroy(GameMusicManagerGameObject) end 
+  if (not Slua.IsNull(GameTranfoManagerGameObject)) then UnityEngine.Object.Destroy(GameTranfoManagerGameObject) end 
+  if (not Slua.IsNull(GameLevelBrizGameObject)) then UnityEngine.Object.Destroy(GameLevelBrizGameObject) end 
 
+  GameLevelBrizGameObject = nil
+  GameTranfoManagerGameObject = nil
+  GameMusicManagerGameObject = nil
   GameSectorManagerGameObject = nil
   GamePlayUIGameObject = nil
   GamePlayManagerGameObjec = nil

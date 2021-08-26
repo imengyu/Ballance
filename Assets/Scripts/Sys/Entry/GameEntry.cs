@@ -61,6 +61,8 @@ namespace Ballance2.Sys.Entry
         public List<string> DebugCustomEntries = new List<string>();
         [Tooltip("是否在系统或自定义调试模式中加载用户自定义模块包")]
         public bool DebugLoadCustomPackages = true;
+        [Tooltip("是否在系统或自定义调试模式中跳过Intro")]
+        public bool DebugSkipIntro = false;
 
         #endregion
 

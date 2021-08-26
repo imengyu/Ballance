@@ -26,7 +26,7 @@ namespace PhysicsRT {
                  PovitRef.transform.position, AxisRef.transform.forward.normalized, 
                 (AgularLimitMin) * Mathf.Deg2Rad, 
                 (AgularLimitMax) * Mathf.Deg2Rad, 
-                GetConstraintBreakData(), GetConstraintMotorData()));
+                GetConstraintBreakData(), GetConstraintMotorData(), Priority));
         }
     }
 }

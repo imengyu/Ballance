@@ -20,7 +20,7 @@ namespace PhysicsRT {
             }
             if(ptr == IntPtr.Zero)
                 throw new Exception("This body hasn't been created yet");
-            CreateLastStep(PhysicsApi.API.CreateHingeConstraint(ptr, otherPtr, PovitRef.transform.position, AxisRef.transform.forward.normalized, GetConstraintBreakData()));
+            CreateLastStep(PhysicsApi.API.CreateHingeConstraint(ptr, otherPtr, PovitRef.transform.position, AxisRef.transform.forward.normalized, GetConstraintBreakData(), Priority));
         }
     }
 }

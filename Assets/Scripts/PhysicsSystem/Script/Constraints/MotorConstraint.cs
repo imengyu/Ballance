@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace PhysicsRT {
 
+    [SLua.CustomLuaClass]
     public class MotorConstraint : PhysicsConstraint {
 
         [HideInInspector]

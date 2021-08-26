@@ -61,6 +61,8 @@ namespace Ballance2.Sys.UI.Utils
                                     fadeObject.image.color = new Color(fadeObject.image.color.r, fadeObject.image.color.g, fadeObject.image.color.b, fadeObject.alpha);
                                 else if (fadeObject.text != null)
                                     fadeObject.text.color = new Color(fadeObject.text.color.r, fadeObject.text.color.g, fadeObject.text.color.b, fadeObject.alpha);
+                                else if (fadeObject.audio != null)
+                                    fadeObject.audio.volume = fadeObject.alpha;
                             }
                             else fadeObject.runEnd = true;
                         }
@@ -80,7 +82,8 @@ namespace Ballance2.Sys.UI.Utils
                                     fadeObject.image.color = new Color(fadeObject.image.color.r, fadeObject.image.color.g, fadeObject.image.color.b, fadeObject.alpha);
                                 else if (fadeObject.text != null)
                                     fadeObject.text.color = new Color(fadeObject.text.color.r, fadeObject.text.color.g, fadeObject.text.color.b, fadeObject.alpha);
-
+                                else if (fadeObject.audio != null)
+                                    fadeObject.audio.volume = fadeObject.alpha;
                             }
                             else
                             {
@@ -120,6 +123,7 @@ namespace Ballance2.Sys.UI.Utils
             public Material[] materials;
             public Image image;
             public Text text;
+            public AudioSource audio;
             public float alpha;
             public float timeInSecond;
             public bool endReactive;
@@ -151,6 +155,15 @@ namespace Ballance2.Sys.UI.Utils
             foreach (FadeObject o in fadeObjects)
             {
                 if (o.text == text && fadeType == o.fadeType)
+                    return o;
+            }
+            return null;
+        }
+        private FadeObject FindFadeObjectByAudio(AudioSource audio, FadeType fadeType)
+        {
+            foreach (FadeObject o in fadeObjects)
+            {
+                if (o.audio == audio && fadeType == o.fadeType)
                     return o;
             }
             return null;
@@ -248,11 +261,11 @@ namespace Ballance2.Sys.UI.Utils
         /// <param name="gameObject">执行对象</param>
         /// <param name="timeInSecond">执行时间</param>
         /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
-        /// <param name="material">执行材质</param>
+        /// <param name="materials">执行材质数组</param>
         [LuaApiDescription("运行淡出动画")]
         [LuaApiParamDescription("gameObject", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
-        [LuaApiParamDescription("material", "执行材质")]
+        [LuaApiParamDescription("materials", "执行材质数组")]
         [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
         public FadeObject AddFadeOut2(GameObject gameObject, float timeInSecond, bool hidden, Material[] materials)
         {
@@ -286,7 +299,7 @@ namespace Ballance2.Sys.UI.Utils
         [LuaApiDescription("运行淡入动画")]
         [LuaApiParamDescription("gameObject", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
-        [LuaApiParamDescription("material", "执行材质")]
+        [LuaApiParamDescription("materials", "执行材质数组")]
         public FadeObject AddFadeIn2(GameObject gameObject, float timeInSecond, Material[] materials)
         {
             FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeIn);
@@ -315,15 +328,13 @@ namespace Ballance2.Sys.UI.Utils
         /// <summary>
         /// 运行淡出动画
         /// </summary>
-        /// <param name="gameObject">执行对象</param>
+        /// <param name="image">执行对象</param>
         /// <param name="timeInSecond">执行时间</param>
         /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
-        /// <param name="material">执行材质</param>
         [LuaApiDescription("运行淡出动画")]
         [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
-        [LuaApiParamDescription("gameObject", "执行对象")]
+        [LuaApiParamDescription("image", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
-        [LuaApiParamDescription("material", "执行材质")]
         public FadeObject AddFadeOut(Image image, float timeInSecond, bool hidden)
         {
             if (image != null)
@@ -350,13 +361,11 @@ namespace Ballance2.Sys.UI.Utils
         /// <summary>
         /// 运行淡入动画
         /// </summary>
-        /// <param name="gameObject">执行对象</param>
+        /// <param name="image">执行对象</param>
         /// <param name="timeInSecond">执行时间</param>
-        /// <param name="material">执行材质</param>
         [LuaApiDescription("运行淡入动画")]
-        [LuaApiParamDescription("gameObject", "执行对象")]
+        [LuaApiParamDescription("image", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
-        [LuaApiParamDescription("material", "执行材质")]
         public FadeObject AddFadeIn(Image image, float timeInSecond)
         {
             if (image != null)
@@ -385,15 +394,13 @@ namespace Ballance2.Sys.UI.Utils
         /// <summary>
         /// 运行淡出动画
         /// </summary>
-        /// <param name="gameObject">执行对象</param>
+        /// <param name="text">执行对象</param>
         /// <param name="timeInSecond">执行时间</param>
         /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
-        /// <param name="material">执行材质</param>
         [LuaApiDescription("运行淡出动画")]
-        [LuaApiParamDescription("gameObject", "执行对象")]
+        [LuaApiParamDescription("text", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
         [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
-        [LuaApiParamDescription("material", "执行材质")]
         public FadeObject AddFadeOut(Text text, float timeInSecond, bool hidden)
         {
             if (text != null)
@@ -420,13 +427,11 @@ namespace Ballance2.Sys.UI.Utils
         /// <summary>
         /// 运行淡入动画
         /// </summary>
-        /// <param name="gameObject">执行对象</param>
+        /// <param name="text">执行对象</param>
         /// <param name="timeInSecond">执行时间</param>
-        /// <param name="material">执行材质</param>
         [LuaApiDescription("运行淡入动画")]
-        [LuaApiParamDescription("gameObject", "执行对象")]
+        [LuaApiParamDescription("text", "执行对象")]
         [LuaApiParamDescription("timeInSecond", "执行时间")]
-        [LuaApiParamDescription("material", "执行材质")]
         public FadeObject AddFadeIn(Text text, float timeInSecond)
         {
             if (text != null)
@@ -447,6 +452,70 @@ namespace Ballance2.Sys.UI.Utils
                 text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
                 if (!text.gameObject.activeSelf)
                     text.gameObject.SetActive(true);
+                return fadeObject;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 运行声音淡出
+        /// </summary>
+        /// <param name="audio">执行对象</param>
+        /// <param name="timeInSecond">执行时间</param>
+        [LuaApiDescription("运行声音淡出")]
+        [LuaApiParamDescription("audio", "执行对象")]
+        [LuaApiParamDescription("timeInSecond", "执行时间")]
+        public FadeObject AddAudioFadeOut(AudioSource audio, float timeInSecond)
+        {
+            if (audio != null)
+            {
+                FadeObject fadeObject = FindFadeObjectByAudio(audio, FadeType.FadeOut);
+                if (fadeObject != null)
+                    fadeObjects.Remove(fadeObject);
+
+                fadeObject = new FadeObject();
+                fadeObject.gameObject = audio.gameObject;
+                fadeObject.timeInSecond = timeInSecond;
+                fadeObject.alpha = 1;
+                fadeObject.material = null;
+                fadeObject.audio = audio;
+                fadeObject.fadeType = FadeType.FadeOut;
+                fadeObject.endReactive = false;
+                fadeObjects.Add(fadeObject);
+
+                audio.volume = 1;
+                return fadeObject;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 运行声音淡入
+        /// </summary>
+        /// <param name="audio">执行对象</param>
+        /// <param name="timeInSecond">执行时间</param>
+        [LuaApiDescription("运行声音淡入")]
+        [LuaApiParamDescription("audio", "执行对象")]
+        [LuaApiParamDescription("timeInSecond", "执行时间")]
+        public FadeObject AddAudioFadeIn(AudioSource audio, float timeInSecond)
+        {
+            if (audio != null)
+            {
+                FadeObject fadeObject = FindFadeObjectByAudio(audio, FadeType.FadeIn);
+                if (fadeObject != null)
+                    fadeObjects.Remove(fadeObject);
+
+                fadeObject = new FadeObject();
+                fadeObject.gameObject = audio.gameObject;
+                fadeObject.timeInSecond = timeInSecond;
+                fadeObject.alpha = 0;
+                fadeObject.material = null;
+                fadeObject.audio = audio;
+                fadeObject.fadeType = FadeType.FadeIn;
+                fadeObjects.Add(fadeObject);
+
+                audio.volume = 0;
+                if (!audio.gameObject.activeSelf)
+                    audio.gameObject.SetActive(true);
                 return fadeObject;
             }
             return null;

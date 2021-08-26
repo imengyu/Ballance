@@ -26,7 +26,7 @@ namespace PhysicsRT {
             CreateLastStep(PhysicsApi.API.CreateCogWheelConstraint(ptr, otherPtr, 
                 rotationPivotARef.transform.position, rotationAxisARef.transform.forward.normalized, radiusA,
                 rotationPivotBRef.transform.position, rotationAxisBRef.transform.forward.normalized, radiusB,
-                GetConstraintBreakData()));
+                GetConstraintBreakData(), Priority));
         }
     }
 }

@@ -202,14 +202,19 @@ namespace Ballance2.Sys.Services
         [LuaApiParamDescription("name", "播放对象的名称")]
         public AudioSource RegisterSoundPlayer(GameSoundType type, string assets, bool playOnAwake = false, bool activeStart = true, string name = "")
         {
-            AudioClip audioClip = LoadAudioResource(assets);
-            if (audioClip == null)
-                return null;
+            AudioClip audioClip = null;
+            if (!string.IsNullOrEmpty(assets)) {
+                audioClip = LoadAudioResource(assets);
+                if (audioClip == null)
+                    return null;
+            }
 
             AudioSource audioSource = Object.Instantiate(audioSourcePrefab, GameSoundManagerObject.transform).GetComponent<AudioSource>();
             audioSource.clip = audioClip;
             audioSource.playOnAwake = playOnAwake;
-            audioSource.gameObject.name = "AudioSource_" + type + "_" + (name == "" ? GamePathManager.GetFileNameWithoutExt(audioClip.name) : name);
+            audioSource.gameObject.name = "AudioSource_" + type + "_" + (name == "" ? 
+                (audioClip != null ? GamePathManager.GetFileNameWithoutExt(audioClip.name) : "") : 
+                name);
 
             if (!activeStart)
                 audioSource.gameObject.SetActive(false);
@@ -235,7 +240,9 @@ namespace Ballance2.Sys.Services
             AudioSource audioSource = Object.Instantiate(audioSourcePrefab, GameSoundManagerObject.transform).GetComponent<AudioSource>();
             audioSource.clip = audioClip;
             audioSource.playOnAwake = playOnAwake;
-            audioSource.gameObject.name = "AudioSource_" + type + "_" + (name == "" ? GamePathManager.GetFileNameWithoutExt(audioClip.name) : name);
+            audioSource.gameObject.name = "AudioSource_" + type + "_" + (name == "" ? 
+                (audioClip != null ? GamePathManager.GetFileNameWithoutExt(audioClip.name) : ""): 
+                name);
 
             if (!activeStart)
                 audioSource.gameObject.SetActive(false);
@@ -403,6 +410,7 @@ namespace Ballance2.Sys.Services
                 return false;
 
             cache = RegisterSoundPlayer(type, audioClip, false, true, key);
+            cache.maxDistance = 2000;
             cache.Play();
             fastPlayVoices[key] = cache;
             return true;

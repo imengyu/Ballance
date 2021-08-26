@@ -20,7 +20,7 @@ abstract class TagsDrawer<T> : PropertyDrawer where T : ScriptableObject, ITagNa
 
     protected abstract int MaxNumCategories { get; }
     protected abstract string DefaultCategoryName { get; }
-    internal string FirstChildPropertyPath { get; set; } // TODO: remove when all usages of bool[] are migrated
+    internal string FirstChildPropertyPath { get; set; } 
 
     string DefaultFormatString => L10n.Tr($"(Undefined {DefaultCategoryName})");
 
@@ -81,7 +81,6 @@ abstract class TagsDrawer<T> : PropertyDrawer where T : ScriptableObject, ITagNa
 
     T[] m_NamesAssets;
 
-    // TODO: remove when all usages of bool[] are migrated
     SerializedProperty GetFirstChildProperty(SerializedProperty property)
     {
         if (!string.IsNullOrEmpty(FirstChildPropertyPath))

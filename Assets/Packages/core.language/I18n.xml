@@ -2,6 +2,7 @@
   <Language name="ChineseSimplified">
     <Text name="ui.yes">是</Text>
     <Text name="ui.no">否</Text>
+    <Text name="ui.ok">好</Text>
     <Text name="ui.notNow">不是现在</Text>
     <Text name="ui.restartGame">重启游戏</Text>
     <Text name="ui.cancel">取消</Text>
@@ -11,6 +12,7 @@
     <Text name="ui.main.about">关于</Text>
     <Text name="ui.main.quit">退出游戏</Text>
     <Text name="ui.main.back">返回</Text>
+    <Text name="ui.main.home">主菜单</Text>
     <Text name="ui.level.customLevel">自定义关卡</Text>
     <Text name="ui.pause.back">返回游戏</Text>
     <Text name="ui.pause.restart">重新开始</Text>
@@ -55,6 +57,15 @@
     </Text>
     <Text name="ui.loader.loadLevelFailed">加载关卡失败</Text>
     <Text name="ui.loader.backToMenu">返回主菜单</Text>
+    <Text name="ui.game.nextLevel">下一关</Text>
+    <Text name="ui.gameWin.levelBouns">关卡分数</Text>
+    <Text name="ui.gameWin.timePoints">剩余时间点</Text>
+    <Text name="ui.gameWin.extraLife">额外的生命</Text>
+    <Text name="ui.gameWin.score">分数</Text>
+    <Text name="ui.gameWin.newHighscore">新的高分！</Text>
+    <Text name="ui.gameWin.win">胜利！</Text>
+    <Text name="ui.gameWin.enterYourName">留下你的大名吧</Text>
+    <Text name="ui.noLevelData">没有关卡数据</Text>
     <Text name="str.tip.click.debug">再点击 {0} 次可开启开发者模式！</Text>
     <Text name="str.tip.in.debug">你已经处于开发者模式！</Text>
   </Language>

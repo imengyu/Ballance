@@ -2,6 +2,7 @@ local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
 local GameError = Ballance2.Sys.Debug.GameError
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+local GameSettingsManager = Ballance2.Config.GameSettingsManager
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local Log = Ballance2.Utils.Log
 local json = Game.SystemPackage:RequireLuaFile('json') ---@type json
@@ -12,6 +13,7 @@ local PhysicsPhantom = PhysicsRT.PhysicsPhantom
 local ShapeType = PhysicsRT.ShapeType
 local MotionType = PhysicsRT.MotionType
 
+local RenderSettings = UnityEngine.RenderSettings
 local GameObject = UnityEngine.GameObject
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
@@ -41,18 +43,20 @@ function LevelBuilder:new()
   self._CurrentLevelFloors = {} ---@type GameObject[]
   self._CurrentLevelPrefab = nil
   self._CurrentLevelObject = nil
-  self._CurrentLevelAssetBundle = nil
+  self._CurrentLevelAsset = nil ---@type LevelAssets
+  self._IsLoading = false
 end
 function LevelBuilder:Start()
   self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.PackageManager:FindPackage('core.ui'):GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', false)
-  self._LevelBuilderUIProgress = self._LevelBuilderUI:FindChild('Progress'):GetComponent(Ballance2.Sys.UI.Progress) ---@type Progress
-  self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:FindChild('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
-  self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:FindChild('PanelFailed').gameObject
-  self._LevelBuilderUIButtonBack = self._LevelBuilderUI:FindChild('PanelFailed/ButtonBack'):GetComponent(UnityEngine.UI.Button) ---@type Button
+  self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.Sys.UI.Progress) ---@type Progress
+  self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
+  self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:Find('PanelFailed').gameObject
+  self._LevelBuilderUIButtonBack = self._LevelBuilderUI:Find('PanelFailed/ButtonBack'):GetComponent(UnityEngine.UI.Button) ---@type Button
   self._LevelBuilderUIPanelFailed.gameObject:SetActive(false)
   self._LevelBuilderUI.gameObject:SetActive(false)
   self._LevelBuilderUIButtonBack.onClick:AddListener(function () self:UnLoadLevel()  end)
-  self._LevelLoaderNative = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelLoaderNative'):GetComponent(Ballance2.Game.GameLevelLoaderNative) ---@type GameLevelLoaderNative
+  self._LevelLoaderNative = self.gameObject:GetComponent(Ballance2.Game.GameLevelLoaderNative) ---@type GameLevelLoaderNative
+  self:UpdateErrStatus(false, nil)
 end
 function LevelBuilder:OnDestroy()
   if self.LevelBuilderUI ~= nil then
@@ -73,6 +77,8 @@ end
 function LevelBuilder:UpdateErrStatus(err, statuaCode, errMessage)  
   self._LevelBuilderUIPanelFailed.gameObject:SetActive(err)
   if err then
+    Log.D(TAG, 'Load level error {0} err:  {1}', { statuaCode, errMessage })
+    self._IsLoading = false
     self._LevelBuilderUITextErrorContent.text = 'Code: '..statuaCode..'\n'..errMessage
     Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal)
   end
@@ -81,8 +87,18 @@ end
 ---加载关卡
 ---@param name string 关卡文件名
 function LevelBuilder:LoadLevel(name)
+
+  if self._IsLoading then
+    Log.E(TAG, 'Level is loading! ')
+    return
+  end
+
+  self._IsLoading = true
+
   --播放加载声音
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
+
+  Log.D(TAG, 'Load level start')
 
   ---设置UI为初始状态
   self._LevelBuilderUI.gameObject:SetActive(true)
@@ -95,9 +111,9 @@ function LevelBuilder:LoadLevel(name)
     ---加载文件就绪回调
     ---@param prefab GameObject
     ---@param jsonString string
-    ---@param assetBundle any
-    function (prefab, jsonString, assetBundle)
-      self._CurrentLevelAssetBundle = assetBundle
+    ---@param level LevelAssets
+    function (prefab, jsonString, level)
+      self._CurrentLevelAsset = level
 
       --加载基础数据
       local status, res = pcall(json.decode, jsonString)
@@ -105,6 +121,8 @@ function LevelBuilder:LoadLevel(name)
         self:UpdateErrStatus(true, 'BAD_LEVEL_JSON', 'Failed to decode json, error: '..res)
         return
       end
+      
+      Log.D(TAG, 'Level asset loaded')
 
       self._CurrentLevelJson = res
       self._CurrentLevelPrefab = prefab
@@ -124,6 +142,8 @@ function LevelBuilder:LoadLevel(name)
       if missedPackages ~= '' then
         self:UpdateErrStatus(true, 'DEPENDS_CHECK_FAILED', '关卡依赖以下此模组，可能是模组未启用或加载失败: '..missedPackages)
       end
+
+      Log.D(TAG, 'Load level prefab')
 
       --载入Prefab
       self._CurrentLevelObject = Game.Manager:InstancePrefab(self._CurrentLevelPrefab, self.gameObject.transform, 'GameLevelMain')
@@ -145,15 +165,26 @@ function LevelBuilder:_LoadLevelInternal()
   Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_START', '*')
   --加载基础设置
   local level = self._CurrentLevelJson.level
+  local levelName = self._CurrentLevelJson.name
+
+  local SectorManager = GamePlay.SectorManager
+  local GamePlayManager = GamePlay.GamePlayManager
 
   self._CurrentLevelModuls = {}
   self._CurrentLevelSkyLayer = nil
   self._CurrentLevelFloors = {}
   
+  Log.D(TAG, 'Pre load')
   --调用自定义加载步骤 pre
   self:_CallLoadStep("pre")
+  self:CallLevelCustomModEvent('beforeLoad')
+  if level.customModEventName and level.customModEventName ~= '' then
+    Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { 'pre' })
+  end
 
-  --首先填充基础信息（出生点、节、结尾）
+  Log.D(TAG, 'Check config')
+
+  --首先检查配置是否正确
   if level.sectorCount ~= #level.sectors then
     self:UpdateErrStatus(true, 'BAD_CONFIG', 'level.sectorCount ~= #level.sectors')
     return
@@ -165,13 +196,7 @@ function LevelBuilder:_LoadLevelInternal()
   if level.sectorCount > 16 then
     self:UpdateErrStatus(true, 'BAD_CONFIG', '该关卡节太多（超过16）')
     return
-  end
-
-  GamePlay.SectorManager.CurrentLevelSectorCount = level.sectorCount
-  GamePlay.SectorManager.CurrentLevelSectors = {}
-  GamePlay.SectorManager.CurrentLevelRestPoints = {}
-  
-  --首先检查配置是否正确
+  end  
   if type(level.internalObjects) ~= "table" then
     self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' 字段错误')
     return
@@ -201,16 +226,42 @@ function LevelBuilder:_LoadLevelInternal()
     return
   end
 
+  Log.D(TAG, 'Load level data')
+
+  --首先填充基础信息（出生点、节、结尾）
+  SectorManager.CurrentLevelSectorCount = level.sectorCount
+  SectorManager.CurrentLevelSectors = {}
+  SectorManager.CurrentLevelRestPoints = {}
+  GamePlayManager.CurrentLevelName = self._CurrentLevelJson.name
+  GamePlayManager.CurrentEndWithUFO = level.endWithUFO or false
+
+  Log.D(TAG, 'Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
+
+  if type(level.defaultHighscoreData) == 'table' then
+    HighscoreManagerTryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
+  else
+    HighscoreManagerTryAddDefaultLevelHighScore(levelName, Clone(DefaultHightScoreLev01_11Data))
+  end
+
+  if level.startLife and level.startLife > 0 then
+    GamePlayManager.StartLife = level.startLife
+  end
+  if level.startPoint and level.startPoint > 0 then
+    GamePlayManager.StartPoint = level.startPoint
+  end
+  if level.levelScore and level.levelScore > 0 then
+    GamePlayManager.LevelScore = level.levelScore
+  end
+  
+
   self:UpdateLoadProgress(0.1)
 
   --加载
   coroutine.resume(coroutine.create(function()
-
-    local SectorManager = GamePlay.SectorManager
-    local GamePlayManager = GamePlay.GamePlayManager
-
     --加载内部对象
     -----------------------------
+
+    Log.D(TAG, 'Load level internal objects')
 
     --加载出生点和火焰
     -----------------------------
@@ -228,10 +279,10 @@ function LevelBuilder:_LoadLevelInternal()
           return
         end
 
-        table.insert(SectorManager.CurrentLevelRestPoints, {
+        SectorManager.CurrentLevelRestPoints[i] = {
           point = rp01,
-          modul = start
-        })
+          flame = start
+        }
       else
         local flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'))
         local r = GameObject.Find(level.internalObjects.PR_ResetPoints[tostring(i)])
@@ -245,10 +296,10 @@ function LevelBuilder:_LoadLevelInternal()
           return
         end
 
-        table.insert(SectorManager.CurrentLevelRestPoints, {
+        SectorManager.CurrentLevelRestPoints[i] = {
           point = r,
-          modul = flame
-        })
+          flame = flame
+        }
       end
       
     end
@@ -263,10 +314,13 @@ function LevelBuilder:_LoadLevelInternal()
     Yield(WaitForSeconds(0.1))
     self:UpdateLoadProgress(0.2)
 
+    Log.D(TAG, 'Load level floors')
+
     --加载 物理路面
     -----------------------------
     for _, floor in ipairs(level.floors) do
-
+      
+      local floorCount = 0
       local physicsData = GamePhysFloor[floor.name] 
       if physicsData ~= nil then
 
@@ -295,23 +349,19 @@ function LevelBuilder:_LoadLevelInternal()
             else
               Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
             end
-            
+            floorCount = floorCount + 1
           else
             Log.W(TAG, 'Not found floor  \''..name..'\' in type \''..floor.name..'\'')
           end
         end
-
+        
+        Log.D(TAG, 'Loaded floor '..floor.name..' count: '..floorCount)
       else
         Log.E(TAG, 'Unknow floor type \''..floor.name..'\'')
       end
     end
 
     self:UpdateLoadProgress(0.3)
-
-    --调用自定义加载步骤 modul
-    -----------------------------
-    self:_CallLoadStep("modul")
-    self:UpdateLoadProgress(0.4)
 
     --加载坠落检测区
     -----------------------------
@@ -321,7 +371,7 @@ function LevelBuilder:_LoadLevelInternal()
 
         --禁用Renderer使物体隐藏
         local renderer = go:AddComponent(Renderer) ---@type Renderer
-        if renderer ~ nil then renderer.enabled = false end
+        if renderer ~= nil then renderer.enabled = false end
         
         --添加幻影
         local phantom = go:AddComponent(PhysicsPhantom) ---@type PhysicsPhantom
@@ -340,6 +390,14 @@ function LevelBuilder:_LoadLevelInternal()
       end
     end
 
+    self:UpdateLoadProgress(0.4)
+
+    Log.D(TAG, 'Load level moduls')
+
+    --调用自定义加载步骤 modul
+    -----------------------------
+    self:_CallLoadStep("modul")
+
     self:UpdateLoadProgress(0.5)
 
     --加载 modul
@@ -348,6 +406,11 @@ function LevelBuilder:_LoadLevelInternal()
     for _, group in ipairs(level.groups) do
       local modul = self:FindRegisterModul(group.name)
       if modul ~= nil then
+        
+        local modulCount = 0
+
+        Log.D(TAG, 'Load modul '..group.name)
+
         for _, name in ipairs(group.objects) do
 
           if tickCount > 16 then
@@ -359,11 +422,13 @@ function LevelBuilder:_LoadLevelInternal()
           if go ~= nil then
             self:ReplacePrefab(go, modul)
             tickCount = tickCount + 1
+            modulCount = modulCount + 1
           else
             Log.W(TAG, 'Not found object \''..name..'\' in group \''..group.name..'\'')
           end 
         end
 
+        Log.D(TAG, 'Loaded modul '..group.name..' count : '..modulCount)
       else
         Log.W(TAG, 'Modul \''..group.name..'\' is not registered')
       end
@@ -372,12 +437,16 @@ function LevelBuilder:_LoadLevelInternal()
 
     self:UpdateLoadProgress(0.6)
 
+    Log.D(TAG, 'Load init moduls')
+
     --首次加载 modul
     -----------------------------
     Yield(WaitForSeconds(0.5))
     SectorManager:DoInitAllModuls();
     
     self:UpdateLoadProgress(0.7)
+
+    Log.D(TAG, 'Load level sector data')
 
     --填充节数据
     -----------------------------
@@ -394,7 +463,7 @@ function LevelBuilder:_LoadLevelInternal()
             Log.W(TAG, 'Not found modul \''..name..'\' in sectors.'..id)
           end
         end
-        SectorManager.CurrentLevelSectors[id] = {
+        SectorManager.CurrentLevelSectors[tonumber(id)] = {
           moduls = moduls
         }
       end
@@ -402,29 +471,33 @@ function LevelBuilder:_LoadLevelInternal()
 
     self:UpdateLoadProgress(0.8)
 
+    Log.D(TAG, 'Load sky and light')
+
     --加载天空盒和灯光
     -----------------------------
+    RenderSettings.fog = true
     if level.skyBox == 'custom' then
       --加载自定义天空盒
       if type(level.customSkyBox) ~= 'table' then
         Log.E(TAG, 'The skyBox is set to \'custom\', but \'customSkyBox\' field is not set')
-        return
+      else
+        Log.D(TAG, 'Load custom SkyBox')
+
+        local B = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.B)
+        local F = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.F)
+        local L = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.L)
+        local R = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.R)
+        local T = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.T)
+        local D = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.D)
+        if B == nil then Log.W(TAG, 'Failed to load customSkyBox.B texture') end
+        if F == nil then Log.W(TAG, 'Failed to load customSkyBox.F texture') end
+        if L == nil then Log.W(TAG, 'Failed to load customSkyBox.L texture') end
+        if R == nil then Log.W(TAG, 'Failed to load customSkyBox.R texture') end
+        if D == nil then Log.W(TAG, 'Failed to load customSkyBox.D texture') end
+
+        local skyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T)
+        GamePlayManager:CreateSkyAndLight('', skyMat, level.lightColor)
       end
-
-      local B = self._LevelLoaderNative:GetTextureAsset(self._CurrentLevelAssetBundle, level.customSkyBox.B)
-      local F = self._LevelLoaderNative:GetTextureAsset(self._CurrentLevelAssetBundle, level.customSkyBox.F)
-      local L = self._LevelLoaderNative:GetTextureAsset(self._CurrentLevelAssetBundle, level.customSkyBox.L)
-      local R = self._LevelLoaderNative:GetTextureAsset(self._CurrentLevelAssetBundle, level.customSkyBox.R)
-      local T = self._LevelLoaderNative:GetTextureAsset(self._CurrentLevelAssetBundle, level.customSkyBox.T)
-      local D = self._LevelLoaderNative:GetTextureAsset(self._CurrentLevelAssetBundle, level.customSkyBox.D)
-      if B == nil then Log.W(TAG, 'Failed to load customSkyBox.B texture') end
-      if F == nil then Log.W(TAG, 'Failed to load customSkyBox.F texture') end
-      if L == nil then Log.W(TAG, 'Failed to load customSkyBox.L texture') end
-      if R == nil then Log.W(TAG, 'Failed to load customSkyBox.R texture') end
-      if D == nil then Log.W(TAG, 'Failed to load customSkyBox.D texture') end
-
-      local skyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T)
-      GamePlayManager:CreateSkyAndLight('', skyMat, level.lightColor)
     else
       --使用自带天空盒 
       GamePlayManager:CreateSkyAndLight(level.skyBox, nil, level.lightColor)
@@ -445,18 +518,86 @@ function LevelBuilder:_LoadLevelInternal()
       self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
       oldSkyLayer:SetActive(false)
     end
+    local GameSettings = GameSettingsManager.GetSettings("core")
+    --如果设置禁用了云层，则隐藏
+    if not GameSettings:GetBool('video.cloud', true) then
+      self._CurrentLevelSkyLayer:SetActive(false)
+    end
+
+    Log.D(TAG, 'Load music')
+
+    --加载自定义音乐
+    -----------------------------
+    local customMusicTheme = level.customMusicTheme
+    if type(customMusicTheme) == 'table' then
+      if type(customMusicTheme.id) == 'nil' then
+        Log.E(TAG, 'The \'customMusicTheme.id\' field is not set')
+      else
+
+        local loadCustomAudio = function (name, orgArr)
+          local arr = {}
+          if type(orgArr) == 'table' then
+            for index, value in ipairs(orgArr) do
+              local audio = self._CurrentLevelAsset:GetAudioClipAsset(self._CurrentLevelAsset, value)
+              if audio ~= nil then
+                table.insert(arr, audio)
+              else
+                audio = Game.PackageManager:GetAudioClipAsset(value)
+                if audio ~= nil then
+                  table.insert(arr, audio)
+                else
+                  Log.W(TAG, 'Not found custom audio resource in customMusicTheme.'..name..'.'..index..' , name : '..value..' , now ignore this sound')
+                end
+              end
+            end
+          end
+          return arr
+        end
+        local id = tonumber(customMusicTheme.id)
+
+        Log.D(TAG, 'Load customMusicTheme '..id)
+
+        GamePlay.MusicManager.Musics[id] = {
+          atmos = loadCustomAudio(customMusicTheme.atmos),
+          musics = loadCustomAudio(customMusicTheme.musics),
+          baseInterval = customMusicTheme.baseInterval or 5,
+          maxInterval = customMusicTheme.baseInterval or 30,
+          atmoInterval = customMusicTheme.baseInterval or 6,
+          atmoMaxInterval = customMusicTheme.baseInterval or 15,
+        }
+      end
+    end
+    --设置音乐
+    if type(level.musicTheme) == "number" then
+      Log.D(TAG, 'Set MusicTheme '..level.musicTheme)
+      GamePlay.MusicManager:SetCurrentTheme(level.musicTheme)
+    else
+      Log.D(TAG, 'No MusicTheme')
+      GamePlay.MusicManager:SetCurrentTheme(0)
+    end
 
     self:UpdateLoadProgress(0.9)
+
+    Log.D(TAG, 'Load others')
 
     --调用自定义加载步骤 last
     -----------------------------
     self:_CallLoadStep("last")
+    self:CallLevelCustomModEvent('finishLoad')
+
+    Log.D(TAG, 'Load finish')
 
     self:UpdateLoadProgress(1)
+
+    --隐藏加载UI
+    Game.UIManager:MaskBlackSet(true)
+    self._LevelBuilderUI.gameObject:SetActive(false)
 
     --最后加载步骤
     -----------------------------
     GamePlayManager:Init()
+
+    self._IsLoading = false
   end))
 end
 
@@ -494,18 +635,34 @@ end
 
 ---卸载当前加载的关卡
 function LevelBuilder:UnLoadLevel()
-  --播放加载声音
-  Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
+  
+  if self._IsLoading then
+    Log.E(TAG, 'Level is loading! ')
+    return
+  end
+
+  self._IsLoading = true
   --
   coroutine.resume(coroutine.create(function()
+
+    Log.D(TAG, 'UnLoad moduls')
 
     --通知所有modul卸载
     GamePlay.SectorManager:DoUnInitAllModuls()
 
     Yield(WaitForSeconds(0.5))
 
+    Log.D(TAG, 'Clear all')
+
     --清空数据
     GamePlay.SectorManager:ClearAll() 
+
+    --删除音乐数据
+    local customMusicTheme = self._CurrentLevelJson.customMusicTheme
+    if type(customMusicTheme) == 'table' and type(customMusicTheme.id) == 'number' then
+      GamePlay.MusicManager.Musics[tostring(customMusicTheme.id)] = nil
+    end
+    GamePlay.MusicManager:SetCurrentTheme(1)
 
     --删除所有modul
     local tickCount = 0
@@ -539,14 +696,22 @@ function LevelBuilder:UnLoadLevel()
     self._CurrentLevelObject = nil
     self._CurrentLevelJson = nil
     self._CurrentLevelPrefab = nil
+    self._CurrentLevelModuls = {}
+    self._CurrentLevelFloors = {}
 
     Yield(WaitForSeconds(0.1))
+
+    Log.D(TAG, 'Unload level asset')
 
     --卸载AssetBundle
-    self._LevelLoaderNative:UnLoadLevel(self._CurrentLevelAssetBundle)
-    self._CurrentLevelAssetBundle = nil
+    self._LevelLoaderNative:UnLoadLevel(self._CurrentLevelAsset)
+    self._CurrentLevelAsset = nil
 
     Yield(WaitForSeconds(0.1))
+
+    Log.D(TAG, 'Unload level finish')
+
+    self._IsLoading = false
 
     --通知回到menulevel
     Game.Manager:RequestEnterLogicScense('MenuLevel')
@@ -595,6 +760,13 @@ end
 ---@param name string 名称
 function LevelBuilder:UnRegisterLoadStep(name)
   self._RegisteredLoadSteps[name] = nil
+end
+
+function LevelBuilder:CallLevelCustomModEvent(type) 
+  local level = self._CurrentLevelJson.level
+  if level.customModEventName and level.customModEventName ~= '' then
+    Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { type })
+  end
 end
 function LevelBuilder:_CallLoadStep(type)
   for _, value in pairs(self._RegisteredLoadSteps) do

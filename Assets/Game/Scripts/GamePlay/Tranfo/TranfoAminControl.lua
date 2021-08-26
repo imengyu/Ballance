@@ -11,7 +11,7 @@ local GameSoundType = Ballance2.Sys.Services.GameSoundType
 ---@field _AnimTrafo_Ringpart2 GameObject
 ---@field _AnimTrafo_Ringpart3 GameObject
 ---@field _AnimTrafo_Ringpart4 GameObject
----@field _AnimTrafo_Animation Animation 
+---@field _AnimTrafo_Animation Animator 
 TranfoAminControl = ClassicObject:extend()
 
 function TranfoAminControl:new()
@@ -36,6 +36,8 @@ function TranfoAminControl:Start()
   --获取变球器电流材质
   renderer = self._AnimTrafo_Flashfield:GetComponent(Renderer) ---@type Renderer
   self._AnimTrafo_FlashfieldMat = renderer.material
+
+  GamePlay.TranfoManager = self
 end
 function TranfoAminControl:Update()
   if self._Flashfield then

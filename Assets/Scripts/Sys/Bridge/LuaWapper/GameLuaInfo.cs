@@ -109,6 +109,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 case "UnityEngine.Camera": return gameObjectVal.GetComponent<UnityEngine.Camera>();
                 case "UnityEngine.MeshRenderer": return gameObjectVal.GetComponent<UnityEngine.MeshRenderer>();
                 case "UnityEngine.MeshFilter": return gameObjectVal.GetComponent<UnityEngine.MeshFilter>();
+                case "UnityEngine.Animator": return gameObjectVal.GetComponent<UnityEngine.Animator>();
                 default: { 
                     var c = gameObjectVal.GetComponent(componentClassVal);
                     if(c == null)

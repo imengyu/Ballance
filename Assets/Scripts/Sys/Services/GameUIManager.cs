@@ -185,6 +185,16 @@ namespace Ballance2.Sys.Services
             UIToast.gameObject.SetActive(false);
             UIToast.SetAsLastSibling();
             EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
+
+            var keyListener = KeyListener.Get(UIRoot.gameObject);
+            keyListener.AddKeyListen(KeyCode.Escape, (keyListener, down) => {
+                //Esc键返回上一页
+                if(pageStack.Count > 0) {
+                    var page = pageStack[pageStack.Count - 1];
+                    if (page.CanEscBack) 
+                        BackPreviusPage();
+                }
+            });
         }
 
         #endregion
@@ -261,6 +271,7 @@ namespace Ballance2.Sys.Services
             
             RegisterUIPrefab("PageCommon", GameUIPrefabType.Page, GameStaticResourcesPool.FindStaticPrefabs("GameUIPageBallanceCommon"));
             RegisterUIPrefab("PageTransparent", GameUIPrefabType.Page, GameStaticResourcesPool.FindStaticPrefabs("GameUIPageBallanceTransparent"));
+            RegisterUIPrefab("PageWide", GameUIPrefabType.Page, GameStaticResourcesPool.FindStaticPrefabs("GameUIPageBallanceWide"));
         }
 
         #endregion

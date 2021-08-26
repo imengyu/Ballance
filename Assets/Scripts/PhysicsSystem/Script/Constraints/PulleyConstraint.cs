@@ -26,7 +26,7 @@ namespace PhysicsRT {
             CreateLastStep(PhysicsApi.API.CreatePulleyConstraint(ptr, otherPtr, 
                 pivotAWRef.transform.position, pivotBWRef.transform.position,
                 pulleyPivotAWRef.transform.position, pulleyPivotBWRef.transform.position, 
-                leverageRatio, GetConstraintBreakData()));
+                leverageRatio, GetConstraintBreakData(), Priority));
         }
     }
 }

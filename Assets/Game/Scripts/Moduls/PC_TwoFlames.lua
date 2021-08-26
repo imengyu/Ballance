@@ -12,16 +12,15 @@ function PC_TwoFlames:Start()
   self.FlameSmallLeft:SetActive(false)
   self.FlameSmallRight:SetActive(false)
   self.Flame:SetActive(false)
-  self.CheckPointTigger.onOverlappingCollidableAdd = {"+=",
   ---@param phantom PhysicsPhantom
   ---@param otherBody PhysicsBody
-  function (phantom, otherBody)
+  self.CheckPointTigger.onOverlappingCollidableAdd = function (phantom, otherBody)
     if not self.CheckPointActived and otherBody.gameObject.tag == 'Ball' then
       --触发下一关
       self.CheckPointActived = true;
       GamePlay.SectorManager:NextSector()
     end
-  end}
+  end
 end
 
 function PC_TwoFlames:Active()

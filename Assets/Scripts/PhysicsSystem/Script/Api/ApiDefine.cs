@@ -164,23 +164,23 @@ namespace PhysicsRT
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnDestoryConstraints(IntPtr constraints);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateBallAndSocketConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr breakable);
+  public delegate IntPtr fnCreateBallAndSocketConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateFixedConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr breakable);
+  public delegate IntPtr fnCreateFixedConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateStiffSpringConstraint(IntPtr body, IntPtr otherBody, IntPtr povitAW, IntPtr povitBW, float springMin, float springMax, IntPtr breakable);
+  public delegate IntPtr fnCreateStiffSpringConstraint(IntPtr body, IntPtr otherBody, IntPtr povitAW, IntPtr povitBW, float springMin, float springMax, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateHingeConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, IntPtr breakable);
+  public delegate IntPtr fnCreateHingeConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateLimitedHingeConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, float agularLimitMin, float agularLimitMax, IntPtr breakable, IntPtr motorData);
+  public delegate IntPtr fnCreateLimitedHingeConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, float agularLimitMin, float agularLimitMax, IntPtr breakable, IntPtr motorData, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateWheelConstraint(IntPtr wheelRigidBody, IntPtr chassis, IntPtr povit, IntPtr axle, IntPtr suspension, IntPtr steering, float suspensionLimitMin, float suspensionLimitMax, float suspensionStrength, float suspensionDamping, IntPtr breakable);
+  public delegate IntPtr fnCreateWheelConstraint(IntPtr wheelRigidBody, IntPtr chassis, IntPtr povit, IntPtr axle, IntPtr suspension, IntPtr steering, float suspensionLimitMin, float suspensionLimitMax, float suspensionStrength, float suspensionDamping, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreatePulleyConstraint(IntPtr body, IntPtr otherBody, IntPtr bodyPivot0, IntPtr bodyPivots1, IntPtr worldPivots0, IntPtr worldPivots1, float leverageRatio, IntPtr breakable);
+  public delegate IntPtr fnCreatePulleyConstraint(IntPtr body, IntPtr otherBody, IntPtr bodyPivot0, IntPtr bodyPivots1, IntPtr worldPivots0, IntPtr worldPivots1, float leverageRatio, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreatePrismaticConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, int allowRotationAroundAxis, float mmax, float mmin, float mag, IntPtr breakable, IntPtr motorData);
+  public delegate IntPtr fnCreatePrismaticConstraint(IntPtr body, IntPtr otherBody, IntPtr povit, IntPtr axis, int allowRotationAroundAxis, float mmax, float mmin, float mag, IntPtr breakable, IntPtr motorData, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateCogWheelConstraint(IntPtr body, IntPtr otherBody, IntPtr rotationPivotA, IntPtr rotationAxisA, float radiusA, IntPtr rotationPivotB, IntPtr rotationAxisB, float radiusB, IntPtr breakable);
+  public delegate IntPtr fnCreateCogWheelConstraint(IntPtr body, IntPtr otherBody, IntPtr rotationPivotA, IntPtr rotationAxisA, float radiusA, IntPtr rotationPivotB, IntPtr rotationAxisB, float radiusB, IntPtr breakable, int priority);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnRigidBodyApplyForce(IntPtr body, float delteTime, IntPtr force);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -682,13 +682,13 @@ namespace PhysicsRT
       return IntPtr.Zero;
     }
 
-    public IntPtr CreateBallAndSocketConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, sConstraintBreakData breakable) {
+    public IntPtr CreateBallAndSocketConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreateBallAndSocketConstraint == null)
         throw new ApiNotFoundException("CreateBallAndSocketConstraint");
 
       var povitPtr = Vector3ToNative3(povit);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreateBallAndSocketConstraint(body, otherBody, povitPtr, breakablePtr);
+      var rs = _CreateBallAndSocketConstraint(body, otherBody, povitPtr, breakablePtr, (int)priority);
       FreeNativeVector3(povitPtr);
       Marshal.FreeHGlobal(breakablePtr);
 
@@ -696,13 +696,13 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateFixedConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, sConstraintBreakData breakable) {
+    public IntPtr CreateFixedConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreateFixedConstraint == null)
         throw new ApiNotFoundException("CreateFixedConstraint");
 
       var povitPtr = Vector3ToNative3(povit);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreateFixedConstraint(body, otherBody, povitPtr, breakablePtr);
+      var rs = _CreateFixedConstraint(body, otherBody, povitPtr, breakablePtr, (int)priority);
       FreeNativeVector3(povitPtr);
       Marshal.FreeHGlobal(breakablePtr);
 
@@ -710,14 +710,14 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateStiffSpringConstraint(IntPtr body, IntPtr otherBody, Vector3 povitAW, Vector3 povitBW, float springMin, float springMax, sConstraintBreakData breakable) {
+    public IntPtr CreateStiffSpringConstraint(IntPtr body, IntPtr otherBody, Vector3 povitAW, Vector3 povitBW, float springMin, float springMax, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreateStiffSpringConstraint == null)
         throw new ApiNotFoundException("CreateStiffSpringConstraint");
 
       var povitAWPtr = Vector3ToNative3(povitAW);
       var povitBWPtr = Vector3ToNative3(povitBW);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreateStiffSpringConstraint(body, otherBody, povitAWPtr, povitBWPtr, springMin, springMax, breakablePtr);
+      var rs = _CreateStiffSpringConstraint(body, otherBody, povitAWPtr, povitBWPtr, springMin, springMax, breakablePtr, (int)priority);
       FreeNativeVector3(povitAWPtr);
       FreeNativeVector3(povitBWPtr);
       Marshal.FreeHGlobal(breakablePtr);
@@ -726,14 +726,14 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateHingeConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, sConstraintBreakData breakable) {
+    public IntPtr CreateHingeConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreateHingeConstraint == null)
         throw new ApiNotFoundException("CreateHingeConstraint");
 
       var povitPtr = Vector3ToNative3(povit);
       var axisPtr = Vector3ToNative3(axis);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreateHingeConstraint(body, otherBody, povitPtr, axisPtr, breakablePtr);
+      var rs = _CreateHingeConstraint(body, otherBody, povitPtr, axisPtr, breakablePtr, (int)priority);
       FreeNativeVector3(povitPtr);
       FreeNativeVector3(axisPtr);
       Marshal.FreeHGlobal(breakablePtr);
@@ -742,7 +742,7 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateLimitedHingeConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, float agularLimitMin, float agularLimitMax, sConstraintBreakData breakable, sConstraintMotorData motorData) {
+    public IntPtr CreateLimitedHingeConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, float agularLimitMin, float agularLimitMax, sConstraintBreakData breakable, sConstraintMotorData motorData, ConstraintPriority priority) {
       if (_CreateLimitedHingeConstraint == null)
         throw new ApiNotFoundException("CreateLimitedHingeConstraint");
 
@@ -750,7 +750,7 @@ namespace PhysicsRT
       var axisPtr = Vector3ToNative3(axis);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
       var motoDataPtr = ConstraintMotorDataToNative(motorData);
-      var rs = _CreateLimitedHingeConstraint(body, otherBody, povitPtr, axisPtr, agularLimitMin, agularLimitMax, breakablePtr, motoDataPtr);
+      var rs = _CreateLimitedHingeConstraint(body, otherBody, povitPtr, axisPtr, agularLimitMin, agularLimitMax, breakablePtr, motoDataPtr, (int)priority);
       FreeNativeVector3(povitPtr);
       FreeNativeVector3(axisPtr);
       Marshal.FreeHGlobal(breakablePtr);
@@ -760,7 +760,7 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateWheelConstraint(IntPtr wheelRigidBody, IntPtr chassis, Vector3 povit, Vector3 axle, Vector3 suspension, Vector3 steering, float suspensionLimitMin, float suspensionLimitMax, float suspensionStrength, float suspensionDamping, sConstraintBreakData breakable) {
+    public IntPtr CreateWheelConstraint(IntPtr wheelRigidBody, IntPtr chassis, Vector3 povit, Vector3 axle, Vector3 suspension, Vector3 steering, float suspensionLimitMin, float suspensionLimitMax, float suspensionStrength, float suspensionDamping, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreateWheelConstraint == null)
         throw new ApiNotFoundException("CreateWheelConstraint");
 
@@ -769,7 +769,7 @@ namespace PhysicsRT
       var suspensionPtr = Vector3ToNative3(suspension);
       var steeringPtr = Vector3ToNative3(steering);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreateWheelConstraint(wheelRigidBody, chassis, povitPtr, axlePtr, suspensionPtr, steeringPtr, suspensionLimitMin, suspensionLimitMax, suspensionStrength, suspensionDamping, breakablePtr);
+      var rs = _CreateWheelConstraint(wheelRigidBody, chassis, povitPtr, axlePtr, suspensionPtr, steeringPtr, suspensionLimitMin, suspensionLimitMax, suspensionStrength, suspensionDamping, breakablePtr, (int)priority);
       FreeNativeVector3(axlePtr); 
       FreeNativeVector3(povitPtr);
       FreeNativeVector3(suspensionPtr);
@@ -780,7 +780,7 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreatePulleyConstraint(IntPtr body, IntPtr otherBody, Vector3 bodyPivot0, Vector3 bodyPivots1, Vector3 worldPivots0, Vector3 worldPivots1, float leverageRatio, sConstraintBreakData breakable) {
+    public IntPtr CreatePulleyConstraint(IntPtr body, IntPtr otherBody, Vector3 bodyPivot0, Vector3 bodyPivots1, Vector3 worldPivots0, Vector3 worldPivots1, float leverageRatio, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreatePulleyConstraint == null)
         throw new ApiNotFoundException("CreatePulleyConstraint");
 
@@ -789,7 +789,7 @@ namespace PhysicsRT
       var worldPivots0Ptr = Vector3ToNative3(worldPivots0);
       var worldPivots1Ptr = Vector3ToNative3(worldPivots1);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreatePulleyConstraint(body, otherBody, bodyPivot0Ptr, bodyPivots1Ptr, worldPivots0Ptr, worldPivots1Ptr, leverageRatio, breakablePtr);
+      var rs = _CreatePulleyConstraint(body, otherBody, bodyPivot0Ptr, bodyPivots1Ptr, worldPivots0Ptr, worldPivots1Ptr, leverageRatio, breakablePtr, (int)priority);
       FreeNativeVector3(bodyPivot0Ptr);
       FreeNativeVector3(bodyPivots1Ptr);
       FreeNativeVector3(worldPivots0Ptr);
@@ -800,7 +800,7 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreatePrismaticConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, bool allowRotationAroundAxis, float mmax, float mmin, float mag, sConstraintBreakData breakable, sConstraintMotorData motorData) {
+    public IntPtr CreatePrismaticConstraint(IntPtr body, IntPtr otherBody, Vector3 povit, Vector3 axis, bool allowRotationAroundAxis, float mmax, float mmin, float mag, sConstraintBreakData breakable, sConstraintMotorData motorData, ConstraintPriority priority) {
       if (_CreatePrismaticConstraint == null)
         throw new ApiNotFoundException("CreatePrismaticConstraint");
 
@@ -809,7 +809,7 @@ namespace PhysicsRT
       
       var breakablePtr = ConstraintBreakDataToNative(breakable);
       var motoDataPtr = ConstraintMotorDataToNative(motorData);
-      var rs = _CreatePrismaticConstraint(body, otherBody, povitPtr, axisPtr, BoolToInt(allowRotationAroundAxis), mmax, mmin, mag, breakablePtr, motoDataPtr);
+      var rs = _CreatePrismaticConstraint(body, otherBody, povitPtr, axisPtr, BoolToInt(allowRotationAroundAxis), mmax, mmin, mag, breakablePtr, motoDataPtr, (int)priority);
       FreeNativeVector3(povitPtr);
       FreeNativeVector3(axisPtr);
       Marshal.FreeHGlobal(breakablePtr);
@@ -819,7 +819,7 @@ namespace PhysicsRT
 
       return rs;
     }
-    public IntPtr CreateCogWheelConstraint(IntPtr body, IntPtr otherBody, Vector3 rotationPivotA, Vector3 rotationAxisA, float radiusA, Vector3 rotationPivotB, Vector3 rotationAxisB, float radiusB, sConstraintBreakData breakable) {
+    public IntPtr CreateCogWheelConstraint(IntPtr body, IntPtr otherBody, Vector3 rotationPivotA, Vector3 rotationAxisA, float radiusA, Vector3 rotationPivotB, Vector3 rotationAxisB, float radiusB, sConstraintBreakData breakable, ConstraintPriority priority) {
       if (_CreateCogWheelConstraint == null)
         throw new ApiNotFoundException("CreateCogWheelConstraint");
 
@@ -828,7 +828,7 @@ namespace PhysicsRT
       var rotationPivotBPtr = Vector3ToNative3(rotationPivotB);
       var rotationAxisBPtr = Vector3ToNative3(rotationAxisB);
       var breakablePtr = ConstraintBreakDataToNative(breakable);
-      var rs = _CreateCogWheelConstraint(body, otherBody, rotationPivotAPtr, rotationAxisAPtr, radiusA, rotationPivotBPtr, rotationAxisBPtr, radiusB, breakablePtr);
+      var rs = _CreateCogWheelConstraint(body, otherBody, rotationPivotAPtr, rotationAxisAPtr, radiusA, rotationPivotBPtr, rotationAxisBPtr, radiusB, breakablePtr, (int)priority);
       FreeNativeVector3(rotationPivotAPtr);
       FreeNativeVector3(rotationAxisAPtr);
       FreeNativeVector3(rotationPivotBPtr);

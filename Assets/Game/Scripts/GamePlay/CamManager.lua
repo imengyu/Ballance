@@ -36,10 +36,10 @@ CamManager = ClassicObject:extend()
 function CamManager:new()
   self._CameraRotateTime = 0.5
   self._CameraRotateUpTime = 0.8
-  self._CameraNormalZ = -16
+  self._CameraNormalX = -16
   self._CameraNormalY = 30
   self._CameraSpaceY = 60
-  self._CameraSpaceZ = -10
+  self._CameraSpaceX = -10
   self.CamRightVector = Vector3.right
   self.CamLeftVector = Vector3.left
   self.CamForwerdVector = Vector3.forward
@@ -57,11 +57,11 @@ function CamManager:new()
   self._CamRotateUpTick = 0
   self._CamRotateUpStart = { 
     y = 0,
-    z = 0
+    x = 0
   }
   self._CamRotateUpTarget = { 
     y = 0,
-    z = 0
+    x = 0
   }
   self._CamOutSpeed = Vector3.zero
   self._CamRotate = 0
@@ -98,7 +98,7 @@ function CamManager:FixedUpdate()
     else
       v = self._CamRotateSpeedCurve:Evaluate(self._CamRotateUpTick / self._CameraRotateUpTime)
     end
-    self.transform.localPosition = Vector3(0, self._CamRotateUpStart.y + v * self._CamRotateUpTarget.y, self._CamRotateUpStart.z + v * self._CamRotateUpTarget.z)
+    self.transform.localPosition = Vector3(self._CamRotateUpStart.x + v * self._CamRotateUpTarget.x, self._CamRotateUpStart.y + v * self._CamRotateUpTarget.y, 0)
     if v >= 1 then
       self._CamIsRotateingUp = false
     end
@@ -116,7 +116,7 @@ function CamManager:ResetVector()
 end
 ---通过旋转方向获取目标角度
 ---@param type number CamRotateType
-function CamManager:GetRotateDegree(type)
+function CamManager:GetRotateDegreeByType(type)
   if type == CamRotateType.North then return 0
   elseif type == CamRotateType.East then return 90
   elseif type == CamRotateType.South then return 180
@@ -127,18 +127,37 @@ end
 
 --#region 公共方法
 
+---通过RestPoint占位符设置摄像机的方向和位置
+---@param go GameObject RestPoint占位符
+function CamManager:SetPosAndDirByRestPoint(go) 
+  local rot = go.transform.eulerAngles.y
+  local type = 0
+  rot = rot % 360;
+  if rot < 0 then rot = rot + 360 
+  elseif rot > 315 then rot = rot - 360 
+  end
+
+  if rot >= -45 and rot < 45 then type = CamRotateType.North
+  elseif rot >= 45 and rot < 135 then type = CamRotateType.East
+  elseif rot >= 135 and rot < 225 then type = CamRotateType.South
+  elseif rot >= 225 and rot < 315 then type = CamRotateType.West
+  end
+
+  self._CameraHostTransform.eulerAngles = Vector3(0, self:GetRotateDegreeByType(type), 0)
+  self._CameraHostTransform.position = go.transform.position
+end
 ---空格键向上旋转
 ---@param enable boolean
 function CamManager:RotateUp(enable)
   self.CamIsSpaced = enable
   self._CamRotateUpStart.y = self.transform.localPosition.y
-  self._CamRotateUpStart.z = self.transform.localPosition.z
+  self._CamRotateUpStart.x = self.transform.localPosition.x
   if enable then
     self._CamRotateUpTarget.y = self._CameraSpaceY - self._CamRotateUpStart.y
-    self._CamRotateUpTarget.z = self._CameraSpaceZ - self._CamRotateUpStart.z
+    self._CamRotateUpTarget.X = self._CameraSpaceX - self._CamRotateUpStart.x
   else
     self._CamRotateUpTarget.y = self._CameraNormalY - self._CamRotateUpStart.y
-    self._CamRotateUpTarget.z = self._CameraNormalZ - self._CamRotateUpStart.z
+    self._CamRotateUpTarget.x = self._CameraNormalX - self._CamRotateUpStart.x
   end
   self._CamRotateUpTick = 0
   self._CamIsRotateingUp = true
@@ -148,7 +167,7 @@ end
 ---@param val number 方向 CamRotateValue
 function CamManager:RotateTo(val)
   self.CamRotateValue = val
-  local target = self:GetRotateDegree(self.CamRotateValue)
+  local target = self:GetRotateDegreeByType(self.CamRotateValue)
 
   self._CamRotateStartDegree = self._CameraHostTransform.eulerAngles.y
   if(target > self._CamRotateStartDegree) then
@@ -164,7 +183,7 @@ end
 function CamManager:RotateRight()
   self.CamRotateValue = self.CamRotateValue - 1
   if(self.CamRotateValue < 0) then self.CamRotateValue = 3 end
-  local target = self:GetRotateDegree(self.CamRotateValue)
+  local target = self:GetRotateDegreeByType(self.CamRotateValue)
 
   self._CamRotateStartDegree = self._CameraHostTransform.eulerAngles.y
   if(target > self._CamRotateStartDegree) then
@@ -180,7 +199,7 @@ end
 function CamManager:RotateLeft()
   self.CamRotateValue = self.CamRotateValue + 1
   if(self.CamRotateValue > 3) then self.CamRotateValue = 0 end
-  local target = self:GetRotateDegree(self.CamRotateValue)
+  local target = self:GetRotateDegreeByType(self.CamRotateValue)
 
   self._CamRotateStartDegree = self._CameraHostTransform.eulerAngles.y
   if(target < self._CamRotateStartDegree) then

@@ -29,6 +29,7 @@ public class GameEntryEditor : Editor
     private SerializedProperty DebugCustomEntryEvent;
     private SerializedProperty DebugCustomEntries;
     private SerializedProperty DebugLoadCustomPackages;
+    private SerializedProperty DebugSkipIntro;
 
     private void OnEnable()
     {
@@ -56,6 +57,7 @@ public class GameEntryEditor : Editor
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
         DebugCustomEntries = serializedObject.FindProperty("DebugCustomEntries");
         DebugLoadCustomPackages = serializedObject.FindProperty("DebugLoadCustomPackages");
+        DebugSkipIntro = serializedObject.FindProperty("DebugSkipIntro");
     }
     private void OnDisable()
     {
@@ -102,6 +104,7 @@ public class GameEntryEditor : Editor
         EditorGUI.EndDisabledGroup();
         EditorGUILayout.PropertyField(DebugEnableLuaDebugger);
         EditorGUILayout.PropertyField(DebugType);
+        EditorGUILayout.PropertyField(DebugSkipIntro);
         
         EditorGUI.BeginDisabledGroup(DebugType.enumValueIndex == (int)GameDebugType.NoDebug || DebugType.enumValueIndex == (int)GameDebugType.FullDebug);
         EditorGUILayout.PropertyField(DebugInitPackages);

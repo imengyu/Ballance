@@ -999,6 +999,7 @@ namespace Ballance2.Sys.Package
         public virtual Sprite GetSpriteAsset(string pathorname) { return GetAsset<Sprite>(pathorname); }
         public virtual Material GetMaterialAsset(string pathorname) { return GetAsset<Material>(pathorname); }
         public virtual PhysicMaterial GetPhysicMaterialAsset(string pathorname) { return GetAsset<PhysicMaterial>(pathorname); }
+        public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
        
         /// <summary>
         /// 读取模块资源包中的Lua代码资源

@@ -26,7 +26,7 @@ namespace PhysicsRT {
                 throw new Exception("This body hasn't been created yet");
             CreateLastStep(PhysicsApi.API.CreatePrismaticConstraint(ptr, otherPtr, PovitRef.transform.position, AxisRef.transform.forward.normalized, 
                 AllowRotationAroundAxis, MaxLinearLimit, MinLinearLimit, MaxFrictionForce,
-                GetConstraintBreakData(), GetConstraintMotorData()));
+                GetConstraintBreakData(), GetConstraintMotorData(), Priority));
         }
     }
 }

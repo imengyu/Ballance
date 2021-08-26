@@ -27,7 +27,7 @@ namespace PhysicsRT {
                     throw new Exception("ConnectedBody hasn't been created yet");
             }
             CreateLastStep(PhysicsApi.API.CreateWheelConstraint(ptr, otherPtr, (Povit), Axle, Suspension,
-                Steering, SuspensionLimitMin, SuspensionLimitMax, SuspensionStrength, SuspensionDamping, GetConstraintBreakData()));
+                Steering, SuspensionLimitMin, SuspensionLimitMax, SuspensionStrength, SuspensionDamping, GetConstraintBreakData(), Priority));
         }
     }
 }

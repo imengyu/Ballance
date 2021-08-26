@@ -9,6 +9,7 @@ local Yield = UnityEngine.Yield
 local Mathf = UnityEngine.Mathf
 local Time = UnityEngine.Time
 local WaitForSeconds = UnityEngine.WaitForSeconds
+local PlayerPrefs = UnityEngine.PlayerPrefs
 
 ---创建主游戏菜单UI
 ---@param package GamePackage
@@ -17,12 +18,23 @@ function CreateGamePlayUI(package)
   local PageGamePause = GameUIManager:RegisterPage('PageGamePause', 'PageCommon')
   local PageGameQuitAsk = GameUIManager:RegisterPage('PageGameQuitAsk', 'PageCommon')
   local PageGameRestartAsk = GameUIManager:RegisterPage('PageGameRestartAsk', 'PageCommon')
+  local PageGameWin = GameUIManager:RegisterPage('PageGameWin', 'PageCommon')
+  local PageEndScore = GameUIManager:RegisterPage('PageEndScore', 'PageTransparent')
+  local PageHighscoreEntry = GameUIManager:RegisterPage('PageHighscoreEntry', 'PageCommon')
 
   PageGamePause:CreateContent(package)
   PageGameQuitAsk:CreateContent(package)
   PageGameRestartAsk:CreateContent(package)
   PageGamePause:CreateContent(package)
+  PageGameWin:CreateContent(package)
+  PageGameWin.CanEscBack = false
+  PageEndScore:CreateContent(package)
+  PageEndScore.CanEscBack = false
+  PageHighscoreEntry:CreateContent(package)
+  PageHighscoreEntry.CanEscBack = false
 
+  MessageCenter:SubscribeEvent('BtnGameHomeClick', function () GamePlay.GamePlayManager:QuitLevel() end)
+  MessageCenter:SubscribeEvent('BtnNextLevellick', function () GamePlay.GamePlayManager:NextLevel() end)
   MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
   MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
   MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
@@ -35,6 +47,19 @@ function CreateGamePlayUI(package)
   end)
   MessageCenter:SubscribeEvent('BtnResumeClick', function () 
     Game.GamePlay.GamePlayManager:ResumeLevel()
+  end)
+  local highscoreEntryName = ''
+  local HighscoreEntryName = MessageCenter:SubscribeValueBinder('HighscoreEntryName', function(val)
+    highscoreEntryName = val
+  end)
+  PageHighscoreEntry.OnShow = function ()
+    HighscoreEntryName:Invoke(PlayerPrefs.GetString('LastEnterHighscoreEntry', 'NAME'))
+  end
+
+  MessageCenter:SubscribeEvent('BtnHighscrollEnterClick', function () 
+    PlayerPrefs.SetString('LastEnterHighscoreEntry', highscoreEntryName)
+    GamePlay.WinScoreUIControl:SaveHighscore(highscoreEntryName)
+    GameUIManager:GoPage('PageGameWin') 
   end)
 end
 
@@ -57,7 +82,7 @@ function GamePlayUIControl:new()
 end
 function GamePlayUIControl:Start() 
   self._ScoreBoardActive.gameObject:SetActive(false)
-  GamePlay.GamePlayUI = self
+  GameUI.GamePlayUI = self
 end
 function GamePlayUIControl:Update()
   if self._CurrentMoveBaffleTick < self._MoveBaffleSec then
@@ -70,13 +95,13 @@ function GamePlayUIControl:Update()
 end
 
 ---闪烁分数面板
-function GamePlayUIControl:TwinkleScore() 
+function GamePlayUIControl:TwinklePoint() 
   self._ScoreBoardActive.gameObject:SetActive(true)
   GameUIManager.UIFadeManager:AddFadeOut(self._ScoreBoardActive, 1, true)
 end
 ---设置分数面板文字
 ---@param score number|string 分数面板文字
-function GamePlayUIControl:SetScoreText(score) 
+function GamePlayUIControl:SetPointText(score) 
   if type(score) == "number" then
     self._ScoreText.text = string.format("%d", score)
   elseif type(score) == "string" then 

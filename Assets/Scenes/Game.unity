@@ -513,6 +513,9 @@ MonoBehaviour:
   - Object: {fileID: 1642299784351381579, guid: cf51ecebc3ed7f446bf4fac188b4bed2,
       type: 3}
     Name: GameUIPageBallanceTransparent
+  - Object: {fileID: 3218178621724588906, guid: 58f6318c4b7231442998208e5403560e,
+      type: 3}
+    Name: GameUIPageBallanceWide
   GameAssets:
   - Object: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     Name: FontConsole
@@ -539,7 +542,7 @@ MonoBehaviour:
   DebugMode: 1
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugEnableLuaDebugger: 0
+  DebugEnableLuaDebugger: 1
   DebugType: 0
   DebugInitPackages:
   - Enable: 1
@@ -560,6 +563,7 @@ MonoBehaviour:
   - CoreDebugLevelBuliderEntry
   - CoreDebugOthersEntry
   DebugLoadCustomPackages: 1
+  DebugSkipIntro: 1
   GameBaseCamera: {fileID: 108933074}
   GameCanvas: {fileID: 1391487607}
   GameGlobalErrorUI: {fileID: 1799846637}

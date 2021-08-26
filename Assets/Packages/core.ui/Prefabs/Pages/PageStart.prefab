@@ -170,6 +170,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev01Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -321,6 +361,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev02Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -472,6 +552,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev10Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -623,6 +743,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev03Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -774,6 +934,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev11Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1126,6 +1326,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev07Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1277,6 +1517,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev06Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1428,6 +1708,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev08Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1743,6 +2063,46 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u81EA\u5B9A\u4E49\u5173\u5361"
       objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnCustomLevelClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1894,6 +2254,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev09Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2045,6 +2445,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev12Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2196,6 +2636,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev05Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2347,6 +2827,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8,
         type: 3}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 139202735468657093}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnStartLev04Click
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554,
         type: 3}
       propertyPath: m_Pivot.x

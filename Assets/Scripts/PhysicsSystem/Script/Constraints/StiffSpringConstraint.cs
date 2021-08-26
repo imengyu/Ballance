@@ -23,7 +23,7 @@ namespace PhysicsRT {
                     throw new Exception("ConnectedBody hasn't been created yet");
             }
             CreateLastStep(PhysicsApi.API.CreateStiffSpringConstraint(ptr, otherPtr, PovitAWRef.transform.position, PovitBWRef.transform.position, 
-                SpringMin, SpringMax, GetConstraintBreakData()));
+                SpringMin, SpringMax, GetConstraintBreakData(), Priority));
         }
     }
 }

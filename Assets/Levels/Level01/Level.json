@@ -6,10 +6,12 @@
   "requiredPackages": [],
   "level": {
     "firstBall": "BallWood",
+    "levelScore": 100,
+    "startPoint": 1000,
+    "startLife": 3,
     "musicTheme": 1,
     "skyBox": "L",
     "skyLayer": "SkyLayer",
-    "customSkyBox": null,
     "lightColor": "#6D6050",
     "customModEventName": "CoreTutorialLevelEventHandler",
     "sectorCount": 4,

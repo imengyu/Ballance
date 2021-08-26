@@ -1,3 +1,4 @@
+using Ballance2.Sys.Package;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.Utils;
 using SLua;
@@ -40,7 +41,10 @@ namespace Ballance2.Sys.Bridge.Lua
                     throw new RequireFailedException("Package " + packname + " not found");
                 return pack.RequireLuaFile(pathOrName.Substring(lastIdx + 3));
             } 
-
+            //有斜杠
+            if(pathOrName.Contains("/")) 
+                return GamePackage.GetSystemPackage().RequireLuaFile(pathOrName.Substring(lastIdx + 3));
+            
             //普通require
             return originalRequire(pathOrName);
         }

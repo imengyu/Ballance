@@ -19,7 +19,7 @@ namespace PhysicsRT {
                 if(otherPtr == IntPtr.Zero)
                     throw new Exception("ConnectedBody hasn't been created yet");
             }
-            CreateLastStep(PhysicsApi.API.CreateBallAndSocketConstraint(ptr, otherPtr, PovitRef.transform.position, GetConstraintBreakData()));
+            CreateLastStep(PhysicsApi.API.CreateBallAndSocketConstraint(ptr, otherPtr, PovitRef.transform.position, GetConstraintBreakData(), Priority));
         }
     }
 }

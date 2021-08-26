@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
+using Ballance2.Sys.Bridge.Lua;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -100,7 +101,6 @@ namespace Ballance2.Sys.Services
 
         #region 模块包自动加载管理
 
-        private GamePackage systemPackage;
         internal class GamePackageRegisterInfo {
             public GamePackageRegisterInfo(GamePackage package) {
                 this.package = package;
@@ -345,7 +345,7 @@ namespace Ballance2.Sys.Services
         public bool UnRegisterPackage(string packageName, bool unLoadImmediately)
         {
             bool success = false;
-            if (packageName == systemPackage.PackageName)
+            if (packageName == SYSTEM_PACKAGE_NAME)
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG,
                     "Package {0} can not UnRegister", packageName);
@@ -777,6 +777,89 @@ namespace Ballance2.Sys.Services
                     "  list-regedad 列举出已注册的模块包\n" +
                     "  notify-run <packageNameFilter> 通知模块包运行，packageNameFilter为包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。\n" +
                     "  wnd 显示模块管理器窗口");
+        }
+
+        #endregion
+    
+        #region 公用加载资源方法
+
+        private GamePackage TryGetPackageByPath(string pathOrName, out string resName) {
+            var lastIdx = pathOrName.IndexOf("__/");
+            if(pathOrName.StartsWith("__") && lastIdx >= 0) {
+                var packname = pathOrName.Substring(2, lastIdx - 2);
+                var pack = FindPackage(packname);
+                if(pack == null)
+                    throw new RequireFailedException("Package " + packname + " not found");
+                resName = pathOrName.Substring(lastIdx + 3);
+                return pack;
+            }
+            else {
+                resName = pathOrName;
+                return GamePackage.GetSystemPackage();
+            }
+        }
+
+        /// <summary>
+        /// 全局 require 方法。
+        /// 如果 以 __packageName__/resourcePath 为开头，则会在指定packageName的包中引入。
+        /// 如果 填写相对路径，则会在指系统包中引入。
+        /// </summary>
+        /// <param name="file">要引入的Lua文件名</param>
+        /// <returns>返回require返回的数据</returns>
+        /// <exception cref="RequireFailedException">
+        /// 未找到指定的模块包。
+        /// </exception>
+        /// <exception cref="Exception">
+        /// 如果Lua执行失败，则抛出此异常。
+        /// </exception>
+        public object RequireLuaFile(string file) { return LuaGlobalApi.require(file); }
+        /// <summary>
+        /// 全局读取资源包中的文字资源
+        /// </summary>
+        /// <param name="pathorname">资源路径</param>
+        /// <returns>返回TextAsset实例，如果未找到，则返回null</returns>
+        /// <exception cref="RequireFailedException">
+        /// 未找到指定的模块包。
+        /// </exception>
+        [LuaApiDescription("读取模块资源包中的文字资源", "返回TextAsset实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
+        public TextAsset GetTextAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetTextAsset(path);
+        }
+        /// <summary>
+        /// 全局读取模块资源包中的 Prefab 资源
+        /// </summary>
+        /// <param name="pathorname">资源路径</param>
+        /// <returns>返回 GameObject 实例，如果未找到，则返回null</returns>
+        /// <exception cref="RequireFailedException">
+        /// 未找到指定的模块包。
+        /// </exception>
+        [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回 GameObject 实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
+        public GameObject GetPrefabAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetPrefabAsset(path);
+        }
+        public Texture GetTextureAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetTextureAsset(path);
+        }
+        public Texture2D GetTexture2DAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetTexture2DAsset(path);
+        }
+        public Sprite GetSpriteAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetSpriteAsset(path);
+        }
+        public Material GetMaterialAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetMaterialAsset(path);
+        }
+        public AudioClip GetAudioClipAsset(string pathorname) {
+            var pack = TryGetPackageByPath(pathorname, out var path);
+            return pack.GetAudioClipAsset(path);
         }
 
         #endregion

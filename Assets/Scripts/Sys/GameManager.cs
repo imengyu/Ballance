@@ -192,10 +192,7 @@ namespace Ballance2.Sys
         private IEnumerator InitAsysc() 
         {
             //检测lua绑定状态
-            object o = GameMainLuaState.doString(@"
-            import 'UnityEngine'
-            return Ballance2.Sys.GameManager.LuaBindingCallback()
-            ", "GameManagerSystemInit");
+            object o = GameMainLuaState.doString(@"return Ballance2.Sys.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
             if (o != null &&  (
                     (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
                     || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
@@ -230,8 +227,8 @@ namespace Ballance2.Sys
                 //通知初始化完成
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
                 //进入场景
-                if(firstScense != "")
-                    RequestEnterLogicScense(firstScense);
+                if(DebugMode && GameEntry.Instance.DebugSkipIntro) RequestEnterLogicScense("MenuLevel");
+                else if(firstScense != "") RequestEnterLogicScense(firstScense);
             }
             else {
                 GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
@@ -452,8 +449,10 @@ namespace Ballance2.Sys
                     yield return new WaitForSeconds(0.2f);
 
                     //进入Intro
-                    RequestEnterLogicScense(firstScense);
-                    firstScense = "";
+                    if(!DebugMode || !GameEntry.Instance.DebugSkipIntro) {
+                        RequestEnterLogicScense(firstScense);
+                        firstScense = "";
+                    }
                 }
             }
 
@@ -472,7 +471,7 @@ namespace Ballance2.Sys
             srv.RegisterCommand("quit", (keyword, fullCmd, args) => {
                 QuitGame();
                 return false;
-            }, 0, "quit 退出游戏");
+            }, 0, "quit > 退出游戏");
             srv.RegisterCommand("s", (keyword, fullCmd, args) =>
             {
                 var type = (string)args[0];
@@ -623,13 +622,13 @@ namespace Ballance2.Sys
                 }
                 return false;
             }, 0, "s <set/get/reset/list/notify> 系统设置命令\n" +
-                    "  set <packageName:string> <setKey:string> <bool/string/float/int> <newValue> 设置指定执行器的某个设置\n" +
-                    "  set <setKey:string> <bool/string/float/int> <newValue> 设置系统执行器的某个设置\n" +
-                    "  get <packageName:string> <setKey:string> <bool/string/float/int> 获取指定执行器的某个设置值\n" +
-                    "  get <setKey:string> <bool/string/float/int> 获取系统执行器的某个设置值\n" +
-                    "  reset <packageName:string> 重置所有设置为默认值\n" +
-                    "  notify <packageName:string> <group:string> 通知指定组设置已更新\n" +
-                    "  list 列举出所有子模块的设置执行器"
+                    "  set <packageName:string> <setKey:string> <bool/string/float/int> <newValue> > 设置指定执行器的某个设置\n" +
+                    "  set <setKey:string> <bool/string/float/int> <newValue> > 设置系统执行器的某个设置\n" +
+                    "  get <packageName:string> <setKey:string> <bool/string/float/int> > 获取指定执行器的某个设置值\n" +
+                    "  get <setKey:string> <bool/string/float/int> > 获取系统执行器的某个设置值\n" +
+                    "  reset <packageName:string> > 重置所有设置为默认值\n" +
+                    "  notify <packageName:string> <group:string> > 通知指定组设置已更新\n" +
+                    "  list > 列举出所有子模块的设置执行器"
             );
             srv.RegisterCommand("r", (keyword, fullCmd, args) =>
             {
@@ -679,21 +678,21 @@ namespace Ballance2.Sys
                 }
                 return false;
             }, 0, "r <fps/resolution/full/device>\n" + 
-                    "  fps [packageName:nmber:number(1-120)] 获取或者设置游戏的目标帧率\n" +
-                    "  resolution <width:nmber> <height:nmber> [fullScreenMode:number(0-3)] 设置游戏的分辨率或全屏\n" +
-                    "  vsync <fullScreenMode:number(0-2)> 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
-                    "  full <fullScreenMode::number(0-3)> 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
-                    "  device 获取当前设备信息");
+                    "  fps [packageName:nmber:number(1-120)] > 获取或者设置游戏的目标帧率\n" +
+                    "  resolution <width:nmber> <height:nmber> [fullScreenMode:number(0-3)] > 设置游戏的分辨率或全屏\n" +
+                    "  vsync <fullScreenMode:number(0-2)> > 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
+                    "  full <fullScreenMode::number(0-3)> > 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
+                    "  device > 获取当前设备信息");
             srv.RegisterCommand("c", (keyword, fullCmd, args) =>
             {
                 GameMainLuaState.doString(fullCmd.Substring(2), "GameManagerLuaConsole");
                 return true;
-            }, 1, "c [any] 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
+            }, 1, "c <code:string> > 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
             srv.RegisterCommand("le", (keyword, fullCmd, args) =>
             {
                 Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
                 return true;
-            }, 1, "le 获取LastError");
+            }, 1, "le > 获取LastError");
         }
        
         #endregion
@@ -933,6 +932,55 @@ namespace Ballance2.Sys
         [LuaApiParamDescription("name", "新对象名称")]
         public GameObject InstancePrefab(GameObject prefab, Transform parent, string name) {
             return CloneUtils.CloneNewObjectWithParent(prefab, parent, name);
+        }
+
+        [LuaApiDescription("写入字符串至指定文件")]
+        [LuaApiParamDescription("path", "文件路径")]
+        [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
+        [LuaApiParamDescription("data", "要写入的文件")]
+        public void WriteFile(string path, bool append, string data) {
+            SecurityUtils.CheckFileAccess(path);
+
+            var sw = new StreamWriter(path, append);
+            sw.Write(data);
+            sw.Close();
+            sw.Dispose();
+        }
+        [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
+        [LuaApiParamDescription("path", "文件路径")]
+        public bool FileExists(string path) { return File.Exists(path); }   
+        [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
+        [LuaApiParamDescription("path", "文件路径")]
+        public bool DirectoryExists(string path) { return Directory.Exists(path); }   
+        [LuaApiDescription("创建目录")]
+        [LuaApiParamDescription("path", "目录路径")]
+        public void CreateDirectory(string path) { 
+            SecurityUtils.CheckFileAccess(path);
+            Directory.CreateDirectory(path);
+        }   
+        [LuaApiDescription("读取文件至字符串", "返回文件路径")]
+        [LuaApiParamDescription("path", "文件路径")]
+        public string ReadFile(string path) {
+            SecurityUtils.CheckFileAccess(path);
+
+            if(!File.Exists(path))
+                throw new FileNotFoundException("Cant read non-exists file", path);
+
+            var sr = new StreamReader(path);
+            var rs = sr.ReadToEnd();
+            sr.Close();
+            sr.Dispose();
+            return rs;
+        }
+        [LuaApiDescription("删除指定的文件或目录")]
+        [LuaApiParamDescription("path", "文件")]
+        public void RemoveFile(string path) {
+            SecurityUtils.CheckFileAccess(path);
+
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+            else if (File.Exists(path)) 
+                File.Delete(path);
         }
 
         #endregion

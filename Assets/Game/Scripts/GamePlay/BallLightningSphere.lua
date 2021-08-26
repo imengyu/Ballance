@@ -143,6 +143,8 @@ function CreateClass_BallLightningSphere()
     end
   end
 
+  function BallLightningSphere:IsLighting() return self.lighing end
+
   ---播放球 闪电动画
   ---@param position Vector3 位置
   ---@param smallToBig boolean 是否由小变大
@@ -190,13 +192,13 @@ function CreateClass_BallLightningSphere()
         Ball_LightningSphereInnernA.gameObject:SetActive(false)
         self.Ball_Smoke.transform.position = position
         self.Ball_Smoke:SetActive(true)
+        self.lighing = false
 
         if (lightAnim) then
             Yield(WaitForSeconds(self.BallLightEndSec))
             self.Ball_Light.gameObject:SetActive(false)
         end
-        
-        self.lighing = false
+
     end))
   end
 

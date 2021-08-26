@@ -78,6 +78,7 @@ namespace Ballance2.Sys.Package
             FileInfo[] thefileInfo = theFolder.GetFiles("*.*", SearchOption.AllDirectories);
             foreach (FileInfo NextFile in thefileInfo) { //遍历文件
                 string path = NextFile.FullName.Replace("\\", "/");
+                if(path.EndsWith(".meta")) continue;
                 int index = path.IndexOf("Assets/");
                 if(index > 0)
                     path = path.Substring(index);

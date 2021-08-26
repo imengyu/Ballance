@@ -3,6 +3,11 @@ local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---
 
 GameUIPackage = nil ---@type GamePackage
 
+GameUI = {
+  HighscoreUIControl = nil, ---@type HighscoreUIControl
+  WinScoreUIControl = nil, ---@type WinScoreUIControl
+}
+
 return {
   ---模块入口函数
   ---@param thisGamePackage GamePackage

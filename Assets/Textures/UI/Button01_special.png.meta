@@ -32,6 +32,9 @@ TextureImporter:
   - first:
       213: 5817284486412995110
     second: UILifeBallInf
+  - first:
+      213: -3741398641509033059
+    second: ScoreLightBar
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -330,7 +333,7 @@ TextureImporter:
         width: 27
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -338,6 +341,27 @@ TextureImporter:
       bones: []
       spriteID: 62a890a4b652bb050800000000000000
       internalID: 5817284486412995110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ScoreLightBar
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 98
+        width: 96
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9b99b122c1e31cc0800000000000000
+      internalID: -3741398641509033059
       vertices: []
       indices: 
       edges: []

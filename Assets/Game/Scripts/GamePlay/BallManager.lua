@@ -10,7 +10,9 @@ local GameError = Ballance2.Sys.Debug.GameError
 local LuaUtils = Ballance2.Utils.LuaUtils
 local MotionType = PhysicsRT.MotionType
 local GUI = UnityEngine.GUI
+local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 local Rect = UnityEngine.Rect
+local Time = UnityEngine.Time
 
 ---球推动定义
 ---@class BallPushType
@@ -75,6 +77,12 @@ function BallManager:new()
     BallLightningSphere = nil, ---@type BallLightningSphere
     GameSettings = nil, ---@type GameSettingsActuator
 
+    movingTime = 1,
+    movingToPos = false,
+    movingToPosTick = 0,
+    movingTargetPos = Vector3.zero,
+    movingBall = nil, ---@type GameObject
+    movingCurrentVelocity = Vector3.zero,
     settingsCallbackId = 0,
     controllingStatus = BallControlStatus.NoControl, ---当前状态
     lastSaveLinearVelocity = nil, ---@type Vector3
@@ -138,6 +146,16 @@ function BallManager:FixedUpdate()
   if self.CanControll then
     self.CurrentBall:Push(self.PushType)
   end
+  --平滑移动至目标
+  if self._private.movingToPos then
+    self._private.movingToPosTick = self._private.movingToPosTick + Time.deltaTime
+    self._private.movingBall.transform.position, self._private.movingCurrentVelocity = Vector3.SmoothDamp(
+      self._private.movingBall.transform.position, 
+      self._private.movingTargetPos, self._private.movingCurrentVelocity, self._private.movingTime, 10)
+    if self._private.movingToPosTick > self._private.movingTime then
+      self._private.movingToPos = false
+    end
+  end
 end
 --[[
 function BallManager:OnGUI()
@@ -189,13 +207,18 @@ function BallManager:RegisterBall(name, gameObject)
   
   gameObject:SetActive(false)
 
-  local ball = GameObjectToLuaClass(gameObject)
+  local ball = GameLuaObjectHost.GetLuaClassFromGameObject(gameObject)
   if(ball == nil) then
     GameErrorChecker.SetLastErrorAndLog(GameError.ClassNotFound, TAG, 'Not found Ball class on {0} !', { name })
   end
   local pieces = ball:GetPieces()
   if(pieces ~= nil) then
     ObjectStateBackupUtils.BackUpObjectAndChilds(pieces) --备份碎片的状态
+  end
+
+  --设置名称
+  if(gameObject.name ~= name) then
+    gameObject.name = name
   end
 
   table.insert(self._private.registerBalls, {
@@ -233,6 +256,9 @@ function BallManager:GetCurrentBall() return self._private.currentBall end
 ---@param name string 球名称，不可为空
 ---@param status number|nil 同时设置新的状态
 function BallManager:SetCurrentBall(name, status)
+  if(name == nil or name == '') then
+    GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, 'You must provide a name for the ball')
+  end
   local ball = self:GetRegisterBall(name)
   if(ball == nil) then
     GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, 'Ball {0} not register', { name })
@@ -368,6 +394,18 @@ end
 ---@param lightAnim boolean 是否同时播放灯光效果
 function BallManager:PlayLighting(pos, smallToBig, lightAnim) 
   self._private.BallLightningSphere:PlayLighting(pos, smallToBig, lightAnim)
+end
+function BallManager:IsLighting() 
+  return self._private.BallLightningSphere:IsLighting()
+end
+---快速将球锁定并移动至目标位置
+---@param pos Vector3 目标位置
+function BallManager:FastMoveTo(pos, time)
+  self._private.movingBall = true
+  self._private.movingTime = time
+  self._private.movingTargetPos = pos
+  self._private.movingToPosTick = 0
+  self:SetControllingStatus(BallControlStatus.LockMode)
 end
 
 --#endregion

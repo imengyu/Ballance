@@ -6,6 +6,7 @@ namespace PhysicsRT
 {
     [DefaultExecutionOrder(300)]
     [RequireComponent(typeof(PhysicsBody))]
+    [SLua.CustomLuaClass]
     public class PhysicsConstraint : MonoBehaviour
     {
         public int Id { get; protected set; }
@@ -25,6 +26,9 @@ namespace PhysicsRT
         [SerializeField]
         [HideInInspector]
         private float m_MaximumLinearImpulse = 1000;
+        [SerializeField]
+        [HideInInspector]
+        private ConstraintPriority m_Priority = ConstraintPriority.Psi;
 
         protected virtual void Awake() {
             
@@ -60,6 +64,10 @@ namespace PhysicsRT
         /// 获取或设置约束破最大线性脉冲
         /// </summary>
         public float MaximumLinearImpulse { get => m_MaximumLinearImpulse;  set => m_MaximumLinearImpulse = value; }  
+        /// <summary>
+        /// 获取或设置约束的优先级
+        /// </summary>
+        public ConstraintPriority Priority { get => m_Priority;  set => m_Priority = value; }  
 
         public delegate void OnConstraintBreakingEvent(PhysicsConstraint constraint, float forceMagnitude, int removed);
 
@@ -130,5 +138,10 @@ namespace PhysicsRT
                 PhysicsApi.API.SetConstraintBroken(ptr, m_Breakable, force);
         }
         private IntPtr GetPtr() { return ptr; }
+    }
+    [SLua.CustomLuaClass]
+    public enum ConstraintPriority {
+        Toi = 3,
+        Psi = 1
     }
 }

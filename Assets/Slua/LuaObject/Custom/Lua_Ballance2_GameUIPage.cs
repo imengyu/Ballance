@@ -467,6 +467,140 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_CanEscBack(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.CanEscBack);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_CanEscBack(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			System.Boolean v;
+			checkType(l,2,out v);
+			self.CanEscBack=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_OnShow(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.Bridge.VoidDelegate v;
+			int op=checkDelegate(l,2,out v);
+			if(op==0) self.OnShow=v;
+			else if(op==1) self.OnShow+=v;
+			else if(op==2) self.OnShow-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_OnHide(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.Bridge.VoidDelegate v;
+			int op=checkDelegate(l,2,out v);
+			if(op==0) self.OnHide=v;
+			else if(op==1) self.OnHide+=v;
+			else if(op==2) self.OnHide-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.GameUIPage");
@@ -479,6 +613,9 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 		addMember(l,"VerticalLayoutGroup",get_VerticalLayoutGroup,set_VerticalLayoutGroup,true);
 		addMember(l,"HorizontalLayoutGroup",get_HorizontalLayoutGroup,set_HorizontalLayoutGroup,true);
 		addMember(l,"PageName",get_PageName,set_PageName,true);
+		addMember(l,"CanEscBack",get_CanEscBack,set_CanEscBack,true);
+		addMember(l,"OnShow",null,set_OnShow,true);
+		addMember(l,"OnHide",null,set_OnHide,true);
 		createTypeMetatable(l,null, typeof(Ballance2.GameUIPage),typeof(UnityEngine.MonoBehaviour));
 	}
 }

@@ -12,13 +12,18 @@
   ],
   "level": {
     "firstBall": "BallWood",
+    "levelScore": 100,
+    "startPoint": 1000,
+    "startLife": 3,
     "musicTheme": 1,
     "skyBox": "A",
     "skyLayer": "SkyLayer",
     "customMusicTheme": {
       "id": 8,
       "baseInterval": 5,
-      "maxInterval": 15,
+      "maxInterval": 30,
+      "atmoInterval": 6,
+      "atmoMaxInterval": 15,
       "musics": [
         "xxx.wav",
         "yyy.wav"
@@ -36,6 +41,18 @@
       "T": "TopResourceName.jpg",
       "D": "DownResourceName.jpg"
     },
+    "defaultHighscoreData": [
+      { "name": "Mr. Default", "score": 7000, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 6600, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 6200, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 5800, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 5400, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 5000, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 4600, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 4200, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 3800, "date": "2004/8/8" },
+      { "name": "Mr. Default", "score": 3600, "date": "2004/8/8" }
+    ],
     "lightColor": "#ffffff",
     "customModEventName": "",
     "sectorCount": 2,

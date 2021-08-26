@@ -35,13 +35,10 @@ namespace Ballance2.Sys.Utils
                 os.remove = nil
                 os.rename = nil
                 os.setlocale = nil
-                if UnityEngine ~= nil and UnityEngine.Application.Quit ~= nil then
-                    UnityEngine.Application.Quit = nil
-                end
                 if Ballance2 ~= nil and Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require ~= nil then
                     require = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require
                 end
-            ");
+            ", "SecurityUtils");
         }
         public static bool CheckRequire(string pathOrName) {
             foreach(var n in disabledRequire)

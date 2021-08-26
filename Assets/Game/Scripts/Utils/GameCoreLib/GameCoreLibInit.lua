@@ -1,16 +1,4 @@
 
----返回绑定在 GameObject 上的第一个 Lua 类实例
----@param go GameObject 要获取的实体
----@return table 类实例，如果为空则返回nil
-function GameObjectToLuaClass(go)
-  if (not Slua.IsNull(go)) then 
-    local host = go:GetComponent(Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost) ---@type GameLuaObjectHost
-    if(host ~= nil) then
-			return host:GetLuaClass()
-		end 
-  end
-	return nil
-end
 ---返回绑定在 GameObject 上的第一个 GameLuaObjectHost 组件
 ---@param go GameObject 要获取的实体
 ---@return GameLuaObjectHost 类实例，如果为空则返回nil
@@ -48,6 +36,32 @@ end
 function IsSet(hashtable, key)
   local t = type(hashtable)
   return (t == "table" or t == "userdata") and hashtable[key] ~= nil
+end
+
+---获取元素在数组中的索引
+---@param table table
+---@param item any
+---@return integer 索引，如果未找到，则返回-1
+function IndexOf(table, item)
+  for i = 1, #table, 1 do
+    if table[i] == item then
+      return i
+    end
+  end
+  return -1
+end
+
+---获取元素在数组中最后一个的索引
+---@param table table
+---@param item any
+---@return integer 索引，如果未找到，则返回-1
+function IndexOf(table, item)
+  for i = #table, 1, -1 do
+    if table[i] == item then
+      return i
+    end
+  end
+  return -1
 end
 
 ---克隆一个表

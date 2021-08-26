@@ -6,7 +6,7 @@ namespace SLua
     public partial class LuaDelegation : LuaObject
     {
 
-        static internal void Lua_Ballance2_Game_GameLevelLoaderNativeCallback(LuaFunction ld ,UnityEngine.GameObject a1,string a2,UnityEngine.AssetBundle a3) {
+        static internal void Lua_Ballance2_Game_GameLevelLoaderNativeCallback(LuaFunction ld ,UnityEngine.GameObject a1,string a2,Ballance2.Game.LevelAssets a3) {
             IntPtr l = ld.L;
             int error = pushTry(l);
 

@@ -1,4 +1,7 @@
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
+local Yield = UnityEngine.Yield
+local WaitForSeconds = UnityEngine.WaitForSeconds
+local AudioRolloffMode = UnityEngine.AudioRolloffMode
 
 ---@class PE_Balloon : ModulBase 
 ---@field PE_Balloon_Platform_ColTest PhysicsBody
@@ -42,6 +45,25 @@ function PE_Balloon:Active()
   self.PE_Balloon_Platte08:ForcePhysics()
   self.PE_Balloon_BoxSide:ForcePhysics()
 
+  --播放最后一小节的音乐
+  coroutine.resume(coroutine.create(function()
+    local _SoundLastSector = GamePlay.GamePlayManager._SoundLastSector
+    Yield(WaitForSeconds(1))
+    --设置为无衰减
+    _SoundLastSector.rolloffMode = AudioRolloffMode.Logarithmic
+    _SoundLastSector.maxDistance = 2000
+    _SoundLastSector:Play()
+    Yield(WaitForSeconds(5))
+    --该音乐播放5秒后淡出
+    Game.UIManager.UIFadeManager:AddAudioFadeOut(_SoundLastSector)
+    Yield(WaitForSeconds(6))
+    _SoundLastSector.volume = 1
+    --播放一次完成之后设置为100m范围衰减，位置为当前飞船位置
+    _SoundLastSector.gameObject.transform.position = self.transform.position
+    _SoundLastSector.rolloffMode = AudioRolloffMode.Linear
+    _SoundLastSector.maxDistance = 100
+  end))
+
 end
 function PE_Balloon:Deactive()
 
@@ -58,8 +80,11 @@ function PE_Balloon:Deactive()
   self.PE_Balloon_BoxSide:ForceDePhysics()
 
   self.gameObject:SetActive(false)
+
+  GamePlay.GamePlayManager._SoundLastSector:Stop()
 end
 function PE_Balloon:Reset()
+  GamePlay.GamePlayManager._SoundLastSector:Stop()
   ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
 function PE_Balloon:Backup()

@@ -132,6 +132,9 @@ encode = function(val, stack)
 end
 
 
+---编码JSON
+---@param val any
+---@return string
 function json.encode(val)
   return ( encode(val) )
 end
@@ -384,7 +387,9 @@ parse = function(str, idx)
   decode_error(str, idx, "unexpected character '" .. chr .. "'")
 end
 
-
+---解码JSON字符串
+---@param str string|table
+---@return table
 function json.decode(str)
   if type(str) ~= "string" then
     error("expected argument of type string, got " .. type(str))
