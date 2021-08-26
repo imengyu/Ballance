@@ -81,7 +81,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 30}
+  m_SizeDelta: {x: 300, y: 80.1095}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7337682619077550372
 CanvasRenderer:
@@ -124,9 +124,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ui.quit.title
-  m_ResourceKey: ui.quit.title
-  m_DefaultString: ui.quit.title
+  m_Text: ui.settings.language.applyDlgText
+  m_ResourceKey: ui.settings.language.applyDlgText
+  m_DefaultString: ui.settings.language.applyDlgText
   m_I18N: 1
 --- !u!1 &6148253123579786526
 GameObject:

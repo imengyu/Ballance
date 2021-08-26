@@ -365,6 +365,7 @@ namespace Ballance2.Sys.Services
             foreach(var p in pageStack) 
                 p.Hide();
             currentPage = null;
+            pageStack.Clear();
         }
         /// <summary>
         /// 返回上一页

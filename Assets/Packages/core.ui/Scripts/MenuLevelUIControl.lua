@@ -1,6 +1,7 @@
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local GamePackage = Ballance2.Sys.Package.GamePackage
+local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local I18N = Ballance2.Sys.Language.I18N
 local SystemPackage = GamePackage.GetSystemPackage()
@@ -59,12 +60,8 @@ function CreateMenuLevelUI(package)
       true, 20, -205, 400, 500)
     OpenSourceLicenseWindow:MoveToCenter()
   end)
-  MessageCenter:SubscribeEvent('BtnGoBallanceBaClick', function () 
-    Application.OpenURL('https://tieba.baidu.com/f?kw=%E5%B9%B3%E8%A1%A1%E7%90%83')
-  end)
-  MessageCenter:SubscribeEvent('BtnGoGithubClick', function () 
-    Application.OpenURL('https://github.com/imengyu/Ballance')
-  end)
+  MessageCenter:SubscribeEvent('BtnGoBallanceBaClick', function () Application.OpenURL(ConstLinks.BallanceBa) end)
+  MessageCenter:SubscribeEvent('BtnGoGithubClick', function () Application.OpenURL(ConstLinks.ProjectGithub) end)
 
 
   MessageCenter:SubscribeEvent('BtnHighscrollClick', function () 
@@ -79,7 +76,14 @@ function CreateMenuLevelUI(package)
   end)
 
   local loadInternalLevel = function (id)
-    GameManager.GameMediator:NotifySingleEvent('CoreStartLoadLevel', { 'Level'..id })
+    --播放加载声音
+    Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
+    Game.UIManager:MaskBlackFadeIn(1)
+    
+    LuaTimer.Add(1000, function ()  
+      GameManager.GameMediator:NotifySingleEvent('CoreStartLoadLevel', { 'Level'..id })
+    end)
+
   end
 
   MessageCenter:SubscribeEvent('BtnStartLev01Click', function () loadInternalLevel('01') end )

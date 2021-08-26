@@ -139,7 +139,7 @@ namespace Ballance2.Game
     }
     public void UnLoadLevel(LevelAssets level)
     {
-      if (level.AssetBundle != null) {
+      if (level != null && level.AssetBundle != null) {
         level.AssetBundle.Unload(true);
         level.AssetBundle = null;
       }
@@ -155,11 +155,11 @@ namespace Ballance2.Game
         if (request.result != UnityWebRequest.Result.Success)
         {
           if (request.responseCode == 404)
-            errCallback("FILE_NOT_FOUND", "关卡文件未找到");
+            errCallback("FILE_NOT_FOUND", "Level file not found");
           else if (request.responseCode == 403)
-            errCallback("ACCESS_DENINED", "无权限读取资源包");
+            errCallback("ACCESS_DENINED", "No permission to read file");
           else
-            errCallback("REQUEST_ERROR", "请求失败：" + request.responseCode);
+            errCallback("REQUEST_ERROR", "Http error: " + request.responseCode);
           yield break;
         }
 
@@ -169,7 +169,7 @@ namespace Ballance2.Game
 
         if (assetBundle == null)
         {
-          errCallback("FAILED_LOAD_ASSETBUNDLE", "错误的关卡，加载 AssetBundle 失败");
+          errCallback("FAILED_LOAD_ASSETBUNDLE", "Wrong level, failed to load AssetBundle");
           yield break;
         }
       }
@@ -177,13 +177,13 @@ namespace Ballance2.Game
       TextAsset LevelJsonTextAsset = level.GetLevelAsset<TextAsset>("Level.json");
       if (LevelJsonTextAsset == null || string.IsNullOrEmpty(LevelJsonTextAsset.text))
       {
-        errCallback("BAD_LEVEL_JSON", "关卡 Level.json 为空或无效");
+        errCallback("BAD_LEVEL_JSON", "Level.json is empty or invalid");
         yield break;
       }
       GameObject LevelPrefab = level.GetLevelAsset<GameObject>("Level.prefab");
       if (LevelPrefab == null)
       {
-        errCallback("BAD_LEVEL", "关卡无效，不存在 Level.prefab ");
+        errCallback("BAD_LEVEL", "The level is invalid. Level.prefab cannot be found");
         yield break;
       }
 

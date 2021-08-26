@@ -15,7 +15,7 @@ Game = {
   --获取系统管理器（GameManager.Instance） [R]
   Manager = GameManager.Instance, 
   ---获取获取系统中介者 [R]
-  Mediator = nil, ---@type GameMediator 
+  Mediator = GameManager.GameMediator, ---@type GameMediator 
   --获取系统包管理器 [R]
   PackageManager = nil, ---@type GamePackageManager
   --获取UI管理器 [R]
@@ -32,11 +32,13 @@ Game = {
 
 function CoreInit()
   local GameManagerInstance = GameManager.Instance
+  local GameMediator = GameManager.GameMediator
 
   Game.PackageManager = GameManagerInstance:GetSystemService('GamePackageManager')
   Game.UIManager = GameManagerInstance:GetSystemService('GameUIManager')
   Game.SoundManager = GameManagerInstance:GetSystemService('GameSoundManager')
 
+  SystemPackage:RequireLuaFile('ConstLinks')
   SystemPackage:RequireLuaFile('GameLayers')
   SystemPackage:RequireLuaFile('GamePhysBall')
   SystemPackage:RequireLuaFile('GamePhysFloor')
@@ -58,27 +60,27 @@ function CoreInit()
   HighscoreManagerLoad()
 
   --调试入口
-  GameManager.GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", TAG, function ()
+  GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", TAG, function ()
     CoreDebugGameGamePlay()
     return false
   end)
   --调试入口
-  GameManager.GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLevelBuliderEntry", TAG, function ()
+  GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLevelBuliderEntry", TAG, function ()
     CoreDebugLevelBuliderEntry()
     return false
   end)
 
   local nextLoadLevel = ''
-  GameManager.GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, function (evtName, params)
+  GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, function (evtName, params)
     local scense = params[1]
     if(scense == 'Level') then 
-      --Hide base Cam
-      GameManager.Instance:SetGameBaseCameraVisible(false)
-      GamePlayInit(function ()
-        if nextLoadLevel ~= '' then
-          Game.LevelBuilder:LoadLevel(nextLoadLevel)
-          nextLoadLevel = ''
-        end
+      LuaTimer.Add(300, function ()
+        GamePlayInit(function ()
+          if nextLoadLevel ~= '' then
+            Game.LevelBuilder:LoadLevel(nextLoadLevel)
+            nextLoadLevel = ''
+          end
+        end)
       end)
     end
     return false
@@ -91,19 +93,20 @@ function CoreInit()
     return false
   end)
   --加载关卡入口
-  GameManager.GameMediator:SubscribeSingleEvent(SystemPackage, "CoreStartLoadLevel", TAG, function (evtName, params)
+  GameMediator:SubscribeSingleEvent(SystemPackage, "CoreStartLoadLevel", TAG, function (evtName, params)
     if type(params[1]) ~= 'string' then
       local type = type(params[1]) 
       GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, 'Param 1 expect string, but got '..type)
       return false
     else
       nextLoadLevel = params[1]
+      Log.D(TAG, 'Start load level '..nextLoadLevel..' ')
     end
-    GameManager.Instance:RequestEnterLogicScense('Level')
+    GameManagerInstance:RequestEnterLogicScense('Level')
     return false
   end)
   --退出
-  GameManager.GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_BEFORE_GAME_QUIT, TAG, function ()
+  GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_BEFORE_GAME_QUIT, TAG, function ()
     ---保存分数数据
     HighscoreManagerSave()
     return false

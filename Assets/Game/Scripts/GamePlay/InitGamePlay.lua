@@ -21,7 +21,6 @@ GamePlay = {
   SectorManager = nil, ---@type SectorManager
   MusicManager = nil, ---@type MusicManager
   TranfoManager = nil, ---@type TranfoAminControl
-  HighscoreManager = nil, ---@type HighscoreManager
 }
 
 ---游戏玩模块初始化
@@ -36,13 +35,14 @@ function GamePlayInit(callback)
 
     --GamePlayUI
     local uiPackage = Game.PackageManager:FindPackage('core.ui')
-    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(uiPackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false)
+    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(uiPackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
     Yield(WaitForSeconds(0.05))
-    GamePlayUIGameObject.gameObject:SetActive(false)
+    GamePlayUIGameObject:SetActive(false)
 
     --初始化基础对象
     GamePlayManagerGameObjec = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GamePlayManager.prefab'), 'GamePlayManager')
     Yield(WaitForSeconds(0.05))
+    Game.Manager:SetGameBaseCameraVisible(false)
     BallsManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/BallManager.prefab'), 'GameBallsManager')
     Yield(WaitForSeconds(0.05))
     GameSectorManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/SectorManager.prefab'), 'GameSectorManager')

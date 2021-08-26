@@ -97,6 +97,7 @@ function GamePlayManager:_InitSetings()
       if GameSettings:GetBool('video.cloud', true) then Game.LevelBuilder._CurrentLevelSkyLayer:SetActive(true)
       else GameSettings:GetBool('video.cloud', true) Game.LevelBuilder._CurrentLevelSkyLayer:SetActive(false) end
     end
+    return false
   end)
 end 
 function GamePlayManager:_Stop(controlStatus) 
@@ -186,7 +187,9 @@ end
 --隐藏天空盒和关卡灯光
 function GamePlayManager:HideSkyAndLight()
   Game.GamePlay.CamManager:SetSkyBox(nil)
-  self.GameLightGameObject:SetActive(false)
+  if self.GameLightGameObject ~= nil then  
+    self.GameLightGameObject:SetActive(false)
+  end
 end
 
 ---加载下一关

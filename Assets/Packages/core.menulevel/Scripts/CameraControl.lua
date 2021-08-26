@@ -55,6 +55,7 @@ function CreateClass_CameraControl()
     self.menuSound.loop = true
     self.menuSound:Play()
     self:SwitchLightZone(false, false)
+    self._Stared = true
 
     GameManager.GameMediator:RegisterSingleEvent(EVENT_SWITCH_LIGHTZONE)
     GameManager.GameMediator:SubscribeSingleEvent(self.package, EVENT_SWITCH_LIGHTZONE, "CameraControl", function (evtName, params)
@@ -84,7 +85,11 @@ function CreateClass_CameraControl()
     self.menuSound:Stop()
   end
   function CameraControl:OnEnable()
-    self.menuSound:Play()
+    if self._Stared then 
+      self.menuSound.loop = true
+      self.menuSound:Play()
+      self:SwitchLightZone(false, false)
+    end
   end
 
   function CameraControl:SetFog(isLz) 

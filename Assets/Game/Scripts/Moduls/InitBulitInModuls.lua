@@ -9,4 +9,7 @@ function InitBulitInModuls()
   Game.LevelBuilder:RegisterModul('P_Trafo_Paper', Game.SystemPackage:GetPrefabAsset('P_Trafo_Paper.prefab'))
   Game.LevelBuilder:RegisterModul('P_Trafo_Stone', Game.SystemPackage:GetPrefabAsset('P_Trafo_Stone.prefab'))
   Game.LevelBuilder:RegisterModul('P_Trafo_Wood', Game.SystemPackage:GetPrefabAsset('P_Trafo_Wood.prefab'))
+  Game.LevelBuilder:RegisterModul('PC_CheckPoints', Game.SystemPackage:GetPrefabAsset('PC_TwoFlames.prefab'))
+  Game.LevelBuilder:RegisterModul('PE_LevelEnd', Game.SystemPackage:GetPrefabAsset('PE_Balloon.prefab'))
+  Game.LevelBuilder:RegisterModul('PS_LevelStart', Game.SystemPackage:GetPrefabAsset('PS_FourFlames.prefab'))
 end

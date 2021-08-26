@@ -57,6 +57,13 @@
     </Text>
     <Text name="ui.loader.loadLevelFailed">加载关卡失败</Text>
     <Text name="ui.loader.backToMenu">返回主菜单</Text>
+    <Text name="ui.loader.submitBug">提交BUG</Text>
+    <Text name="ui.loader.copyErrInfo">复制错误信息</Text>
+    <Text name="ui.loader.forDeveloper">关卡开发者：您可以按 F12 进入控制台查看更多错误信息。
+玩家：如果这是第三方玩家制作的关卡，您可以向制作者反馈错误信息。
+如果这是游戏自带关卡，您可以点击 “提交BUG” 或访问 
+https://imengyu.top/ballanceProject/bugs/ 向我们反馈错误
+    </Text>
     <Text name="ui.game.nextLevel">下一关</Text>
     <Text name="ui.gameWin.levelBouns">关卡分数</Text>
     <Text name="ui.gameWin.timePoints">剩余时间点</Text>
@@ -66,6 +73,7 @@
     <Text name="ui.gameWin.win">胜利！</Text>
     <Text name="ui.gameWin.enterYourName">留下你的大名吧</Text>
     <Text name="ui.noLevelData">没有关卡数据</Text>
+    <Text name="str.tip.errInfoCopied">错误信息已经复制!</Text>
     <Text name="str.tip.click.debug">再点击 {0} 次可开启开发者模式！</Text>
     <Text name="str.tip.in.debug">你已经处于开发者模式！</Text>
   </Language>

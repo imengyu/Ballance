@@ -32,6 +32,10 @@ local function OnEnterMenuLevel(thisGamePackage)
     GameMenuLevel = CloneUtils.CloneNewObject(thisGamePackage:GetPrefabAsset('GameMenuLevel.prefab'), 'GameMenuLevel')
   end
 
+  if not GameMenuLevel.activeSelf then
+    GameMenuLevel:SetActive(true)
+  end
+
   coroutine.resume(coroutine.create(function ()
     Yield(WaitForSeconds(0.5))
     GameUIManager:GoPage('PageMain')
@@ -48,8 +52,9 @@ local function OnQuitMenuLevel(thisGamePackage)
 
   if (not Slua.IsNull(GameMenuLevel)) then 
     GameMenuLevel:SetActive(false)
-    GameManager.Instance:SetGameBaseCameraVisible(true)
   end 
+  
+  GameManager.Instance:SetGameBaseCameraVisible(true)
 end
 
 return {

@@ -70,6 +70,7 @@ namespace Ballance2.Sys.Package
                     LoadLogo(PackageFilePath + "/" + BaseInfo.Logo);
                 
                 DoSearchScriptNames();
+                LoadAllFileNames();
                 SystemPackageSetInitFinished();
 
                 disableZipLoad = true;
@@ -95,7 +96,27 @@ namespace Ballance2.Sys.Package
         }
 
         private Dictionary<string, string> packageCodeAsset = new Dictionary<string, string>();
+        private Dictionary<string, string> fileList = new Dictionary<string, string>();
+        
+        private void LoadAllFileNames() {
+            DirectoryInfo theFolder = new DirectoryInfo(PackageFilePath);
+            FileInfo[] thefileInfo = theFolder.GetFiles("*.*", SearchOption.AllDirectories);
+            foreach (FileInfo NextFile in thefileInfo) { //遍历文件
+                string path = NextFile.FullName.Replace("\\", "/");
+                if(path.EndsWith(".meta")) continue;
+                if(path.EndsWith(".lua")) continue;
+                int index = path.IndexOf("Assets/");
+                if(index > 0)
+                    path = path.Substring(index);
 
+                fileList.Add(NextFile.Name, path);
+            }
+        }
+        private string GetFullPathByName(string name) {
+            if(fileList.TryGetValue(name, out string fullpath))
+                return fullpath;
+            return null;
+        } 
         public override void Destroy() {
             packageCodeAsset.Clear();
             base.Destroy();
@@ -106,7 +127,6 @@ namespace Ballance2.Sys.Package
         public void SetDisableLoadFileInUnity() {
             disableLoadFileInUnity = true;
         }
-
         private void DoSearchScriptNames() {
 #if UNITY_EDITOR
             //构建一下所有脚本名称和路径的列表
@@ -141,7 +161,13 @@ namespace Ballance2.Sys.Package
             } else {
                 if(pathorname.StartsWith("Assets"))
                     return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(pathorname);       
-                return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH + pathorname);
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH + pathorname);
+                if(asset == null && !pathorname.Contains("/") && !pathorname.Contains("\\")) {
+                    string fullPath = GetFullPathByName(pathorname);
+                    if(fullPath != null)
+                        asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
+                }
+                return asset;
             }
 #else
             return base.GetAsset<T>(pathorname);

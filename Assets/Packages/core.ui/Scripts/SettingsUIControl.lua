@@ -1,6 +1,8 @@
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local GameSettingsManager = Ballance2.Config.GameSettingsManager
+local I18NProvider = Ballance2.Sys.Language.I18NProvider
+
 local Screen = UnityEngine.Screen
 local QualitySettings = UnityEngine.QualitySettings
 local KeyCode = UnityEngine.KeyCode
@@ -139,12 +141,17 @@ function BindSettingsUI(MessageCenter)
   --语言
   local applyLanguage = function (lang)
     GameSettingsManager.GetSettings("core"):SetInt("language", lang)
-    GameUIManager:GoPage('PageApplyLangDialog')
+    if I18NProvider.GetCurrentLanguage() ~= lang then
+      GameUIManager:GoPage('PageApplyLangDialog')
+    else
+      GameUIManager:BackPreviusPage()
+    end 
   end
 
-  MessageCenter:SubscribeEvent('BtnChineseSimplified', function () applyLanguage(SystemLanguage.ChineseSimplified) end)
-  MessageCenter:SubscribeEvent('BtnChineseTraditional', function () applyLanguage(SystemLanguage.ChineseTraditional) end)
-  MessageCenter:SubscribeEvent('BtnEnglish', function () applyLanguage(SystemLanguage.English) end)
+  MessageCenter:SubscribeEvent('BtnSettingsLanguageClick', function ()  GameUIManager:GoPage('PageLanguage') end)
+  MessageCenter:SubscribeEvent('BtnChineseSimplifiedClick', function () applyLanguage(SystemLanguage.ChineseSimplified) end)
+  MessageCenter:SubscribeEvent('BtnChineseTraditionalClick', function () applyLanguage(SystemLanguage.ChineseTraditional) end)
+  MessageCenter:SubscribeEvent('BtnEnglishClick', function () applyLanguage(SystemLanguage.English) end)
 
   MessageCenter:SubscribeEvent('BtnLangBackClick', function () 
     GameUIManager:BackPreviusPage()

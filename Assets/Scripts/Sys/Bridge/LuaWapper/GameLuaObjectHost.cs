@@ -411,7 +411,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             fun = self["LateUpdate"] as LuaFunction;
             if (fun != null) lateUpdate = fun.cast<LuaVoidDelegate>();
 
-            fun = self["onEnable"] as LuaFunction;
+            fun = self["OnEnable"] as LuaFunction;
             if (fun != null) onEnable = fun.cast<LuaVoidDelegate>();
 
             fun = self["OnDisable"] as LuaFunction;

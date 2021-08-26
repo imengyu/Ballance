@@ -83,7 +83,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 0
+  m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_UseCustomVertexStreams: 0
@@ -351,7 +351,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 2
-      minScalar: 0.8
+      minScalar: 1.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -931,7 +931,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 26
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1049,21 +1049,21 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0.0000009192154
           value: 0.37606516
-          inSlope: 5.2960396
-          outSlope: 5.2960396
+          inSlope: 10.886411
+          outSlope: 10.886411
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.44159785
+          outWeight: 0.22845921
         - serializedVersion: 3
-          time: 0.11975272
-          value: 1
-          inSlope: -0.17175797
-          outSlope: -0.17175797
+          time: 0.2106618
+          value: 0.9714286
+          inSlope: -1.4056853
+          outSlope: -1.4056853
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.21437226
+          outWeight: 0.16163565
         - serializedVersion: 3
           time: 1
           value: 0.2
@@ -1395,7 +1395,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
+        atime1: 55512
         atime2: 62451
         atime3: 65535
         atime4: 0
