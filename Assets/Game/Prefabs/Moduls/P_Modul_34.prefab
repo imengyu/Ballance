@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShapeType: 0
   m_Wrap: 0
-  m_Translation: {x: 0, y: 0, z: 0}
+  m_Translation: {x: 0, y: 0, z: 0.00000011920929}
   m_Rotation: {x: 0, y: 0, z: 0}
   m_Scale: {x: 1, y: 1, z: 1}
   m_CustomTags:
@@ -113,7 +113,7 @@ MonoBehaviour:
     Tag07: 0
   m_ShapeMesh: {fileID: -1799730409127487345, guid: b759e736e23a1d745abd0d14c718d695,
     type: 3}
-  m_ShapeSize: {x: 1, y: 1, z: 1}
+  m_ShapeSize: {x: 5, y: 5, z: 5}
   m_ShapeRadius: 0.5
   m_ShapeConvexRadius: 0
   m_ShapeHeight: 1
@@ -251,6 +251,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
+  m_SystemGroupName: 
+  m_SubSystemId: 0
+  m_SubSystemDontCollideWith: 0
 --- !u!114 &1547696244558699936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +271,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   motorEnable: 0
   motorSpring: 0
   motorTau: 0.2
@@ -278,8 +282,12 @@ MonoBehaviour:
   motorMaxForce: 1000000
   motorSpringConstant: 0
   motorSpringDamping: 0.3
-  Povit: {x: 0, y: 0, z: 0}
-  Axis: {x: 0, y: 0, z: 1}
+  PovitRef: {fileID: 0}
+  AxisRef: {fileID: 0}
+  AllowRotationAroundAxis: 0
+  MaxLinearLimit: 100
+  MinLinearLimit: 0
+  MaxFrictionForce: 1000
 --- !u!1 &4088031401384821701
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +756,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
+  m_SystemGroupName: 
+  m_SubSystemId: 0
+  m_SubSystemDontCollideWith: 0
 --- !u!1 &9175142106070903127
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,7 +981,7 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
-  m_Friction: 0.8
+  m_Friction: 0.7
   m_Restitution: 0.4
   m_Layer: 3
   m_InertiaTensor:
@@ -997,3 +1008,6 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
+  m_SystemGroupName: 
+  m_SubSystemId: 0
+  m_SubSystemDontCollideWith: 0

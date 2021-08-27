@@ -28,12 +28,15 @@ Game = {
   GamePlay = nil, 
   --获取关卡建造器模块 [R]
   LevelBuilder = nil, ---@type LevelBuilder
+  --获取调试命令 [R]
+  CommandServer = nil, ---@type GameDebugCommandServer
 }
 
 function CoreInit()
   local GameManagerInstance = GameManager.Instance
   local GameMediator = GameManager.GameMediator
 
+  Game.CommandServer = GameManagerInstance.GameDebugCommandServer
   Game.PackageManager = GameManagerInstance:GetSystemService('GamePackageManager')
   Game.UIManager = GameManagerInstance:GetSystemService('GameUIManager')
   Game.SoundManager = GameManagerInstance:GetSystemService('GameSoundManager')

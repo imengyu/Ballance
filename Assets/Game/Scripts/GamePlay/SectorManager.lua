@@ -1,4 +1,6 @@
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local DebugUtils = Ballance2.Utils.DebugUtils
+local Log = Ballance2.Utils.Log
 
 ---节管理器
 ---@class SectorManager : GameLuaObjectHostClass
@@ -13,6 +15,8 @@ SectorDataStorage = {}
 ---@field flame PC_TwoFlames
 RestPointsDataStorage = {}
 
+local TAG = 'SectorManager'
+
 function SectorManager:new() 
   self.CurrentLevelSectorCount = 0
   self.CurrentLevelSectors = {} ---@type SectorDataStorage[]
@@ -25,16 +29,20 @@ end
 
 function SectorManager:DoInitAllModuls() 
   --初次加载后通知每个modul进行备份
-  for _, value in ipairs(Game.LevelBuilder._CurrentLevelModuls) do
-    value.modul:Backup()
-    value.modul:Deactive()
+  for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
+    if value ~= nil then
+      value.modul:Backup()
+      value.modul:Deactive()
+    end
   end
 end
 function SectorManager:DoUnInitAllModuls() 
   --通知每个modul卸载
-  for _, value in ipairs(Game.LevelBuilder._CurrentLevelModuls) do
-    value.modul:Deactive()
-    value.modul:UnLoad()
+  for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
+    if value ~= nil then
+      value.modul:Deactive()
+      value.modul:UnLoad()
+    end
   end
 end
 function SectorManager:ClearAll() 
@@ -46,20 +54,22 @@ end
 
 ---进入下一小节
 function SectorManager:NextSector() 
-  if GamePlayManager.CurrentSector < self.CurrentLevelSectorCount then
-    self:SetCurrentSector(GamePlayManager.CurrentSector + 1)
+  if GamePlay.GamePlayManager.CurrentSector < self.CurrentLevelSectorCount then
+    self:SetCurrentSector(GamePlay.GamePlayManager.CurrentSector + 1)
   end
 end
 ---设置当前节
 ---@param sector number
 function SectorManager:SetCurrentSector(sector) 
-  local oldSector = GamePlayManager.CurrentSector
+  local oldSector = GamePlay.GamePlayManager.CurrentSector
   if oldSector ~= sector then
     --禁用之前一节的所有机关
     if oldSector > 0 then
       local s = self.CurrentLevelSectors[oldSector]
-      for _, value in ipairs(s.moduls) do
-        value:Deactive()
+      for _, value in pairs(s.moduls) do
+        if value ~= nil then  
+          value:Deactive()
+        end
       end 
       
       --设置火焰状态
@@ -68,12 +78,19 @@ function SectorManager:SetCurrentSector(sector)
       flame:Deactive()
     end
 
-    GamePlayManager.CurrentSector = sector 
+    GamePlay.GamePlayManager.CurrentSector = sector 
 
     --激活当前节的机关
     local s = self.CurrentLevelSectors[sector]
-    for _, value in ipairs(s.moduls) do
-      value:Active()
+    if s == nil then
+      Log.E(TAG, 'Sector '..sector..' not found')
+      GamePlay.GamePlayManager.CurrentSector = 0 
+      return
+    end
+    for _, value in pairs(s.moduls) do
+      if value ~= nil then  
+        value:Active()
+      end
     end 
 
     --设置火焰状态
@@ -103,13 +120,15 @@ end
 ---重置当前节的机关
 ---@param active boolean 重置机关后是否激活
 function SectorManager:ResetCurrentSector(active)  
-  local sector = GamePlayManager.CurrentSector
+  local sector = GamePlay.GamePlayManager.CurrentSector
   if sector > 0 then
     local s = self.CurrentLevelSectors[sector]
-    for _, value in ipairs(s.moduls) do
-      value:Deactive()
-      value:Reset()
-      if active then value:Active() end
+    for _, value in pairs(s.moduls) do
+      if value ~= nil then
+        value:Deactive()
+        value:Reset()
+        if active then value:Active() end
+      end
     end 
   end
   if sector == self.CurrentLevelSectorCount then
@@ -120,10 +139,12 @@ end
 ---@param active boolean 重置机关后是否激活
 function SectorManager:ResetAllSector(active) 
   --通知每个modul卸载
-  for _, value in ipairs(Game.LevelBuilder._CurrentLevelModuls) do
-    value.modul:Deactive()
-    value.modul:Reset()
-    if active then value.modul:Active() end
+  for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
+    if value ~= nil then
+      value.modul:Deactive()
+      value.modul:Reset()
+      if active then value.modul:Active() end
+    end
   end
 end
 

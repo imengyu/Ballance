@@ -20,7 +20,7 @@ CamRotateType = {
 ---@field _CamUpSpeedCurve AnimationCurve 
 ---@field _CameraRotateTime number
 ---@field _CameraRotateUpTime number
----@field _CameraNormalZ number
+---@field _CameraNormalX number
 ---@field _CameraNormalY number
 ---@field _CameraSpaceY number
 ---@field CamRightVector Vector3 获取摄像机右侧向量 [R]
@@ -73,7 +73,7 @@ end
 
 function CamManager:Start()
   self.CamFollow = self._CameraHost:GetComponent(CamFollow) ---@type CamFollow
-  self.transform.localPosition = Vector3(0,  self._CameraNormalY,  self._CameraNormalZ)
+  self.transform.localPosition = Vector3(self._CameraNormalX, self._CameraNormalY, 0)
   self.transform:LookAt(Vector3.zero)
 end
 function CamManager:FixedUpdate()
@@ -108,7 +108,7 @@ end
 ---摄像机面对向量重置
 function CamManager:ResetVector()
   --根据摄像机朝向重置几个球推动的方向向量
-  local y = -self._CameraHostTransform.localEulerAngles.y;
+  local y = -self._CameraHostTransform.localEulerAngles.y - 90;
   self.CamRightVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.right;
   self.CamLeftVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.left;
   self.CamForwerdVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.forward;
@@ -145,6 +145,8 @@ function CamManager:SetPosAndDirByRestPoint(go)
 
   self._CameraHostTransform.eulerAngles = Vector3(0, self:GetRotateDegreeByType(type), 0)
   self._CameraHostTransform.position = go.transform.position
+  self.CamRotateValue = type
+  self:ResetVector()
 end
 ---空格键向上旋转
 ---@param enable boolean

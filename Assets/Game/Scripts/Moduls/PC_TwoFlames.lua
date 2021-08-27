@@ -18,6 +18,7 @@ function PC_TwoFlames:Start()
     if not self.CheckPointActived and otherBody.gameObject.tag == 'Ball' then
       --触发下一关
       self.CheckPointActived = true;
+      self.Flame:SetActive(false)
       GamePlay.SectorManager:NextSector()
     end
   end

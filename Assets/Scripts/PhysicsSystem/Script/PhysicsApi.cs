@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Ballance2.Utils;
 using UnityEngine;
 
 namespace PhysicsRT
@@ -40,11 +41,11 @@ namespace PhysicsRT
 
         private static void ErrorReport(string msg) {
             if(msg.Contains("Report"))
-                Debug.Log(msg);
+                Log.D("Physics", msg);
             else if(msg.Contains("Warn") || msg.Contains("WARN"))
-                Debug.LogWarning(msg); 
+                Log.W("Physics", msg); 
             else
-                Debug.LogError(msg);
+                Log.E("Physics", msg);
         }
 
         private static IntPtr assertMsgBuffer = IntPtr.Zero;

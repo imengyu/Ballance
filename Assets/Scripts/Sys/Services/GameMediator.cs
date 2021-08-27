@@ -3,6 +3,7 @@ using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Bridge.Handler;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
+using Ballance2.Sys.Utils.ServiceUtils;
 using Ballance2.Utils;
 using SLua;
 using System;
@@ -39,6 +40,8 @@ namespace Ballance2.Sys.Services
     public class GameMediator : GameService
     {
         private readonly string TAG = "GameMediator";
+        private GameObject go = null;
+        private GameMediatorDelayCaller DelayCaller = null;
         
         [DoNotToLua]
         public GameMediator() : base("GameMediator")
@@ -48,9 +51,12 @@ namespace Ballance2.Sys.Services
         [DoNotToLua]
         public override void Destroy()
         {
+            if(go != null)
+                UnityEngine.Object.Destroy(go);
             UnLoadAllEvents();
             UnLoadAllActions();
             DestroyStore();
+
         }
         [DoNotToLua]
         public override bool Initialize()
@@ -61,6 +67,9 @@ namespace Ballance2.Sys.Services
             RegisterEventHandler(GamePackage.GetSystemPackage(),
                 GameEventNames.EVENT_BASE_INIT_FINISHED, TAG, (evtName, param) =>
                 {
+                    go = GameManager.Instance.InstanceNewGameObject("GameMediator");
+                    DelayCaller = go.AddComponent<GameMediatorDelayCaller>();
+                    DelayCaller.GameMediator = this;
                     InitCommands();
                     return false;
                 });
@@ -255,6 +264,27 @@ namespace Ballance2.Sys.Services
         }
 
         /// <summary>
+        /// 延时通知单一事件
+        /// </summary>
+        /// <param name="evtName">事件名称</param>
+        /// <param name="delayeSecond">延时时长，单位秒</param>
+        /// <param name="pararms">事件参数</param>
+        /// <returns>返回是否成功</returns>
+        [LuaApiDescription("延时通知单一事件", "返回是否成功")]
+        [LuaApiParamDescription("evtName", "事件名称")]
+        [LuaApiParamDescription("delayeSecond", "延时时长，单位秒")]
+        [LuaApiParamDescription("pararms", "事件参数")]
+        public bool DelayedNotifySingleEvent(string evtName, float delayeSecond, params object[] pararms) {
+            if (string.IsNullOrEmpty(evtName))
+            {
+                Log.W(TAG, "NotifySingleEvent evtName 参数未提供");
+                GameErrorChecker.LastError = GameError.ParamNotProvide;
+                return false;
+            }
+            DelayCaller.AddDelayCallSingle(evtName, delayeSecond, pararms);
+            return true;
+        }
+        /// <summary>
         /// 通知单一事件
         /// </summary>
         /// <param name="evtName">事件名称</param>
@@ -282,6 +312,36 @@ namespace Ballance2.Sys.Services
                 return false;
             }
         }
+        
+        /// <summary>
+        /// 延时执行事件分发
+        /// </summary>
+        /// <param name="gameEvent">事件实例</param>
+        /// <param name="delayeSecond">延时时长，单位秒</param>
+        /// <param name="handlerFilter">指定事件可以接收到的名字（这里可以用正则）</param>
+        /// <param name="pararms">事件参数</param>
+        /// <returns>返回已经发送的接收器个数</returns>
+        [LuaApiDescription("延时执行事件分发", "返回已经发送的接收器个数")]
+        [LuaApiParamDescription("gameEvent", "事件实例")]
+        [LuaApiParamDescription("handlerFilter", "指定事件可以接收到的名字（这里可以用正则）")]
+        [LuaApiParamDescription("delayeSecond", "延时时长，单位秒")]
+        [LuaApiParamDescription("pararms", "事件参数")]
+        public bool DelayedDispatchGlobalEvent(string evtName, string handlerFilter, float delayeSecond, params object[] pararms) {
+            if (string.IsNullOrEmpty(evtName))
+            {
+                Log.W(TAG, "NotifySingleEvent evtName 参数未提供");
+                GameErrorChecker.LastError = GameError.ParamNotProvide;
+                return false;
+            }
+            if (!IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
+            {
+                Log.W(TAG, "事件 {0} 未注册", evtName);
+                GameErrorChecker.LastError = GameError.NotRegister;
+            }
+            DelayCaller.AddDelayCallNormal(evtName, handlerFilter, delayeSecond, pararms);
+            return true;
+        }
+        
         /// <summary>
         /// 执行事件分发
         /// </summary>
@@ -944,7 +1004,7 @@ namespace Ballance2.Sys.Services
         #region 调试命令
 
         private void InitCommands() {
-            GameManager.Instance.GameDebugCommandServer.RegisterCommand("gm", (keyword, full, args) => {
+            GameManager.Instance.GameDebugCommandServer.RegisterCommand("gm", (keyword, full, argsCount, args) => {
                 switch(args[0]) {
                     case "single_event":
                         return HandleSingleEventCommand(args);

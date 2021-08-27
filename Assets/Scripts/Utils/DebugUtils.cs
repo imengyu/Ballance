@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using Ballance2.LuaHelpers;
+using SLua;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -24,7 +25,7 @@ namespace Ballance2.Utils
     /// <summary>
     /// 调试工具类
     /// </summary>
-    [SLua.CustomLuaClass]
+    [CustomLuaClass]
     [LuaApiDescription("游戏中介者")]
     public class DebugUtils
     {
@@ -167,6 +168,75 @@ namespace Ballance2.Utils
             return StringUtils.ValueArrayToString(any);
         }
 
+        /// <summary>
+        /// 打印LUA变量
+        /// </summary>
+        /// <param name="any">LUA变量</param>
+        /// <returns></returns>
+        [LuaApiDescription("打印LUA变量", "")]
+        [LuaApiParamDescription("any", "LUA变量")]
+        [LuaApiParamDescription("max_level", "打印最大级")]
+        public static string PrintLuaVarAuto(object any, int max_level) {
+
+            StringBuilder sb = new StringBuilder();
+            PrintLuaVarAutoLoop(sb, any, 0, max_level);
+            return sb.ToString();
+        }
+
+        private static void PrintLuaVarAutoLoop(StringBuilder stringBuilder, object any, int level, int max_level, string prefix = "") {
+            if(max_level > 0 && level > max_level)
+                return;
+            var type = any.GetType() ;
+            if(type == typeof(LuaTable)) {
+                var t = (LuaTable)any;
+
+                stringBuilder.Append(prefix);
+                stringBuilder.Append("table (length: ");
+                stringBuilder.Append(t.length());
+                stringBuilder.Append(" empty: ");
+                stringBuilder.Append(t.IsEmpty);
+                stringBuilder.Append(")");
+                stringBuilder.AppendLine("{");
+                
+                foreach(var v in t) {
+
+                    string key = "";
+                    if(type == typeof(int)) key = ((int)any).ToString();
+                    else if(type == typeof(char)) key = "'" + ((string)any) + "'";
+                    else if(type == typeof(string)) key = "\"" + ((string)any) + "\"";
+                    
+                    StringBuilder sb = new StringBuilder();
+                    PrintLuaVarAutoLoop(sb, any, level + 1, max_level, prefix + "  ");
+                    stringBuilder.AppendFormat("{0}   {1} = {2}\n", prefix, key, sb.ToString());
+                }
+                stringBuilder.Append(prefix);
+                stringBuilder.AppendLine("}");
+            } else if(type == typeof(LuaFunction)) {
+                var f = (LuaFunction)any;
+                stringBuilder.AppendFormat("{0} function: 0x{1:X} ({1})\n", prefix, f.L, f.Ref);
+            } 
+            else if(type == typeof(int)) 
+                stringBuilder.AppendFormat("{0} int: {1}\n", prefix, (int)any);
+            else if(type == typeof(long)) 
+                stringBuilder.AppendFormat("{0} long: {1}\n", prefix, (long)any);
+            else if(type == typeof(double)) 
+                stringBuilder.AppendFormat("{0} double: {1}\n", prefix, (double)any);
+            else if(type == typeof(float)) 
+                stringBuilder.AppendFormat("{0} float: {1}\n", prefix, (float)any);
+            else if(type == typeof(bool))
+                stringBuilder.AppendFormat("{0} bool: {1}\n", prefix, (bool)any);
+            else if(type == typeof(char))
+                stringBuilder.AppendFormat("{0} char: \'{1}\'\n", prefix, (char)any);
+            else if(type == typeof(string)) 
+                stringBuilder.AppendFormat("{0} string: \"{1}\"\n", prefix, (string)any);
+            else if(type == typeof(LuaVar)) {
+                var v = (LuaVar)any;
+                stringBuilder.AppendFormat("{0} unknow var: 0x{1:X}\n", prefix, v.L);
+            }
+            else
+                stringBuilder.AppendFormat("{0} unknow var: {1}\n", prefix, any);
+        }
+
         public static bool CheckDebugParam(int index, string[] arr, out string value, bool required = true, string defaultValue = "") {
             if(arr.Length <= index) {
                 if(required)
@@ -225,6 +295,18 @@ namespace Ballance2.Utils
             }
             if(!double.TryParse(arr[index], out value)) {
                 Log.E("Debug", "参数 [{0}] 不是有效的 double", index);
+                return false;
+            } 
+            return true;
+        }
+        public static bool CheckStringDebugParam(int index, string[] arr, bool required = true) {
+            if(arr.Length <= index) {
+                if(required)
+                    Log.E("Debug", "缺少参数 [{0}]", index);
+                return false;
+            }
+            if(string.IsNullOrEmpty(arr[index])) {
+                Log.E("Debug", "参数 [{0}] 不是有效的字符串为空", index);
                 return false;
             } 
             return true;

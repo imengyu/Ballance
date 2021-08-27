@@ -113,7 +113,7 @@ public class GameEntryEditor : Editor
 
         var arr = target.DebugCustomEntries;
         var newIndex = EditorGUILayout.Popup(DebugCustomEntryEvent.displayName, arr.IndexOf(DebugCustomEntryEvent.stringValue), arr.ToArray());
-        if(newIndex >= 0 && newIndex > arr.Count)
+        if(newIndex >= 0 && newIndex < arr.Count)
             DebugCustomEntryEvent.stringValue = arr[newIndex];
 
         EditorGUILayout.PropertyField(DebugCustomEntries);

@@ -422,7 +422,7 @@ namespace Ballance2.Sys.Services
 
         private void InitCommands() {
             var srv = GameManager.Instance.GameDebugCommandServer;
-            srv.RegisterCommand("sm", (keyword, fullCmd, args) => {
+            srv.RegisterCommand("sm", (keyword, fullCmd, argsCount, args) => {
                 var type = (string)args[0];
                 switch(type) {
                     case "play": {

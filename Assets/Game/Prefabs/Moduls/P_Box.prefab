@@ -249,7 +249,7 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
-  m_Friction: 0.7
+  m_Friction: 0.3
   m_Restitution: 0.3
   m_Layer: 3
   m_InertiaTensor:
@@ -276,3 +276,6 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
+  m_SystemGroupName: 
+  m_SubSystemId: 0
+  m_SubSystemDontCollideWith: 0

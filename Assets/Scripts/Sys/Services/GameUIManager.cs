@@ -186,15 +186,62 @@ namespace Ballance2.Sys.Services
             UIToast.SetAsLastSibling();
             EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
 
-            var keyListener = KeyListener.Get(UIRoot.gameObject);
-            keyListener.AddKeyListen(KeyCode.Escape, (keyListener, down) => {
-                //Esc键返回上一页
-                if(pageStack.Count > 0) {
-                    var page = pageStack[pageStack.Count - 1];
-                    if (page.CanEscBack) 
-                        BackPreviusPage();
+            keyListener = KeyListener.Get(UIRoot.gameObject);
+            keyListener.AddKeyListen(KeyCode.Escape, (key, down) => {
+                if(down) {
+                    //Esc键返回上一页
+                    if(pageStack.Count > 0) {
+                        var page = pageStack[pageStack.Count - 1];
+                        if (page.CanEscBack) 
+                            BackPreviusPage();
+                    }
                 }
             });
+        }
+
+        private KeyListener keyListener = null;
+
+        /// <summary>
+        /// 侦听某个按键一次
+        /// </summary>
+        /// <param name="code">按键值</param>
+        /// <param name="pressedOrReleased">如果为true，则侦听按下事件，否则侦听松开事件</param>
+        /// <param name="callback">回调</param>
+        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+        [LuaApiDescription("侦听某个按键一次", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+        [LuaApiParamDescription("key", "键值")]
+        [LuaApiParamDescription("pressedOrReleased", "如果为true，则侦听按下事件，否则侦听松开事件")]
+        [LuaApiParamDescription("callBack", "回调函数")]
+        public int WaitKey(KeyCode code, bool pressedOrReleased, VoidDelegate callback) {
+            int id = 0;
+            id = keyListener.AddKeyListen(code, (key, down) => {
+                if(down == pressedOrReleased) {
+                    keyListener.DeleteKeyListen(id);
+                    callback();
+                }
+            });
+            return id;
+        }
+        /// <summary>
+        /// 添加侦听器侦听键。
+        /// </summary>
+        /// <param name="key">键值。</param>
+        /// <param name="callBack">回调函数。</param>
+        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+        [LuaApiDescription("添加侦听器侦听键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+        [LuaApiParamDescription("key", "键值")]
+        [LuaApiParamDescription("callBack", "回调函数")]
+        public int ListenKey(KeyCode key, KeyListener.KeyDelegate callBack) {
+            return keyListener.AddKeyListen(key, callBack);
+        }
+        /// <summary>
+        /// 删除侦听按键
+        /// </summary>
+        /// <param name="id">AddKeyListen 返回的ID</param>
+        [LuaApiDescription("删除侦听按键")]
+        [LuaApiParamDescription("id", "AddKeyListen 返回的ID")]
+        public void DeleteKeyListen(int id) {
+            keyListener.DeleteKeyListen(id);
         }
 
         #endregion
@@ -973,7 +1020,7 @@ namespace Ballance2.Sys.Services
         #region 调试命令
 
         private void InitCommands() {
-            GameManager.Instance.GameDebugCommandServer.RegisterCommand("um", (keyword, full, args) => {
+            GameManager.Instance.GameDebugCommandServer.RegisterCommand("um", (keyword, full, argsCount, args) => {
                 switch(args[0]) { 
                     case "window": {
                         switch(args[1]) {

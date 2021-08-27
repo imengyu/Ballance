@@ -84,3 +84,35 @@ function Clone(object)
     end
     return _copy(object)
 end
+
+---comment
+---@param data any
+---@param max_level number
+---@param prefix string
+function VarDump(data, max_level, prefix)   
+  if type(prefix) ~= "string" then   
+      prefix = ""  
+  end   
+  if type(data) ~= "table" then   
+      print(prefix .. tostring(data))   
+  else  
+      print(data)   
+      if max_level ~= 0 then   
+          local prefix_next = prefix .. "    "  
+          print(prefix .. "{")   
+          for k,v in pairs(data) do  
+              io.stdout:write(prefix_next .. k .. " = ")   
+              if type(v) ~= "table" or (type(max_level) == "number" and max_level <= 1) then   
+                  print(v)   
+              else  
+                  if max_level == nil then   
+                    VarDump(v, nil, prefix_next)   
+                  else  
+                    VarDump(v, max_level - 1, prefix_next)   
+                  end   
+              end   
+          end   
+          print(prefix .. "}")   
+      end   
+  end   
+end

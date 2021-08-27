@@ -692,7 +692,7 @@ namespace Ballance2.Sys.Services
 
         private void InitPackageCommands() {
             var srv = GameManager.Instance.GameDebugCommandServer;
-            srv.RegisterCommand("pm", (keyword, fullCmd, args) => {
+            srv.RegisterCommand("pm", (keyword, fullCmd, argsCount, args) => {
                 var type = (string)args[0];
                 switch(type) {
                     case "load": {

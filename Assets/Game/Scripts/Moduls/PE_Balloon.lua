@@ -23,14 +23,14 @@ end
 function PE_Balloon:Start()
   self.PE_Balloon_Platform_ColTest.onCollisionEnter = function (body, other, info)
     if other and other.gameObject.tag == "Ball" then
-      self.PE_Balloon_Platform_HingeJoint.enable = false --断开与桥的连接
+      self.PE_Balloon_Platform_HingeJoint:SetEnabled(false) --断开与桥的连接
       GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
     end
   end
 end
 
 function PE_Balloon:Active()
-  self.PE_Balloon_Platform_HingeJoint.enable = true
+  self.PE_Balloon_Platform_HingeJoint:SetEnabled(true)
   self.gameObject:SetActive(true)
 
   self.PE_Balloon_Platform_ColTest:ForcePhysics()

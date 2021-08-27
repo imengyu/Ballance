@@ -334,7 +334,7 @@ function BallManager:_DeactiveCurrentBall()
 end
 function BallManager:_ActiveCurrentBall() 
   local current = self._private.currentActiveBall
-  if current == nil then
+  if current == nil and self._private.currentBall ~= nil then
     current = self._private.currentBall
     self._private.currentActiveBall = self._private.currentBall
 

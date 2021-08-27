@@ -183,6 +183,41 @@ public class Lua_Ballance2_Utils_DebugUtils : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int PrintLuaVarAuto_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			System.Object a1;
+			checkType(l,1,out a1);
+			System.Int32 a2;
+			checkType(l,2,out a2);
+			var ret=Ballance2.Utils.DebugUtils.PrintLuaVarAuto(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int CheckDebugParam_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -386,6 +421,43 @@ public class Lua_Ballance2_Utils_DebugUtils : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int CheckStringDebugParam_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			System.Int32 a1;
+			checkType(l,1,out a1);
+			System.String[] a2;
+			checkArray(l,2,out a2);
+			System.Boolean a3;
+			checkType(l,3,out a3);
+			var ret=Ballance2.Utils.DebugUtils.CheckStringDebugParam(a1,a2,a3);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Utils.DebugUtils");
@@ -393,11 +465,13 @@ public class Lua_Ballance2_Utils_DebugUtils : LuaObject {
 		addMember(l,PrintBytes_s);
 		addMember(l,PrintCodeWithLine_s);
 		addMember(l,PrintArrVar_s);
+		addMember(l,PrintLuaVarAuto_s);
 		addMember(l,CheckDebugParam_s);
 		addMember(l,CheckIntDebugParam_s);
 		addMember(l,CheckFloatDebugParam_s);
 		addMember(l,CheckBoolDebugParam_s);
 		addMember(l,CheckDoubleDebugParam_s);
+		addMember(l,CheckStringDebugParam_s);
 		createTypeMetatable(l,constructor, typeof(Ballance2.Utils.DebugUtils));
 	}
 }

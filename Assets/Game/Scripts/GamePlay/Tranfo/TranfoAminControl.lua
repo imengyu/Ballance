@@ -7,6 +7,7 @@ local GameSoundType = Ballance2.Sys.Services.GameSoundType
 ---变球器控制器
 ---@class TranfoAminControl : GameLuaObjectHostClass
 ---@field _AnimTrafo_Flashfield GameObject
+---@field _AnimTrafo_Group GameObject
 ---@field _AnimTrafo_Ringpart1 GameObject
 ---@field _AnimTrafo_Ringpart2 GameObject
 ---@field _AnimTrafo_Ringpart3 GameObject
@@ -36,6 +37,7 @@ function TranfoAminControl:Start()
   --获取变球器电流材质
   renderer = self._AnimTrafo_Flashfield:GetComponent(Renderer) ---@type Renderer
   self._AnimTrafo_FlashfieldMat = renderer.material
+  self._AnimTrafo_Group:SetActive(false)
 
   GamePlay.TranfoManager = self
 end
@@ -56,8 +58,8 @@ end
 ---@param placeholder GameObject
 ---@param ballChangeCallback function
 function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
-  self.gameObject:SetActive(true)
-  self.transform.position = pos
+  self._AnimTrafo_Group:SetActive(true)
+  self._AnimTrafo_Group.transform.position = pos
 
   ---隐藏占位变球器
   if placeholder ~= nil then
@@ -92,7 +94,7 @@ function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
     Yield(WaitForSeconds(0.33))
 
     --隐藏本体，显示占位变球器
-    self.gameObject:SetActive(false)
+    self._AnimTrafo_Group.gameObject:SetActive(false)
     if placeholder ~= nil then
       placeholder:SetActive(true)
     end

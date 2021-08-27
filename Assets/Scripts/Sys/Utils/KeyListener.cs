@@ -56,8 +56,10 @@ namespace Ballance2.Sys.Utils
             public KeyDelegate callBack;
         }
 
-        private List<KeyListenerItem> items = new List<KeyListenerItem>();
+        private Dictionary<int, KeyListenerItem> items = new Dictionary<int, KeyListenerItem>();
+        private Dictionary<int, bool> itemsDownStatus = new Dictionary<int, bool>();
         private bool isListenKey = true;
+        private int listenKeyId = 0;
 
         /// <summary>
         /// 是否开启监听
@@ -71,33 +73,50 @@ namespace Ballance2.Sys.Utils
         /// <param name="key">键值。</param>
         /// <param name="key2">键值2。</param>
         /// <param name="callBack">回调函数。</param>
-        [LuaApiDescription("添加侦听器侦听键")]
+        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+        [LuaApiDescription("添加侦听器侦听键", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
         [LuaApiParamDescription("key", "键值")]
         [LuaApiParamDescription("key2", "键值2")]
         [LuaApiParamDescription("callBack", "回调函数")]
-        public void AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
+        public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
         {
             KeyListener.KeyListenerItem item = new KeyListener.KeyListenerItem();
             item.callBack = callBack;
             item.key = key;
             item.key2 = key2;
             item.has2key = true;
-            items.Add(item);
+            items.Add(++listenKeyId, item);
+            itemsDownStatus[listenKeyId] = false;
+            return listenKeyId;
         }
         /// <summary>
         /// 添加侦听器侦听键。
         /// </summary>
         /// <param name="key">键值。</param>
         /// <param name="callBack">回调函数。</param>
-        [LuaApiDescription("添加侦听器侦听键。")]
+        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+        [LuaApiDescription("添加侦听器侦听键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
         [LuaApiParamDescription("key", "键值")]
         [LuaApiParamDescription("callBack", "回调函数")]
-        public void AddKeyListen(KeyCode key, KeyDelegate callBack)
+        public int AddKeyListen(KeyCode key, KeyDelegate callBack)
         {
             KeyListener.KeyListenerItem item = new KeyListener.KeyListenerItem();
             item.callBack = callBack;
             item.key = key;
-            items.Add(item);
+            items.Add(++listenKeyId, item);
+            itemsDownStatus[listenKeyId] = false;
+            return listenKeyId;
+        }
+        /// <summary>
+        /// 删除指定侦听器。
+        /// </summary>
+        /// <param name="id">AddKeyListen 返回的ID</param>
+        [LuaApiDescription("删除指定侦听器。")]
+        [LuaApiParamDescription("id", "AddKeyListen 返回的ID")]
+        public void DeleteKeyListen(int id)
+        {
+            itemsDownStatus.Remove(listenKeyId);
+            items.Remove(id);
         }
         /// <summary>
         /// 清空事件侦听器所有侦听键。
@@ -106,37 +125,41 @@ namespace Ballance2.Sys.Utils
         public void ClearKeyListen()
         {
             items.Clear();
+            itemsDownStatus.Clear();
         }
 
         private void Update()
         {
             if (isListenKey)
             {
-                for (int i = 0; i < items.Count; i++)
+                foreach(var v in items) 
                 {
-                    if (items[i].has2key)
+                    var item = v.Value;
+                    var itemDownStatus = itemsDownStatus[v.Key];
+                    if (item.has2key)
                     {
-                        if (Input.GetKeyDown(items[i].key2) && !items[i].downed)
+                        if (Input.GetKeyDown(item.key2) && !itemDownStatus)
                         {
-                            items[i].downed = true;
-                            items[i].callBack(items[i].key2, true);
+                            itemDownStatus = true;
+                            item.callBack(item.key2, true);
                         }
-                        if (Input.GetKeyUp(items[i].key2) && items[i].downed)
+                        if (Input.GetKeyUp(item.key2) && itemDownStatus)
                         {
-                            items[i].downed = false;
-                            items[i].callBack(items[i].key2, false);
+                            itemDownStatus = false;
+                            item.callBack(item.key2, false);
                         }
                     }
-                    if (Input.GetKeyDown(items[i].key) && !items[i].downed)
+                    if (Input.GetKeyDown(item.key) && !itemDownStatus)
                     {
-                        items[i].downed = true;
-                        items[i].callBack(items[i].key, true);
+                        itemDownStatus = true;
+                        item.callBack(item.key, true);
                     }
-                    if (Input.GetKeyUp(items[i].key) && items[i].downed)
+                    if (Input.GetKeyUp(item.key) && itemDownStatus)
                     {
-                        items[i].downed = false;
-                        items[i].callBack(items[i].key, false);
+                        itemDownStatus = false;
+                        item.callBack(item.key, false);
                     }
+                    itemsDownStatus[v.Key] = itemDownStatus;
                 }
             }
         }

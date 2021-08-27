@@ -15,6 +15,7 @@ namespace Ballance2.Game
         [LuaApiDescription("指定当前跟踪的目标")]
         [Tooltip("指定当前跟踪的目标")]
         public Transform Target = null;
+        public Transform LookSmoothTarget = null;
         [LuaApiDescription("指定当前跟踪的目标")]
         [Tooltip("指定当前跟踪的目标")]
         public Transform CameraTransform = null;
@@ -22,13 +23,18 @@ namespace Ballance2.Game
         [Tooltip("摄像机平滑移动的时间")]
         public float SmoothTime = 0.1f;
 
+        public float SmoothToTargetTime = 0.06f;
+
+        private Vector3 smoothTargetVelocity = Vector3.zero;
         private Vector3 cameraVelocity = Vector3.zero;
 
         private void FixedUpdate() {
             if(Target != null) 
             {
+                if(Look)
+                    LookSmoothTarget.transform.position = Vector3.SmoothDamp(transform.position, Target.position, ref smoothTargetVelocity, SmoothToTargetTime);
                 if(Look && CameraTransform != null)
-                    CameraTransform.LookAt(Target);
+                    CameraTransform.LookAt(LookSmoothTarget);
                 if(Follow) 
                     transform.position = Vector3.SmoothDamp(transform.position, Target.position, ref cameraVelocity, SmoothTime);
             }

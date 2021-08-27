@@ -45,6 +45,15 @@ namespace PhysicsRT
                 PhysicsApi.API.SetConstraintEnable(ptr, false);
         }
 
+        /// <summary>
+        /// 设置是否启用约束
+        /// </summary>
+        /// <param name="b"></param>
+        public void SetEnabled(bool b) {
+            if(ptr != IntPtr.Zero)
+                PhysicsApi.API.SetConstraintEnable(ptr, b);
+        }
+
         private IntPtr ptr = IntPtr.Zero;
         private PhysicsWorld CurrentPhysicsWorld = null;
 

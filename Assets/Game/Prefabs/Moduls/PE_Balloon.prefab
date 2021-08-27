@@ -183,7 +183,7 @@ MonoBehaviour:
     Tag07: 0
   m_Friction: 0.5
   m_Restitution: 0.4
-  m_Layer: -1
+  m_Layer: 3
   m_InertiaTensor:
     e00: 1
     e01: 0
@@ -208,9 +208,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 3
+  m_SubSystemDontCollideWith: 2
 --- !u!114 &275065140243705496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926385719267457}
 --- !u!1 &450275747258543179
 GameObject:
@@ -479,9 +480,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 7
+  m_SubSystemDontCollideWith: 6
 --- !u!114 &450275747258543181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +500,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926385430142518}
   AxisRef: {fileID: 7030926385430142518}
 --- !u!1 &768580478379977959
@@ -751,9 +753,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 8
+  m_SubSystemDontCollideWith: 7
 --- !u!114 &768580478379977961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -771,6 +773,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926385245078667}
   AxisRef: {fileID: 7030926385245078667}
 --- !u!1 &1106876256206392447
@@ -1401,6 +1404,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   motorEnable: 0
   motorSpring: 0
   motorTau: 0.2
@@ -1434,6 +1438,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926385719267457}
   AxisRef: {fileID: 7030926385719267457}
 --- !u!114 &1292572827298755143
@@ -2295,9 +2300,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 9
+  m_SubSystemDontCollideWith: 8
 --- !u!114 &3534020416391495703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2315,6 +2320,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926384169061972}
   AxisRef: {fileID: 7030926384169061972}
 --- !u!1 &3627663775244267396
@@ -3080,9 +3086,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 6
+  m_SubSystemDontCollideWith: 5
 --- !u!114 &5111216448853400815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3100,6 +3106,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926384519596454}
   AxisRef: {fileID: 7030926384519596454}
 --- !u!1 &5222043008859044849
@@ -3352,9 +3359,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 10
+  m_SubSystemDontCollideWith: 9
 --- !u!114 &5222043008859044851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3372,6 +3379,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926386085672218}
   AxisRef: {fileID: 7030926386085672218}
 --- !u!1 &6374896977184566236
@@ -3894,9 +3902,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 4
+  m_SubSystemDontCollideWith: 2
 --- !u!114 &6931793308048622639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3914,6 +3922,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926384458629557}
   AxisRef: {fileID: 7030926384458629557}
 --- !u!1 &7035945379688416616
@@ -5504,9 +5513,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 11
+  m_SubSystemDontCollideWith: 10
 --- !u!114 &8157607035814951443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5524,6 +5533,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926385435306462}
   AxisRef: {fileID: 7030926385435306462}
 --- !u!1 &8394247453393352214
@@ -5776,9 +5786,9 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
-  m_SystemGroupName: 
-  m_SubSystemId: 0
-  m_SubSystemDontCollideWith: 0
+  m_SystemGroupName: PE_Balloon
+  m_SubSystemId: 5
+  m_SubSystemDontCollideWith: 4
 --- !u!114 &8394247453393352216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5796,6 +5806,7 @@ MonoBehaviour:
   m_Threshold: 10
   m_MaximumAngularImpulse: 1000
   m_MaximumLinearImpulse: 1000
+  m_Priority: 1
   PovitRef: {fileID: 7030926384404561987}
   AxisRef: {fileID: 7030926384404561987}
 --- !u!1 &8557966583813998468

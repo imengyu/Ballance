@@ -18,6 +18,7 @@ function LevelBriz:new()
   self._LightFlashTick = false
 end
 function LevelBriz:Start()
+  self._BrizLight.color = Color(0,0,0,1)
   Game.Mediator:RegisterEventHandler(GamePackage.GetSystemPackage(), 'CoreBrizLevelEventHandler', 'LevelBrizHandler', function (type)
     if type == 'beforeStart' then
       Game.Mediator:RegisterEventHandler(GamePackage.GetSystemPackage(), 'GAME_START', 'LevelBrizHandler', function ()
@@ -39,7 +40,7 @@ function LevelBriz:Update()
     if v > 1 then
       self._LightFlash = false
     else
-      self._BrizLight.color = Color(self._BrizLight.color.r, self._BrizLight.color.g, self._BrizLight.color.b, v)
+      self._BrizLight.color = Color(v, v, v, 1)
     end
   end
 end

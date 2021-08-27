@@ -2,7 +2,7 @@ local GamePackage = Ballance2.Sys.Package.GamePackage
 local SystemPackage = GamePackage.GetSystemPackage()
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local GameManager = Ballance2.Sys.GameManager
-local ColorUtility = UnityEngine.ColorUtility
+local StringUtils = Ballance2.Utils.StringUtils
 
 function CoreDebugGameGamePlay()
   --Hide base Cam
@@ -11,9 +11,8 @@ function CoreDebugGameGamePlay()
   GamePlayInit(function ()
     --Init floors
     CloneUtils.CloneNewObject(SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Debug/TestFloor.prefab'), 'GameTestFloor')
-    local _, color = ColorUtility.TryParseHtmlString('6D6050', Slua.out)
-    GamePlay.GamePlayManager:CreateSkyAndLight('L', nil, color)
-    GamePlay.GamePlayManager:StartLevel()
+    GamePlay.GamePlayManager:CreateSkyAndLight('L', nil, StringUtils.StringToColor('#6D6050'))
+    GamePlay.GamePlayManager:_InitAndStart()
   end)
 
 end

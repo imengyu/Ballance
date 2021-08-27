@@ -294,6 +294,44 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int DelayedNotifySingleEvent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			System.Single a2;
+			checkType(l,3,out a2);
+			System.Object[] a3;
+			checkParams(l,4,out a3);
+			var ret=self.DelayedNotifySingleEvent(a1,a2,a3);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int NotifySingleEvent(IntPtr l) {
 		try {
 			#if DEBUG
@@ -311,6 +349,46 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 			System.Object[] a2;
 			checkParams(l,3,out a2);
 			var ret=self.NotifySingleEvent(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int DelayedDispatchGlobalEvent(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameMediator self=(Ballance2.Sys.Services.GameMediator)checkSelf(l);
+			System.String a1;
+			checkType(l,2,out a1);
+			System.String a2;
+			checkType(l,3,out a2);
+			System.Single a3;
+			checkType(l,4,out a3);
+			System.Object[] a4;
+			checkParams(l,5,out a4);
+			var ret=self.DelayedDispatchGlobalEvent(a1,a2,a3,a4);
 			pushValue(l,true);
 			pushValue(l,ret);
 			return 2;
@@ -1020,7 +1098,9 @@ public class Lua_Ballance2_Sys_Services_GameMediator : LuaObject {
 		addMember(l,IsGlobalEventRegistered);
 		addMember(l,GetRegisteredGlobalEvent);
 		addMember(l,CheckSingleEventAttatched);
+		addMember(l,DelayedNotifySingleEvent);
 		addMember(l,NotifySingleEvent);
+		addMember(l,DelayedDispatchGlobalEvent);
 		addMember(l,DispatchGlobalEvent);
 		addMember(l,SubscribeSingleEvent);
 		addMember(l,UnsubscribeSingleEvent);

@@ -333,6 +333,39 @@ public class Lua_PhysicsRT_PhysicsShape : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int set_ShapeType(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsShape self=(PhysicsRT.PhysicsShape)checkSelf(l);
+			PhysicsRT.ShapeType v;
+			v = (PhysicsRT.ShapeType)LuaDLL.luaL_checkinteger(l, 2);
+			self.ShapeType=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_Wrap(IntPtr l) {
 		try {
 			#if DEBUG
@@ -348,6 +381,39 @@ public class Lua_PhysicsRT_PhysicsShape : LuaObject {
 			pushValue(l,true);
 			pushEnum(l,(int)self.Wrap);
 			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_Wrap(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsShape self=(PhysicsRT.PhysicsShape)checkSelf(l);
+			PhysicsRT.ShapeWrap v;
+			v = (PhysicsRT.ShapeWrap)LuaDLL.luaL_checkinteger(l, 2);
+			self.Wrap=v;
+			pushValue(l,true);
+			return 1;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -1078,8 +1144,8 @@ public class Lua_PhysicsRT_PhysicsShape : LuaObject {
 		addMember(l,GetChildInstanceEnable);
 		addMember(l,EnableAllChildInstance);
 		addMember(l,"StaticCompoundChildId",get_StaticCompoundChildId,null,true);
-		addMember(l,"ShapeType",get_ShapeType,null,true);
-		addMember(l,"Wrap",get_Wrap,null,true);
+		addMember(l,"ShapeType",get_ShapeType,set_ShapeType,true);
+		addMember(l,"Wrap",get_Wrap,set_Wrap,true);
 		addMember(l,"ShapeMesh",get_ShapeMesh,set_ShapeMesh,true);
 		addMember(l,"ShapeSize",get_ShapeSize,set_ShapeSize,true);
 		addMember(l,"ShapeRadius",get_ShapeRadius,set_ShapeRadius,true);

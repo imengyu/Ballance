@@ -50,8 +50,8 @@ namespace Ballance2.Sys.Entry
         public bool DebugEnableLuaDebugger = true;
         [Tooltip("调试类型")]
         public GameDebugType DebugType = GameDebugType.NoDebug;
-        [Reorderable("DebugInitPackages", true, "PackageName")]
         [Tooltip("当前调试中需要初始化的包名")]
+        [Reorderable("DebugInitPackages", true, "PackageName")]
         public List<GameDebugPackageInfo> DebugInitPackages = null;
         [Tooltip("自定义调试用例入口事件名称。进入调试之后会发送一个指定的全局事件，自定义调试用例可以根据这个事件作为调试入口。")]
         public string DebugCustomEntryEvent = "DebugEntry";

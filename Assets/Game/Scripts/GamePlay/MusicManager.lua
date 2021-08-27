@@ -26,6 +26,7 @@ function MusicManager:new()
   self._CurrentIsAtmo = false
   self._CurrentAudioTick = 0
   self._CurrentAudioTick2 = 0
+  self._LastMusicIndex = 0
 end
 function MusicManager:Start() 
   ---加载内置音乐
@@ -44,9 +45,9 @@ function MusicManager:Start()
         Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Theme_'..i..'_3.wav')
       },
       baseInterval = 5,
-      maxInterval = 30,
-      atmoInterval = 6,
-      atmoMaxInterval = 15,
+      maxInterval = 15,
+      atmoInterval = 7,
+      atmoMaxInterval = 20,
     }
   end
 
@@ -59,11 +60,32 @@ function MusicManager:FixedUpdate()
     if self._CurrentAudioTick > 0 then
       self._CurrentAudioTick = self._CurrentAudioTick - 1
     else
-      if not self.CurrentAudioSource.isPlaying then self.CurrentAudioSource:Stop() end
+      local musicIndex = math.random(#self.CurrentAudioTheme.musics)
+      if musicIndex == self._LastMusicIndex then
+        if musicIndex < #self.CurrentAudioTheme.musics then
+          musicIndex = musicIndex + 1
+        else
+          musicIndex = 1
+        end
+      end
+      self._LastMusicIndex = musicIndex
+      if not self.CurrentAudioSource.isPlaying then 
+        self.CurrentAudioSource:Stop() 
+        self.CurrentAudioSource.clip = self.CurrentAudioTheme.musics[musicIndex]
+        self.CurrentAudioSource.volume = 1
+        self.CurrentAudioSource:Play()
+      elseif self._CurrentIsAtom then
+        Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 2)
+        LuaTimer.Add(200, function ()
+          self.CurrentAudioSource.clip = self.CurrentAudioTheme.musics[musicIndex]
+          self.CurrentAudioSource.volume = 1
+          self.CurrentAudioSource:Play()
+        end)
+      end
 
-      self.CurrentAudioSource.clip = self.CurrentAudioTheme.musics[math.random(#self.CurrentAudioTheme.musics)]
-      self.CurrentAudioSource:Play()
+      self._CurrentIsAtom = false
       self._CurrentAudioTick = math.random(self.CurrentAudioTheme.baseInterval, self.CurrentAudioTheme.maxInterval)
+      self._CurrentAudioTick2 = self._CurrentAudioTick + 1
     end
 
     --随机播放atmo音效
@@ -72,8 +94,10 @@ function MusicManager:FixedUpdate()
     else
       if not self.CurrentAudioSource.isPlaying then
         self.CurrentAudioSource.clip = self.CurrentAudioTheme.atmos[math.random(#self.CurrentAudioTheme.atmos)]
+        self.CurrentAudioSource.volume = math.random(0.5, 1)
         self.CurrentAudioSource:Play()
       end
+      self._CurrentIsAtom = true
       self._CurrentAudioTick2 = math.random(self.CurrentAudioTheme.atmoInterval, self.CurrentAudioTheme.atmoMaxInterval)
     end
 

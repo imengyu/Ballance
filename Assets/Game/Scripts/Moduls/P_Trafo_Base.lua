@@ -13,7 +13,7 @@ end
 
 function P_Trafo_Base:Start()
   self._Tigger.onOverlappingCollidableAdd = function (phantom, otherBody)
-    self._OnOverlappingCollidableAdd(phantom, otherBody)
+    self:_OnOverlappingCollidableAdd(phantom, otherBody)
   end
 end
 function P_Trafo_Base:Active()
@@ -32,9 +32,9 @@ end
 ---@param otherBody PhysicsBody
 function P_Trafo_Base:_OnOverlappingCollidableAdd(phantom, otherBody)
   --球，并且球类型于目标类型不一致
-  if not self.TranfoActived and otherBody.gameObject.tag == 'Ball' and otherBody.gameObject.name ~= self._TargetBallType then
+  if not self._TranfoActived and otherBody.gameObject.tag == 'Ball' and otherBody.gameObject.name ~= self._TargetBallType then
     --触发变球
-    self.TranfoActived = true;
+    self._TranfoActived = true;
     GamePlay.GamePlayManager:ActiveTranfo(self, self._TargetBallType, self._Color)
   end
 end

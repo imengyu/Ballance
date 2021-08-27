@@ -116,7 +116,18 @@ namespace PhysicsRT
         public void SetAabbBySelf() {
             Renderer renderer = GetComponent<Renderer>();
             if(renderer != null) 
-                SetAabb(transform.TransformPoint(renderer.bounds.min), transform.TransformPoint(renderer.bounds.max));
+                SetAabbWorld(renderer.bounds.min, renderer.bounds.max);
+        }
+         /// <summary>
+        /// 更新当前幻影的Aabb包围盒（相对）
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        public void SetAabbWorld(Vector3 min, Vector3 max) {
+            if(ptr != IntPtr.Zero)
+                PhysicsApi.API.SetAabbPhantomMinMax(ptr, min, max);
+            m_Min = min - transform.position;
+            m_Max = max - transform.position;
         }
         /// <summary>
         /// 更新当前幻影的Aabb包围盒（相对）
@@ -126,8 +137,26 @@ namespace PhysicsRT
         public void SetAabb(Vector3 min, Vector3 max) {
             m_Max = max;
             m_Min = min;
-            if(ptr != IntPtr.Zero) 
-                PhysicsApi.API.SetAabbPhantomMinMax(ptr, transform.TransformPoint(m_Min), transform.TransformPoint(m_Max));
+            if(ptr != IntPtr.Zero) {
+                var _min = transform.TransformPoint(m_Min);
+                var _max = transform.TransformPoint(m_Max);
+                if(_min.x > _max.x){
+                    var o = _max.x;
+                    _max.x = _min.x;
+                    _min.x = o;
+                }
+                if(_min.y > _max.y){
+                    var o = _max.y;
+                    _max.y = _min.y;
+                    _min.y = o;
+                }
+                if(_min.z > _max.z){
+                    var o = _max.z;
+                    _max.z = _min.z;
+                    _min.z = o;
+                }
+                PhysicsApi.API.SetAabbPhantomMinMax(ptr, _min, _max);
+            }
         }
         /// <summary>
         /// 获取当前幻影相交的刚体
@@ -155,9 +184,27 @@ namespace PhysicsRT
                 return;
             }
 
+            var _min = transform.position + m_Min;
+            var _max = transform.position + m_Max;
+            if(_min.x > _max.x){
+                var o = _max.x;
+                _max.x = _min.x;
+                _min.x = o;
+            }
+            if(_min.y > _max.y){
+                var o = _max.y;
+                _max.y = _min.y;
+                _min.y = o;
+            }
+            if(_min.z > _max.z){
+                var o = _max.z;
+                _max.z = _min.z;
+                _min.z = o;
+            }
+
             ptr = PhysicsApi.API.CreateAabbPhantom(
                 CurrentPhysicsWorld.GetPtr(),
-                transform.TransformPoint(m_Min), transform.TransformPoint(m_Max),
+                _min, _max,
                 m_EnableListener,
                 m_Layer);
 

@@ -22,6 +22,7 @@ function GamePlayManager:new()
   self.StartLife = 3
   self.StartPoint = 1000
   self.LevelScore = 100 ---当前关卡的基础分数
+  self.StartBall = 'BallWood'
 
   self.CurrentLevelName = ''
   self.CurrentPoint = 0 ---当前时间点数
@@ -41,10 +42,25 @@ function GamePlayManager:Start()
   self:_InitSounds()
   self:_InitKeyEvents()
   self:_InitSetings()
+
+  Game.Mediator:RegisterGlobalEvent('GAME_START')
+  Game.Mediator:RegisterGlobalEvent('GAME_RESTART')
+  Game.Mediator:RegisterGlobalEvent('GAME_QUIT')
+  Game.Mediator:RegisterGlobalEvent('GAME_RESUME')
+  Game.Mediator:RegisterGlobalEvent('GAME_PAUSE')
+  Game.Mediator:RegisterGlobalEvent('GAME_FALL')
+  Game.Mediator:RegisterGlobalEvent('GAME_PASS')
+  Game.Mediator:SubscribeSingleEvent(Game.SystemPackage, "CoreGamePlayManagerInitAndStart", 'GamePlayManager', function (evtName, params)
+    self:_InitAndStart()
+    return false
+  end)
+
 end
 function GamePlayManager:OnDestroy()
   if (not Slua.IsNull(self.GameLightGameObject)) then UnityEngine.Object.Destroy(self.GameLightGameObject) end 
   self.GameLightGameObject = nil
+
+  Game.Mediator:UnRegisterSingleEvent()
 end
 function GamePlayManager:FixedUpdate()
   --分数每半秒减一
@@ -137,7 +153,7 @@ function GamePlayManager:_SetCamPos()
 end
 
 ---LevelBuilder 就绪，现在GamePlayManager进行初始化
-function GamePlayManager:Init() 
+function GamePlayManager:_InitAndStart() 
   coroutine.resume(coroutine.create(function()
     --UI
     Game.UIManager:CloseAllPage()
@@ -149,13 +165,15 @@ function GamePlayManager:Init()
     GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
     ---进入第一小节
     GamePlay.SectorManager:SetCurrentSector(1)
-    self._SetCamPos()
+    --设置初始球
+    GamePlay.BallManager:SetCurrentBall(self.StartBall)
+    self:_SetCamPos()
     Game.UIManager:MaskBlackFadeOut(1)
     --播放开始音乐
     Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal)
+    --
     Game.LevelBuilder:CallLevelCustomModEvent('beforeStart')
-
-    Game.Mediator:DispatchGlobalEvent('GAME_START', '*')
+    Game.Mediator:DispatchGlobalEvent('GAME_START', '*', {})
 
     Yield(WaitForSeconds(1))
 
@@ -204,7 +222,7 @@ function GamePlayManager:RestartLevel()
 
   self:_Stop(BallControlStatus.NoControl)
 
-  Game.Mediator:DispatchGlobalEvent('GAME_RESTART', '*')
+  Game.Mediator:DispatchGlobalEvent('GAME_RESTART', '*', {})
 
   coroutine.resume(coroutine.create(function()
 
@@ -215,14 +233,14 @@ function GamePlayManager:RestartLevel()
     Yield(WaitForSeconds(0.5))
 
     --开始
-    self:Init()
+    self:_InitAndStart()
   end))
 
 end
 ---退出关卡
 function GamePlayManager:QuitLevel() 
   
-  Game.Mediator:DispatchGlobalEvent('GAME_QUIT', '*')
+  Game.Mediator:DispatchGlobalEvent('GAME_QUIT', '*', {})
 
   Game.UIManager:CloseAllPage()
   coroutine.resume(coroutine.create(function()
@@ -242,7 +260,7 @@ function GamePlayManager:PauseLevel(showPauseUI)
   --停止模拟
   self.GamePhysicsWorld.Simulating = false
 
-  Game.Mediator:DispatchGlobalEvent('GAME_PAUSE', '*')
+  Game.Mediator:DispatchGlobalEvent('GAME_PAUSE', '*', {})
 
   --UI
   if showPauseUI then
@@ -256,7 +274,7 @@ function GamePlayManager:ResumeLevel()
   --停止继续
   self.GamePhysicsWorld.Simulating = true
 
-  Game.Mediator:DispatchGlobalEvent('GAME_RESUME', '*')
+  Game.Mediator:DispatchGlobalEvent('GAME_RESUME', '*', {})
 
   --UI
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
@@ -274,7 +292,7 @@ function GamePlayManager:Fall()
 
   if self.CurrentLife > 0 then
     
-    Game.Mediator:DispatchGlobalEvent('GAME_FALL', '*')
+    Game.Mediator:DispatchGlobalEvent('GAME_FALL', '*', {})
     --禁用控制
     self:_Stop(BallControlStatus.Control)
 
@@ -283,20 +301,20 @@ function GamePlayManager:Fall()
     Game.UIManager:MaskWhiteFadeIn(1)
 
     coroutine.resume(coroutine.create(function()
-      Yield(WaitForSeconds(2))
+      Yield(WaitForSeconds(1))
  
       --禁用控制
       self:_Stop(BallControlStatus.NoControl)
-      self._SoundBallFall:Stop()
+      Yield(WaitForSeconds(1))
 
       --重置
-      self._SetCamPos()
-      self._Start()
+      self:_SetCamPos()
+      self:_Start()
       Game.UIManager:MaskWhiteFadeOut(1)
     end))
   else
     
-    Game.Mediator:DispatchGlobalEvent('GAME_FAIL', '*')
+    Game.Mediator:DispatchGlobalEvent('GAME_FAIL', '*', {})
     --禁用控制
     self:_Stop(BallControlStatus.UnleashingMode)
     --延时显示失败菜单
@@ -311,7 +329,7 @@ function GamePlayManager:Pass()
 
   if self.CurrentLevelPass then return end
 
-  Game.Mediator:DispatchGlobalEvent('GAME_PASS', '*')
+  Game.Mediator:DispatchGlobalEvent('GAME_PASS', '*', {})
 
   self.CurrentLevelPass = true
   self._SoundLastSector:Stop() --停止最后一小节的音乐
@@ -355,7 +373,7 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
     Yield(WaitForSeconds(1))
 
     --播放变球动画
-    GamePlay.TranfoManager:PlayAnim(targetPos, color, tranfo, function ()
+    GamePlay.TranfoManager:PlayAnim(targetPos, color, tranfo.gameObject, function ()
       --切换球
       GamePlay.BallManager:SetCurrentBall(targetType, BallControlStatus.Control)
     end)
@@ -365,9 +383,11 @@ end
 
 ---添加生命
 function GamePlayManager:AddLife() 
-  self._SoundAddLife:Play()
   self.CurrentLife = self.CurrentLife + 1
-  GameUI.GamePlayUI:AddLifeBall()
+  LuaTimer.Add(317, function ()
+    self._SoundAddLife:Play()
+    GameUI.GamePlayUI:AddLifeBall()
+  end)
 end
 ---添加时间点数
 ---@param count number|nil 时间点数，默认为10

@@ -7,6 +7,9 @@ function PS_FourFlames:new()
   self.Flame_C = nil ---@type GameObject
   self.Flame_D = nil ---@type GameObject
 end
+function PS_FourFlames:Start()
+  self:Deactive()
+end
 function PS_FourFlames:Active()
   self.Flame_A:SetActive(true)
   self.Flame_B:SetActive(true)

@@ -119,6 +119,7 @@ namespace Ballance2.Sys
             GameBaseCamera = gameEntryInstance.GameBaseCamera;
             GameCanvas = gameEntryInstance.GameCanvas;
             DebugMode = gameEntryInstance.DebugMode;
+            GameDebugCommandServer = new GameDebugCommandServer();
 
             InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
         }
@@ -129,7 +130,6 @@ namespace Ballance2.Sys
             Application.wantsToQuit += Application_wantsToQuit;
 
             GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-            GameDebugCommandServer = new GameDebugCommandServer();
 
             InitDebugConfig(gameEntryInstance);
             InitCommands();
@@ -468,11 +468,11 @@ namespace Ballance2.Sys
         
         private void InitCommands() {
             var srv = GameManager.Instance.GameDebugCommandServer;
-            srv.RegisterCommand("quit", (keyword, fullCmd, args) => {
+            srv.RegisterCommand("quit", (keyword, fullCmd, argsCount, args) => {
                 QuitGame();
                 return false;
             }, 0, "quit > 退出游戏");
-            srv.RegisterCommand("s", (keyword, fullCmd, args) =>
+            srv.RegisterCommand("s", (keyword, fullCmd, argsCount, args) =>
             {
                 var type = (string)args[0];
                 switch(type) {
@@ -630,7 +630,7 @@ namespace Ballance2.Sys
                     "  notify <packageName:string> <group:string> > 通知指定组设置已更新\n" +
                     "  list > 列举出所有子模块的设置执行器"
             );
-            srv.RegisterCommand("r", (keyword, fullCmd, args) =>
+            srv.RegisterCommand("r", (keyword, fullCmd, argsCount, args) =>
             {
                 var type = (string)args[0];
                 switch(type) {
@@ -683,12 +683,16 @@ namespace Ballance2.Sys
                     "  vsync <fullScreenMode:number(0-2)> > 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
                     "  full <fullScreenMode::number(0-3)> > 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
                     "  device > 获取当前设备信息");
-            srv.RegisterCommand("c", (keyword, fullCmd, args) =>
+            srv.RegisterCommand("c", (keyword, fullCmd, argsCount, args) =>
             {
-                GameMainLuaState.doString(fullCmd.Substring(2), "GameManagerLuaConsole");
+                var cmd = fullCmd.Substring(2);
+                if(!cmd.Contains("\n") && !cmd.StartsWith("return "))
+                    cmd = "return " + cmd;
+                var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
+                Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
                 return true;
             }, 1, "c <code:string> > 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
-            srv.RegisterCommand("le", (keyword, fullCmd, args) =>
+            srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
             {
                 Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
                 return true;
@@ -924,7 +928,7 @@ namespace Ballance2.Sys
         [LuaApiParamDescription("prefab", "预制体")]
         [LuaApiParamDescription("name", "新对象名称")]
         public GameObject InstancePrefab(GameObject prefab, string name) {
-            return CloneUtils.CloneNewObject(prefab, name);
+            return InstancePrefab(prefab, transform, name);
         }
         [LuaApiDescription("实例化预制体", "返回新对象")]
         [LuaApiParamDescription("prefab", "预制体")]
@@ -932,6 +936,21 @@ namespace Ballance2.Sys
         [LuaApiParamDescription("name", "新对象名称")]
         public GameObject InstancePrefab(GameObject prefab, Transform parent, string name) {
             return CloneUtils.CloneNewObjectWithParent(prefab, parent, name);
+        }
+        [LuaApiDescription("新建一个新的 GameObject ", "返回新对象")]
+        [LuaApiParamDescription("parent", "父级")]
+        [LuaApiParamDescription("name", "新对象名称")]
+        public GameObject InstanceNewGameObject(Transform parent, string name) {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(parent);
+            return go;
+        }
+        [LuaApiDescription("新建一个新的 GameObject ", "返回新对象")]
+        [LuaApiParamDescription("name", "新对象名称")]
+        public GameObject InstanceNewGameObject(string name) {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(transform);
+            return go;
         }
 
         [LuaApiDescription("写入字符串至指定文件")]

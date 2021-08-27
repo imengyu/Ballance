@@ -66,5 +66,15 @@ function LuaTimer.Add(delay,cycle,func) end
 ---@param id number
 function LuaTimer.Delete(id) end 
 
+---uCoroutine Yieldk
+---@param y any
+---@param f function
+UnityEngine.Yieldk = function (y, f) end
+
+---@diagnostic disable-next-line: lowercase-global
+uCoroutine = {}
+uCoroutine.create = function(x) end
+uCoroutine.yield = function(x) end
+
 ---Slua 全局命名空间
 Slua = SluaNamespace

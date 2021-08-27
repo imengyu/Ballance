@@ -62,6 +62,9 @@ class PhysicsPhantomEditor : Editor
         EditorGUILayout.PropertyField(pMin);
         EditorGUILayout.PropertyField(pMax);
 
+        if(GUILayout.Button("Set by self"))
+            instance.SetAabbBySelf();
+
         if(EditorApplication.isPlaying)
             EditorGUILayout.HelpBox("Some values can't change at runtime.", MessageType.Warning);
 

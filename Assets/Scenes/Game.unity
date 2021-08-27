@@ -543,7 +543,7 @@ MonoBehaviour:
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.debug
@@ -557,7 +557,7 @@ MonoBehaviour:
     PackageName: core.ui
   - Enable: 1
     PackageName: core.language
-  DebugCustomEntryEvent: CoreDebugGamePlayEntry
+  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
   DebugCustomEntries:
   - CoreDebugGamePlayEntry
   - CoreDebugLevelBuliderEntry
@@ -3301,7 +3301,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.8
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

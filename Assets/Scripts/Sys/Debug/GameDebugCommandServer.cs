@@ -75,7 +75,7 @@ namespace Ballance2.Sys.Debug
 
                         //Kernel hander
                         if (cmdItem.Callback != null)
-                            return cmdItem.Callback(sp.Result[0], cmd, arglist.ToArray());
+                            return cmdItem.Callback(sp.Result[0], cmd, arglist.Count, arglist.ToArray());
                         else {
                             Log.W(TAG, "命令 {0}({1}) 无接收器", cmdItem.Keyword, cmdItem.Id);
                             return false;
@@ -156,7 +156,7 @@ namespace Ballance2.Sys.Debug
             return false;
         }
         
-        private bool OnCommandHelp(string keyword, string fullCmd, string[] args)
+        private bool OnCommandHelp(string keyword, string fullCmd, int argsCount, string[] args)
         {
             string helpText = "命令帮助：\n";
             foreach (CmdItem cmdItem in commands)
@@ -168,12 +168,12 @@ namespace Ballance2.Sys.Debug
         private void RegisterSystemCommands() {
             //注册基础内置命令
             RegisterCommand("help", OnCommandHelp, 1, "help 显示命令帮助");
-            RegisterCommand("e", (keyword, fullCmd, args) =>
+            RegisterCommand("e", (keyword, fullCmd, argsCount, args) =>
             {
                 Log.V("echo", fullCmd.Substring(2));
                 return true;
             }, 1, "e [any] 测试命令");
-            RegisterCommand("quit-debug-mode", (keyword, fullCmd, args) =>
+            RegisterCommand("quit-debug-mode", (keyword, fullCmd, argsCount, args) =>
             {
                 GameManager.GameMediator.CallAction(GamePackage.GetSystemPackage(), "System", "DisableDebugMode");
                 return true;

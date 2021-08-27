@@ -77,8 +77,8 @@ namespace PhysicsRT
         CustomPhysicsMaterialTags m_CustomMaterialTags = new CustomPhysicsMaterialTags();
 
         public int StaticCompoundChildId { get; private set; }
-        public ShapeType ShapeType => m_ShapeType;
-        public ShapeWrap Wrap => m_Wrap;
+        public ShapeType ShapeType { get => m_ShapeType; set => m_ShapeType = value; }
+        public ShapeWrap Wrap { get => m_Wrap; set => m_Wrap = value; } 
         public Mesh ShapeMesh { get => m_ShapeMesh; set => m_ShapeMesh = value; }
         public Vector3 ShapeSize { get => m_ShapeSize; set => m_ShapeSize = value; }
         public float ShapeRadius { get => m_ShapeRadius; set => m_ShapeRadius = value; }

@@ -189,6 +189,42 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int InstanceNewGameObject(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
+			UnityEngine.Transform a1;
+			checkType(l,2,out a1);
+			System.String a2;
+			checkType(l,3,out a2);
+			var ret=self.InstanceNewGameObject(a1,a2);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int WriteFile(IntPtr l) {
 		try {
 			#if DEBUG
@@ -835,6 +871,7 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 		addMember(l,GetSystemService);
 		addMember(l,SetGameBaseCameraVisible);
 		addMember(l,InstancePrefab);
+		addMember(l,InstanceNewGameObject);
 		addMember(l,WriteFile);
 		addMember(l,FileExists);
 		addMember(l,DirectoryExists);

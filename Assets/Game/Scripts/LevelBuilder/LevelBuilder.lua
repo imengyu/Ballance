@@ -4,6 +4,8 @@ local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 local GameSettingsManager = Ballance2.Config.GameSettingsManager
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
+local DebugUtils = Ballance2.Utils.DebugUtils
+local StringUtils = Ballance2.Utils.StringUtils
 local Log = Ballance2.Utils.Log
 local I18N = Ballance2.Sys.Language.I18N
 local json = Game.SystemPackage:RequireLuaFile('json') ---@type json
@@ -21,6 +23,7 @@ local GameObject = UnityEngine.GameObject
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local MeshFilter = UnityEngine.MeshFilter
+local MeshCollider = UnityEngine.MeshCollider
 local Renderer = UnityEngine.Renderer
 
 local TAG = 'LevelBuilder'
@@ -63,6 +66,23 @@ function LevelBuilder:Start()
   self._LevelBuilderUIButtonCopyErrInfo = self._LevelBuilderUI:Find('PanelFailed/ButtonCopyErrInfo'):GetComponent(UnityEngine.UI.Button) ---@type Button
   self._LevelBuilderUIPanelFailed.gameObject:SetActive(false)
   self._LevelBuilderUI.gameObject:SetActive(false)
+
+  Game.CommandServer:RegisterCommand('lb', function (keyword, fullCmd, argsCount, args)
+    local k2 = args[1]
+    if k2 == 'quit' then
+      Log.V(TAG, 'Unload')
+      self:UnLoadLevel();
+    elseif k2 == 'load' then
+      if argsCount < 2 then
+        Log.E(TAG, 'Missing arg 2')
+      else
+        Log.V(TAG, 'Load')
+        Game.Mediator:NotifySingleEvent('CoreStartLoadLevel', { args[2] })
+      end
+    end
+  end, 0, 'lb <quit/load>\n'..
+    '  <quit> > 终止当前的关卡加载\n'..
+    '  <load> <levelname:string> > 加载指定关卡\n')
 
   self._LevelBuilderUIButtonBack.onClick:AddListener(function () 
     Game.UIManager:MaskBlackSet(true)
@@ -252,6 +272,18 @@ function LevelBuilder:_LoadLevelInternal()
     self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
     return
   end
+  if type(level.sectors) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
+    return
+  end
+  if type(level.floors) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
+    return
+  end  
+  if type(level.groups) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
+    return
+  end
 
   Log.D(TAG, 'Load level data')
 
@@ -259,6 +291,7 @@ function LevelBuilder:_LoadLevelInternal()
   SectorManager.CurrentLevelSectorCount = level.sectorCount
   SectorManager.CurrentLevelSectors = {}
   SectorManager.CurrentLevelRestPoints = {}
+  GamePlayManager.StartBall = level.firstBall or 'BallWood'
   GamePlayManager.CurrentLevelName = self._CurrentLevelJson.name
   GamePlayManager.CurrentEndWithUFO = level.endWithUFO or false
 
@@ -270,6 +303,10 @@ function LevelBuilder:_LoadLevelInternal()
     HighscoreManagerTryAddDefaultLevelHighScore(levelName, Clone(DefaultHightScoreLev01_11Data))
   end
 
+  if level.firstBall and GamePlay.BallManager:GetRegisterBall(GamePlayManager.StartBall) == nil then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'level.firstBall\' '..level.firstBall..' is not register')
+    return
+  end
   if level.startLife and level.startLife > 0 then
     GamePlayManager.StartLife = level.startLife
   end
@@ -282,371 +319,403 @@ function LevelBuilder:_LoadLevelInternal()
   
 
   self:UpdateLoadProgress(0.1)
-
+  
   --加载
-  coroutine.resume(coroutine.create(function()
-    local errStack = ''
-    local err = ''
-    local status = xpcall(function () 
-      self:_LoadLevelSeq();
-    end, function (errM)
-      err = errM
-      errStack = debug.traceback()
-    end)
-    if not status then
-      self:UpdateErrStatus(true, 'LOADER_EXPECTION2', 'Loading failed, exception information: \n'..err..'\n'..errStack)
-    end
+  local loadCo = coroutine.create(function()
+    --加载内部对象
+    -----------------------------
 
-  end))
-end
-function LevelBuilder:_LoadLevelSeq()
+    Log.D(TAG, 'Load level internal objects')
 
-  local level = self._CurrentLevelJson.level
-
-  local SectorManager = GamePlay.SectorManager
-  local GamePlayManager = GamePlay.GamePlayManager
-
-  --加载内部对象
-  -----------------------------
-
-  Log.D(TAG, 'Load level internal objects')
-
-  --加载出生点和火焰
-  -----------------------------
-  for i = 1, level.sectorCount, 1 do
-    if i == 1 then
-      local start = self:ReplacePrefab(level.internalObjects.PS_LevelStart, self:FindRegisterModul('PS_LevelStart'))
-      local rp01 = GameObject.Find(level.internalObjects.PR_ResetPoints[tostring(i)])
-      
-      if start == nil then
-        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'PS_LevelStart\' 丢失')
-        return
-      end
-      if rp01 == nil then
-        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'PR_ResetPoints.1\' 丢失')
-        return
-      end
-
-      SectorManager.CurrentLevelRestPoints[i] = {
-        point = rp01,
-        flame = start
-      }
-    else
-      local flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'))
-      local r = GameObject.Find(level.internalObjects.PR_ResetPoints[tostring(i)])
-      
-      if flame == nil then
-        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'PC_CheckPoints.'..i..'\' 丢失')
-        return
-      end
-      if r == nil then
-        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'PR_ResetPoints.'..i..'\' 丢失')
-        return
-      end
-
-      SectorManager.CurrentLevelRestPoints[i] = {
-        point = r,
-        flame = flame
-      }
-    end
-    
-  end
-  --加载结尾
-  -----------------------------
-  SectorManager.CurrentLevelEndBalloon = self:ReplacePrefab(level.internalObjects.PE_LevelEnd, self:FindRegisterModul('PE_LevelEnd'))
-  if SectorManager.CurrentLevelEndBalloon == nil then
-    self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'PE_LevelEnd\' 丢失')
-    return
-  end
-
-  Yield(WaitForSeconds(0.1))
-  self:UpdateLoadProgress(0.2)
-
-  Log.D(TAG, 'Load level floors')
-
-  --加载 物理路面
-  -----------------------------
-  for _, floor in ipairs(level.floors) do
-    
-    local floorCount = 0
-    local physicsData = GamePhysFloor[floor.name] 
-    if physicsData ~= nil then
-
-      --StaticCompound
-      local floorStatic = Game.Manager:InstancePrefab(self.gameObject.transform, 'FloorStaticCompound_'..floor.name)
-      local shape = floorStatic:AddComponent(PhysicsShape) ---@type PhysicsShape
-      shape.ShapeType = ShapeType.StaticCompound
-      local body = floorStatic:AddComponent(PhysicsBody) ---@type PhysicsBody
-      body.MotionType = MotionType.Fixed
-      body.Friction = physicsData.Friction
-      body.Restitution = physicsData.Restitution
-      body.Layer = physicsData.Layer
-      table.insert(self._CurrentLevelFloors, floorStatic)
-      
-      --Floor childs
-      for _, name in ipairs(floor.objects) do     
-        local go = GameObject.Find(name)
-        if go ~= nil then
-          --Mesh
-          local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
-          if meshFilter ~= nil and meshFilter.mesh  ~= nil then
-            local shape = go:AddComponent(PhysicsShape) ---@type PhysicsShape
-            shape.ShapeType = ShapeType.BvCompressedMesh
-            shape.ShapeConvexRadius = 0.1
-            shape.ShapeMesh = meshFilter.mesh
-          else
-            Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
-          end
-          floorCount = floorCount + 1
-        else
-          Log.W(TAG, 'Not found floor  \''..name..'\' in type \''..floor.name..'\'')
-        end
-      end
-      
-      Log.D(TAG, 'Loaded floor '..floor.name..' count: '..floorCount)
-    else
-      Log.E(TAG, 'Unknow floor type \''..floor.name..'\'')
-    end
-  end
-
-  self:UpdateLoadProgress(0.3)
-
-  --加载坠落检测区
-  -----------------------------
-  for _, name in ipairs(level.depthTestCubes) do
-    local go = GameObject.Find(name)
-    if go ~= nil then
-
-      --禁用Renderer使物体隐藏
-      local renderer = go:AddComponent(Renderer) ---@type Renderer
-      if renderer ~= nil then renderer.enabled = false end
-      
-      --添加幻影
-      local phantom = go:AddComponent(PhysicsPhantom) ---@type PhysicsPhantom
-      phantom.SetAabbBySelf()
-      ---@param self PhysicsPhantom
-      ---@param other PhysicsBody
-      phantom.onOverlappingCollidableAdd = function (self, other)
-        --触发球坠落
-        if other.gameObject.tag == 'Ball' then
-          GamePlayManager:Fall()
-        end
-      end
-
-    else
-      Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
-    end
-  end
-
-  self:UpdateLoadProgress(0.4)
-
-  Log.D(TAG, 'Load level moduls')
-
-  --调用自定义加载步骤 modul
-  -----------------------------
-  self:_CallLoadStep("modul")
-
-  self:UpdateLoadProgress(0.5)
-
-  --加载 modul
-  -----------------------------
-  local tickCount = 0
-  for _, group in ipairs(level.groups) do
-    local modul = self:FindRegisterModul(group.name)
-    if modul ~= nil then
-      
-      local modulCount = 0
-
-      Log.D(TAG, 'Load modul '..group.name)
-
-      for _, name in ipairs(group.objects) do
-
-        if tickCount > 16 then
-          Yield(WaitForSeconds(0.08))
-          tickCount = 0
+    --加载出生点和火焰
+    -----------------------------
+    for i = 1, level.sectorCount, 1 do
+      if i == 1 then
+        local start = self:ReplacePrefab(level.internalObjects.PS_LevelStart, self:FindRegisterModul('PS_LevelStart'))
+        if start == nil then
+          self:UpdateErrStatus(true, 'OBJECT_MISSING', 'Object \'PS_LevelStart\' is missing')
+          return
         end
 
-        local go = GameObject.Find(name)
-        if go ~= nil then
-          self:ReplacePrefab(go, modul)
-          tickCount = tickCount + 1
-          modulCount = modulCount + 1
-        else
-          Log.W(TAG, 'Not found object \''..name..'\' in group \''..group.name..'\'')
-        end 
-      end
-
-      Log.D(TAG, 'Loaded modul '..group.name..' count : '..modulCount)
-    else
-      Log.W(TAG, 'Modul \''..group.name..'\' is not registered')
-    end
-
-  end
-
-  self:UpdateLoadProgress(0.6)
-
-  Log.D(TAG, 'Load init moduls')
-
-  --首次加载 modul
-  -----------------------------
-  Yield(WaitForSeconds(0.5))
-  SectorManager:DoInitAllModuls();
-
-  self:UpdateLoadProgress(0.7)
-
-  Log.D(TAG, 'Load level sector data')
-
-  --填充节数据
-  -----------------------------
-  for id, sector in ipairs(level.sectors) do
-    if SectorManager.CurrentLevelSectors[id] ~= nil then
-      Log.W(TAG, 'Duplicate key \''..id..'\' in sectors')
-    else
-      local moduls = {}
-      for _, name in ipairs(sector) do
-        local modul = self._CurrentLevelModuls[name]
-        if modul ~= nil then
-          table.insert(moduls, modul)
-        else
-          Log.W(TAG, 'Not found modul \''..name..'\' in sectors.'..id)
+        local objName = level.internalObjects.PR_ResetPoints["1"]
+        if objName == nil then
+          self:UpdateErrStatus(true, 'FIELD_MISSING', 'Field \'level.internalObjects.PR_ResetPoints[1]\' is nil')
+          return
         end
+
+        local rp01 = GameObject.Find(objName)
+        if rp01 == nil then
+          self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..objName..'\' is not found')
+          return
+        end
+
+        SectorManager.CurrentLevelRestPoints[i] = {
+          point = rp01,
+          flame = start
+        }
+
+        rp01:SetActive(false)
+      else
+        local flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'))
+        if flame == nil then
+          self:UpdateErrStatus(true, 'OBJECT_MISSING', 'Object \'PC_CheckPoints.'..i..'\' is missing')
+          return
+        end
+
+        local objName = level.internalObjects.PR_ResetPoints[tostring(i)]
+        if objName == nil then
+          self:UpdateErrStatus(true, 'FIELD_MISSING', 'Field \'level.internalObjects.PR_ResetPoints['..i..']\' is nil')
+          return
+        end
+
+        local r = GameObject.Find(objName)
+        if r == nil then
+          self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..objName..'\' is not found')
+          return
+        end
+
+        r:SetActive(false)
+
+        SectorManager.CurrentLevelRestPoints[i] = {
+          point = r,
+          flame = flame
+        }
       end
-      SectorManager.CurrentLevelSectors[tonumber(id)] = {
-        moduls = moduls
-      }
+      
     end
-  end
-
-  self:UpdateLoadProgress(0.8)
-
-  Log.D(TAG, 'Load sky and light')
-
-  --加载天空盒和灯光
-  -----------------------------
-  RenderSettings.fog = true
-  if level.skyBox == 'custom' then
-    --加载自定义天空盒
-    if type(level.customSkyBox) ~= 'table' then
-      Log.E(TAG, 'The skyBox is set to \'custom\', but \'customSkyBox\' field is not set')
-    else
-      Log.D(TAG, 'Load custom SkyBox')
-
-      local B = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.B)
-      local F = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.F)
-      local L = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.L)
-      local R = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.R)
-      local T = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.T)
-      local D = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.D)
-      if B == nil then Log.W(TAG, 'Failed to load customSkyBox.B texture') end
-      if F == nil then Log.W(TAG, 'Failed to load customSkyBox.F texture') end
-      if L == nil then Log.W(TAG, 'Failed to load customSkyBox.L texture') end
-      if R == nil then Log.W(TAG, 'Failed to load customSkyBox.R texture') end
-      if D == nil then Log.W(TAG, 'Failed to load customSkyBox.D texture') end
-
-      local skyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T)
-      GamePlayManager:CreateSkyAndLight('', skyMat, level.lightColor)
+    --加载结尾
+    -----------------------------
+    SectorManager.CurrentLevelEndBalloon = self:ReplacePrefab(level.internalObjects.PE_LevelEnd, self:FindRegisterModul('PE_LevelEnd'))
+    if SectorManager.CurrentLevelEndBalloon == nil then
+      self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..level.internalObjects.PE_LevelEnd..'\' is not found')
+      return
     end
-  else
-    --使用自带天空盒 
-    GamePlayManager:CreateSkyAndLight(level.skyBox, nil, level.lightColor)
-  end
 
-  --加载SkyLayer
-  -----------------------------
-  if level.skyLayer == 'SkyLayer' then
-    local oldSkyLayer = GameObject.Find('SkyLayer')
-    self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyLayer.prefab'), 'SkyLayer')
-    self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
-    self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
-    oldSkyLayer:SetActive(false)
-  elseif level.skyLayer == 'SkyVoterx' then
-    local oldSkyLayer = GameObject.Find('SkyVoterx')
-    self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyVoterx.prefab'), 'SkyVoterx')
-    self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
-    self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
-    oldSkyLayer:SetActive(false)
-  end
-  local GameSettings = GameSettingsManager.GetSettings("core")
-  --如果设置禁用了云层，则隐藏
-  if not GameSettings:GetBool('video.cloud', true) then
-    self._CurrentLevelSkyLayer:SetActive(false)
-  end
+    Yield(WaitForSeconds(0.1))
+    self:UpdateLoadProgress(0.2)
 
-  Log.D(TAG, 'Load music')
+    Log.D(TAG, 'Load level floors')
 
-  --加载自定义音乐
-  -----------------------------
-  local customMusicTheme = level.customMusicTheme
-  if type(customMusicTheme) == 'table' then
-    if type(customMusicTheme.id) == 'nil' then
-      Log.E(TAG, 'The \'customMusicTheme.id\' field is not set')
-    else
+    ---加载 物理路面
+    -----------------------------
+    for _, floor in ipairs(level.floors) do
+      
+      local floorCount = 0
+      local physicsData = GamePhysFloor[floor.name] 
+      if physicsData ~= nil then
 
-      local loadCustomAudio = function (name, orgArr)
-        local arr = {}
-        if type(orgArr) == 'table' then
-          for index, value in ipairs(orgArr) do
-            local audio = self._CurrentLevelAsset:GetAudioClipAsset(self._CurrentLevelAsset, value)
-            if audio ~= nil then
-              table.insert(arr, audio)
+        --StaticCompound
+        local floorStatic = Game.Manager:InstanceNewGameObject(self.gameObject.transform, floor.name)
+        local shape = floorStatic:AddComponent(PhysicsShape) ---@type PhysicsShape
+        shape.ShapeType = ShapeType.StaticCompound
+        local body = floorStatic:AddComponent(PhysicsBody) ---@type PhysicsBody
+        body.DoNotAutoCreateAtAwake = true
+        body.MotionType = MotionType.Fixed
+        body.Friction = physicsData.Friction
+        body.Restitution = physicsData.Restitution
+        body.Layer = physicsData.Layer
+        table.insert(self._CurrentLevelFloors, floorStatic)
+        
+        --Floor childs
+        for _, name in ipairs(floor.objects) do     
+          local go = GameObject.Find(name)
+          if go ~= nil then
+            --Mesh
+            local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
+            if meshFilter ~= nil and meshFilter.mesh  ~= nil then
+              go.transform:SetParent(floorStatic.transform)
+              go.tag = floor.name
+              local shape = go:AddComponent(PhysicsShape) ---@type PhysicsShape
+              shape.ShapeType = ShapeType.BvCompressedMesh
+              shape.ShapeConvexRadius = 0.1
+              shape.ShapeMesh = meshFilter.mesh
+              if go:GetComponent(MeshCollider) == nil then
+                go:AddComponent(MeshCollider)
+              end
             else
-              audio = Game.PackageManager:GetAudioClipAsset(value)
+              Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
+            end
+            floorCount = floorCount + 1
+          else
+            Log.W(TAG, 'Not found floor  \''..name..'\' in type \''..floor.name..'\'')
+          end
+        end
+
+        if floorCount == 0 then
+          ---没有路面，则隐藏当前静态父级
+          floorStatic:SetActive(false)
+        else  
+          body:ForcePhysics()
+          Log.D(TAG, 'Loaded floor '..floor.name..' count: '..floorCount)
+        end
+        
+      else
+        Log.E(TAG, 'Unknow floor type \''..floor.name..'\'')
+      end
+    end
+
+    self:UpdateLoadProgress(0.3)
+
+    --加载坠落检测区
+    -----------------------------
+    for _, name in ipairs(level.depthTestCubes) do
+      local go = GameObject.Find(name)
+      if go ~= nil then
+
+        --禁用Renderer使物体隐藏
+        local renderer = go:GetComponent(Renderer) ---@type Renderer
+        if renderer ~= nil then renderer.enabled = false end
+        
+        --添加幻影
+        local phantom = go:AddComponent(PhysicsPhantom) ---@type PhysicsPhantom
+        phantom.EnableListener = true
+        phantom.DoNotAutoCreateAtAwake = true
+        phantom:SetAabbBySelf()
+        ---@param self PhysicsPhantom
+        ---@param other PhysicsBody
+        phantom.onOverlappingCollidableAdd = function (self, other)
+          --触发球坠落
+          if other.gameObject.tag == 'Ball' then
+            GamePlayManager:Fall()
+          end
+        end
+        phantom:ForceReCreate()
+      else
+        Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
+      end
+    end
+
+    self:UpdateLoadProgress(0.4)
+
+    Log.D(TAG, 'Load level moduls')
+
+    --调用自定义加载步骤 modul
+    -----------------------------
+    self:_CallLoadStep("modul")
+
+    self:UpdateLoadProgress(0.5)
+
+    --加载 modul
+    -----------------------------
+    local tickCount = 0
+    for _, group in ipairs(level.groups) do
+      local modul = self:FindRegisterModul(group.name)
+      if modul ~= nil then
+        
+        local modulCount = 0
+
+        Log.D(TAG, 'Load modul '..group.name)
+
+        for _, name in ipairs(group.objects) do
+
+          if tickCount > 16 then
+            Yield(WaitForSeconds(0.08))
+            tickCount = 0
+          end
+
+          local m = self:ReplacePrefab(name, modul)
+          if m ~= nil then
+            tickCount = tickCount + 1
+            modulCount = modulCount + 1
+          else
+            Log.W(TAG, 'Not found object \''..name..'\' in group \''..group.name..'\'')
+          end 
+        end
+
+        Log.D(TAG, 'Loaded modul '..group.name..' count : '..modulCount)
+      else
+        Log.W(TAG, 'Modul \''..group.name..'\' is not registered')
+      end
+
+    end
+
+    self:UpdateLoadProgress(0.6)
+
+    Log.D(TAG, 'Load init moduls')
+
+    --首次加载 modul
+    -----------------------------
+    Yield(WaitForSeconds(0.5))
+    SectorManager:DoInitAllModuls();
+
+    self:UpdateLoadProgress(0.7)
+
+    Log.D(TAG, 'Load level sector data')
+
+    --填充节数据
+    -----------------------------  
+    for i = 1, level.sectorCount, 1 do
+      local sector = level.sectors[tostring(i)]
+      if sector == nil then
+        Log.W(TAG, 'Sector key \''..i..'\' not found')
+      else
+        local moduls = {}
+        for _, name in ipairs(sector) do
+          local modul = self._CurrentLevelModuls[name]
+          if modul ~= nil then
+            table.insert(moduls, modul.modul)
+          else
+            Log.W(TAG, 'Not found modul \''..name..'\' in sectors.'..i)
+          end
+        end
+        SectorManager.CurrentLevelSectors[i] = {
+          moduls = moduls
+        }
+      end
+    end
+
+    self:UpdateLoadProgress(0.8)
+
+    Log.D(TAG, 'Load sky and light')
+
+    --加载天空盒和灯光
+    -----------------------------
+    RenderSettings.fog = false
+    if level.skyBox == 'custom' then
+      --加载自定义天空盒
+      if type(level.customSkyBox) ~= 'table' then
+        Log.E(TAG, 'The skyBox is set to \'custom\', but \'customSkyBox\' field is invalid')
+      else
+        Log.D(TAG, 'Load custom SkyBox')
+
+        local B = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.B)
+        local F = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.F)
+        local L = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.L)
+        local R = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.R)
+        local T = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.T)
+        local D = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.D)
+        if B == nil then Log.W(TAG, 'Failed to load customSkyBox.B texture') end
+        if F == nil then Log.W(TAG, 'Failed to load customSkyBox.F texture') end
+        if L == nil then Log.W(TAG, 'Failed to load customSkyBox.L texture') end
+        if R == nil then Log.W(TAG, 'Failed to load customSkyBox.R texture') end
+        if D == nil then Log.W(TAG, 'Failed to load customSkyBox.D texture') end
+
+        local skyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T)
+        GamePlayManager:CreateSkyAndLight('', skyMat, level.lightColor)
+      end
+    elseif type(level.skyBox) == "string" then
+      --使用自带天空盒 
+      GamePlayManager:CreateSkyAndLight(level.skyBox, nil, StringUtils.StringToColor(level.lightColor))
+    else
+      Log.E(TAG, 'Invalid field \'level.skyBox\': '..DebugUtils.PrintLuaVarAuto(level.skyBox, 1))
+    end
+
+    --加载SkyLayer
+    -----------------------------
+    if level.skyLayer == 'SkyLayer' then
+      local oldSkyLayer = GameObject.Find('SkyLayer')
+      self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyLayer.prefab'), 'SkyLayer')
+      self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
+      self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
+      self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
+      oldSkyLayer:SetActive(false)
+    elseif level.skyLayer == 'SkyVoterx' then
+      local oldSkyLayer = GameObject.Find('SkyVoterx')
+      self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyVoterx.prefab'), 'SkyVoterx')
+      self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
+      self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
+      self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
+      oldSkyLayer:SetActive(false)
+    end
+    local GameSettings = GameSettingsManager.GetSettings("core")
+    --如果设置禁用了云层，则隐藏
+    if not GameSettings:GetBool('video.cloud', true) then
+      self._CurrentLevelSkyLayer:SetActive(false)
+    end
+
+    Log.D(TAG, 'Load music')
+
+    --加载自定义音乐
+    -----------------------------
+    local customMusicTheme = level.customMusicTheme
+    if type(customMusicTheme) == 'table' then
+      if type(customMusicTheme.id) == 'nil' then
+        Log.E(TAG, 'The \'customMusicTheme.id\' field is not set')
+      else
+
+        local loadCustomAudio = function (name, orgArr)
+          local arr = {}
+          if type(orgArr) == 'table' then
+            for index, value in ipairs(orgArr) do
+              local audio = self._CurrentLevelAsset:GetAudioClipAsset(self._CurrentLevelAsset, value)
               if audio ~= nil then
                 table.insert(arr, audio)
               else
-                Log.W(TAG, 'Not found custom audio resource in customMusicTheme.'..name..'.'..index..' , name : '..value..' , now ignore this sound')
+                audio = Game.PackageManager:GetAudioClipAsset(value)
+                if audio ~= nil then
+                  table.insert(arr, audio)
+                else
+                  Log.W(TAG, 'Not found custom audio resource in customMusicTheme.'..name..'.'..index..' , name : '..value..' , now ignore this sound')
+                end
               end
             end
           end
+          return arr
         end
-        return arr
+        local id = tonumber(customMusicTheme.id)
+
+        Log.D(TAG, 'Load customMusicTheme '..id)
+
+        GamePlay.MusicManager.Musics[id] = {
+          atmos = loadCustomAudio(customMusicTheme.atmos),
+          musics = loadCustomAudio(customMusicTheme.musics),
+          baseInterval = customMusicTheme.baseInterval or 5,
+          maxInterval = customMusicTheme.baseInterval or 30,
+          atmoInterval = customMusicTheme.baseInterval or 6,
+          atmoMaxInterval = customMusicTheme.baseInterval or 15,
+        }
       end
-      local id = tonumber(customMusicTheme.id)
-
-      Log.D(TAG, 'Load customMusicTheme '..id)
-
-      GamePlay.MusicManager.Musics[id] = {
-        atmos = loadCustomAudio(customMusicTheme.atmos),
-        musics = loadCustomAudio(customMusicTheme.musics),
-        baseInterval = customMusicTheme.baseInterval or 5,
-        maxInterval = customMusicTheme.baseInterval or 30,
-        atmoInterval = customMusicTheme.baseInterval or 6,
-        atmoMaxInterval = customMusicTheme.baseInterval or 15,
-      }
     end
-  end
-  --设置音乐
-  if type(level.musicTheme) == "number" then
-    Log.D(TAG, 'Set MusicTheme '..level.musicTheme)
-    GamePlay.MusicManager:SetCurrentTheme(level.musicTheme)
+    --设置音乐
+    if type(level.musicTheme) == "number" then
+      Log.D(TAG, 'Set MusicTheme '..level.musicTheme)
+      GamePlay.MusicManager:SetCurrentTheme(level.musicTheme)
+    else
+      Log.D(TAG, 'No MusicTheme')
+      GamePlay.MusicManager:SetCurrentTheme(0)
+    end
+
+    self:UpdateLoadProgress(0.9)
+
+    Log.D(TAG, 'Load others')
+
+    --调用自定义加载步骤 last
+    -----------------------------
+    self:_CallLoadStep("last")
+    self:CallLevelCustomModEvent('finishLoad')
+
+    Log.D(TAG, 'Load finish')
+
+    self:UpdateLoadProgress(1)
+
+    --隐藏加载UI
+    Game.UIManager:MaskBlackSet(true)
+    self._LevelBuilderUI.gameObject:SetActive(false)
+
+    --最后加载步骤
+    -----------------------------
+    Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.3, {})
+
+    self._IsLoading = false
+  end)
+  local status = coroutine.resume(loadCo)
+
+  if not status then
+    Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal)
   else
-    Log.D(TAG, 'No MusicTheme')
-    GamePlay.MusicManager:SetCurrentTheme(0)
+    ---检查 coroutine 是否已经停止但是状态还是未设置
+    local checkTime = 0
+    local id = 0
+    id = LuaTimer.Add(1000, 1000, function ()
+      checkTime = checkTime + 1
+      if checkTime > 30 then LuaTimer.Delete(id) end
+      if self._IsLoading and coroutine.status(loadCo) == "dead" then
+        self:UpdateErrStatus(true, 'LOADER_STOPPED', debug.traceback(loadCo))
+      end
+    end)
   end
-
-  self:UpdateLoadProgress(0.9)
-
-  Log.D(TAG, 'Load others')
-
-  --调用自定义加载步骤 last
-  -----------------------------
-  self:_CallLoadStep("last")
-  self:CallLevelCustomModEvent('finishLoad')
-
-  Log.D(TAG, 'Load finish')
-
-  self:UpdateLoadProgress(1)
-
-  --隐藏加载UI
-  Game.UIManager:MaskBlackSet(true)
-  self._LevelBuilderUI.gameObject:SetActive(false)
-
-  --最后加载步骤
-  -----------------------------
-  GamePlayManager:Init()
-
-  self._IsLoading = false
 end
+
 
 ---替换占位符并生成机关
 ---@param objName string 占位符的名称
@@ -659,10 +728,8 @@ function LevelBuilder:ReplacePrefab(objName, modulPrefab)
     return nil
   end
   local obj = GameObject.Find(objName)
-  if obj == nil then
-    Log.E(TAG, 'Not found placeholder \''..objName..'\'')
-    return nil
-  end
+  if obj == nil then return nil end
+
   --隐藏占位符
   obj:SetActive(false) 
   --克隆机关
@@ -714,24 +781,28 @@ function LevelBuilder:UnLoadLevel()
     --删除音乐数据
     local customMusicTheme = self._CurrentLevelJson.customMusicTheme
     if type(customMusicTheme) == 'table' and type(customMusicTheme.id) == 'number' then
-      GamePlay.MusicManager.Musics[tostring(customMusicTheme.id)] = nil
+      GamePlay.MusicManager.Musics[customMusicTheme.id] = nil
     end
     GamePlay.MusicManager:SetCurrentTheme(1)
 
     --删除所有modul
     local tickCount = 0
-    for _, value in ipairs(self._CurrentLevelModuls) do
-      if tickCount > 16 then
-        Yield(WaitForSeconds(0.08))
-        tickCount = 0
+    for _, value in pairs(self._CurrentLevelModuls) do
+      if value ~= nil then 
+        if tickCount > 16 then
+          Yield(WaitForSeconds(0.08))
+          tickCount = 0
+        end
+        UnityEngine.Object.Destroy(value.go)
+        tickCount = tickCount + 1
       end
-      UnityEngine.Object.Destroy(value.go)
-      tickCount = tickCount + 1
     end
 
     --删除路面
-    for _, value in ipairs(self._CurrentLevelFloors) do
-      UnityEngine.Object.Destroy(value)
+    for _, value in pairs(self._CurrentLevelFloors) do
+      if value ~= nil then 
+        UnityEngine.Object.Destroy(value)
+      end
     end
 
     Yield(WaitForSeconds(0.1))
