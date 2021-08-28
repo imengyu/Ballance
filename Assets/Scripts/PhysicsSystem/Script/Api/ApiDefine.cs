@@ -126,7 +126,7 @@ namespace PhysicsRT
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnSetPhysicsWorldGravity(IntPtr world, IntPtr gravity);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate int fnReadPhysicsWorldBodys(IntPtr world, IntPtr buffer, int count);
+  public delegate int fnUpdateAllPhysicsWorldBodys(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnSetPhysicsWorldCollisionLayerMasks(IntPtr world, uint layerId, uint toMask, int enable, int forceUpdate);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -294,7 +294,7 @@ namespace PhysicsRT
       _DestroyPhysicsWorld = Marshal.GetDelegateForFunctionPointer<fnDestroyPhysicsWorld>(apiArray[i++]);
       _StepPhysicsWorld = Marshal.GetDelegateForFunctionPointer<fnStepPhysicsWorld>(apiArray[i++]);
       _SetPhysicsWorldGravity = Marshal.GetDelegateForFunctionPointer<fnSetPhysicsWorldGravity>(apiArray[i++]);
-      _ReadPhysicsWorldBodys = Marshal.GetDelegateForFunctionPointer<fnReadPhysicsWorldBodys>(apiArray[i++]);
+      _UpdateAllPhysicsWorldBodys = Marshal.GetDelegateForFunctionPointer<fnUpdateAllPhysicsWorldBodys>(apiArray[i++]);
       _CreateRigidBody = Marshal.GetDelegateForFunctionPointer<fnCreateRigidBody>(apiArray[i++]);
       _ActiveRigidBody = Marshal.GetDelegateForFunctionPointer<fnActiveRigidBody>(apiArray[i++]);
       _DeactiveRigidBody = Marshal.GetDelegateForFunctionPointer<fnDeactiveRigidBody>(apiArray[i++]);
@@ -405,7 +405,7 @@ namespace PhysicsRT
     private fnDestroyPhysicsWorld _DestroyPhysicsWorld;
     private fnStepPhysicsWorld _StepPhysicsWorld;
     private fnSetPhysicsWorldGravity _SetPhysicsWorldGravity;
-    private fnReadPhysicsWorldBodys _ReadPhysicsWorldBodys;
+    private fnUpdateAllPhysicsWorldBodys _UpdateAllPhysicsWorldBodys;
     private fnCreateRigidBody _CreateRigidBody;
     private fnActiveRigidBody _ActiveRigidBody;
     private fnDeactiveRigidBody _DeactiveRigidBody;
@@ -1828,12 +1828,12 @@ namespace PhysicsRT
 
       ApiExceptionCheck();
     }
-    public int ReadPhysicsWorldBodys(IntPtr world, IntPtr buffer, int count)
+    public int UpdateAllPhysicsWorldBodys(IntPtr world)
     {
-      if (_ReadPhysicsWorldBodys == null)
-        throw new ApiNotFoundException("ReadPhysicsWorldBodys");
+      if (_UpdateAllPhysicsWorldBodys == null)
+        throw new ApiNotFoundException("UpdateAllPhysicsWorldBodys");
 
-      var rs = _ReadPhysicsWorldBodys(world, buffer, count);
+      var rs = _UpdateAllPhysicsWorldBodys(world);
 
       ApiExceptionCheck();
 

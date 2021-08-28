@@ -30,20 +30,20 @@ function PE_Balloon:Start()
 end
 
 function PE_Balloon:Active()
-  self.PE_Balloon_Platform_HingeJoint:SetEnabled(true)
   self.gameObject:SetActive(true)
 
+  self.PE_Balloon_BoxSide:ForcePhysics()
+  self.PE_Balloon_Platte08:ForcePhysics()
+  self.PE_Balloon_Platte07:ForcePhysics()
+  self.PE_Balloon_Platte06:ForcePhysics()
+  self.PE_Balloon_Platte05:ForcePhysics()
+  self.PE_Balloon_Platte04:ForcePhysics()
+  self.PE_Balloon_Platte03:ForcePhysics()
+  self.PE_Balloon_Platte02:ForcePhysics()
+  self.PE_Balloon_Platte01:ForcePhysics()
   self.PE_Balloon_Platform_ColTest:ForcePhysics()
   self.PE_Balloon_Platform:ForcePhysics()
-  self.PE_Balloon_Platte01:ForcePhysics()
-  self.PE_Balloon_Platte02:ForcePhysics()
-  self.PE_Balloon_Platte03:ForcePhysics()
-  self.PE_Balloon_Platte04:ForcePhysics()
-  self.PE_Balloon_Platte05:ForcePhysics()
-  self.PE_Balloon_Platte06:ForcePhysics()
-  self.PE_Balloon_Platte07:ForcePhysics()
-  self.PE_Balloon_Platte08:ForcePhysics()
-  self.PE_Balloon_BoxSide:ForcePhysics()
+  self.PE_Balloon_Platform_HingeJoint:SetEnabled(true)
 
   --播放最后一小节的音乐
   coroutine.resume(coroutine.create(function()
@@ -55,7 +55,7 @@ function PE_Balloon:Active()
     _SoundLastSector:Play()
     Yield(WaitForSeconds(5))
     --该音乐播放5秒后淡出
-    Game.UIManager.UIFadeManager:AddAudioFadeOut(_SoundLastSector)
+    Game.UIManager.UIFadeManager:AddAudioFadeOut(_SoundLastSector, 4)
     Yield(WaitForSeconds(6))
     _SoundLastSector.volume = 1
     --播放一次完成之后设置为100m范围衰减，位置为当前飞船位置

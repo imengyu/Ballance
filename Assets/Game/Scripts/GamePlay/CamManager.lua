@@ -46,8 +46,6 @@ function CamManager:new()
   self.CamBackVector = Vector3.back
   self.CamFollowSpeed = 0.05
   self.CamIsSpaced = false
-  self.FollowEnable = false
-  self.LookEnable = false
   self.Target = nil
   self.CamRotateValue = CamRotateType.North
 
@@ -108,11 +106,11 @@ end
 ---摄像机面对向量重置
 function CamManager:ResetVector()
   --根据摄像机朝向重置几个球推动的方向向量
-  local y = -self._CameraHostTransform.localEulerAngles.y - 90;
-  self.CamRightVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.right;
-  self.CamLeftVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.left;
-  self.CamForwerdVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.forward;
-  self.CamBackVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.back;
+  local y = -self._CameraHostTransform.localEulerAngles.y - 90
+  self.CamRightVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.right
+  self.CamLeftVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.left
+  self.CamForwerdVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.forward
+  self.CamBackVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.back
 end
 ---通过旋转方向获取目标角度
 ---@param type number CamRotateType
@@ -132,21 +130,22 @@ end
 function CamManager:SetPosAndDirByRestPoint(go) 
   local rot = go.transform.eulerAngles.y
   local type = 0
-  rot = rot % 360;
+  rot = rot % 360
   if rot < 0 then rot = rot + 360 
   elseif rot > 315 then rot = rot - 360 
   end
 
-  if rot >= -45 and rot < 45 then type = CamRotateType.North
-  elseif rot >= 45 and rot < 135 then type = CamRotateType.East
-  elseif rot >= 135 and rot < 225 then type = CamRotateType.South
-  elseif rot >= 225 and rot < 315 then type = CamRotateType.West
+  if rot >= -45 and rot < 45 then type = CamRotateType.South
+  elseif rot >= 45 and rot < 135 then type = CamRotateType.West
+  elseif rot >= 135 and rot < 225 then type = CamRotateType.North
+  elseif rot >= 225 and rot < 315 then type = CamRotateType.East
   end
 
   self._CameraHostTransform.eulerAngles = Vector3(0, self:GetRotateDegreeByType(type), 0)
   self._CameraHostTransform.position = go.transform.position
   self.CamRotateValue = type
   self:ResetVector()
+  return self
 end
 ---空格键向上旋转
 ---@param enable boolean
@@ -234,6 +233,7 @@ end
 ---指定当前跟踪的目标
 ---@param target Transform
 function CamManager:SetTarget(target)
+  self.Target = target
   self.CamFollow.Target = target
   return self
 end

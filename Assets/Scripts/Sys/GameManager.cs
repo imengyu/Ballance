@@ -17,6 +17,7 @@ using System.Xml;
 using UnityEngine;
 using UnityEngine.Networking;
 using Ballance2.Sys.Utils;
+using UnityEngine.Profiling;
 
 /*
 * Copyright(c) 2021 imengyu
@@ -140,12 +141,15 @@ namespace Ballance2.Sys
             GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
             
             GameMainLuaSvr = new LuaSvr();
+            
+            Profiler.BeginSample("BindLua");
             GameMainLuaSvr.init(null, () =>
             {
                 GameMainLuaState = LuaSvr.mainState;
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
                 finish.Invoke();
             });
+            Profiler.BeginSample("GameManagerStartDebugger");
         }
 
         private bool sLoadUserPackages = true;
@@ -213,6 +217,9 @@ namespace Ballance2.Sys
 
             SecurityUtils.FixLuaSecure(GameMainLuaState);
 
+            //初始化宏定义
+            LuaUtils.InitMacros(GameMainLuaState);
+
             //加载系统 packages
             yield return StartCoroutine(LoadSystemCore());
 
@@ -223,16 +230,17 @@ namespace Ballance2.Sys
             //全部加载完毕之后通知所有模块初始化
             GetSystemService<GamePackageManager>().NotifyAllPackageRun("*");
 
+            //通知初始化完成
+            GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
+
             if(string.IsNullOrEmpty(sCustomDebugName)) {
-                //通知初始化完成
-                GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
                 //进入场景
                 if(DebugMode && GameEntry.Instance.DebugSkipIntro) RequestEnterLogicScense("MenuLevel");
                 else if(firstScense != "") RequestEnterLogicScense(firstScense);
             }
             else {
-                GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
                 RequestEnterLogicScense("GameDebug");
+                GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
             }
         }
         private IEnumerator LoadUserPackages() {
@@ -342,6 +350,8 @@ namespace Ballance2.Sys
                 var systemPackage = pm.FindPackage(GamePackageManager.SYSTEM_PACKAGE_NAME);
                 systemPackage.SystemPackage = true;
 
+                yield return new WaitForSeconds(0.5f);
+
                 LuaFunction f = systemPackage.GetLuaFun("CoreVersion");
                 if(f == null) {
                     GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package (1)");
@@ -360,18 +370,22 @@ namespace Ballance2.Sys
             
             if(GameEntry.Instance.DebugEnableLuaDebugger)
             {
+                Profiler.BeginSample("GameManagerStartDebugger");
                 //初始化lua调试器
                 GameMainLuaState.doString(@"
                     local SystemPackage = Ballance2.Sys.Package.GamePackage.GetSystemPackage()
                     SystemPackage:RequireLuaFile('debugger');
                     StartVscodeDebuggee();
                 ", "GameManagerStartDebugger");
+                Profiler.EndSample();
             }
 
             #endregion
 
             #region 加载SystemPackages中定义的包
             
+            Profiler.BeginSample("GameManagerLoadSystemPackages");
+
             XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
 
             for(int loadStepNow = 0; loadStepNow < 2; loadStepNow++) {
@@ -455,6 +469,8 @@ namespace Ballance2.Sys
                     }
                 }
             }
+            
+            Profiler.EndSample();
 
             yield return new WaitForSeconds(0.2f);
 
@@ -840,6 +856,11 @@ namespace Ballance2.Sys
         #region Update
 
         private int nextGameQuitTick = -1;
+        private class DelayItem {
+            public float Time;
+            public VoidDelegate Callback;
+        }
+        private List<DelayItem> delayItems = new List<DelayItem>();
 
         /// <summary>
         /// 请求游戏退出
@@ -856,6 +877,16 @@ namespace Ballance2.Sys
                     ClearScense();
                 if (nextGameQuitTick == 0)
                     GameSystem.Destroy();
+            }
+            if (delayItems.Count > 0) {
+                for(int i = delayItems.Count - 1; i >= 0; i--) {
+                    var item = delayItems[i];
+                    item.Time -= Time.deltaTime;
+                    if(item.Time <= 0) {
+                        item.Callback.Invoke();
+                        delayItems.RemoveAt(i);
+                    }
+                }
             }
         }
 
@@ -1000,6 +1031,18 @@ namespace Ballance2.Sys
                 Directory.Delete(path, true);
             else if (File.Exists(path)) 
                 File.Delete(path);
+        }
+        /// <summary>
+        /// 延时
+        /// </summary>
+        /// <param name="sec">延时时长，秒</param>
+        /// <param name="callback">回调</param>
+        [LuaApiDescription("延时. Lua中不推荐使用这个函数，请使用LuaTimer")]
+        public void Delay(float sec, VoidDelegate callback) {
+            var d = new DelayItem();
+            d.Time = sec;
+            d.Callback = callback;
+            delayItems.Add(d);
         }
 
         #endregion

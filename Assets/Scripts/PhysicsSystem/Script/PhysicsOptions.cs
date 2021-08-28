@@ -10,9 +10,6 @@ public class PhysicsOptions : ScriptableObject
     [Tooltip("小内存池的大小")]
     [Range(8, 2048)]
     public int SmallPoolSize = 32;
-    [Tooltip("更新内存缓冲区的大小")]
-    [Range(16, 2048)]
-    public int UpdateBufferSize = 128;
 
     #region Base
 

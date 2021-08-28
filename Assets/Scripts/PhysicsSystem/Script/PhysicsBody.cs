@@ -1,5 +1,4 @@
 
-using PhysicsRT.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -93,7 +92,7 @@ namespace PhysicsRT
     [DisallowMultipleComponent]
     [RequireComponent(typeof(PhysicsShape))]
     [SLua.CustomLuaClass]
-    public class PhysicsBody : MonoBehaviour, LinkedListItem<PhysicsBody>
+    public class PhysicsBody : MonoBehaviour
     {
         const float MinimumMass = 0.001f;
     
@@ -905,7 +904,7 @@ namespace PhysicsRT
             TWICE_ADD,
             END,
         }
-        private class PhysicsBodyContactData : LinkedListItem<PhysicsBodyContactData> {
+        private class PhysicsBodyContactData {
             public PhysicsBody body;
             public sPhysicsBodyContactData data;
             public PhysicsBodyContactDataState state;
@@ -921,12 +920,11 @@ namespace PhysicsRT
             public PhysicsBodyContactData next { get; set; }
         }
         private Dictionary<int, PhysicsBodyContactData> currentFramEnterBodies = new Dictionary<int, PhysicsBodyContactData>();
-        private SimpleLinkedList<PhysicsBodyContactData> currentFramEnterBodiesList = new SimpleLinkedList<PhysicsBodyContactData>();
+        private List<PhysicsBodyContactData> currentFramEnterBodiesList = new List<PhysicsBodyContactData>();
 
         internal void FlushPhysicsBodyContactDataTick() {
-            List<int> needRemoveData = new List<int>();
-            PhysicsBodyContactData d = currentFramEnterBodiesList.getBegin();
-            while(d != null) {
+            for(int i = currentFramEnterBodiesList.Count- 1; i >= 0; i--) {
+                var d = currentFramEnterBodiesList[i];
                 switch(d.state) {
                     case PhysicsBodyContactDataState.NEW_ADD: 
                         onCollisionEnter?.Invoke(this, d.body, new PhysicsBodyCollisionInfo(d.data));
@@ -939,10 +937,9 @@ namespace PhysicsRT
                     case PhysicsBodyContactDataState.END: 
                         onCollisionLeave?.Invoke(this, d.body);
                         currentFramEnterBodies.Remove(d.body.Id);
-                        currentFramEnterBodiesList.remove(d);
+                        currentFramEnterBodiesList.RemoveAt(i);
                         break;
                 }
-                d = d.next;
             }
         }      
         internal void OnBodyPointContactCallback(PhysicsBody other, sPhysicsBodyContactData data) {
@@ -957,7 +954,7 @@ namespace PhysicsRT
             } else {
                 d = new PhysicsBodyContactData(other, data);
                 currentFramEnterBodies.Add(other.Id, d);
-                currentFramEnterBodiesList.add(d);
+                currentFramEnterBodiesList.Add(d);
             }
         }
     }

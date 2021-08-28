@@ -27,6 +27,7 @@ class GameLuaObjectHostInspector : Editor
     private SerializedProperty pManualInputScript;
     private SerializedProperty pUpdateDelta;
     private SerializedProperty pFixUpdateDelta;
+    private SerializedProperty pDebugLoadScript;
 
     private ReorderableList reorderableList;
     private GUIStyle styleHighlight = null;
@@ -86,6 +87,7 @@ class GameLuaObjectHostInspector : Editor
         pManualInputScript = serializedObject.FindProperty("ManualInputScript");
         pUpdateDelta = serializedObject.FindProperty("UpdateDelta");
         pFixUpdateDelta = serializedObject.FindProperty("FixUpdateDelta");
+        pDebugLoadScript = serializedObject.FindProperty("DebugLoadScript");
         
         //自动设置名称
         if(myScript != null && pName.stringValue == "")
@@ -283,6 +285,8 @@ class GameLuaObjectHostInspector : Editor
         reorderableList.drawHeaderCallback = (rect) => EditorGUI.LabelField(rect, pLuaInitialVars.displayName);
     }
 
+    private string callFunName = "";
+
     private void DrawMinInspector()
     {
         EditorGUILayout.BeginVertical(styleCNBox);
@@ -317,6 +321,8 @@ class GameLuaObjectHostInspector : Editor
             EditorGUI.EndDisabledGroup();
         }
 
+
+        EditorGUILayout.PropertyField(pDebugLoadScript);
         EditorGUILayout.PropertyField(pExecuteOrder);
         EditorGUILayout.PropertyField(pCreateStore);
         EditorGUILayout.PropertyField(pCreateActionStore);
@@ -354,12 +360,22 @@ class GameLuaObjectHostInspector : Editor
 
         EditorGUILayout.Space(5);
 
-        GUI.enabled = EditorApplication.isPlaying;
+        EditorGUI.BeginDisabledGroup(!EditorApplication.isPlaying);
+
         if (GUILayout.Button("UpdateAllVarToLua"))
             myScript.UpdateAllVarToLua();
         if (GUILayout.Button("UpdateAllVarFromLua"))
             myScript.UpdateAllVarFromLua();
-        GUI.enabled = true;
+
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginHorizontal();
+        callFunName = GUILayout.TextArea(callFunName);
+        if (GUILayout.Button("调用无参函数", GUILayout.Width(100)))
+            myScript.CallLuaFun(callFunName);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUI.EndDisabledGroup();
 
         EditorGUILayout.Space(5);
 

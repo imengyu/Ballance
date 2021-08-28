@@ -25,9 +25,7 @@ namespace Ballance2.Sys.Utils
         /// <param name="gameObject"></param>
         [LuaApiDescription("清除对象的备份")]
         public static void ClearObjectBackUp(GameObject gameObject) {
-            var key = gameObject.GetInstanceID();
-            if(objectBackup.ContainsKey(key))
-                objectBackup.Remove(key);
+            objectBackup.Remove(gameObject.GetInstanceID());
         }
 
         /// <summary>

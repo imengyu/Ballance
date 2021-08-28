@@ -1,4 +1,4 @@
-using PhysicsRT.Utils;
+using Ballance2.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -60,15 +60,11 @@ namespace PhysicsRT
             return null;
         }
 
-        private SimpleLinkedList<PhysicsBody> bodysList = new SimpleLinkedList<PhysicsBody>();
         private Dictionary<int, PhysicsBody> bodysDict = new Dictionary<int, PhysicsBody>();
         private Dictionary<int, PhysicsPhantom> phantomsList = new Dictionary<int, PhysicsPhantom>();
         private Dictionary<int, PhysicsConstraint> constraintDict = new Dictionary<int, PhysicsConstraint>();
         private Dictionary<int, PhysicsBody> bodysDictAddContactListener = new Dictionary<int, PhysicsBody>();
-        private PhysicsBody bodyCurrent = null;
         private IntPtr physicsWorldPtr = IntPtr.Zero;
-        private IntPtr bodysUpdateBuffer = IntPtr.Zero;
-        private int updateBufferSize = 0;
 
         private void Awake() {
             _OnBodyContactEventCallback = OnBodyPointContactCallback;
@@ -80,8 +76,6 @@ namespace PhysicsRT
 
             var layerNames = Resources.Load<PhysicsLayerNames>("PhysicsLayerNames");
             Debug.Assert(layerNames != null);
-
-            updateBufferSize = PhysicsOptions.Instance.UpdateBufferSize;
 
             int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
             if(PhysicsWorlds.ContainsKey(currentScenseIndex)) 
@@ -102,7 +96,6 @@ namespace PhysicsRT
                     _OnBodyTriggerEventCallback,
                     _OnBodyContactEventCallback,
                     _OnPhantomOverlapCallback);
-                bodysUpdateBuffer = Marshal.AllocHGlobal(Marshal.SizeOf<float>() * 7 * updateBufferSize);
             }
         }
         private void OnDestroy() {
@@ -122,7 +115,6 @@ namespace PhysicsRT
             var list = new List<PhysicsBody>(bodysDict.Values);
             for(int i = list.Count - 1; i >= 0; i--)
                 DestroyImmediate(list[i]);
-            bodysList.clear();
             bodysDict.Clear();
             bodysDictAddContactListener.Clear();
 
@@ -134,11 +126,6 @@ namespace PhysicsRT
             {
                 PhysicsApi.API.DestroyPhysicsWorld(physicsWorldPtr);
                 physicsWorldPtr = IntPtr.Zero;
-            }
-            if (bodysUpdateBuffer != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(bodysUpdateBuffer);
-                bodysUpdateBuffer = IntPtr.Zero;
             }
         }
         private void FixedUpdate() {
@@ -178,34 +165,23 @@ namespace PhysicsRT
         /// </summary>
         public void UpdateAllBodys()
         {
-            float[] dat = new float[8 * updateBufferSize];
+            PhysicsApi.API.UpdateAllPhysicsWorldBodys(physicsWorldPtr);
 
-            bodyCurrent = bodysList.getBegin();
-            while(bodyCurrent != bodysList.getEnd() && bodyCurrent != null)
+            float[] dat = new float[4];
+            foreach(var bodyCurrent in bodysDict.Values) 
             {
-                PhysicsApi.API.ReadPhysicsWorldBodys(physicsWorldPtr, bodysUpdateBuffer, updateBufferSize);
-                Marshal.Copy(bodysUpdateBuffer, dat, 0, 8 * updateBufferSize);
+                var t = bodyCurrent.gameObject.transform;
+                IntPtr ptr = bodyCurrent.GetPtr(); //pos 0
+                Marshal.Copy(ptr, dat, 0, 3);      //float[3]
 
-                int count = 0;
-                while(bodyCurrent != null && count < updateBufferSize)
-                {
-                    if(bodyCurrent.gameObject.activeSelf && bodyCurrent.MotionType != MotionType.Keyframed) {
-                        bodyCurrent.transform.position = new Vector3(
-                            dat[count * 8 + 0],
-                            dat[count * 8 + 1],
-                            dat[count * 8 + 2]
-                        );
-                        bodyCurrent.transform.rotation = new Quaternion(
-                            dat[count * 8 + 3], 
-                            dat[count * 8 + 4], 
-                            dat[count * 8 + 5], 
-                            dat[count * 8 + 6]
-                        );
-                    }
+                var p = new Vector3(dat[0], dat[1], dat[2]);
+                if(CommonUtils.IsValid(p))
+                    t.position = p;
 
-                    count++;
-                    bodyCurrent = bodyCurrent.next;
-                }
+                ptr = new IntPtr(ptr.ToInt64() + Marshal.SizeOf<float>() * 3); //pos 3
+                Marshal.Copy(ptr, dat, 0, 4);      //float[4]
+
+                t.rotation = new Quaternion(dat[0], dat[1], dat[2], dat[3]);
             }
         }
 
@@ -237,7 +213,6 @@ namespace PhysicsRT
         /// <param name="id"></param>
         /// <param name="body"></param>
         internal void AddBody(int id, PhysicsBody body) {
-            bodysList.add(body);
             bodysDict.Add(id, body);
             if(body.AddContactListener) 
                 bodysDictAddContactListener.Add(id, body);
@@ -247,7 +222,6 @@ namespace PhysicsRT
         /// </summary>
         /// <param name="body"></param>
         internal void RemoveBody(PhysicsBody body) {
-            bodysList.remove(body);
             bodysDict.Remove(body.Id);
             if(body.AddContactListener) 
                 bodysDictAddContactListener.Remove(body.Id);

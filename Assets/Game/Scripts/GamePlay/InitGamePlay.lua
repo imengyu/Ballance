@@ -27,31 +27,24 @@ GamePlay = {
 ---@param callback function
 function GamePlayInit(callback)
   coroutine.resume(coroutine.create(function()
-    --初始化关卡加载器
-    local LevelBuilderGameObject = LevelBuilderInit()
-    Yield(WaitForSeconds(0.1))
-    Game.LevelBuilder = GameLuaObjectHost.GetLuaClassFromGameObject(LevelBuilderGameObject) ---@type LevelBuilder
-    InitBulitInModuls()
-
     --GamePlayUI
-    local uiPackage = Game.PackageManager:FindPackage('core.ui')
-    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(uiPackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
+    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.PackageManager:GetPrefabAsset('__core.ui__/GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
     Yield(WaitForSeconds(0.05))
     GamePlayUIGameObject:SetActive(false)
 
     --初始化基础对象
-    GamePlayManagerGameObjec = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GamePlayManager.prefab'), 'GamePlayManager')
+    GamePlayManagerGameObjec = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('GamePlayManager.prefab'), 'GamePlayManager')
     Yield(WaitForSeconds(0.05))
     Game.Manager:SetGameBaseCameraVisible(false)
-    BallsManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/BallManager.prefab'), 'GameBallsManager')
+    BallsManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('BallManager.prefab'), 'GameBallsManager')
     Yield(WaitForSeconds(0.05))
-    GameSectorManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/SectorManager.prefab'), 'GameSectorManager')
+    GameSectorManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('SectorManager.prefab'), 'GameSectorManager')
     Yield(WaitForSeconds(0.05))
-    GameMusicManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/MusicManager.prefab'), 'GameMusicManager')
+    GameMusicManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('MusicManager.prefab'), 'GameMusicManager')
     Yield(WaitForSeconds(0.05))
-    GameTranfoManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Core/AminTranfo.prefab'), 'GameTranfoManager')
+    GameTranfoManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('AminTranfo.prefab'), 'GameTranfoManager')
     Yield(WaitForSeconds(0.05))
-    GameLevelBrizGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('Assets/Game/Prefabs/Others/LevelBriz.prefab'), 'GameLevelBriz')
+    GameLevelBrizGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('LevelBriz.prefab'), 'GameLevelBriz')
 
     Game.GamePlay = GamePlay
 

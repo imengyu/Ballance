@@ -5,6 +5,39 @@ using System.Collections.Generic;
 public class Lua_PhysicsRT_PhysicsConstraint : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetEnabled(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsConstraint self=(PhysicsRT.PhysicsConstraint)checkSelf(l);
+			System.Boolean a1;
+			checkType(l,2,out a1);
+			self.SetEnabled(a1);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int Create(IntPtr l) {
 		try {
 			#if DEBUG
@@ -518,6 +551,7 @@ public class Lua_PhysicsRT_PhysicsConstraint : LuaObject {
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"PhysicsRT.PhysicsConstraint");
+		addMember(l,SetEnabled);
 		addMember(l,Create);
 		addMember(l,Destroy);
 		addMember(l,"ConnectedBody",get_ConnectedBody,set_ConnectedBody,true);

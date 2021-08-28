@@ -1,4 +1,10 @@
+local BulitInModulsLoaded = false
+
 function InitBulitInModuls()
+  if BulitInModulsLoaded then
+    return
+  end
+
   Game.LevelBuilder:RegisterModul('P_Ball_Paper', Game.SystemPackage:GetPrefabAsset('P_Ball_Paper.prefab'))
   Game.LevelBuilder:RegisterModul('P_Ball_Stone', Game.SystemPackage:GetPrefabAsset('P_Ball_Stone.prefab'))
   Game.LevelBuilder:RegisterModul('P_Ball_Wood', Game.SystemPackage:GetPrefabAsset('P_Ball_Wood.prefab'))
@@ -9,8 +15,11 @@ function InitBulitInModuls()
   Game.LevelBuilder:RegisterModul('P_Trafo_Paper', Game.SystemPackage:GetPrefabAsset('P_Trafo_Paper.prefab'))
   Game.LevelBuilder:RegisterModul('P_Trafo_Stone', Game.SystemPackage:GetPrefabAsset('P_Trafo_Stone.prefab'))
   Game.LevelBuilder:RegisterModul('P_Trafo_Wood', Game.SystemPackage:GetPrefabAsset('P_Trafo_Wood.prefab'))
-  Game.LevelBuilder:RegisterModul('P_Extra_Life', Game.SystemPackage:GetPrefabAsset('P_ExtraLife.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Extra_Life', Game.SystemPackage:GetPrefabAsset('P_Extra_Life.prefab'))
+  Game.LevelBuilder:RegisterModul('P_Extra_Point', Game.SystemPackage:GetPrefabAsset('P_Extra_Point.prefab'))
   Game.LevelBuilder:RegisterModul('PC_CheckPoints', Game.SystemPackage:GetPrefabAsset('PC_TwoFlames.prefab'))
   Game.LevelBuilder:RegisterModul('PE_LevelEnd', Game.SystemPackage:GetPrefabAsset('PE_Balloon.prefab'))
   Game.LevelBuilder:RegisterModul('PS_LevelStart', Game.SystemPackage:GetPrefabAsset('PS_FourFlames.prefab'))
+
+  BulitInModulsLoaded = true
 end

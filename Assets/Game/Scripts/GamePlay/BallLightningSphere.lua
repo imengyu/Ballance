@@ -42,8 +42,8 @@ BallLightningSphere = {
     lighingControlTick = 0,
     ballLightningSphereMaterialA = nil, ---@type Material
     ballLightningSphereMaterialB = nil, ---@type Material
-    ballLightingRoateSpeed1 = 300,
-    ballLightingRoateSpeed2 = 300,
+    ballLightingRoateSpeed1 = 400,
+    ballLightingRoateSpeed2 = 400,
     ballLightningSphereTextureCurrent = 1,
     ballLightningMusic = nil, ---@type AudioSource
 }

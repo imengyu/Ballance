@@ -16,14 +16,14 @@ local Vector3 = UnityEngine.Vector3
 Ball = ClassicObject:extend()
 
 function Ball:new()
-  self._CamMgr = nil;
-  self._Rigidbody = nil;
-  self._Pieces = nil;
-  self._PiecesMinForce = 0;
-  self._PiecesMaxForce = 5;
-  self._Force = 0;
-  self._UpForce = 0;
-  self._DownForce = 0;
+  self._CamMgr = nil
+  self._Rigidbody = nil
+  self._Pieces = nil
+  self._PiecesMinForce = 0
+  self._PiecesMaxForce = 5
+  self._Force = 0
+  self._UpForce = 0
+  self._DownForce = 0
 end
 
 function Ball:Start()

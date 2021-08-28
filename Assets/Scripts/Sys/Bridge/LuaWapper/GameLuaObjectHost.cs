@@ -6,6 +6,10 @@ using Ballance2.Utils;
 using SLua;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /*
  * Copyright (c) 2020  mengyu
@@ -109,11 +113,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         [LuaApiDescription("是否自动创建共享操作仓库")]
         [SerializeField]
         public bool CreateActionStore = false;
-        [Tooltip("调试")]
-        [DoNotToLua]
-        [SerializeField]
-        public string DebugScript = "";
-        [Tooltip("调试加载脚本")]
+        [Tooltip("在调试环境中加载脚本，需要先添加LuaDebugMini调试环境至场景中")]
         [DoNotToLua]
         [SerializeField]
         public bool DebugLoadScript = false;
@@ -192,11 +192,33 @@ namespace Ballance2.Sys.Bridge.LuaWapper
         /// <returns>返回类的table，如果创建失败，则返回null</returns>
         [LuaApiDescription("立即创建类，如果类已创建，则返回已创建的类", "返回类的table，如果创建失败，则返回nil")]
         public LuaTable CreateClass() {
-
-            if(Package == null && !InitPackage()) 
-                return null;
-            if(self == null && Package != null) {
-                LuaFunction classInit = Package.RequireLuaClass(LuaClassName);
+            if(self == null) {
+                LuaFunction classInit = null;
+                if(DebugLoadScript) {
+                    #if UNITY_EDITOR
+                        //直接加载
+                        if(LuaDebugMini.Instance == null) {
+                            Log.E(TAG + ":" + Name, "Not found LuaDebugMini, please add it");
+                            return null;
+                        } 
+                        var path = LuaFileName;
+                        if(!path.EndsWith(".lua")) path += ".lua";
+                        if(!File.Exists(path)) {
+                            Log.E(TAG + ":" + Name, "Not found lua file: '" + path + "' ");
+                            return null;
+                        }
+                            
+                        LuaDebugMini.LuaState.doString(File.ReadAllText(path));
+                        classInit = LuaDebugMini.LuaState.getFunction("CreateClass_" + LuaClassName);
+                    #else
+                        Log.E(TAG + ":" + Name, "DebugLoadScript can only use in editor");
+                    #endif
+                } else if(Package == null && !InitPackage()) 
+                    return null;
+                else 
+                    classInit = Package.RequireLuaClass(LuaClassName);
+                
+                //Create class
                 if (classInit == null)
                 {
                     Log.E(TAG + ":" + Name, "LuaObject {0} create error : class not found : {1}", Name, LuaClassName);
@@ -238,7 +260,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             if (!LuaInit())
             {
                 enabled = false;
-                Log.W(TAG + ":" + Name, "LuaObject {0} disabled because load error", Name);
             }
             else
             {

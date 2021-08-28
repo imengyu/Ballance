@@ -23,9 +23,10 @@ public class Lua_Ballance2_Sys_Utils_KeyListener : LuaObject {
 				a1 = (UnityEngine.KeyCode)LuaDLL.luaL_checkinteger(l, 2);
 				Ballance2.Sys.Utils.KeyListener.KeyDelegate a2;
 				checkDelegate(l,3,out a2);
-				self.AddKeyListen(a1,a2);
+				var ret=self.AddKeyListen(a1,a2);
 				pushValue(l,true);
-				return 1;
+				pushValue(l,ret);
+				return 2;
 			}
 			else if(argc==4){
 				Ballance2.Sys.Utils.KeyListener self=(Ballance2.Sys.Utils.KeyListener)checkSelf(l);
@@ -35,13 +36,47 @@ public class Lua_Ballance2_Sys_Utils_KeyListener : LuaObject {
 				a2 = (UnityEngine.KeyCode)LuaDLL.luaL_checkinteger(l, 3);
 				Ballance2.Sys.Utils.KeyListener.KeyDelegate a3;
 				checkDelegate(l,4,out a3);
-				self.AddKeyListen(a1,a2,a3);
+				var ret=self.AddKeyListen(a1,a2,a3);
 				pushValue(l,true);
-				return 1;
+				pushValue(l,ret);
+				return 2;
 			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function AddKeyListen to call");
 			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int DeleteKeyListen(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Utils.KeyListener self=(Ballance2.Sys.Utils.KeyListener)checkSelf(l);
+			System.Int32 a1;
+			checkType(l,2,out a1);
+			self.DeleteKeyListen(a1);
+			pushValue(l,true);
+			return 1;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -188,6 +223,7 @@ public class Lua_Ballance2_Sys_Utils_KeyListener : LuaObject {
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Utils.KeyListener");
 		addMember(l,AddKeyListen);
+		addMember(l,DeleteKeyListen);
 		addMember(l,ClearKeyListen);
 		addMember(l,Get_s);
 		addMember(l,"IsListenKey",get_IsListenKey,set_IsListenKey,true);

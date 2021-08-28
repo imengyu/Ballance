@@ -18,6 +18,7 @@ using System.Xml;
 using UnityEngine;
 using Ballance2.Sys.Bridge.Lua;
 using Ballance2.Sys.Utils;
+using System.Collections;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -281,6 +282,7 @@ namespace Ballance2.Sys.Package
             await new WaitUntil(IsLuaStateInitFinished);
 
             SecurityUtils.FixLuaSecure(PackageLuaState);
+            LuaUtils.InitMacros(PackageLuaState);
             return true;
         }
         protected void SystemPackageSetInitFinished() { 
@@ -290,15 +292,16 @@ namespace Ballance2.Sys.Package
             mainLuaCodeLoaded = false;
             requiredLuaFiles = new Dictionary<string, object>();
             requiredLuaClasses = new Dictionary<string, LuaFunction>();
-            RunPackageExecutionCode();
+            
+            GameManager.Instance.Delay(0.05f, () => RunPackageExecutionCode());
         }
         private void SetLuaStateInitFinished() { 
             luaStateInited = true; 
             luaStateIniting = false;
             baseInited = true;
 
-            if(runExecutionCodeWhenLuaStateInit) 
-                RunPackageExecutionCode();
+            if(runExecutionCodeWhenLuaStateInit)
+                GameManager.Instance.Delay(0.05f, () => RunPackageExecutionCode());
         }
 
         /// <summary>

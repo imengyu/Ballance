@@ -200,14 +200,29 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
-			UnityEngine.Transform a1;
-			checkType(l,2,out a1);
-			System.String a2;
-			checkType(l,3,out a2);
-			var ret=self.InstanceNewGameObject(a1,a2);
-			pushValue(l,true);
-			pushValue(l,ret);
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
+				System.String a1;
+				checkType(l,2,out a1);
+				var ret=self.InstanceNewGameObject(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==3){
+				Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
+				UnityEngine.Transform a1;
+				checkType(l,2,out a1);
+				System.String a2;
+				checkType(l,3,out a2);
+				var ret=self.InstanceNewGameObject(a1,a2);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function InstanceNewGameObject to call");
 			return 2;
 		}
 		catch(Exception e) {

@@ -16,6 +16,7 @@ local PlayerPrefs = UnityEngine.PlayerPrefs
 function CreateGamePlayUI(package)
 
   local PageGamePause = GameUIManager:RegisterPage('PageGamePause', 'PageCommon')
+  local PageGameFail = GameUIManager:RegisterPage('PageGameFail', 'PageCommon')
   local PageGameQuitAsk = GameUIManager:RegisterPage('PageGameQuitAsk', 'PageCommon')
   local PageGameRestartAsk = GameUIManager:RegisterPage('PageGameRestartAsk', 'PageCommon')
   local PageGameWin = GameUIManager:RegisterPage('PageGameWin', 'PageCommon')
@@ -32,6 +33,8 @@ function CreateGamePlayUI(package)
   PageEndScore.CanEscBack = false
   PageHighscoreEntry:CreateContent(package)
   PageHighscoreEntry.CanEscBack = false
+  PageGameFail:CreateContent(package)
+  PageGameFail.CanEscBack = false
 
   MessageCenter:SubscribeEvent('BtnGameHomeClick', function () GamePlay.GamePlayManager:QuitLevel() end)
   MessageCenter:SubscribeEvent('BtnNextLevellick', function () GamePlay.GamePlayManager:NextLevel() end)
@@ -105,7 +108,7 @@ function GamePlayUIControl:SetPointText(score)
   if type(score) == "number" then
     self._ScoreText.text = string.format("%d", score)
   elseif type(score) == "string" then 
-    self._ScoreText.text = score;
+    self._ScoreText.text = score
   end
 end
 
@@ -149,20 +152,20 @@ function GamePlayUIControl:SetLifeBallCount(count)
         UnityEngine.Object.Destroy(self._LifeBalls:GetChild(i).gameObject)
       end
       CloneUtils.CloneNewObjectWithParent(self._LifeBoardBallInfPrefab, self._LifeBalls)
-      self:_MoveLifeLeftBaffle();
+      self:_MoveLifeLeftBaffle()
     else
       if self._LifeBalls.childCount > count then
         --显示数量大于目标，删除多余的
         for i = self._LifeBalls.childCount - 1, count + 1, -1 do
           UnityEngine.Object.Destroy(self._LifeBalls:GetChild(i).gameObject)
         end
-        self:_MoveLifeLeftBaffle();
+        self:_MoveLifeLeftBaffle()
       elseif self._LifeBalls.childCount < count then
         --显示数量小于目标，添加
         for i = 1, count - self._LifeBalls.childCount, 1 do
           CloneUtils.CloneNewObjectWithParent(self._LifeBoardBallPrefab, self._LifeBalls)
         end
-        self:_MoveLifeLeftBaffle();
+        self:_MoveLifeLeftBaffle()
       end
     end
   end

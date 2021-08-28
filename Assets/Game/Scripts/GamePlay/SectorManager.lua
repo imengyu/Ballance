@@ -80,43 +80,50 @@ function SectorManager:SetCurrentSector(sector)
 
     GamePlay.GamePlayManager.CurrentSector = sector 
 
-    --激活当前节的机关
-    local s = self.CurrentLevelSectors[sector]
-    if s == nil then
-      Log.E(TAG, 'Sector '..sector..' not found')
-      GamePlay.GamePlayManager.CurrentSector = 0 
-      return
-    end
-    for _, value in pairs(s.moduls) do
-      if value ~= nil then  
-        value:Active()
-      end
-    end 
-
-    --设置火焰状态
-    self.CurrentLevelRestPoints[sector].flame:Active()
-    if sector < self.CurrentLevelSectorCount then
-      --下一关的火焰
-      local flameNext = self.CurrentLevelRestPoints[sector + 1].flame
-      if flameNext ~= nil then
-        flameNext:InternalActive()
-      end
-    end
-
-    --播放音乐
-    if sector > 1 then
-      Game.SoundManager:PlayFastVoice('core.sounds:Misc_Checkpoint.wav', GameSoundType.Normal)
-    end
-
-    --如果是最后一个小节，则激活飞船
-    if sector == self.CurrentLevelSectorCount then
-      self.CurrentLevelEndBalloon:Active()
-    else
-      self.CurrentLevelEndBalloon:Deactive()
-    end
-
+    self:ActiveCurrentSector(true)
   end
 end
+
+---激活当前节的机关
+---@param playCheckPointSound boolean 是否播放节点音乐
+function SectorManager:ActiveCurrentSector(playCheckPointSound) 
+  local sector = GamePlay.GamePlayManager.CurrentSector
+  --激活当前节的机关
+  local s = self.CurrentLevelSectors[sector]
+  if s == nil then
+    Log.E(TAG, 'Sector '..sector..' not found')
+    GamePlay.GamePlayManager.CurrentSector = 0 
+    return
+  end
+  for _, value in pairs(s.moduls) do
+    if value ~= nil then  
+      value:Active()
+    end
+  end 
+
+  --设置火焰状态
+  self.CurrentLevelRestPoints[sector].flame:Active()
+  if sector < self.CurrentLevelSectorCount then
+    --下一关的火焰
+    local flameNext = self.CurrentLevelRestPoints[sector + 1].flame
+    if flameNext ~= nil then
+      flameNext:InternalActive()
+    end
+  end
+
+  --播放音乐
+  if playCheckPointSound and sector > 1 then
+    Game.SoundManager:PlayFastVoice('core.sounds:Misc_Checkpoint.wav', GameSoundType.Normal)
+  end
+
+  --如果是最后一个小节，则激活飞船
+  if sector == self.CurrentLevelSectorCount then
+    self.CurrentLevelEndBalloon:Active()
+  else
+    self.CurrentLevelEndBalloon:Deactive()
+  end
+end
+
 ---重置当前节的机关
 ---@param active boolean 重置机关后是否激活
 function SectorManager:ResetCurrentSector(active)  
@@ -126,13 +133,12 @@ function SectorManager:ResetCurrentSector(active)
     for _, value in pairs(s.moduls) do
       if value ~= nil then
         value:Deactive()
-        value:Reset()
-        if active then value:Active() end
+        value:Reset('sectorRestart')
       end
     end 
   end
-  if sector == self.CurrentLevelSectorCount then
-    self.CurrentLevelEndBalloon:Reset()
+  if active then
+    self:ActiveCurrentSector(false)
   end
 end
 ---重置所有机关
@@ -142,10 +148,11 @@ function SectorManager:ResetAllSector(active)
   for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
     if value ~= nil then
       value.modul:Deactive()
-      value.modul:Reset()
+      value.modul:Reset('levelRestart')
       if active then value.modul:Active() end
     end
   end
+  self.CurrentLevelEndBalloon:Reset()
 end
 
 function CreateClass_SectorManager() 

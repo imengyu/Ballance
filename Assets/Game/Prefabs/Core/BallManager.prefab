@@ -3320,9 +3320,9 @@ MonoBehaviour:
     floatVal: 0
     componentClassVal: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
   LuaPublicVars: []
-  ExecuteOrder: 10
-  CreateStore: 1
-  CreateActionStore: 1
+  ExecuteOrder: 5
+  CreateStore: 0
+  CreateActionStore: 0
   DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
@@ -5279,7 +5279,7 @@ MonoBehaviour:
     floatVal: 1
     componentClassVal: 
   LuaPublicVars: []
-  ExecuteOrder: 5
+  ExecuteOrder: 2
   CreateStore: 0
   CreateActionStore: 0
   DebugScript: 
@@ -10725,7 +10725,7 @@ MonoBehaviour:
     floatVal: 0.05
     componentClassVal: 
   LuaPublicVars: []
-  ExecuteOrder: 5
+  ExecuteOrder: 2
   CreateStore: 0
   CreateActionStore: 0
   DebugScript: 
@@ -12479,7 +12479,7 @@ MonoBehaviour:
     floatVal: 1
     componentClassVal: 
   LuaPublicVars: []
-  ExecuteOrder: 5
+  ExecuteOrder: 2
   CreateStore: 0
   CreateActionStore: 0
   DebugScript: 

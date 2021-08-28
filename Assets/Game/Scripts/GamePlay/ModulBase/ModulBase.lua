@@ -18,7 +18,8 @@ end
 function ModulBase:UnLoad()
 end
 ---机关重置为初始状态时发出此事件（玩家失败，重新开始一节）。Reset在Deactive之后发出
-function ModulBase:Reset()
+---@param type "sectorRestart"|"levelRestart" 重置类型 sectorRestart 玩家失败，重新开始一节，levelRestart 关卡重新开始
+function ModulBase:Reset(type)
 end
 ---机关就绪，可以保存状态时发出此事件（初次加载完成）
 function ModulBase:Backup()

@@ -3,6 +3,7 @@ local GameError = Ballance2.Sys.Debug.GameError
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 local GameSettingsManager = Ballance2.Config.GameSettingsManager
+local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local DebugUtils = Ballance2.Utils.DebugUtils
 local StringUtils = Ballance2.Utils.StringUtils
@@ -57,51 +58,54 @@ function LevelBuilder:new()
   self._IsLoading = false
 end
 function LevelBuilder:Start()
-  self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.PackageManager:FindPackage('core.ui'):GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', false)
-  self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.Sys.UI.Progress) ---@type Progress
-  self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
-  self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:Find('PanelFailed').gameObject
-  self._LevelBuilderUIButtonBack = self._LevelBuilderUI:Find('PanelFailed/ButtonBack'):GetComponent(UnityEngine.UI.Button) ---@type Button
-  self._LevelBuilderUIButtonSubmitBug = self._LevelBuilderUI:Find('PanelFailed/ButtonSubmitBug'):GetComponent(UnityEngine.UI.Button) ---@type Button
-  self._LevelBuilderUIButtonCopyErrInfo = self._LevelBuilderUI:Find('PanelFailed/ButtonCopyErrInfo'):GetComponent(UnityEngine.UI.Button) ---@type Button
-  self._LevelBuilderUIPanelFailed.gameObject:SetActive(false)
-  self._LevelBuilderUI.gameObject:SetActive(false)
+  Game.Mediator:RegisterEventHandler(Game.SystemPackage, GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "LevelBuilder", function ()
+    Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED')
+    Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY')
+    Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_START')
 
-  Game.CommandServer:RegisterCommand('lb', function (keyword, fullCmd, argsCount, args)
-    local k2 = args[1]
-    if k2 == 'quit' then
-      Log.V(TAG, 'Unload')
-      self:UnLoadLevel();
-    elseif k2 == 'load' then
-      if argsCount < 2 then
-        Log.E(TAG, 'Missing arg 2')
-      else
-        Log.V(TAG, 'Load')
-        Game.Mediator:NotifySingleEvent('CoreStartLoadLevel', { args[2] })
-      end
-    end
-  end, 0, 'lb <quit/load>\n'..
-    '  <quit> > 终止当前的关卡加载\n'..
-    '  <load> <levelname:string> > 加载指定关卡\n')
-
-  self._LevelBuilderUIButtonBack.onClick:AddListener(function () 
-    Game.UIManager:MaskBlackSet(true)
-    Game.Manager:SetGameBaseCameraVisible(true)
+    self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.PackageManager:GetPrefabAsset('__core.ui__/LevelBuilderUI.prefab'), 'GameLevelBuilderUI', false)
+    self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.Sys.UI.Progress) ---@type Progress
+    self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
+    self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:Find('PanelFailed').gameObject
+    self._LevelBuilderUIButtonBack = self._LevelBuilderUI:Find('PanelFailed/ButtonBack'):GetComponent(UnityEngine.UI.Button) ---@type Button
+    self._LevelBuilderUIButtonSubmitBug = self._LevelBuilderUI:Find('PanelFailed/ButtonSubmitBug'):GetComponent(UnityEngine.UI.Button) ---@type Button
+    self._LevelBuilderUIButtonCopyErrInfo = self._LevelBuilderUI:Find('PanelFailed/ButtonCopyErrInfo'):GetComponent(UnityEngine.UI.Button) ---@type Button
+    self._LevelBuilderUIPanelFailed.gameObject:SetActive(false)
     self._LevelBuilderUI.gameObject:SetActive(false)
-    self:UnLoadLevel()  
-  end)
-  self._LevelBuilderUIButtonSubmitBug.onClick:AddListener(function () Application.OpenURL(ConstLinks.BugReportURL) end)  
-  self._LevelBuilderUIButtonCopyErrInfo.onClick:AddListener(function () 
-    GUIUtility.systemCopyBuffer = self._LevelBuilderCurrentError
-    Game.UIManager:GlobalToast(I18N.Tr('str.tip.errInfoCopied'))
-  end)
 
-  Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED')
-  Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY')
-  Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_START')
+    Game.CommandServer:RegisterCommand('lb', function (keyword, fullCmd, argsCount, args)
+      local k2 = args[1]
+      if k2 == 'quit' then
+        Log.V(TAG, 'Unload')
+        self:UnLoadLevel()
+      elseif k2 == 'load' then
+        if argsCount < 2 then
+          Log.E(TAG, 'Missing arg 2')
+        else
+          Log.V(TAG, 'Load')
+          Game.Mediator:NotifySingleEvent('CoreStartLoadLevel', { args[2] })
+        end
+      end
+    end, 0, 'lb <quit/load>\n'..
+      '  <quit> > 终止当前的关卡加载\n'..
+      '  <load> <levelname:string> > 加载指定关卡\n')
 
-  self._LevelLoaderNative = self.gameObject:GetComponent(Ballance2.Game.GameLevelLoaderNative) ---@type GameLevelLoaderNative
-  self:UpdateErrStatus(false, nil)
+    self._LevelBuilderUIButtonBack.onClick:AddListener(function () 
+      Game.UIManager:MaskBlackSet(true)
+      Game.Manager:SetGameBaseCameraVisible(true)
+      self._LevelBuilderUI.gameObject:SetActive(false)
+      self:UnLoadLevel()  
+    end)
+    self._LevelBuilderUIButtonSubmitBug.onClick:AddListener(function () Application.OpenURL(ConstLinks.BugReportURL) end)  
+    self._LevelBuilderUIButtonCopyErrInfo.onClick:AddListener(function () 
+      GUIUtility.systemCopyBuffer = self._LevelBuilderCurrentError
+      Game.UIManager:GlobalToast(I18N.Tr('str.tip.errInfoCopied'))
+    end)
+
+    self._LevelLoaderNative = self.gameObject:GetComponent(Ballance2.Game.GameLevelLoaderNative) ---@type GameLevelLoaderNative
+    self:UpdateErrStatus(false, nil)
+    return false
+  end)
 end
 function LevelBuilder:OnDestroy()
   if self.LevelBuilderUI ~= nil then
@@ -156,6 +160,9 @@ function LevelBuilder:LoadLevel(name)
   self:UpdateLoadProgress(0)
   self:UpdateErrStatus(false, nil)
   Game.UIManager:MaskBlackSet(false)
+
+  --加载内置模块
+  InitBulitInModuls()
 
   --由C#代码加载文件
   self._LevelLoaderNative:LoadLevel(name, 
@@ -303,10 +310,6 @@ function LevelBuilder:_LoadLevelInternal()
     HighscoreManagerTryAddDefaultLevelHighScore(levelName, Clone(DefaultHightScoreLev01_11Data))
   end
 
-  if level.firstBall and GamePlay.BallManager:GetRegisterBall(GamePlayManager.StartBall) == nil then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'level.firstBall\' '..level.firstBall..' is not register')
-    return
-  end
   if level.startLife and level.startLife > 0 then
     GamePlayManager.StartLife = level.startLife
   end
@@ -536,7 +539,7 @@ function LevelBuilder:_LoadLevelInternal()
     --首次加载 modul
     -----------------------------
     Yield(WaitForSeconds(0.5))
-    SectorManager:DoInitAllModuls();
+    SectorManager:DoInitAllModuls()
 
     self:UpdateLoadProgress(0.7)
 
@@ -566,6 +569,7 @@ function LevelBuilder:_LoadLevelInternal()
 
     self:UpdateLoadProgress(0.8)
 
+    Yield(WaitForSeconds(0.1))
     Log.D(TAG, 'Load sky and light')
 
     --加载天空盒和灯光
@@ -676,6 +680,7 @@ function LevelBuilder:_LoadLevelInternal()
     end
 
     self:UpdateLoadProgress(0.9)
+    Yield(WaitForSeconds(0.2))
 
     Log.D(TAG, 'Load others')
 
@@ -687,15 +692,17 @@ function LevelBuilder:_LoadLevelInternal()
     Log.D(TAG, 'Load finish')
 
     self:UpdateLoadProgress(1)
-
-    --隐藏加载UI
-    Game.UIManager:MaskBlackSet(true)
-    self._LevelBuilderUI.gameObject:SetActive(false)
+    Yield(WaitForSeconds(0.1))
 
     --最后加载步骤
     -----------------------------
     Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.3, {})
 
+    Yield(WaitForSeconds(0.3))
+
+    --隐藏加载UI
+    Game.UIManager:MaskBlackSet(true)
+    self._LevelBuilderUI.gameObject:SetActive(false)
     self._IsLoading = false
   end)
   local status = coroutine.resume(loadCo)

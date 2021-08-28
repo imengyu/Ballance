@@ -262,11 +262,13 @@ namespace PhysicsRT
                         sPhysicsShape str = (sPhysicsShape)Marshal.PtrToStructure(retStruct, typeof(sPhysicsShape));
                         int[] staticCompoundShapeRetIds = new int[str.staticCompoundShapeRetIdsCount];
                         Marshal.Copy(str.staticCompoundShapeRetIds, staticCompoundShapeRetIds, 0, str.staticCompoundShapeRetIdsCount);
-                        for (int i = 0, ia = 0, c = transform.childCount; i < c; i++) {
-                            var shape = transform.GetChild(i).gameObject.GetComponent<PhysicsShape>();
-                            if (shape != null) {
-                                shape.StaticCompoundChildId = staticCompoundShapeRetIds[ia];
-                                ia++;
+                        for (int i = 0, ia = 0, c = transform.childCount; i < c && ia < str.staticCompoundShapeRetIdsCount; i++) {
+                            if(transform.gameObject.activeSelf) {
+                                var shape = transform.GetChild(i).gameObject.GetComponent<PhysicsShape>();
+                                if (shape != null) {
+                                    shape.StaticCompoundChildId = staticCompoundShapeRetIds[ia];
+                                    ia++;
+                                }
                             }
                         }
 
@@ -377,21 +379,23 @@ namespace PhysicsRT
             List<IntPtr> childernShapes = new List<IntPtr>();
             for (int i = 0, c = transform.childCount; i < c; i++) {
                 var child = transform.GetChild(i);
-                var shape = child.gameObject.GetComponent<PhysicsShape>();
-                if (shape != null)
-                {
-                    var ptr = shape.GetShapeBody(forceRecreate, layout);
-                    if(ptr == IntPtr.Zero)
-                        continue;
-                    childernShapes.Add(ptr);
-
-                    if (withChildTransforms)// Child Transforms
+                if(child.gameObject.activeSelf) {
+                    var shape = child.gameObject.GetComponent<PhysicsShape>();
+                    if (shape != null)
                     {
-                        childernTransforms.Add(PhysicsApi.API.CreateTransform(
-                            shape.transform.localPosition.x, shape.transform.localPosition.y, shape.transform.localPosition.z,
-                            shape.transform.localRotation.x, shape.transform.localRotation.y, shape.transform.localRotation.z, shape.transform.localRotation.w,
-                            shape.transform.localScale.x, shape.transform.localScale.y, shape.transform.localScale.z
-                        ));
+                        var ptr = shape.GetShapeBody(forceRecreate, layout);
+                        if(ptr == IntPtr.Zero)
+                            continue;
+                        childernShapes.Add(ptr);
+
+                        if (withChildTransforms)// Child Transforms
+                        {
+                            childernTransforms.Add(PhysicsApi.API.CreateTransform(
+                                shape.transform.localPosition.x, shape.transform.localPosition.y, shape.transform.localPosition.z,
+                                shape.transform.localRotation.x, shape.transform.localRotation.y, shape.transform.localRotation.z, shape.transform.localRotation.w,
+                                shape.transform.localScale.x, shape.transform.localScale.y, shape.transform.localScale.z
+                            ));
+                        }
                     }
                 }
             }

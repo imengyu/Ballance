@@ -13,14 +13,7 @@ BallPiecesControll = {
   _Force = 0,
   _UpForce = 0,
   _DownForce = 0,
-
-  _PieceThrown = {}, ---@type BallPiecesTimeStorage[]
-} 
-
----@class BallPiecesTimeStorage
-BallPiecesTimeStorage = {
-  GameObject = nil, ---@type GameObject
-  TimeLive = 0,
+  _TimerIds = {}
 } 
 
 function CreateClass_BallPiecesControll()
@@ -34,15 +27,6 @@ function CreateClass_BallPiecesControll()
 
   function BallPiecesControll:Start()
     GamePlay.BallPiecesControll = self
-  end
-  function BallPiecesControll:FixedUpdate()
-    --超时恢复碎片
-    for _, v in ipairs(self._PieceThrown) do
-      v.TimeLive = v.TimeLive - 1
-      if v.TimeLive <= 0 then
-        self:ResetPieces(v.GameObject)
-      end
-    end
   end
     
   ---抛出碎片
@@ -60,21 +44,22 @@ function CreateClass_BallPiecesControll()
       --设置位置
       parent.transform.position = pos
 
-      --添加数据，让碎片自动消失
-      table.insert(self._PieceThrown, {
-        GameObject = parent,
-        TimeLive = timeLive or 20,
-      })
-
       for i = 0, parent.transform.childCount - 1 do
         local child = parent.transform:GetChild(i)
         local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
-        local forceDir = child.position
+        local forceDir = child.localPosition
         child.gameObject:SetActive(true)
         forceDir:Normalize() --力的方向是从原点向碎片位置
         body:ForcePhysics() --物理
         body:ApplyPointImpulse(forceDir * math.random(minForce, maxForce), Vector3.up) --施加力
       end
+
+      ---延时消失
+      local iid = parent:GetInstanceID()
+      self._TimerIds[iid] = LuaTimer.Add((timeLive or 20) * 2000, function ()
+        self._TimerIds[iid] = nil
+        self:ResetPieces(parent)
+      end)
 
     end
   end
@@ -83,12 +68,11 @@ function CreateClass_BallPiecesControll()
   function BallPiecesControll:ResetPieces(parent)
     if parent.activeSelf then
       
-      --移除数据
-      for i = #self._PieceThrown, 0, -1 do
-        if(self._PieceThrown[i].GameObject == parent) then
-          table.remove(self._PieceThrown, i)
-          break
-        end
+      local iid = parent:GetInstanceID()
+      local id = self._TimerIds[iid]
+      if id ~= nil then
+        self._TimerIds[iid] = nil
+        LuaTimer.Delete(id)
       end
 
       --去除物理
@@ -100,15 +84,13 @@ function CreateClass_BallPiecesControll()
 
       --渐变淡出隐藏其材质
       for i = 0, parent.transform.childCount - 1 do
-        FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 2, true, nil)
+        FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 3, true, nil)
       end
 
       --延时
-      coroutine.resume(coroutine.create(function()
-        Yield(WaitForSeconds(2))
+      LuaTimer.Add(3000, function ()
         parent:SetActive(false) --隐藏
-      end))
-
+      end)
     end
   end
 

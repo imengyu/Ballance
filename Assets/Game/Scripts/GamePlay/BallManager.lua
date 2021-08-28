@@ -8,6 +8,7 @@ local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
 local GameManager = Ballance2.Sys.GameManager
 local GameError = Ballance2.Sys.Debug.GameError
 local LuaUtils = Ballance2.Utils.LuaUtils
+local SmoothFly = Ballance2.Game.Utils.SmoothFly
 local MotionType = PhysicsRT.MotionType
 local GUI = UnityEngine.GUI
 local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
@@ -41,6 +42,8 @@ BallControlStatus = {
   UnleashingMode = 2,
   ---锁定模式（例如变换球时，无物理效果，无法控制，但摄像机跟随）
   LockMode = 3,
+  ---释放模式2（球仍然有物理效果，但无法控制，摄像机跟随看着球）
+  FreeMode = 4,
 }
 
 ---@class BallRegStorage
@@ -57,6 +60,7 @@ local BallRegStorage = {
 ---@field _BallStone GameObject
 ---@field _BallPaper GameObject
 ---@field _BallSmoke GameObject
+---@field CurrentBallName string 获取当前的球名称 [R]
 ---@field CurrentBall Ball 获取当前的球 [R]
 ---@field PushType number 获取或者设置当前球的推动方向 [RW]
 ---@field CanControll boolean 获取当前用户是否可以控制球 [R]
@@ -67,22 +71,16 @@ BallManager = ClassicObject:extend()
 local TAG = 'BallManager'
 
 function BallManager:new()
-  self.PushType = 0;
-  self.CurrentBall = nil;
-  self.CanControll = false;
-  self.CanControllCamera = false;
-  self.ShiftPressed = false;
+  self.PushType = 0
+  self.CurrentBall = nil
+  self.CurrentBallName = ''
+  self.CanControll = false
+  self.CanControllCamera = false
+  self.ShiftPressed = false
   self._DebugMode = false
   self._private = {
     BallLightningSphere = nil, ---@type BallLightningSphere
     GameSettings = nil, ---@type GameSettingsActuator
-
-    movingTime = 1,
-    movingToPos = false,
-    movingToPosTick = 0,
-    movingTargetPos = Vector3.zero,
-    movingBall = nil, ---@type GameObject
-    movingCurrentVelocity = Vector3.zero,
     settingsCallbackId = 0,
     controllingStatus = BallControlStatus.NoControl, ---当前状态
     lastSaveLinearVelocity = nil, ---@type Vector3
@@ -113,11 +111,10 @@ function BallManager:new()
     nextRecoverPos = Vector3.zero, ---@type Vector3
     rect = Rect(20,100,200,20),
   }
-
-  GamePlay.BallManager = self
 end
 
 function BallManager:Start()
+  GamePlay.BallManager = self
   self._private.BallLightningSphere = self._BallLightningSphere:GetLuaClass()
 
   self:RegisterBall('BallWood', self._BallWood)
@@ -145,16 +142,6 @@ end
 function BallManager:FixedUpdate()
   if self.CanControll then
     self.CurrentBall:Push(self.PushType)
-  end
-  --平滑移动至目标
-  if self._private.movingToPos then
-    self._private.movingToPosTick = self._private.movingToPosTick + Time.deltaTime
-    self._private.movingBall.transform.position, self._private.movingCurrentVelocity = Vector3.SmoothDamp(
-      self._private.movingBall.transform.position, 
-      self._private.movingTargetPos, self._private.movingCurrentVelocity, self._private.movingTime, 10)
-    if self._private.movingToPosTick > self._private.movingTime then
-      self._private.movingToPos = false
-    end
   end
 end
 --[[
@@ -267,6 +254,7 @@ function BallManager:SetCurrentBall(name, status)
     self:_DeactiveCurrentBall()
     self._private.currentBall = ball
     self.CurrentBall = ball.ball
+    self.CurrentBallName = ball.name
     self:SetControllingStatus(status)
   end
 end
@@ -275,8 +263,10 @@ end
 function BallManager:SetControllingStatus(status)
   if(status ~= nil) then 
     self._private.controllingStatus = status
+    self:_FlushCurrentBallAllStatus()
+  elseif(status ~= self._private.controllingStatus) then
+    self:_FlushCurrentBallAllStatus()
   end
-  self:_FlushCurrentBallAllStatus()
 end
 ---重新恢复 LockMode 之前的速度值
 function BallManager:RestoreCurrentBallSpeed()
@@ -287,12 +277,31 @@ end
 function BallManager:SetNextRecoverPos(pos)
   self._private.nextRecoverPos = pos
 end
+---重置指定球的碎片
+---@param typeName string 球类型名称
+function BallManager:ResetPeices(typeName)
+  local ball = self:GetRegisterBall(typeName)
+  if ball ~= nil then
+    ball.ball:ResetPieces()
+  else
+    Log.W(TAG, 'Ball type '..typeName..' not found')
+  end
+end
+---抛出指定球的碎片
+---@param typeName string 球类型名称
+function BallManager:ThrowPeices(typeName, pos)
+  local ball = self:GetRegisterBall(typeName)
+  if ball ~= nil then
+    ball.ball:ThrowPieces(pos or self._private.nextRecoverPos) 
+  else
+    Log.W(TAG, 'Ball type '..typeName..' not found')
+  end
+end
 
   --#region 球状态工作方法
 
 function BallManager:_FlushCurrentBallAllStatus() 
   local status = self._private.controllingStatus
-  local current = self._private.currentBall;
   if status == BallControlStatus.NoControl then
     self.CanControll = false
     self.CanControllCamera = false
@@ -302,21 +311,26 @@ function BallManager:_FlushCurrentBallAllStatus()
     self.CanControll = true
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
-    self:_SetRigidbodyDaymic(current.rigidbody)
+    self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
   elseif status == BallControlStatus.LockMode then
     self.CanControll = false
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
-    self:_ZeroSpeedRigidbody(current.rigidbody);
-    self:_SetRigidbodyKeyFramed(current.rigidbody)
+    self:_PhysicsOrDePhysicsCurrentBall(false)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
   elseif status == BallControlStatus.UnleashingMode then
     self.CanControll = false
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
-    self:_SetRigidbodyDaymic(current.rigidbody)
+    self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
+  elseif status == BallControlStatus.FreeMode then
+    self.CanControll = false
+    self.CanControllCamera = true
+    self:_ActiveCurrentBall()
+    self:_PhysicsOrDePhysicsCurrentBall(true)
+    GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
   end
 end
 ---取消激活当前的球
@@ -324,9 +338,11 @@ function BallManager:_DeactiveCurrentBall()
   local current = self._private.currentActiveBall
   if current ~= nil then
     --取消激活
-    current.rigidbody:ForceDePhysics()
+    if current.rigidbody:IsPhysicsed() then
+      current.ball:Deactive()
+      current.rigidbody:ForceDePhysics()
+    end
     current.ball.gameObject:SetActive(false)
-    current.ball:Deactive()
     --清空摄像机跟随对象
     GamePlay.CamManager:SetTarget(nil)
     self._private.currentActiveBall = nil
@@ -340,15 +356,25 @@ function BallManager:_ActiveCurrentBall()
 
     ---设置位置
     current.ball.transform.position = self._private.nextRecoverPos
-    --激活
-    current.ball.gameObject:SetActive(true)
-    current.rigidbody:ForcePhysics()
-    current.ball:Active()
-    if self._private.controllingStatus ~= BallControlStatus.LockMode then
-      current.rigidbody:ForceActive()
-    end
     --设置摄像机跟随对象
     GamePlay.CamManager:SetTarget(current.ball.transform)
+  end
+end
+function BallManager:_PhysicsOrDePhysicsCurrentBall(physics) 
+  local current = self._private.currentActiveBall
+  if current ~= nil then
+    --激活
+    local physicsed = current.rigidbody:IsPhysicsed()
+    current.ball.gameObject:SetActive(true)
+    if physics and not physicsed then
+      current.rigidbody.InitialLinearVelocity = Vector3.zero
+      current.rigidbody.InitialAngularVelocity = Vector3.zero
+      current.rigidbody:ForcePhysics() 
+    end
+    if not physics and physicsed then
+      current.rigidbody:ForceDePhysics() 
+    end
+    current.ball:Active()
   end
 end
 ---设置刚体的速度为0
@@ -362,18 +388,6 @@ end
 function BallManager:_RestoreRigidbodySpeed(rigidbody) 
   rigidbody.LinearVelocity = self._private.lastSaveLinearVelocit
   rigidbody.AngularVelocity = self._private.lastSaveAngularVelocity
-end
----设置刚体KeyFramed模式
----@param rigidbody PhysicsBody
-function BallManager:_SetRigidbodyKeyFramed(rigidbody) 
-  rigidbody:ForceDeactive()
-  rigidbody.MotionType = MotionType.Keyframed
-end
----设置刚体Daymic模式
----@param rigidbody PhysicsBody
-function BallManager:_SetRigidbodyDaymic(rigidbody) 
-  rigidbody.MotionType = MotionType.Dynamic
-  rigidbody:ForceActive()
 end
 
   --#endregion
@@ -400,12 +414,27 @@ function BallManager:IsLighting()
 end
 ---快速将球锁定并移动至目标位置
 ---@param pos Vector3 目标位置
-function BallManager:FastMoveTo(pos, time)
-  self._private.movingBall = true
-  self._private.movingTime = time
-  self._private.movingTargetPos = pos
-  self._private.movingToPosTick = 0
+---@param time number 时间
+---@param callback function 完成回调
+function BallManager:FastMoveTo(pos, time, callback)
+
+  --锁定
   self:SetControllingStatus(BallControlStatus.LockMode)
+
+  if self._private.currentActiveBall ~= nil then  
+    local ball = self._private.currentActiveBall.ball
+    local mover = ball.gameObject:GetComponent(SmoothFly) ---@type SmoothFly
+    if mover == nil then
+      mover = ball.gameObject:AddComponent(SmoothFly) ---@type SmoothFly
+    end
+
+    mover.TargetPos = pos
+    mover.Time = time
+    mover.ArrivalDiatance = 0.02
+    mover.StopWhenArrival = true
+    mover.ArrivalCallback = callback
+    mover.Fly = true
+  end
 end
 
 --#endregion
@@ -455,7 +484,22 @@ function BallManager:_InitKeyEvents()
         self:SetControllingStatus(BallControlStatus.NoControl)
         self:SetNextRecoverPos(Vector3.zero)
       end
-    end)     
+    end)  
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha5, function (key, downed)
+      if(downed) then
+        self:ThrowPeices('BallWood')
+      end
+    end)    
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha6, function (key, downed)
+      if(downed) then
+        self:ThrowPeices('BallStone')
+      end
+    end)  
+    self._private.keyListener:AddKeyListen(KeyCode.Alpha7, function (key, downed)
+      if(downed) then
+        self:ThrowPeices('BallPaper')
+      end
+    end)   
   end
 end
 function BallManager:_OnControlSettingsChanged()
@@ -500,7 +544,7 @@ function BallManager:_DownArrow_Key(key, down)
   end
 end
 function BallManager:_RightArrow_Key(key, down)
-  self._RightPressed = down;
+  self._RightPressed = down
   if (down) then
       if (self.ShiftPressed) then
         self:RemoveBallPush(BallPushType.Right)
@@ -516,7 +560,7 @@ function BallManager:_RightArrow_Key(key, down)
   end
 end
 function BallManager:_LeftArrow_Key(key, down)
-  self._LeftPressed = down;
+  self._LeftPressed = down
   if (down) then
     if (self.ShiftPressed) then
       self:RemoveBallPush(BallPushType.Left)

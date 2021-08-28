@@ -59,6 +59,7 @@ function CoreInit()
   SystemPackage:RequireLuaClass('ModulComplexPhysics')
   SystemPackage:RequireLuaClass('Ball')
   
+  LevelBuilderInit()
   --加载分数数据
   HighscoreManagerLoad()
 

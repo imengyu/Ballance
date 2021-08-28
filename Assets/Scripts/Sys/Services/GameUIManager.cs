@@ -188,7 +188,7 @@ namespace Ballance2.Sys.Services
 
             keyListener = KeyListener.Get(UIRoot.gameObject);
             keyListener.AddKeyListen(KeyCode.Escape, (key, down) => {
-                if(down) {
+                if(!down) {
                     //Esc键返回上一页
                     if(pageStack.Count > 0) {
                         var page = pageStack[pageStack.Count - 1];

@@ -44,10 +44,10 @@ function MusicManager:Start()
         Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Theme_'..i..'_2.wav'),
         Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Theme_'..i..'_3.wav')
       },
-      baseInterval = 5,
-      maxInterval = 15,
-      atmoInterval = 7,
-      atmoMaxInterval = 20,
+      baseInterval = 10,
+      maxInterval = 25,
+      atmoInterval = 15,
+      atmoMaxInterval = 30,
     }
   end
 

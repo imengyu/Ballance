@@ -7,6 +7,7 @@ local KeyCode = UnityEngine.KeyCode
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local WaitUntil = UnityEngine.WaitUntil
+local Vector3 = UnityEngine.Vector3
 
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass
@@ -49,6 +50,7 @@ function GamePlayManager:Start()
   Game.Mediator:RegisterGlobalEvent('GAME_RESUME')
   Game.Mediator:RegisterGlobalEvent('GAME_PAUSE')
   Game.Mediator:RegisterGlobalEvent('GAME_FALL')
+  Game.Mediator:RegisterGlobalEvent('GAME_FAIL')
   Game.Mediator:RegisterGlobalEvent('GAME_PASS')
   Game.Mediator:SubscribeSingleEvent(Game.SystemPackage, "CoreGamePlayManagerInitAndStart", 'GamePlayManager', function (evtName, params)
     self:_InitAndStart()
@@ -124,32 +126,35 @@ function GamePlayManager:_Stop(controlStatus)
   --禁用音乐
   GamePlay.MusicManager:DisableBackgroundMusic()
 end
-function GamePlayManager:_Start() 
+function GamePlayManager:_Start(isStartBySector) 
   self._IsGamePlaying = true
   self._IsCountDownPoint = true
 
   if self.CurrentDisableStart then return end
 
-  coroutine.resume(coroutine.create(function()
-    --初始位置
-    local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
-    local startPos = startRestPoint.transform.position
+  --开始音乐
+  GamePlay.MusicManager:EnableBackgroundMusic()
 
-    GamePlay.BallManager:PlayLighting(startPos, true, true)
-    Yield(WaitUntil(function () return not GamePlay.BallManager:IsLighting() end)) --等待闪电完成
+  if isStartBySector then
+    coroutine.resume(coroutine.create(function()
+      --初始位置
+      local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
+      local startPos = startRestPoint.transform.position
 
-    --开始控制
-    GamePlay.BallManager:SetNextRecoverPos(startPos)
-    GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control) 
+      GamePlay.BallManager:PlayLighting(startPos, true, true)
+      Yield(WaitUntil(function () return not GamePlay.BallManager:IsLighting() end)) --等待闪电完成
 
-    --开始音乐
-    GamePlay.MusicManager:EnableBackgroundMusic()
-  end))
-
+      --开始控制
+      GamePlay.BallManager:SetNextRecoverPos(startPos)
+      GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
+    end))
+  else
+    GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
+  end
 end
 function GamePlayManager:_SetCamPos()
   local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
-  GamePlay.CamManager:SetPosAndDirByRestPoint(startRestPoint)
+  GamePlay.CamManager:SetPosAndDirByRestPoint(startRestPoint):SetTarget(startRestPoint.transform):SetCamLook(true)
 end
 
 ---LevelBuilder 就绪，现在GamePlayManager进行初始化
@@ -180,7 +185,7 @@ function GamePlayManager:_InitAndStart()
     --模拟
     self.GamePhysicsWorld.Simulating = true
     --开始
-    self:_Start()
+    self:_Start(true)
   end))
   
 end
@@ -228,6 +233,7 @@ function GamePlayManager:RestartLevel()
 
     Yield(WaitForSeconds(0.8))
     --重置所有节
+    GamePlay.SectorManager:SetCurrentSector(0)
     GamePlay.SectorManager:ResetAllSector(false)
 
     Yield(WaitForSeconds(0.5))
@@ -255,7 +261,7 @@ end
 ---暂停关卡
 ---@param showPauseUI boolean 是否显示暂停界面
 function GamePlayManager:PauseLevel(showPauseUI) 
-  self:_Stop(BallControlStatus.UnleashingMode)
+  self:_Stop(BallControlStatus.FreeMode)
 
   --停止模拟
   self.GamePhysicsWorld.Simulating = false
@@ -279,7 +285,7 @@ function GamePlayManager:ResumeLevel()
   --UI
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
   Game.UIManager:CloseAllPage()
-  self:_Start()
+  self:_Start(false)
 end
 
 ---球坠落
@@ -288,38 +294,50 @@ function GamePlayManager:Fall()
   if self.CurrentLevelPass then return end
 
   --下落音乐
+  self._SoundBallFall.volume = 1
   self._SoundBallFall:Play()
 
   if self.CurrentLife > 0 then
     
     Game.Mediator:DispatchGlobalEvent('GAME_FALL', '*', {})
     --禁用控制
-    self:_Stop(BallControlStatus.Control)
+    self:_Stop(BallControlStatus.FreeMode)
 
     self.CurrentLife = self.CurrentLife - 1
-    GameUI.GamePlayUI:RemoveLifeBall()
     Game.UIManager:MaskWhiteFadeIn(1)
 
     coroutine.resume(coroutine.create(function()
       Yield(WaitForSeconds(1))
- 
+
       --禁用控制
       self:_Stop(BallControlStatus.NoControl)
       Yield(WaitForSeconds(1))
+      
+      Game.UIManager.UIFadeManager:AddAudioFadeOut(self._SoundBallFall, 1)
 
-      --重置
+      --重置机关和摄像机
+      GamePlay.SectorManager:ResetCurrentSector(true)
       self:_SetCamPos()
-      self:_Start()
+      self:_Start(true)
       Game.UIManager:MaskWhiteFadeOut(1)
+      
+      --UI
+      Yield(WaitForSeconds(1))
+      GameUI.GamePlayUI:RemoveLifeBall()
+
     end))
   else
     
     Game.Mediator:DispatchGlobalEvent('GAME_FAIL', '*', {})
     --禁用控制
-    self:_Stop(BallControlStatus.UnleashingMode)
-    --延时显示失败菜单
+    self:_Stop(BallControlStatus.FreeMode)
+    
     coroutine.resume(coroutine.create(function()
-      Yield(WaitForSeconds(2))
+      Yield(WaitForSeconds(1))
+      self:_Stop(BallControlStatus.UnleashingMode)
+
+      --延时显示失败菜单
+      Yield(WaitForSeconds(1))
       Game.UIManager:GoPage('PageGameFail') 
     end))
   end
@@ -362,23 +380,24 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
   end
   self._IsTranfoIn = true
 
-  coroutine.resume(coroutine.create(function()
+  local targetPos = tranfo.gameObject.transform:TransformPoint(Vector3(0, 2, 0))
+  local oldBallType =  GamePlay.BallManager.CurrentBallName
 
-    local targetPos = tranfo.gameObject.transform.position
-
-    GamePlay.BallManager:SetNextRecoverPos(targetPos)
-    --快速将球锁定并移动至目标位置
-    GamePlay.BallManager:FastMoveTo(targetPos, 1)
-
-    Yield(WaitForSeconds(1))
-
+  --快速回收目标球碎片
+  GamePlay.BallManager:ResetPeices(targetType)
+  GamePlay.BallManager:SetNextRecoverPos(targetPos)
+  --快速将球锁定并移动至目标位置
+  GamePlay.BallManager:FastMoveTo(targetPos, 0.4, function ()
     --播放变球动画
-    GamePlay.TranfoManager:PlayAnim(targetPos, color, tranfo.gameObject, function ()
-      --切换球
+    GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform.position, color, tranfo.gameObject, function ()
+      --切换球并且抛出碎片
+      GamePlay.BallManager:ThrowPeices(oldBallType, targetPos)
       GamePlay.BallManager:SetCurrentBall(targetType, BallControlStatus.Control)
+      --重置状态
+      tranfo:Reset()
+      self._IsTranfoIn = false
     end)
-  end))
-  
+  end)  
 end
 
 ---添加生命

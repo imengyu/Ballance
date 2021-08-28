@@ -159,5 +159,48 @@ namespace Ballance2.Utils
         {
             return new Color(o.r, o.g, o.b, a);
         }
+
+        /// <summary>
+        /// 计算两个物体的距离
+        /// </summary>
+        /// <param name="o1">物体1</param>
+        /// <param name="o2">物体2</param>
+        /// <returns></returns>
+        [LuaApiDescription("计算两个物体的距离")]
+        [LuaApiParamDescription("o1", "物体1")]
+        [LuaApiParamDescription("o2", "物体2")]
+        public static float DistanceBetweenTwoObjects(GameObject o1, GameObject o2)
+        {
+            return (o1.transform.position - o2.transform.position).sqrMagnitude;
+        }
+        /// <summary>
+        /// 计算两个坐标的距离
+        /// </summary>
+        /// <param name="o1">坐标1</param>
+        /// <param name="o2">坐标2</param>
+        /// <returns></returns>
+        [LuaApiDescription("计算两个坐标的距离")]
+        [LuaApiParamDescription("o1", "坐标1")]
+        [LuaApiParamDescription("o2", "坐标2")]
+        public static float DistanceBetweenTwoPos(Vector3 o1, Vector3 o2)
+        {
+            return (o1 - o2).sqrMagnitude;
+        }
+        
+        [LuaApiDescription("判断 UnityEngine.Object 是否为空", "")]
+        [LuaApiParamDescription("o", "原颜色")]
+        public static bool IsObjectNull(UnityEngine.Object o)
+        {
+            return o == null;
+        }
+
+        public static bool IsValid(Vector3 v)
+        {
+            return !float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z);
+        }
+        public static bool IsValid(Vector2 v)
+        {
+            return !float.IsNaN(v.x) && !float.IsNaN(v.y);
+        }
     }
 }
