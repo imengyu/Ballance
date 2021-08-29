@@ -252,6 +252,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &219679653008563965
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +505,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &326655268505304375
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +758,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &482231672407214574
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,7 +776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6727007411107786933
 Transform:
   m_ObjectHideFlags: 0
@@ -783,7 +786,7 @@ Transform:
   m_GameObject: {fileID: 482231672407214574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children: []
   m_Father: {fileID: 1587216784312711802}
   m_RootOrder: 0
@@ -1089,6 +1092,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &662649410594567003
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,6 +1345,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &894153905963175777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,6 +1598,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &933083797712109975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1845,6 +1851,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &1125576233219688934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,7 +1904,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -2154,6 +2160,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &1585231846016420582
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,6 +2413,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &1679991316622375360
 GameObject:
   m_ObjectHideFlags: 0
@@ -2658,6 +2666,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &2300100167275902307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,6 +2919,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &2551379028935815756
 GameObject:
   m_ObjectHideFlags: 0
@@ -3323,7 +3333,6 @@ MonoBehaviour:
   ExecuteOrder: 5
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -3580,6 +3589,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &2955111604560649750
 GameObject:
   m_ObjectHideFlags: 0
@@ -3832,6 +3842,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3127170422580914422
 GameObject:
   m_ObjectHideFlags: 0
@@ -4084,6 +4095,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3254018778215878806
 GameObject:
   m_ObjectHideFlags: 0
@@ -4336,6 +4348,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3342494631535360456
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,6 +4601,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3344784212308367392
 GameObject:
   m_ObjectHideFlags: 0
@@ -4841,6 +4855,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!114 &8475929799163367446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4996,7 +5011,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 4
+    floatVal: 0.3
     componentClassVal: 
   - Type: 22
     Name: _PiecesMaxForce
@@ -5066,7 +5081,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 12
+    floatVal: 0.4
     componentClassVal: 
   - Type: 22
     Name: _Force
@@ -5282,7 +5297,6 @@ MonoBehaviour:
   ExecuteOrder: 2
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -5539,6 +5553,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3619143744023889358
 GameObject:
   m_ObjectHideFlags: 0
@@ -5791,6 +5806,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3791580992569633773
 GameObject:
   m_ObjectHideFlags: 0
@@ -6043,6 +6059,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &3877958309039161025
 GameObject:
   m_ObjectHideFlags: 0
@@ -6295,6 +6312,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &4084024825177340269
 GameObject:
   m_ObjectHideFlags: 0
@@ -6547,6 +6565,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &4329624348821282866
 GameObject:
   m_ObjectHideFlags: 0
@@ -6799,6 +6818,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &4793876697556535989
 GameObject:
   m_ObjectHideFlags: 0
@@ -7121,7 +7141,7 @@ MonoBehaviour:
         outWeight: 0.071871124
       - serializedVersion: 3
         time: 1
-        value: 1
+        value: 0.9
         inSlope: 2.0748188
         outSlope: 2.0748188
         tangentMode: 0
@@ -7215,7 +7235,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 1.8
+    floatVal: 1
     componentClassVal: 
   - Type: 10
     Name: BallLightningCurve
@@ -8051,7 +8071,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -8308,6 +8327,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &5308330109732515694
 GameObject:
   m_ObjectHideFlags: 0
@@ -8560,6 +8580,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &5471120648298291357
 GameObject:
   m_ObjectHideFlags: 0
@@ -8812,6 +8833,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &5652028914571371105
 GameObject:
   m_ObjectHideFlags: 0
@@ -9064,6 +9086,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &5717576820868040031
 GameObject:
   m_ObjectHideFlags: 0
@@ -9316,6 +9339,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &5804246795706321711
 GameObject:
   m_ObjectHideFlags: 0
@@ -9568,6 +9592,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &5836029952703412534
 GameObject:
   m_ObjectHideFlags: 0
@@ -9913,6 +9938,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &6327197682923225555
 GameObject:
   m_ObjectHideFlags: 0
@@ -10029,7 +10055,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -10287,6 +10312,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!114 &7229525657330439329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10442,7 +10468,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 0.8
+    floatVal: 0.05
     componentClassVal: 
   - Type: 22
     Name: _PiecesMaxForce
@@ -10512,7 +10538,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 2.3
+    floatVal: 0.1
     componentClassVal: 
   - Type: 22
     Name: _Force
@@ -10728,7 +10754,6 @@ MonoBehaviour:
   ExecuteOrder: 2
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -11032,6 +11057,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &6836484517777099705
 GameObject:
   m_ObjectHideFlags: 0
@@ -11284,6 +11310,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &6977890673710919265
 GameObject:
   m_ObjectHideFlags: 0
@@ -11536,6 +11563,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7123148697167565329
 GameObject:
   m_ObjectHideFlags: 0
@@ -11788,6 +11816,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7206836674265043214
 GameObject:
   m_ObjectHideFlags: 0
@@ -12041,6 +12070,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!114 &7594207142973122758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12196,7 +12226,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 1.5
+    floatVal: 0.1
     componentClassVal: 
   - Type: 22
     Name: _PiecesMaxForce
@@ -12266,7 +12296,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 5
+    floatVal: 0.2
     componentClassVal: 
   - Type: 22
     Name: _Force
@@ -12482,7 +12512,6 @@ MonoBehaviour:
   ExecuteOrder: 2
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -12514,7 +12543,7 @@ Transform:
   m_GameObject: {fileID: 7254874751843047690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children: []
   m_Father: {fileID: 1587216784312711802}
   m_RootOrder: 1
@@ -12820,6 +12849,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7659934097277963421
 GameObject:
   m_ObjectHideFlags: 0
@@ -13072,6 +13102,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7697854858821287985
 GameObject:
   m_ObjectHideFlags: 0
@@ -13324,6 +13355,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7698333013415957228
 GameObject:
   m_ObjectHideFlags: 0
@@ -13576,6 +13608,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7711795052512440116
 GameObject:
   m_ObjectHideFlags: 0
@@ -13828,6 +13861,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7749961677175350724
 GameObject:
   m_ObjectHideFlags: 0
@@ -14080,6 +14114,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7753876277514698126
 GameObject:
   m_ObjectHideFlags: 0
@@ -14332,6 +14367,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7795944162072144911
 GameObject:
   m_ObjectHideFlags: 0
@@ -14584,6 +14620,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &7806506264467073957
 GameObject:
   m_ObjectHideFlags: 0
@@ -14836,6 +14873,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8211123400995636813
 GameObject:
   m_ObjectHideFlags: 0
@@ -15088,6 +15126,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8238253496500619855
 GameObject:
   m_ObjectHideFlags: 0
@@ -15340,6 +15379,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8250066322243369288
 GameObject:
   m_ObjectHideFlags: 0
@@ -15592,7 +15632,8 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
---- !u!114 &993931881225397576
+  DeactiveWhenLeaveBroadphase: 1
+--- !u!114 &3948003021884908258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15601,7 +15642,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8251663411001110547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 195f6ee6e33801748970bc4aefc10910, type: 3}
+  m_Script: {fileID: 11500000, guid: 20472b314d940a44c9069d39782c749c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ActiveTime: 3
@@ -15857,6 +15898,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8698372116864237530
 GameObject:
   m_ObjectHideFlags: 0
@@ -16109,6 +16151,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8709217047661635578
 GameObject:
   m_ObjectHideFlags: 0
@@ -16361,6 +16404,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8860145151536495322
 GameObject:
   m_ObjectHideFlags: 0
@@ -16613,6 +16657,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &8871328996306216493
 GameObject:
   m_ObjectHideFlags: 0
@@ -16865,6 +16910,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1 &9087422538200826029
 GameObject:
   m_ObjectHideFlags: 0
@@ -17117,6 +17163,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!1001 &3680314084049370854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17286,23 +17333,153 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
         type: 3}
-      propertyPath: playOnAwake
+      propertyPath: EmissionModule.m_BurstCount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
         type: 3}
-      propertyPath: ShapeModule.arc.value
-      value: 360
+      propertyPath: EmissionModule.m_Bursts.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
         type: 3}
-      propertyPath: ShapeModule.radius.value
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].cycleCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].probability
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].repeatInterval
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
         type: 3}
-      propertyPath: InitialModule.maxNumParticles
-      value: 1000
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291475478346428002, guid: bbe911314b6a34f44b5a43edff36b35f,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 1324812798151847563, guid: bbe911314b6a34f44b5a43edff36b35f,
         type: 3}

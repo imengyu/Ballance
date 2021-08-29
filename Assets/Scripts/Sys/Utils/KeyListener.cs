@@ -59,6 +59,7 @@ namespace Ballance2.Sys.Utils
         private Dictionary<int, KeyListenerItem> items = new Dictionary<int, KeyListenerItem>();
         private Dictionary<int, bool> itemsDownStatus = new Dictionary<int, bool>();
         private bool isListenKey = true;
+        private bool isKeyModfied = false;
         private int listenKeyId = 0;
 
         /// <summary>
@@ -87,6 +88,7 @@ namespace Ballance2.Sys.Utils
             item.has2key = true;
             items.Add(++listenKeyId, item);
             itemsDownStatus[listenKeyId] = false;
+            isKeyModfied = true;
             return listenKeyId;
         }
         /// <summary>
@@ -105,6 +107,7 @@ namespace Ballance2.Sys.Utils
             item.key = key;
             items.Add(++listenKeyId, item);
             itemsDownStatus[listenKeyId] = false;
+            isKeyModfied = true;
             return listenKeyId;
         }
         /// <summary>
@@ -117,6 +120,7 @@ namespace Ballance2.Sys.Utils
         {
             itemsDownStatus.Remove(listenKeyId);
             items.Remove(id);
+            isKeyModfied = true;
         }
         /// <summary>
         /// 清空事件侦听器所有侦听键。
@@ -126,12 +130,14 @@ namespace Ballance2.Sys.Utils
         {
             items.Clear();
             itemsDownStatus.Clear();
+            isKeyModfied = true;
         }
 
         private void Update()
         {
             if (isListenKey)
             {
+                isKeyModfied = false;
                 foreach(var v in items) 
                 {
                     var item = v.Value;
@@ -142,22 +148,26 @@ namespace Ballance2.Sys.Utils
                         {
                             itemDownStatus = true;
                             item.callBack(item.key2, true);
+                            if(isKeyModfied) return;
                         }
                         if (Input.GetKeyUp(item.key2) && itemDownStatus)
                         {
                             itemDownStatus = false;
                             item.callBack(item.key2, false);
+                            if(isKeyModfied) return;
                         }
                     }
                     if (Input.GetKeyDown(item.key) && !itemDownStatus)
                     {
                         itemDownStatus = true;
                         item.callBack(item.key, true);
+                            if(isKeyModfied) return;
                     }
                     if (Input.GetKeyUp(item.key) && itemDownStatus)
                     {
                         itemDownStatus = false;
                         item.callBack(item.key, false);
+                            if(isKeyModfied) return;
                     }
                     itemsDownStatus[v.Key] = itemDownStatus;
                 }

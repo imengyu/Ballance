@@ -2,7 +2,14 @@ using Ballance2.LuaHelpers;
 using UnityEngine;
 
 namespace Ballance2.Game.Utils
-{
+{    
+  [SLua.CustomLuaClass]
+  public enum SmoothFlyType {
+    [LuaApiDescription("SmoothDamp")]
+    SmoothDamp,
+    [LuaApiDescription("直接移动")]
+    Lerp
+  }
   [LuaApiDescription("平滑移动脚本")]
   [SLua.CustomLuaClass]
   public class SmoothFly : MonoBehaviour {
@@ -19,7 +26,7 @@ namespace Ballance2.Game.Utils
     [LuaApiDescription("平滑移动时间")]
     public float Time = 1.0f;
     [LuaApiDescription("最大速度")]
-    public float MaxSpeed = 10000;
+    public float MaxSpeed = 0;
     [LuaApiDescription("当前的速度")]
     public Vector3 CurrentVelocity = Vector3.zero;
     [LuaApiDescription("达到目标时停止")]
@@ -28,18 +35,42 @@ namespace Ballance2.Game.Utils
     public float ArrivalDiatance = 0.1f;
     [LuaApiDescription("达到目标时回调")]
     public CallbackDelegate ArrivalCallback;
+    [LuaApiDescription("飞行类型")]
+    public SmoothFlyType Type = SmoothFlyType.SmoothDamp;
+
+    private float LerpTick = 0;
+    private Vector3 LerpStart = Vector3.zero;
+    private Vector3 LerpEnd = Vector3.zero;
     
     private void Update() {
       if(Fly) {
-        if(TargetTransform != null) {
-          transform.position = Vector3.SmoothDamp(transform.position, TargetTransform.position, ref CurrentVelocity, Time, MaxSpeed);
-          if((transform.position - TargetTransform.position).sqrMagnitude < ArrivalDiatance) Arrival();
-        }
-        else {
-          transform.position = Vector3.SmoothDamp(transform.position, TargetPos, ref CurrentVelocity, Time, MaxSpeed);
-          if((transform.position - TargetPos).sqrMagnitude < ArrivalDiatance) Arrival();
+        if(Type == SmoothFlyType.SmoothDamp) {
+          var targetPos = GetPos();
+          if(MaxSpeed <= 0)
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref CurrentVelocity, Time);
+          else
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref CurrentVelocity, Time, MaxSpeed);
+
+          if((transform.position - targetPos).sqrMagnitude < ArrivalDiatance) 
+            Arrival();
+          
+        } else if(Type == SmoothFlyType.Lerp) {
+          if(LerpTick == 0) {
+            LerpStart = transform.position;
+            LerpEnd = GetPos();
+          }
+          if(LerpTick <= Time){
+            transform.position = Vector3.Lerp(LerpStart,LerpEnd , LerpTick);
+            LerpTick += UnityEngine.Time.deltaTime;
+          } else {
+            LerpTick = 0;
+            Arrival();
+          }
         }
       }
+    }
+    private Vector3 GetPos() {
+      return TargetTransform != null ? TargetTransform.position : TargetPos;
     }
     private void Arrival() {
       if(StopWhenArrival) Fly = false;

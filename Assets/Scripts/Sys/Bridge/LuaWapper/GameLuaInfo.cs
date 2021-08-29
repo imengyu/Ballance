@@ -110,12 +110,58 @@ namespace Ballance2.Sys.Bridge.LuaWapper
                 case "UnityEngine.MeshRenderer": return gameObjectVal.GetComponent<UnityEngine.MeshRenderer>();
                 case "UnityEngine.MeshFilter": return gameObjectVal.GetComponent<UnityEngine.MeshFilter>();
                 case "UnityEngine.Animator": return gameObjectVal.GetComponent<UnityEngine.Animator>();
+                case "UnityEngine.AudioSource": return gameObjectVal.GetComponent<UnityEngine.AudioSource>();
+                case "UnityEngine.BillboardRenderer": return gameObjectVal.GetComponent<UnityEngine.BillboardRenderer>();
+                case "UnityEngine.LineRenderer": return gameObjectVal.GetComponent<UnityEngine.LineRenderer>();
+                case "UnityEngine.TrailRenderer": return gameObjectVal.GetComponent<UnityEngine.TrailRenderer>();
+                case "UnityEngine.SkinnedMeshRenderer": return gameObjectVal.GetComponent<UnityEngine.SkinnedMeshRenderer>();
+                case "UnityEngine.SpriteRenderer": return gameObjectVal.GetComponent<UnityEngine.SpriteRenderer>();
+                case "UnityEngine.SpriteMask": return gameObjectVal.GetComponent<UnityEngine.SpriteMask>();
+                case "UnityEngine.OcclusionPortal": return gameObjectVal.GetComponent<UnityEngine.OcclusionPortal>();
+                case "UnityEngine.OcclusionArea": return gameObjectVal.GetComponent<UnityEngine.OcclusionArea>();
+                case "UnityEngine.Rigidbody": return gameObjectVal.GetComponent<UnityEngine.Rigidbody>();
+                case "UnityEngine.Rigidbody2D": return gameObjectVal.GetComponent<UnityEngine.Rigidbody2D>();
+                case "UnityEngine.Tree": return gameObjectVal.GetComponent<UnityEngine.Tree>();
+                case "UnityEngine.TextMesh": return gameObjectVal.GetComponent<UnityEngine.TextMesh>();
+                case "UnityEngine.CanvasRenderer": return gameObjectVal.GetComponent<UnityEngine.CanvasRenderer>();
+                case "UnityEngine.WindZone": return gameObjectVal.GetComponent<UnityEngine.WindZone>();
+                case "UnityEngine.Cloth": return gameObjectVal.GetComponent<UnityEngine.Cloth>();
+                case "UnityEngine.CharacterController": return gameObjectVal.GetComponent<UnityEngine.CharacterController>();
+                case "UnityEngine.MeshCollider": return gameObjectVal.GetComponent<UnityEngine.MeshCollider>();
+                case "UnityEngine.CapsuleCollider": return gameObjectVal.GetComponent<UnityEngine.CapsuleCollider>();
+                case "UnityEngine.BoxCollider": return gameObjectVal.GetComponent<UnityEngine.BoxCollider>();
+                case "UnityEngine.SphereCollider": return gameObjectVal.GetComponent<UnityEngine.SphereCollider>();
+                case "UnityEngine.TerrainCollider": return gameObjectVal.GetComponent<UnityEngine.TerrainCollider>();
+                case "UnityEngine.WheelCollider": return gameObjectVal.GetComponent<UnityEngine.WheelCollider>();
+                case "UnityEngine.HingeJoint": return gameObjectVal.GetComponent<UnityEngine.HingeJoint>();
+                case "UnityEngine.SpringJoint": return gameObjectVal.GetComponent<UnityEngine.SpringJoint>();
+                case "UnityEngine.FixedJoint": return gameObjectVal.GetComponent<UnityEngine.FixedJoint>();
+                case "UnityEngine.CharacterJoint": return gameObjectVal.GetComponent<UnityEngine.CharacterJoint>();
+                case "UnityEngine.ConfigurableJoint": return gameObjectVal.GetComponent<UnityEngine.ConfigurableJoint>();
+                case "UnityEngine.MonoBehaviour": return gameObjectVal.GetComponent<UnityEngine.MonoBehaviour>();
+                case "UnityEngine.FlareLayer": return gameObjectVal.GetComponent<UnityEngine.FlareLayer>();
+                case "UnityEngine.ReflectionProbe": return gameObjectVal.GetComponent<UnityEngine.ReflectionProbe>();
+                case "UnityEngine.Projector": return gameObjectVal.GetComponent<UnityEngine.Projector>();
+                case "UnityEngine.LensFlare": return gameObjectVal.GetComponent<UnityEngine.LensFlare>();
+                case "UnityEngine.AudioBehaviour": return gameObjectVal.GetComponent<UnityEngine.AudioBehaviour>();
+                case "UnityEngine.AudioLowPassFilter": return gameObjectVal.GetComponent<UnityEngine.AudioLowPassFilter>();
+                case "UnityEngine.AudioHighPassFilter": return gameObjectVal.GetComponent<UnityEngine.AudioHighPassFilter>();
+                case "UnityEngine.AudioReverbFilter": return gameObjectVal.GetComponent<UnityEngine.AudioReverbFilter>();
+                case "UnityEngine.AudioListener": return gameObjectVal.GetComponent<UnityEngine.AudioListener>();
+                case "UnityEngine.AudioReverbZone": return gameObjectVal.GetComponent<UnityEngine.AudioReverbZone>();
+                case "UnityEngine.AudioDistortionFilter": return gameObjectVal.GetComponent<UnityEngine.AudioDistortionFilter>();
+                case "UnityEngine.AudioEchoFilter": return gameObjectVal.GetComponent<UnityEngine.AudioEchoFilter>();
+                case "UnityEngine.AudioChorusFilter": return gameObjectVal.GetComponent<UnityEngine.AudioChorusFilter>();
+                case "UnityEngine.ConstantForce": return gameObjectVal.GetComponent<UnityEngine.ConstantForce>();
+                case "UnityEngine.ArticulationBody": return gameObjectVal.GetComponent<UnityEngine.ArticulationBody>();
+                case "UnityEngine.CanvasGroup": return gameObjectVal.GetComponent<UnityEngine.CanvasGroup>();
+                case "UnityEngine.Canvas": return gameObjectVal.GetComponent<UnityEngine.Canvas>();
                 default: { 
                     var c = gameObjectVal.GetComponent(componentClassVal);
                     if(c == null)
-                        UnityEngine.Debug.Log("Can't get component: " + 
+                        UnityEngine.Debug.LogWarning("Can't get component: " + 
                             componentClassVal + " " + (c == null ? "(null)" : (c + "(" + c.GetType().Name + ")"))
-                            + "\nMay be should add reference in LuaVarObjectInfo");
+                            + " May be should add reference in LuaVarObjectInfo?");
                     return c;
                 }
             }

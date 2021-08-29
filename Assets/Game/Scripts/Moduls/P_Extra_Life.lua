@@ -46,11 +46,11 @@ function P_Extra_Life:Start()
 end
 function P_Extra_Life:Active()
   if self._OnFloor then
-    self.P_Extra_Life_Shadow:SetActive(true)
     --如果在路面上，还要播放上下的动画
     self.P_Extra_Life_Animator:Play('P_ExtraLife_Updown_Animation', 1)
   end
   
+  self.P_Extra_Life_Shadow:SetActive(self._OnFloor)
   self.P_Extra_Life_Animator.speed = 1
   self.P_Extra_Life_Animator:Play('P_ExtraLife_Animation')
   self.P_Extra_Life_Sphere:SetActive(true)

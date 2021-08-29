@@ -118,7 +118,7 @@ namespace PhysicsRT
   public delegate IntPtr fnCreatePhysicsWorld(IntPtr gravity,
       int solverIterationCount, float broadPhaseWorldSize, float collisionTolerance,
       bool bContinuous, bool bVisualDebugger, uint layerMask, IntPtr layerToMask, int stableSolverOn,
-      IntPtr onConstraintBreakingCallback, IntPtr onBodyTriggerEventCallback, IntPtr onBodyContactEventCallback, IntPtr onPhantomOverlapCallback);
+      IntPtr onConstraintBreakingCallback, IntPtr onBodyTriggerEventCallback, IntPtr onBodyContactEventCallback, IntPtr onPhantomOverlapCallback, IntPtr onMaxPositionExceededCallback);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnDestroyPhysicsWorld(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -248,6 +248,8 @@ namespace PhysicsRT
   public delegate void fnOnBodyContactEventCallback(IntPtr body, IntPtr bodyOther, int id, int otherId, IntPtr data);
   [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
   public delegate void fnOnPhantomOverlapCallback(IntPtr phantom, IntPtr bodyOther, int id, int otherId, int type);
+  [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
+  public delegate void fnOnMaxPositionExceededCallback(IntPtr body, int id);
 
   #endregion
 
@@ -1765,7 +1767,7 @@ namespace PhysicsRT
     public IntPtr CreatePhysicsWorld(Vector3 gravity, int solverIterationCount, float broadPhaseWorldSize, float collisionTolerance,
       bool bContinuous, bool bVisualDebugger, uint layerMask, int[] layerToMask, bool stableSolverOn,
       fnOnConstraintBreakingCallback onConstraintBreakingCallback, fnOnBodyTriggerEventCallback onBodyTriggerEventCallback, 
-      fnOnBodyContactEventCallback onBodyContactEventCallback, fnOnPhantomOverlapCallback onPhantomOverlapCallback)
+      fnOnBodyContactEventCallback onBodyContactEventCallback, fnOnPhantomOverlapCallback onPhantomOverlapCallback, fnOnMaxPositionExceededCallback onMaxPositionExceededCallback)
     {
       if (_CreatePhysicsWorld == null)
         throw new ApiNotFoundException("CreatePhysicsWorld");
@@ -1779,9 +1781,10 @@ namespace PhysicsRT
       var onBodyTriggerEnterCallbackPtr = Marshal.GetFunctionPointerForDelegate(onBodyTriggerEventCallback);
       var onBodyTriggerLeaveCallbackPtr = Marshal.GetFunctionPointerForDelegate(onBodyContactEventCallback);
       var onPhantomOverlapCallbackPtr = Marshal.GetFunctionPointerForDelegate(onPhantomOverlapCallback);
+      var onMaxPositionExceededCallbackPtr = Marshal.GetFunctionPointerForDelegate(onMaxPositionExceededCallback);
 
       var rs = _CreatePhysicsWorld(pGravity, solverIterationCount, broadPhaseWorldSize, collisionTolerance, bContinuous, bVisualDebugger, layerMask, layerToMaskPtr, BoolToInt(stableSolverOn),
-        onConstraintBreakingCallbackPtr, onBodyTriggerEnterCallbackPtr, onBodyTriggerLeaveCallbackPtr, onPhantomOverlapCallbackPtr);
+        onConstraintBreakingCallbackPtr, onBodyTriggerEnterCallbackPtr, onBodyTriggerLeaveCallbackPtr, onPhantomOverlapCallbackPtr, onMaxPositionExceededCallbackPtr);
 
       FreeNativeVector4(pGravity);
       Marshal.FreeHGlobal(layerToMaskPtr);

@@ -19,6 +19,7 @@ local GameEventNames = Ballance2.Sys.Bridge.GameEventNames
 local GameManager = Ballance2.Sys.GameManager
 local GamePackage = Ballance2.Sys.Package.GamePackage
 
+---@deprecated This is rewrite in csharp
 ---@class DebugTools : GameLuaObjectHostClass
 DebugTools = {
   

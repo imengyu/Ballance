@@ -1,5 +1,6 @@
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local Log = Ballance2.Utils.Log
+local CommonUtils = Ballance2.Utils.CommonUtils
 
 ---背景音乐管理器
 ---@class MusicManager : GameLuaObjectHostClass
@@ -52,6 +53,24 @@ function MusicManager:Start()
   end
 
   GamePlay.MusicManager = self
+
+  Game.Manager.GameDebugCommandServer:RegisterCommand('bgm', function (eyword, fullCmd, argsCount, args)
+    local type = args[1]
+    if type == 'enable' then
+      self:EnableBackgroundMusic()
+      Log.D(TAG, 'EnableBackgroundMusic');
+    elseif type == 'disable' then
+      self:DisableBackgroundMusic()
+      Log.D(TAG, 'DisableBackgroundMusic');
+    else
+      Log.W(TAG, 'Unknow option '..type);
+      return false
+    end
+    return true
+  end, 1, "bgm <left/right/up/down/-all> 背景音乐管理器命令"..
+          "  enable > 开启背景音乐"..
+          "  disable > 关闭背景音乐"
+  )
 end
 function MusicManager:FixedUpdate() 
   if self.CurrentAudioEnabled and self.CurrentAudioTheme ~= nil then
@@ -75,8 +94,8 @@ function MusicManager:FixedUpdate()
         self.CurrentAudioSource.volume = 1
         self.CurrentAudioSource:Play()
       elseif self._CurrentIsAtom then
-        Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 2)
-        LuaTimer.Add(200, function ()
+        Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 10)
+        LuaTimer.Add(10000, function ()
           self.CurrentAudioSource.clip = self.CurrentAudioTheme.musics[musicIndex]
           self.CurrentAudioSource.volume = 1
           self.CurrentAudioSource:Play()
@@ -85,7 +104,6 @@ function MusicManager:FixedUpdate()
 
       self._CurrentIsAtom = false
       self._CurrentAudioTick = math.random(self.CurrentAudioTheme.baseInterval, self.CurrentAudioTheme.maxInterval)
-      self._CurrentAudioTick2 = self._CurrentAudioTick + 1
     end
 
     --随机播放atmo音效
@@ -94,7 +112,7 @@ function MusicManager:FixedUpdate()
     else
       if not self.CurrentAudioSource.isPlaying then
         self.CurrentAudioSource.clip = self.CurrentAudioTheme.atmos[math.random(#self.CurrentAudioTheme.atmos)]
-        self.CurrentAudioSource.volume = math.random(0.5, 1)
+        self.CurrentAudioSource.volume = CommonUtils.RandomFloat(0.5, 1)
         self.CurrentAudioSource:Play()
       end
       self._CurrentIsAtom = true

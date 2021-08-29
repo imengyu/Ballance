@@ -4,6 +4,7 @@ using Ballance2.LuaHelpers;
 using Ballance2.Sys.Bridge;
 using Ballance2.Sys.Debug;
 using Ballance2.Sys.Package;
+using Ballance2.Sys.Services;
 using Ballance2.Sys.UI.Utils;
 using Ballance2.Sys.Utils;
 using SLua;
@@ -24,7 +25,7 @@ using UnityEngine.UI;
 *
 */
 
-namespace Ballance2
+namespace Ballance2.Sys.UI
 {
     /// <summary>
     /// UI页实例
@@ -42,13 +43,26 @@ namespace Ballance2
         public VoidDelegate OnShow;
         public VoidDelegate OnHide;
 
+        private GameUIManager uIManager;
+        private int escBackId = 0;
+
         public void Show() {
+            uIManager = GameManager.Instance.GetSystemService<GameUIManager>();
             gameObject.SetActive(true);
             OnShow?.Invoke();
+            if(CanEscBack) {
+                escBackId = uIManager.WaitKey(KeyCode.Escape, false, () => {
+
+                });
+            }
         }
         public void Hide() {
             gameObject.SetActive(false);
             OnHide?.Invoke();
+            if(escBackId != 0) {
+                uIManager.DeleteKeyListen(escBackId);
+                escBackId = 0;
+            }
         }
         
         /// <summary>

@@ -1,99 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &926590522604633964
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4177721334523711990}
-  - component: {fileID: 79508123005701031}
-  - component: {fileID: 2047487717250860449}
-  - component: {fileID: 5097965654473910723}
-  m_Layer: 5
-  m_Name: LogStacktraceText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &4177721334523711990
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 926590522604633964}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1299198240810440687}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 1}
---- !u!222 &79508123005701031
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 926590522604633964}
-  m_CullTransparentMesh: 0
---- !u!114 &2047487717250860449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 926590522604633964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
---- !u!114 &5097965654473910723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 926590522604633964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 13
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 1
-    m_MaxSize: 40
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Click Item to show stack trace
 --- !u!1 &2614362693550141177
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2614362693550141176}
   - component: {fileID: 2614362693550141179}
-  - component: {fileID: 2703914232575034517}
+  - component: {fileID: 5774587853113956080}
   m_Layer: 5
   m_Name: DebugWindow
   m_TagString: Untagged
@@ -149,7 +55,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2614362693550141177}
   m_CullTransparentMesh: 0
---- !u!114 &2703914232575034517
+--- !u!114 &5774587853113956080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,710 +64,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2614362693550141177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a1624f4fefb6fd45aa49fe116903639, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e7b4fc48f3016f4d95328685ecce6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: DebugWindow
-  LuaClassName: DebugWindow
-  LuaFileName: 
-  LuaPackageName: core.debug
-  LuaInitialVars:
-  - Type: 16
-    Name: CommandInputField
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 2041977377237091996}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.InputField
-  - Type: 16
-    Name: LogContentView
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 5229052756399445351}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.RectTransform
-  - Type: 16
-    Name: LogStacktraceView
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 7871616267757274280}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.RectTransform
-  - Type: 16
-    Name: LogScrollView
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 6733758180719482598}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.ScrollRect
-  - Type: 16
-    Name: ToggleAutoScroll
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 8051878056455804465}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: Ballance2.Sys.UI.ToggleEx
-  - Type: 16
-    Name: CheckBoxMessages
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 1498382151821259393}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.Toggle
-  - Type: 16
-    Name: CheckBoxWarningAndErr
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 1278873963689626542}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.Toggle
-  - Type: 16
-    Name: LogStacktraceText
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 926590522604633964}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.Text
-  - Type: 16
-    Name: LogStacktraceScrollView
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 8709917628573337385}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.ScrollRect
-  - Type: 16
-    Name: FilterLogInputField
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 2041977378024163216}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    componentClassVal: UnityEngine.UI.InputField
-  LuaPublicVars: []
-  ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
-  DebugScript: 
-  DebugLoadScript: 0
+  LogItemPrefab: {fileID: 847735631924818306, guid: edb21f654db3c0044ad02004596a7660,
+    type: 3}
+  CommandInputField: {fileID: 7306210921782148817}
+  FilterLogInputField: {fileID: 7306210922605658077}
+  LogContentView: {fileID: 4011413582691239456}
+  LogScrollView: {fileID: 3614671766129053730}
+  LogStacktraceScrollView: {fileID: 1694811812428317165}
+  LogStacktraceView: {fileID: 1299198240810440687}
+  LogStacktraceText: {fileID: 5097965654473910723}
+  CheckBoxWarningAndErr: {fileID: 7257642892951812456}
+  CheckBoxMessages: {fileID: 7047139986237800519}
+  ToggleAutoScroll: {fileID: 8051878056455804471}
 --- !u!1001 &509731737672588065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -901,8 +118,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
+        type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -158.13004
+      value: -156.03
       objectReference: {fileID: 0}
     - target: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
@@ -1072,27 +294,164 @@ PrefabInstance:
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_Size
-      value: 0.99784553
+      value: 0.17954886
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
---- !u!1 &6733758180719482598 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6512753940811861447, guid: 38d86cc1785d7774f87dab7495bf034d,
+--- !u!114 &3614671766129053730 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d,
     type: 3}
   m_PrefabInstance: {fileID: 509731737672588065}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5229052756399445351 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5729631604670778950, guid: 38d86cc1785d7774f87dab7495bf034d,
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &4011413582691239456 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
     type: 3}
   m_PrefabInstance: {fileID: 509731737672588065}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &511204991072358126
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1299198240810440687}
+    m_Modifications:
+    - target: {fileID: 847735631924818306, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_Name
+      value: LogStacktraceText
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531207609748627224, guid: edb21f654db3c0044ad02004596a7660,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: edb21f654db3c0044ad02004596a7660, type: 3}
+--- !u!114 &5097965654473910723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4730951125753751341, guid: edb21f654db3c0044ad02004596a7660,
+    type: 3}
+  m_PrefabInstance: {fileID: 511204991072358126}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2446455759300724215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1223,13 +582,13 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -1238,17 +597,17 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: CopyStacktrace
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: CopyStacktrace
+      value: OnFilterInputEndInput
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
@@ -1343,7 +702,7 @@ PrefabInstance:
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60.075718
+      value: -60.70074
       objectReference: {fileID: 0}
     - target: {fileID: 4002645149959415574, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
@@ -1498,7 +857,7 @@ PrefabInstance:
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
       propertyPath: m_Size
-      value: 0.9823861
+      value: 0.9994647
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d,
         type: 3}
@@ -1507,18 +866,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
---- !u!1 &7871616267757274280 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5729631604670778950, guid: 38d86cc1785d7774f87dab7495bf034d,
+--- !u!114 &1694811812428317165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d,
     type: 3}
   m_PrefabInstance: {fileID: 2503478971746421486}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8709917628573337385 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6512753940811861447, guid: 38d86cc1785d7774f87dab7495bf034d,
-    type: 3}
-  m_PrefabInstance: {fileID: 2503478971746421486}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1299198240810440687 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d,
@@ -1655,13 +1014,13 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -1670,17 +1029,17 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: ShowDebugOptWindow
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: ShowDebugOptWindow
+      value: OnFilterInputEndInput
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
@@ -1850,13 +1209,13 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -1865,17 +1224,17 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: ClearCommand
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: ClearCommand
+      value: OnFilterInputEndInput
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
@@ -1930,19 +1289,24 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
+      propertyPath: m_CharacterLimit
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
+        type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -1951,17 +1315,17 @@ PrefabInstance:
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: ExecCommand
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: ExecCommand
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
@@ -2086,12 +1450,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3956745429265036406}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2041977377237091996 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3080357253436928746, guid: 811d2a41527d36c43a3ec02653a15404,
+--- !u!114 &7306210921782148817 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
     type: 3}
   m_PrefabInstance: {fileID: 3956745429265036406}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3956745430051878266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2154,13 +1524,13 @@ PrefabInstance:
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2169,12 +1539,12 @@ PrefabInstance:
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: OnFilterInputEndInput
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
@@ -2328,18 +1698,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
---- !u!1 &2041977378024163216 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3080357253436928746, guid: 811d2a41527d36c43a3ec02653a15404,
-    type: 3}
-  m_PrefabInstance: {fileID: 3956745430051878266}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6083027079274631458 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7098359002695427160, guid: 811d2a41527d36c43a3ec02653a15404,
     type: 3}
   m_PrefabInstance: {fileID: 3956745430051878266}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7306210922605658077 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
+    type: 3}
+  m_PrefabInstance: {fileID: 3956745430051878266}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3956745431066202789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2475,13 +1851,13 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2490,12 +1866,12 @@ PrefabInstance:
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: ExecCommand
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6653156347538941329, guid: 2534452a5613b024693a065135468baa,
         type: 3}
@@ -2544,13 +1920,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
+      propertyPath: UseButtonStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
+        type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
@@ -2561,7 +1942,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -2581,7 +1962,7 @@ PrefabInstance:
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: OnAutoScrollChanged
       objectReference: {fileID: 0}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
@@ -2591,7 +1972,7 @@ PrefabInstance:
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
@@ -2601,7 +1982,7 @@ PrefabInstance:
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: OnAutoScrollChanged
+      value: OnFilterInputEndInput
       objectReference: {fileID: 0}
     - target: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
         type: 3}
@@ -2776,18 +2157,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef29e32d53bc7894bb1e565ca67a8be7, type: 3}
---- !u!1 &8051878056455804465 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 532992993284287189, guid: ef29e32d53bc7894bb1e565ca67a8be7,
-    type: 3}
-  m_PrefabInstance: {fileID: 7555797877746105572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8051878056455804464 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 532992993284287188, guid: ef29e32d53bc7894bb1e565ca67a8be7,
     type: 3}
   m_PrefabInstance: {fileID: 7555797877746105572}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8051878056455804471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 532992993284287187, guid: ef29e32d53bc7894bb1e565ca67a8be7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7555797877746105572}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8888da6e7f87167479269e69cc72c5e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7767841906023747707
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2803,13 +2190,13 @@ PrefabInstance:
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2818,12 +2205,12 @@ PrefabInstance:
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: OnShowMessagesCheckChange
       objectReference: {fileID: 0}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
@@ -2973,12 +2360,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7767841906023747707}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1498382151821259393 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
+--- !u!114 &7047139986237800519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
     type: 3}
   m_PrefabInstance: {fileID: 7767841906023747707}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7814325430182130908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3209,9 +2602,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6834658925534326661, guid: 86e520af9b45f5d4381aff76e7581f11, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 86e520af9b45f5d4381aff76e7581f11, type: 3}
---- !u!224 &3651180729652210716 stripped
+--- !u!224 &3651180730137017293 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6834658925391206592, guid: 86e520af9b45f5d4381aff76e7581f11,
+  m_CorrespondingSourceObject: {fileID: 6834658925910937361, guid: 86e520af9b45f5d4381aff76e7581f11,
     type: 3}
   m_PrefabInstance: {fileID: 7814325430182130908}
   m_PrefabAsset: {fileID: 0}
@@ -3221,9 +2614,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7814325430182130908}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &3651180730137017293 stripped
+--- !u!224 &3651180729652210716 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6834658925910937361, guid: 86e520af9b45f5d4381aff76e7581f11,
+  m_CorrespondingSourceObject: {fileID: 6834658925391206592, guid: 86e520af9b45f5d4381aff76e7581f11,
     type: 3}
   m_PrefabInstance: {fileID: 7814325430182130908}
   m_PrefabAsset: {fileID: 0}
@@ -3242,13 +2635,13 @@ PrefabInstance:
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2703914232575034517}
+      objectReference: {fileID: 5774587853113956080}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -3257,12 +2650,12 @@ PrefabInstance:
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallLuaFun
+      value: OnShowErrCheckChange
       objectReference: {fileID: 0}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost, Assembly-CSharp
+      value: Ballance2.DebugWindow, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
         type: 3}
@@ -3412,9 +2805,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7978338627817072980}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1278873963689626542 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9153488925147734778, guid: 4f5f0df7282ad944e8674e115a3a2820,
+--- !u!114 &7257642892951812456 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 720738067573870652, guid: 4f5f0df7282ad944e8674e115a3a2820,
     type: 3}
   m_PrefabInstance: {fileID: 7978338627817072980}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

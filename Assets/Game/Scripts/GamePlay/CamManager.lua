@@ -37,7 +37,7 @@ function CamManager:new()
   self._CameraRotateTime = 0.5
   self._CameraRotateUpTime = 0.8
   self._CameraNormalX = -16
-  self._CameraNormalY = 30
+  self._CameraNormalY = 26
   self._CameraSpaceY = 60
   self._CameraSpaceX = -10
   self.CamRightVector = Vector3.right
@@ -73,6 +73,37 @@ function CamManager:Start()
   self.CamFollow = self._CameraHost:GetComponent(CamFollow) ---@type CamFollow
   self.transform.localPosition = Vector3(self._CameraNormalX, self._CameraNormalY, 0)
   self.transform:LookAt(Vector3.zero)
+
+  Game.Manager.GameDebugCommandServer:RegisterCommand('cam', function (eyword, fullCmd, argsCount, args)
+    local type = args[1]
+    if type == 'left' then
+      self:RotateLeft()
+    elseif type == 'right' then
+      self:RotateLeft()
+    elseif type == 'up' then
+      self:RotateUp(true)
+    elseif type == 'down' then
+      self:RotateUp(false)
+    elseif type == 'follow' then
+      self:SetCamFollow(true)
+    elseif type == 'no-follow' then
+      self:SetCamFollow(false)
+    elseif type == 'look' then
+      self:SetCamLook(true)
+    elseif type == 'no-look' then
+      self:SetCamLook(false)
+    end
+    return true
+  end, 1, "cam <left/right/up/down/-all> 摄像机管理器命令"..
+          "  left > 向左旋转摄像机"..
+          "  right > 向右旋转摄像机"..
+          "  up > 空格键升起摄像机"..
+          "  down > 空格放开落下摄像机"..
+          "  follow > 开启摄像机跟随"..
+          "  no-follow > 关闭摄像机跟随"..
+          "  look > 开启摄像机看球"..
+          "  no-look > 关闭摄像机看球"
+  )
 end
 function CamManager:FixedUpdate()
   --摄像机水平旋转

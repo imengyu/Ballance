@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8781644155923059489}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3483439386890913890
 MeshFilter:
@@ -49,7 +49,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1341771824673224712}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -110,7 +110,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8781644155923059489}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &855547890389223858
 MonoBehaviour:
@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Type: 0
-  m_Min: {x: -2.4, y: 0, z: -2.4}
-  m_Max: {x: 2.4, y: 1, z: 2.4}
+  m_Min: {x: -2, y: 0, z: -2}
+  m_Max: {x: 2, y: 1, z: 2}
   m_Layer: 8
   m_EnableListener: 1
   m_DoNotAutoCreateAtAwake: 0
@@ -160,7 +160,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8781644155923059489}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1630831757045384699
 MeshFilter:
@@ -179,7 +179,7 @@ MeshRenderer:
   m_GameObject: {fileID: 2101929513231851765}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -240,9 +240,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2575107690896148615}
   - {fileID: 2823335692352821111}
   - {fileID: 5395828124237932668}
+  - {fileID: 2575107690896148615}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1, y: 0, z: 0}
@@ -477,7 +477,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

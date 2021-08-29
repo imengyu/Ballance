@@ -1,6 +1,7 @@
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 local SmoothFly = Ballance2.Game.Utils.SmoothFly
+local SmoothFlyType = Ballance2.Game.Utils.SmoothFlyType
 local Physics = UnityEngine.Physics
 local Vector3 = UnityEngine.Vector3
 local AudioSource = UnityEngine.AudioSource
@@ -20,13 +21,15 @@ local AudioSource = UnityEngine.AudioSource
 ---@field P_Extra_Point_Ball_Povit4 GameObject
 ---@field P_Extra_Point_Ball_Povit5 GameObject
 ---@field P_Extra_Point_Ball_Povit6 GameObject
+---@field P_Extra_Point_Fizz GameObject
+---@field P_Extra_Point_Sound AudioSource
 P_Extra_Point = ModulBase:extend()
 
 function P_Extra_Point:new()
   self._RotDegree = 6
   self._Rotate = true
-  self._FlyUpTime = 1.3
-  self._FlyFollowTime = 2
+  self._FlyUpTime = 2.5
+  self._FlyFollowTime = 0.3
 end
 
 function P_Extra_Point:Start()
@@ -38,21 +41,32 @@ function P_Extra_Point:Start()
   self._P_Extra_Point_Ball_Fly5 = self.P_Extra_Point_Ball5:GetComponent(SmoothFly) ---@type SmoothFly
   self._P_Extra_Point_Ball_Fly6 = self.P_Extra_Point_Ball6:GetComponent(SmoothFly) ---@type SmoothFly
 
-  self._Sound_Extra_Start = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, 'core.sounds:Extra_Start.wav', false, true, 'Sound_Extra_Start')
-
   for i = 1, 6, 1 do
     local fly = self['P_Extra_Point_Ball'..i]:GetComponent(SmoothFly) ---@type SmoothFly
     local hitAudio = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Hit'):GetComponent(AudioSource) ---@type AudioSource
+    local hitFizz = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Fizz').gameObject
+    local ballParticle = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Ball').gameObject
+    local flowParticle = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Flow').gameObject
+
     Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, hitAudio)
     self['_P_Extra_Point_Ball_Fly'..i] = fly
+    self['_P_Extra_Point_Ball_Rest'..i] = function ()
+      ballParticle:SetActive(true)
+      flowParticle:SetActive(true)
+      hitFizz:SetActive(false)
+      hitAudio:Stop()
+    end
 
     fly.StopWhenArrival = true
     fly.ArrivalDiatance = 2
-    ---@param fly SmoothFly
-    fly.ArrivalCallback = function (fly)
-      fly.gameObject:SetActive(false)
-      GamePlay.GamePlayManager:AddPoint(20) --小球是20分
-      hitAudio:Play()
+    fly.ArrivalCallback = function ()
+      if not self._FlyUp then
+        ballParticle:SetActive(false)
+        flowParticle:SetActive(false)
+        hitFizz:SetActive(true)
+        hitAudio:Play()
+        GamePlay.GamePlayManager:AddPoint(20) --小球是20分
+      end
     end
   end
 
@@ -62,10 +76,11 @@ function P_Extra_Point:Start()
     if not self._Actived and otherBody.gameObject.tag == 'Ball' then
       self._Actived = true
       self:StartFly()
-      self._Sound_Extra_Start:Play()
       GamePlay.GamePlayManager:AddPoint(100) --大球是100分
     end
   end
+
+  self._OnFloor = false
   --触发射线，检查当前下方是不是路面，如果是，则显示 Shadow 
   ---@type boolean
   local ok, 
@@ -74,12 +89,9 @@ function P_Extra_Point:Start()
   if ok and hitinfo.collider ~= nil then
     local parentName = hitinfo.collider.gameObject.tag
     if parentName == 'Phys_Floors' or parentName == 'Phys_FloorWoods' then
-      self.P_Extra_Point_Floor:SetActive(true)
-    else
-      self.P_Extra_Point_Floor:SetActive(false)
+      self._OnFloor = true
     end
   else
-    self.P_Extra_Point_Floor:SetActive(false)
   end
 
   self._RotCenter = self.transform.position
@@ -96,28 +108,43 @@ function P_Extra_Point:Start()
 end
 function P_Extra_Point:StartFly()
   self._Rotate = false
+  self._FlyUp = true
 
-  local posMult = Vector3(1.2, 1, 1.2)
-  local upY = self.transform.position.y + 13
+  self.P_Extra_Point_Floor:SetActive(false)
+  self.P_Extra_Point_Ball0:SetActive(false)
+  self.P_Extra_Point_Fizz:SetActive(true)
+  self.P_Extra_Point_Sound:Play()
+
+  local upY = 20
 
   for i = 1, 6, 1 do
+    local ball = self['P_Extra_Point_Ball'..i] ---@type GameObject
     local fly = self['_P_Extra_Point_Ball_Fly'..i] ---@type SmoothFly
-    fly.Fly = true
+    local posMult = Vector3(1.2, 1, 1.2)
+    local localPos = Vector3.Scale(ball.transform.localPosition, posMult)
+  
+    fly.Type = SmoothFlyType.Lerp
     fly.TargetTransform = nil
-    fly.TargetPos = self['P_Extra_Point_Ball'..i].transform.position * posMult
-    fly.TargetPos.y = upY
+    fly.TargetPos = self.transform:TransformPoint(localPos.x, upY, localPos.z)
     fly.Time = self._FlyUpTime
+    fly.Fly = true
+    upY = upY + 2
   end
 
-  LuaTimer.Add(self._FlyUpTime * 1000, function ()
-    self._FlyModUp = true
-    local followTarget = GamePlay.CamManager.Target
+  local fTime =  self._FlyFollowTime
 
+  LuaTimer.Add(1400, function ()
+    self.P_Extra_Point_Fizz:SetActive(false)
+    self._FlyUp = false
+
+    local followTarget = GamePlay.CamManager.Target
     for i = 1, 6, 1 do
       local fly = self['_P_Extra_Point_Ball_Fly'..i] ---@type SmoothFly
       fly.Fly = true
+      fly.Type = SmoothFlyType.SmoothDamp
       fly.TargetTransform = followTarget
-      fly.Time = self._FlyFollowTime
+      fly.Time = fTime
+      fTime = fTime - 0.02
     end
   end)
 end
@@ -134,24 +161,27 @@ function P_Extra_Point:Update()
 end
 
 function P_Extra_Point:Active()
-  self.gameObject:SetActive(true)
-  self.P_Extra_Point_Ball0:SetActive(true)
-  self.P_Extra_Point_Ball1:SetActive(true)
-  self.P_Extra_Point_Ball2:SetActive(true)
-  self.P_Extra_Point_Ball3:SetActive(true)
-  self.P_Extra_Point_Ball4:SetActive(true)
-  self.P_Extra_Point_Ball5:SetActive(true)
-  self.P_Extra_Point_Ball6:SetActive(true)
-  self._Rotate = true
-  self._FlyModUp = false
-  self._FlyModFollow = false
+  if not self._Actived then
+    self.gameObject:SetActive(true)
+    self.P_Extra_Point_Floor:SetActive(self._OnFloor)
+    self.P_Extra_Point_Ball0:SetActive(true)
+    self.P_Extra_Point_Ball1:SetActive(true)
+    self.P_Extra_Point_Ball2:SetActive(true)
+    self.P_Extra_Point_Ball3:SetActive(true)
+    self.P_Extra_Point_Ball4:SetActive(true)
+    self.P_Extra_Point_Ball5:SetActive(true)
+    self.P_Extra_Point_Ball6:SetActive(true)
+    self._Rotate = true
+    self._FlyModUp = false
+    self._FlyModFollow = false
+  end
 end
 function P_Extra_Point:Deactive()
   self.gameObject:SetActive(false)
 end
 function P_Extra_Point:Reset(type)
-  self._Actived = false
   if(type == 'levelRestart') then
+    self._Actived = false
     ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball1)
     ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball2)
     ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball3)
@@ -164,6 +194,9 @@ function P_Extra_Point:Reset(type)
     self._P_Extra_Point_Ball_Fly4.Fly = false
     self._P_Extra_Point_Ball_Fly5.Fly = false
     self._P_Extra_Point_Ball_Fly6.Fly = false
+    for i = 1, 6, 1 do
+      self['_P_Extra_Point_Ball_Rest'..i]()
+    end
   end
 end
 function P_Extra_Point:Backup()

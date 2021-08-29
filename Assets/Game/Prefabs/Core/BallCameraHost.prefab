@@ -132,8 +132,7 @@ MonoBehaviour:
   CameraTransform: {fileID: 7268144510246012001}
   SmoothTime: 0.3
   SmoothTimeY: 0.5
-  SmoothToTargetTime: 0.1
-  SmoothMaxSpeed: 10
+  SmoothToTargetTime: 0.03
 --- !u!1 &7268144510246012012
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,7 +652,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 1
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

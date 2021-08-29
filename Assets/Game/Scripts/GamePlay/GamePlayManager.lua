@@ -3,11 +3,13 @@ local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local KeyListener = Ballance2.Sys.Utils.KeyListener
 local GameSettingsManager = Ballance2.Config.GameSettingsManager
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local DebugUtils = Ballance2.Utils.DebugUtils
 local KeyCode = UnityEngine.KeyCode
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local WaitUntil = UnityEngine.WaitUntil
 local Vector3 = UnityEngine.Vector3
+local AudioRolloffMode = UnityEngine.AudioRolloffMode
 
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass
@@ -24,6 +26,7 @@ function GamePlayManager:new()
   self.StartPoint = 1000
   self.LevelScore = 100 ---当前关卡的基础分数
   self.StartBall = 'BallWood'
+  self.NextLevelName = ''
 
   self.CurrentLevelName = ''
   self.CurrentPoint = 0 ---当前时间点数
@@ -56,7 +59,20 @@ function GamePlayManager:Start()
     self:_InitAndStart()
     return false
   end)
-
+  Game.Manager.GameDebugCommandServer:RegisterCommand('win', function () self:Pass() return true end, 0, 'win > 直接过关')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('fall', function () self:Fall() return true end, 0, 'fall > 触发球掉落死亡')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('restart', function () self:Fall() return true end, 0, 'restart > 重新开始关卡')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('pause', function () self:PauseLevel() return true end, 0, 'pause > 暂停')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('resume', function () self:ResumeLevel() return true end, 0, 'resume > 恢复')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('unload', function () self:QuitLevel() return true end, 0, 'unload > 卸载关卡')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('nextlev', function () self:Fall() return true end, 0, 'nextlev > 加载下一关')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('addlife', function () self:AddLife() return true end, 0, 'addlife > 添加一个生命球')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('addtime', function (keyword, fullCmd, argsCount, args) 
+    local ox, nx = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 0)
+    if not ox then return false end
+    self:AddPoint(tonumber(nx))  
+    return true
+  end, 1, 'addtime <count:number> > 添加时间点 count：要添加数量')
 end
 function GamePlayManager:OnDestroy()
   if (not Slua.IsNull(self.GameLightGameObject)) then UnityEngine.Object.Destroy(self.GameLightGameObject) end 
@@ -73,12 +89,16 @@ function GamePlayManager:FixedUpdate()
 end
 
 function GamePlayManager:_InitSounds() 
-  self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Lightning')
-  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_Lightning')
-  self._SoundLastSector = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_EndCheckpoint.wav'), false, true, 'Misc_Lightning')
-  self._SoundFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Final.wav'), false, true, 'Misc_Lightning')
-  self._SoundLastFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_LastFinal.wav'), false, true, 'Misc_Lightning')
+  self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Fall')
+  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_extraball')
+  self._SoundLastSector = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_EndCheckpoint.wav'), false, true, 'Music_EndCheckpoint')
+  self._SoundFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Final.wav'), false, true, 'Music_Final')
+  self._SoundLastFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_LastFinal.wav'), false, true, 'Music_LastFinal')
   self._SoundLastSector.loop = true
+  self._SoundLastSector.dopplerLevel = 0
+  self._SoundLastSector.rolloffMode = AudioRolloffMode.Linear
+  self._SoundLastSector.minDistance = 95
+  self._SoundLastSector.maxDistance = 130
 end
 function GamePlayManager:_InitKeyEvents() 
   self.keyListener = KeyListener.Get(self.gameObject)
@@ -128,7 +148,6 @@ function GamePlayManager:_Stop(controlStatus)
 end
 function GamePlayManager:_Start(isStartBySector) 
   self._IsGamePlaying = true
-  self._IsCountDownPoint = true
 
   if self.CurrentDisableStart then return end
 
@@ -147,8 +166,11 @@ function GamePlayManager:_Start(isStartBySector)
       --开始控制
       GamePlay.BallManager:SetNextRecoverPos(startPos)
       GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
+
+      self._IsCountDownPoint = true
     end))
   else
+    self._IsCountDownPoint = true
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
   end
 end
@@ -215,10 +237,29 @@ function GamePlayManager:HideSkyAndLight()
   end
 end
 
+function GamePlayManager:_QuitOrLoadNextLevel(loadNext) 
+  local callBack = nil
+  if loadNext then
+    callBack = function ()
+      Game.LevelBuilder:LoadLevel(self.NextLevelName)
+    end
+  end
+
+  Game.UIManager:CloseAllPage()
+  Game.UIManager:MaskBlackFadeIn(0.7)
+  Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
+
+  LuaTimer.Add(800, function () 
+    GameUI.GamePlayUI.gameObject:SetActive(false)
+    Game.Mediator:DispatchGlobalEvent('GAME_QUIT', '*', {})
+    Game.LevelBuilder:UnLoadLevel(callBack)
+  end)
+end
+
 ---加载下一关
 function GamePlayManager:NextLevel() 
-  --黑色进入
-  Game.UIManager:MaskBlackFadeIn(1)
+  if self.NextLevelName == '' then return end
+  self:_QuitOrLoadNextLevel(true)
 end
 ---重新开始关卡
 function GamePlayManager:RestartLevel() 
@@ -245,18 +286,7 @@ function GamePlayManager:RestartLevel()
 end
 ---退出关卡
 function GamePlayManager:QuitLevel() 
-  
-  Game.Mediator:DispatchGlobalEvent('GAME_QUIT', '*', {})
-
-  Game.UIManager:CloseAllPage()
-  coroutine.resume(coroutine.create(function()
-    --播放加载声音
-    Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
-    --黑色进入
-    Game.UIManager:MaskBlackFadeIn(1)
-    Yield(WaitForSeconds(1))
-    Game.LevelBuilder:UnLoadLevel()
-  end))
+  self:_QuitOrLoadNextLevel(false)
 end
 ---暂停关卡
 ---@param showPauseUI boolean 是否显示暂停界面
@@ -359,13 +389,9 @@ function GamePlayManager:Pass()
     --#TODO: UFO动画
   else
     self._SoundFinnal:Play() --播放音乐
-
-    coroutine.resume(coroutine.create(function()
-      Yield(WaitForSeconds(2))
-      Game.UIManager:GoPage('PageGameWin')
-      Yield(WaitForSeconds(2))
+    LuaTimer.Add(4000, function ()
       GameUI.WinScoreUIControl:StartSeq()
-    end))
+    end)
   end
 
 end
@@ -387,7 +413,7 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
   GamePlay.BallManager:ResetPeices(targetType)
   GamePlay.BallManager:SetNextRecoverPos(targetPos)
   --快速将球锁定并移动至目标位置
-  GamePlay.BallManager:FastMoveTo(targetPos, 0.4, function ()
+  GamePlay.BallManager:FastMoveTo(targetPos, 0.2, function ()
     --播放变球动画
     GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform.position, color, tranfo.gameObject, function ()
       --切换球并且抛出碎片

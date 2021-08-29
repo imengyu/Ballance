@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1024573842549606129}
   - component: {fileID: 7628093879852914797}
   - component: {fileID: 3108331966930382063}
+  - component: {fileID: 5421833748305975844}
   m_Layer: 5
   m_Name: DebugStatText
   m_TagString: Untagged
@@ -79,6 +80,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &5421833748305975844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3229013170375622076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6501224125525866488
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +106,7 @@ GameObject:
   - component: {fileID: 6501224125525866489}
   - component: {fileID: 6501224125525866491}
   - component: {fileID: 6501224125525866490}
+  - component: {fileID: 3417416064397924799}
   m_Layer: 5
   m_Name: DebugFPSText
   m_TagString: Untagged
@@ -158,6 +175,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &3417416064397924799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6501224125525866488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6501224125918381496
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,9 +200,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6501224125918381497}
   - component: {fileID: 6501224125918381499}
-  - component: {fileID: 3915009530628167841}
   - component: {fileID: 2674840441809398414}
   - component: {fileID: 1761886242550718034}
+  - component: {fileID: 7570099552962911029}
   m_Layer: 5
   m_Name: DebugToolbar
   m_TagString: Untagged
@@ -208,102 +240,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6501224125918381496}
   m_CullTransparentMesh: 0
---- !u!114 &3915009530628167841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6501224125918381496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a1624f4fefb6fd45aa49fe116903639, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: DebugTools
-  LuaClassName: DebugTools
-  LuaFileName: 
-  LuaPackageName: core.debug
-  LuaInitialVars:
-  - Type: 16
-    Name: DebugLogText
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 6501224126624804204}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    floatVal: 0
-    componentClassVal: UnityEngine.UI.Text
-  LuaPublicVars: []
-  ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 1
-  DebugScript: 
-  DebugLoadScript: 0
-  ManualInputScript: 0
-  UpdateDelta: 0
-  FixUpdateDelta: 0
 --- !u!114 &2674840441809398414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +268,19 @@ MonoBehaviour:
   updateInterval: 0.5
   fps: 0
   FpsText: {fileID: 6501224125525866490}
+--- !u!114 &7570099552962911029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6501224125918381496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c491d32cb2e40654fa2820d8cfaad75a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugLogText: {fileID: 6501224126624804206}
 --- !u!1 &6501224126624804204
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +292,7 @@ GameObject:
   - component: {fileID: 6501224126624804205}
   - component: {fileID: 6501224126624804207}
   - component: {fileID: 6501224126624804206}
+  - component: {fileID: 7809867582866355400}
   m_Layer: 5
   m_Name: DebugLogText
   m_TagString: Untagged
@@ -411,3 +361,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.83
   m_Text: 
+--- !u!114 &7809867582866355400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6501224126624804204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1

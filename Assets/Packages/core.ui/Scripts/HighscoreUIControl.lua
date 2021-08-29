@@ -1,16 +1,16 @@
 local Text = UnityEngine.UI.Text
 local I18N = Ballance2.Sys.Language.I18N
 
-HighscoreUIControl = ClassicObject:extend()
-
 ---分数统计界面控制
 ---@class HighscoreUIControl : GameLuaObjectHostClass
 ---@field TextLevelName Text
+HighscoreUIControl = ClassicObject:extend()
+
 function HighscoreUIControl:new() 
 end
 function HighscoreUIControl:Start() 
 
-  self._CurrentIndex = 0
+  self._CurrentIndex = 1
   self._TextItem = {}
   for i = 1, 10, 1 do
     self._TextItem[i] = {
@@ -50,7 +50,7 @@ function HighscoreUIControl:LoadLevelData(name)
 
     self.TextLevelName.text = name
   else
-    self._CurrentIndex = P_Modul_01
+    self._CurrentIndex = 1
     for i = 1, 10, 1 do
       self._TextItem[i].textName.text = ''
       self._TextItem[i].testScore.text = ''

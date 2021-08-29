@@ -41,7 +41,6 @@ namespace SLua {
 				Lua_PhysicsRT_PhysicsSpring.reg,
 				Lua_PhysicsRT_PhysicsWorld.reg,
 				Lua_Ballance2_DebugCamera.reg,
-				Lua_Ballance2_GameUIPage.reg,
 				Lua_Ballance2_Utils_CommonUtils.reg,
 				Lua_Ballance2_Utils_ConverUtils.reg,
 				Lua_Ballance2_Utils_DebugUtils.reg,
@@ -49,7 +48,6 @@ namespace SLua {
 				Lua_Ballance2_Utils_Log.reg,
 				Lua_Ballance2_Utils_LogLevel.reg,
 				Lua_Ballance2_Utils_LuaUtils.reg,
-				Lua_Ballance2_Utils_ActiveInTime.reg,
 				Lua_Ballance2_Utils_StringSpliter.reg,
 				Lua_Ballance2_Utils_StringUtils.reg,
 				Lua_Ballance2_Sys_GameManager.reg,
@@ -62,6 +60,7 @@ namespace SLua {
 				Lua_Ballance2_Sys_UI_GameUIControlMessageSender.reg,
 				Lua_Ballance2_Sys_UI_GameUIControlValueBinder.reg,
 				Lua_Ballance2_Sys_UI_GameUIMessageCenter.reg,
+				Lua_Ballance2_Sys_UI_GameUIPage.reg,
 				Lua_Ballance2_Sys_UI_I18NText.reg,
 				Lua_Ballance2_Sys_UI_KeyChoose.reg,
 				Lua_Ballance2_Sys_UI_Progress.reg,
@@ -79,6 +78,7 @@ namespace SLua {
 				Lua_Ballance2_Sys_UI_Utils_UIContentSizeUtils.reg,
 				Lua_Ballance2_Sys_UI_Utils_UIFadeManager.reg,
 				Lua_Ballance2_Sys_UI_Utils_UIRayIgnore.reg,
+				Lua_Ballance2_Sys_Tools_ActiveInTime.reg,
 				Lua_Ballance2_Sys_Services_GameService.reg,
 				Lua_Ballance2_Sys_Services_GameMediator.reg,
 				Lua_Ballance2_Sys_Services_GamePackageManager.reg,
@@ -125,6 +125,7 @@ namespace SLua {
 				Lua_Ballance2_Game_LevelAssets.reg,
 				Lua_Ballance2_Game_GameLevelLoaderNative.reg,
 				Lua_Ballance2_Game_CamFollow.reg,
+				Lua_Ballance2_Game_Utils_SmoothFlyType.reg,
 				Lua_Ballance2_Game_Utils_SmoothFly.reg,
 				Lua_Ballance2_Game_Utils_SkyBoxUtils.reg,
 				Lua_Ballance2_Config_GameConst.reg,
@@ -143,7 +144,6 @@ namespace SLua {
 				Lua_System_Xml_XmlReaderSettings.reg,
 				Lua_System_Xml_XmlWriterSettings.reg,
 				Lua_UnityEngine_Input.reg,
-				Lua_UnityEngine_AssetBundle.reg,
 			};
 			return list;
 		}

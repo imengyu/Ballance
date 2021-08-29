@@ -112,8 +112,8 @@ function CreateClass_BallLightningSphere()
             Ball_LightningSphereInnernA.transform.localScale = Vector3(v, v, v)
             Ball_LightningSphereInnernB.transform.localScale = Vector3(v, v, v)
         else
-            Ball_LightningSphereInnernA.transform.localScale = Vector3(1, 1, 1)
-            Ball_LightningSphereInnernB.transform.localScale = Vector3(1, 1, 1)
+            Ball_LightningSphereInnernA.transform.localScale = Vector3(0.9, 0.9, 0.9)
+            Ball_LightningSphereInnernB.transform.localScale = Vector3(0.9, 0.9, 0.9)
             self.lighingBig = false
         end
     end

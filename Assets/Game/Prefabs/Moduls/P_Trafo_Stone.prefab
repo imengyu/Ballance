@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Type: 0
-  m_Min: {x: -2.4, y: 0, z: -2.4}
-  m_Max: {x: 2.4, y: 1, z: 2.4}
+  m_Min: {x: -2, y: 0, z: -2}
+  m_Max: {x: 2, y: 1, z: 2}
   m_Layer: 8
   m_EnableListener: 1
   m_DoNotAutoCreateAtAwake: 0

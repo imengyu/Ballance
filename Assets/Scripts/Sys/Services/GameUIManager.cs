@@ -187,16 +187,6 @@ namespace Ballance2.Sys.Services
             EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
 
             keyListener = KeyListener.Get(UIRoot.gameObject);
-            keyListener.AddKeyListen(KeyCode.Escape, (key, down) => {
-                if(!down) {
-                    //Esc键返回上一页
-                    if(pageStack.Count > 0) {
-                        var page = pageStack[pageStack.Count - 1];
-                        if (page.CanEscBack) 
-                            BackPreviusPage();
-                    }
-                }
-            });
         }
 
         private KeyListener keyListener = null;
@@ -425,10 +415,12 @@ namespace Ballance2.Sys.Services
                 var page = pageStack[pageStack.Count - 1];
                 pageStack.RemoveAt(pageStack.Count - 1);
                 page.Hide();
-                //显示前一个
-                page = pageStack[pageStack.Count - 1];
-                page.Show();
-                currentPage = page;
+                if(pageStack.Count > 0) {
+                    //显示前一个
+                    page = pageStack[pageStack.Count - 1];
+                    page.Show();
+                    currentPage = page;
+                }
                 return true;
             }
             return false;

@@ -16,7 +16,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			self.Show();
 			pushValue(l,true);
 			return 1;
@@ -47,7 +47,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			self.Hide();
 			pushValue(l,true);
 			return 1;
@@ -80,7 +80,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			#endif
 			int argc = LuaDLL.lua_gettop(l);
 			if(argc==2){
-				Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+				Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 				Ballance2.Sys.Package.GamePackage a1;
 				checkType(l,2,out a1);
 				self.CreateContent(a1);
@@ -88,7 +88,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 				return 1;
 			}
 			else if(argc==3){
-				Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+				Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 				Ballance2.Sys.Package.GamePackage a1;
 				checkType(l,2,out a1);
 				System.String a2;
@@ -127,7 +127,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			UnityEngine.RectTransform a1;
 			checkType(l,2,out a1);
 			self.SetContent(a1);
@@ -160,7 +160,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.Content);
 			return 2;
@@ -191,7 +191,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			UnityEngine.RectTransform v;
 			checkType(l,2,out v);
 			self.Content=v;
@@ -224,7 +224,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.ContentHost);
 			return 2;
@@ -255,7 +255,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			UnityEngine.RectTransform v;
 			checkType(l,2,out v);
 			self.ContentHost=v;
@@ -288,7 +288,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.VerticalLayoutGroup);
 			return 2;
@@ -319,7 +319,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			UnityEngine.UI.VerticalLayoutGroup v;
 			checkType(l,2,out v);
 			self.VerticalLayoutGroup=v;
@@ -352,7 +352,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.HorizontalLayoutGroup);
 			return 2;
@@ -383,7 +383,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			UnityEngine.UI.HorizontalLayoutGroup v;
 			checkType(l,2,out v);
 			self.HorizontalLayoutGroup=v;
@@ -416,7 +416,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.PageName);
 			return 2;
@@ -447,7 +447,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			System.String v;
 			checkType(l,2,out v);
 			self.PageName=v;
@@ -480,7 +480,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.CanEscBack);
 			return 2;
@@ -511,7 +511,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			System.Boolean v;
 			checkType(l,2,out v);
 			self.CanEscBack=v;
@@ -544,7 +544,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			Ballance2.Sys.Bridge.VoidDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.OnShow=v;
@@ -579,7 +579,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.GameUIPage self=(Ballance2.GameUIPage)checkSelf(l);
+			Ballance2.Sys.UI.GameUIPage self=(Ballance2.Sys.UI.GameUIPage)checkSelf(l);
 			Ballance2.Sys.Bridge.VoidDelegate v;
 			int op=checkDelegate(l,2,out v);
 			if(op==0) self.OnHide=v;
@@ -603,7 +603,7 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
-		getTypeTable(l,"Ballance2.GameUIPage");
+		getTypeTable(l,"Ballance2.Sys.UI.GameUIPage");
 		addMember(l,Show);
 		addMember(l,Hide);
 		addMember(l,CreateContent);
@@ -616,6 +616,6 @@ public class Lua_Ballance2_GameUIPage : LuaObject {
 		addMember(l,"CanEscBack",get_CanEscBack,set_CanEscBack,true);
 		addMember(l,"OnShow",null,set_OnShow,true);
 		addMember(l,"OnHide",null,set_OnHide,true);
-		createTypeMetatable(l,null, typeof(Ballance2.GameUIPage),typeof(UnityEngine.MonoBehaviour));
+		createTypeMetatable(l,null, typeof(Ballance2.Sys.UI.GameUIPage),typeof(UnityEngine.MonoBehaviour));
 	}
 }

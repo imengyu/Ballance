@@ -71,6 +71,7 @@ namespace PhysicsRT
             _OnConstraintBreakingCallback = OnConstraintBreakingCallback;
             _OnBodyTriggerEventCallback = OnBodyTiggerEventCallback;
             _OnPhantomOverlapCallback = OnPhantomOverlapCallback;
+            _OnMaxPositionExceededCallback = OnMaxPositionExceededCallback;
 
             PhysicsSystemInit.Worlds.Add(this);
 
@@ -95,7 +96,8 @@ namespace PhysicsRT
                     _OnConstraintBreakingCallback,
                     _OnBodyTriggerEventCallback,
                     _OnBodyContactEventCallback,
-                    _OnPhantomOverlapCallback);
+                    _OnPhantomOverlapCallback,
+                    _OnMaxPositionExceededCallback);
             }
         }
         private void OnDestroy() {
@@ -367,7 +369,17 @@ namespace PhysicsRT
         private fnOnConstraintBreakingCallback _OnConstraintBreakingCallback;
         private fnOnBodyTriggerEventCallback _OnBodyTriggerEventCallback;
         private fnOnPhantomOverlapCallback _OnPhantomOverlapCallback;
+        private fnOnMaxPositionExceededCallback _OnMaxPositionExceededCallback;
 
+        private void OnMaxPositionExceededCallback(IntPtr body, int id) {
+            var sbody = GetBodyById(id);
+            if(sbody != null) {
+                sbody.ForceDePhysics();
+                if(sbody.DeactiveWhenLeaveBroadphase)
+                    sbody.gameObject.SetActive(false);
+                sbody.onLeaveBroadphase?.Invoke(sbody);
+            }
+        }
         private void OnConstraintBreakingCallback(IntPtr constraint, int id, float forceMagnitude, int removed) {
             var c = GetConstraintById(id);
             if(c != null && c.onBreaking != null) 

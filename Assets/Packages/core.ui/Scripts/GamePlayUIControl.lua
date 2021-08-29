@@ -1,10 +1,10 @@
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
-local UIAnchorPosUtils = Ballance2.Sys.UI.Utils.UIAnchorPosUtils
 local Image = UnityEngine.UI.Image
 local Color = UnityEngine.Color
 local Vector2 = UnityEngine.Vector2
+local InputField = UnityEngine.UI.InputField
 local Yield = UnityEngine.Yield
 local Mathf = UnityEngine.Mathf
 local Time = UnityEngine.Time
@@ -51,17 +51,20 @@ function CreateGamePlayUI(package)
   MessageCenter:SubscribeEvent('BtnResumeClick', function () 
     Game.GamePlay.GamePlayManager:ResumeLevel()
   end)
-  local highscoreEntryName = ''
-  local HighscoreEntryName = MessageCenter:SubscribeValueBinder('HighscoreEntryName', function(val)
-    highscoreEntryName = val
-  end)
-  PageHighscoreEntry.OnShow = function ()
-    HighscoreEntryName:Invoke(PlayerPrefs.GetString('LastEnterHighscoreEntry', 'NAME'))
+
+  --高分默认数据
+  local HighscoreEntryName = PageHighscoreEntry.Content:Find('InputField'):GetComponent(InputField) ---@type InputField
+  HighscoreEntryName.text = PlayerPrefs.GetString('LastEnterHighscoreEntry', 'NAME')
+
+  --过关之后的下一关按扭
+  local ButtonNext = PageGameWin.Content:Find('ButtonNext').gameObject
+  PageGameWin.OnShow = function ()
+    ButtonNext:SetActive(GamePlay.GamePlayManager.NextLevelName ~= '')
   end
 
   MessageCenter:SubscribeEvent('BtnHighscrollEnterClick', function () 
-    PlayerPrefs.SetString('LastEnterHighscoreEntry', highscoreEntryName)
-    GamePlay.WinScoreUIControl:SaveHighscore(highscoreEntryName)
+    PlayerPrefs.SetString('LastEnterHighscoreEntry', HighscoreEntryName.text)
+    GameUI.WinScoreUIControl:SaveHighscore(HighscoreEntryName.text)
     GameUIManager:GoPage('PageGameWin') 
   end)
 end

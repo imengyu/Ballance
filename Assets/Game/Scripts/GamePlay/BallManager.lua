@@ -8,12 +8,10 @@ local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
 local GameManager = Ballance2.Sys.GameManager
 local GameError = Ballance2.Sys.Debug.GameError
 local LuaUtils = Ballance2.Utils.LuaUtils
+local DebugUtils = Ballance2.Utils.DebugUtils
 local SmoothFly = Ballance2.Game.Utils.SmoothFly
-local MotionType = PhysicsRT.MotionType
-local GUI = UnityEngine.GUI
 local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 local Rect = UnityEngine.Rect
-local Time = UnityEngine.Time
 
 ---球推动定义
 ---@class BallPushType
@@ -134,6 +132,43 @@ function BallManager:Start()
   self._private.keyListener = KeyListener.Get(self.gameObject)
   --请求触发设置更新函数
   GameSettings:RequireSettingsLoad("control")
+
+  Game.Manager.GameDebugCommandServer:RegisterCommand('balls', function (eyword, fullCmd, argsCount, args)
+    local type = args[1]
+    if type == 'play-lighting' then
+      self:PlayLighting(self._private.nextRecoverPos)
+    elseif type == 'set-recover-pos' then
+      local ox, nx = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 0)
+      if not ox then return false end
+      local oy, ny = DebugUtils.CheckIntDebugParam(2, args, Slua.out, true, 0)
+      if not oy then return false end
+      local oz, nz = DebugUtils.CheckIntDebugParam(3, args, Slua.out, true, 0)
+      if not oz then return false end
+
+      local pos = Vector3(nx, ny, nz)
+      self:SetNextRecoverPos(pos)
+      Log.D(TAG, 'NextRecoverPos now is : {0}', pos);
+    elseif type == 'set-ball' then
+      local o, n = DebugUtils.CheckDebugParam(1, args, Slua.out, true, 1)
+      if not o then return false end
+
+      self:SetCurrentBall(n)
+      Log.D(TAG, 'Set ball type to : {0}', n);
+
+    elseif type == 'set-control-status' then
+      local o, n = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 1)
+      if not o then return false end
+
+      self:SetControllingStatus(n)
+      Log.D(TAG, 'Set control status to : {0}', n);
+    end
+    return true
+  end, 1, "balls <next/set/reset/reset-all> 球管理器命令"..
+          "  set-recover-pos <x:number> <y:number> <z:number> > 设置下次球激活位置"..
+          "  set-ball <ballName:string> > 设置当前激活球"..
+          "  set-control-status <status:number> > 设置当前控制模式 status: 0 无控制 1 正常控制 2 释放模式 3 锁定模式 4 释放模式2"..
+          "  play-lighting > 播放出生动画"
+  )
 end
 function BallManager:OnDestroy()
   self._private.GameSettings:UnRegisterSettingsUpdateCallback(self._private.settingsCallbackId)

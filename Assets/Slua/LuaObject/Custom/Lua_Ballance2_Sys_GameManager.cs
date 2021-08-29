@@ -445,6 +445,41 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int Delay(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.GameManager self=(Ballance2.Sys.GameManager)checkSelf(l);
+			System.Single a1;
+			checkType(l,2,out a1);
+			Ballance2.Sys.Bridge.VoidDelegate a2;
+			checkDelegate(l,3,out a2);
+			self.Delay(a1,a2);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int RequestEnterLogicScense(IntPtr l) {
 		try {
 			#if DEBUG
@@ -893,6 +928,7 @@ public class Lua_Ballance2_Sys_GameManager : LuaObject {
 		addMember(l,CreateDirectory);
 		addMember(l,ReadFile);
 		addMember(l,RemoveFile);
+		addMember(l,Delay);
 		addMember(l,RequestEnterLogicScense);
 		addMember(l,GetLogicScenses);
 		addMember(l,LuaBindingCallback_s);

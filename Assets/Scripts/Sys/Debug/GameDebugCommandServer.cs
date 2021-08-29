@@ -167,7 +167,7 @@ namespace Ballance2.Sys.Debug
 
         private void RegisterSystemCommands() {
             //注册基础内置命令
-            RegisterCommand("help", OnCommandHelp, 1, "help 显示命令帮助");
+            RegisterCommand("help", OnCommandHelp, 0, "help 显示命令帮助");
             RegisterCommand("e", (keyword, fullCmd, argsCount, args) =>
             {
                 Log.V("echo", fullCmd.Substring(2));
@@ -177,7 +177,7 @@ namespace Ballance2.Sys.Debug
             {
                 GameManager.GameMediator.CallAction(GamePackage.GetSystemPackage(), "System", "DisableDebugMode");
                 return true;
-            }, 1, "quit-debug-mode 关闭开发者模式");
+            }, 0, "quit-debug-mode 关闭开发者模式");
         }
     }
 }

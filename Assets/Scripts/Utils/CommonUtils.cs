@@ -65,6 +65,16 @@ namespace Ballance2.Utils
         {
             return idPool++;
         }
+
+        public static float RandomFloat(float min, float max)
+        {
+            return UnityEngine.Random.Range(min, max);
+        }
+        public static float RandomFloat(float max)
+        {
+            return UnityEngine.Random.Range(0, max);
+        }
+
         /// <summary>
         /// 检查数组是否为空
         /// </summary>

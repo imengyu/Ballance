@@ -1,7 +1,7 @@
 local PhysicsBody = PhysicsRT.PhysicsBody
 local Vector3 = UnityEngine.Vector3
+local CommonUtils = Ballance2.Utils.CommonUtils
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
-local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local FadeManager = Game.UIManager.UIFadeManager
 
@@ -51,7 +51,7 @@ function CreateClass_BallPiecesControll()
         child.gameObject:SetActive(true)
         forceDir:Normalize() --力的方向是从原点向碎片位置
         body:ForcePhysics() --物理
-        body:ApplyPointImpulse(forceDir * math.random(minForce, maxForce), Vector3.up) --施加力
+        body:ApplyPointImpulse(forceDir * CommonUtils.RandomFloat(minForce, maxForce), Vector3.up) --施加力
       end
 
       ---延时消失
@@ -88,7 +88,7 @@ function CreateClass_BallPiecesControll()
       end
 
       --延时
-      LuaTimer.Add(3000, function ()
+      LuaTimer.Add(2990, function ()
         parent:SetActive(false) --隐藏
       end)
     end

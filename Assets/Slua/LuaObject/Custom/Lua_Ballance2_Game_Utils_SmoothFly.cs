@@ -550,6 +550,70 @@ public class Lua_Ballance2_Game_Utils_SmoothFly : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_Type(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Game.Utils.SmoothFly self=(Ballance2.Game.Utils.SmoothFly)checkSelf(l);
+			pushValue(l,true);
+			pushEnum(l,(int)self.Type);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_Type(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Game.Utils.SmoothFly self=(Ballance2.Game.Utils.SmoothFly)checkSelf(l);
+			Ballance2.Game.Utils.SmoothFlyType v;
+			v = (Ballance2.Game.Utils.SmoothFlyType)LuaDLL.luaL_checkinteger(l, 2);
+			self.Type=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Game.Utils.SmoothFly");
@@ -562,6 +626,7 @@ public class Lua_Ballance2_Game_Utils_SmoothFly : LuaObject {
 		addMember(l,"StopWhenArrival",get_StopWhenArrival,set_StopWhenArrival,true);
 		addMember(l,"ArrivalDiatance",get_ArrivalDiatance,set_ArrivalDiatance,true);
 		addMember(l,"ArrivalCallback",null,set_ArrivalCallback,true);
+		addMember(l,"Type",get_Type,set_Type,true);
 		createTypeMetatable(l,null, typeof(Ballance2.Game.Utils.SmoothFly),typeof(UnityEngine.MonoBehaviour));
 	}
 }

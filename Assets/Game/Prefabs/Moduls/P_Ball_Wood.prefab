@@ -207,7 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_CollidableQualityType: -1
-  m_Mass: 14
+  m_Mass: 8
   m_LinearDamping: 0.2
   m_AngularDamping: 0.1
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
@@ -224,7 +224,7 @@ MonoBehaviour:
     Tag06: 0
     Tag07: 0
   m_Friction: 0.7
-  m_Restitution: 0.2
+  m_Restitution: 0.3
   m_Layer: 3
   m_InertiaTensor:
     e00: 1
@@ -250,6 +250,10 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
+  m_SystemGroupName: 
+  m_SubSystemId: 0
+  m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1
 --- !u!114 &691889369596670053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +275,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

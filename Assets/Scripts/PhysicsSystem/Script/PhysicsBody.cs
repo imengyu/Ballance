@@ -176,6 +176,8 @@ namespace PhysicsRT
         [Tooltip("指定当前碰撞组不与那个子组碰撞，默认为0。创建之后再修改则必须调用 ForceUpdateCollisionFilterInfo 才能生效")]
         [SerializeField]
         private int m_SubSystemDontCollideWith = 0;
+        [Tooltip("指定是否在离开世界边界时隐藏GameObject")]
+        public bool DeactiveWhenLeaveBroadphase = true;
 
         private IntPtr ptr = IntPtr.Zero;
 
@@ -531,12 +533,12 @@ namespace PhysicsRT
                 m_MaxAngularVelocity,
                 currentShapeMassProperties);
 
-            TryCreateSpring();
-            TryCreateConstant();
 
             Id = PhysicsApi.API.GetRigidBodyId(ptr);
             CurrentPhysicsWorld.AddBody(Id, this);
             
+            TryCreateSpring();
+            TryCreateConstant();
             ReApplyForce();
 
             nextCreateForce = false;
@@ -876,7 +878,13 @@ namespace PhysicsRT
         public delegate void OnBodyCollisionCallback(PhysicsBody body, PhysicsBody other, PhysicsBodyCollisionInfo info);
         [SLua.CustomLuaClass]
         public delegate void OnBodyCollisionLeaveCallback(PhysicsBody body, PhysicsBody other);
-
+        [SLua.CustomLuaClass]
+        public delegate void OnBodyCallback(PhysicsBody body);
+        
+        /// <summary>
+        /// 刚体离开世界边界时的回调。刚体离开世界边界时会自动反物理化
+        /// </summary>
+        public OnBodyCallback onLeaveBroadphase;
         /// <summary>
         /// Tigger中刚体进入时的事件（为Tigger时有效）
         /// </summary>

@@ -85,7 +85,11 @@ function LevelBuilder:Start()
           Log.V(TAG, 'Load')
           Game.Mediator:NotifySingleEvent('CoreStartLoadLevel', { args[2] })
         end
+      else
+        Log.W(TAG, 'Unknow option '..type);
+        return false
       end
+      return true
     end, 0, 'lb <quit/load>\n'..
       '  <quit> > 终止当前的关卡加载\n'..
       '  <load> <levelname:string> > 加载指定关卡\n')
@@ -298,6 +302,7 @@ function LevelBuilder:_LoadLevelInternal()
   SectorManager.CurrentLevelSectorCount = level.sectorCount
   SectorManager.CurrentLevelSectors = {}
   SectorManager.CurrentLevelRestPoints = {}
+  GamePlayManager.NextLevelName = tostring(level.nextLevel) or ''
   GamePlayManager.StartBall = level.firstBall or 'BallWood'
   GamePlayManager.CurrentLevelName = self._CurrentLevelJson.name
   GamePlayManager.CurrentEndWithUFO = level.endWithUFO or false
@@ -755,7 +760,8 @@ function LevelBuilder:ReplacePrefab(objName, modulPrefab)
 end
 
 ---卸载当前加载的关卡
-function LevelBuilder:UnLoadLevel()
+---@param endCallback function|nil 完成回调
+function LevelBuilder:UnLoadLevel(endCallback)
   
   if self._IsLoading then
     Log.E(TAG, 'Level is loading! ')
@@ -845,9 +851,12 @@ function LevelBuilder:UnLoadLevel()
 
     self._IsLoading = false
 
-    --通知回到menulevel
-    Game.Manager:RequestEnterLogicScense('MenuLevel')
-
+    if type(endCallback) == 'function' then
+      endCallback()
+    else 
+      --通知回到menulevel
+      Game.Manager:RequestEnterLogicScense('MenuLevel')
+    end
   end))
 end
 

@@ -566,17 +566,17 @@ PrefabInstance:
     - target: {fileID: 1699761057477749831, guid: 63e5a5e31183c354cae28c651e1834b3,
         type: 3}
       propertyPath: m_Text
-      value: Quit
+      value: ui.yes
       objectReference: {fileID: 0}
     - target: {fileID: 1699761057477749831, guid: 63e5a5e31183c354cae28c651e1834b3,
         type: 3}
       propertyPath: m_ResourceKey
-      value: ui.main.quit
+      value: ui.yes
       objectReference: {fileID: 0}
     - target: {fileID: 1699761057477749831, guid: 63e5a5e31183c354cae28c651e1834b3,
         type: 3}
       propertyPath: m_DefaultString
-      value: Quit
+      value: ui.yes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}

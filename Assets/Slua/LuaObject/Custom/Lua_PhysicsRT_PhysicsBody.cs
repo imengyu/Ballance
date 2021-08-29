@@ -587,6 +587,105 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_DeactiveWhenLeaveBroadphase(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.DeactiveWhenLeaveBroadphase);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_DeactiveWhenLeaveBroadphase(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			System.Boolean v;
+			checkType(l,2,out v);
+			self.DeactiveWhenLeaveBroadphase=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_onLeaveBroadphase(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsBody self=(PhysicsRT.PhysicsBody)checkSelf(l);
+			PhysicsRT.PhysicsBody.OnBodyCallback v;
+			int op=checkDelegate(l,2,out v);
+			if(op==0) self.onLeaveBroadphase=v;
+			else if(op==1) self.onLeaveBroadphase+=v;
+			else if(op==2) self.onLeaveBroadphase-=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int set_onTiggerEnter(IntPtr l) {
 		try {
 			#if DEBUG
@@ -2476,6 +2575,8 @@ public class Lua_PhysicsRT_PhysicsBody : LuaObject {
 		addMember(l,ApplyLinearImpulse);
 		addMember(l,ApplyPointImpulse);
 		addMember(l,ApplyAngularImpulse);
+		addMember(l,"DeactiveWhenLeaveBroadphase",get_DeactiveWhenLeaveBroadphase,set_DeactiveWhenLeaveBroadphase,true);
+		addMember(l,"onLeaveBroadphase",null,set_onLeaveBroadphase,true);
 		addMember(l,"onTiggerEnter",null,set_onTiggerEnter,true);
 		addMember(l,"onTiggerLeave",null,set_onTiggerLeave,true);
 		addMember(l,"onCollisionEnter",null,set_onCollisionEnter,true);

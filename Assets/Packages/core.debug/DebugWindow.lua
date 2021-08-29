@@ -25,6 +25,7 @@ local GamePackage = Ballance2.Sys.Package.GamePackage
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
+---@deprecated This is rewrite in csharp
 ---@class DebugWindow : GameLuaObjectHostClass
 DebugWindow = {
   --Initvars
@@ -48,6 +49,8 @@ DebugWindow = {
   logFont = nil,
   logMaxCount = 256,
   logFilter = '',
+
+  commandHistory = {},
 
   cmdServer = nil, 
 }
@@ -144,7 +147,7 @@ function CreateClass_DebugWindow()
     工具函数
   ]]--
 
-  ---布局日志界面
+  --布局日志界面
   ---@param self table
   function DebugWindow:RelayoutLogContent()
     local transform = self.LogContentView
@@ -224,6 +227,7 @@ function CreateClass_DebugWindow()
   ---执行命令
   function DebugWindow:ExecCommand()
     if self.cmdServer:ExecuteCommand(self.CommandInputField.text) then
+      table.insert(self.commandHistory, self.CommandInputField.text)
       self.CommandInputField.text = ''
       self:SelectLastLog()
     end
@@ -236,7 +240,7 @@ function CreateClass_DebugWindow()
   function DebugWindow:ClearCommand()
     self.logWarnCount = 0
     self.logErrorCount = 0
-    self.logInfoCount = 0
+    self.logInfoCount = 
     --清空日志条目
     self:ClearLogContent()
     GlobalDebugToolbar.LuaSelf:Clear()

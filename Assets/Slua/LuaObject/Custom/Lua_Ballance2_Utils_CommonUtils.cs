@@ -130,6 +130,55 @@ public class Lua_Ballance2_Utils_CommonUtils : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int RandomFloat_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==1){
+				System.Single a1;
+				checkType(l,1,out a1);
+				var ret=Ballance2.Utils.CommonUtils.RandomFloat(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(argc==2){
+				System.Single a1;
+				checkType(l,1,out a1);
+				System.Single a2;
+				checkType(l,2,out a2);
+				var ret=Ballance2.Utils.CommonUtils.RandomFloat(a1,a2);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function RandomFloat to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int IsArrayNullOrEmpty_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -490,6 +539,7 @@ public class Lua_Ballance2_Utils_CommonUtils : LuaObject {
 		addMember(l,GenRandomID_s);
 		addMember(l,GenAutoIncrementID_s);
 		addMember(l,GenNonDuplicateID_s);
+		addMember(l,RandomFloat_s);
 		addMember(l,IsArrayNullOrEmpty_s);
 		addMember(l,IsDictionaryNullOrEmpty_s);
 		addMember(l,GenSameStringArray_s);

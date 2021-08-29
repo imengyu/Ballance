@@ -265,7 +265,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -314,8 +313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Type: 0
-  m_Min: {x: -2.4, y: 0, z: -2.4}
-  m_Max: {x: 2.4, y: 1, z: 2.4}
+  m_Min: {x: -2, y: 0, z: -2}
+  m_Max: {x: 2, y: 1, z: 2}
   m_Layer: 8
   m_EnableListener: 1
   m_DoNotAutoCreateAtAwake: 0
@@ -345,7 +344,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5726748937027950348}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 365916250524178757}

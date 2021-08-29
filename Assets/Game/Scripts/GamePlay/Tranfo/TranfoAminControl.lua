@@ -81,7 +81,7 @@ function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
 
   --延时关闭
   coroutine.resume(coroutine.create(function()
-    Yield(WaitForSeconds(2.5))
+    Yield(WaitForSeconds(2.456))
 
     self._AnimTrafo_Flashfield:SetActive(false)
     self._Flashfield = false
@@ -90,7 +90,7 @@ function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
       ballChangeCallback()
     end
     
-    Yield(WaitForSeconds(0.4))
+    Yield(WaitForSeconds(0.7))
 
     self._AnimTrafo_Animation.speed = 0
     --隐藏本体，显示占位变球器

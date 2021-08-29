@@ -25,6 +25,33 @@ function SectorManager:new()
 end
 function SectorManager:Start() 
   GamePlay.SectorManager = self
+  Game.Manager.GameDebugCommandServer:RegisterCommand('sector', function (eyword, fullCmd, argsCount, args)
+    local type = args[1]
+    if type == 'next' then
+      self:NextSector()
+    elseif type == 'set' then
+      local o, n = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 1)
+      if not o then return false end
+
+      self:SetCurrentSector(n)
+    elseif type == 'reset' then
+      local o, n = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 1)
+      if not o then return false end
+
+      self:ResetCurrentSector(n)
+    elseif type == 'reset-all' then
+      self:ResetAllSector()
+    else
+      Log.W(TAG, 'Unknow option '..type);
+      return false
+    end
+    return true
+  end, 1, "sector <next/set/reset/reset-all> 节管理器命令"..
+          "  next > 进入下一小节"..
+          "  set <sector:number> > 设置当前激活的小节"..
+          "  reset <sector:number> > 重置指定的小节"..
+          "  reset-all > 重置所有小节"
+  )
 end
 
 function SectorManager:DoInitAllModuls() 

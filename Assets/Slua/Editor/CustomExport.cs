@@ -55,7 +55,6 @@ namespace SLua
             add(typeof(System.Xml.XmlWriterSettings), null);
 
             add(typeof(UnityEngine.Input), null);
-            add(typeof(UnityEngine.AssetBundle), null);
             
             // add your custom class here
             // add( type, typename)
