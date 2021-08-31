@@ -21,9 +21,11 @@ namespace PhysicsRT
         private bool m_DoNotAutoCreateAtAwake = false;
         private IntPtr ptr = IntPtr.Zero;
 
-        public float springConstant = 1000.0f;
+        public float springStrength = 1000.0f;
         public float springDamping = 0.1f;
         public float springRestLength = 0.0f;
+        public bool onCompression = true;
+        public bool onExtension = true;
         [SerializeField]
         public PhysicsBody ConnectedBody;
 
@@ -97,9 +99,11 @@ namespace PhysicsRT
                 ConnectedBody != null ? ConnectedBody.GetPtr() : IntPtr.Zero,
                 m_PovitA.position,
                 m_PovitB.position,
-                springConstant,
+                springStrength,
                 springDamping,
-                springRestLength);
+                springRestLength,
+                onCompression,
+                onExtension);
         }
         public void Destroy() {
             if(CurrentPhysicsWorld == null || ptr == IntPtr.Zero)

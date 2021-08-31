@@ -3,7 +3,12 @@ guid: 117475e1e53b56d47abeb77948380144
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Modul_25_BridgeMat
+    second: {fileID: 2100000, guid: d06e5bbd4a00a744b8560249a0694fdc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

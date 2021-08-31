@@ -487,8 +487,10 @@ namespace PhysicsRT
                 }
 
                 shapeBodyPtr = shape.GetShapeBody(nextCreateForce, m_Layer);
-                if(CenterOfMass != Vector3.zero)
-                    currentShapeMassProperties = shape.ComputeMassProperties(m_Mass);
+                if(m_AutoComputeCenterOfMass)
+                  currentShapeMassProperties = shape.ComputeMassProperties(m_Mass);
+                else
+                  currentShapeMassProperties = IntPtr.Zero;
             }
             return shapeBodyPtr;
         }

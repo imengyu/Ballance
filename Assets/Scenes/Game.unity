@@ -543,7 +543,7 @@ MonoBehaviour:
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
-  DebugType: 2
+  DebugType: 0
   DebugInitPackages:
   - Enable: 1
     PackageName: core.debug

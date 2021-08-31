@@ -226,7 +226,7 @@ namespace PhysicsRT
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fnGetPhantomId(IntPtr ptr);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fnCreateSpringAction(IntPtr world, IntPtr body1, IntPtr body2, IntPtr position1, IntPtr position2, float springConstant, float springDamping, float springRestLength);
+  public delegate IntPtr fnCreateSpringAction(IntPtr world, IntPtr body1, IntPtr body2, IntPtr position1, IntPtr position2, float springStrength, float springDamping, float springRestLength, int onCompression, int onExtension);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fnDestroySpringAction(IntPtr world, IntPtr spring);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -842,13 +842,13 @@ namespace PhysicsRT
       return rs;
     }
 
-    public IntPtr CreateSpringAction(IntPtr world, IntPtr body1, IntPtr body2, Vector3 position1, Vector3 position2, float springConstant, float springDamping, float springRestLength) {
+    public IntPtr CreateSpringAction(IntPtr world, IntPtr body1, IntPtr body2, Vector3 position1, Vector3 position2, float springStrength, float springDamping, float springRestLength, bool onCompression, bool onExtension) {
       if (_CreateSpringAction == null)
         throw new ApiNotFoundException("CreateSpringAction");
 
       var position1Ptr = Vector3ToNative3(position1);
       var position2Ptr = Vector3ToNative3(position2);
-      var rs = _CreateSpringAction(world, body1, body2, position1Ptr, position2Ptr, springConstant, springDamping, springRestLength);
+      var rs = _CreateSpringAction(world, body1, body2, position1Ptr, position2Ptr, springStrength, springDamping, springRestLength, BoolToInt(onCompression), BoolToInt(onExtension));
       FreeNativeVector3(position1Ptr);
       FreeNativeVector3(position2Ptr);
 

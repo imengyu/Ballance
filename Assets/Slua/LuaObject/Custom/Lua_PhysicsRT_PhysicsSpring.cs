@@ -130,7 +130,7 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_springConstant(IntPtr l) {
+	static public int get_springStrength(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -143,7 +143,7 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 			#endif
 			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
 			pushValue(l,true);
-			pushValue(l,self.springConstant);
+			pushValue(l,self.springStrength);
 			return 2;
 		}
 		catch(Exception e) {
@@ -161,7 +161,7 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int set_springConstant(IntPtr l) {
+	static public int set_springStrength(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -175,7 +175,7 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
 			System.Single v;
 			checkType(l,2,out v);
-			self.springConstant=v;
+			self.springStrength=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -304,6 +304,134 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 			System.Single v;
 			checkType(l,2,out v);
 			self.springRestLength=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_onCompression(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.onCompression);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_onCompression(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
+			System.Boolean v;
+			checkType(l,2,out v);
+			self.onCompression=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_onExtension(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.onExtension);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_onExtension(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
+			System.Boolean v;
+			checkType(l,2,out v);
+			self.onExtension=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -583,9 +711,11 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 		addMember(l,GetPtr);
 		addMember(l,Create);
 		addMember(l,Destroy);
-		addMember(l,"springConstant",get_springConstant,set_springConstant,true);
+		addMember(l,"springStrength",get_springStrength,set_springStrength,true);
 		addMember(l,"springDamping",get_springDamping,set_springDamping,true);
 		addMember(l,"springRestLength",get_springRestLength,set_springRestLength,true);
+		addMember(l,"onCompression",get_onCompression,set_onCompression,true);
+		addMember(l,"onExtension",get_onExtension,set_onExtension,true);
 		addMember(l,"ConnectedBody",get_ConnectedBody,set_ConnectedBody,true);
 		addMember(l,"DoNotAutoCreateAtAwake",get_DoNotAutoCreateAtAwake,set_DoNotAutoCreateAtAwake,true);
 		addMember(l,"PovitA",get_PovitA,set_PovitA,true);

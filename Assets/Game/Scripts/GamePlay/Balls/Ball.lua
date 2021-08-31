@@ -39,7 +39,7 @@ function Ball:new()
     },
     MaxSpeed = 5,
     MinSpeed = 0.01,
-    SoundDelay = 1
+    SoundDelay = 2
   }
   self._RollSoundLockTick = 0
   self._RollSound = {
