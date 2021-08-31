@@ -24,9 +24,9 @@ public class PhysicsSpringEditorTool : EditorTool
 				EditorGUI.BeginChangeCheck();
 				
 				Handles.color = Color.yellow;
-				Handles.SphereHandleCap(122, val.PovitA, Quaternion.Euler(0,0,0), 0.6f, EventType.Repaint);
+				Handles.SphereHandleCap(122, val.PovitA.position, Quaternion.Euler(0,0,0), 0.6f, EventType.Repaint);
 				Handles.color = Color.red;
-				Handles.SphereHandleCap(122, val.PovitB, Quaternion.Euler(0,0,0), 0.6f, EventType.Repaint);
+				Handles.SphereHandleCap(122, val.PovitB.position, Quaternion.Euler(0,0,0), 0.6f, EventType.Repaint);
 
 				if (EditorGUI.EndChangeCheck()) {}
 			}

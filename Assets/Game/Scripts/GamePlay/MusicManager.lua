@@ -26,7 +26,6 @@ function MusicManager:new()
 
   self._CurrentIsAtmo = false
   self._CurrentAudioTick = 0
-  self._CurrentAudioTick2 = 0
   self._LastMusicIndex = 0
 end
 function MusicManager:Start() 
@@ -79,28 +78,33 @@ function MusicManager:FixedUpdate()
     if self._CurrentAudioTick > 0 then
       self._CurrentAudioTick = self._CurrentAudioTick - 1
     else
-      local musicIndex = math.random(#self.CurrentAudioTheme.musics)
-      if musicIndex == self._LastMusicIndex then
-        if musicIndex < #self.CurrentAudioTheme.musics then
-          musicIndex = musicIndex + 1
-        else
-          musicIndex = 1
+      if self._CurrentIsAtmo then
+        self._CurrentIsAtmo = false
+        if not self.CurrentAudioSource.isPlaying then
+          self.CurrentAudioSource.clip = self.CurrentAudioTheme.atmos[math.random(#self.CurrentAudioTheme.atmos)]
+          self.CurrentAudioSource.volume = CommonUtils.RandomFloat(0.5, 1)
+          self.CurrentAudioSource:Play()
         end
-      end
-      self._LastMusicIndex = musicIndex
-      if not self.CurrentAudioSource.isPlaying then 
-        self.CurrentAudioSource:Stop() 
-        self.CurrentAudioSource.clip = self.CurrentAudioTheme.musics[musicIndex]
-        self.CurrentAudioSource.volume = 1
-        self.CurrentAudioSource:Play()
-      elseif self._CurrentIsAtom then
-        Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 10)
-        LuaTimer.Add(10000, function ()
+        self._CurrentAudioTick = math.random(self.CurrentAudioTheme.atmoInterval, self.CurrentAudioTheme.atmoMaxInterval)
+      else
+        self._CurrentIsAtmo = math.random() > 0.5
+        local musicIndex = math.random(#self.CurrentAudioTheme.musics)
+        if musicIndex == self._LastMusicIndex then
+          if musicIndex < #self.CurrentAudioTheme.musics then
+            musicIndex = musicIndex + 1
+          else
+            musicIndex = 1
+          end
+        end
+        self._LastMusicIndex = musicIndex
+        if not self.CurrentAudioSource.isPlaying then 
+          self.CurrentAudioSource:Stop() 
           self.CurrentAudioSource.clip = self.CurrentAudioTheme.musics[musicIndex]
           self.CurrentAudioSource.volume = 1
           self.CurrentAudioSource:Play()
-        end)
+        end
       end
+      
 
       self._CurrentIsAtom = false
       self._CurrentAudioTick = math.random(self.CurrentAudioTheme.baseInterval, self.CurrentAudioTheme.maxInterval)
@@ -110,13 +114,7 @@ function MusicManager:FixedUpdate()
     if self._CurrentAudioTick2 > 0 then
       self._CurrentAudioTick2 = self._CurrentAudioTick2 - 1
     else
-      if not self.CurrentAudioSource.isPlaying then
-        self.CurrentAudioSource.clip = self.CurrentAudioTheme.atmos[math.random(#self.CurrentAudioTheme.atmos)]
-        self.CurrentAudioSource.volume = CommonUtils.RandomFloat(0.5, 1)
-        self.CurrentAudioSource:Play()
-      end
-      self._CurrentIsAtom = true
-      self._CurrentAudioTick2 = math.random(self.CurrentAudioTheme.atmoInterval, self.CurrentAudioTheme.atmoMaxInterval)
+      
     end
 
   end
@@ -139,6 +137,9 @@ end
 function MusicManager:EnableBackgroundMusic() 
   if self.CurrentAudioTheme ~= 0 then
     self.CurrentAudioEnabled = true 
+    self._CurrentAudioTick = math.random(2, self.CurrentAudioTheme.maxInterval / 2)
+    self._CurrentAudioTick2 = math.random(10, self.CurrentAudioTheme.atmoMaxInterval)
+
     --淡入当前正在播放的音乐
     if self.CurrentAudioSource.isPlaying then
       Game.UIManager.UIFadeManager:AddAudioFadeIn(self.CurrentAudioSource, 1)
@@ -155,6 +156,25 @@ function MusicManager:DisableBackgroundMusic()
   else
     self.CurrentAudioSource.volume = 1
   end
+end
+---从当前时间开始暂停音乐指定秒
+---@param sec number
+function MusicManager:DisableInSec(sec) 
+  if sec <= 0 or not self.CurrentAudioEnabled then
+    return
+  end
+  --淡出当前正在播放的音乐
+  if self.CurrentAudioSource.isPlaying then
+    Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 1)
+  end
+
+  self.CurrentAudioEnabled = false 
+  LuaTimer.Add(1000, function ()
+    self.CurrentAudioSource:Stop()
+  end)
+  LuaTimer.Add(sec*1000, function ()
+    self.CurrentAudioEnabled = true 
+  end)
 end
 
 function CreateClass_MusicManager() 

@@ -179,6 +179,9 @@ namespace PhysicsRT
         [Tooltip("指定是否在离开世界边界时隐藏GameObject")]
         public bool DeactiveWhenLeaveBroadphase = true;
 
+        public object CustomData = null;
+        public int CustomLayer = 0;
+
         private IntPtr ptr = IntPtr.Zero;
 
         public string SystemGroupName  { get => m_SystemGroupName; set { m_SystemGroupName = value; } }
@@ -537,9 +540,8 @@ namespace PhysicsRT
             Id = PhysicsApi.API.GetRigidBodyId(ptr);
             CurrentPhysicsWorld.AddBody(Id, this);
             
-            TryCreateSpring();
             TryCreateConstant();
-            ReApplyForce();
+            TryCreateSpring();
 
             nextCreateForce = false;
         }
@@ -580,10 +582,13 @@ namespace PhysicsRT
         }
         
         private void TryCreateSpring() {
-            var constants = GetComponents<PhysicsSpring>();
-            for(int i = 0; i < constants.Length; i++) 
-                if(!constants[i].DoNotAutoCreateAtAwake)
-                    constants[i].Create();
+            var springs = GetComponents<PhysicsSpring>();
+            for(int i = 0; i < springs.Length; i++) 
+                if(!springs[i].DoNotAutoCreateAtAwake)
+                    springs[i].TryCreate();
+            foreach(var c in pendingCreateSpring)
+                c.TryCreate();
+            pendingCreateSpring.Clear();
         }
         private void TryDestroySpring() {
             var constants = GetComponents<PhysicsSpring>();
@@ -592,6 +597,8 @@ namespace PhysicsRT
         }
 
         private List<PhysicsConstraint> pendingCreateConstant = new List<PhysicsConstraint>();
+        private List<PhysicsSpring> pendingCreateSpring = new List<PhysicsSpring>();
+        internal void AddPendingCreateSpring(PhysicsSpring c) { pendingCreateSpring.Add(c); }
         internal void AddPendingCreateConstant(PhysicsConstraint c) { pendingCreateConstant.Add(c); }
 
         private MotionType oldMotionType = MotionType.Fixed;
@@ -759,55 +766,6 @@ namespace PhysicsRT
             }
         }
     
-        //暂时存储刚体还未创建时用户设置的力，创建后统一设置
-        private enum StartTemForceType {
-           Force,
-           ForceAtPoint,
-           Torque,
-           LinearImpulse,
-           PointImpulse,
-           AngularImpulse
-        }
-        private class StartTemForce {
-            public StartTemForceType type;
-            public Vector3 force;
-            public Vector3 point;
-            public StartTemForce(StartTemForceType type, Vector3 force, Vector3 point) {
-                this.type = type;
-                this.force = force;
-                this.point = point;
-            }
-
-        }
-        private List<StartTemForce> fTemp = new List<StartTemForce>();
-        private void ReApplyForce() {
-            if(ptr != IntPtr.Zero) {
-                fTemp.ForEach((a) => {
-                    switch(a.type) {
-                        case StartTemForceType.Force: 
-                            ApplyForce(a.force);
-                            break;
-                        case StartTemForceType.ForceAtPoint: 
-                            ApplyForceAtPoint(a.force, a.point);
-                            break;
-                        case StartTemForceType.Torque: 
-                            ApplyTorque(a.force);
-                            break;
-                        case StartTemForceType.LinearImpulse: 
-                            ApplyForce(a.force);
-                            break;
-                        case StartTemForceType.PointImpulse: 
-                            ApplyPointImpulse(a.force, a.point);
-                            break;
-                        case StartTemForceType.AngularImpulse: 
-                            ApplyAngularImpulse(a.force);
-                            break;
-                    }
-                });
-                fTemp.Clear();
-            }
-        }
-
         /// <summary>
         /// Applies a force to the rigid body. The force is applied to the center of mass.
         /// </summary>
@@ -815,8 +773,6 @@ namespace PhysicsRT
         public void ApplyForce(Vector3 force) {
             if(ptr != IntPtr.Zero)
                 PhysicsApi.API.RigidBodyApplyForce(ptr, Time.deltaTime, force);
-            else
-                fTemp.Add(new StartTemForce(StartTemForceType.Force, force, Vector3.zero));
         }
         /// <summary>
         /// Applies a force (in world space) to the rigid body at the point p in world space.
@@ -826,8 +782,6 @@ namespace PhysicsRT
         public void ApplyForceAtPoint(Vector3 force, Vector3 point) {
             if(ptr != IntPtr.Zero)
                 PhysicsApi.API.RigidBodyApplyForceAtPoint(ptr, Time.deltaTime, force, point);
-            else
-                fTemp.Add(new StartTemForce(StartTemForceType.ForceAtPoint, force, point));
         }
         /// <summary>
         /// Applies the specified torque (in world space) to the rigid body.
@@ -837,8 +791,6 @@ namespace PhysicsRT
         public void ApplyTorque(Vector3 torque) {
             if(ptr != IntPtr.Zero)
                 PhysicsApi.API.RigidBodyApplyTorque(ptr, Time.deltaTime, torque);
-            else
-                fTemp.Add(new StartTemForce(StartTemForceType.Torque, torque, Vector3.zero));
         }
         /// <summary>
         /// Applies an impulse (in world space) to the center of mass.
@@ -847,8 +799,6 @@ namespace PhysicsRT
         public void ApplyLinearImpulse(Vector3 imp) {
             if(ptr != IntPtr.Zero)
                 PhysicsApi.API.RigidBodyApplyLinearImpulse(ptr, imp);
-            else
-                fTemp.Add(new StartTemForce(StartTemForceType.LinearImpulse, imp, Vector3.zero));
         }
         /// <summary>
         /// Apply an impulse at the point p in world space.
@@ -858,8 +808,6 @@ namespace PhysicsRT
         public void ApplyPointImpulse(Vector3 imp, Vector3 point) {
             if(ptr != IntPtr.Zero)
                 PhysicsApi.API.RigidBodyApplyPointImpulse(ptr, imp, point);
-            else
-                fTemp.Add(new StartTemForce(StartTemForceType.PointImpulse, imp, point));
         }
         /// <summary>
         /// Apply an instantaneous change in angular velocity around center of mass.
@@ -868,8 +816,6 @@ namespace PhysicsRT
         public void ApplyAngularImpulse(Vector3 imp) {
             if(ptr != IntPtr.Zero)
                 PhysicsApi.API.RigidBodyApplyAngularImpulse(ptr, imp);
-            else
-                fTemp.Add(new StartTemForce(StartTemForceType.AngularImpulse, imp, Vector3.zero));
         }
 
         [SLua.CustomLuaClass]

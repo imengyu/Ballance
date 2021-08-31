@@ -459,6 +459,39 @@ public class Lua_Ballance2_Utils_Log : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int GetLogColor_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Utils.LogLevel a1;
+			a1 = (Ballance2.Utils.LogLevel)LuaDLL.luaL_checkinteger(l, 1);
+			var ret=Ballance2.Utils.Log.GetLogColor(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Utils.Log");
@@ -473,6 +506,7 @@ public class Lua_Ballance2_Utils_Log : LuaObject {
 		addMember(l,UnRegisterLogObserver_s);
 		addMember(l,GetLogObserver_s);
 		addMember(l,LogLevelToString_s);
+		addMember(l,GetLogColor_s);
 		createTypeMetatable(l,null, typeof(Ballance2.Utils.Log));
 	}
 }

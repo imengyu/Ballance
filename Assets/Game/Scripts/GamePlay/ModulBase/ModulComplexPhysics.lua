@@ -8,25 +8,41 @@ function ModulComplexPhysics:new()
   self._PhysicsBody2 = nil ---@type PhysicsBody
   self._PhysicsBody3 = nil ---@type PhysicsBody
   self._PhysicsBody4 = nil ---@type PhysicsBody
+  self._PhysicsBody1CustomLayerName = nil
+  self._PhysicsBody2CustomLayerName = nil
+  self._PhysicsBody3CustomLayerName = nil
+  self._PhysicsBody4CustomLayerName = nil
 end
-function ModulComplexPhysics:GamePause()
-  self._PhysicsBody1:ForceDeactive()
-  self._PhysicsBody2:ForceDeactive()
-  if self._PhysicsBody3 ~= nil then self._PhysicsBody3:ForceDeactive() end
-  if self._PhysicsBody4 ~= nil then self._PhysicsBody4:ForceDeactive() end
-end
-function ModulComplexPhysics:GameResume()
-  self._PhysicsBody1:ForceActive()
-  self._PhysicsBody2:ForceActive()
-  if self._PhysicsBody3 ~= nil then self._PhysicsBody3:ForceActive() end
-  if self._PhysicsBody4 ~= nil then self._PhysicsBody4:ForceActive() end
+function ModulComplexPhysics:Start()
+  if not IsNilOrEmpty(self._PhysicsBody1CustomLayerName) then
+    self._PhysicsBody1.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsBody1CustomLayerName)
+  end
+  if not IsNilOrEmpty(self._PhysicsBody2CustomLayerName) then
+    self._PhysicsBody2.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsBody2CustomLayerName)
+  end
+  if self._PhysicsBody3 ~= nil then 
+    self._PhysicsBody3:ForcePhysics() 
+    if not IsNilOrEmpty(self._PhysicsBody3CustomLayerName) then
+      self._PhysicsBody3.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsBody3CustomLayerName)
+    end
+  end
+  if self._PhysicsBody4 ~= nil then 
+    self._PhysicsBody4:ForcePhysics() 
+    if not IsNilOrEmpty(self._PhysicsBody4CustomLayerName) then
+      self._PhysicsBody4.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsBody4CustomLayerName)
+    end
+  end
 end
 function ModulComplexPhysics:Active()
   self.gameObject:SetActive(true)
   self._PhysicsBody1:ForcePhysics()
   self._PhysicsBody2:ForcePhysics()
-  if self._PhysicsBody3 ~= nil then self._PhysicsBody3:ForcePhysics() end
-  if self._PhysicsBody4 ~= nil then self._PhysicsBody4:ForcePhysics() end
+  if self._PhysicsBody3 ~= nil then 
+    self._PhysicsBody3:ForcePhysics() 
+  end
+  if self._PhysicsBody4 ~= nil then 
+    self._PhysicsBody4:ForcePhysics() 
+  end
 end
 function ModulComplexPhysics:Deactive()
   self.gameObject:SetActive(false)

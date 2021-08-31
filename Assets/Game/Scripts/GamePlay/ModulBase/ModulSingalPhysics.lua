@@ -5,10 +5,14 @@ ModulSingalPhysics = ModulBase:extend()
 
 function ModulSingalPhysics:new()
   self._PhysicsBody = nil
+  self._PhysicsBodyCustomLayerName = nil
 end
 function ModulSingalPhysics:Start()
   if self._PhysicsBody == nil then 
     self._PhysicsBody = self.gameObject:GetComponent(PhysicsRT.PhysicsBody) ---@type PhysicsBody
+  end
+  if not IsNilOrEmpty(self._PhysicsBodyCustomLayerName) then
+    self._PhysicsBody.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsBodyCustomLayerName)
   end
 end
 

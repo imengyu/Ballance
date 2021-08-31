@@ -8,6 +8,8 @@ BallPaper = Ball:extend()
 function BallPaper:new()
   BallPaper.super.new(self)
   self._PaperPiecesSound = nil
+  self._HitSound.Names.All = 'core.sounds:Hit_Paper.wav'
+  self._RollSound.Names.All = 'core.sounds:Roll_Paper.wav'
 end
 
 function BallPaper:Start()

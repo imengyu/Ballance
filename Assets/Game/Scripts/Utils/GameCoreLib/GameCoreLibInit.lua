@@ -10,6 +10,10 @@ function GameObjectToGameLuaObjectHost(go)
   end
 end
 
+function IsNilOrEmpty(value)
+  return value == nil or value == ''
+end
+
 ---带格式和参数打印到 `stdout`。
 ---@param fmt string 格式
 function Printf(fmt, ...)

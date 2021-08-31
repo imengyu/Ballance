@@ -60,4 +60,5 @@ namespace Ballance2.Sys.Bridge
     [SLua.CustomLuaClass]
     [LuaApiDescription("调试命令回调")]
     public delegate bool CommandDelegate(string keyword, string fullCmd, int argsCount, string[] args);
+    
 }

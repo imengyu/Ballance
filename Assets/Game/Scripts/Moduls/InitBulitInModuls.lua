@@ -23,3 +23,79 @@ function InitBulitInModuls()
 
   BulitInModulsLoaded = true
 end
+
+---注册内置机关的自定义声音组
+function InitBulitInModulCustomSounds()
+  ---@param type string
+  ---@param ball Ball
+  ---@param vol number
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Dome', function (type, ball, vol)
+    if type == 'hit' then
+      local sound = ball._HitSound.SoundDome ---@type AudioSource
+      if sound then
+        sound.volume = vol
+        if not sound.isPlaying then
+          sound:Play()
+        end
+      end
+    end
+  end)
+  ---@param type string
+  ---@param ball Ball
+  ---@param vol number
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Wood', function (type, ball, vol)
+    if type == 'hit' then
+      if ball._HitSound.SoundWood then
+        ball._HitSound.SoundWood.volume = vol
+        ball._HitSound.SoundWood:Play()
+      end
+    elseif type == 'roll' then
+      if ball._RollSound.SoundWood then
+        ball._RollSound.SoundWood.volume = vol
+      end
+    end
+  end)
+  ---@param type string
+  ---@param ball Ball
+  ---@param vol number
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Stone', function (type, ball, vol)
+    if type == 'hit' then
+      if ball._HitSound.SoundStone then
+        ball._HitSound.SoundStone.volume = vol
+        ball._HitSound.SoundStone:Play()
+      end
+    elseif type == 'roll' then
+      if ball._RollSound.SoundStone then
+        ball._RollSound.SoundStone.volume = vol
+      end
+    end
+  end)
+  ---@param type string
+  ---@param ball Ball
+  ---@param vol number
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('WoodOnlyHit', function (type, ball, vol)
+    if type == 'hit' then
+      local sound = ball._HitSound.SoundWood
+      if sound then
+        sound.volume = vol
+        if not sound.isPlaying then
+          sound:Play()
+        end
+      end
+    end
+  end)
+  ---@param type string
+  ---@param ball Ball
+  ---@param vol number
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('StoneOnlyHit', function (type, ball, vol)
+    if type == 'hit' then
+      local sound = ball._HitSound.SoundStone
+      if sound then
+        sound.volume = vol
+        if not sound.isPlaying then
+          sound:Play()
+        end
+      end
+    end
+  end)
+end

@@ -16,6 +16,13 @@ BallPiecesControll = {
   _TimerIds = {}
 } 
 
+---球碎片数据
+---@class BallPiecesData
+---@field bodys PhysicsBody[]
+---@field parent GameObject
+---@field throwed boolean
+BallPiecesData = {}
+
 function CreateClass_BallPiecesControll()
   
   function BallPiecesControll:new(o)
@@ -30,42 +37,45 @@ function CreateClass_BallPiecesControll()
   end
     
   ---抛出碎片
-  ---@param parent GameObject 父级
+  ---@param data BallPiecesData
   ---@param pos Vector3
   ---@param minForce number 推动最小力
   ---@param maxForce number 推动最大力
   ---@param timeLive number 碎片存活时间（30个tick为单位）
-  function BallPiecesControll:ThrowPieces(parent, pos, minForce, maxForce, timeLive)
+  function BallPiecesControll:ThrowPieces(data, pos, minForce, maxForce, timeLive)
+
+    local parent = data.parent
     if not parent.activeSelf then
       parent:SetActive(true)
 
       --还原初始状态
       ObjectStateBackupUtils.RestoreObjectAndChilds(parent)
       --设置位置
-      parent.transform.position = pos
+      data.parent.transform.position = pos
+      data.throwed = true
 
-      for i = 0, parent.transform.childCount - 1 do
-        local child = parent.transform:GetChild(i)
-        local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
-        local forceDir = child.localPosition
-        child.gameObject:SetActive(true)
+      for _, body in ipairs(data.bodys) do
+        local forceDir = body.transform.localPosition
+        body.gameObject:SetActive(true)
         forceDir:Normalize() --力的方向是从原点向碎片位置
         body:ForcePhysics() --物理
-        body:ApplyPointImpulse(forceDir * CommonUtils.RandomFloat(minForce, maxForce), Vector3.up) --施加力
+        body:ApplyLinearImpulse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
       end
 
       ---延时消失
       local iid = parent:GetInstanceID()
       self._TimerIds[iid] = LuaTimer.Add((timeLive or 20) * 2000, function ()
         self._TimerIds[iid] = nil
-        self:ResetPieces(parent)
+        self:ResetPieces(data)
       end)
 
     end
   end
   ---回收碎片
-  ---@param parent GameObject 父级
-  function BallPiecesControll:ResetPieces(parent)
+  ---@param data BallPiecesData
+  function BallPiecesControll:ResetPieces(data)
+
+    local parent = data.parent
     if parent.activeSelf then
       
       local iid = parent:GetInstanceID()
@@ -76,9 +86,7 @@ function CreateClass_BallPiecesControll()
       end
 
       --去除物理
-      for i = 0, parent.transform.childCount - 1 do
-        local child = parent.transform:GetChild(i)
-        local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
+      for _, body in ipairs(data.bodys) do
         body:ForceDePhysics() 
       end
 
@@ -86,6 +94,8 @@ function CreateClass_BallPiecesControll()
       for i = 0, parent.transform.childCount - 1 do
         FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 3, true, nil)
       end
+
+      data.throwed = false
 
       --延时
       LuaTimer.Add(2990, function ()

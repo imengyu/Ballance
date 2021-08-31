@@ -23,6 +23,7 @@ CamRotateType = {
 ---@field _CameraNormalX number
 ---@field _CameraNormalY number
 ---@field _CameraSpaceY number
+---@field _PosFrame Transform 
 ---@field CamRightVector Vector3 获取摄像机右侧向量 [R]
 ---@field CamLeftVector Vector3 获取摄像机左侧向量 [R]
 ---@field CamForwerdVector Vector3 获取摄像机向前向量 [R]
@@ -36,8 +37,8 @@ CamManager = ClassicObject:extend()
 function CamManager:new()
   self._CameraRotateTime = 0.5
   self._CameraRotateUpTime = 0.8
-  self._CameraNormalX = -16
-  self._CameraNormalY = 26
+  self._CameraNormalX = -14
+  self._CameraNormalY = 22
   self._CameraSpaceY = 60
   self._CameraSpaceX = -10
   self.CamRightVector = Vector3.right

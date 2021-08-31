@@ -105,7 +105,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -235,7 +234,7 @@ MonoBehaviour:
   m_CollidableQualityType: -1
   m_Mass: 0.2
   m_LinearDamping: 1.5
-  m_AngularDamping: 0.1
+  m_AngularDamping: 0.4
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1
@@ -249,7 +248,7 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
-  m_Friction: 0.5
+  m_Friction: 0.65
   m_Restitution: 0.4
   m_Layer: 3
   m_InertiaTensor:
@@ -279,3 +278,4 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  DeactiveWhenLeaveBroadphase: 1

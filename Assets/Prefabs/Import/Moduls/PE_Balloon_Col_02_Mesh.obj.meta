@@ -3,7 +3,12 @@ guid: 90a8b1ce8248e484a98e646f18a4a900
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PE_Balloon_Col_02_MeshMat
+    second: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   materials:
     materialImportMode: 2
     materialName: 0

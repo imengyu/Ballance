@@ -848,7 +848,7 @@ namespace PhysicsRT
 
       var position1Ptr = Vector3ToNative3(position1);
       var position2Ptr = Vector3ToNative3(position2);
-      var rs = _CreateSpringAction(world, body1, body1, position1Ptr, position2Ptr, springConstant, springDamping, springRestLength);
+      var rs = _CreateSpringAction(world, body1, body2, position1Ptr, position2Ptr, springConstant, springDamping, springRestLength);
       FreeNativeVector3(position1Ptr);
       FreeNativeVector3(position2Ptr);
 

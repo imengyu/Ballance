@@ -10,6 +10,7 @@ local GameError = Ballance2.Sys.Debug.GameError
 local LuaUtils = Ballance2.Utils.LuaUtils
 local DebugUtils = Ballance2.Utils.DebugUtils
 local SmoothFly = Ballance2.Game.Utils.SmoothFly
+local SpeedMeter = Ballance2.Game.SpeedMeter
 local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
 local Rect = UnityEngine.Rect
 
@@ -42,6 +43,8 @@ BallControlStatus = {
   LockMode = 3,
   ---释放模式2（球仍然有物理效果，但无法控制，摄像机跟随看着球）
   FreeMode = 4,
+  ---无物理效果，无法控制，但摄像机不跟随，但看着球
+  LockLookMode = 5,
 }
 
 ---@class BallRegStorage
@@ -64,6 +67,7 @@ local BallRegStorage = {
 ---@field CanControll boolean 获取当前用户是否可以控制球 [R]
 ---@field CanControllCamera boolean 获取当前用户是否可以控制摄像机 [R]
 ---@field ShiftPressed boolean 获取当前用户是否按下Shift键 [R]
+---@field PosFrame Transform 获取当前球的位置 [R]
 BallManager = ClassicObject:extend()
 
 local TAG = 'BallManager'
@@ -127,6 +131,7 @@ function BallManager:Start()
   end)
   self._private.GameSettings = GameSettings
   self._DebugMode = GameManager.DebugMode
+  self.PosFrame = GamePlay.CamManager._PosFrame
 
   --初始化键盘侦听
   self._private.keyListener = KeyListener.Get(self.gameObject)
@@ -221,13 +226,20 @@ function BallManager:RegisterBall(name, gameObject)
   end
 
   --检查是否添加了刚体组件
-  local body = gameObject:GetComponent(PhysicsRT.PhysicsBody)
+  local body = gameObject:GetComponent(PhysicsRT.PhysicsBody) ---@type PhysicsBody
   if(body == nil) then
     GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, TAG, 'Not fuoud PhysicsBody on Ball {0} , please add it before call RegisterBall', { name })
     return
   end
-  
-  gameObject:SetActive(false)
+
+  --添加刚体的接触事件，为球声音做准备
+  body.AddContactListener = true
+  --添加速度计
+  local speedMeter = gameObject:GetComponent(SpeedMeter) ---@type SpeedMeter
+  if(speedMeter == nil) then
+    speedMeter = gameObject:AddComponent(SpeedMeter)
+    speedMeter.Enabled = true
+  end
 
   local ball = GameLuaObjectHost.GetLuaClassFromGameObject(gameObject)
   if(ball == nil) then
@@ -239,15 +251,18 @@ function BallManager:RegisterBall(name, gameObject)
   end
 
   --设置名称
-  if(gameObject.name ~= name) then
-    gameObject.name = name
-  end
+  if(gameObject.name ~= name) then gameObject.name = name end
+
+  gameObject:SetActive(false)
 
   table.insert(self._private.registerBalls, {
     name = name,
     ball = ball,
     rigidbody = body
   })
+
+  --初始化球声音
+  self:_InitBallSounds(ball, speedMeter, body)
 end
 ---取消注册球 
 ---@param name string 球名称
@@ -366,6 +381,12 @@ function BallManager:_FlushCurrentBallAllStatus()
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
+  elseif status == BallControlStatus.LockLookMode then
+    self.CanControll = false
+    self.CanControllCamera = false
+    self:_ActiveCurrentBall()
+    self:_PhysicsOrDePhysicsCurrentBall(false)
+    GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
   end
 end
 ---取消激活当前的球
@@ -647,6 +668,28 @@ function BallManager:RemoveBallPush(t)
 end
 
 --#endregion
+
+--#region 球声音方法
+
+---@param ball Ball
+---@param speedMeter SpeedMeter
+---@param body PhysicsBody
+function BallManager:_InitBallSounds(ball, speedMeter, body)
+  speedMeter.Enabled = true
+  
+  body.onCollisionEnter = function (body, other, info)
+    GamePlay.BallSoundManager:HandlerBallCollisionEnter(ball, speedMeter, body, other, info)
+  end 
+  body.onCollisionStay = function (body, other, info)
+    GamePlay.BallSoundManager:HandlerBallCollisionStay(ball, speedMeter, body, other, info)
+  end 
+  body.onCollisionLeave = function (body, other)
+    GamePlay.BallSoundManager:HandlerBallCollisionLeave(ball, speedMeter, body, other)
+  end 
+end
+
+--#endregion
+
 
 function CreateClass_BallManager()
   return BallManager() 

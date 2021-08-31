@@ -44,6 +44,7 @@ class PhysicsBodyEditor : Editor
         pSystemGroupName = serializedObject.FindProperty("m_SystemGroupName"); 
         pSubSystemId = serializedObject.FindProperty("m_SubSystemId"); 
         pSubSystemDontCollideWith = serializedObject.FindProperty("m_SubSystemDontCollideWith");   
+        pCustomLayer = serializedObject.FindProperty("CustomLayer");   
 
         bOpenCollisionFilterInfo = EditorPrefs.GetBool("PhysicsBodyEditor_bOpenCollisionFilterInfo", false);
 
@@ -75,6 +76,7 @@ class PhysicsBodyEditor : Editor
     private SerializedProperty pDoNotAutoCreateAtAwake;
     private SerializedProperty pAutoComputeCenterOfMass;
     private SerializedProperty pAutoControlActive;
+    private SerializedProperty pCustomLayer;
 
     private SerializedProperty pLayer;
     private SerializedProperty pSystemGroupName;
@@ -132,6 +134,7 @@ class PhysicsBodyEditor : Editor
             EditorGUI.EndDisabledGroup();
         }
       
+        EditorGUILayout.PropertyField(pCustomLayer);
         if(EditorApplication.isPlaying) EditorGUILayout.LabelField("Ptr: 0x" + instance.GetPtr().ToString("X"));
         
         if (EditorGUI.EndChangeCheck())

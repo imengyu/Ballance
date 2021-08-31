@@ -117,7 +117,7 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
   local sector = GamePlay.GamePlayManager.CurrentSector
   --激活当前节的机关
   local s = self.CurrentLevelSectors[sector]
-  if s == nil then
+  if s == nil and sector ~= 0 then
     Log.E(TAG, 'Sector '..sector..' not found')
     GamePlay.GamePlayManager.CurrentSector = 0 
     return

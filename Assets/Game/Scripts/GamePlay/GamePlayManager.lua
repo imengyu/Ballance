@@ -32,7 +32,7 @@ function GamePlayManager:new()
   self.CurrentPoint = 0 ---当前时间点数
   self.CurrentLife = 0 ---当前生命数
   self.CurrentSector = 0 ---当前小节
-  self.CurrentLevelPass = false
+  self.CurrentLevelPass = false ---获取是否过关
   
   self.CurrentDisableStart = false
   self.CurrentEndWithUFO = false
@@ -66,9 +66,23 @@ function GamePlayManager:Start()
   Game.Manager.GameDebugCommandServer:RegisterCommand('resume', function () self:ResumeLevel() return true end, 0, 'resume > 恢复')
   Game.Manager.GameDebugCommandServer:RegisterCommand('unload', function () self:QuitLevel() return true end, 0, 'unload > 卸载关卡')
   Game.Manager.GameDebugCommandServer:RegisterCommand('nextlev', function () self:Fall() return true end, 0, 'nextlev > 加载下一关')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('gos', function (keyword, fullCmd, argsCount, args) 
+    local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
+    if not ox then return false end
+      GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
+      GamePlay.SectorManager:SetCurrentSector(nx)
+      self:_SetCamPos()
+      self:_Start(true)
+    return true
+  end, 1, 'gos <count:number> > 跳转到指定的小节')
+  Game.Manager.GameDebugCommandServer:RegisterCommand('rebirth', function () 
+    GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
+    self:_SetCamPos()
+    self:_Start(true) 
+  return true end, 0, 'rebirth > 重新出生')
   Game.Manager.GameDebugCommandServer:RegisterCommand('addlife', function () self:AddLife() return true end, 0, 'addlife > 添加一个生命球')
   Game.Manager.GameDebugCommandServer:RegisterCommand('addtime', function (keyword, fullCmd, argsCount, args) 
-    local ox, nx = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 0)
+    local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
     if not ox then return false end
     self:AddPoint(tonumber(nx))  
     return true
@@ -181,6 +195,12 @@ end
 
 ---LevelBuilder 就绪，现在GamePlayManager进行初始化
 function GamePlayManager:_InitAndStart() 
+
+  self.CurrentLevelPass = false
+  self.CurrentDisableStart = false
+  self._IsGamePlaying = false
+  self._IsCountDownPoint = false
+
   coroutine.resume(coroutine.create(function()
     --UI
     Game.UIManager:CloseAllPage()
@@ -323,6 +343,9 @@ function GamePlayManager:Fall()
 
   if self.CurrentLevelPass then return end
 
+  if self._DethLock then return end
+  self._DethLock = true
+
   --下落音乐
   self._SoundBallFall.volume = 1
   self._SoundBallFall:Play()
@@ -355,6 +378,8 @@ function GamePlayManager:Fall()
       Yield(WaitForSeconds(1))
       GameUI.GamePlayUI:RemoveLifeBall()
 
+      self._DethLock = false
+
     end))
   else
     
@@ -369,6 +394,8 @@ function GamePlayManager:Fall()
       --延时显示失败菜单
       Yield(WaitForSeconds(1))
       Game.UIManager:GoPage('PageGameFail') 
+
+      self._DethLock = false
     end))
   end
 end
@@ -377,23 +404,30 @@ function GamePlayManager:Pass()
 
   if self.CurrentLevelPass then return end
 
-  Game.Mediator:DispatchGlobalEvent('GAME_PASS', '*', {})
-
   self.CurrentLevelPass = true
   self._SoundLastSector:Stop() --停止最后一小节的音乐
   self:_Stop(BallControlStatus.UnleashingMode)
 
+  GamePlay.BallManager.CanControllCamera = false
+  Game.Mediator:DispatchGlobalEvent('GAME_PASS', '*', {})
+
   if self.CurrentEndWithUFO then --播放结尾的UFO动画
     self._SoundLastFinnal:Play() --播放音乐
-
-    --#TODO: UFO动画
+    GamePlay.UFOAnimController:StartSeq()
   else
     self._SoundFinnal:Play() --播放音乐
-    LuaTimer.Add(4000, function ()
+    LuaTimer.Add(6000, function ()
       GameUI.WinScoreUIControl:StartSeq()
     end)
   end
 
+end
+
+function GamePlayManager:UfoAnimFinish() 
+  self._SoundFinnal:Play()
+  GamePlay.MusicManager:DisableBackgroundMusic()
+  GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
+  GameUI.WinScoreUIControl:StartSeq()
 end
 
 ---激活变球序列

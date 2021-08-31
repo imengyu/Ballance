@@ -493,7 +493,7 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.Transform v;
 			checkType(l,2,out v);
 			self.PovitA=v;
 			pushValue(l,true);
@@ -557,7 +557,7 @@ public class Lua_PhysicsRT_PhysicsSpring : LuaObject {
 			#endif
 			#endif
 			PhysicsRT.PhysicsSpring self=(PhysicsRT.PhysicsSpring)checkSelf(l);
-			UnityEngine.Vector3 v;
+			UnityEngine.Transform v;
 			checkType(l,2,out v);
 			self.PovitB=v;
 			pushValue(l,true);

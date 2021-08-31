@@ -1,5 +1,5 @@
 
-DefaultHightScoreLev01_11Data = {
+local DefaultHightScoreLev01_11Data = {
   { name = "Mr. Default", score = 4000, date = "2004/8/8" },
   { name = "Mr. Default", score = 3600, date = "2004/8/8" },
   { name = "Mr. Default", score = 3200, date = "2004/8/8" },

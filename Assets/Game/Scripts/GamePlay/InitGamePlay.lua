@@ -10,6 +10,7 @@ local GameSectorManagerGameObject = nil
 local GameMusicManagerGameObject = nil
 local GameTranfoManagerGameObject = nil
 local GameLevelBrizGameObject = nil
+local GameUFOAnimControllerGameObject = nil
 
 ---模块全局索引
 ---@class GamePlay
@@ -21,6 +22,8 @@ GamePlay = {
   SectorManager = nil, ---@type SectorManager
   MusicManager = nil, ---@type MusicManager
   TranfoManager = nil, ---@type TranfoAminControl
+  UFOAnimController = nil, ---@type UFOAnimController
+  BallSoundManager = nil, ---@type BallSoundManager
 }
 
 ---游戏玩模块初始化
@@ -45,6 +48,8 @@ function GamePlayInit(callback)
     GameTranfoManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('AminTranfo.prefab'), 'GameTranfoManager')
     Yield(WaitForSeconds(0.05))
     GameLevelBrizGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('LevelBriz.prefab'), 'GameLevelBriz')
+    Yield(WaitForSeconds(0.05))
+    GameUFOAnimControllerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('PE_UFO.prefab'), 'GameUFOAnimController')
 
     Game.GamePlay = GamePlay
 
@@ -61,6 +66,7 @@ function GamePlayUnload()
   GamePlay.SectorManager = nil
   GamePlay.MusicManager = nil
   GamePlay.TranfoManager = nil
+  GamePlay.UFOAnimController = nil
   
   if (not Slua.IsNull(BallsManagerGameObject)) then UnityEngine.Object.Destroy(BallsManagerGameObject) end 
   if (not Slua.IsNull(GamePlayManagerGameObjec)) then UnityEngine.Object.Destroy(GamePlayManagerGameObjec) end 
@@ -69,7 +75,9 @@ function GamePlayUnload()
   if (not Slua.IsNull(GameMusicManagerGameObject)) then UnityEngine.Object.Destroy(GameMusicManagerGameObject) end 
   if (not Slua.IsNull(GameTranfoManagerGameObject)) then UnityEngine.Object.Destroy(GameTranfoManagerGameObject) end 
   if (not Slua.IsNull(GameLevelBrizGameObject)) then UnityEngine.Object.Destroy(GameLevelBrizGameObject) end 
+  if (not Slua.IsNull(GameUFOAnimControllerGameObject)) then UnityEngine.Object.Destroy(GameUFOAnimControllerGameObject) end 
 
+  GameUFOAnimControllerGameObject = nil
   GameLevelBrizGameObject = nil
   GameTranfoManagerGameObject = nil
   GameMusicManagerGameObject = nil

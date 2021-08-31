@@ -125,6 +125,8 @@ namespace SLua {
 				Lua_Ballance2_Game_LevelAssets.reg,
 				Lua_Ballance2_Game_GameLevelLoaderNative.reg,
 				Lua_Ballance2_Game_CamFollow.reg,
+				Lua_Ballance2_Game_DistanceChecker.reg,
+				Lua_Ballance2_Game_SpeedMeter.reg,
 				Lua_Ballance2_Game_Utils_SmoothFlyType.reg,
 				Lua_Ballance2_Game_Utils_SmoothFly.reg,
 				Lua_Ballance2_Game_Utils_SkyBoxUtils.reg,

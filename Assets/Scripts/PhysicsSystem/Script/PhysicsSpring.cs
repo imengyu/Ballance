@@ -7,16 +7,15 @@ namespace PhysicsRT
     [AddComponentMenu("PhysicsRT/Physics Spring")]
     [DefaultExecutionOrder(250)]
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(PhysicsBody))]
     [SLua.CustomLuaClass]
     public class PhysicsSpring : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("获取弹簧锚点A (世界坐标)")]
-        private Vector3 m_PovitA = new Vector3(0.0f,-0.5f,0.0f);
+        private Transform m_PovitA;
         [SerializeField]
         [Tooltip("获取弹簧锚点B (世界坐标)")]
-        private Vector3 m_PovitB = new Vector3(0.0f,0.5f,0.0f);
+        private Transform m_PovitB;
         [Tooltip("在 Awake 时不自动创建，设置为 false 后您需要手动调用 ForceReCreate 来创建")]
         [SerializeField]
         private bool m_DoNotAutoCreateAtAwake = false;
@@ -37,12 +36,12 @@ namespace PhysicsRT
         /// 获取弹簧锚点A (世界坐标)
         /// </summary>
         /// <value></value>
-        public Vector3 PovitA { get => m_PovitA; set => m_PovitA = value; }
+        public Transform PovitA { get => m_PovitA; set => m_PovitA = value; }
         /// <summary>
         /// 获取弹簧锚点B (世界坐标)
         /// </summary>
         /// <value></value>
-        public Vector3 PovitB { get => m_PovitB; set => m_PovitB = value; }
+        public Transform PovitB { get => m_PovitB; set => m_PovitB = value; }
 
         /// <summary>
         /// 重新创建弹簧
@@ -61,10 +60,32 @@ namespace PhysicsRT
 
         public IntPtr GetPtr() { return ptr; }
 
+        internal bool TryCreate()
+        {
+          if (!enabled)
+            return false;
+          if (ptr == IntPtr.Zero)
+          {
+            var thisBody = GetComponent<PhysicsBody>();
+            if (thisBody.GetPtr() != IntPtr.Zero && (ConnectedBody == null || ConnectedBody.GetPtr() != IntPtr.Zero))
+            {
+              Create();
+              return true;
+            }
+            else if (ConnectedBody != null && ConnectedBody.GetPtr() == IntPtr.Zero)
+              ConnectedBody.AddPendingCreateSpring(this);
+            else if (thisBody.GetPtr() == IntPtr.Zero)
+              thisBody.AddPendingCreateSpring(this);
+          }
+          return false;
+        }
+
         public void Create() {
             if(ptr != IntPtr.Zero) {
                 return;
-            }
+            }   
+            if(CurrentPhysicsWorld == null) 
+              CurrentPhysicsWorld = PhysicsWorld.GetCurrentScensePhysicsWorld();
             if(CurrentPhysicsWorld == null) {
                 Debug.LogWarning("Not found PhysicsWorld in this scense, please add it before use PhysicsBody.");
                 return;
@@ -74,8 +95,8 @@ namespace PhysicsRT
                 CurrentPhysicsWorld.GetPtr(),
                 GetComponent<PhysicsBody>().GetPtr(),
                 ConnectedBody != null ? ConnectedBody.GetPtr() : IntPtr.Zero,
-                m_PovitA,
-                m_PovitB,
+                m_PovitA.position,
+                m_PovitB.position,
                 springConstant,
                 springDamping,
                 springRestLength);

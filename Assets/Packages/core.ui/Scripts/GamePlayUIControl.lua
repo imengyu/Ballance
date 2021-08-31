@@ -19,6 +19,7 @@ function CreateGamePlayUI(package)
   local PageGameFail = GameUIManager:RegisterPage('PageGameFail', 'PageCommon')
   local PageGameQuitAsk = GameUIManager:RegisterPage('PageGameQuitAsk', 'PageCommon')
   local PageGameRestartAsk = GameUIManager:RegisterPage('PageGameRestartAsk', 'PageCommon')
+  local PageGameWinRestartAsk = GameUIManager:RegisterPage('PageGameWinRestartAsk', 'PageCommon')
   local PageGameWin = GameUIManager:RegisterPage('PageGameWin', 'PageCommon')
   local PageEndScore = GameUIManager:RegisterPage('PageEndScore', 'PageTransparent')
   local PageHighscoreEntry = GameUIManager:RegisterPage('PageHighscoreEntry', 'PageCommon')
@@ -28,6 +29,7 @@ function CreateGamePlayUI(package)
   PageGameRestartAsk:CreateContent(package)
   PageGamePause:CreateContent(package)
   PageGameWin:CreateContent(package)
+  PageGameWinRestartAsk:CreateContent(package)
   PageGameWin.CanEscBack = false
   PageEndScore:CreateContent(package)
   PageEndScore.CanEscBack = false
@@ -36,9 +38,11 @@ function CreateGamePlayUI(package)
   PageGameFail:CreateContent(package)
   PageGameFail.CanEscBack = false
 
+
   MessageCenter:SubscribeEvent('BtnGameHomeClick', function () GamePlay.GamePlayManager:QuitLevel() end)
   MessageCenter:SubscribeEvent('BtnNextLevellick', function () GamePlay.GamePlayManager:NextLevel() end)
   MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
+  MessageCenter:SubscribeEvent('BtnGameWinRestartClick', function () GameUIManager:GoPage('PageGameWinRestartAsk') end)
   MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
   MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
     GameUIManager:HideCurrentPage()

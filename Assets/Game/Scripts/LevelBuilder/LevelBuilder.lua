@@ -167,6 +167,10 @@ function LevelBuilder:LoadLevel(name)
 
   --加载内置模块
   InitBulitInModuls()
+  InitBulitInModulCustomSounds()
+
+  --发送开始事件
+  Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_BEFORE_START', '*', nil)
 
   --由C#代码加载文件
   self._LevelLoaderNative:LoadLevel(name, 
