@@ -76,23 +76,9 @@ MonoBehaviour:
   m_Friction: 0.5
   m_Restitution: 0.4
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -104,6 +90,7 @@ MonoBehaviour:
   m_SubSystemId: 3
   m_SubSystemDontCollideWith: 2
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &275065140243705494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +219,7 @@ MonoBehaviour:
   m_MaximumLinearImpulse: 1000
   m_Priority: 1
   PovitRef: {fileID: 7030926385719267457}
+  Stabilized: 0
 --- !u!23 &2853583798373864629
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -499,23 +487,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -527,6 +501,7 @@ MonoBehaviour:
   m_SubSystemId: 7
   m_SubSystemDontCollideWith: 6
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &450275747258543181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,6 +522,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926385430142518}
   AxisRef: {fileID: 7030926385430142518}
+  Stabilized: 1
 --- !u!1 &768580478379977959
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,23 +749,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -801,6 +763,7 @@ MonoBehaviour:
   m_SubSystemId: 8
   m_SubSystemDontCollideWith: 7
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &768580478379977961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,6 +784,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926385245078667}
   AxisRef: {fileID: 7030926385245078667}
+  Stabilized: 1
 --- !u!1 &1106876256206392447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,23 +1214,9 @@ MonoBehaviour:
   m_Friction: 0.6
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -1278,6 +1228,7 @@ MonoBehaviour:
   m_SubSystemId: 2
   m_SubSystemDontCollideWith: 1
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &1292572827298755140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1298,6 +1249,7 @@ MonoBehaviour:
   m_Priority: 1
   PovitRef: {fileID: 7030926385719267457}
   AxisRef: {fileID: 7030926385719267457}
+  Stabilized: 0
 --- !u!114 &5460074240357383625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1313,9 +1265,11 @@ MonoBehaviour:
   m_PovitA: {fileID: 2244183726677087568}
   m_PovitB: {fileID: 2244183726677087568}
   m_DoNotAutoCreateAtAwake: 0
-  springConstant: 300
+  springStrength: 1000
   springDamping: 2
   springRestLength: 1
+  onCompression: 1
+  onExtension: 1
   ConnectedBody: {fileID: 3665619465525756436}
 --- !u!114 &4578032048192499889
 MonoBehaviour:
@@ -1369,6 +1323,7 @@ MonoBehaviour:
   MaxLinearLimit: 7
   MinLinearLimit: -6
   MaxFrictionForce: 0
+  Stabilized: 0
 --- !u!1 &1580483554479688818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,23 +2186,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -2259,6 +2200,7 @@ MonoBehaviour:
   m_SubSystemId: 9
   m_SubSystemDontCollideWith: 8
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &3534020416391495703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2279,6 +2221,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926384169061972}
   AxisRef: {fileID: 7030926384169061972}
+  Stabilized: 1
 --- !u!1 &3627663775244267396
 GameObject:
   m_ObjectHideFlags: 0
@@ -2648,23 +2591,9 @@ MonoBehaviour:
   m_Friction: 0
   m_Restitution: 0
   m_Layer: 4
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -2676,6 +2605,7 @@ MonoBehaviour:
   m_SubSystemId: 3
   m_SubSystemDontCollideWith: 2
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!33 &4944603600625665980
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2759,6 +2689,7 @@ MonoBehaviour:
   MaxLinearLimit: 30000
   MinLinearLimit: -2
   MaxFrictionForce: 0
+  Stabilized: 0
 --- !u!114 &6165824682453478475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3364,23 +3295,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -3392,6 +3309,7 @@ MonoBehaviour:
   m_SubSystemId: 6
   m_SubSystemDontCollideWith: 5
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &5111216448853400815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3412,6 +3330,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926384519596454}
   AxisRef: {fileID: 7030926384519596454}
+  Stabilized: 1
 --- !u!1 &5222043008859044849
 GameObject:
   m_ObjectHideFlags: 0
@@ -3638,23 +3557,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -3666,6 +3571,7 @@ MonoBehaviour:
   m_SubSystemId: 10
   m_SubSystemDontCollideWith: 9
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &5222043008859044851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3686,6 +3592,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926386085672218}
   AxisRef: {fileID: 7030926386085672218}
+  Stabilized: 1
 --- !u!1 &6312155475290963425
 GameObject:
   m_ObjectHideFlags: 0
@@ -4373,23 +4280,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -4401,6 +4294,7 @@ MonoBehaviour:
   m_SubSystemId: 4
   m_SubSystemDontCollideWith: 2
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &6931793308048622639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4421,6 +4315,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926384458629557}
   AxisRef: {fileID: 7030926384458629557}
+  Stabilized: 1
 --- !u!1 &7034153580821665929
 GameObject:
   m_ObjectHideFlags: 0
@@ -4595,23 +4490,9 @@ MonoBehaviour:
   m_Friction: 0.5
   m_Restitution: 0.4
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 1
@@ -4623,6 +4504,7 @@ MonoBehaviour:
   m_SubSystemId: 1
   m_SubSystemDontCollideWith: 0
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &173756133675649987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4642,6 +4524,7 @@ MonoBehaviour:
   m_MaximumLinearImpulse: 1000
   m_Priority: 1
   PovitRef: {fileID: 7030926385719267457}
+  Stabilized: 0
 --- !u!1 &7035945379688416616
 GameObject:
   m_ObjectHideFlags: 0
@@ -6497,23 +6380,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 5
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -6525,6 +6394,7 @@ MonoBehaviour:
   m_SubSystemId: 11
   m_SubSystemDontCollideWith: 10
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &8157607035814951443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6545,6 +6415,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926385435306462}
   AxisRef: {fileID: 7030926385435306462}
+  Stabilized: 1
 --- !u!1 &8394247453393352214
 GameObject:
   m_ObjectHideFlags: 0
@@ -6771,23 +6642,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -6799,6 +6656,7 @@ MonoBehaviour:
   m_SubSystemId: 5
   m_SubSystemDontCollideWith: 4
   DeactiveWhenLeaveBroadphase: 1
+  CustomLayer: 0
 --- !u!114 &8394247453393352216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6819,6 +6677,7 @@ MonoBehaviour:
   m_Priority: 3
   PovitRef: {fileID: 7030926384404561987}
   AxisRef: {fileID: 7030926384404561987}
+  Stabilized: 1
 --- !u!1 &8557966583813998468
 GameObject:
   m_ObjectHideFlags: 0

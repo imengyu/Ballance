@@ -157,6 +157,70 @@ public class Lua_Ballance2_Sys_Utils_KeyListener : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_DisableWhenUIFocused(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Utils.KeyListener self=(Ballance2.Sys.Utils.KeyListener)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.DisableWhenUIFocused);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_DisableWhenUIFocused(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Utils.KeyListener self=(Ballance2.Sys.Utils.KeyListener)checkSelf(l);
+			System.Boolean v;
+			checkType(l,2,out v);
+			self.DisableWhenUIFocused=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_IsListenKey(IntPtr l) {
 		try {
 			#if DEBUG
@@ -226,6 +290,7 @@ public class Lua_Ballance2_Sys_Utils_KeyListener : LuaObject {
 		addMember(l,DeleteKeyListen);
 		addMember(l,ClearKeyListen);
 		addMember(l,Get_s);
+		addMember(l,"DisableWhenUIFocused",get_DisableWhenUIFocused,set_DisableWhenUIFocused,true);
 		addMember(l,"IsListenKey",get_IsListenKey,set_IsListenKey,true);
 		createTypeMetatable(l,null, typeof(Ballance2.Sys.Utils.KeyListener),typeof(UnityEngine.MonoBehaviour));
 	}

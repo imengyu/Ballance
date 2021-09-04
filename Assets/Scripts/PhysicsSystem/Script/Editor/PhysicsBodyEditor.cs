@@ -41,12 +41,16 @@ class PhysicsBodyEditor : Editor
         pAddContactListener = serializedObject.FindProperty("m_AddContactListener"); 
         pAutoComputeCenterOfMass = serializedObject.FindProperty("m_AutoComputeCenterOfMass"); 
         pAutoControlActive = serializedObject.FindProperty("m_AutoControlActive"); 
+        pInertiaTensor1 = serializedObject.FindProperty("m_InertiaTensor1"); 
+        pInertiaTensor2 = serializedObject.FindProperty("m_InertiaTensor2"); 
+        pInertiaTensor3 = serializedObject.FindProperty("m_InertiaTensor3"); 
         pSystemGroupName = serializedObject.FindProperty("m_SystemGroupName"); 
         pSubSystemId = serializedObject.FindProperty("m_SubSystemId"); 
         pSubSystemDontCollideWith = serializedObject.FindProperty("m_SubSystemDontCollideWith");   
         pCustomLayer = serializedObject.FindProperty("CustomLayer");   
 
         bOpenCollisionFilterInfo = EditorPrefs.GetBool("PhysicsBodyEditor_bOpenCollisionFilterInfo", false);
+        bInertiaTensor = EditorPrefs.GetBool("PhysicsBodyEditor_bInertiaTensor", false);
 
         var names = AssetDatabase.LoadAssetAtPath<PhysicsLayerNames>("Assets/Resources/PhysicsLayerNames.asset");
         var tags = PhysicsLayerTags.Everything;
@@ -57,6 +61,9 @@ class PhysicsBodyEditor : Editor
     }
     private void OnDisable() {
         EditorPrefs.SetBool("PhysicsBodyEditor_bOpenCollisionFilterInfo", bOpenCollisionFilterInfo);
+        EditorPrefs.SetBool("PhysicsBodyEditor_bInertiaTensor", bInertiaTensor);
+
+
     }
 
     private SerializedProperty pMotionType;
@@ -66,6 +73,9 @@ class PhysicsBodyEditor : Editor
     private SerializedProperty pAngularDamping;
     private SerializedProperty pInitialLinearVelocity;
     private SerializedProperty pInitialAngularVelocity;
+    private SerializedProperty pInertiaTensor1;
+    private SerializedProperty pInertiaTensor2;
+    private SerializedProperty pInertiaTensor3;
     private SerializedProperty pGravityFactor;
     private SerializedProperty pCenterOfMass;
     private SerializedProperty pCustomTags;
@@ -84,6 +94,7 @@ class PhysicsBodyEditor : Editor
     private SerializedProperty pSubSystemDontCollideWith;
 
     private bool bOpenCollisionFilterInfo = false;
+    private bool bInertiaTensor = false;
 
     public override void OnInspectorGUI()
     {
@@ -115,6 +126,16 @@ class PhysicsBodyEditor : Editor
         
         EditorGUILayout.PropertyField(pMass);
         EditorGUILayout.PropertyField(pCenterOfMass);
+        EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying);
+
+        bInertiaTensor = EditorGUILayout.Foldout(bInertiaTensor, "InertiaTensor");
+        if(bInertiaTensor) {
+            pInertiaTensor1.vector3Value = EditorGUILayout.Vector3Field("1", pInertiaTensor1.vector3Value);
+            pInertiaTensor2.vector3Value = EditorGUILayout.Vector3Field("2", pInertiaTensor2.vector3Value);
+            pInertiaTensor3.vector3Value = EditorGUILayout.Vector3Field("3", pInertiaTensor3.vector3Value);
+        }
+
+        EditorGUI.EndDisabledGroup();
         EditorGUILayout.PropertyField(pLinearDamping);
         EditorGUILayout.PropertyField(pAngularDamping);
         EditorGUILayout.PropertyField(pGravityFactor);

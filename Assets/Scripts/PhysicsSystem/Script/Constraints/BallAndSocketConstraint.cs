@@ -8,6 +8,7 @@ namespace PhysicsRT {
     public class BallAndSocketConstraint : PhysicsConstraint {
 
         public GameObject PovitRef;
+        public bool Stabilized;
 
         public override void Create() {
             var ptr = CreatePre();
@@ -19,7 +20,7 @@ namespace PhysicsRT {
                 if(otherPtr == IntPtr.Zero)
                     throw new Exception("ConnectedBody hasn't been created yet");
             }
-            CreateLastStep(PhysicsApi.API.CreateBallAndSocketConstraint(ptr, otherPtr, PovitRef.transform.position, GetConstraintBreakData(), Priority));
+            CreateLastStep(PhysicsApi.API.CreateBallAndSocketConstraint(ptr, otherPtr, PovitRef.transform.position, GetConstraintBreakData(), Priority, Stabilized));
         }
     }
 }

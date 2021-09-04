@@ -145,7 +145,11 @@ namespace PhysicsRT
         [SerializeField]
         private int m_Layer = -1;
         [SerializeField]
-        private Matrix4x4 m_InertiaTensor = Matrix4x4.identity;
+        private Vector3 m_InertiaTensor1 = new Vector3(1,0,0);
+        [SerializeField]
+        private Vector3 m_InertiaTensor2 = new Vector3(0,1,0);
+        [SerializeField]
+        private Vector3 m_InertiaTensor3 = new Vector3(0,0,1);
         [SerializeField]
         [Tooltip("The maximum angular velocity of the body (in rad/s).")]
         private float m_MaxAngularVelocity = 200;
@@ -295,17 +299,25 @@ namespace PhysicsRT
                 }
             }
         }
+        
+        private Matrix4x4 retInertiaTensor = Matrix4x4.identity;
+        
         /// <summary>
         /// 获取或设置刚体的惯性张量
         /// </summary>
         public Matrix4x4 InertiaTensor {
-            get => m_InertiaTensor; 
+            get {
+              retInertiaTensor.SetRow(0, m_InertiaTensor1);
+              retInertiaTensor.SetRow(1, m_InertiaTensor2);
+              retInertiaTensor.SetRow(2, m_InertiaTensor3);
+              return retInertiaTensor;
+            }
             set {
-                if(m_InertiaTensor != value) {
-                    m_InertiaTensor = value; 
-                    if(ptr != IntPtr.Zero) 
-                        PhysicsApi.API.SetRigidBodyInertiaTensor(ptr, value);
-                }
+              m_InertiaTensor1 = value.GetRow(0);
+              m_InertiaTensor2 = value.GetRow(1);
+              m_InertiaTensor3 = value.GetRow(2);
+              if(ptr != IntPtr.Zero) 
+                PhysicsApi.API.SetRigidBodyInertiaTensor(ptr, value);
             }
         }
         /// <summary>
@@ -531,7 +543,7 @@ namespace PhysicsRT
                 m_LinearDamping,
                 m_AngularDamping,
                 m_CenterOfMass,
-                m_InertiaTensor,
+                InertiaTensor,
                 m_InitialLinearVelocity,
                 m_InitialAngularVelocity,
                 m_MaxLinearVelocity,

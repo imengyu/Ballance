@@ -11,6 +11,7 @@ namespace PhysicsRT {
         public GameObject AxisRef;
         public float AgularLimitMin = 0;
         public float AgularLimitMax = 360;
+        public bool Stabilized;
 
         public override void Create() {
             var ptr = CreatePre();
@@ -26,7 +27,7 @@ namespace PhysicsRT {
                  PovitRef.transform.position, AxisRef.transform.forward.normalized, 
                 (AgularLimitMin) * Mathf.Deg2Rad, 
                 (AgularLimitMax) * Mathf.Deg2Rad, 
-                GetConstraintBreakData(), GetConstraintMotorData(), Priority));
+                GetConstraintBreakData(), GetConstraintMotorData(), Priority, Stabilized));
         }
     }
 }

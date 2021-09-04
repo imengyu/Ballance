@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /*
@@ -187,6 +188,7 @@ namespace Ballance2.Sys.Services
             EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
 
             keyListener = KeyListener.Get(UIRoot.gameObject);
+            keyListener.DisableWhenUIFocused = false;
         }
 
         private KeyListener keyListener = null;
@@ -232,6 +234,15 @@ namespace Ballance2.Sys.Services
         [LuaApiParamDescription("id", "AddKeyListen 返回的ID")]
         public void DeleteKeyListen(int id) {
             keyListener.DeleteKeyListen(id);
+        }
+
+        /// <summary>
+        /// 获取当前鼠标是否在UI上
+        /// </summary>
+        /// <returns></returns>
+        [LuaApiDescription("获取当前鼠标是否在UI上")]
+        public bool IsUiFocus() {
+          return EventSystem.current.IsPointerOverGameObject() || GUIUtility.hotControl != 0;
         }
 
         #endregion

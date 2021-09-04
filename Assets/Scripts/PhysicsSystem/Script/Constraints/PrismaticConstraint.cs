@@ -13,6 +13,7 @@ namespace PhysicsRT {
         public float MaxLinearLimit = 100;
         public float MinLinearLimit = 0;
         public float MaxFrictionForce = 1000;
+        public bool Stabilized;
 
         public override void Create() {
             var ptr = CreatePre();
@@ -26,7 +27,7 @@ namespace PhysicsRT {
                 throw new Exception("This body hasn't been created yet");
             CreateLastStep(PhysicsApi.API.CreatePrismaticConstraint(ptr, otherPtr, PovitRef.transform.position, AxisRef.transform.forward.normalized, 
                 AllowRotationAroundAxis, MaxLinearLimit, MinLinearLimit, MaxFrictionForce,
-                GetConstraintBreakData(), GetConstraintMotorData(), Priority));
+                GetConstraintBreakData(), GetConstraintMotorData(), Priority, Stabilized));
         }
     }
 }

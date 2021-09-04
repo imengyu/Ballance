@@ -225,23 +225,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -479,23 +465,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -733,23 +705,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -1124,23 +1082,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -1378,23 +1322,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -1632,23 +1562,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -1886,23 +1802,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -2196,23 +2098,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -2450,23 +2338,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -2704,23 +2578,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -2958,23 +2818,9 @@ MonoBehaviour:
   m_Friction: 5
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -3630,23 +3476,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -3884,23 +3716,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -4138,23 +3956,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -4392,23 +4196,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -4646,23 +4436,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -4882,7 +4658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_CollidableQualityType: -1
-  m_Mass: 18
+  m_Mass: 10
   m_LinearDamping: 0.5
   m_AngularDamping: 0.1
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
@@ -4901,23 +4677,9 @@ MonoBehaviour:
   m_Friction: 0.5
   m_Restitution: 0.1
   m_Layer: 1
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -5600,23 +5362,9 @@ MonoBehaviour:
   m_Friction: 3
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -5854,23 +5602,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -6108,23 +5842,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -6362,23 +6082,9 @@ MonoBehaviour:
   m_Friction: 4
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -6616,23 +6322,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -6870,23 +6562,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -8380,23 +8058,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -8634,23 +8298,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -8888,23 +8538,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -9142,23 +8778,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -9396,23 +9018,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -9650,23 +9258,9 @@ MonoBehaviour:
   m_Friction: 5
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -9997,23 +9591,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -10353,7 +9933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_CollidableQualityType: -1
-  m_Mass: 0.4
+  m_Mass: 0.2
   m_LinearDamping: 2.7
   m_AngularDamping: 0.2
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
@@ -10372,23 +9952,9 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0.5
   m_Layer: 1
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -11118,23 +10684,9 @@ MonoBehaviour:
   m_Friction: 4
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -11372,23 +10924,9 @@ MonoBehaviour:
   m_Friction: 4
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -11626,23 +11164,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -11880,23 +11404,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -12135,23 +11645,9 @@ MonoBehaviour:
   m_Friction: 0.8
   m_Restitution: 0.5
   m_Layer: 1
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -12915,23 +12411,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -13169,23 +12651,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -13423,23 +12891,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -13677,23 +13131,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -13931,23 +13371,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -14185,23 +13611,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -14439,23 +13851,9 @@ MonoBehaviour:
   m_Friction: 4
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -14693,23 +14091,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -14947,23 +14331,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -15201,23 +14571,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -15455,23 +14811,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -15709,23 +15051,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -15976,23 +15304,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -16230,23 +15544,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -16484,23 +15784,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.6
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -16738,23 +16024,9 @@ MonoBehaviour:
   m_Friction: 1
   m_Restitution: 0.9
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -16992,23 +16264,9 @@ MonoBehaviour:
   m_Friction: 3
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
@@ -17246,23 +16504,9 @@ MonoBehaviour:
   m_Friction: 2
   m_Restitution: 0.84
   m_Layer: 2
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0

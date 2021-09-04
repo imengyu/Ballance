@@ -621,28 +621,14 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Restitution: 0.4
   m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
+  m_InertiaTensor1: {x: 1, y: 0, z: 0}
+  m_InertiaTensor2: {x: 0, y: 1, z: 0}
+  m_InertiaTensor3: {x: 0, y: 0, z: 1}
   m_MaxAngularVelocity: 200
   m_MaxLinearVelocity: 200
   m_IsTigger: 0
   m_AddContactListener: 0
-  m_DoNotAutoCreateAtAwake: 0
+  m_DoNotAutoCreateAtAwake: 1
   m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: 
@@ -670,6 +656,7 @@ MonoBehaviour:
   m_Priority: 1
   PovitRef: {fileID: 3349958259146136828}
   AxisRef: {fileID: 3349958259146136828}
+  Stabilized: 0
 --- !u!1 &2029249011480546106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,7 +1396,7 @@ PrefabInstance:
     - target: {fileID: 8098310408283778255, guid: 4f475f423afed2541a7d63c9bbb4d3bd,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}

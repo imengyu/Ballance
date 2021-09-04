@@ -168,6 +168,6 @@ public class Test : MonoBehaviour {
 
     private IEnumerator LateAddForce(PhysicsBody ball, Vector3 f) {
       yield return new WaitForSeconds(0.1f);
-      ball.ApplyForce(f);
+      ball.ApplyLinearImpulse(f);
     }
 }

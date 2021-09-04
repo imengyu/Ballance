@@ -12,6 +12,7 @@ namespace PhysicsRT {
         public GameObject pulleyPivotAWRef;
         public GameObject pulleyPivotBWRef;
         public float leverageRatio = 0;
+        public bool Stabilized;
 
         public override void Create() {
             var ptr = CreatePre();
@@ -26,7 +27,7 @@ namespace PhysicsRT {
             CreateLastStep(PhysicsApi.API.CreatePulleyConstraint(ptr, otherPtr, 
                 pivotAWRef.transform.position, pivotBWRef.transform.position,
                 pulleyPivotAWRef.transform.position, pulleyPivotBWRef.transform.position, 
-                leverageRatio, GetConstraintBreakData(), Priority));
+                leverageRatio, GetConstraintBreakData(), Priority, Stabilized));
         }
     }
 }

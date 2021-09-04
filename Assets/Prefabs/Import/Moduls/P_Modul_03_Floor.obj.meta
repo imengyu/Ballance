@@ -1,62 +1,14 @@
 fileFormatVersion: 2
-guid: 679a654df310a774ba5ee54f419c9170
+guid: a937aaea60a78524c97ad87ea91c61bd
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: 1827226128182048838
-    second: Take 001
+  internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: MetalButtons
-    second: {fileID: 2100000, guid: 63d0eb6504262694a95e1076ebf62af2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Metall
-    second: {fileID: 2100000, guid: 8c5bc8c0310d37647a3b119d526fbca4, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Target
-    second: {fileID: 2100000, guid: 89ebaa7f680aefb418955d17d989784c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wood
-    second: {fileID: 2100000, guid: 333cf564dc735044ca1a356b2502edef, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: WoodAxis
-    second: {fileID: 2100000, guid: 0bc52859a4f8dd942ab97cd2b2da4ef2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: WoodMisc
-    second: {fileID: 2100000, guid: d39a2998f3489a54bb4f510883f72493, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ball_Wood
-    second: {fileID: 2800000, guid: db4c1997f55e04348ac15ae5d8ccfe74, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Target
-    second: {fileID: 2800000, guid: 4b14d4173a4dc4d499735a16fd1e570d, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Wood_Metal
-    second: {fileID: 2800000, guid: 073c324b34de4624fa253277b6a9e77d, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Wood_Misc
-    second: {fileID: 2800000, guid: 4bc0901562626074cbfe6d787f3ab7a4, type: 3}
+      name: P_Modul_03_Floor
+    second: {fileID: 2100000, guid: ceb62f153ee53a8468157c70594cfe1e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -116,7 +68,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -126,7 +78,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -141,11 +93,11 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1

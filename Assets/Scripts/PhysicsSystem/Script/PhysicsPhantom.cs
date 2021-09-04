@@ -234,8 +234,10 @@ namespace PhysicsRT
         public OnPhantomOverlappingCollidableCallback onOverlappingCollidableRemove;
 
         public void OnPhantomOverlapCallback(PhysicsBody sbodyOther, int ty) {
+          if(gameObject.activeSelf) {
             if(ty == 1) onOverlappingCollidableAdd?.Invoke(this, sbodyOther);
             else onOverlappingCollidableRemove?.Invoke(this, sbodyOther);
+          }
         }    
     
         private Vector3 oldPosition = Vector3.zero;

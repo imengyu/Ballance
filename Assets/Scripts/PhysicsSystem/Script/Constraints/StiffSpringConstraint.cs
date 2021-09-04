@@ -11,6 +11,7 @@ namespace PhysicsRT {
         public GameObject PovitBWRef;
         public float SpringMin;
         public float SpringMax;
+        public bool Stabilized;
 
         public override void Create() {
             var ptr = CreatePre();
@@ -23,7 +24,7 @@ namespace PhysicsRT {
                     throw new Exception("ConnectedBody hasn't been created yet");
             }
             CreateLastStep(PhysicsApi.API.CreateStiffSpringConstraint(ptr, otherPtr, PovitAWRef.transform.position, PovitBWRef.transform.position, 
-                SpringMin, SpringMax, GetConstraintBreakData(), Priority));
+                SpringMin, SpringMax, GetConstraintBreakData(), Priority, Stabilized));
         }
     }
 }

@@ -3,7 +3,22 @@ guid: d795ec8aa1bb77442a25f1b0ac95333b
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Modul_41_Axis
+    second: {fileID: 2100000, guid: f85ef732b14c163458238163b3238780, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Modul_41_BoxMetal
+    second: {fileID: 2100000, guid: acb1ac8621923cd4cac5cf2190772e28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Modul_41_BoxWood
+    second: {fileID: 2100000, guid: 9f763e35f4753b8478f51977a507973b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -31,7 +46,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -88,7 +103,7 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

@@ -3,7 +3,12 @@ guid: 25863f82823e7cc4ebeaaa9f1974e14e
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Modul_26_HalterMat
+    second: {fileID: 2100000, guid: 34386ebbd0a4eae4a9fe1413aac28b8d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,12 @@ guid: 003a917db6cea72499ef3558e32c2ed7
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: P_Modul_26_SackMat
+    second: {fileID: 2100000, guid: 52e19b26ba057e541902b41e5fb832e6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
