@@ -150,6 +150,7 @@ public class Lua_UnityEngine_EventSystems_ExecuteEvents : LuaObject {
 		addMember(l,ExecuteHierarchy_s);
 		addMember(l,CanHandleEvent_s);
 		addMember(l,GetEventHandler_s);
+		addMember(l,"pointerMoveHandler",null,null,true);
 		addMember(l,"pointerEnterHandler",null,null,true);
 		addMember(l,"pointerExitHandler",null,null,true);
 		addMember(l,"pointerDownHandler",null,null,true);

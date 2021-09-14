@@ -232,37 +232,6 @@ public class Lua_UnityEngine_RenderTexture : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int MarkRestoreExpected(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			UnityEngine.RenderTexture self=(UnityEngine.RenderTexture)checkSelf(l);
-			self.MarkRestoreExpected();
-			pushValue(l,true);
-			return 1;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int ResolveAntiAliasedSurface(IntPtr l) {
 		try {
 			#if DEBUG
@@ -2142,7 +2111,6 @@ public class Lua_UnityEngine_RenderTexture : LuaObject {
 		getTypeTable(l,"UnityEngine.RenderTexture");
 		addMember(l,GetNativeDepthBufferPtr);
 		addMember(l,DiscardContents);
-		addMember(l,MarkRestoreExpected);
 		addMember(l,ResolveAntiAliasedSurface);
 		addMember(l,SetGlobalShaderProperty);
 		addMember(l,Create);

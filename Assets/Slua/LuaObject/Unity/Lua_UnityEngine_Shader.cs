@@ -746,6 +746,55 @@ public class Lua_UnityEngine_Shader : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetGlobalInt_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(matchType(l,argc,1,typeof(string),typeof(int))){
+				System.String a1;
+				checkType(l,1,out a1);
+				System.Int32 a2;
+				checkType(l,2,out a2);
+				UnityEngine.Shader.SetGlobalInt(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(matchType(l,argc,1,typeof(int),typeof(int))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				System.Int32 a2;
+				checkType(l,2,out a2);
+				UnityEngine.Shader.SetGlobalInt(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function SetGlobalInt to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int SetGlobalFloat_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -795,7 +844,7 @@ public class Lua_UnityEngine_Shader : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int SetGlobalInt_s(IntPtr l) {
+	static public int SetGlobalInteger_s(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -812,7 +861,7 @@ public class Lua_UnityEngine_Shader : LuaObject {
 				checkType(l,1,out a1);
 				System.Int32 a2;
 				checkType(l,2,out a2);
-				UnityEngine.Shader.SetGlobalInt(a1,a2);
+				UnityEngine.Shader.SetGlobalInteger(a1,a2);
 				pushValue(l,true);
 				return 1;
 			}
@@ -821,12 +870,12 @@ public class Lua_UnityEngine_Shader : LuaObject {
 				checkType(l,1,out a1);
 				System.Int32 a2;
 				checkType(l,2,out a2);
-				UnityEngine.Shader.SetGlobalInt(a1,a2);
+				UnityEngine.Shader.SetGlobalInteger(a1,a2);
 				pushValue(l,true);
 				return 1;
 			}
 			pushValue(l,false);
-			LuaDLL.lua_pushstring(l,"No matched override function SetGlobalInt to call");
+			LuaDLL.lua_pushstring(l,"No matched override function SetGlobalInteger to call");
 			return 2;
 		}
 		catch(Exception e) {
@@ -1413,6 +1462,53 @@ public class Lua_UnityEngine_Shader : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int GetGlobalInt_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(matchType(l,argc,1,typeof(string))){
+				System.String a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Shader.GetGlobalInt(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			else if(matchType(l,argc,1,typeof(int))){
+				System.Int32 a1;
+				checkType(l,1,out a1);
+				var ret=UnityEngine.Shader.GetGlobalInt(a1);
+				pushValue(l,true);
+				pushValue(l,ret);
+				return 2;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function GetGlobalInt to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetGlobalFloat_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1460,7 +1556,7 @@ public class Lua_UnityEngine_Shader : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int GetGlobalInt_s(IntPtr l) {
+	static public int GetGlobalInteger_s(IntPtr l) {
 		try {
 			#if DEBUG
 			var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -1475,7 +1571,7 @@ public class Lua_UnityEngine_Shader : LuaObject {
 			if(matchType(l,argc,1,typeof(string))){
 				System.String a1;
 				checkType(l,1,out a1);
-				var ret=UnityEngine.Shader.GetGlobalInt(a1);
+				var ret=UnityEngine.Shader.GetGlobalInteger(a1);
 				pushValue(l,true);
 				pushValue(l,ret);
 				return 2;
@@ -1483,13 +1579,13 @@ public class Lua_UnityEngine_Shader : LuaObject {
 			else if(matchType(l,argc,1,typeof(int))){
 				System.Int32 a1;
 				checkType(l,1,out a1);
-				var ret=UnityEngine.Shader.GetGlobalInt(a1);
+				var ret=UnityEngine.Shader.GetGlobalInteger(a1);
 				pushValue(l,true);
 				pushValue(l,ret);
 				return 2;
 			}
 			pushValue(l,false);
-			LuaDLL.lua_pushstring(l,"No matched override function GetGlobalInt to call");
+			LuaDLL.lua_pushstring(l,"No matched override function GetGlobalInteger to call");
 			return 2;
 		}
 		catch(Exception e) {
@@ -2194,8 +2290,9 @@ public class Lua_UnityEngine_Shader : LuaObject {
 		addMember(l,IsKeywordEnabled_s);
 		addMember(l,WarmupAllShaders_s);
 		addMember(l,PropertyToID_s);
-		addMember(l,SetGlobalFloat_s);
 		addMember(l,SetGlobalInt_s);
+		addMember(l,SetGlobalFloat_s);
+		addMember(l,SetGlobalInteger_s);
 		addMember(l,SetGlobalVector_s);
 		addMember(l,SetGlobalColor_s);
 		addMember(l,SetGlobalMatrix_s);
@@ -2205,8 +2302,9 @@ public class Lua_UnityEngine_Shader : LuaObject {
 		addMember(l,SetGlobalFloatArray_s);
 		addMember(l,SetGlobalVectorArray_s);
 		addMember(l,SetGlobalMatrixArray_s);
-		addMember(l,GetGlobalFloat_s);
 		addMember(l,GetGlobalInt_s);
+		addMember(l,GetGlobalFloat_s);
+		addMember(l,GetGlobalInteger_s);
 		addMember(l,GetGlobalVector_s);
 		addMember(l,GetGlobalColor_s);
 		addMember(l,GetGlobalMatrix_s);

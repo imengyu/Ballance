@@ -167,6 +167,42 @@ public class Lua_UnityEngine_EventSystems_EventSystem : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetUITookitEventSystemOverride_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.EventSystems.EventSystem a1;
+			checkType(l,1,out a1);
+			System.Boolean a2;
+			checkType(l,2,out a2);
+			System.Boolean a3;
+			checkType(l,3,out a3);
+			UnityEngine.EventSystems.EventSystem.SetUITookitEventSystemOverride(a1,a2,a3);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_current(IntPtr l) {
 		try {
 			#if DEBUG
@@ -550,6 +586,7 @@ public class Lua_UnityEngine_EventSystems_EventSystem : LuaObject {
 		addMember(l,SetSelectedGameObject);
 		addMember(l,RaycastAll);
 		addMember(l,IsPointerOverGameObject);
+		addMember(l,SetUITookitEventSystemOverride_s);
 		addMember(l,"current",get_current,set_current,false);
 		addMember(l,"sendNavigationEvents",get_sendNavigationEvents,set_sendNavigationEvents,true);
 		addMember(l,"pixelDragThreshold",get_pixelDragThreshold,set_pixelDragThreshold,true);

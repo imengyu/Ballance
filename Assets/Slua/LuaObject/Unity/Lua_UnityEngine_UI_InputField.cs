@@ -1398,9 +1398,73 @@ public class Lua_UnityEngine_UI_InputField : LuaObject {
 			#endif
 			#endif
 			UnityEngine.UI.InputField self=(UnityEngine.UI.InputField)checkSelf(l);
-			UnityEngine.UI.InputField.SubmitEvent v;
+			UnityEngine.UI.InputField.EndEditEvent v;
 			checkType(l,2,out v);
 			self.onEndEdit=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_onSubmit(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.InputField self=(UnityEngine.UI.InputField)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.onSubmit);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_onSubmit(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.UI.InputField self=(UnityEngine.UI.InputField)checkSelf(l);
+			UnityEngine.UI.InputField.SubmitEvent v;
+			checkType(l,2,out v);
+			self.onSubmit=v;
 			pushValue(l,true);
 			return 1;
 		}
@@ -2566,6 +2630,7 @@ public class Lua_UnityEngine_UI_InputField : LuaObject {
 		addMember(l,"customCaretColor",get_customCaretColor,set_customCaretColor,true);
 		addMember(l,"selectionColor",get_selectionColor,set_selectionColor,true);
 		addMember(l,"onEndEdit",get_onEndEdit,set_onEndEdit,true);
+		addMember(l,"onSubmit",get_onSubmit,set_onSubmit,true);
 		addMember(l,"onValueChanged",get_onValueChanged,set_onValueChanged,true);
 		addMember(l,"onValidateInput",null,set_onValidateInput,true);
 		addMember(l,"characterLimit",get_characterLimit,set_characterLimit,true);

@@ -138,6 +138,42 @@ public class Lua_UnityEngine_QualitySettings : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SetLODSettings_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			System.Single a1;
+			checkType(l,1,out a1);
+			System.Int32 a2;
+			checkType(l,2,out a2);
+			System.Boolean a3;
+			checkType(l,3,out a3);
+			UnityEngine.QualitySettings.SetLODSettings(a1,a2,a3);
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int GetRenderPipelineAssetAt_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -2342,6 +2378,7 @@ public class Lua_UnityEngine_QualitySettings : LuaObject {
 		addMember(l,IncreaseLevel_s);
 		addMember(l,DecreaseLevel_s);
 		addMember(l,SetQualityLevel_s);
+		addMember(l,SetLODSettings_s);
 		addMember(l,GetRenderPipelineAssetAt_s);
 		addMember(l,GetQualityLevel_s);
 		addMember(l,"pixelLightCount",get_pixelLightCount,set_pixelLightCount,false);

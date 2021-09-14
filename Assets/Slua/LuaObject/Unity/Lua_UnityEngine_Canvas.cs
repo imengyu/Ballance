@@ -1020,6 +1020,37 @@ public class Lua_UnityEngine_Canvas : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_renderingDisplaySize(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Canvas self=(UnityEngine.Canvas)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.renderingDisplaySize);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_worldCamera(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1169,6 +1200,7 @@ public class Lua_UnityEngine_Canvas : LuaObject {
 		addMember(l,"additionalShaderChannels",get_additionalShaderChannels,set_additionalShaderChannels,true);
 		addMember(l,"sortingLayerName",get_sortingLayerName,set_sortingLayerName,true);
 		addMember(l,"rootCanvas",get_rootCanvas,null,true);
+		addMember(l,"renderingDisplaySize",get_renderingDisplaySize,null,true);
 		addMember(l,"worldCamera",get_worldCamera,set_worldCamera,true);
 		addMember(l,"normalizedSortingGridSize",get_normalizedSortingGridSize,set_normalizedSortingGridSize,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.Canvas),typeof(UnityEngine.Behaviour));

@@ -227,6 +227,40 @@ public class Lua_UnityEngine_EventSystems_BaseInputModule : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int ConvertUIToolkitPointerId(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.EventSystems.BaseInputModule self=(UnityEngine.EventSystems.BaseInputModule)checkSelf(l);
+			UnityEngine.EventSystems.PointerEventData a1;
+			checkType(l,2,out a1);
+			var ret=self.ConvertUIToolkitPointerId(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_input(IntPtr l) {
 		try {
 			#if DEBUG
@@ -330,6 +364,7 @@ public class Lua_UnityEngine_EventSystems_BaseInputModule : LuaObject {
 		addMember(l,ActivateModule);
 		addMember(l,UpdateModule);
 		addMember(l,IsModuleSupported);
+		addMember(l,ConvertUIToolkitPointerId);
 		addMember(l,"input",get_input,null,true);
 		addMember(l,"inputOverride",get_inputOverride,set_inputOverride,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.EventSystems.BaseInputModule),typeof(UnityEngine.EventSystems.UIBehaviour));

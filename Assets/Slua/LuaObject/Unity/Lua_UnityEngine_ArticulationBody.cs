@@ -936,6 +936,37 @@ public class Lua_UnityEngine_ArticulationBody : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SnapAnchorToClosestContact(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ArticulationBody self=(UnityEngine.ArticulationBody)checkSelf(l);
+			self.SnapAnchorToClosestContact();
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_jointType(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1271,6 +1302,70 @@ public class Lua_UnityEngine_ArticulationBody : LuaObject {
 			pushValue(l,true);
 			pushValue(l,self.isRoot);
 			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_computeParentAnchor(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ArticulationBody self=(UnityEngine.ArticulationBody)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.computeParentAnchor);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_computeParentAnchor(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ArticulationBody self=(UnityEngine.ArticulationBody)checkSelf(l);
+			bool v;
+			checkType(l,2,out v);
+			self.computeParentAnchor=v;
+			pushValue(l,true);
+			return 1;
 		}
 		catch(Exception e) {
 			return error(l,e);
@@ -3362,6 +3457,70 @@ public class Lua_UnityEngine_ArticulationBody : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_collisionDetectionMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ArticulationBody self=(UnityEngine.ArticulationBody)checkSelf(l);
+			pushValue(l,true);
+			pushEnum(l,(int)self.collisionDetectionMode);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_collisionDetectionMode(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.ArticulationBody self=(UnityEngine.ArticulationBody)checkSelf(l);
+			UnityEngine.CollisionDetectionMode v;
+			v = (UnityEngine.CollisionDetectionMode)LuaDLL.luaL_checkinteger(l, 2);
+			self.collisionDetectionMode=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.ArticulationBody");
@@ -3393,12 +3552,14 @@ public class Lua_UnityEngine_ArticulationBody : LuaObject {
 		addMember(l,GetDriveTargetVelocities);
 		addMember(l,SetDriveTargetVelocities);
 		addMember(l,GetDofStartIndices);
+		addMember(l,SnapAnchorToClosestContact);
 		addMember(l,"jointType",get_jointType,set_jointType,true);
 		addMember(l,"anchorPosition",get_anchorPosition,set_anchorPosition,true);
 		addMember(l,"parentAnchorPosition",get_parentAnchorPosition,set_parentAnchorPosition,true);
 		addMember(l,"anchorRotation",get_anchorRotation,set_anchorRotation,true);
 		addMember(l,"parentAnchorRotation",get_parentAnchorRotation,set_parentAnchorRotation,true);
 		addMember(l,"isRoot",get_isRoot,null,true);
+		addMember(l,"computeParentAnchor",get_computeParentAnchor,set_computeParentAnchor,true);
 		addMember(l,"linearLockX",get_linearLockX,set_linearLockX,true);
 		addMember(l,"linearLockY",get_linearLockY,set_linearLockY,true);
 		addMember(l,"linearLockZ",get_linearLockZ,set_linearLockZ,true);
@@ -3433,6 +3594,7 @@ public class Lua_UnityEngine_ArticulationBody : LuaObject {
 		addMember(l,"jointForce",get_jointForce,set_jointForce,true);
 		addMember(l,"dofCount",get_dofCount,null,true);
 		addMember(l,"index",get_index,null,true);
+		addMember(l,"collisionDetectionMode",get_collisionDetectionMode,set_collisionDetectionMode,true);
 		createTypeMetatable(l,null, typeof(UnityEngine.ArticulationBody),typeof(UnityEngine.Behaviour));
 	}
 }

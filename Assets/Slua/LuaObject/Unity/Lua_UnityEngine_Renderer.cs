@@ -552,6 +552,70 @@ public class Lua_UnityEngine_Renderer : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int get_staticShadowCaster(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Renderer self=(UnityEngine.Renderer)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.staticShadowCaster);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_staticShadowCaster(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Renderer self=(UnityEngine.Renderer)checkSelf(l);
+			bool v;
+			checkType(l,2,out v);
+			self.staticShadowCaster=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int get_motionVectorGenerationMode(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1938,6 +2002,7 @@ public class Lua_UnityEngine_Renderer : LuaObject {
 		addMember(l,"shadowCastingMode",get_shadowCastingMode,set_shadowCastingMode,true);
 		addMember(l,"receiveShadows",get_receiveShadows,set_receiveShadows,true);
 		addMember(l,"forceRenderingOff",get_forceRenderingOff,set_forceRenderingOff,true);
+		addMember(l,"staticShadowCaster",get_staticShadowCaster,set_staticShadowCaster,true);
 		addMember(l,"motionVectorGenerationMode",get_motionVectorGenerationMode,set_motionVectorGenerationMode,true);
 		addMember(l,"lightProbeUsage",get_lightProbeUsage,set_lightProbeUsage,true);
 		addMember(l,"reflectionProbeUsage",get_reflectionProbeUsage,set_reflectionProbeUsage,true);

@@ -288,6 +288,55 @@ public class Lua_UnityEngine_Logger : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int LogException(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			int argc = LuaDLL.lua_gettop(l);
+			if(argc==2){
+				UnityEngine.Logger self=(UnityEngine.Logger)checkSelf(l);
+				System.Exception a1;
+				checkType(l,2,out a1);
+				self.LogException(a1);
+				pushValue(l,true);
+				return 1;
+			}
+			else if(argc==3){
+				UnityEngine.Logger self=(UnityEngine.Logger)checkSelf(l);
+				System.Exception a1;
+				checkType(l,2,out a1);
+				UnityEngine.Object a2;
+				checkType(l,3,out a2);
+				self.LogException(a1,a2);
+				pushValue(l,true);
+				return 1;
+			}
+			pushValue(l,false);
+			LuaDLL.lua_pushstring(l,"No matched override function LogException to call");
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int LogFormat(IntPtr l) {
 		try {
 			#if DEBUG
@@ -328,55 +377,6 @@ public class Lua_UnityEngine_Logger : LuaObject {
 			}
 			pushValue(l,false);
 			LuaDLL.lua_pushstring(l,"No matched override function LogFormat to call");
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int LogException(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			int argc = LuaDLL.lua_gettop(l);
-			if(argc==2){
-				UnityEngine.Logger self=(UnityEngine.Logger)checkSelf(l);
-				System.Exception a1;
-				checkType(l,2,out a1);
-				self.LogException(a1);
-				pushValue(l,true);
-				return 1;
-			}
-			else if(argc==3){
-				UnityEngine.Logger self=(UnityEngine.Logger)checkSelf(l);
-				System.Exception a1;
-				checkType(l,2,out a1);
-				UnityEngine.Object a2;
-				checkType(l,3,out a2);
-				self.LogException(a1,a2);
-				pushValue(l,true);
-				return 1;
-			}
-			pushValue(l,false);
-			LuaDLL.lua_pushstring(l,"No matched override function LogException to call");
 			return 2;
 		}
 		catch(Exception e) {
@@ -591,8 +591,8 @@ public class Lua_UnityEngine_Logger : LuaObject {
 		addMember(l,Log);
 		addMember(l,LogWarning);
 		addMember(l,LogError);
-		addMember(l,LogFormat);
 		addMember(l,LogException);
+		addMember(l,LogFormat);
 		addMember(l,"logHandler",get_logHandler,set_logHandler,true);
 		addMember(l,"logEnabled",get_logEnabled,set_logEnabled,true);
 		addMember(l,"filterLogType",get_filterLogType,set_filterLogType,true);

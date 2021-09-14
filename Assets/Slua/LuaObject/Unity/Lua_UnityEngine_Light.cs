@@ -34,7 +34,6 @@ public class Lua_UnityEngine_Light : LuaObject {
 		}
 		#endif
 	}
-	
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
 	static public int AddCommandBuffer(IntPtr l) {
@@ -1849,7 +1848,134 @@ public class Lua_UnityEngine_Light : LuaObject {
 		}
 		#endif
 	}
-
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_shadowRadius(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Light self=(UnityEngine.Light)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.shadowRadius);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_shadowRadius(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Light self=(UnityEngine.Light)checkSelf(l);
+			float v;
+			checkType(l,2,out v);
+			self.shadowRadius=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_shadowAngle(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Light self=(UnityEngine.Light)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.shadowAngle);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_shadowAngle(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.Light self=(UnityEngine.Light)checkSelf(l);
+			float v;
+			checkType(l,2,out v);
+			self.shadowAngle=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
 	static public int get_shadows(IntPtr l) {
@@ -2364,6 +2490,8 @@ public class Lua_UnityEngine_Light : LuaObject {
 		addMember(l,"cullingMask",get_cullingMask,set_cullingMask,true);
 		addMember(l,"renderingLayerMask",get_renderingLayerMask,set_renderingLayerMask,true);
 		addMember(l,"lightShadowCasterMode",get_lightShadowCasterMode,set_lightShadowCasterMode,true);
+		addMember(l,"shadowRadius",get_shadowRadius,set_shadowRadius,true);
+		addMember(l,"shadowAngle",get_shadowAngle,set_shadowAngle,true);
 		addMember(l,"shadows",get_shadows,set_shadows,true);
 		addMember(l,"shadowStrength",get_shadowStrength,set_shadowStrength,true);
 		addMember(l,"shadowResolution",get_shadowResolution,set_shadowResolution,true);

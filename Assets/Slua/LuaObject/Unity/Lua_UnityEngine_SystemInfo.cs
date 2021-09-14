@@ -103,6 +103,39 @@ public class Lua_UnityEngine_SystemInfo : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
+	static public int SupportsRandomWriteOnRenderTextureFormat_s(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			UnityEngine.RenderTextureFormat a1;
+			a1 = (UnityEngine.RenderTextureFormat)LuaDLL.luaL_checkinteger(l, 1);
+			var ret=UnityEngine.SystemInfo.SupportsRandomWriteOnRenderTextureFormat(a1);
+			pushValue(l,true);
+			pushValue(l,ret);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
 	static public int SupportsTextureFormat_s(IntPtr l) {
 		try {
 			#if DEBUG
@@ -1537,66 +1570,6 @@ public class Lua_UnityEngine_SystemInfo : LuaObject {
 	}
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
-	static public int get_supportsConservativeRaster(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			pushValue(l,true);
-			pushValue(l,UnityEngine.SystemInfo.supportsConservativeRaster);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
-	static public int get_supportsMultiview(IntPtr l) {
-		try {
-			#if DEBUG
-			var method = System.Reflection.MethodBase.GetCurrentMethod();
-			string methodName = GetMethodName(method);
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.BeginSample(methodName);
-			#else
-			Profiler.BeginSample(methodName);
-			#endif
-			#endif
-			pushValue(l,true);
-			pushValue(l,UnityEngine.SystemInfo.supportsMultiview);
-			return 2;
-		}
-		catch(Exception e) {
-			return error(l,e);
-		}
-		#if DEBUG
-		finally {
-			#if UNITY_5_5_OR_NEWER
-			UnityEngine.Profiling.Profiler.EndSample();
-			#else
-			Profiler.EndSample();
-			#endif
-		}
-		#endif
-	}
-	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	[UnityEngine.Scripting.Preserve]
 	static public int get_supportsGeometryShaders(IntPtr l) {
 		try {
 			#if DEBUG
@@ -2765,11 +2738,102 @@ public class Lua_UnityEngine_SystemInfo : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_supportsConservativeRaster(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushValue(l,UnityEngine.SystemInfo.supportsConservativeRaster);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_supportsMultiview(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushValue(l,UnityEngine.SystemInfo.supportsMultiview);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_supportsStoreAndResolveAction(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			pushValue(l,true);
+			pushValue(l,UnityEngine.SystemInfo.supportsStoreAndResolveAction);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"UnityEngine.SystemInfo");
 		addMember(l,SupportsRenderTextureFormat_s);
 		addMember(l,SupportsBlendingOnRenderTextureFormat_s);
+		addMember(l,SupportsRandomWriteOnRenderTextureFormat_s);
 		addMember(l,SupportsTextureFormat_s);
 		addMember(l,SupportsVertexAttributeFormat_s);
 		addMember(l,IsFormatSupported_s);
@@ -2817,8 +2881,6 @@ public class Lua_UnityEngine_SystemInfo : LuaObject {
 		addMember(l,"supportsCubemapArrayTextures",get_supportsCubemapArrayTextures,null,false);
 		addMember(l,"copyTextureSupport",get_copyTextureSupport,null,false);
 		addMember(l,"supportsComputeShaders",get_supportsComputeShaders,null,false);
-		addMember(l,"supportsConservativeRaster",get_supportsConservativeRaster,null,false);
-		addMember(l,"supportsMultiview",get_supportsMultiview,null,false);
 		addMember(l,"supportsGeometryShaders",get_supportsGeometryShaders,null,false);
 		addMember(l,"supportsTessellationShaders",get_supportsTessellationShaders,null,false);
 		addMember(l,"supportsRenderTargetArrayIndexFromVertexShader",get_supportsRenderTargetArrayIndexFromVertexShader,null,false);
@@ -2858,6 +2920,9 @@ public class Lua_UnityEngine_SystemInfo : LuaObject {
 		addMember(l,"supportsMipStreaming",get_supportsMipStreaming,null,false);
 		addMember(l,"usesLoadStoreActions",get_usesLoadStoreActions,null,false);
 		addMember(l,"hdrDisplaySupportFlags",get_hdrDisplaySupportFlags,null,false);
+		addMember(l,"supportsConservativeRaster",get_supportsConservativeRaster,null,false);
+		addMember(l,"supportsMultiview",get_supportsMultiview,null,false);
+		addMember(l,"supportsStoreAndResolveAction",get_supportsStoreAndResolveAction,null,false);
 		createTypeMetatable(l,constructor, typeof(UnityEngine.SystemInfo));
 	}
 }
