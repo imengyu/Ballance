@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using BallancePhysics;
+using System.Collections.Generic;
 
 namespace BallancePhysics.Api
 {
@@ -65,17 +66,25 @@ namespace BallancePhysics.Api
     }
 
     private fn_physicalize _physicalize;
-    public IntPtr physicalize(IntPtr world, string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, bool use_ball, bool enable_convex_hull, bool auto_mass_center, bool enable_collision, bool start_frozen, bool physical_unmoveable, Vector3 position, Vector3 shfit_mass_center, Quaternion rotation, bool use_exists_surface, string surface_name, int mesh_count, IntPtr mesh_data, float extra_radius) {
+    public IntPtr physicalize(IntPtr world, string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, bool use_ball, bool enable_convex_hull, bool auto_mass_center, bool enable_collision, bool start_frozen, bool physical_unmoveable, Vector3 position, Vector3 shfit_mass_center, Quaternion rotation, bool use_exists_surface, string surface_name, int convex_count, List<IntPtr> convex_data, int concave_count, List<IntPtr> concave_data, float extra_radius) {
       
       var pt_position = create_point(position);
       var pt_shfit_mass_center = create_point(shfit_mass_center);
       var pt_rotation = create_quat(rotation);
 
+      var p_convex_data = Marshal.AllocHGlobal(convex_data.Count * Marshal.SizeOf<IntPtr>());
+      var p_concave_data = Marshal.AllocHGlobal(concave_data.Count * Marshal.SizeOf<IntPtr>());
+
+      Marshal.Copy(convex_data.ToArray(), 0, p_convex_data, convex_data.Count);
+      Marshal.Copy(concave_data.ToArray(), 0, p_concave_data, concave_data.Count);
+
       var rs = _physicalize(world, name, layer, systemGroup, subSystemId, subSystemDontCollideWith, mass, friction, 
         elasticity, linear_speed_damp, rot_speed_damp, ball_radius, PhysicsApi.boolToSbool(use_ball), PhysicsApi.boolToSbool(enable_convex_hull), PhysicsApi.boolToSbool(auto_mass_center), 
         PhysicsApi.boolToSbool(enable_collision), PhysicsApi.boolToSbool(start_frozen), PhysicsApi.boolToSbool(physical_unmoveable), pt_position, pt_shfit_mass_center,
-        pt_rotation, PhysicsApi.boolToSbool(use_exists_surface), surface_name, mesh_count, mesh_data, extra_radius);
+        pt_rotation, PhysicsApi.boolToSbool(use_exists_surface), surface_name, convex_count, p_convex_data, concave_count, p_concave_data, extra_radius);
       
+      Marshal.FreeHGlobal(p_convex_data);
+      Marshal.FreeHGlobal(p_concave_data);
       destroy_point(pt_position);
       destroy_point(pt_shfit_mass_center);
       destroy_quat(pt_rotation);
@@ -85,7 +94,7 @@ namespace BallancePhysics.Api
     
     private fn_unphysicalize _unphysicalize;
     public void unphysicalize(IntPtr world, IntPtr body, bool silently) {
-      _physicalize(world, body, PhysicsApi.boolToSbool(silently));
+      _unphysicalize(world, body, PhysicsApi.boolToSbool(silently));
     }
     
     private fn_physics_set_collision_listener _physics_set_collision_listener;
@@ -107,7 +116,7 @@ namespace BallancePhysics.Api
 
     private fn_physics_get_speed_vec _physics_get_speed_vec;
     public void physics_get_speed_vec(IntPtr body, out Vector3 speed_ws_out) {
-      var pt_speed_ws_out = create_point(position);
+      var pt_speed_ws_out = create_point(Vector3.zero);
       _physics_get_speed_vec(body, pt_speed_ws_out);
       speed_ws_out = new Vector3(
         get_point_x(pt_speed_ws_out),
@@ -119,7 +128,7 @@ namespace BallancePhysics.Api
     
     private fn_physics_get_rot_speed _physics_get_rot_speed;
     public void physics_get_rot_speed(IntPtr body, out Vector3 normized_axis_cs_out) {
-      var pt_normized_axis_cs_out = create_point(position);
+      var pt_normized_axis_cs_out = create_point(Vector3.zero);
       _physics_get_rot_speed(body, pt_normized_axis_cs_out);
       normized_axis_cs_out = new Vector3(
         get_point_x(pt_normized_axis_cs_out),
@@ -161,28 +170,28 @@ namespace BallancePhysics.Api
     }
 
     private fn_physics_is_inside_phantom _physics_is_inside_phantom;
-    public int physics_is_inside_phantom(IntPtr phantom, IntPtr other) { return _physics_is_inside_phantom(phantom, other) > 0; }
+    public bool physics_is_inside_phantom(IntPtr phantom, IntPtr other) { return _physics_is_inside_phantom(phantom, other) > 0; }
 
     private fn_physics_is_contact _physics_is_contact;
-    public int physics_is_contact(IntPtr body, IntPtr other) { return _physics_is_contact(body, other) > 0; }
+    public bool physics_is_contact(IntPtr body, IntPtr other) { return _physics_is_contact(body, other) > 0; }
 
     private fn_physics_is_motion_enabled _physics_is_motion_enabled;
-    public int physics_is_motion_enabled(IntPtr body) { return _physics_is_motion_enabled(body) > 0; }
+    public bool physics_is_motion_enabled(IntPtr body) { return _physics_is_motion_enabled(body) > 0; }
 
     private fn_physics_is_controlling _physics_is_controlling;
-    public int physics_is_controlling(IntPtr body, IntPtr controller) { return _physics_is_controlling(body, controller) > 0; }
+    public bool physics_is_controlling(IntPtr body, IntPtr controller) { return _physics_is_controlling(body, controller) > 0; }
 
     private fn_physics_is_fixed _physics_is_fixed;
-    public int physics_is_fixed(IntPtr body) { return _physics_is_fixed(body) > 0; }
+    public bool physics_is_fixed(IntPtr body) { return _physics_is_fixed(body) > 0; }
 
     private fn_physics_is_gravity_enabled _physics_is_gravity_enabled;
-    public int physics_is_gravity_enabled(IntPtr body) { return _physics_is_gravity_enabled(body) > 0; }
+    public bool physics_is_gravity_enabled(IntPtr body) { return _physics_is_gravity_enabled(body) > 0; }
 
     private fn_physics_enable_gravity _physics_enable_gravity;
-    public int physics_enable_gravity(IntPtr body) { return _physics_enable_gravity(body) > 0; }
+    public void physics_enable_gravity(IntPtr body, bool enable) { _physics_enable_gravity(body, PhysicsApi.boolToSbool(enable)); }
 
     private fn_physics_enable_motion _physics_enable_motion;
-    public int physics_enable_motion(IntPtr body, bool enable) { return _physics_enable_motion(body, PhysicsApi.boolToSbool(enable)) > 0; }
+    public void physics_enable_motion(IntPtr body, bool enable) { _physics_enable_motion(body, PhysicsApi.boolToSbool(enable)); }
     
     private fn_physics_transform_position_to_world_coords _physics_transform_position_to_world_coords;
     public void physics_transform_position_to_world_coords(IntPtr body, Vector3 pos_cs, Vector3 out_ws) {
@@ -224,7 +233,7 @@ namespace BallancePhysics.Api
     public RayCastResult raycasting(IntPtr world, Vector3 start_point, Vector3 direction, ref float distance_out) {
       var pt_start_point = create_point(start_point);
       var pt_direction = create_point(direction);
-      var rsPtr = _raycasting(body, pt_start_point, pt_direction, ref distance_out);
+      var rsPtr = _raycasting(world, pt_start_point, pt_direction, ref distance_out);
       destroy_point(pt_start_point);
       destroy_point(pt_direction);
 
@@ -244,7 +253,7 @@ namespace BallancePhysics.Api
     public bool raycasting_object(IntPtr world, Vector3 start_point, Vector3 direction, ref float distance_out) {
       var pt_start_point = create_point(start_point);
       var pt_direction = create_point(direction);
-      var rs = _raycasting_object(body, pt_start_point, pt_direction, ref distance_out);
+      var rs = _raycasting_object(world, pt_start_point, pt_direction, ref distance_out);
       destroy_point(pt_start_point);
       destroy_point(pt_direction);
       return rs > 0;
@@ -299,7 +308,7 @@ namespace BallancePhysics.Api
     private fn_set_physics_ball_joint _set_physics_ball_joint;
     public IntPtr set_physics_ball_joint(IntPtr body, IntPtr other, Vector3 joint_position_ws) {
       var pt_joint_position_ws = create_point(joint_position_ws);
-      var rs = _set_physics_ball_joint(body, pt_joint_position_ws);
+      var rs = _set_physics_ball_joint(body, other, pt_joint_position_ws);
       destroy_point(pt_joint_position_ws);
       return rs;
     }
@@ -308,7 +317,7 @@ namespace BallancePhysics.Api
     public IntPtr set_physics_hinge(IntPtr body, IntPtr other, Vector3 anchor_ws, Vector3 free_axis_ws) {
       var pt_anchor_ws = create_point(anchor_ws);
       var pt_free_axis_ws = create_point(free_axis_ws);
-      var rs = _set_physics_ball_joint(body, other, pt_anchor_ws, pt_free_axis_ws);
+      var rs = _set_physics_hinge(body, other, pt_anchor_ws, pt_free_axis_ws);
       destroy_point(pt_anchor_ws);
       destroy_point(pt_free_axis_ws);
       return rs;
@@ -332,7 +341,7 @@ namespace BallancePhysics.Api
     public IntPtr create_physics_force(IntPtr body1, IntPtr body2, Vector3 pos1_os, Vector3 pos2_os, float force_value, bool push_object2) {
       var pt_pos1_os = create_point(pos1_os);
       var pt_pos2_os = create_point(pos2_os);
-      var rs = _create_physics_force(body, other, pt_pos1_os, pt_pos2_os, PhysicsApi.boolToSbool(push_object2));
+      var rs = _create_physics_force(body1, body2, pt_pos1_os, pt_pos2_os, force_value, PhysicsApi.boolToSbool(push_object2));
       destroy_point(pt_pos1_os);
       destroy_point(pt_pos2_os);
       return rs;
@@ -342,7 +351,7 @@ namespace BallancePhysics.Api
     public IntPtr create_physics_spring(IntPtr body1, IntPtr body2, Vector3 pos1_os, Vector3 pos2_os, float length, float constant, float spring_damping, float global_damping, bool use_stiff_spring) {
       var pt_pos1_os = create_point(pos1_os);
       var pt_pos2_os = create_point(pos2_os);
-      var rs = _create_physics_force(body, other, pt_pos1_os, pt_pos2_os, length, constant, spring_damping, global_damping, PhysicsApi.boolToSbool(use_stiff_spring));
+      var rs = _create_physics_spring(body1, body2, pt_pos1_os, pt_pos2_os, length, constant, spring_damping, global_damping, PhysicsApi.boolToSbool(use_stiff_spring));
       destroy_point(pt_pos1_os);
       destroy_point(pt_pos2_os);
       return rs;
@@ -399,7 +408,7 @@ namespace BallancePhysics.Api
       _physics_convert_to_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_convert_to_phantom>(apiArray[i++]);
       _physics_is_inside_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_inside_phantom>(apiArray[i++]);
       _physics_is_contact = Marshal.GetDelegateForFunctionPointer<fn_physics_is_contact>(apiArray[i++]);
-      physics_is_motion_enabled = Marshal.GetDelegateForFunctionPointer<fn_physics_is_motion_enabled>(apiArray[i++]);
+      _physics_is_motion_enabled = Marshal.GetDelegateForFunctionPointer<fn_physics_is_motion_enabled>(apiArray[i++]);
       _physics_is_controlling = Marshal.GetDelegateForFunctionPointer<fn_physics_is_controlling>(apiArray[i++]);
       _physics_is_fixed = Marshal.GetDelegateForFunctionPointer<fn_physics_is_fixed>(apiArray[i++]);
       _physics_is_gravity_enabled = Marshal.GetDelegateForFunctionPointer<fn_physics_is_gravity_enabled>(apiArray[i++]);

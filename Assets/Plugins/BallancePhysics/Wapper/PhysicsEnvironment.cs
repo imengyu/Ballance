@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 namespace BallancePhysics.Wapper
 {
+  [AddComponentMenu("BallancePhysics/PhysicsEnvironment")]
+  [DefaultExecutionOrder(10)]
+  [DisallowMultipleComponent]
+  [SLua.CustomLuaClass]
   public class PhysicsEnvironment : MonoBehaviour
   {
     [Tooltip("世界的引力。默认值是 (0, -9.8, 0). (模拟开始后更改此值无效，请使用 SetGravity 更改)")]
@@ -45,5 +49,16 @@ namespace BallancePhysics.Wapper
         handle = PhysicsApi.API.create_environment(Gravity, 66, -2147483647, layerNames.GetGroupFilterMasks());
       }
     }
+    private void OnDestroy() {
+      if(handle != IntPtr.Zero) {
+        PhysicsApi.API.destroy_environment(handle);
+        handle = IntPtr.Zero;
+
+        int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
+        PhysicsWorlds.Remove(currentScenseIndex);
+      }
+    }
+  
+    public IntPtr GetPtr() { return handle; }
   }
 }

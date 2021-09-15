@@ -102,7 +102,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_motion_controller(IntPtr controller);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_physicalize(IntPtr world, [MarshalAs(UnmanagedType.LPStr)] string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, int use_ball, int enable_convex_hull, int auto_mass_center, int enable_collision, int start_frozen, int physical_unmoveable, IntPtr position, IntPtr shfit_mass_center, IntPtr rotation, int use_exists_surface, [MarshalAs(UnmanagedType.LPStr)] string surface_name, int mesh_count, IntPtr mesh_data, float extra_radius);
+  public delegate IntPtr fn_physicalize(IntPtr world, [MarshalAs(UnmanagedType.LPStr)] string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, int use_ball, int enable_convex_hull, int auto_mass_center, int enable_collision, int start_frozen, int physical_unmoveable, IntPtr position, IntPtr shfit_mass_center, IntPtr rotation, int use_exists_surface, [MarshalAs(UnmanagedType.LPStr)] string surface_name, int convex_count, IntPtr convex_data, int concave_count, IntPtr concave_data, float extra_radius);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_unphysicalize(IntPtr world, IntPtr body, int silently);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
