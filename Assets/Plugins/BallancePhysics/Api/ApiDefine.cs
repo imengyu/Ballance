@@ -128,9 +128,9 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_delete_raycast_result(IntPtr rs);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_raycasting(IntPtr _object, IntPtr start_point, IntPtr direction, ref float distance_out);
+  public delegate IntPtr fn_raycasting(IntPtr world, IntPtr start_point, IntPtr direction, ref float distance_out);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_raycasting_object(IntPtr _object, IntPtr start_point, IntPtr direction, ref float distance_out);
+  public delegate int fn_raycasting_object(IntPtr world, IntPtr start_point, IntPtr direction, ref float distance_out);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fn_set_physics_ball_joint(IntPtr body, IntPtr other, IntPtr joint_position_ws);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
