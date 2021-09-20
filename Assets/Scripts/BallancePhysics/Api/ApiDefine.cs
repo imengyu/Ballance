@@ -68,7 +68,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_physics_enable_motion(IntPtr body, int enable);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate void fn_physics_beam_object_to_new_position(IntPtr body, IntPtr rotation, IntPtr pos);
+  public delegate void fn_physics_beam_object_to_new_position(IntPtr body, IntPtr rotation, IntPtr pos, int optimize_for_repeated_calls);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate float fn_physics_get_speed(IntPtr body);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -128,9 +128,11 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_delete_raycast_result(IntPtr rs);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_raycasting(IntPtr world, IntPtr start_point, IntPtr direction, ref float distance_out);
+  public delegate IntPtr fn_raycasting(IntPtr world, int flag, IntPtr start_point, IntPtr direction, float rayLength);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate int fn_raycasting_object(IntPtr world, IntPtr start_point, IntPtr direction, ref float distance_out);
+  public delegate int fn_raycasting_object(IntPtr objectp, IntPtr start_point, IntPtr direction, float rayLength, ref float distance_out);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate int fn_raycasting_one(IntPtr world, IntPtr start_point, IntPtr direction, float rayLength, ref float distance_out);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fn_set_physics_ball_joint(IntPtr body, IntPtr other, IntPtr joint_position_ws);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -151,5 +153,8 @@ namespace BallancePhysics.Api
   public delegate IntPtr fn_create_physics_spring(IntPtr body1, IntPtr body2, IntPtr pos1_os, IntPtr pos2_os, float length, float constant, float spring_damping, float global_damping, int use_stiff_spring);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_physics_spring(IntPtr spring);
-
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate int fn_surface_exist_by_name([MarshalAs(UnmanagedType.LPStr)] string name);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_target_pos(IntPtr controller, IntPtr pos_ws);
 }

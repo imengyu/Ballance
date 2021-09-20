@@ -52,7 +52,9 @@ namespace BallancePhysics.Api
     public fn_destroy_physics_spring destroy_physics_spring;
     public fn_set_physics_force_value set_physics_force_value;
     public fn_set_physics_fixed_constraint set_physics_fixed_constraint;
+    public fn_physics_get_id physics_get_id;
     private fn_delete_raycast_result delete_raycast_result;
+    private fn_surface_exist_by_name _surface_exist_by_name;
 
     private fn_create_environment _create_environment;
     public IntPtr create_environment(Vector3 gravity, float suimRate, int layerMask, int[] layerToMask) {  
@@ -106,10 +108,10 @@ namespace BallancePhysics.Api
     public bool physics_freeze(IntPtr body) { return _physics_freeze(body) > 0; }
     
     private fn_physics_beam_object_to_new_position _physics_beam_object_to_new_position;
-    public void physics_beam_object_to_new_position(IntPtr body, Quaternion rotation, Vector3 position) {
+    public void physics_beam_object_to_new_position(IntPtr body, Quaternion rotation, Vector3 position, bool optimize_for_repeated_calls) {
       var pt_position = create_point(position);
       var pt_rotation = create_quat(rotation); 
-      _physics_beam_object_to_new_position(body, pt_rotation, pt_position);
+      _physics_beam_object_to_new_position(body, pt_rotation, pt_position, PhysicsApi.boolToSbool(optimize_for_repeated_calls));
       destroy_point(pt_position);
       destroy_quat(pt_rotation);
     }
@@ -181,6 +183,9 @@ namespace BallancePhysics.Api
     private fn_physics_is_controlling _physics_is_controlling;
     public bool physics_is_controlling(IntPtr body, IntPtr controller) { return _physics_is_controlling(body, controller) > 0; }
 
+    private fn_physics_is_phantom _physics_is_phantom;
+    public bool physics_is_phantom(IntPtr body) { return _physics_is_phantom(body) > 0; }
+
     private fn_physics_is_fixed _physics_is_fixed;
     public bool physics_is_fixed(IntPtr body) { return _physics_is_fixed(body) > 0; }
 
@@ -229,11 +234,18 @@ namespace BallancePhysics.Api
       destroy_point(pt_out_ws);
     }
 
+    private fn_motion_controller_set_target_pos _motion_controller_set_target_pos;
+    public void motion_controller_set_target_pos(IntPtr controller, Vector3 pos_ws) {
+      var pt_out_ws = create_point(pos_ws);
+      _motion_controller_set_target_pos(controller, pt_out_ws);
+      destroy_point(pt_out_ws);
+    }
+
     private fn_raycasting _raycasting;
-    public RayCastResult raycasting(IntPtr world, Vector3 start_point, Vector3 direction, ref float distance_out) {
+    public RayCastResult raycasting(IntPtr world, int flag, Vector3 start_point, Vector3 direction, float rayLength) {
       var pt_start_point = create_point(start_point);
       var pt_direction = create_point(direction);
-      var rsPtr = _raycasting(world, pt_start_point, pt_direction, ref distance_out);
+      var rsPtr = _raycasting(world, flag, pt_start_point, pt_direction, rayLength);
       destroy_point(pt_start_point);
       destroy_point(pt_direction);
 
@@ -250,13 +262,23 @@ namespace BallancePhysics.Api
     }
 
     private fn_raycasting_object _raycasting_object;
-    public bool raycasting_object(IntPtr world, Vector3 start_point, Vector3 direction, ref float distance_out) {
+    public bool raycasting_object(IntPtr objectPtr, Vector3 start_point, Vector3 direction, float rayLength, ref float distance_out) {
       var pt_start_point = create_point(start_point);
       var pt_direction = create_point(direction);
-      var rs = _raycasting_object(world, pt_start_point, pt_direction, ref distance_out);
+      var rs = _raycasting_object(objectPtr, pt_start_point, pt_direction, rayLength, ref distance_out);
       destroy_point(pt_start_point);
       destroy_point(pt_direction);
       return rs > 0;
+    }
+
+    private fn_raycasting_one _raycasting_one;
+    public int raycasting_one(IntPtr world, Vector3 start_point, Vector3 direction, float rayLength, ref float distance_out) {
+      var pt_start_point = create_point(start_point);
+      var pt_direction = create_point(direction);
+      var rs = _raycasting_object(world, pt_start_point, pt_direction, rayLength, ref distance_out);
+      destroy_point(pt_start_point);
+      destroy_point(pt_direction);
+      return rs;
     }
 
     private fn_create_points_buffer _create_points_buffer;
@@ -324,12 +346,12 @@ namespace BallancePhysics.Api
     }
 
     private fn_set_physics_constraint _set_physics_constraint;
-    public IntPtr set_physics_constraint(IntPtr body, IntPtr other, float force_factor, float damp_factor, bool translation_limit, Vector3 translation_freedom_min, Vector3 translation_freedom_max, bool rotation_limit, Vector3 rotation_freedom_min, Vector3 rotation_freedom_max) {
+    public IntPtr set_physics_constraint(IntPtr body, IntPtr other, float force_factor, float damp_factor, int translation_limit, Vector3 translation_freedom_min, Vector3 translation_freedom_max, int rotation_limit, Vector3 rotation_freedom_min, Vector3 rotation_freedom_max) {
       var pt_translation_freedom_min = create_point(translation_freedom_min);
       var pt_translation_freedom_max = create_point(translation_freedom_max);
       var pt_rotation_freedom_min = create_point(rotation_freedom_min);
       var pt_rotation_freedom_max = create_point(rotation_freedom_max);
-      var rs = _set_physics_constraint(body, other, force_factor, damp_factor, PhysicsApi.boolToSbool(translation_limit), pt_translation_freedom_min, pt_translation_freedom_max, PhysicsApi.boolToSbool(rotation_limit), pt_rotation_freedom_min, pt_rotation_freedom_max);
+      var rs = _set_physics_constraint(body, other, force_factor, damp_factor, translation_limit, pt_translation_freedom_min, pt_translation_freedom_max, rotation_limit, pt_rotation_freedom_min, pt_rotation_freedom_max);
       destroy_point(pt_translation_freedom_min);
       destroy_point(pt_translation_freedom_max);
       destroy_point(pt_rotation_freedom_min);
@@ -338,9 +360,9 @@ namespace BallancePhysics.Api
     }
   
     private fn_create_physics_force _create_physics_force;
-    public IntPtr create_physics_force(IntPtr body1, IntPtr body2, Vector3 pos1_os, Vector3 pos2_os, float force_value, bool push_object2) {
-      var pt_pos1_os = create_point(pos1_os);
-      var pt_pos2_os = create_point(pos2_os);
+    public IntPtr create_physics_force(IntPtr body1, IntPtr body2, Vector3 pos1_ws, Vector3 pos2_ws, float force_value, bool push_object2) {
+      var pt_pos1_os = create_point(pos1_ws);
+      var pt_pos2_os = create_point(pos2_ws);
       var rs = _create_physics_force(body1, body2, pt_pos1_os, pt_pos2_os, force_value, PhysicsApi.boolToSbool(push_object2));
       destroy_point(pt_pos1_os);
       destroy_point(pt_pos2_os);
@@ -348,15 +370,23 @@ namespace BallancePhysics.Api
     }
 
     private fn_create_physics_spring _create_physics_spring;
-    public IntPtr create_physics_spring(IntPtr body1, IntPtr body2, Vector3 pos1_os, Vector3 pos2_os, float length, float constant, float spring_damping, float global_damping, bool use_stiff_spring) {
-      var pt_pos1_os = create_point(pos1_os);
-      var pt_pos2_os = create_point(pos2_os);
+    public IntPtr create_physics_spring(IntPtr body1, IntPtr body2, Vector3 pos1_ws, Vector3 pos2_ws, float length, float constant, float spring_damping, float global_damping, bool use_stiff_spring) {
+      var pt_pos1_os = create_point(pos1_ws);
+      var pt_pos2_os = create_point(pos2_ws);
       var rs = _create_physics_spring(body1, body2, pt_pos1_os, pt_pos2_os, length, constant, spring_damping, global_damping, PhysicsApi.boolToSbool(use_stiff_spring));
       destroy_point(pt_pos1_os);
       destroy_point(pt_pos2_os);
       return rs;
     }
   
+    public bool surface_exist_by_name(string name) {
+      return _surface_exist_by_name(name) > 0;
+    }
+
+    public Vector3 ptr_to_vec3(IntPtr p) {
+      return new Vector3(get_point_x(p), get_point_y(p), get_point_z(p));
+    }
+
     //获取所有函数指针
     internal void initAll(IntPtr apiArrayPtr, int len)
     {
@@ -437,6 +467,11 @@ namespace BallancePhysics.Api
       destroy_physics_force = Marshal.GetDelegateForFunctionPointer<fn_destroy_physics_force>(apiArray[i++]);
       _create_physics_spring = Marshal.GetDelegateForFunctionPointer<fn_create_physics_spring>(apiArray[i++]);
       destroy_physics_spring = Marshal.GetDelegateForFunctionPointer<fn_destroy_physics_spring>(apiArray[i++]);
+      _surface_exist_by_name = Marshal.GetDelegateForFunctionPointer<fn_surface_exist_by_name>(apiArray[i++]);
+      physics_get_id = Marshal.GetDelegateForFunctionPointer<fn_physics_get_id>(apiArray[i++]);
+      _raycasting_one = Marshal.GetDelegateForFunctionPointer<fn_raycasting_one>(apiArray[i++]);
+      _physics_is_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_phantom>(apiArray[i++]);
+      _motion_controller_set_target_pos = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_target_pos>(apiArray[i++]);
       
       InitSuccess = true;
     }
