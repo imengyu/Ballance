@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Continuous: 0
-  Gravity: {x: 0, y: -66, z: 0}
+  Gravity: {x: 0, y: -20, z: 0}
   SolverIterationCount: 4
   BroadPhaseWorldSize: 4000
   CollisionTolerance: 0.2
@@ -176,7 +176,6 @@ MonoBehaviour:
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
