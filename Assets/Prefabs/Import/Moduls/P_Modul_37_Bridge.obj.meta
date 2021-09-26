@@ -1,39 +1,9 @@
 fileFormatVersion: 2
 guid: dfa6831f8ba67d249af625060c9d1247
 ModelImporter:
-  serializedVersion: 20200
+  serializedVersion: 21100
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: P_Modul37_Misc_MetalButtons
-    second: {fileID: 2100000, guid: 4a56e99c967f0214a940678b5ea780fd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: P_Modul_37_Metall_1
-    second: {fileID: 2100000, guid: 1156ae67eb207ed41bc1d1c8a18bc896, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: P_Modul_37_Target
-    second: {fileID: 2100000, guid: 195188ca976de9a4888d7935bedecd02, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: P_Modul_37_Wood01
-    second: {fileID: 2100000, guid: c6e17dd5ae97a9440bff2bfbb79eab34, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: P_Modul_37_WoodAxis
-    second: {fileID: 2100000, guid: a5f452bb7df6915449330359a68bc1a2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: P_Modul_37_WoodMisc
-    second: {fileID: 2100000, guid: 6a3a5f539afae2d4586a3b6b9039de51, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -103,7 +73,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -122,7 +92,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1

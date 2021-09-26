@@ -47,7 +47,7 @@ MonoBehaviour:
   Gravity: {x: 0, y: -20, z: 0}
   SolverIterationCount: 4
   BroadPhaseWorldSize: 4000
-  CollisionTolerance: 0.2
+  CollisionTolerance: 0.5
   VisualDebugger: 1
   StableSolverOn: 1
   Simulating: 1
