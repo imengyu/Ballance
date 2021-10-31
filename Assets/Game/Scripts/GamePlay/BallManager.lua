@@ -115,7 +115,7 @@ function BallManager:new()
   }
 end
 
-function BallManager:Start()
+function BallManager:Awake()
   GamePlay.BallManager = self
   self._private.BallLightningSphere = self._BallLightningSphere:GetLuaClass()
 
@@ -138,7 +138,7 @@ function BallManager:Start()
   --请求触发设置更新函数
   GameSettings:RequireSettingsLoad("control")
 
-  Game.Manager.GameDebugCommandServer:RegisterCommand('balls', function (eyword, fullCmd, argsCount, args)
+  self._private.CommandId = Game.Manager.GameDebugCommandServer:RegisterCommand('balls', function (eyword, fullCmd, argsCount, args)
     local type = args[1]
     if type == 'play-lighting' then
       self:PlayLighting(self._private.nextRecoverPos)
@@ -169,13 +169,16 @@ function BallManager:Start()
     end
     return true
   end, 1, "balls <next/set/reset/reset-all> 球管理器命令"..
-          "  set-recover-pos <x:number> <y:number> <z:number> > 设置下次球激活位置"..
-          "  set-ball <ballName:string> > 设置当前激活球"..
-          "  set-control-status <status:number> > 设置当前控制模式 status: 0 无控制 1 正常控制 2 释放模式 3 锁定模式 4 释放模式2"..
-          "  play-lighting > 播放出生动画"
+          "  set-recover-pos <x:number> <y:number> <z:number> ▶ 设置下次球激活位置"..
+          "  set-ball <ballName:string>                       ▶ 设置当前激活球"..
+          "  set-control-status <status:number>               ▶ 设置当前控制模式 status: 0 无控制 1 正常控制 2 释放模式 3 锁定模式 4 释放模式2"..
+          "  play-lighting                                    ▶ 播放出生动画"
   )
 end
 function BallManager:OnDestroy()
+  Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._private.CommandId);
+
+  self._private.registerBalls = {}
   self._private.GameSettings:UnRegisterSettingsUpdateCallback(self._private.settingsCallbackId)
   self._private.keyListener:ClearKeyListen()
 end
@@ -393,6 +396,8 @@ end
 function BallManager:_DeactiveCurrentBall() 
   local current = self._private.currentActiveBall
   if current ~= nil then
+    --停止球的声音
+    GamePlay.BallSoundManager:ForceDisableBallAllSound(current.ball)
     --取消激活
     if current.rigidbody:IsPhysicsed() then
       current.ball:Deactive()
@@ -410,6 +415,8 @@ function BallManager:_ActiveCurrentBall()
     current = self._private.currentBall
     self._private.currentActiveBall = self._private.currentBall
 
+    --停止球的声音
+    GamePlay.BallSoundManager:ForceDisableBallAllSound(current.ball)
     ---设置位置
     current.ball.transform.position = self._private.nextRecoverPos
     --设置摄像机跟随对象

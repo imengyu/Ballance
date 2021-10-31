@@ -829,6 +829,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1009,7 +1010,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 8
@@ -1091,6 +1092,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1246,7 +1248,7 @@ MonoBehaviour:
   m_CollidableQualityType: -1
   m_Mass: 0.3
   m_LinearDamping: 1
-  m_AngularDamping: 0.8
+  m_AngularDamping: 0.86
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1
@@ -1271,7 +1273,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 1
@@ -1354,6 +1356,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1534,7 +1537,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 9
@@ -1637,6 +1640,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1817,7 +1821,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 1
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 5
@@ -1899,6 +1903,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2079,7 +2084,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 3
@@ -2161,6 +2166,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2341,7 +2347,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 6
@@ -2423,6 +2429,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2603,7 +2610,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 7
@@ -2685,6 +2692,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2865,7 +2873,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 4
@@ -2947,6 +2955,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3127,7 +3136,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: P_Modul29
   m_SubSystemId: 2

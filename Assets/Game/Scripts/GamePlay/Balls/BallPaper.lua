@@ -18,9 +18,9 @@ function BallPaper:Start()
     Game.SoundManager:LoadAudioResource('core.sounds:Pieces_Paper.wav'), false, true, 'Pieces_Paper')
 end
 
-function BallPaper:ThrowPieces()
+function BallPaper:ThrowPieces(pos)
   self._PaperPiecesSound:Play()
-  Ball.ThrowPieces(self)
+  Ball.ThrowPieces(self, pos)
 end
 
 function CreateClass_BallPaper()

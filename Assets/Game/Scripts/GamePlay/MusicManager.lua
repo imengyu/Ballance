@@ -53,7 +53,7 @@ function MusicManager:Start()
 
   GamePlay.MusicManager = self
 
-  Game.Manager.GameDebugCommandServer:RegisterCommand('bgm', function (eyword, fullCmd, argsCount, args)
+  self._CommandId = Game.Manager.GameDebugCommandServer:RegisterCommand('bgm', function (eyword, fullCmd, argsCount, args)
     local type = args[1]
     if type == 'enable' then
       self:EnableBackgroundMusic()
@@ -67,10 +67,14 @@ function MusicManager:Start()
     end
     return true
   end, 1, "bgm <left/right/up/down/-all> 背景音乐管理器命令"..
-          "  enable > 开启背景音乐"..
-          "  disable > 关闭背景音乐"
+          "  enable  ▶ 开启背景音乐"..
+          "  disable ▶ 关闭背景音乐"
   )
 end
+function MusicManager:OnDestroy() 
+  Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._CommandId)
+end
+
 function MusicManager:FixedUpdate() 
   if self.CurrentAudioEnabled and self.CurrentAudioTheme ~= nil then
 
@@ -135,7 +139,7 @@ function MusicManager:SetCurrentTheme(theme)
   end
 end
 function MusicManager:EnableBackgroundMusic() 
-  if self.CurrentAudioTheme ~= 0 then
+  if self.CurrentAudioTheme then
     self.CurrentAudioEnabled = true 
     self._CurrentAudioTick = math.random(2, self.CurrentAudioTheme.maxInterval / 2)
     self._CurrentAudioTick2 = math.random(10, self.CurrentAudioTheme.atmoMaxInterval)

@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Continuous: 0
-  Gravity: {x: 0, y: -20, z: 0}
+  Gravity: {x: 0, y: -66, z: 0}
   SolverIterationCount: 4
   BroadPhaseWorldSize: 4000
-  CollisionTolerance: 0.5
+  CollisionTolerance: 0.01
   VisualDebugger: 1
   StableSolverOn: 1
   Simulating: 1

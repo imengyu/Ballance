@@ -75,7 +75,7 @@ function CamManager:Start()
   self.transform.localPosition = Vector3(self._CameraNormalX, self._CameraNormalY, 0)
   self.transform:LookAt(Vector3.zero)
 
-  Game.Manager.GameDebugCommandServer:RegisterCommand('cam', function (eyword, fullCmd, argsCount, args)
+  self._CommandId = Game.Manager.GameDebugCommandServer:RegisterCommand('cam', function (eyword, fullCmd, argsCount, args)
     local type = args[1]
     if type == 'left' then
       self:RotateLeft()
@@ -96,16 +96,20 @@ function CamManager:Start()
     end
     return true
   end, 1, "cam <left/right/up/down/-all> 摄像机管理器命令"..
-          "  left > 向左旋转摄像机"..
-          "  right > 向右旋转摄像机"..
-          "  up > 空格键升起摄像机"..
-          "  down > 空格放开落下摄像机"..
-          "  follow > 开启摄像机跟随"..
-          "  no-follow > 关闭摄像机跟随"..
-          "  look > 开启摄像机看球"..
-          "  no-look > 关闭摄像机看球"
+          "  left      ▶ 向左旋转摄像机"..
+          "  right     ▶ 向右旋转摄像机"..
+          "  up        ▶ 空格键升起摄像机"..
+          "  down      ▶ 空格放开落下摄像机"..
+          "  follow    ▶ 开启摄像机跟随"..
+          "  no-follow ▶ 关闭摄像机跟随"..
+          "  look      ▶ 开启摄像机看球"..
+          "  no-look   ▶ 关闭摄像机看球"
   )
 end
+function CamManager:OnDestroy() 
+  Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._CommandId)
+end
+
 function CamManager:FixedUpdate()
   --摄像机水平旋转
   if self._CamIsRotateing then

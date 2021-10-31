@@ -1134,7 +1134,7 @@ namespace PhysicsRT
     public IntPtr CreateRigidBody(IntPtr world, IntPtr shape, Vector3 position, Quaternion rot, 
 	    string name, int motionType, int qualityType, float friction, 
       float restitution, float mass, int active, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, bool isTiggerVolume, bool addContactListener, float gravityFactor, float linearDamping, float angularDamping, 
-      Vector3 centerOfMass, Matrix4x4 inertiaTensor, Vector3 linearVelocity, Vector3 angularVelocity, float maxLinearVelocity, float maxAngularVelocity, IntPtr massProperties)
+      Vector3 centerOfMass, Matrix4x4 inertiaTensor, Vector3 linearVelocity, Vector3 angularVelocity, float maxLinearVelocity, float maxAngularVelocity, IntPtr massProperties, bool autoComputeCenterOfMass)
     {
       if (_CreateRigidBody == null)
         throw new ApiNotFoundException("CreateRigidBody");
@@ -1151,7 +1151,7 @@ namespace PhysicsRT
         world, shape, nPtrPosition, nPtrRot, nPtrName, motionType, qualityType,
         friction, restitution, mass, active, layer,  systemGroup, subSystemId, subSystemDontCollideWith,
         BoolToInt(isTiggerVolume), BoolToInt(addContactListener), gravityFactor, linearDamping, 
-        angularDamping, nPtrCenterOfMass, nPtrInertiaTensor, nPtrLinearVelocity, nPtrAngularVelocity, 
+        angularDamping, autoComputeCenterOfMass ? IntPtr.Zero : nPtrCenterOfMass, nPtrInertiaTensor, nPtrLinearVelocity, nPtrAngularVelocity, 
         maxLinearVelocity, maxAngularVelocity,
         massProperties);
       

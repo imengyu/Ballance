@@ -91,8 +91,8 @@ function LevelBuilder:Start()
       end
       return true
     end, 0, 'lb <quit/load>\n'..
-      '  <quit> > 终止当前的关卡加载\n'..
-      '  <load> <levelname:string> > 加载指定关卡\n')
+      '  <quit>                    ▶ 终止当前的关卡加载\n'..
+      '  <load> <levelname:string> ▶ 加载指定关卡\n')
 
     self._LevelBuilderUIButtonBack.onClick:AddListener(function () 
       Game.UIManager:MaskBlackSet(true)
@@ -780,12 +780,15 @@ function LevelBuilder:UnLoadLevel(endCallback)
 
     --通知所有modul卸载
     GamePlay.SectorManager:DoUnInitAllModuls()
-
-    local level = self._CurrentLevelJson.level
-    self:_CallLoadStep('unload')
-    if level.customModEventName and level.customModEventName ~= '' then
-      Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { 'unload' })
-      Game.Mediator:UnRegisterGlobalEvent(level.customModEventName)
+    
+    --通知关卡自定义回调卸载
+    if self._CurrentLevelJson and self._CurrentLevelJson.level then
+      local level = self._CurrentLevelJson.level
+      self:_CallLoadStep('unload')
+      if level.customModEventName and level.customModEventName ~= '' then
+        Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { 'unload' })
+        Game.Mediator:UnRegisterGlobalEvent(level.customModEventName)
+      end
     end
 
     Yield(WaitForSeconds(0.5))
@@ -857,7 +860,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
 
     if type(endCallback) == 'function' then
       endCallback()
-    else 
+    else
       --通知回到menulevel
       Game.Manager:RequestEnterLogicScense('MenuLevel')
     end
@@ -915,7 +918,7 @@ end
 
 function LevelBuilder:CallLevelCustomModEvent(type) 
   local level = self._CurrentLevelJson.level
-  if level.customModEventName and level.customModEventName ~= '' then
+  if level and level.customModEventName and level.customModEventName ~= '' then
     Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { type })
   end
 end

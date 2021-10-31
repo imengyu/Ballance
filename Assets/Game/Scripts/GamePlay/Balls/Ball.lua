@@ -39,7 +39,8 @@ function Ball:new()
     },
     MaxSpeed = 5,
     MinSpeed = 0.01,
-    SoundDelay = 2
+    ---声音播放延时，多个声音一起播放时如果未到达延时，则后面的声音不会播放
+    SoundDelay = 5
   }
   self._RollSoundLockTick = 0
   self._RollSound = {
@@ -51,6 +52,7 @@ function Ball:new()
     },
     MaxSpeed = 0.2,
     MinSpeed = 0.02,
+    ---声音播放延时，多个声音一起播放时如果未到达延时，则后面的声音不会播放
     SoundDelay = 5,
   }
 end

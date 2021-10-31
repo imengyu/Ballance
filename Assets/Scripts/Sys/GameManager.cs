@@ -638,13 +638,13 @@ namespace Ballance2.Sys
                 }
                 return false;
             }, 0, "s <set/get/reset/list/notify> 系统设置命令\n" +
-                    "  set <packageName:string> <setKey:string> <bool/string/float/int> <newValue> > 设置指定执行器的某个设置\n" +
-                    "  set <setKey:string> <bool/string/float/int> <newValue> > 设置系统执行器的某个设置\n" +
-                    "  get <packageName:string> <setKey:string> <bool/string/float/int> > 获取指定执行器的某个设置值\n" +
-                    "  get <setKey:string> <bool/string/float/int> > 获取系统执行器的某个设置值\n" +
-                    "  reset <packageName:string> > 重置所有设置为默认值\n" +
-                    "  notify <packageName:string> <group:string> > 通知指定组设置已更新\n" +
-                    "  list > 列举出所有子模块的设置执行器"
+                    "  set <packageName:string> <setKey:string> <bool/string/float/int> <newValue> ▶ 设置指定执行器的某个设置\n" +
+                    "  set <setKey:string> <bool/string/float/int> <newValue>                      ▶ 设置系统执行器的某个设置\n" +
+                    "  get <packageName:string> <setKey:string> <bool/string/float/int>            ▶ 获取指定执行器的某个设置值\n" +
+                    "  get <setKey:string> <bool/string/float/int>                                 ▶ 获取系统执行器的某个设置值\n" +
+                    "  reset <packageName:string>                                                  ▶ 重置所有设置为默认值\n" +
+                    "  notify <packageName:string> <group:string>                                  ▶ 通知指定组设置已更新\n" +
+                    "  list                                                                        ▶ 列举出所有子模块的设置执行器"
             );
             srv.RegisterCommand("r", (keyword, fullCmd, argsCount, args) =>
             {
@@ -694,10 +694,10 @@ namespace Ballance2.Sys
                 }
                 return false;
             }, 0, "r <fps/resolution/full/device>\n" + 
-                    "  fps [packageName:nmber:number(1-120)] > 获取或者设置游戏的目标帧率\n" +
-                    "  resolution <width:nmber> <height:nmber> [fullScreenMode:number(0-3)] > 设置游戏的分辨率或全屏\n" +
-                    "  vsync <fullScreenMode:number(0-2)> > 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
-                    "  full <fullScreenMode::number(0-3)> > 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
+                    "  fps [packageName:nmber:number(1-120)]                                ▶ 获取或者设置游戏的目标帧率\n" +
+                    "  resolution <width:nmber> <height:nmber> [fullScreenMode:number(0-3)] ▶ 设置游戏的分辨率或全屏\n" +
+                    "  vsync <fullScreenMode:number(0-2)>                                   ▶ 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
+                    "  full <fullScreenMode::number(0-3)>                                   ▶ 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
                     "  device > 获取当前设备信息");
             srv.RegisterCommand("c", (keyword, fullCmd, argsCount, args) =>
             {
@@ -707,7 +707,7 @@ namespace Ballance2.Sys
                 var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
                 Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
                 return true;
-            }, 1, "c <code:string> > 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
+            }, 1, "c <code:string> ▶ 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
             srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
             {
                 Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());

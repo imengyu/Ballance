@@ -54,6 +54,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -208,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_CollidableQualityType: -1
-  m_Mass: 1.5
+  m_Mass: 1
   m_LinearDamping: 0.1
   m_AngularDamping: 0.1
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
@@ -224,7 +225,7 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
-  m_Friction: 0.3
+  m_Friction: 0.2
   m_Restitution: 0.2
   m_Layer: 3
   m_InertiaTensor1: {x: 1, y: 0, z: 0}
@@ -669,6 +670,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

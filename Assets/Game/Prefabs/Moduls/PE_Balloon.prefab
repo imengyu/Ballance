@@ -1200,8 +1200,8 @@ MonoBehaviour:
   m_MotionType: 0
   m_CollidableQualityType: -1
   m_Mass: 10
-  m_LinearDamping: 1
-  m_AngularDamping: 1
+  m_LinearDamping: 2
+  m_AngularDamping: 2
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1
@@ -1226,7 +1226,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: PE_Balloon
   m_SubSystemId: 2
@@ -1269,8 +1269,8 @@ MonoBehaviour:
   m_PovitA: {fileID: 2244183726677087568}
   m_PovitB: {fileID: 2244183726677087568}
   m_DoNotAutoCreateAtAwake: 0
-  springStrength: 1000
-  springDamping: 2
+  springStrength: 500
+  springDamping: 3
   springRestLength: 1
   onCompression: 1
   onExtension: 1
@@ -2584,8 +2584,8 @@ MonoBehaviour:
   m_MotionType: 0
   m_CollidableQualityType: -1
   m_Mass: 10
-  m_LinearDamping: 1
-  m_AngularDamping: 1
+  m_LinearDamping: 2
+  m_AngularDamping: 2
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1

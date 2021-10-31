@@ -117,7 +117,6 @@ class PhysicsBodyEditor : Editor
         EditorGUILayout.PropertyField(pCollidableQualityType);
         EditorGUILayout.PropertyField(pInitialLinearVelocity);
         EditorGUILayout.PropertyField(pInitialAngularVelocity);
-        EditorGUILayout.PropertyField(pAutoComputeCenterOfMass);
         EditorGUILayout.PropertyField(pCustomTags);
         EditorGUILayout.PropertyField(pTigger);
         EditorGUILayout.PropertyField(pAddContactListener);
@@ -125,6 +124,7 @@ class PhysicsBodyEditor : Editor
         EditorGUI.EndDisabledGroup();
         
         EditorGUILayout.PropertyField(pMass);
+        EditorGUILayout.PropertyField(pAutoComputeCenterOfMass);
         EditorGUILayout.PropertyField(pCenterOfMass);
         EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying);
 

@@ -56,6 +56,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -210,9 +211,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_CollidableQualityType: -1
-  m_Mass: 3
-  m_LinearDamping: 1
-  m_AngularDamping: 1
+  m_Mass: 4.5
+  m_LinearDamping: 0.7
+  m_AngularDamping: 0.7
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1
@@ -237,7 +238,7 @@ MonoBehaviour:
   m_IsTigger: 0
   m_AddContactListener: 0
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 0
+  m_AutoComputeCenterOfMass: 1
   m_AutoControlActive: 1
   m_SystemGroupName: 
   m_SubSystemId: 0

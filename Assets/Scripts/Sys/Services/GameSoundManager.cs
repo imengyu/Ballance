@@ -441,8 +441,8 @@ namespace Ballance2.Sys.Services
                 }
                 return false;
             }, 1, "sm <play/list> 声音管理器命令\n" + 
-                    "  play <asset:string> [soundType:GameSoundType] 播放一个音乐，asset路径格式为 “模块包名:音乐文件路径”；soundType指示音乐类型，默认为GameSoundType.Normal\n" + 
-                    "  list 列举出声音管理器管理的所有声音实例");
+                    "  play <asset:string> [soundType:GameSoundType] ▶ 播放一个音乐，asset路径格式为 “模块包名:音乐文件路径”；soundType指示音乐类型，默认为GameSoundType.Normal\n" + 
+                    "  list                                          ▶ 列举出声音管理器管理的所有声音实例");
         }
 
         #endregion

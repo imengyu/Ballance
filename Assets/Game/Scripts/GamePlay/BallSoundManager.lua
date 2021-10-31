@@ -59,9 +59,15 @@ end
 ---@param speedMeter SpeedMeter
 ---@param info PhysicsBodyCollisionInfo
 function BallSoundManager:HandlerBallCollisionEnter(ball, speedMeter, body, other, info)
+  if other == nil then
+    return
+  end
+  
+  --使用速度计算声音音量
   local vol = (math.abs(info.separatingVelocity) - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)
 
   if ball._HitSound.SoundAll == nil then
+
     local layer = other.CustomLayer
     if layer > 31 then
       --判断自定义声音层
@@ -122,9 +128,15 @@ end
 ---@param info PhysicsBodyCollisionInfo
 function BallSoundManager:HandlerBallCollisionStay(ball, speedMeter, body, other, info)
 
+  --增加延时，防止多个碰撞事件发出多个碰撞声音
   if ball._RollSoundLockTick <= 0 then
     ball._RollSoundLockTick = ball._RollSound.SoundDelay
 
+    if other == nil then
+      return
+    end
+
+    --使用速度计算声音音量
     local vol = (speedMeter.NowAbsoluteSpeed - ball._RollSound.MinSpeed) / (ball._RollSound.MaxSpeed - ball._RollSound.MinSpeed)
     if ball._RollSound.SoundAll == nil then
 
@@ -194,6 +206,18 @@ function BallSoundManager:HandlerBallCollisionLeave(ball, speedMeter, body, othe
       ball._RollSound.SoundAll.volume = 0
     end
   end
+end
+
+---强制禁止指定球所有声音
+---@param ball Ball 球
+function BallSoundManager:ForceDisableBallAllSound(ball) 
+  if ball._RollSound.SoundAll == nil then
+    if ball._RollSound.SoundStone then ball._RollSound.SoundStone.volume = 0 end
+    if ball._RollSound.SoundWood then ball._RollSound.SoundWood.volume = 0 end
+    if ball._RollSound.SoundMetal then ball._RollSound.SoundMetal.volume = 0 end
+  else
+    ball._RollSound.SoundAll.volume = 0
+  end   
 end
 
 function CreateClass_BallSoundManager() 

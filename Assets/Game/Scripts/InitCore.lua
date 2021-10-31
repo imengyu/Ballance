@@ -65,7 +65,7 @@ function CoreInit()
 
   --调试入口
   GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", TAG, function ()
-    CoreDebugGameGamePlay()
+    CoreDebugGamePlay()
     return false
   end)
   --调试入口
@@ -89,7 +89,7 @@ function CoreInit()
     end
     return false
   end)    
-  GameManager.GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, TAG, function (evtName, params)
+  GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, TAG, function (evtName, params)
     local scense = params[1]
     if(scense == 'Level') then 
       GamePlayUnload()

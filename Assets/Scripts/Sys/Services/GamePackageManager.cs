@@ -767,16 +767,16 @@ namespace Ballance2.Sys.Services
                 }
                 return false;
             }, 1, "pm <reg/load/info/unload/list-loaded/list-reged/notify-run/wnd> [packageName] 模块管理器命令\n" + 
-                    "  reg <packageName:string> 注册一个模块包\n" +
-                    "  load <packageName:string> 加载一个模块包\n" +
-                    "  info <packageName:string> 显示一个模块包的信息\n" +
-                    "  unload <packageName:string> [unLoadImmediately:boolean] 卸载一个模块包, unLoadImmediately指定是否立即卸载，默认false\n" +
-                    "  enable <packageName:string> 启用模块包启动加载\n" +
-                    "  disable <packageName:string> 禁用模块包启动加载\n" +
-                    "  list-loaded 列举出已加载的模块包\n" +
-                    "  list-regedad 列举出已注册的模块包\n" +
-                    "  notify-run <packageNameFilter> 通知模块包运行，packageNameFilter为包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。\n" +
-                    "  wnd 显示模块管理器窗口");
+                    "  reg <packageName:string>                                ▶ 注册一个模块包\n" +
+                    "  load <packageName:string>                               ▶ 加载一个模块包\n" +
+                    "  info <packageName:string>                               ▶ 显示一个模块包的信息\n" +
+                    "  unload <packageName:string> [unLoadImmediately:boolean] ▶ 卸载一个模块包, unLoadImmediately指定是否立即卸载，默认false\n" +
+                    "  enable <packageName:string>                             ▶ 启用模块包启动加载\n" +
+                    "  disable <packageName:string>                            ▶ 禁用模块包启动加载\n" +
+                    "  list-loaded                                             ▶ 列举出已加载的模块包\n" +
+                    "  list-regedad                                            ▶ 列举出已注册的模块包\n" +
+                    "  notify-run <packageNameFilter>                          ▶ 通知模块包运行，packageNameFilter为包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。\n" +
+                    "  wnd                                                     ▶ 显示模块管理器窗口");
         }
 
         #endregion

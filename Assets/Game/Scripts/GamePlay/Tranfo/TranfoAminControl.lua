@@ -52,13 +52,14 @@ function TranfoAminControl:Update()
 end
 
 ---开始变球动画
----@param pos Vector3
+---@param transform Transform
 ---@param color Color
 ---@param placeholder GameObject
 ---@param ballChangeCallback function
-function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
+function TranfoAminControl:PlayAnim(transform, color, placeholder, ballChangeCallback)
   self.gameObject:SetActive(true)
-  self.transform.position = pos
+  self.transform.position = transform.position
+  self.transform.eulerAngles = transform.eulerAngles
 
   ---隐藏占位变球器
   if placeholder ~= nil then
@@ -81,7 +82,7 @@ function TranfoAminControl:PlayAnim(pos, color, placeholder, ballChangeCallback)
 
   --延时关闭
   coroutine.resume(coroutine.create(function()
-    Yield(WaitForSeconds(2.456))
+    Yield(WaitForSeconds(2.3))
 
     self._AnimTrafo_Flashfield:SetActive(false)
     self._Flashfield = false

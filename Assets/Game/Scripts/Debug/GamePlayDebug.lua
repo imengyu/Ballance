@@ -4,7 +4,7 @@ local CloneUtils = Ballance2.Sys.Utils.CloneUtils
 local GameManager = Ballance2.Sys.GameManager
 local StringUtils = Ballance2.Utils.StringUtils
 
-function CoreDebugGameGamePlay()
+function CoreDebugGamePlay()
   --Hide base Cam
   GameManager.Instance:SetGameBaseCameraVisible(false)
   

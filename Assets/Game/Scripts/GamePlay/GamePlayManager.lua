@@ -10,6 +10,7 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 local WaitUntil = UnityEngine.WaitUntil
 local Vector3 = UnityEngine.Vector3
 local AudioRolloffMode = UnityEngine.AudioRolloffMode
+local Log = Ballance2.Utils.Log
 
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass
@@ -39,34 +40,43 @@ function GamePlayManager:new()
 
   self._IsGamePlaying = false
   self._IsCountDownPoint = false
+  self._CommandIds = {}
 
   GamePlay.GamePlayManager = self
 end
-function GamePlayManager:Start()
+function GamePlayManager:Awake()
   self:_InitSounds()
   self:_InitKeyEvents()
-  self:_InitSetings()
+  self:_InitSettings()
 
-  Game.Mediator:RegisterGlobalEvent('GAME_START')
-  Game.Mediator:RegisterGlobalEvent('GAME_RESTART')
-  Game.Mediator:RegisterGlobalEvent('GAME_QUIT')
-  Game.Mediator:RegisterGlobalEvent('GAME_RESUME')
-  Game.Mediator:RegisterGlobalEvent('GAME_PAUSE')
-  Game.Mediator:RegisterGlobalEvent('GAME_FALL')
-  Game.Mediator:RegisterGlobalEvent('GAME_FAIL')
-  Game.Mediator:RegisterGlobalEvent('GAME_PASS')
-  Game.Mediator:SubscribeSingleEvent(Game.SystemPackage, "CoreGamePlayManagerInitAndStart", 'GamePlayManager', function (evtName, params)
+  local Mediator = Game.Mediator;
+  local GameDebugCommandServer = Game.Manager.GameDebugCommandServer;
+
+  --注册全局事件
+
+  Mediator:RegisterGlobalEvent('GAME_START')
+  Mediator:RegisterGlobalEvent('GAME_RESTART')
+  Mediator:RegisterGlobalEvent('GAME_QUIT')
+  Mediator:RegisterGlobalEvent('GAME_RESUME')
+  Mediator:RegisterGlobalEvent('GAME_PAUSE')
+  Mediator:RegisterGlobalEvent('GAME_FALL')
+  Mediator:RegisterGlobalEvent('GAME_FAIL')
+  Mediator:RegisterGlobalEvent('GAME_PASS')
+  Mediator:SubscribeSingleEvent(Game.SystemPackage, "CoreGamePlayManagerInitAndStart", 'GamePlayManager', function (evtName, params)
     self:_InitAndStart()
     return false
   end)
-  Game.Manager.GameDebugCommandServer:RegisterCommand('win', function () self:Pass() return true end, 0, 'win > 直接过关')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('fall', function () self:Fall() return true end, 0, 'fall > 触发球掉落死亡')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('restart', function () self:Fall() return true end, 0, 'restart > 重新开始关卡')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('pause', function () self:PauseLevel() return true end, 0, 'pause > 暂停')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('resume', function () self:ResumeLevel() return true end, 0, 'resume > 恢复')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('unload', function () self:QuitLevel() return true end, 0, 'unload > 卸载关卡')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('nextlev', function () self:Fall() return true end, 0, 'nextlev > 加载下一关')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('gos', function (keyword, fullCmd, argsCount, args) 
+
+  --注册控制台指令
+
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('win', function () self:Pass() return true end, 0, 'win > 直接过关'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('fall', function () self:Fall() return true end, 0, 'fall > 触发球掉落死亡'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('restart', function () self:Fall() return true end, 0, 'restart > 重新开始关卡'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('pause', function () self:PauseLevel() return true end, 0, 'pause > 暂停'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('resume', function () self:ResumeLevel() return true end, 0, 'resume > 恢复'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('unload', function () self:QuitLevel() return true end, 0, 'unload > 卸载关卡'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('nextlev', function () self:Fall() return true end, 0, 'nextlev > 加载下一关'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('gos', function (keyword, fullCmd, argsCount, args) 
     local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
     if not ox then return false end
       GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
@@ -74,25 +84,47 @@ function GamePlayManager:Start()
       self:_SetCamPos()
       self:_Start(true)
     return true
-  end, 1, 'gos <count:number> > 跳转到指定的小节')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('rebirth', function () 
+  end, 1, 'gos <count:number> > 跳转到指定的小节'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('rebirth', function () 
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
     self:_SetCamPos()
     self:_Start(true) 
-  return true end, 0, 'rebirth > 重新出生')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('addlife', function () self:AddLife() return true end, 0, 'addlife > 添加一个生命球')
-  Game.Manager.GameDebugCommandServer:RegisterCommand('addtime', function (keyword, fullCmd, argsCount, args) 
+  return true end, 0, 'rebirth > 重新出生'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('addlife', function () self:AddLife() return true end, 0, 'addlife > 添加一个生命球'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('addtime', function (keyword, fullCmd, argsCount, args) 
     local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
     if not ox then return false end
     self:AddPoint(tonumber(nx))  
     return true
-  end, 1, 'addtime <count:number> > 添加时间点 count：要添加数量')
+  end, 1, 'addtime <count:number> > 添加时间点 count：要添加数量'))
+
 end
 function GamePlayManager:OnDestroy()
+
+  Log.D('GamePlayManager', 'GamePlayManager:OnDestroy')
+  
+  local Mediator = Game.Mediator;
+  local GameDebugCommandServer = Game.Manager.GameDebugCommandServer;
+
+  --取消注册全局事件
+
+  Mediator:UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart")
+  Mediator:UnRegisterGlobalEvent('GAME_START')
+  Mediator:UnRegisterGlobalEvent('GAME_RESTART')
+  Mediator:UnRegisterGlobalEvent('GAME_QUIT')
+  Mediator:UnRegisterGlobalEvent('GAME_RESUME')
+  Mediator:UnRegisterGlobalEvent('GAME_PAUSE')
+  Mediator:UnRegisterGlobalEvent('GAME_FALL')
+  Mediator:UnRegisterGlobalEvent('GAME_FAIL')
+  Mediator:UnRegisterGlobalEvent('GAME_PASS')
+
+  --取消注册控制台指令
+  for _, value in pairs(self._CommandIds) do
+    GameDebugCommandServer:UnRegisterCommand(value)
+  end
+
   if (not Slua.IsNull(self.GameLightGameObject)) then UnityEngine.Object.Destroy(self.GameLightGameObject) end 
   self.GameLightGameObject = nil
-
-  Game.Mediator:UnRegisterSingleEvent()
 end
 function GamePlayManager:FixedUpdate()
   --分数每半秒减一
@@ -142,7 +174,7 @@ function GamePlayManager:_InitKeyEvents()
     end
   end)
 end
-function GamePlayManager:_InitSetings() 
+function GamePlayManager:_InitSettings() 
   local GameSettings = GameSettingsManager.GetSettings("core")
   GameSettings:RegisterSettingsUpdateCallback('video', function (groupName, action)
     if Game.LevelBuilder._CurrentLevelSkyLayer ~= nil then 
@@ -170,9 +202,12 @@ function GamePlayManager:_Start(isStartBySector)
 
   if isStartBySector then
     coroutine.resume(coroutine.create(function()
-      --初始位置
-      local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
-      local startPos = startRestPoint.transform.position
+      local startPos = Vector3.zero
+      if self.CurrentSector > 0 then
+        --初始位置
+        local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
+        startPos = startRestPoint.transform.position
+      end
 
       GamePlay.BallManager:PlayLighting(startPos, true, true)
       Yield(WaitUntil(function () return not GamePlay.BallManager:IsLighting() end)) --等待闪电完成
@@ -189,8 +224,10 @@ function GamePlayManager:_Start(isStartBySector)
   end
 end
 function GamePlayManager:_SetCamPos()
-  local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
-  GamePlay.CamManager:SetPosAndDirByRestPoint(startRestPoint):SetTarget(startRestPoint.transform):SetCamLook(true)
+  if self.CurrentSector > 0 then
+    local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
+    GamePlay.CamManager:SetPosAndDirByRestPoint(startRestPoint):SetTarget(startRestPoint.transform):SetCamLook(true)
+  end
 end
 
 ---LevelBuilder 就绪，现在GamePlayManager进行初始化
@@ -447,9 +484,9 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
   GamePlay.BallManager:ResetPeices(targetType)
   GamePlay.BallManager:SetNextRecoverPos(targetPos)
   --快速将球锁定并移动至目标位置
-  GamePlay.BallManager:FastMoveTo(targetPos, 0.2, function ()
+  GamePlay.BallManager:FastMoveTo(targetPos, 0.1, function ()
     --播放变球动画
-    GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform.position, color, tranfo.gameObject, function ()
+    GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform, color, tranfo.gameObject, function ()
       --切换球并且抛出碎片
       GamePlay.BallManager:ThrowPeices(oldBallType, targetPos)
       GamePlay.BallManager:SetCurrentBall(targetType, BallControlStatus.Control)

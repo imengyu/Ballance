@@ -1,10 +1,10 @@
 local CloneUtils = Ballance2.Sys.Utils.CloneUtils
-local GameLuaObjectHost = Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+local Log = Ballance2.Utils.Log
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 
 local BallsManagerGameObject = nil
-local GamePlayManagerGameObjec = nil
+local GamePlayManagerGameObject = nil
 local GamePlayUIGameObject = nil
 local GameSectorManagerGameObject = nil
 local GameMusicManagerGameObject = nil
@@ -29,6 +29,8 @@ GamePlay = {
 ---游戏玩模块初始化
 ---@param callback function
 function GamePlayInit(callback)
+  Log.D('GamePlay', 'GamePlayInit')
+  
   coroutine.resume(coroutine.create(function()
     --GamePlayUI
     GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.PackageManager:GetPrefabAsset('__core.ui__/GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
@@ -36,7 +38,7 @@ function GamePlayInit(callback)
     GamePlayUIGameObject:SetActive(false)
 
     --初始化基础对象
-    GamePlayManagerGameObjec = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('GamePlayManager.prefab'), 'GamePlayManager')
+    GamePlayManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('GamePlayManager.prefab'), 'GamePlayManager')
     Yield(WaitForSeconds(0.05))
     Game.Manager:SetGameBaseCameraVisible(false)
     BallsManagerGameObject = CloneUtils.CloneNewObject(Game.SystemPackage:GetPrefabAsset('BallManager.prefab'), 'GameBallsManager')
@@ -59,6 +61,8 @@ function GamePlayInit(callback)
 end
 ---游戏玩模块卸载
 function GamePlayUnload()
+  Log.D('GamePlay', 'GamePlayUnload')
+
   GamePlay.BallManager = nil
   GamePlay.BallPiecesControll = nil
   GamePlay.CamManager = nil
@@ -69,7 +73,7 @@ function GamePlayUnload()
   GamePlay.UFOAnimController = nil
   
   if (not Slua.IsNull(BallsManagerGameObject)) then UnityEngine.Object.Destroy(BallsManagerGameObject) end 
-  if (not Slua.IsNull(GamePlayManagerGameObjec)) then UnityEngine.Object.Destroy(GamePlayManagerGameObjec) end 
+  if (not Slua.IsNull(GamePlayManagerGameObject)) then UnityEngine.Object.Destroy(GamePlayManagerGameObject) end 
   if (not Slua.IsNull(GamePlayUIGameObject)) then UnityEngine.Object.Destroy(GamePlayUIGameObject) end 
   if (not Slua.IsNull(GameSectorManagerGameObject)) then UnityEngine.Object.Destroy(GameSectorManagerGameObject) end 
   if (not Slua.IsNull(GameMusicManagerGameObject)) then UnityEngine.Object.Destroy(GameMusicManagerGameObject) end 
@@ -83,7 +87,7 @@ function GamePlayUnload()
   GameMusicManagerGameObject = nil
   GameSectorManagerGameObject = nil
   GamePlayUIGameObject = nil
-  GamePlayManagerGameObjec = nil
+  GamePlayManagerGameObject = nil
   BallsManagerGameObject = nil
 
   Game.GamePlay = nil

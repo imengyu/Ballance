@@ -63,7 +63,9 @@ function CreateClass_DebugOptWindow()
     self:LoadAllStatus()
   end
   function DebugOptWindow:OnDestroy()
-    GameManager.Instance.GameActionStore:UnRegisterActions({ "DebugOptAddOption", "DebugOptRemoveOption" })
+    if GameManager.Instance then
+      GameManager.Instance.GameActionStore:UnRegisterActions({ "DebugOptAddOption", "DebugOptRemoveOption" })
+    end
   end
 
   ---添加和删除条目

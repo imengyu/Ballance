@@ -499,10 +499,7 @@ namespace PhysicsRT
                 }
 
                 shapeBodyPtr = shape.GetShapeBody(nextCreateForce, m_Layer);
-                if(m_AutoComputeCenterOfMass)
-                  currentShapeMassProperties = shape.ComputeMassProperties(m_Mass);
-                else
-                  currentShapeMassProperties = IntPtr.Zero;
+                currentShapeMassProperties = shape.ComputeMassProperties(m_Mass);
             }
             return shapeBodyPtr;
         }
@@ -548,7 +545,8 @@ namespace PhysicsRT
                 m_InitialAngularVelocity,
                 m_MaxLinearVelocity,
                 m_MaxAngularVelocity,
-                currentShapeMassProperties);
+                currentShapeMassProperties,
+                m_AutoComputeCenterOfMass);
 
 
             Id = PhysicsApi.API.GetRigidBodyId(ptr);

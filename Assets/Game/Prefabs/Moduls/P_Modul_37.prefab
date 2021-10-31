@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8592631656688532822}
   - component: {fileID: 7514913175826555871}
   m_Layer: 0
-  m_Name: P_Modul_37_Co3_Mesh
+  m_Name: P_Modul_37_Col3_Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -703,6 +703,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -861,9 +862,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_CollidableQualityType: -1
-  m_Mass: 3
+  m_Mass: 5
   m_LinearDamping: 1
-  m_AngularDamping: 0.05
+  m_AngularDamping: 1
   m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
   m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
   m_GravityFactor: 1
@@ -879,7 +880,7 @@ MonoBehaviour:
     Tag07: 0
   m_Friction: 0.7
   m_Restitution: 0.4
-  m_Layer: 4
+  m_Layer: 3
   m_InertiaTensor1: {x: 1, y: 0, z: 0}
   m_InertiaTensor2: {x: 0, y: 1, z: 0}
   m_InertiaTensor3: {x: 0, y: 0, z: 1}
@@ -967,6 +968,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
