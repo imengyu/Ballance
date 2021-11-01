@@ -50,8 +50,6 @@ function CoreInit()
   SystemPackage:RequireLuaFile('InitGamePlay')
   SystemPackage:RequireLuaFile('InitLevelBuilder')
   SystemPackage:RequireLuaFile('InitBulitInModuls')
-  SystemPackage:RequireLuaFile('GamePlayDebug')
-  SystemPackage:RequireLuaFile('LevelBuilderDebug')
   SystemPackage:RequireLuaFile('DefaultHighscoreData')
   SystemPackage:RequireLuaFile('HighscoreManager')
   SystemPackage:RequireLuaClass('ModulBase')
@@ -64,15 +62,24 @@ function CoreInit()
   HighscoreManagerLoad()
 
   --调试入口
-  GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", TAG, function ()
-    CoreDebugGamePlay()
-    return false
-  end)
-  --调试入口
-  GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLevelBuliderEntry", TAG, function ()
-    CoreDebugLevelBuliderEntry()
-    return false
-  end)
+  if GameManager.DebugMode then
+    SystemPackage:RequireLuaFile('GamePlayDebug')
+    SystemPackage:RequireLuaFile('CoreLuaDebug')
+    SystemPackage:RequireLuaFile('LevelBuilderDebug')
+
+    GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", TAG, function ()
+      CoreDebugGamePlay()
+      return false
+    end)
+    GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLevelBuliderEntry", TAG, function ()
+      CoreDebugLevelBuliderEntry()
+      return false
+    end)
+    GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLuaEntry", TAG, function ()
+      CoreDebugLuaEntry()
+      return false
+    end)
+  end
 
   local nextLoadLevel = ''
   GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, function (evtName, params)

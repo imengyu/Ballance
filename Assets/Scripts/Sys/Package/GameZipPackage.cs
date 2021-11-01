@@ -50,11 +50,11 @@ namespace Ballance2.Sys.Package
             bool defFileFounded = false;
 
             //在zip中加载Def
-            ZipInputStream zip = ZipUtils.OpenZipFile(GamePathManager.FixFilePathScheme(PackageFilePath));
+            ZipInputStream zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
             if(zip == null)
                 return false;
 
-            UpdateTime = File.GetLastWriteTime(GamePathManager.FixFilePathScheme(PackageFilePath));
+            UpdateTime = File.GetLastWriteTime(PathUtils.FixFilePathScheme(PackageFilePath));
 
             ZipEntry theEntry;
             while ((theEntry = zip.GetNextEntry()) != null)
@@ -89,7 +89,7 @@ namespace Ballance2.Sys.Package
             if(disableZipLoad)
                 return await base.LoadPackage();
             //从zip读取AssetBundle
-            ZipInputStream zip = ZipUtils.OpenZipFile(GamePathManager.FixFilePathScheme(PackageFilePath));
+            ZipInputStream zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
             if (zip == null)
                 return false;
 
@@ -222,7 +222,7 @@ namespace Ballance2.Sys.Package
         {
 #if ENABLE_MONO || ENABLE_DOTNET
 
-            ZipInputStream zip = ZipUtils.OpenZipFile(GamePathManager.FixFilePathScheme(PackageFilePath));
+            ZipInputStream zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
             if (zip == null) 
                 return null;
 

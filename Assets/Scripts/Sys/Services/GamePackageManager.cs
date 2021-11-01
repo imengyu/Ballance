@@ -260,8 +260,8 @@ namespace Ballance2.Sys.Services
                 //路径转换
                 realPackagePath = GamePathManager.GetResRealPath("package", packageName + ".ballance");
                 string realPackagePathInCore = GamePathManager.GetResRealPath("core", packageName + ".ballance");
-                if (GamePathManager.Exists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
-                else if (!GamePathManager.Exists(realPackagePath))
+                if (PathUtils.Exists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
+                else if (!PathUtils.Exists(realPackagePath))
                 {
                     Log.E(TAG, "Package {0} register failed because file {1} not found", packageName, realPackagePath);
                     return false;
@@ -807,22 +807,6 @@ namespace Ballance2.Sys.Services
             }
         }
 
-        /// <summary>
-        /// 全局 require 方法。
-        /// 如果 以 __packageName__/resourcePath 为开头，则会在指定packageName的包中引入。
-        /// 如果 填写相对路径，则会在指系统包中引入。
-        /// </summary>
-        /// <param name="file">要引入的Lua文件名</param>
-        /// <returns>返回require返回的数据</returns>
-        /// <exception cref="RequireFailedException">
-        /// 未找到指定的模块包。
-        /// </exception>
-        /// <exception cref="Exception">
-        /// 如果Lua执行失败，则抛出此异常。
-        /// </exception>
-        [LuaApiDescription("全局 require 方法。如果 以 __packageName__/resourcePath 为开头，则会在指定packageName的包中引入。如果 填写相对路径，则会在指系统包中引入。", "返回require返回的数据")]
-        [LuaApiParamDescription("file", "要引入的Lua文件名")]
-        public object RequireLuaFile(string file) { return LuaGlobalApi.require(file); }
         /// <summary>
         /// 全局读取资源包中的文字资源
         /// </summary>

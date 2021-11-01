@@ -2,7 +2,7 @@
 using SLua;
 using System.Collections.Generic;
 [UnityEngine.Scripting.Preserve]
-public class Lua_Ballance2_Sys_Utils_TextureScroller : LuaObject {
+public class Lua_Ballance2_Game_TextureScroller : LuaObject {
 	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	[UnityEngine.Scripting.Preserve]
 	static public int get_Material(IntPtr l) {
@@ -16,7 +16,7 @@ public class Lua_Ballance2_Sys_Utils_TextureScroller : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.Utils.TextureScroller self=(Ballance2.Sys.Utils.TextureScroller)checkSelf(l);
+			Ballance2.Game.TextureScroller self=(Ballance2.Game.TextureScroller)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.Material);
 			return 2;
@@ -47,7 +47,7 @@ public class Lua_Ballance2_Sys_Utils_TextureScroller : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.Utils.TextureScroller self=(Ballance2.Sys.Utils.TextureScroller)checkSelf(l);
+			Ballance2.Game.TextureScroller self=(Ballance2.Game.TextureScroller)checkSelf(l);
 			UnityEngine.Material v;
 			checkType(l,2,out v);
 			self.Material=v;
@@ -80,7 +80,7 @@ public class Lua_Ballance2_Sys_Utils_TextureScroller : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.Utils.TextureScroller self=(Ballance2.Sys.Utils.TextureScroller)checkSelf(l);
+			Ballance2.Game.TextureScroller self=(Ballance2.Game.TextureScroller)checkSelf(l);
 			pushValue(l,true);
 			pushValue(l,self.ScrollSpeed);
 			return 2;
@@ -111,7 +111,7 @@ public class Lua_Ballance2_Sys_Utils_TextureScroller : LuaObject {
 			Profiler.BeginSample(methodName);
 			#endif
 			#endif
-			Ballance2.Sys.Utils.TextureScroller self=(Ballance2.Sys.Utils.TextureScroller)checkSelf(l);
+			Ballance2.Game.TextureScroller self=(Ballance2.Game.TextureScroller)checkSelf(l);
 			UnityEngine.Vector2 v;
 			checkType(l,2,out v);
 			self.ScrollSpeed=v;
@@ -133,9 +133,9 @@ public class Lua_Ballance2_Sys_Utils_TextureScroller : LuaObject {
 	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
-		getTypeTable(l,"Ballance2.Sys.Utils.TextureScroller");
+		getTypeTable(l,"Ballance2.Game.TextureScroller");
 		addMember(l,"Material",get_Material,set_Material,true);
 		addMember(l,"ScrollSpeed",get_ScrollSpeed,set_ScrollSpeed,true);
-		createTypeMetatable(l,null, typeof(Ballance2.Sys.Utils.TextureScroller),typeof(UnityEngine.MonoBehaviour));
+		createTypeMetatable(l,null, typeof(Ballance2.Game.TextureScroller),typeof(UnityEngine.MonoBehaviour));
 	}
 }

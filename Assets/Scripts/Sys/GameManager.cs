@@ -147,7 +147,7 @@ namespace Ballance2.Sys
             Profiler.BeginSample("BindLua");
             GameMainLuaSvr.init(null, () =>
             {
-                Profiler.EndSample("BindLua");
+                Profiler.EndSample();
                 GameMainLuaState = LuaSvr.mainState;
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
                 finish.Invoke();
@@ -1020,7 +1020,7 @@ namespace Ballance2.Sys
         [LuaApiParamDescription("path", "文件路径")]
         [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
         [LuaApiParamDescription("data", "要写入的文件")]
-        public void WriteFile(string path, bool append, string data) { return FileUtils.WriteFile(path, append, data); }
+        public void WriteFile(string path, bool append, string data) { FileUtils.WriteFile(path, append, data); }
         [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
         [LuaApiParamDescription("path", "文件路径")]
         public bool FileExists(string path) { return FileUtils.FileExists(path); }   
@@ -1029,13 +1029,13 @@ namespace Ballance2.Sys
         public bool DirectoryExists(string path) { return FileUtils.DirectoryExists(path); }   
         [LuaApiDescription("创建目录")]
         [LuaApiParamDescription("path", "目录路径")]
-        public void CreateDirectory(string path)  { return FileUtils.CreateDirectory(path); }
+        public void CreateDirectory(string path)  { FileUtils.CreateDirectory(path); }
         [LuaApiDescription("读取文件至字符串", "返回文件路径")]
         [LuaApiParamDescription("path", "文件路径")]
         public string ReadFile(string path)  { return FileUtils.ReadFile(path); }
         [LuaApiDescription("删除指定的文件或目录")]
         [LuaApiParamDescription("path", "文件")]
-        public void RemoveFile(string path)  { return FileUtils.RemoveFile(path); }
+        public void RemoveFile(string path)  { FileUtils.RemoveFile(path); }
         
         /// <summary>
         /// 延时

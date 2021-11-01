@@ -76,7 +76,7 @@ namespace Ballance2.Utils
         {
             SecurityUtils.CheckFileAccess(file);
             byte[] temp = new byte[head.Length];
-            FileStream fs = new FileStream(GamePathManager.FixFilePathScheme(file), FileMode.Open);
+            FileStream fs = new FileStream(PathUtils.FixFilePathScheme(file), FileMode.Open);
             fs.Read(temp, 0, head.Length);
             fs.Close();
             return StringUtils.TestBytesMatch(temp, head);
@@ -130,7 +130,7 @@ namespace Ballance2.Utils
         public static byte[] ReadAllToBytes(string file)
         {
             SecurityUtils.CheckFileAccess(file);
-            FileStream fs = new FileStream(GamePathManager.FixFilePathScheme(file), FileMode.Open);
+            FileStream fs = new FileStream(PathUtils.FixFilePathScheme(file), FileMode.Open);
             byte[] temp = new byte[fs.Length];
             fs.Read(temp, 0, temp.Length);
             fs.Close();

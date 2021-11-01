@@ -2,6 +2,7 @@
 using Ballance2.Sys.Bridge.LuaWapper;
 using Ballance2.Sys.Bridge.LuaWapper.GameLuaWapperEvents;
 using Ballance2.Sys.Res;
+using Ballance2.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -313,7 +314,7 @@ class GameLuaObjectHostInspector : Editor
                     path = Path.ChangeExtension(path, "");
                     serializedObject.Update();
                     pLuaFileName.stringValue = path.Substring(0, path.Length - 1);
-                    pLuaClassName.stringValue = GamePathManager.GetFileNameWithoutExt(path);
+                    pLuaClassName.stringValue = PathUtils.GetFileNameWithoutExt(path);
                     w.Close();
                     serializedObject.ApplyModifiedProperties();
                 };

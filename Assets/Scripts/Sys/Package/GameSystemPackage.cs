@@ -175,7 +175,7 @@ namespace Ballance2.Sys.Package
                 return base.GetCodeLuaAsset(pathorname, out realPath);
             } else {
                 //绝对路径
-                if(GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets")) {
+                if(PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets")) {
                     realPath = pathorname;
                     return FileUtils.ReadAllToBytes(pathorname);
                 }

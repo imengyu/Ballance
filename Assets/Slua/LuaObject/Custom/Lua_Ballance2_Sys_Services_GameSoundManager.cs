@@ -283,6 +283,134 @@ public class Lua_Ballance2_Sys_Services_GameSoundManager : LuaObject {
 		}
 		#endif
 	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_GameMainAudioMixer(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameSoundManager self=(Ballance2.Sys.Services.GameSoundManager)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.GameMainAudioMixer);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_GameMainAudioMixer(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameSoundManager self=(Ballance2.Sys.Services.GameSoundManager)checkSelf(l);
+			UnityEngine.Audio.AudioMixer v;
+			checkType(l,2,out v);
+			self.GameMainAudioMixer=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int get_GameUIAudioMixer(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameSoundManager self=(Ballance2.Sys.Services.GameSoundManager)checkSelf(l);
+			pushValue(l,true);
+			pushValue(l,self.GameUIAudioMixer);
+			return 2;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
+	[SLua.MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	[UnityEngine.Scripting.Preserve]
+	static public int set_GameUIAudioMixer(IntPtr l) {
+		try {
+			#if DEBUG
+			var method = System.Reflection.MethodBase.GetCurrentMethod();
+			string methodName = GetMethodName(method);
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.BeginSample(methodName);
+			#else
+			Profiler.BeginSample(methodName);
+			#endif
+			#endif
+			Ballance2.Sys.Services.GameSoundManager self=(Ballance2.Sys.Services.GameSoundManager)checkSelf(l);
+			UnityEngine.Audio.AudioMixer v;
+			checkType(l,2,out v);
+			self.GameUIAudioMixer=v;
+			pushValue(l,true);
+			return 1;
+		}
+		catch(Exception e) {
+			return error(l,e);
+		}
+		#if DEBUG
+		finally {
+			#if UNITY_5_5_OR_NEWER
+			UnityEngine.Profiling.Profiler.EndSample();
+			#else
+			Profiler.EndSample();
+			#endif
+		}
+		#endif
+	}
 	[UnityEngine.Scripting.Preserve]
 	static public void reg(IntPtr l) {
 		getTypeTable(l,"Ballance2.Sys.Services.GameSoundManager");
@@ -292,6 +420,8 @@ public class Lua_Ballance2_Sys_Services_GameSoundManager : LuaObject {
 		addMember(l,DestroySoundPlayer);
 		addMember(l,PlayFastVoice);
 		addMember(l,"TAG",get_TAG,null,false);
+		addMember(l,"GameMainAudioMixer",get_GameMainAudioMixer,set_GameMainAudioMixer,true);
+		addMember(l,"GameUIAudioMixer",get_GameUIAudioMixer,set_GameUIAudioMixer,true);
 		createTypeMetatable(l,null, typeof(Ballance2.Sys.Services.GameSoundManager),typeof(Ballance2.Sys.Services.GameService));
 	}
 }

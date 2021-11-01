@@ -1,4 +1,5 @@
 ﻿using Ballance2.LuaHelpers;
+using System.Runtime.InteropServices;
 using SLua;
 using UnityEngine;
 
@@ -197,6 +198,22 @@ namespace Ballance2.Utils
 #if UNITY_WEBGL
     state["UNITY_WEBGL"] = true;
 #endif
+    }
+
+    /// <summary>
+    /// 获取Lua调用文件名，此函数必须在 [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))] 回调中使用。
+    /// </summary>
+    /// <param name="l">Lua虚拟机</param>
+    internal static string GetLuaCallerFileName(System.IntPtr l) {
+      var fileName = "";
+      var ar = Marshal.AllocHGlobal(Marshal.SizeOf<lua_Debug>());
+      if(LuaDLL.lua_getstack(l, 2, ar) == 1) { //位置2
+        LuaDLL.lua_getinfo(l, "S", ar);
+        var luaDebug = (lua_Debug)Marshal.PtrToStructure(ar, typeof(lua_Debug));
+        fileName = Marshal.PtrToStringAnsi(luaDebug.source);
+      }
+      Marshal.FreeHGlobal(ar);
+      return fileName;
     }
   }
 

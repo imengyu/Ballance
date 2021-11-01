@@ -71,7 +71,7 @@ namespace Ballance2.Sys.Package
                         }
 
                         if(StringUtils.IsUrl(filePath)) UpdateTime = System.DateTime.Now;
-                        else UpdateTime = System.IO.File.GetLastWriteTime(GamePathManager.FixFilePathScheme(filePath));
+                        else UpdateTime = System.IO.File.GetLastWriteTime(PathUtils.FixFilePathScheme(filePath));
 
                         ReadInfo(PackageDef);
 

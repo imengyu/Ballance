@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 991171314783793267}
   - component: {fileID: 8113902888850393669}
   - component: {fileID: 2568976875346622140}
-  - component: {fileID: 2894340827220807010}
+  - component: {fileID: 3416249257154215953}
   m_Layer: 0
   m_Name: SkyVoterx
   m_TagString: Untagged
@@ -52,6 +52,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -82,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2894340827220807010
+--- !u!114 &3416249257154215953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,8 +92,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4294746121804726880}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b44c24f17b1a1643bd4002774967deb, type: 3}
+  m_Script: {fileID: 11500000, guid: b0a832de45cc50f4b90c8f1ec6acb4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Material: {fileID: 0}
-  ScrollSpeed: {x: 0.005, y: -0.01}
+  Material: {fileID: 2100000, guid: 0e50b096459d7b44b9f6ee88a7583534, type: 2}
+  ScrollSpeed: {x: 0.15, y: 0.15}

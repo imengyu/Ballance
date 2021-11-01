@@ -90,6 +90,24 @@ namespace SLua
         public bool finished;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct lua_Debug 
+    {
+      public int _event;
+      public IntPtr name;	/* (n) */
+      public IntPtr namewhat;	/* (n) `global', `local', `field', `method' */
+      public IntPtr what;	/* (S) `Lua', `C', `main', `tail' */
+      public IntPtr source;	/* (S) */
+      public int currentline;	/* (l) */
+      public int nups;		/* (u) number of upvalues */
+      public int linedefined;	/* (S) */
+      public int lastlinedefined;	/* (S) */
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = LuaDLL.LUA_IDSIZE)]
+      public char[] short_src; /* (S) */
+      /* private part */
+      public int i_ci;  /* active function */
+    };
+
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int LuaCSFunction(IntPtr luaState);
@@ -102,6 +120,8 @@ namespace SLua
     public delegate int LuaFunctionCallback(IntPtr luaState);
     public class LuaDLL
     {
+        public const int LUA_IDSIZE = 60;
+
         public static int LUA_MULTRET = -1;
 #if UNITY_IPHONE && !UNITY_EDITOR
 		const string LUADLL = "__Internal";
@@ -127,6 +147,10 @@ namespace SLua
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int lua_pushthread(IntPtr L);
 
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int lua_getinfo(IntPtr L, string what, IntPtr ar);
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int lua_getstack(IntPtr L, int level, IntPtr ar);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int lua_gc(IntPtr luaState, LuaGCOptions what, int data);

@@ -557,11 +557,12 @@ MonoBehaviour:
     PackageName: core.ui
   - Enable: 1
     PackageName: core.language
-  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
+  DebugCustomEntryEvent: CoreDebugLuaEntry
   DebugCustomEntries:
   - CoreDebugGamePlayEntry
   - CoreDebugLevelBuliderEntry
   - CoreDebugOthersEntry
+  - CoreDebugLuaEntry
   DebugLoadCustomPackages: 1
   DebugSkipIntro: 1
   GameBaseCamera: {fileID: 108933074}

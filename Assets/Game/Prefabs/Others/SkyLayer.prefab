@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 240951622758755697}
   - component: {fileID: 240951622758755696}
   - component: {fileID: 240951622758755695}
-  - component: {fileID: 4716249179994496805}
+  - component: {fileID: 6608178995372648670}
   m_Layer: 0
   m_Name: SkyLayer
   m_TagString: Untagged
@@ -52,6 +52,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -82,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4716249179994496805
+--- !u!114 &6608178995372648670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,8 +92,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 240951622758755694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b44c24f17b1a1643bd4002774967deb, type: 3}
+  m_Script: {fileID: 11500000, guid: b0a832de45cc50f4b90c8f1ec6acb4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Material: {fileID: 0}
-  ScrollSpeed: {x: 0.005, y: 0.005}
+  Material: {fileID: 2100000, guid: 12e881cedd502ae4cbba61422e17bf87, type: 2}
+  ScrollSpeed: {x: 0.15, y: 0.15}

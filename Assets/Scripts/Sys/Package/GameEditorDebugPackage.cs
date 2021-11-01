@@ -107,7 +107,7 @@ namespace Ballance2.Sys.Package
 
         public override byte[] GetCodeLuaAsset(string pathorname, out string realPath)
         {
-            if (GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
+            if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
             {
                 if (File.Exists(pathorname)) {
                     realPath = pathorname;
@@ -136,7 +136,7 @@ namespace Ballance2.Sys.Package
         }
         public override Assembly LoadCodeCSharp(string pathorname)
         {
-            if (GamePathManager.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
+            if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
             {
                 if (File.Exists(pathorname)) 
                     return Assembly.LoadFile(pathorname);

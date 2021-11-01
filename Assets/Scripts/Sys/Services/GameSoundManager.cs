@@ -158,7 +158,7 @@ namespace Ballance2.Sys.Services
             }
 
             AudioClip clip = package.GetAsset<AudioClip>(names[1]);
-            if (clip != null) clip.name = GamePathManager.GetFileNameWithoutExt(names[1]);
+            if (clip != null) clip.name = PathUtils.GetFileNameWithoutExt(names[1]);
             else
             {
                 Log.W(TAG, "未找到声音文件 {0} ，在模块 {1}", assets, names[0]);
@@ -185,7 +185,7 @@ namespace Ballance2.Sys.Services
                 return null;
             }
             AudioClip clip = package.GetAsset<AudioClip>(assets);
-            if (clip != null) clip.name = GamePathManager.GetFileNameWithoutExt(assets);
+            if (clip != null) clip.name = PathUtils.GetFileNameWithoutExt(assets);
             else
             {
                 Log.W(TAG, "在模块 {1} 未找到声音文件 {0}", assets, package.PackageName);
@@ -220,7 +220,7 @@ namespace Ballance2.Sys.Services
             audioSource.clip = audioClip;
             audioSource.playOnAwake = playOnAwake;
             audioSource.gameObject.name = "AudioSource_" + type + "_" + (name == "" ? 
-                (audioClip != null ? GamePathManager.GetFileNameWithoutExt(audioClip.name) : "") : 
+                (audioClip != null ? PathUtils.GetFileNameWithoutExt(audioClip.name) : "") : 
                 name);
 
             if (!activeStart)
@@ -248,7 +248,7 @@ namespace Ballance2.Sys.Services
             audioSource.clip = audioClip;
             audioSource.playOnAwake = playOnAwake;
             audioSource.gameObject.name = "AudioSource_" + type + "_" + (name == "" ? 
-                (audioClip != null ? GamePathManager.GetFileNameWithoutExt(audioClip.name) : ""): 
+                (audioClip != null ? PathUtils.GetFileNameWithoutExt(audioClip.name) : ""): 
                 name);
 
             if (!activeStart)

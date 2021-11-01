@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -383,27 +384,5 @@ namespace Ballance2.Utils
         public static byte[] StringToUnicodeBytes(string input) {
             return Encoding.Unicode.GetBytes(input);
         }
-
-#if UNITY_EDITOR
-        /**
-         * 物理路径转为项目路径
-         */
-         [SLua.DoNotToLua]
-        public static string AbsPathToRelPath(string path) {
-          path = path.Replace('\\', '/');
-          if(GamePathManager.IsAbsolutePath(path)) {
-            var current = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/');
-            var startIndex = path.IndexOf(current);
-            if(startIndex == 0)
-              path = path.Substring(current.Length);
-            if(path.EndsWith("/"))
-              path = path.Remove(path.Length - 1);
-            if(path.StartsWith("/"))
-              path = path.Remove(0, 1);
-          }
-          return path;
-        }
-#endif
-
     }
 }

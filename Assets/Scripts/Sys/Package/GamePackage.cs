@@ -18,7 +18,6 @@ using System.Xml;
 using UnityEngine;
 using Ballance2.Sys.Bridge.Lua;
 using Ballance2.Sys.Utils;
-using System.Collections;
 
 /*
 * Copyright(c) 2021  mengyu
