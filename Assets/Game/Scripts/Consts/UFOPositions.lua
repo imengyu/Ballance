@@ -8,6 +8,7 @@ local Vector3 = UnityEngine.Vector3
 ---@field startBall boolean
 UFOPositionItem = {}
 
+---UFO 动画的位置参数
 UFOPositions = {
   { pos = Vector3(-500, -30, -50), flyTime = 0.01, waitTime = 3 },
   { pos = Vector3(-30, 7, -20), flyTime = 1.8, waitTime = 2 },

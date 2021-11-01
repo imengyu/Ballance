@@ -167,9 +167,9 @@ function WinScoreUIControl:_ShowHighscore()
   local HighscoreEntryNameTextScore = PageHighscoreEntry.Content:Find('TextScore'):GetComponent(Text) ---@type Text
   
   HighscoreEntryNameTextScore.text = tostring(self._ScoreNTotal)..' <size=20>'..I18N.Tr('ui.gameWin.points')..'</size>';
-
+  
+  self._HighscoreSound:Play()
   if HighscoreManagerCheckLevelHighScore(GamePlay.GamePlayManager.CurrentLevelName, self._ScoreNTotal) then
-    self._HighscoreSound:Play()
     PageHighscoreEntry.Content:Find('TextNewHighScore').gameObject:SetActive(true)
     PageHighscoreEntry.Content:Find('TextWin').gameObject:SetActive(false)
   else

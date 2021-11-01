@@ -26,6 +26,7 @@ namespace Ballance2.Sys.Utils
         private static string currentDir = "";
         private static string[] disabledRequire = new string[2] {
             "package",
+            "os",
             "io"
         };
 
