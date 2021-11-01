@@ -21,7 +21,6 @@ using UnityEngine.Audio;
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2.Sys.Services
@@ -99,8 +98,16 @@ namespace Ballance2.Sys.Services
         
         #region AudioMixer
 
-        private AudioMixer GameMainAudioMixer;
-        private AudioMixer GameUIAudioMixer;
+        /// <summary>
+        /// 游戏主AudioMixer
+        /// </summary>
+        [LuaApiDescription("游戏主AudioMixer")]
+        public AudioMixer GameMainAudioMixer;
+        /// <summary>
+        /// 游戏UI AudioMix
+        /// </summary>
+        [LuaApiDescription("游戏UI AudioMixer")]
+        public AudioMixer GameUIAudioMixer;
 
         private AudioMixerGroup GameUIAudioMixerGroupMaster;
 

@@ -10,14 +10,9 @@ using UnityEngine.UI;
 * 
 * 用途：
 * 一个开关组件，与原版的Chexkbox区分开来
-* 
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.UI {

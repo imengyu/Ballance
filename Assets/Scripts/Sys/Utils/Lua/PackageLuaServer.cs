@@ -12,11 +12,10 @@ using UnityEngine;
 * PackageLuaServer.cs
 * 
 * 用途：
-* 为游戏Package模块修改了一下下的Lua虚拟机
+* 从 Slua中拷贝出来，为适应游戏Package模块Lua虚拟机分区而修改了一下下的Lua虚拟机。
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2.Sys.Utils.Lua

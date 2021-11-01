@@ -22,10 +22,6 @@ using UnityEngine.UI;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 class DebugStat : MonoBehaviour

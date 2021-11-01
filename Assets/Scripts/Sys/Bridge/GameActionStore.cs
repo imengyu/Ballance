@@ -11,13 +11,13 @@ using System.Collections.Generic;
  * 
  * 模块名：     
  * GameActionStore.cs
+ *
  * 用途：
  * 存储操作的类。
  * 操作可以向每个模块提供统一的操作接口。
  * 
  * 作者：
  * mengyu
- * 
  */
 
 namespace Ballance2.Sys.Bridge

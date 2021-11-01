@@ -12,15 +12,12 @@ using UnityEngine.UI;
 * UIFadeManager.cs
 * 
 * 用途：
-* 渐变自管理类
-* 负责自动化脚本的管理与执行
+* 渐变自管理类。
+* 负责渐变自动化脚本的管理与执行。
+* 该组件有绑定一个实例至 GameUIManager 上，可快速访问。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.UI.Utils

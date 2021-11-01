@@ -2,6 +2,19 @@ using Ballance2.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* DebugBeginStats.cs
+* 
+* 用途：
+* 游戏刚开始Debug模块还未加载时，此脚本负责显示输出日志。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Debug
 {
     public class DebugBeginStats : MonoBehaviour 

@@ -4,6 +4,19 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * LicensesStringLoader.cs
+ * 
+ * 用途：
+ * 用于加载Lincnse文字资源。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2
 {
     public class LicensesStringLoader : MonoBehaviour

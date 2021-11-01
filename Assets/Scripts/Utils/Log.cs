@@ -8,8 +8,15 @@ using Ballance2.LuaHelpers;
 * Log.cs
 * 
 * 用途：
-* 基础日志静态类
+* 基础日志静态类。此类提供一些静态方可输出日志至控制台或文件，或
+* 可注册日志观察者以获取系统输出的日志，供自己输出或处理。
 * 
+* 日志观察者使用方法：
+* Log.RegisterLogObserver((level, tag, message, stackTrace) => {
+*   //捕获Warning和Error等级的日志信息
+* }, LogLevel.Warning | LogLevel.Error);
+*
+* 日志使用方法：
 * Log.V(tag, message, ...) 打印一些最为繁琐、意义不大的日志信息 
 * Log.D(tag, message, ...) 打印一些调试信息
 * Log.I(tag, message, ...) 打印一些比较重要的数据，可帮助你分析用户行为数据
@@ -18,10 +25,6 @@ using Ballance2.LuaHelpers;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-12 imengyu 增加日志暂存区
 *
 */
 
@@ -251,6 +254,11 @@ namespace Ballance2.Utils
     /// <param name="observer">观察者回调</param>
     /// <param name="acceptLevel">指定观察者要捕获的日志等级</param>
     /// <returns>返回大于0的数字表示观察者ID，返回-1表示错误</returns>
+    /// <example>
+    /// Log.RegisterLogObserver((level, tag, message, stackTrace) => {
+    ///   //捕获Warning和Error等级的日志信息
+    /// }, LogLevel.Warning | LogLevel.Error);
+    /// </example>
     [LuaApiDescription("注册日志观察者", "返回大于0的数字表示观察者ID，返回-1表示错误")]
     [LuaApiParamDescription("observer", "观察者回调")]
     [LuaApiParamDescription("acceptLevel", "指定观察者要捕获的日志等级")]

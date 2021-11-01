@@ -7,12 +7,12 @@ using System;
  * 
  * 模块名：     
  * GameLuaHandler.cs
+ *
  * 用途：
  * Lua 接收器 Handler，用于为LUA层提供事件与回调的接收能力。
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge.Handler

@@ -1,6 +1,20 @@
 using SLua;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021 imengyu
+*
+* 模块名：     
+* TextureScroller.cs
+* 
+* 用途：
+* 材质贴图滚动组件。在游戏中用于云层的滚动。
+*
+* TODO: 请移到其他地方
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Utils
 {
     [CustomLuaClass]

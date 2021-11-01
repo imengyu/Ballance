@@ -13,14 +13,8 @@ using UnityEngine.UI;
 * 用途：
 * UI 窗口承载
 * 
-*
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-17 imengyu 修复窗口居中问题
-*
 */
 
 namespace Ballance2.Sys.UI

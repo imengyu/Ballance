@@ -12,7 +12,6 @@ using UnityEngine.UI;
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2.Sys.UI.ValueBinder

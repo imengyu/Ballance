@@ -68,10 +68,13 @@ namespace Ballance2.Utils
         return LuaTableArrayToObjectArray(param);
       return param;
     }
+
+    [DoNotToLua]
     public static LuaTable ToLuaTableForCS(object param)
     {
       return param as LuaTable;
     }
+    [DoNotToLua]
     public static LuaFunction ToLuaFunctionForCS(object param)
     {
       return param as LuaFunction;
@@ -88,8 +91,11 @@ namespace Ballance2.Utils
     {
       return param ? "true" : "false";
     }
+    [LuaApiDescription("Vector3转为字符串表示")]
     public static string Vector3ToString(Vector3 param) { return param.ToString(); }
+    [LuaApiDescription("Vector4转为字符串表示")]
     public static string Vector4ToString(Vector4 param) { return param.ToString(); }
+    [LuaApiDescription("Vector2转为字符串表示")]
     public static string Vector2ToString(Vector2 param) { return param.ToString(); }
     [LuaApiDescription("字符串转为布尔值")]
     [LuaApiParamDescription("param", "字符串 \"true\" 或者 \"false\"")]
@@ -143,6 +149,10 @@ namespace Ballance2.Utils
       return a >> b;
     }
 
+    /// <summary>
+    /// 将 UNITY 相关宏定义导入至lua虚拟机，方便lua端使用
+    /// </summary>
+    /// <param name="state">要导入的lua虚拟机</param>
     internal static void InitMacros(LuaState state)
     {
 #if UNITY_EDITOR

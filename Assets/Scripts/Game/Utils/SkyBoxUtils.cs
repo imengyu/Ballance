@@ -6,7 +6,6 @@ using Ballance2.Utils;
 using UnityEngine;
 
 /*
-
 * Copyright(c) 2021  mengyu
 *
 * 模块名：     
@@ -17,10 +16,6 @@ using UnityEngine;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Game.Utils

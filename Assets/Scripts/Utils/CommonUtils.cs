@@ -17,9 +17,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 
-* 
-*
 */
 
 namespace Ballance2.Utils
@@ -41,7 +38,6 @@ namespace Ballance2.Utils
         /// </summary>
         /// <returns></returns>
         [LuaApiDescription("生成随机ID", "")]
-        [LuaApiParamDescription("", "")]
         public static int GenRandomID()
         {
             return random.Next(128) * idPoolRm++ / random.Next(idPoolRm, idPoolRm + random.Next(16));
@@ -51,7 +47,6 @@ namespace Ballance2.Utils
         /// </summary>
         /// <returns></returns>
         [LuaApiDescription("生成自增长ID", "")]
-        [LuaApiParamDescription("", "")]
         public static int GenAutoIncrementID()
         {
             return idPoolSq++;
@@ -66,10 +61,25 @@ namespace Ballance2.Utils
             return idPool++;
         }
 
+        /// <summary>
+        /// 生成 min-max 的随机数
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <returns></returns>
+        [LuaApiDescription("生成自增长ID", "")]
+        [LuaApiParamDescription("min", "最小值")]
+        [LuaApiParamDescription("max", "最大值")]
         public static float RandomFloat(float min, float max)
         {
             return UnityEngine.Random.Range(min, max);
         }
+        /// <summary>
+        /// 生成 0-max 的随机数
+        /// </summary>
+        /// <param name="max">最大值</param>
+        /// <returns></returns>
+        [LuaApiParamDescription("max", "最大值")]
         public static float RandomFloat(float max)
         {
             return UnityEngine.Random.Range(0, max);
@@ -197,17 +207,31 @@ namespace Ballance2.Utils
             return (o1 - o2).sqrMagnitude;
         }
         
-        [LuaApiDescription("判断 UnityEngine.Object 是否为空", "")]
-        [LuaApiParamDescription("o", "原颜色")]
+        [LuaApiDescription("Lua 判断 UnityEngine.Object 是否为空", "")]
+        [LuaApiParamDescription("o", "对象")]
         public static bool IsObjectNull(UnityEngine.Object o)
         {
             return o == null;
         }
 
+        /// <summary>
+        /// 判断 Vector3 是有效
+        /// </summary>
+        /// <param name="v">对象</param>
+        /// <returns></returns>
+        [LuaApiDescription("Lua 判断 UnityEngine.Vector3 是否有效", "")]
+        [LuaApiParamDescription("v", "对象")]
         public static bool IsValid(Vector3 v)
         {
             return !float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z);
         }
+        /// <summary>
+        /// 判断 Vector2 是否有效
+        /// </summary>
+        /// <param name="v">对象</param>
+        /// <returns></returns>
+        [LuaApiDescription("Lua 判断 UnityEngine.Vector2 是否有效", "")]
+        [LuaApiParamDescription("v", "对象")]
         public static bool IsValid(Vector2 v)
         {
             return !float.IsNaN(v.x) && !float.IsNaN(v.y);

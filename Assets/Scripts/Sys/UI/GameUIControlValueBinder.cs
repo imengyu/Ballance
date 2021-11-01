@@ -13,7 +13,6 @@ using UnityEngine;
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2.Sys.UI

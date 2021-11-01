@@ -10,15 +10,10 @@ using UnityEngine.UI;
 * Progress.cs
 * 
 * 用途：
-* 一个进度条组件组件
-* 
+* 一个进度条组件组件。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.UI

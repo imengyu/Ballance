@@ -15,10 +15,6 @@ using UnityEngine.UI;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 public class GameDebugTools : MonoBehaviour {

@@ -5,6 +5,19 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* Progress.cs
+* 
+* 用途：
+* 一个键盘按键选择组件。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.UI
 {
     /// <summary>

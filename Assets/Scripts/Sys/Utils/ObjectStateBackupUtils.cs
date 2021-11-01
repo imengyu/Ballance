@@ -3,6 +3,24 @@ using Ballance2.LuaHelpers;
 using SLua;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021 imengyu
+*
+* 模块名：     
+* ObjectStateBackupUtils.cs
+* 
+* 用途：
+* 对象变换状态保存器。
+* Virtools 中有一个叫做IC的功能，可以保存物体的初始状态，设置了IC，可以很
+* 方便的恢复物体的初始状态，Ballance中很多模块需要IC的功能以重复恢复初始状态，
+* 因此设计了此对象变换状态保存器。
+* 目前可保存物体的旋转与位置信息，可选保存单个物体，或是对象和他的一级子对象，
+* 可满足大部分使用需求。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Utils
 {
     [CustomLuaClass]
@@ -14,7 +32,8 @@ namespace Ballance2.Sys.Utils
             public Quaternion Rot;
         }
         private static Dictionary<int, ObjectStateBackup> objectBackup = new Dictionary<int, ObjectStateBackup>();
-
+        
+        // 由 GameManager 调用。
         public static void ClearAll() {
             objectBackup.Clear();
         }

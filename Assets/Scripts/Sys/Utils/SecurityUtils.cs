@@ -4,6 +4,21 @@ using Ballance2.Sys.Bridge.Lua;
 using SLua;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021 imengyu
+*
+* 模块名：     
+* SecurityUtils.cs
+* 
+* 用途：
+* Lua 虚拟机安全工具类。
+* 负责修复 Lua 虚拟机不安全的函数与相关require功能。
+* 负责检查文件系统的不安全访问并抛出异常。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Utils
 {
     public static class SecurityUtils

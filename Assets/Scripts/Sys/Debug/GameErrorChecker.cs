@@ -16,10 +16,6 @@ using System.Text;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Debug
@@ -39,11 +35,11 @@ namespace Ballance2.Sys.Debug
         }
 
         /// <summary>
-        /// 抛出游戏异常，此操作会直接终止游戏
+        /// 抛出游戏异常，此操作会直接停止游戏。类似于 Windows 蓝屏功能。
         /// </summary>
         /// <param name="code">错误代码</param>
         /// <param name="message">关于错误的异常信息</param>
-        [LuaApiDescription("抛出游戏异常，此操作会直接终止游戏")]
+        [LuaApiDescription("抛出游戏异常，此操作会直接停止游戏。类似于 Windows 蓝屏功能。")]
         [LuaApiParamDescription("code", "错误代码")]
         [LuaApiParamDescription("message", "关于错误的异常信息")]
         public static void ThrowGameError(GameError code, string message) 

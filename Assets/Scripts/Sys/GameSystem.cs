@@ -20,8 +20,8 @@ using UnityEngine;
 * 
 * 用途：
 * 游戏的基础系统与入口管理。
-* 此管理器用来管理基础系统初始化和几个基础服务，与GameManager不同，
-* GameManager管理的是上层的服务，而此服务管理的是基础服务。
+* 此管理器用来管理基础系统初始化和一些基础服务。
+* 与GameManager不同，GameManager管理的是上层的服务，而此服务管理的是基础服务。
 *
 * 作者：
 * mengyu
@@ -183,7 +183,7 @@ namespace Ballance2.Sys
         public static bool IsRestart = false;
 
         /// <summary>
-        /// 初始化
+        /// 初始化主入口
         /// </summary> 
         public static void Init()
         {

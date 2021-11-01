@@ -8,13 +8,13 @@ using SLua;
  * 
  * 模块名：     
  * GameHandler.cs
+ *
  * 用途：
  * 用于统一各个层的数据和事件接收。
  * 为C#和LUA都提供了一个包装类，可以方便的接收事件或是回调。
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge.Handler

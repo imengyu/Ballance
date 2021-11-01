@@ -27,14 +27,11 @@ using System.Collections;
 * GamePackage.cs
 * 
 * 用途：
-* 游戏模块的声明以及模块功能提供
+* 游戏模块的声明以及模块功能提供。
+* 负责：模块运行环境初始化卸载、资源读取相关。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Package
@@ -997,11 +994,23 @@ namespace Ballance2.Sys.Package
         [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回 GameObject 实例，如果未找到，则返回null")]
         [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual GameObject GetPrefabAsset(string pathorname) { return GetAsset<GameObject>(pathorname); }
+        [LuaApiDescription("读取模块资源包中的 Texture 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual Texture GetTextureAsset(string pathorname) { return GetAsset<Texture>(pathorname); }
+        [LuaApiDescription("读取模块资源包中的 Texture2D 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual Texture2D GetTexture2DAsset(string pathorname) { return GetAsset<Texture2D>(pathorname); }
+        [LuaApiDescription("读取模块资源包中的 Sprite 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual Sprite GetSpriteAsset(string pathorname) { return GetAsset<Sprite>(pathorname); }
+        [LuaApiDescription("读取模块资源包中的 Texture 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "Material")]
         public virtual Material GetMaterialAsset(string pathorname) { return GetAsset<Material>(pathorname); }
+        [LuaApiDescription("读取模块资源包中的 PhysicMaterial 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual PhysicMaterial GetPhysicMaterialAsset(string pathorname) { return GetAsset<PhysicMaterial>(pathorname); }
+        [LuaApiDescription("读取模块资源包中的 AudioClip 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
        
         /// <summary>

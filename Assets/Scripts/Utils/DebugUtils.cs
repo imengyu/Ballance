@@ -15,9 +15,6 @@ using SLua;
 * 作者：
 * mengyu
 *
-* 
-* 
-*
 */
 
 namespace Ballance2.Utils
@@ -26,7 +23,7 @@ namespace Ballance2.Utils
     /// 调试工具类
     /// </summary>
     [CustomLuaClass]
-    [LuaApiDescription("游戏中介者")]
+    [LuaApiDescription("调试工具类")]
     public class DebugUtils
     {
         /// <summary>
@@ -152,6 +149,11 @@ namespace Ballance2.Utils
 
             return sb.ToString();
         }
+        /// <summary>
+        /// 打印出带行号的代码
+        /// </summary>
+        /// <param name="code">代码字符串直接数组</param>
+        /// <returns></returns>
         public static string PrintCodeWithLine(byte[] code)
         {
             return PrintCodeWithLine(Encoding.UTF8.GetString(code));
@@ -184,6 +186,7 @@ namespace Ballance2.Utils
         }
 
         private static void PrintLuaVarAutoLoop(StringBuilder stringBuilder, object any, int level, int max_level, string prefix = "") {
+            //递归打印出LUA变量
             if(max_level > 0 && level > max_level)
                 return;
             var type = any.GetType() ;
@@ -237,6 +240,15 @@ namespace Ballance2.Utils
                 stringBuilder.AppendFormat("{0} unknow var: {1}\n", prefix, any);
         }
 
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的字符串参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckDebugParam(int index, string[] arr, out string value, bool required = true, string defaultValue = "") {
             if(arr.Length <= index) {
                 if(required)
@@ -247,6 +259,15 @@ namespace Ballance2.Utils
             value = arr[index];
             return true; 
         }
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的整形参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckIntDebugParam(int index, string[] arr, out int value, bool required = true, int defaultValue = 0) {
             if(arr.Length <= index) {
                 if(required)
@@ -260,6 +281,15 @@ namespace Ballance2.Utils
             } 
             return true;
         }
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的浮点型参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckFloatDebugParam(int index, string[] arr, out float value, bool required = true, float defaultValue = 0) {
             if(arr.Length <= index) {
                 if(required)
@@ -273,6 +303,15 @@ namespace Ballance2.Utils
             } 
             return true;
         }
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的布尔型参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckBoolDebugParam(int index, string[] arr, out bool value, bool required = true, bool defaultValue = false) {
             if(arr.Length <= index) {
                 if(required)
@@ -286,6 +325,15 @@ namespace Ballance2.Utils
             } 
             return true;
         }
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的双精浮点数类型参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckDoubleDebugParam(int index, string[] arr, out double value, bool required = true, double defaultValue = 0) {
             if(arr.Length <= index) {
                 if(required)
@@ -299,6 +347,15 @@ namespace Ballance2.Utils
             } 
             return true;
         }
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的字符串参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckStringDebugParam(int index, string[] arr, bool required = true) {
             if(arr.Length <= index) {
                 if(required)
@@ -311,6 +368,15 @@ namespace Ballance2.Utils
             } 
             return true;
         }
+        /// <summary>
+        /// 从用户输入的参数数组中检查并获取指定位的枚举型参数。
+        /// </summary>
+        /// <param name="index">设置当前需要获取的参数是参数数组的第几个</param>
+        /// <param name="arr">用户输入的参数数组</param>
+        /// <param name="value">获取到的参数</param>
+        /// <param name="required">是否必填，必填则如果无输入参数，会返回false</param>
+        /// <param name="defaultValue">默认值，若非必填且无输入参数，则会返回默认值</param>
+        /// <returns>返回参数是否成功获取</returns>
         public static bool CheckEnumDebugParam<T>(int index, string[] arr, out T value, bool required = true, T defaultValue = default(T)) where T : struct {
             if(arr.Length <= index) {
                 if(required)

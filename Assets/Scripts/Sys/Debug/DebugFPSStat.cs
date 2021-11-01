@@ -13,10 +13,6 @@ using UnityEngine.UI;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 public class DebugFPSStat : MonoBehaviour

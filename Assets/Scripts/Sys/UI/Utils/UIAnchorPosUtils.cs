@@ -12,10 +12,6 @@ using UnityEngine;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.UI.Utils
@@ -237,7 +233,7 @@ namespace Ballance2.Sys.UI.Utils
         /// </summary>
         /// <param name="rectTransform">UI 组件</param>
         /// <returns></returns>
-        [LuaApiDescription("aaa", "aaa")]
+        [LuaApiDescription("获取组件的Top", "")]
         [LuaApiParamDescription("rectTransform", "UI 组件")]
         public static float GetUITop(RectTransform rectTransform)
         {
@@ -248,7 +244,7 @@ namespace Ballance2.Sys.UI.Utils
         /// </summary>
         /// <param name="rectTransform">UI 组件</param>
         /// <returns></returns>
-        [LuaApiDescription("aaa", "aaa")]
+        [LuaApiDescription("获取组件的Left", "")]
         [LuaApiParamDescription("rectTransform", "UI 组件")]
         public static float GetUILeft(RectTransform rectTransform)
         {
@@ -259,7 +255,7 @@ namespace Ballance2.Sys.UI.Utils
         /// </summary>
         /// <param name="rectTransform">UI 组件</param>
         /// <returns></returns>
-        [LuaApiDescription("aaa", "aaa")]
+        [LuaApiDescription("获取组件的Bottom", "")]
         [LuaApiParamDescription("rectTransform", "UI 组件")]
         public static float GetUIBottom(RectTransform rectTransform)
         {
@@ -271,7 +267,7 @@ namespace Ballance2.Sys.UI.Utils
         /// </summary>
         /// <param name="rectTransform">UI 组件</param>
         /// <param name="pivot">轴锚点</param>
-        [LuaApiDescription("aaa", "aaa")]
+        [LuaApiDescription("设置 UI 组件枢轴")]
         [LuaApiParamDescription("rectTransform", "UI 组件")]
         [LuaApiParamDescription("pivot", "轴锚点")]
         public static void SetUIPivot(RectTransform rectTransform, UIPivot pivot)
@@ -324,7 +320,7 @@ namespace Ballance2.Sys.UI.Utils
         /// 设置 UI 组件枢轴
         /// </summary>
         /// <param name="rectTransform">UI 组件</param>
-        [LuaApiDescription("aaa", "aaa")]
+        [LuaApiDescription("设置 UI 组件枢轴")]
         [LuaApiParamDescription("rectTransform", "UI 组件")]
         public static void SetUIPivot(RectTransform rectTransform, UIPivot pivot, RectTransform.Axis axis)
         {

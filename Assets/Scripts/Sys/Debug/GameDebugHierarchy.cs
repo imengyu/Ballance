@@ -13,10 +13,6 @@ using UnityEngine;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 public class GameDebugHierarchy : MonoBehaviour {

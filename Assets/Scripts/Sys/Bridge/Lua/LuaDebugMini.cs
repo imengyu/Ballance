@@ -3,6 +3,19 @@ using Ballance2.Config;
 using SLua;
 using UnityEngine;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * LuaDebugMini.cs
+ * 
+ * 用途：
+ * Lua 迷你调试环境。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 [CustomLuaClass]
 public class LuaDebugMini : MonoBehaviour {
 

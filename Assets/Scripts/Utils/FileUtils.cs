@@ -1,6 +1,7 @@
 ﻿
 using Ballance2.LuaHelpers;
 using Ballance2.Sys.Res;
+using Ballance2.Sys.Utils;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -12,13 +13,19 @@ using UnityEngine;
 * FileUtils.cs
 * 
 * 用途：
-* 文件工具类
+* 文件工具类。提供了文件操作相关工具方法。
+* 
+* Lua 中不允许直接访问文件系统，因此此处提供了一些方法来允许Lua读写本地配置文件,操作或删除本地目录等。
+* 但注意，这些API不允许访问用户文件，只允许访问以下目录：
+* 游戏主目录（exe同级与子目录）
+* Application.dataPath
+* Application.persistentDataPath
+* Application.temporaryCachePath
+* Application.streamingAssetsPath
+* 尝试访问不可访问的目录将会抛出异常。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
 *
 */
 
@@ -67,6 +74,7 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("head", "自定义文件头")]
         public static bool TestFileHead(string file, byte[] head)
         {
+            SecurityUtils.CheckFileAccess(file);
             byte[] temp = new byte[head.Length];
             FileStream fs = new FileStream(GamePathManager.FixFilePathScheme(file), FileMode.Open);
             fs.Read(temp, 0, head.Length);
@@ -74,14 +82,70 @@ namespace Ballance2.Utils
             return StringUtils.TestBytesMatch(temp, head);
         }        
         
+        [LuaApiDescription("写入字符串至指定文件")]
+        [LuaApiParamDescription("path", "文件路径")]
+        [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
+        [LuaApiParamDescription("data", "要写入的文件")]
+        public static void WriteFile(string path, bool append, string data) {
+            SecurityUtils.CheckFileAccess(path);
+            var sw = new StreamWriter(path, append);
+            sw.Write(data);
+            sw.Close();
+            sw.Dispose();
+        }
+        [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
+        [LuaApiParamDescription("path", "文件路径")]
+        public static bool FileExists(string path) { return File.Exists(path); }   
+        [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
+        [LuaApiParamDescription("path", "文件路径")]
+        public static bool DirectoryExists(string path) { return Directory.Exists(path); }   
+        [LuaApiDescription("创建目录")]
+        [LuaApiParamDescription("path", "目录路径")]
+        public static void CreateDirectory(string path) { 
+            SecurityUtils.CheckFileAccess(path);
+            Directory.CreateDirectory(path);
+        }   
+        [LuaApiDescription("读取文件至字符串", "返回文件路径")]
+        [LuaApiParamDescription("path", "文件路径")]
+        public static string ReadFile(string path) {
+            SecurityUtils.CheckFileAccess(path);
+
+            if(!File.Exists(path))
+                throw new FileNotFoundException("Cant read non-exists file", path);
+
+            var sr = new StreamReader(path);
+            var rs = sr.ReadToEnd();
+            sr.Close();
+            sr.Dispose();
+            return rs;
+        }
+        /// <summary>
+        /// 读取文件所有内容为字节数组
+        /// </summary>
+        /// <param name="file">文件路径</param>
+        /// <remarks>注意：此 API 不能读取用户个人的本地文件。</remarks>
+        /// <returns>返回字节数组</returns>
+        [LuaApiDescription("读取文件所有内容为字节数组。注意：此 API 不能读取用户个人的本地文件。", "返回字节数组")]
+        [LuaApiParamDescription("file", "文件路径")]
         public static byte[] ReadAllToBytes(string file)
         {
+            SecurityUtils.CheckFileAccess(file);
             FileStream fs = new FileStream(GamePathManager.FixFilePathScheme(file), FileMode.Open);
             byte[] temp = new byte[fs.Length];
             fs.Read(temp, 0, temp.Length);
             fs.Close();
             return temp;
-        }
+        }       
+        [LuaApiDescription("删除指定的文件或目录")]
+        [LuaApiParamDescription("path", "文件")]
+        public static void RemoveFile(string path) {
+            SecurityUtils.CheckFileAccess(path);
+
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+            else if (File.Exists(path)) 
+                File.Delete(path);
+        }    
 
         /// <summary>
         /// 把文件大小（字节）按单位转换为可读的字符串

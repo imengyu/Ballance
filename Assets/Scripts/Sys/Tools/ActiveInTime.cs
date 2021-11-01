@@ -3,8 +3,24 @@ using System.Collections.Generic;
 using Ballance2.LuaHelpers;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021 imengyu
+*
+* 模块名：     
+* ObjectStateBackupUtils.cs
+* 
+* 用途：
+* 一个小组件，让物体在激活后指定秒内自动失活。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Tools
 {
+    /// <summary>
+    /// 一个小组件，让物体在激活后指定秒内自动失活
+    /// </summary>
     [LuaApiDescription("一个小组件，让物体在激活后指定秒内自动失活")]
     [SLua.CustomLuaClass]
     public class ActiveInTime : MonoBehaviour

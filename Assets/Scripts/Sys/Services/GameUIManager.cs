@@ -26,11 +26,6 @@ using UnityEngine.UI;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-16 扩展窗口功能
-*
 */
 
 namespace Ballance2.Sys.Services

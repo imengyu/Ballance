@@ -4,6 +4,19 @@ using Ballance2.Sys.Utils;
 using SLua;
 using UnityEngine;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * LuaGlobalApi.cs
+ * 
+ * 用途：
+ * Lua 全局 API
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Sys.Bridge.Lua
 {
     [CustomLuaClass]

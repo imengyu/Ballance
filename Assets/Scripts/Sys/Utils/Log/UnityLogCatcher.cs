@@ -8,14 +8,10 @@ using UnityEngine;
 * UnityLogCatcher.cs
 * 
 * 用途：
-* Unity日志捕捉器，用于捕捉Unity日志并将其显示至控制台
+* Unity日志捕捉器，用于捕捉Unity日志并将其显示至游戏内控制台。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Utils

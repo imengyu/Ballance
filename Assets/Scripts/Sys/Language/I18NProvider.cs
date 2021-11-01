@@ -4,6 +4,19 @@ using Ballance2.LuaHelpers;
 using Ballance2.Utils;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* I18NProvider.cs
+* 
+* 用途：
+* 国际化支持类，用于加载并处理国际化字符串资源以及读取本地化字符串。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Language
 {
     [SLua.CustomLuaClass]
@@ -31,6 +44,7 @@ namespace Ballance2.Sys.Language
             }
         }
 
+        //由GameManager调用
         public static void ClearAllLanguageResources() {
             currentLanguage = SystemLanguage.ChineseSimplified;
             currentLanguagePack = null;
@@ -39,8 +53,13 @@ namespace Ballance2.Sys.Language
             languagePacks.Clear();
         }
 
-        [LuaApiDescription("加载语言定义文件")]
-        [LuaApiParamDescription("xmlAssets", "语言定义XML文件")]
+        /// <summary>
+        /// 加载语言定义文件
+        /// </summary>
+        /// <param name="xmlAssets">语言定义XML字符串</param>
+        /// <returns>加载是否成功</returns>
+        [LuaApiDescription("加载语言定义文件", "加载是否成功")]
+        [LuaApiParamDescription("xmlAssets", "语言定义XML字符串")]
         public static bool LoadLanguageResources(string xmlAssets) {
             try {
                 XmlDocument doc = new XmlDocument();
@@ -70,29 +89,57 @@ namespace Ballance2.Sys.Language
             }
             return false;
         }
-        [LuaApiDescription("加载语言定义文件")]
+        /// <summary>
+        /// 加载语言定义文件
+        /// </summary>
+        /// <param name="xmlAssets">语言定义XML资源文件</param>
+        /// <returns>加载是否成功</returns>
+        [LuaApiDescription("加载语言定义文件", "加载是否成功")]
         [LuaApiParamDescription("xmlAssets", "语言定义XML资源文件")]
         public static bool LoadLanguageResources(TextAsset xmlAssets) {
             return LoadLanguageResources(xmlAssets.text);
         }
 
+        /// <summary>
+        /// 设置当前游戏语言
+        /// </summary>
+        /// <param name="language">语言</param>
+        [LuaApiDescription("设置当前游戏语言")]
+        [LuaApiParamDescription("language", "语言")]
         public static void SetCurrentLanguage(SystemLanguage language) {
             if(currentLanguage != language) {
                 currentLanguage = language;
             }
             currentLanguagePack = GetOrAddLanguagePack(language);
         }
+        /// <summary>
+        /// 获取当前游戏语言
+        /// </summary>
+        /// <returns></returns>
+        [LuaApiDescription("获取当前游戏语言", "")]
         public static SystemLanguage GetCurrentLanguage() {
             return currentLanguage;
         }      
 
-        [LuaApiDescription("获取语言字符串，使用当前系统语言")]
+        /// <summary>
+        /// 使用当前系统语言获取语言字符串
+        /// </summary>
+        /// <param name="key">字符串键值</param>
+        /// <returns>如果找到对应键值字符串，则返回字符串，否则返回null</returns>
+        [LuaApiDescription("使用当前系统语言获取语言字符串", "如果找到对应键值字符串，则返回字符串，否则返回null")]
         [LuaApiParamDescription("key", "字符串键值")]
         public static string GetLanguageString(string key) {
             return GetLanguageString(key, currentLanguage);
         }
-        [LuaApiDescription("加载语言定义文件")]
-        [LuaApiParamDescription("xmlAssets", "语言定义XML文件")]
+        /// <summary>
+        /// 使用指定语言获取语言字符串
+        /// </summary>
+        /// <param name="key">字符串键值</param>
+        /// <param name="lang">指定语言</param>
+        /// <returns>如果找到对应键值字符串，则返回字符串，否则返回null</returns>
+        [LuaApiDescription("使用指定语言获取语言字符串", "如果找到对应键值字符串，则返回字符串，否则返回null")]
+        [LuaApiParamDescription("key", "字符串键值")]
+        [LuaApiParamDescription("lang", "指定语言")]
         public static string GetLanguageString(string key, SystemLanguage lang) {
             if(lang == currentLanguage)
                 if(currentLanguagePack != null && currentLanguagePack.LanguageValues.TryGetValue(key, out var s)) return s;

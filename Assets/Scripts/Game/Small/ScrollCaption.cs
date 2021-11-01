@@ -4,6 +4,19 @@ using Ballance2.Sys.UI.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * ScrollCaption.cs
+ * 
+ * 用途：
+ * 字幕脚本。该字幕与Ballance原版的关于字幕相似。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Game.Small
 {
     public class ScrollCaption : MonoBehaviour {

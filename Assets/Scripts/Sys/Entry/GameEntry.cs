@@ -20,15 +20,11 @@ using UnityEngine.Android;
 * GameEntry.cs
 * 
 * 用途：
-* 整个游戏的入口
-* 以及用户协议对话框的显示
+* 此模块为整个游戏的入口，负责启动整个游戏框架，以及全局的配置、调试、命令行设置。
+* 并且负责用户协议对话框的显示，用户点击用户协议相关。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-12 mengyu 修改调试相关配置
 */
 
 namespace Ballance2.Sys.Entry
@@ -41,10 +37,10 @@ namespace Ballance2.Sys.Entry
 
         [Tooltip("启用调试模式。Editor下默认为调试模式")]
         public bool DebugMode = false;
-        [Tooltip("目标帧率")]
+        [Tooltip("目标帧率（DebugSetFrameRate 为 true 时有效）")]
         [Range(10, 120)]
         public int DebugTargetFrameRate = 60;
-        [Tooltip("是否设置固定帧率")]
+        [Tooltip("是否设置固定帧率（仅Editor中有效）")]
         public bool DebugSetFrameRate = true;
         [Tooltip("是否启用Lua调试器")]
         public bool DebugEnableLuaDebugger = true;

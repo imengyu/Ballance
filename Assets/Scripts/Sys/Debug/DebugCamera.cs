@@ -20,7 +20,6 @@ using UnityEngine.EventSystems;
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2

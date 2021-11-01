@@ -15,7 +15,6 @@ using Ballance2.LuaHelpers;
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2.Sys.UI.Utils

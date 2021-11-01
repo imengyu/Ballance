@@ -26,7 +26,7 @@ namespace Ballance2.Utils
     /// 字符串工具类
     /// </summary>
     [SLua.CustomLuaClass]
-    [LuaApiDescription("")]
+    [LuaApiDescription("字符串工具类")]
     public static class StringUtils
     {
         /// <summary>
@@ -353,21 +353,33 @@ namespace Ballance2.Utils
             return sb.ToString();
         }
 
+        [LuaApiDescription("Encoding.ASCII.GetString 函数包装", "返回解码的字符串")]
+        [LuaApiParamDescription("inputBytes", "字节数组")]
         public static string GetASCIIBytes(byte[] inputBytes) {
             return Encoding.ASCII.GetString(inputBytes);
         }
+        [LuaApiDescription("Encoding.UTF8.GetString 函数包装", "返回解码的字符串")]
+        [LuaApiParamDescription("inputBytes", "字节数组")]
         public static string GetUtf8Bytes(byte[] inputBytes) {
             return Encoding.UTF8.GetString(inputBytes);
         }
+        [LuaApiDescription("Encoding.Unicode.GetString 函数包装", "返回解码的字符串")]
+        [LuaApiParamDescription("inputBytes", "字节数组")]
         public static string GetUnicodeBytes(byte[] inputBytes) {
             return Encoding.Unicode.GetString(inputBytes);
         }
+        [LuaApiDescription("Encoding.ASCII.GetBytes 函数包装", "返回字节数组")]
+        [LuaApiParamDescription("input", "输入字符串")]
         public static byte[] StringToASCIIBytes(string input) {
             return Encoding.ASCII.GetBytes(input);
         }
+        [LuaApiDescription("Encoding.UTF8.GetBytes 函数包装", "返回字节数组")]
+        [LuaApiParamDescription("input", "输入字符串")]
         public static byte[] StringToUtf8Bytes(string input) {
             return Encoding.UTF8.GetBytes(input);
         }
+        [LuaApiDescription("Encoding.Unicode.GetBytes 函数包装", "返回字节数组")]
+        [LuaApiParamDescription("input", "输入字符串")]
         public static byte[] StringToUnicodeBytes(string input) {
             return Encoding.Unicode.GetBytes(input);
         }

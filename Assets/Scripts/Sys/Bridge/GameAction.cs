@@ -10,12 +10,12 @@ using UnityEngine;
  * 
  * 模块名：     
  * GameAction.cs
+ * 
  * 用途：
  * 全局操作类定义
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge

@@ -26,15 +26,12 @@ using UnityEngine.Profiling;
 * GameManager.cs
 * 
 * 用途：
-* 游戏底层主管理器，提供多个关键全局组件使用，负责管理游戏底层管理与控制
+* 游戏底层主管理器，提供多个关键全局组件使用，负责管理游戏底层管理与控制.
+* 它主要提供了全局事件、主lua虚拟机、初始化与退出功能，虚拟场景功能，并且提供了
+* 一些全局方便使用的工具函数。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-13 mengyu 添加了退出方法
-*
 */
 
 namespace Ballance2.Sys
@@ -111,7 +108,7 @@ namespace Ballance2.Sys
         #region 初始化
 
         /// <summary>
-        /// 初始化
+        /// 初始化入口，由 GameSystem 调用
         /// </summary>
         internal void Initialize(GameEntry gameEntryInstance)
         {
@@ -125,6 +122,11 @@ namespace Ballance2.Sys
             InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
         }
         
+        /// <summary>
+        /// 初始化基础设置、主lua虚拟机、其他事件
+        /// </summary>
+        /// <param name="gameEntryInstance">入口配置实例</param>
+        /// <param name="finish">完成回调</param>
         private void InitBase(GameEntry gameEntryInstance, System.Action finish) {
             Instance = this;
 
@@ -145,11 +147,11 @@ namespace Ballance2.Sys
             Profiler.BeginSample("BindLua");
             GameMainLuaSvr.init(null, () =>
             {
+                Profiler.EndSample("BindLua");
                 GameMainLuaState = LuaSvr.mainState;
                 GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
                 finish.Invoke();
             });
-            Profiler.BeginSample("GameManagerStartDebugger");
         }
 
         private bool sLoadUserPackages = true;
@@ -157,6 +159,10 @@ namespace Ballance2.Sys
         private string sCustomDebugName = "";
         private List<string> sLoadCustomPackages = new List<string>();
 
+        /// <summary>
+        /// 加载调试配置
+        /// </summary>
+        /// <param name="gameEntryInstance">入口配置实例</param>
         private void InitDebugConfig(GameEntry gameEntryInstance) {
             //根据GameEntry中调试信息赋值到当前类变量，供加载使用
             sLoadUserPackages = !DebugMode || gameEntryInstance.DebugLoadCustomPackages;
@@ -168,6 +174,9 @@ namespace Ballance2.Sys
                 }
             }
         }
+        /// <summary>
+        /// 加载调试操作
+        /// </summary>
         private void InitDebugAction() {
             GameActionStore.RegisterAction(GameSystemPackage.GetSystemPackage(), "EnableDebugMode", "", (pararms) => {
                 DebugMode = true;
@@ -193,6 +202,10 @@ namespace Ballance2.Sys
             }, null);
         }
 
+        /// <summary>
+        /// 异步初始化主流程。
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator InitAsysc() 
         {
             //检测lua绑定状态
@@ -233,6 +246,7 @@ namespace Ballance2.Sys
             //通知初始化完成
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
 
+            //如果调试配置中设置了CustomDebugName，则进入自定义调试场景，否则进入默认场景
             if(string.IsNullOrEmpty(sCustomDebugName)) {
                 //进入场景
                 if(DebugMode && GameEntry.Instance.DebugSkipIntro) RequestEnterLogicScense("MenuLevel");
@@ -243,6 +257,10 @@ namespace Ballance2.Sys
                 GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
             }
         }
+        /// <summary>
+        /// 加载用户定义的模组
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator LoadUserPackages() {
             var pm = GetSystemService<GamePackageManager>();
             var list = pm.LoadPackageRegisterInfo();
@@ -264,6 +282,10 @@ namespace Ballance2.Sys
                     yield return pm.LoadPackage(info.packageName);
             }
         }
+        /// <summary>
+        /// 加载系统定义的模块包
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator LoadSystemCore()
         {
             UnityWebRequest request = null;
@@ -724,7 +746,7 @@ namespace Ballance2.Sys
 
         private void InitVideoSettings()
         {
-            //屏幕大小事件
+            //发出屏幕大小更改事件
             GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED);
 
             resolutions = Screen.resolutions;
@@ -740,7 +762,8 @@ namespace Ballance2.Sys
             GameSettings.RegisterSettingsUpdateCallback("video", OnVideoSettingsUpdated);
             GameSettings.RequireSettingsLoad("video");
         }
-
+        
+        //视频设置更新器，更新视频设置至引擎
         private bool OnVideoSettingsUpdated(string groupName, int action)
         {
             int resolutionsSet = GameSettings.GetInt("video.resolution", defaultResolution);
@@ -755,6 +778,7 @@ namespace Ballance2.Sys
             QualitySettings.SetQualityLevel(quality, true);
             QualitySettings.vSyncCount = vSync;
             
+            //发出屏幕大小更改事件
             GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, "*",
                 resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
             return true;
@@ -837,6 +861,8 @@ namespace Ballance2.Sys
         }
         private void DoQuit() 
         {            
+            //退出时将清理一些关键数据，发送退出事件
+
             GameBaseCamera.clearFlags = CameraClearFlags.Color;
             GameBaseCamera.backgroundColor = Color.black;
 
@@ -863,7 +889,7 @@ namespace Ballance2.Sys
         private List<DelayItem> delayItems = new List<DelayItem>();
 
         /// <summary>
-        /// 请求游戏退出
+        /// 请求游戏退出。
         /// </summary>
         private void ReqGameQuit()
         {
@@ -955,6 +981,9 @@ namespace Ballance2.Sys
             return GameConst.GameBulidVersion;
         }
         
+        // Prefab 预制体实例化相关方法。
+        // 这里提供一些快速方法方便直接使用。这些方法与 CloneUtils 提供的方法功能一致。
+
         [LuaApiDescription("实例化预制体", "返回新对象")]
         [LuaApiParamDescription("prefab", "预制体")]
         [LuaApiParamDescription("name", "新对象名称")]
@@ -984,54 +1013,30 @@ namespace Ballance2.Sys
             return go;
         }
 
+        // 此处提供了一些方法来允许Lua读写本地配置文件,操作或删除本地目录等。
+        // 这里提供一些快速方法方便直接使用。等同于FileUtils中的相关函数。 
+
         [LuaApiDescription("写入字符串至指定文件")]
         [LuaApiParamDescription("path", "文件路径")]
         [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
         [LuaApiParamDescription("data", "要写入的文件")]
-        public void WriteFile(string path, bool append, string data) {
-            SecurityUtils.CheckFileAccess(path);
-
-            var sw = new StreamWriter(path, append);
-            sw.Write(data);
-            sw.Close();
-            sw.Dispose();
-        }
+        public void WriteFile(string path, bool append, string data) { return FileUtils.WriteFile(path, append, data); }
         [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
         [LuaApiParamDescription("path", "文件路径")]
-        public bool FileExists(string path) { return File.Exists(path); }   
+        public bool FileExists(string path) { return FileUtils.FileExists(path); }   
         [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
         [LuaApiParamDescription("path", "文件路径")]
-        public bool DirectoryExists(string path) { return Directory.Exists(path); }   
+        public bool DirectoryExists(string path) { return FileUtils.DirectoryExists(path); }   
         [LuaApiDescription("创建目录")]
         [LuaApiParamDescription("path", "目录路径")]
-        public void CreateDirectory(string path) { 
-            SecurityUtils.CheckFileAccess(path);
-            Directory.CreateDirectory(path);
-        }   
+        public void CreateDirectory(string path)  { return FileUtils.CreateDirectory(path); }
         [LuaApiDescription("读取文件至字符串", "返回文件路径")]
         [LuaApiParamDescription("path", "文件路径")]
-        public string ReadFile(string path) {
-            SecurityUtils.CheckFileAccess(path);
-
-            if(!File.Exists(path))
-                throw new FileNotFoundException("Cant read non-exists file", path);
-
-            var sr = new StreamReader(path);
-            var rs = sr.ReadToEnd();
-            sr.Close();
-            sr.Dispose();
-            return rs;
-        }
+        public string ReadFile(string path)  { return FileUtils.ReadFile(path); }
         [LuaApiDescription("删除指定的文件或目录")]
         [LuaApiParamDescription("path", "文件")]
-        public void RemoveFile(string path) {
-            SecurityUtils.CheckFileAccess(path);
-
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-            else if (File.Exists(path)) 
-                File.Delete(path);
-        }
+        public void RemoveFile(string path)  { return FileUtils.RemoveFile(path); }
+        
         /// <summary>
         /// 延时
         /// </summary>
@@ -1048,6 +1053,11 @@ namespace Ballance2.Sys
         #endregion
     
         #region Logic Scense
+
+        // 逻辑场景是类似于 Unity 场景的功能，但是它无需频繁加载卸载。
+        // 切换逻辑场景实际上是在同一个 Unity 场景中操作，因此速度快。
+        // 切换逻辑场景将发出 EVENT_LOGIC_SECNSE_QUIT 与 EVENT_LOGIC_SECNSE_ENTER 全局事件，
+        // 子模块根据这两个事件来隐藏或显示自己的东西，从而达到切换场景的效果。
 
         private List<string> logicScenses = new List<string>();
         private int currentScense = -1;

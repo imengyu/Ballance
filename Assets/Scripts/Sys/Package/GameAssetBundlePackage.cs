@@ -17,10 +17,6 @@ using UnityEngine.Networking;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Package

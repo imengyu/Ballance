@@ -4,6 +4,19 @@ using Ballance2.LuaHelpers;
 using SLua;
 using UnityEngine;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * SpeedMeter.cs
+ * 
+ * 用途：
+ * 速度计组件，用于测量物体的移动速度。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Game
 {
   [CustomLuaClass]

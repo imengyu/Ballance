@@ -10,14 +10,11 @@ using UnityEngine;
 * CloneUtils.cs
 * 
 * 用途：
-* 克隆游戏对象快速工具类
+* 克隆游戏对象快速工具类。
+* 提供了一些工具方法，可方便的克隆出空物体，或是使用已有Prefab克隆出新物体。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Utils

@@ -9,14 +9,12 @@ using UnityEngine;
 * GameStaticResourcesPool.cs
 * 
 * 用途：
-* 游戏静态资源池
+* 游戏静态资源池。
+* 可在 GameEntry 中配置静态引用资源，打包后无需加载，可使用本工具类直接获取。
+* 但太多静态引用资源会导致游戏启动变慢。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Res

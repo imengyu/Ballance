@@ -2,7 +2,6 @@
 using UnityEngine.EventSystems;
 
 /*
-
 * Copyright(c) 2021  mengyu
 *
 * 模块名：     
@@ -13,10 +12,6 @@ using UnityEngine.EventSystems;
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.UI.Utils

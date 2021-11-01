@@ -1,6 +1,19 @@
 using Ballance2.LuaHelpers;
 using UnityEngine;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * SmoothFly.cs
+ * 
+ * 用途：
+ * 平滑移动脚本，可将物体平滑移动至指定目标。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Game.Utils
 {    
   [SLua.CustomLuaClass]

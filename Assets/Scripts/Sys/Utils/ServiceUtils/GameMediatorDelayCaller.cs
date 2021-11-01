@@ -2,6 +2,19 @@ using System.Collections.Generic;
 using Ballance2.Sys.Services;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* GameMediatorDelayCaller.cs
+* 
+* 用途：
+* 本类为 GameMediator 提供了延时触发事件的功能。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Utils.ServiceUtils
 {
 

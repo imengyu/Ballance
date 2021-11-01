@@ -5,6 +5,19 @@ using Ballance2.Sys.Bridge;
 using SLua;
 using UnityEngine;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * DistanceChecker.cs
+ * 
+ * 用途：
+ * 距离检查器，用于测量两个物体的距离，以在指定范围内触发自定义事件。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Game
 {
   [CustomLuaClass]

@@ -13,12 +13,8 @@ using UnityEngine.EventSystems;
 * 用途：
 * 一个分割两个视图的控件，用户可以手动拖动调整两个视图的大小
 * 
-*
 * 作者：
 * mengyu
-*
-* 
-* 
 *
 */
 

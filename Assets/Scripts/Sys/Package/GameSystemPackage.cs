@@ -17,15 +17,10 @@ using Ballance2.Sys.Debug;
 * GameSystemPackage.cs
 * 
 * 用途：
-* 游戏主模块结构的声明
+* 游戏主模块特殊结构的声明
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-17 Add BaseInfo for GameSystemPackage
-*
 */
 
 namespace Ballance2.Sys.Package

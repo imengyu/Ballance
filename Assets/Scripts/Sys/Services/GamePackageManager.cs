@@ -24,15 +24,11 @@ using Ballance2.Sys.Bridge.Lua;
 * GamePackageManager.cs
 * 
 * 用途：
-* 框架包管理器，用于管理每个功能包的加载与释放
+* 框架包管理器，用于管理模块包的注册、加载、卸载等流程。
+* 一并提供了从模块包中读取资源的相关API。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-* 2021-4-17 imengyu 添加模块管理器窗口
-*
 */
 
 namespace Ballance2.Sys.Services
@@ -122,6 +118,10 @@ namespace Ballance2.Sys.Services
 
         private XmlDocument packageEnableStatusListXml = new XmlDocument();
 
+        /// <summary>
+        /// 读取模块包状态
+        /// </summary>
+        /// <returns></returns>
         internal List<GamePackageRegisterInfo> LoadPackageRegisterInfo() {
             string pathPackageStatus = Application.persistentDataPath + "/PackageStatus.xml";
             if (File.Exists(pathPackageStatus))
@@ -151,6 +151,9 @@ namespace Ballance2.Sys.Services
 
             return lastRegisteredPackages;
         }
+        /// <summary>
+        /// 保存模块包状态
+        /// </summary>
         internal void SavePackageRegisterInfo() {
             StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/PackageStatus.xml", false, Encoding.UTF8);
 
@@ -180,6 +183,11 @@ namespace Ballance2.Sys.Services
             sw.Dispose();
 
         }
+        /// <summary>
+        /// 设置模块包启用状态
+        /// </summary>
+        /// <param name="packageName">包名</param>
+        /// <param name="val">启用状态</param>
         internal void SetPackageEnableLoad(string packageName, bool val) {
             if(registeredPackages.TryGetValue(packageName, out var outPackage)) 
                 outPackage.enableLoad = val;
@@ -812,6 +820,8 @@ namespace Ballance2.Sys.Services
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
+        [LuaApiDescription("全局 require 方法。如果 以 __packageName__/resourcePath 为开头，则会在指定packageName的包中引入。如果 填写相对路径，则会在指系统包中引入。", "返回require返回的数据")]
+        [LuaApiParamDescription("file", "要引入的Lua文件名")]
         public object RequireLuaFile(string file) { return LuaGlobalApi.require(file); }
         /// <summary>
         /// 全局读取资源包中的文字资源
@@ -835,28 +845,38 @@ namespace Ballance2.Sys.Services
         /// <exception cref="RequireFailedException">
         /// 未找到指定的模块包。
         /// </exception>
-        [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回 GameObject 实例，如果未找到，则返回null")]
+        [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回资源实例，如果未找到，则返回null")]
         [LuaApiParamDescription("pathorname", "资源路径")]
         public GameObject GetPrefabAsset(string pathorname) {
             var pack = TryGetPackageByPath(pathorname, out var path);
             return pack.GetPrefabAsset(path);
         }
+        [LuaApiDescription("读取模块资源包中的 Texture 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public Texture GetTextureAsset(string pathorname) {
             var pack = TryGetPackageByPath(pathorname, out var path);
             return pack.GetTextureAsset(path);
         }
+        [LuaApiDescription("读取模块资源包中的 Texture2D 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public Texture2D GetTexture2DAsset(string pathorname) {
             var pack = TryGetPackageByPath(pathorname, out var path);
             return pack.GetTexture2DAsset(path);
         }
+        [LuaApiDescription("读取模块资源包中的 Sprite 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public Sprite GetSpriteAsset(string pathorname) {
             var pack = TryGetPackageByPath(pathorname, out var path);
             return pack.GetSpriteAsset(path);
         }
+        [LuaApiDescription("读取模块资源包中的 Material 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public Material GetMaterialAsset(string pathorname) {
             var pack = TryGetPackageByPath(pathorname, out var path);
             return pack.GetMaterialAsset(path);
         }
+        [LuaApiDescription("读取模块资源包中的 AudioClip 资源", "返回资源实例，如果未找到，则返回null")]
+        [LuaApiParamDescription("pathorname", "资源路径")]
         public AudioClip GetAudioClipAsset(string pathorname) {
             var pack = TryGetPackageByPath(pathorname, out var path);
             return pack.GetAudioClipAsset(path);

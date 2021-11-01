@@ -9,12 +9,12 @@ using UnityEngine;
  * 
  * 模块名：     
  * GameEvent.cs
+ *
  * 用途：
  * 游戏全局事件的说明与存储类。
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge

@@ -10,9 +10,6 @@
 * 作者：
 * mengyu
 *
-* 
-* 
-*
 */
 
 using System;
@@ -42,10 +39,6 @@ namespace Ballance2.Utils
         /// <param name="defaultValue">默认值</param>
         /// <param name="paramName">参数名称（用于错误日志）</param>
         /// <returns>转换成功的枚举，如果输入字符串无法转为枚举，则返回默认值</returns>
-        [LuaApiDescription("字符串转为枚举", "转换成功的枚举，如果输入字符串无法转为枚举，则返回默认值")]
-        [LuaApiParamDescription("stringValue", "要转换的字符串")]
-        [LuaApiParamDescription("defaultValue", "默认值")]
-        [LuaApiParamDescription("paramName", "参数名称（用于错误日志）")]
         public static T StringToEnum<T>(string stringValue, T defaultValue, string paramName = "") where T : struct
         {
             if (string.IsNullOrEmpty(stringValue))

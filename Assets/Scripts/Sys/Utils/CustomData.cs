@@ -7,11 +7,10 @@
 * CustomData.cs
 * 
 * 用途：
-* 自定义对象数据
+* 自定义对象数据。不建议使用。
 *
 * 作者：
 * mengyu
-*
 */
 
 namespace Ballance2.Sys.Utils

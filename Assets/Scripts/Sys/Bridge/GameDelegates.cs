@@ -8,12 +8,12 @@ using UnityEngine;
  * 
  * 模块名：     
  * GameDelegates.cs
+ *
  * 用途：
  * 提供一些委托定义，用于向lua导出
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge

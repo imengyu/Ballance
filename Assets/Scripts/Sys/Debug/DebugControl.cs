@@ -1,6 +1,19 @@
 using Ballance2;
 using UnityEngine;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* DebugCamera.cs
+* 
+* 用途：
+* 调试控制器相关脚本。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.Debug
 {
     public class DebugControl : MonoBehaviour 

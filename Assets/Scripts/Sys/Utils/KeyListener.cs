@@ -144,6 +144,7 @@ namespace Ballance2.Sys.Utils
     {
       if (isListenKey)
       {
+        //排除GUI激活
         if (DisableWhenUIFocused && (EventSystem.current.IsPointerOverGameObject() || GUIUtility.hotControl != 0))
           return;
           

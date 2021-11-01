@@ -9,7 +9,6 @@
 * 
 * 作者：
 * mengyu
-* 
 */
 
 using Ballance2.LuaHelpers;

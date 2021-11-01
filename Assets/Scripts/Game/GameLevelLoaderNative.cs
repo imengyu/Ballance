@@ -10,6 +10,20 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * GameLevelLoaderNative.cs
+ * 
+ * 用途：
+ * 关卡 AssetBundle 加载。
+ * 因为 lua 中无法直接调用 AssetBundle 加载文件，因此将加载 AssetBundle 的代码抽离至 C# 中。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Game
 {
 
@@ -123,7 +137,7 @@ namespace Ballance2.Game
       }
       else
 #else
-      else if(true) 
+      if(true) 
 #endif
       {
         //路径

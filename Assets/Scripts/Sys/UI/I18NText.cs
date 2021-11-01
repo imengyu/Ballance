@@ -5,10 +5,28 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* Progress.cs
+* 
+* 用途：
+* 一个自动加载I18N字符串的文字组件。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.UI
 {
+    /// <summary>
+    /// 一个自动加载I18N字符串的文字组件。
+    /// </summary>
     [SLua.CustomLuaClass]
     [ExecuteInEditMode]
+    [Ballance2.LuaHelpers.LuaApiDescription("一个自动加载I18N字符串的文字组件")]
+    [AddComponentMenu("Ballance/UI/Controls/I18NText")]
     public class I18NText : Text
     {
         [SerializeField]

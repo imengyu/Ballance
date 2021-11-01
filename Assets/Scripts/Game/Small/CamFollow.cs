@@ -1,6 +1,19 @@
 using Ballance2.LuaHelpers;
 using UnityEngine;
 
+/*
+ * Copyright (c) 2020  mengyu
+ * 
+ * 模块名：     
+ * CamFollow.cs
+ * 
+ * 用途：
+ * 摄像机跟随脚本，用于Ballance球摄像机跟随的核心内容。
+ * 
+ * 作者：
+ * mengyu
+ */
+
 namespace Ballance2.Game
 {
     [LuaApiDescription("摄像机跟随脚本")]

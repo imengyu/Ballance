@@ -11,12 +11,12 @@ using UnityEngine;
  * 
  * 模块名：     
  * GameGlobalStore.cs
+ *
  * 用途：
  * 用于提供全局数据共享功能。
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge

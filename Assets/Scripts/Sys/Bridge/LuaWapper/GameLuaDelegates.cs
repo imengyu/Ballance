@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
  * 
  * 模块名：     
  * GameLuaWapper.cs
+ * 
  * 用途：
  * Lua包装所需的委托。
  * 
  * 作者：
  * mengyu
- *
  */
 
 namespace Ballance2.Sys.Bridge.LuaWapper

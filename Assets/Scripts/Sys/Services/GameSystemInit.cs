@@ -16,10 +16,6 @@ using UnityEngine;
 * 作者：
 * mengyu
 *
-* 
-* 
-* 2021-1-18 imenyu 删除不必要的函数
-*
 */
 
 namespace Ballance2.Sys.Services {

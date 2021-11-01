@@ -13,14 +13,10 @@ using UnityEngine;
 * GameInit.cs
 * 
 * 用途：
-* 管理外部资源文件的路径
+* 游戏外部资源文件的路径配置与路径转换工具类。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Res

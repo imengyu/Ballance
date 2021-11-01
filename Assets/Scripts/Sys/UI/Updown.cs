@@ -5,6 +5,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* Window.cs
+* 
+* 用途：
+* 一个上下数值组件
+* 
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.Sys.UI
 {
     /// <summary>

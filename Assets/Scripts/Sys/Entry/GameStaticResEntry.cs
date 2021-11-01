@@ -10,14 +10,10 @@ using UnityEngine;
 * GameStaticResEntry.cs
 * 
 * 用途：
-* 静态 Prefab 资源引入脚本
+* 静态 Prefab 资源引入脚本.该脚本绑定在 GameEntry 上。
 *
 * 作者：
 * mengyu
-*
-* 
-* 
-*
 */
 
 namespace Ballance2.Sys.Entry

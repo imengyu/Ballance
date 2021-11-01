@@ -13,6 +13,19 @@ using Ballance2.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2021  mengyu
+*
+* 模块名：     
+* DebugTools.cs
+* 
+* 用途：
+* 调试窗口控制类。
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2
 {
   public class DebugWindow : MonoBehaviour

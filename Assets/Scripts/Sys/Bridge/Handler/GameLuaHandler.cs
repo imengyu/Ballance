@@ -5,15 +5,12 @@
  * 
  * 模块名：     
  * GameLuaHandler.cs
+ *
  * 用途：
  * Lua事件或是回调接收器。
  * 
  * 作者：
  * mengyu
- * 
- * 
- * 
- *
  */
 
 namespace Ballance2.Sys.Bridge.Handler
