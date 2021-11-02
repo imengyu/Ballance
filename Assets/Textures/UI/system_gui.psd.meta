@@ -336,6 +336,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -345,8 +346,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -1663,6 +1664,66 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      system_gui_38: -640165843456951987
+      system_gui_49: 8902620681648697655
+      system_gui_65: -7630727215154562521
+      system_gui_18: 4339967757981605128
+      system_gui_20: -4610733912421552025
+      system_gui_51: -4825753653546556987
+      system_gui_37: 6185064589633493502
+      system_gui_62: 7846938490384685000
+      system_gui_46: 9081126380634734799
+      system_gui_70: -8152998865465848109
+      system_gui_60: 8438798086717914939
+      system_gui_66: -5093513372111505469
+      system_gui_67: -5823949816416637721
+      system_gui_35: -629796646736663849
+      system_gui_50: 1154512629317595783
+      system_gui_77: -7265816918284123039
+      system_gui_71: 8199682685527786370
+      system_gui_40: -1668114865096956679
+      system_gui_47: -9100469446420412935
+      system_gui_53: -6787322772362598568
+      system_gui_21: 6700335028210261622
+      system_gui_72: -9117897411005600601
+      system_gui_73: 7035618795537083928
+      system_gui_44: -9209596457331486333
+      system_gui_43: -8640479623088261172
+      system_gui_69: 9012467377891697674
+      system_gui_23: -2407097654950009958
+      system_gui_75: 7781389738337204524
+      system_gui_55: -1714946349274030861
+      system_gui_79: 7206145395486761345
+      system_gui_22: 8051123311531701542
+      system_gui_64: -8983623551252004834
+      system_gui_17: -7335684896397817085
+      system_gui_59: -9041830655727726778
+      system_gui_28: 4339225749220643467
+      system_gui_34: -6685105678880452824
+      system_gui_76: -8040666343761393993
+      system_gui_42: -6506581538796598956
+      system_gui_25: 8172313790712727047
+      system_gui_33: -6748562370134372770
+      system_gui_48: 7880049525172564496
+      system_gui_19: 7928264306897510315
+      system_gui_39: -8442962142123173219
+      system_gui_24: 3399751484076023081
+      system_gui_31: 8017742803904545004
+      system_gui_78: 7631007858114400880
+      system_gui_36: 8641199821787465979
+      system_gui_30: 9216228005841759499
+      system_gui_45: -8010207806092045782
+      system_gui_57: -775183344312285971
+      system_gui_29: 6984899539004896876
+      system_gui_41: -4194962791815199338
+      system_gui_68: -1188962837084042941
+      system_gui_27: -5390961871813075550
+      system_gui_74: -1889543990127176562
+      system_gui_61: -1771439767053489083
+      system_gui_32: 1392164897108038395
+      system_gui_26: -841565506489833938
+      system_gui_63: -804274595266467298
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1

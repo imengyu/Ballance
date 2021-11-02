@@ -1057,9 +1057,9 @@ namespace SLua
 
 
                 ParameterInfo p = pars[n];
-                if (p.ParameterType.IsByRef && p.IsOut)
+                if (p.ParameterType.IsByRef && p.IsOut && !p.IsIn)
                     str += string.Format("out {0} a{1}", t, n + 1);
-                else if (p.ParameterType.IsByRef)
+                else if (p.ParameterType.IsByRef && !p.IsIn)
                     str += string.Format("ref {0} a{1}", t, n + 1);
                 else
                     str += string.Format("{0} a{1}", t, n + 1);
@@ -1901,6 +1901,12 @@ namespace SLua
             ConstructorInfo[] cons = t.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
             foreach (ConstructorInfo ci in cons)
             {
+              var parameterInfos = ci.GetParameters();
+              if (parameterInfos.Length > 0)
+              { 
+                if(parameterInfos[0].ParameterType.IsGenericType)
+                  continue;
+              }
                 if (!IsObsolete(ci) && !DontExport(ci) && !ContainUnsafe(ci))
                     ret.Add(ci);
             }
@@ -2692,9 +2698,9 @@ namespace SLua
 			for (int n = parOffset; n < pars.Length; n++)
 			{
 				ParameterInfo p = pars[n];
-				if (p.ParameterType.IsByRef && p.IsOut)
+				if (p.ParameterType.IsByRef && p.IsOut && !p.IsIn)
 					str += string.Format("out a{0}", n + 1);
-				else if (p.ParameterType.IsByRef)
+				else if (p.ParameterType.IsByRef && !p.IsIn)
 					str += string.Format("ref a{0}", n + 1);
 				else
 					str += string.Format("a{0}", n + 1);

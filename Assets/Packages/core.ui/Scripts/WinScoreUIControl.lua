@@ -139,7 +139,9 @@ function WinScoreUIControl:Skip()
   self.HighlightBar3:SetActive(false)
   self.HighlightBar4:SetActive(false)
 
-  self._ScoreNTimePoints = self._ScoreNTimePoints + GamePlay.GamePlayManager.CurrentPoint
+  local GamePlayManager = self._GamePlayManager
+
+  self._ScoreNTimePoints = self._ScoreNTimePoints + GamePlayManager.CurrentPoint
   self._ScoreNExtraLives = self._ScoreNExtraLives + 200 * GamePlayManager.CurrentLife
   self._ScoreNTotal = GamePlayManager.LevelScore + self._ScoreNTimePoints + self._ScoreNExtraLives
 

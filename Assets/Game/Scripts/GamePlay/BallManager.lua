@@ -617,7 +617,7 @@ function BallManager:_RightArrow_Key(key, down)
   else
     self:RemoveBallPush(BallPushType.Right)
     --旋转摄像机
-    if (self.ShiftPressed) then
+    if (self.CanControll and self.ShiftPressed) then
       GamePlay.CamManager:RotateRight()
     end
   end
@@ -633,7 +633,7 @@ function BallManager:_LeftArrow_Key(key, down)
   else
     self:RemoveBallPush(BallPushType.Left)
     --旋转摄像机
-    if (self.ShiftPressed) then
+    if (self.CanControll and self.ShiftPressed) then
       GamePlay.CamManager:RotateLeft()
     end
   end
@@ -653,7 +653,9 @@ function BallManager:_Up_Key(key, down)
   end
 end
 function BallManager:_Space_Key(key, down) 
-  GamePlay.CamManager:RotateUp(down) 
+  if (self.CanControll) then
+    GamePlay.CamManager:RotateUp(down) 
+  end
 end
 function BallManager:_Shift_Key(key, down) 
   self.ShiftPressed = down 

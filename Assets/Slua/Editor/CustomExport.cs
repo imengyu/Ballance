@@ -115,6 +115,9 @@ namespace SLua
         {
             list = new List<string>
             {      
+                "System.ReadOnlySpan<System.Char>",
+                "ReadOnlySpan<Char>",
+                "ReadOnlySpan",
                 "HideInInspector",
                 "ExecuteInEditMode",
                 "AddComponentMenu",

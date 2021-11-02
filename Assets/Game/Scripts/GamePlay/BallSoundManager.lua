@@ -62,9 +62,11 @@ function BallSoundManager:HandlerBallCollisionEnter(ball, speedMeter, body, othe
   if other == nil then
     return
   end
-  
+
+  local voc = math.abs(info.separatingVelocity)
+
   --使用速度计算声音音量
-  local vol = (math.abs(info.separatingVelocity) - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)
+  local vol = (voc - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)
 
   if ball._HitSound.SoundAll == nil then
 

@@ -240,6 +240,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -248,12 +249,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -1840,6 +1841,79 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      IconErr: -1127535243709945411
+      IconBug: 330399109862669774
+      ModIconNotSupport: -8640479623088261172
+      IconAtari: 7928264306897510315
+      IconRestoreMinDark: -9209596457331486333
+      IconCloseLight: 6984899539004896876
+      IconUpdown: -1771439767053489083
+      RoundMini: -640165843456951987
+      IconCheck: -5823949816416637721
+      IconMoreDark: -7335684896397817085
+      BoxRound: 8902620681648697655
+      IconExpDark: -1668114865096956679
+      ModIconFailed: 7880049525172564496
+      ModIconUnknow: -6506581538796598956
+      IconMoreLight: 4339967757981605128
+      IconSizeDragger: 8199682685527786370
+      RoundNor: 8641199821787465979
+      IconMove: -6787322772362598568
+      IconArrowDown: -9117897411005600601
+      IconStorage: -677287127555733900
+      IconTransparent: 8051123311531701542
+      BoxRoundBottom: -7359264501309230124
+      IconArrowUp: 6700335028210261622
+      IconCheckCircle: 7846938490384685000
+      IconCloseDark: -8010207806092045782
+      IconResize: -1714946349274030861
+      Box: -4115149617545907244
+      RoundBorderSmall: -6748562370134372770
+      IconMinLight: 8172313790712727047
+      TexMadeWithUnity: 2843758286862564216
+      IconArrowLeft: -4610733912421552025
+      IconPiovt: -9041830655727726778
+      BoxBorderNor: -5336445588202113547
+      IconSub: 7781389738337204524
+      IconDrag: 8438798086717914939
+      IconArrowRight: -804274595266467298
+      IconGlobal: 1219836524575074602
+      ColorDragger: -629796646736663849
+      IconRestoreLight: -6685105678880452824
+      IconHand: -4825753653546556987
+      ArrowThin: -5390961871813075550
+      RoundSmall: 6185064589633493502
+      IconExpLight: 3399751484076023081
+      BoxRoundBordered: 1154512629317595783
+      IconMinDark: -4194962791815199338
+      IconMaxLight: -2407097654950009958
+      IconRotate: 89167502557122216
+      RoundBorderBig: 1392164897108038395
+      IconMaxDark: -8442962142123173219
+      IconRestoreDark: 9081126380634734799
+      IconWarn: 296291400770824323
+      IconRestoreMinLight: 4339225749220643467
+      IconLocal: -775183344312285971
+      MadeWithVirtools: -7630727215154562521
+      IconHexagon: 7035618795537083928
+      RoundMiddle: 8017742803904545004
+      BoxRoundRight: 9125724041508807365
+      ModIconSuccess: -9100469446420412935
+      IconInfo: -1260817676324544406
+      IconLoca: -4618419649242449049
+      RoundBig: 9216228005841759499
+      IconCry: -3272098343177431209
+      IconSuccess: 2055094742030120401
+      IconExlam: 537618950744142135
+      IconAdd: -1889543990127176562
+      BoxBorderDark: -8117073929778123104
+      IconSmile: -3452515485003531442
+      ArrowFat: -841565506489833938
+      BoxRoundNs: -4918782725231409810
+      BoxRoundLeft: 7105688129526397165
+      PoweredByHavok: -8983623551252004834
+      BoxRoundTop: -1387942528601720239
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

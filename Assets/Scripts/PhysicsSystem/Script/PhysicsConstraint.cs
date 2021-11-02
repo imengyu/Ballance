@@ -150,14 +150,14 @@ namespace PhysicsRT
       return data;
     }
 
-    private bool GetConstraintBroken()
+    public bool GetConstraintBroken()
     {
       if (ptr != IntPtr.Zero)
         return PhysicsApi.API.IsConstraintBroken(ptr);
       Debug.LogWarning("Constraint not created");
       return false;
     }
-    private void SetConstraintBroken(bool broken, float force = 0)
+    public void SetConstraintBroken(bool broken, float force = 0)
     {
       if (ptr != IntPtr.Zero)
         PhysicsApi.API.SetConstraintBroken(ptr, m_Breakable, force);

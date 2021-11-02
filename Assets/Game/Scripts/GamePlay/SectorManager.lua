@@ -109,9 +109,10 @@ function SectorManager:SetCurrentSector(sector)
       flame:Deactive()
     end
 
-    GamePlay.GamePlayManager.CurrentSector = sector 
-
-    self:ActiveCurrentSector(true)
+    if sector > 0 then 
+      GamePlay.GamePlayManager.CurrentSector = sector 
+      self:ActiveCurrentSector(true)
+    end
   end
 end
 

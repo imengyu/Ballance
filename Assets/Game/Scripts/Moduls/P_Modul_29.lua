@@ -1,4 +1,5 @@
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
+local GameSoundType = Ballance2.Sys.Services.GameSoundType
 
 ---@class P_Modul_29 : ModulBase 
 ---@field _P_Modul_29_Platte01 PhysicsBody
@@ -25,6 +26,7 @@ function P_Modul_29:Start()
     if not self._BrigeBreaked and otherBody.gameObject.tag == 'Ball' and otherBody.gameObject.name ~= 'BallStone' then
       self._BrigeBreaked = true
       self._P_Modul_29_Platte05_HingeConstraint:SetEnabled(false)
+      Game.SoundManager:PlayFastVoice('core.sounds:Misc_RopeTears.wav', GameSoundType.Normal)
     end
   end
 end
@@ -41,6 +43,7 @@ function P_Modul_29:Active()
   self._P_Modul_29_Platte09:ForcePhysics()
 end
 function P_Modul_29:Deactive()
+  self._P_Modul_29_Platte05_HingeConstraint:SetEnabled(true)
   self._P_Modul_29_Platte01:ForceDePhysics()
   self._P_Modul_29_Platte02:ForceDePhysics()
   self._P_Modul_29_Platte03:ForceDePhysics()

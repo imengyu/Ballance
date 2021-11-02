@@ -243,7 +243,7 @@ function GamePlayManager:_InitAndStart()
     Game.UIManager:CloseAllPage()
     GameUI.GamePlayUI.gameObject:SetActive(true)
     --设置初始分数\生命球
-    self.CurrentLife = self.StartLife
+    self.CurrentLife = 1
     self.CurrentPoint = self.StartPoint
     GameUI.GamePlayUI:SetLifeBallCount(self.CurrentLife)
     GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
@@ -331,8 +331,8 @@ function GamePlayManager:RestartLevel()
 
     Yield(WaitForSeconds(0.8))
     --重置所有节
-    GamePlay.SectorManager:SetCurrentSector(0)
     GamePlay.SectorManager:ResetAllSector(false)
+    self.CurrentSector = 0
 
     Yield(WaitForSeconds(0.5))
 
@@ -401,8 +401,9 @@ function GamePlayManager:Fall()
 
       --禁用控制
       self:_Stop(BallControlStatus.NoControl)
+
       Yield(WaitForSeconds(1))
-      
+
       Game.UIManager.UIFadeManager:AddAudioFadeOut(self._SoundBallFall, 1)
 
       --重置机关和摄像机
