@@ -316,9 +316,11 @@ namespace Slua
               XmlNode node = documentation.ChildNodes[i];
               if(node.Name == "summary")
                 methodComment = FixString(node.InnerText.Trim());
-              else if(node.Name == "param" && node.Attributes["name"] != null)
-                methodVarComments.Add(FixString(node.Attributes["name"].InnerText), FixString(node.InnerText));
-              else if(node.Name == "returns")
+              else if(node.Name == "param" && node.Attributes["name"] != null) {
+                string key = FixString(node.Attributes["name"].InnerText);
+                if(methodVarComments.ContainsKey(key)) methodVarComments[key] = FixString(node.InnerText);
+                else methodVarComments.Add(key, FixString(node.InnerText));
+              } else if(node.Name == "returns")
                 methodRetComment = FixString(node.InnerText);
             }
           }
