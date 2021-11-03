@@ -25,7 +25,7 @@ function P_Modul_29:Start()
     --石球断开木桥
     if not self._BrigeBreaked and otherBody.gameObject.tag == 'Ball' and otherBody.gameObject.name ~= 'BallStone' then
       self._BrigeBreaked = true
-      self._P_Modul_29_Platte05_HingeConstraint:SetEnabled(false)
+      self._P_Modul_29_Platte05_HingeConstraint:Destroy()
       Game.SoundManager:PlayFastVoice('core.sounds:Misc_RopeTears.wav', GameSoundType.Normal)
     end
   end
@@ -43,7 +43,6 @@ function P_Modul_29:Active()
   self._P_Modul_29_Platte09:ForcePhysics()
 end
 function P_Modul_29:Deactive()
-  self._P_Modul_29_Platte05_HingeConstraint:SetEnabled(true)
   self._P_Modul_29_Platte01:ForceDePhysics()
   self._P_Modul_29_Platte02:ForceDePhysics()
   self._P_Modul_29_Platte03:ForceDePhysics()
@@ -56,7 +55,7 @@ function P_Modul_29:Deactive()
   self.gameObject:SetActive(false)
 end
 function P_Modul_29:Reset()
-  self._P_Modul_29_Platte05_HingeConstraint:SetEnabled(true)
+  self._P_Modul_29_Platte05_HingeConstraint:Create()
   ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
   self._BrigeBreaked = false
 end

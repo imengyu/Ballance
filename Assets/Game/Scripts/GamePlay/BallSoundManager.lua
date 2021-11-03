@@ -63,7 +63,11 @@ function BallSoundManager:HandlerBallCollisionEnter(ball, speedMeter, body, othe
     return
   end
 
+  --速度低于限定值，不播放声音
   local voc = math.abs(info.separatingVelocity)
+  if voc < ball._HitSound.MinSpeed then
+    return
+  end
 
   --使用速度计算声音音量
   local vol = (voc - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)

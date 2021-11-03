@@ -232,6 +232,103 @@ function LevelBuilder:LoadLevel(name)
       self:UpdateErrStatus(true, code, err)
     end)
 end
+
+---自动归组
+function LevelBuilder:_AutoGroup(level)
+  local transform = self._CurrentLevelObject.transform
+  local childCount = transform.childCount - 1
+
+  level.internalObjects = {}
+  level.sectors = {
+    PS_LevelStart = '',
+    PE_LevelEnd = '',
+    PR_ResetPoints = {},
+    PC_CheckPoints = {},
+  }
+  level.floors = {}
+  level.groups = {}
+  level.depthTestCubes = {}
+
+  local groupsTemp = {}
+  local sectorsTemp = {}
+
+  for i = 0, childCount, 1 do
+    local name = transform:GetChild(i).gameObject.name
+    if name =='PS_LevelStart' then
+      --开始火焰
+      level.internalObjects.PS_LevelStart = 'PS_LevelStart'
+    elseif name =='PE_LevelEnd' then
+      --结束飞船
+      level.internalObjects.PS_LevelStart = 'PE_LevelEnd'
+    elseif string.startWith(name, 'PR_ResetPoint:') then
+      --出生点
+      local sector = string.sub(name, 14)
+      level.sectors.PR_ResetPoints[sector] = name
+    elseif string.startWith(name, 'PC_CheckPoint:') then
+      --检查点
+      local sector = string.sub(name, 14)
+      level.sectors.PC_CheckPoints[sector] = name
+    elseif string.startWith(name, 'S_') then
+      --静态路面组
+      local c_names = {}
+      local c_transform =  transform:GetChild(i)
+      local c_childCount = c_transform.childCount - 1
+      for i = 0, c_childCount, 1 do
+        table.insert(c_names, c_transform:GetChild(i).gameObject.name)
+      end
+      table.insert(level.floors, {
+        name = 'Phys_'..string.sub(name, 2),
+        objects = c_names
+      })
+    elseif string.startWith(name, 'D_') then
+      --坠落检测区
+      local c_transform =  transform:GetChild(i)
+      local c_childCount = c_transform.childCount - 1
+      for i = 0, c_childCount, 1 do
+        table.insert(level.depthTestCubes, c_transform:GetChild(i).gameObject.name)
+      end
+    elseif string.contains(name, ':') then
+      local arr = string.split(name, ':')
+      if #arr > 2 then
+        local nname = arr[1]
+        local sector = arr[#arr]
+        if string.startWith(nname, 'P_') then
+          --机关
+          local pname = string.sub(2)
+          local gdata = groupsTemp[pname]
+          local sdata = sectorsTemp[sector]
+          if gdata == nil then
+            gdata = {}
+            groupsTemp[pname] = gdata
+          end
+          if sdata == nil then
+            sdata = {}
+            sectorsTemp[sector] = sdata
+          end
+          table.insert(gdata, name);
+          table.insert(sdata, name);
+        --elseif string.startWith(name, 'K_') then
+          --Internal TODO
+        end
+      end
+    end
+  end
+
+  for key, value in pairs(groupsTemp) do
+    table.insert(level.groups, {
+      name = key,
+      objects = value
+    })
+  end
+  for key, value in pairs(sectorsTemp) do
+    table.insert(level.sectors, {
+      name = key,
+      objects = value
+    })
+  end
+end
+
+---加载序列
 function LevelBuilder:_LoadLevelInternal()
 
   --发送开始事件
@@ -267,37 +364,42 @@ function LevelBuilder:_LoadLevelInternal()
     self:UpdateErrStatus(true, 'BAD_CONFIG', 'There are too many sectors (more than 16)')
     return
   end  
-  if type(level.internalObjects) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' is invalid')
-    return
-  end
-  if type(level.internalObjects.PS_LevelStart) ~= "string" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PS_LevelStart\' is invalid')
-    return
-  end
-  if type(level.internalObjects.PE_LevelEnd) ~= "string" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PE_LevelEnd\' is invalid')
-    return
-  end  
-  if type(level.internalObjects.PC_CheckPoints) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PC_CheckPoints\' is invalid')
-    return
-  end  
-  if type(level.internalObjects.PR_ResetPoints) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
-    return
-  end
-  if type(level.sectors) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
-    return
-  end
-  if type(level.floors) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
-    return
-  end  
-  if type(level.groups) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
-    return
+  if level.autoGroup == true then
+    Log.D(TAG, 'Generate auto group')
+    self:_AutoGroup(level) --配置了 autoGroup 自动归组，则自动生成归组信息
+  else
+    if type(level.internalObjects) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' is invalid')
+      return
+    end
+    if type(level.internalObjects.PS_LevelStart) ~= "string" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PS_LevelStart\' is invalid')
+      return
+    end
+    if type(level.internalObjects.PE_LevelEnd) ~= "string" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PE_LevelEnd\' is invalid')
+      return
+    end  
+    if type(level.internalObjects.PC_CheckPoints) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PC_CheckPoints\' is invalid')
+      return
+    end  
+    if type(level.internalObjects.PR_ResetPoints) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
+      return
+    end
+    if type(level.sectors) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
+      return
+    end
+    if type(level.floors) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
+      return
+    end  
+    if type(level.groups) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
+      return
+    end
   end
 
   Log.D(TAG, 'Load level data')
@@ -591,12 +693,12 @@ function LevelBuilder:_LoadLevelInternal()
       else
         Log.D(TAG, 'Load custom SkyBox')
 
-        local B = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.B)
-        local F = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.F)
-        local L = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.L)
-        local R = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.R)
-        local T = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.T)
-        local D = self._CurrentLevelAsset:GetTextureAsset(self._CurrentLevelAsset, level.customSkyBox.D)
+        local B = self._CurrentLevelAsset:GetTextureAsset(level.customSkyBox.B)
+        local F = self._CurrentLevelAsset:GetTextureAsset(level.customSkyBox.F)
+        local L = self._CurrentLevelAsset:GetTextureAsset(level.customSkyBox.L)
+        local R = self._CurrentLevelAsset:GetTextureAsset(level.customSkyBox.R)
+        local T = self._CurrentLevelAsset:GetTextureAsset(level.customSkyBox.T)
+        local D = self._CurrentLevelAsset:GetTextureAsset(level.customSkyBox.D)
         if B == nil then Log.W(TAG, 'Failed to load customSkyBox.B texture') end
         if F == nil then Log.W(TAG, 'Failed to load customSkyBox.F texture') end
         if L == nil then Log.W(TAG, 'Failed to load customSkyBox.L texture') end
@@ -650,7 +752,7 @@ function LevelBuilder:_LoadLevelInternal()
           local arr = {}
           if type(orgArr) == 'table' then
             for index, value in ipairs(orgArr) do
-              local audio = self._CurrentLevelAsset:GetAudioClipAsset(self._CurrentLevelAsset, value)
+              local audio = self._CurrentLevelAsset:GetAudioClipAsset(value)
               if audio ~= nil then
                 table.insert(arr, audio)
               else
@@ -731,7 +833,6 @@ function LevelBuilder:_LoadLevelInternal()
     end)
   end
 end
-
 
 ---替换占位符并生成机关
 ---@param objName string 占位符的名称

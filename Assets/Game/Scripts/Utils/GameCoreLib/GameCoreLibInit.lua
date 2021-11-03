@@ -1,4 +1,5 @@
 require('Print.lua')
+require('Split.lua')
 
 ---返回绑定在 GameObject 上的第一个 GameLuaObjectHost 组件
 ---@param go GameObject 要获取的实体

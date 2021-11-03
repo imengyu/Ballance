@@ -12,6 +12,7 @@ local GameSoundType = Ballance2.Sys.Services.GameSoundType
 ---@field _AnimTrafo_Ringpart3 GameObject
 ---@field _AnimTrafo_Ringpart4 GameObject
 ---@field _AnimTrafo_Animation Animator 
+---@field _AnimTrafo_FlashfieldMat Material
 TranfoAminControl = ClassicObject:extend()
 
 function TranfoAminControl:new()
@@ -91,7 +92,7 @@ function TranfoAminControl:PlayAnim(transform, color, placeholder, ballChangeCal
       ballChangeCallback()
     end
     
-    Yield(WaitForSeconds(0.7))
+    Yield(WaitForSeconds(0.2))
 
     self._AnimTrafo_Animation.speed = 0
     --隐藏本体，显示占位变球器

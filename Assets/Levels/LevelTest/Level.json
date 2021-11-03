@@ -1,0 +1,21 @@
+{
+  "name": "Level02",
+  "author": "Ballance",
+  "version": "1.0",
+  "introduction": "Level02",
+  "requiredPackages": [],
+  "level": {
+    "firstBall": "BallWood",
+    "levelScore": 200,
+    "startPoint": 1000,
+    "startLife": 3,
+    "musicTheme": 5,
+    "skyBox": "F",
+    "skyLayer": "SkyLayer",
+    "nextLevel": "Level03",
+    "lightColor": "#987B57",
+    "sectorCount": 5,
+    "endWithUFO": false,
+    "autoGroup": true
+  }
+}

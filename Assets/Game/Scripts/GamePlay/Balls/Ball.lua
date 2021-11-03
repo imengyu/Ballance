@@ -37,10 +37,10 @@ function Ball:new()
       Stone = '',
       Wood = '',
     },
-    MaxSpeed = 5,
-    MinSpeed = 0.01,
+    MaxSpeed = 15,
+    MinSpeed = 2,
     ---声音播放延时，多个声音一起播放时如果未到达延时，则后面的声音不会播放
-    SoundDelay = 5
+    SoundDelay = 10
   }
   self._RollSoundLockTick = 0
   self._RollSound = {
@@ -50,10 +50,10 @@ function Ball:new()
       Stone = '',
       Wood = '',
     },
-    MaxSpeed = 0.2,
-    MinSpeed = 0.02,
+    MaxSpeed = 0.35,
+    MinSpeed = 0.01,
     ---声音播放延时，多个声音一起播放时如果未到达延时，则后面的声音不会播放
-    SoundDelay = 5,
+    SoundDelay = 8,
   }
 end
 

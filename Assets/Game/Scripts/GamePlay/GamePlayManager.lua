@@ -243,7 +243,7 @@ function GamePlayManager:_InitAndStart()
     Game.UIManager:CloseAllPage()
     GameUI.GamePlayUI.gameObject:SetActive(true)
     --设置初始分数\生命球
-    self.CurrentLife = 1
+    self.CurrentLife = self.StartLife
     self.CurrentPoint = self.StartPoint
     GameUI.GamePlayUI:SetLifeBallCount(self.CurrentLife)
     GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
