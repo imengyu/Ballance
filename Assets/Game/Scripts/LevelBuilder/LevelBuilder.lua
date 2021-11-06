@@ -238,13 +238,13 @@ function LevelBuilder:_AutoGroup(level)
   local transform = self._CurrentLevelObject.transform
   local childCount = transform.childCount - 1
 
-  level.internalObjects = {}
-  level.sectors = {
+  level.internalObjects = {
     PS_LevelStart = '',
     PE_LevelEnd = '',
     PR_ResetPoints = {},
     PC_CheckPoints = {},
   }
+  level.sectors = {}
   level.floors = {}
   level.groups = {}
   level.depthTestCubes = {}
@@ -263,11 +263,11 @@ function LevelBuilder:_AutoGroup(level)
     elseif string.startWith(name, 'PR_ResetPoint:') then
       --出生点
       local sector = string.sub(name, 14)
-      level.sectors.PR_ResetPoints[sector] = name
+      level.internalObjects.PR_ResetPoints[sector] = name
     elseif string.startWith(name, 'PC_CheckPoint:') then
       --检查点
       local sector = string.sub(name, 14)
-      level.sectors.PC_CheckPoints[sector] = name
+      level.internalObjects.PC_CheckPoints[sector] = name
     elseif string.startWith(name, 'S_') then
       --静态路面组
       local c_names = {}
@@ -307,7 +307,7 @@ function LevelBuilder:_AutoGroup(level)
           end
           table.insert(gdata, name);
           table.insert(sdata, name);
-        --elseif string.startWith(name, 'K_') then
+        --elseif string.startWith(name, 'I_') then
           --Internal TODO
         end
       end
@@ -326,6 +326,8 @@ function LevelBuilder:_AutoGroup(level)
       objects = value
     })
   end
+
+  Log.D(TAG, json.encode(level))
 end
 
 ---加载序列
@@ -367,39 +369,39 @@ function LevelBuilder:_LoadLevelInternal()
   if level.autoGroup == true then
     Log.D(TAG, 'Generate auto group')
     self:_AutoGroup(level) --配置了 autoGroup 自动归组，则自动生成归组信息
-  else
-    if type(level.internalObjects) ~= "table" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' is invalid')
-      return
-    end
-    if type(level.internalObjects.PS_LevelStart) ~= "string" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PS_LevelStart\' is invalid')
-      return
-    end
-    if type(level.internalObjects.PE_LevelEnd) ~= "string" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PE_LevelEnd\' is invalid')
-      return
-    end  
-    if type(level.internalObjects.PC_CheckPoints) ~= "table" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PC_CheckPoints\' is invalid')
-      return
-    end  
-    if type(level.internalObjects.PR_ResetPoints) ~= "table" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
-      return
-    end
-    if type(level.sectors) ~= "table" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
-      return
-    end
-    if type(level.floors) ~= "table" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
-      return
-    end  
-    if type(level.groups) ~= "table" then
-      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
-      return
-    end
+  end
+
+  if type(level.internalObjects) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' is invalid')
+    return
+  end
+  if type(level.internalObjects.PS_LevelStart) ~= "string" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PS_LevelStart\' is invalid')
+    return
+  end
+  if type(level.internalObjects.PE_LevelEnd) ~= "string" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PE_LevelEnd\' is invalid')
+    return
+  end  
+  if type(level.internalObjects.PC_CheckPoints) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PC_CheckPoints\' is invalid')
+    return
+  end  
+  if type(level.internalObjects.PR_ResetPoints) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
+    return
+  end
+  if type(level.sectors) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
+    return
+  end
+  if type(level.floors) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
+    return
+  end  
+  if type(level.groups) ~= "table" then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
+    return
   end
 
   Log.D(TAG, 'Load level data')

@@ -75,6 +75,10 @@ function CoreInit()
       CoreDebugLevelBuliderEntry()
       return false
     end)
+    GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLevelEnvironmentEntry", TAG, function ()
+      CoreDebugLevelEnvironmentEntry()
+      return false
+    end)
     GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugLuaEntry", TAG, function ()
       CoreDebugLuaEntry()
       return false
