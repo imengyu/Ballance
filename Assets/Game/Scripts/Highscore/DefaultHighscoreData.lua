@@ -12,7 +12,7 @@ local DefaultHightScoreLev01_11Data = {
   { name = "Mr. Default", score = 400, date = "2004/8/8" },
 }
 
-DefaultHighscoreLevelNamesData = {
+local DefaultHighscoreLevelNamesData = {
   "Level01",
   "Level02",
   "Level03",
@@ -27,7 +27,7 @@ DefaultHighscoreLevelNamesData = {
   "Level12",
   "Level13"
 }
-DefaultHighscoreData = {
+local DefaultHighscoreData = {
   Level01 = Clone(DefaultHightScoreLev01_11Data),
   Level02 = Clone(DefaultHightScoreLev01_11Data),
   Level03 = Clone(DefaultHightScoreLev01_11Data),
@@ -52,4 +52,10 @@ DefaultHighscoreData = {
     { name = "Mr. Default", score = 3600, date = "2004/8/8" },
   },
   Level13 = Clone(DefaultHightScoreLev01_11Data),
+}
+
+return {
+  DefaultHightScoreLev01_11Data = DefaultHightScoreLev01_11Data,
+  DefaultHighscoreLevelNamesData = DefaultHighscoreLevelNamesData,
+  DefaultHighscoreData = DefaultHighscoreData
 }

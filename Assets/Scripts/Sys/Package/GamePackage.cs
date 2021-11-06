@@ -560,9 +560,9 @@ namespace Ballance2.Sys.Package
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("导入Lua文件到当前模块虚拟机中", "返回执行结果")]
+        [LuaApiDescription("导入Lua文件到当前模块虚拟机中。不重复导入", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
-        public object RequireLuaFile(string fileName) { return RequireLuaFileInternal(this, fileName, false); }
+        public object RequireLuaFile(string fileName) { return RequireLuaFileInternal(this, fileName, true); }
         /// <summary>
         /// 导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
         /// </summary>
@@ -574,9 +574,9 @@ namespace Ballance2.Sys.Package
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入", "返回执行结果")]
+        [LuaApiDescription("导入Lua文件到当前模块虚拟机中，允许重复导入", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
-        public object RequireLuaFileOnce(string fileName) { return RequireLuaFileInternal(this, fileName, true); }
+        public object RequireLuaFileNoOnce(string fileName) { return RequireLuaFileInternal(this, fileName, false); }
         /// <summary>
         /// 从其他模块导入Lua文件到当前模块虚拟机中
         /// </summary>
@@ -588,9 +588,9 @@ namespace Ballance2.Sys.Package
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中", "返回执行结果")]
+        [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中。不重复导入", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
-        public object RequireLuaFile(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, false); }
+        public object RequireLuaFile(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, true); }
         /// <summary>
         /// 从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
         /// </summary>
@@ -602,9 +602,9 @@ namespace Ballance2.Sys.Package
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
         /// </exception>
-        [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入", "返回执行结果")]
+        [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中，允许重复导入", "返回执行结果")]
         [LuaApiParamDescription("fileName", "LUA文件名")]
-        public object RequireLuaFileOnce(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, true); }
+        public object RequireLuaFileNoOnce(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, false); }
         
         private Dictionary<string, object> requiredLuaFiles = null;
         private Dictionary<string, LuaFunction> requiredLuaClasses = null;
@@ -635,7 +635,7 @@ namespace Ballance2.Sys.Package
             try
             {
                 //不重复导入
-                if(once && requiredLuaFiles.TryGetValue(fileName, out var lastRet)) 
+                if(once && requiredLuaFiles.TryGetValue(realPath, out var lastRet)) 
                     return lastRet;
 
                 if(PackageLuaState.doBuffer(lua, realPath, out var v))
@@ -643,11 +643,11 @@ namespace Ballance2.Sys.Package
                 else
                     throw new Exception(PackageName + " 无法导入 Lua : 执行失败");
 
-                //添加结果
-                if(requiredLuaFiles.ContainsKey(fileName))
-                    requiredLuaFiles[fileName] = rs;
+                //添加结果，用于下一次不重复导入
+                if(requiredLuaFiles.ContainsKey(realPath))
+                    requiredLuaFiles[realPath] = rs;
                 else
-                    requiredLuaFiles.Add(fileName, rs);
+                    requiredLuaFiles.Add(realPath, rs);
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 ---纸球定义
 ---@class BallWood : Ball
+---@field super Ball
 BallWood = Ball:extend()
 
 function BallWood:new()

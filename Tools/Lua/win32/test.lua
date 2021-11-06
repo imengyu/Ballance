@@ -32,5 +32,13 @@ function print_r ( t )
   print()
 end
 
-local info = debug.getinfo(1);
-print_r(info);
+
+local aaa1 = require('aaa')()
+local aaa2 = require('aaa')()
+
+aaa1:setTime(123)
+aaa2:setTime(321)
+aaa1:setTime(123)
+
+print('aaa1: '..aaa1:getTime())
+print('aaa2: '..aaa2:getTime())

@@ -4,3 +4,5 @@ ConstLinks = {
   ProjectGithub = 'https://github.com/imengyu/Ballance',
   BugReportURL = 'https://imengyu.top/ballanceProject/bugs/',
 }
+
+return ConstLinks

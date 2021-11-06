@@ -1,3 +1,7 @@
+require('GamePlayUIControl')
+require('MenuLevelUIControl')
+require('SettingsUIControl')
+
 local GameManager = Ballance2.Sys.GameManager
 local GameUIManager = GameManager.Instance:GetSystemService('GameUIManager') ---@type GameUIManager
 
@@ -16,9 +20,6 @@ return {
     GameUIPackage = thisGamePackage
     MessageCenter = GameUIManager:CreateUIMessageCenter('GameUIGloobalMessageCenter')
     MessageCenter:SubscribeEvent('BtnBackClick', function () GameUIManager:BackPreviusPage() end)
-    thisGamePackage:RequireLuaFile('GamePlayUIControl')
-    thisGamePackage:RequireLuaFile('MenuLevelUIControl')
-    thisGamePackage:RequireLuaFile('SettingsUIControl')
     CreateSettingsUI(thisGamePackage)
     CreateMenuLevelUI(thisGamePackage)
     CreateGamePlayUI(thisGamePackage)

@@ -25,16 +25,19 @@ end
 ---加载关卡分数数据
 ---@param name string|number
 function HighscoreUIControl:LoadLevelData(name) 
+
+  self.LevelNames = Game.HighScoreManager.GetLevelNames()
+
   local setIndex = true
   if type(name) == 'number' then
-    name = HighscoreData.LevelNames[name]
+    name = self.LevelNames[name]
     setIndex = false
   end
 
-  local data = HighscoreData.Data[name]
+  local data = Game.HighScoreManager.GetData(name)
   if data ~= nil then
     if setIndex then
-      self._CurrentIndex = IndexOf(HighscoreData.LevelNames, name)
+      self._CurrentIndex = IndexOf(self.LevelNames, name)
     end
 
     for i = 1, 10, 1 do
@@ -59,7 +62,7 @@ function HighscoreUIControl:LoadLevelData(name)
   end
 end
 function HighscoreUIControl:Next() 
-  if self._CurrentIndex < #HighscoreData.LevelNames then
+  if self._CurrentIndex < #self.LevelNames then
     self._CurrentIndex = self._CurrentIndex + 1
   else
     self._CurrentIndex = 1
@@ -70,7 +73,7 @@ function HighscoreUIControl:Prev()
   if self._CurrentIndex > 1 then
     self._CurrentIndex = self._CurrentIndex - 1
   else
-    self._CurrentIndex = #HighscoreData.LevelNames
+    self._CurrentIndex = #self.LevelNames
   end
   self:LoadLevelData(self._CurrentIndex)
 end

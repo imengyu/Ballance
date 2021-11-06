@@ -38,6 +38,7 @@ namespace Ballance2.Sys.Bridge.Lua
     }
 
     private static string[] internalLuaLib = { "string","utf8","table","math","os","debug" };
+    private static string[] internalLuaFile = { "json","classic","debugger","vscode-debuggee","mobdebug","dkjson" };
 
     /// <summary>
     /// 从Lua文件路径获取它属于那个模块包
@@ -63,10 +64,10 @@ namespace Ballance2.Sys.Bridge.Lua
     /// </summary>
     [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
     [StaticExport]
-    public static int require(IntPtr l)
+    public static int require(IntPtr l) 
     {
       try {
-        System.String pathOrName;
+        string pathOrName;
         LuaObject.checkType(l, 1, out pathOrName);
 
         if (pm == null)
@@ -87,18 +88,11 @@ namespace Ballance2.Sys.Bridge.Lua
             break;
           }
         //处理一些游戏内置模块
-        if(pathOrName == "json")
-          ret = GameSystemPackage.GetSystemPackage().RequireLuaFile("json.lua");
-        else if(pathOrName == "classic")
-          ret = GameSystemPackage.GetSystemPackage().RequireLuaFile("classic.lua");
-        else if(pathOrName == "debugger")
-          ret = GameSystemPackage.GetSystemPackage().RequireLuaFile("debugger.lua");
-        else if(pathOrName == "vscode-debuggee")
-          ret = GameSystemPackage.GetSystemPackage().RequireLuaFile("vscode-debuggee.lua");
-        else if(pathOrName == "mobdebug")
-          ret = GameSystemPackage.GetSystemPackage().RequireLuaFile("mobdebug.lua");
-        else if(pathOrName == "dkjson")
-          ret = GameSystemPackage.GetSystemPackage().RequireLuaFile("dkjson.lua");
+        foreach(var s in internalLuaFile)
+          if(s == pathOrName) {
+            ret = GameSystemPackage.GetSystemPackage().RequireLuaFile(pathOrName + ".lua");
+            break;
+          }
         
         if(ret == null) {
           //处理以包名 __xxx__/ 为开头的字符串
@@ -119,10 +113,10 @@ namespace Ballance2.Sys.Bridge.Lua
             if (pack != null) {
               //有斜杠
               if (pathOrName.Contains("/")) {
-                if(pathOrName.StartsWith("."))
-                  ret = pack.RequireLuaFile(PathUtils.JoinTwoPath( Path.GetDirectoryName(fileName).Replace("\\","/"), pathOrName));//相对路径加载
-                else
+                if(pathOrName.StartsWith("/"))
                   ret = pack.RequireLuaFile(pathOrName);//绝对路径加载
+                else
+                  ret = pack.RequireLuaFile(PathUtils.JoinTwoPath( Path.GetDirectoryName(fileName).Replace("\\","/"), pathOrName));//相对路径加载
               } else
                 //无斜杠，从当前目录加载文件
                 ret = pack.RequireLuaFile(Path.GetDirectoryName(fileName).Replace("\\","/") + "/" + pathOrName);
@@ -138,6 +132,67 @@ namespace Ballance2.Sys.Bridge.Lua
         return LuaObject.error(l,e);
       }
     }
+
+    /// <summary>
+    /// 全局加载资源重写
+    /// </summary>
+    [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+    [StaticExport]
+    public static int loadAsset(IntPtr l) {
+      try {
+        string pathOrName;
+        LuaObject.checkType(l, 1, out pathOrName);
+
+        if (pm == null)
+          pm = GameManager.Instance.GetSystemService<GamePackageManager>();
+        
+        object ret = null;
+        //处理以包名 __xxx__/ 为开头的字符串
+        var lastIdx = pathOrName.IndexOf("__/");
+        if (pathOrName.StartsWith("__") && lastIdx >= 0)
+        {
+          var packname = pathOrName.Substring(2, lastIdx - 2);
+          if(packname == "internal")
+            ret = Resources.Load(pathOrName);
+          else if(packname == "static.asset")
+            ret = GameStaticResourcesPool.FindStaticPrefabs(pathOrName);
+          else if(packname == "static.prefab")
+            ret = GameStaticResourcesPool.FindStaticAssets<UnityEngine.Object>(pathOrName);
+          else {
+            var pack = pm.FindPackage(packname);
+            if (pack == null)
+              throw new RequireFailedException("Package " + packname + " not found");
+            ret = pack.GetAsset<UnityEngine.Object>(pathOrName.Substring(lastIdx + 3));
+          }
+        } else {
+          //尝试获取当前lua栈帧所在文件
+          var fileName = LuaUtils.GetLuaCallerFileName(l);
+          var packName = PackageNameByLuaFilePath(fileName);
+
+          var pack = pm.FindPackage(packName);
+          if (pack != null) {
+            //有斜杠
+            if (pathOrName.Contains("/")) {
+              if(pathOrName.StartsWith("/"))
+                ret = pack.GetAsset<UnityEngine.Object>(pathOrName);//绝对路径加载
+              else
+                ret = pack.GetAsset<UnityEngine.Object>(PathUtils.JoinTwoPath( Path.GetDirectoryName(fileName).Replace("\\","/"), pathOrName));//相对路径加载
+            } else
+              //无斜杠，从当前目录加载资源
+              ret = pack.GetAsset<UnityEngine.Object>(Path.GetDirectoryName(fileName).Replace("\\","/") + "/" + pathOrName);
+          }
+        }
+        
+        
+        LuaObject.pushValue(l,true);
+        LuaObject.pushValue(l,ret);
+        return 2;
+      }
+      catch(Exception e) {
+        return LuaObject.error(l,e);
+      }
+    }
+  
   }
 
   /// <summary>

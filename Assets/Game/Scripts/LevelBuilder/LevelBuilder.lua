@@ -1,3 +1,5 @@
+require('AutoGroup')
+
 local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
 local GameError = Ballance2.Sys.Debug.GameError
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
@@ -123,6 +125,7 @@ end
 function LevelBuilder:UpdateLoadProgress(precent)
   self._LevelBuilderUIProgress.value = precent
 end
+
 ---设置加载失败状态
 ---@param err boolean
 ---@param statuaCode string
@@ -233,103 +236,6 @@ function LevelBuilder:LoadLevel(name)
     end)
 end
 
----自动归组
-function LevelBuilder:_AutoGroup(level)
-  local transform = self._CurrentLevelObject.transform
-  local childCount = transform.childCount - 1
-
-  level.internalObjects = {
-    PS_LevelStart = '',
-    PE_LevelEnd = '',
-    PR_ResetPoints = {},
-    PC_CheckPoints = {},
-  }
-  level.sectors = {}
-  level.floors = {}
-  level.groups = {}
-  level.depthTestCubes = {}
-
-  local groupsTemp = {}
-  local sectorsTemp = {}
-
-  for i = 0, childCount, 1 do
-    local name = transform:GetChild(i).gameObject.name
-    if name =='PS_LevelStart' then
-      --开始火焰
-      level.internalObjects.PS_LevelStart = 'PS_LevelStart'
-    elseif name =='PE_LevelEnd' then
-      --结束飞船
-      level.internalObjects.PS_LevelStart = 'PE_LevelEnd'
-    elseif string.startWith(name, 'PR_ResetPoint:') then
-      --出生点
-      local sector = string.sub(name, 14)
-      level.internalObjects.PR_ResetPoints[sector] = name
-    elseif string.startWith(name, 'PC_CheckPoint:') then
-      --检查点
-      local sector = string.sub(name, 14)
-      level.internalObjects.PC_CheckPoints[sector] = name
-    elseif string.startWith(name, 'S_') then
-      --静态路面组
-      local c_names = {}
-      local c_transform =  transform:GetChild(i)
-      local c_childCount = c_transform.childCount - 1
-      for i = 0, c_childCount, 1 do
-        table.insert(c_names, c_transform:GetChild(i).gameObject.name)
-      end
-      table.insert(level.floors, {
-        name = 'Phys_'..string.sub(name, 2),
-        objects = c_names
-      })
-    elseif string.startWith(name, 'D_') then
-      --坠落检测区
-      local c_transform =  transform:GetChild(i)
-      local c_childCount = c_transform.childCount - 1
-      for i = 0, c_childCount, 1 do
-        table.insert(level.depthTestCubes, c_transform:GetChild(i).gameObject.name)
-      end
-    elseif string.contains(name, ':') then
-      local arr = string.split(name, ':')
-      if #arr > 2 then
-        local nname = arr[1]
-        local sector = arr[#arr]
-        if string.startWith(nname, 'P_') then
-          --机关
-          local pname = string.sub(2)
-          local gdata = groupsTemp[pname]
-          local sdata = sectorsTemp[sector]
-          if gdata == nil then
-            gdata = {}
-            groupsTemp[pname] = gdata
-          end
-          if sdata == nil then
-            sdata = {}
-            sectorsTemp[sector] = sdata
-          end
-          table.insert(gdata, name);
-          table.insert(sdata, name);
-        --elseif string.startWith(name, 'I_') then
-          --Internal TODO
-        end
-      end
-    end
-  end
-
-  for key, value in pairs(groupsTemp) do
-    table.insert(level.groups, {
-      name = key,
-      objects = value
-    })
-  end
-  for key, value in pairs(sectorsTemp) do
-    table.insert(level.sectors, {
-      name = key,
-      objects = value
-    })
-  end
-
-  Log.D(TAG, json.encode(level))
-end
-
 ---加载序列
 function LevelBuilder:_LoadLevelInternal()
 
@@ -368,40 +274,40 @@ function LevelBuilder:_LoadLevelInternal()
   end  
   if level.autoGroup == true then
     Log.D(TAG, 'Generate auto group')
-    self:_AutoGroup(level) --配置了 autoGroup 自动归组，则自动生成归组信息
-  end
-
-  if type(level.internalObjects) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' is invalid')
-    return
-  end
-  if type(level.internalObjects.PS_LevelStart) ~= "string" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PS_LevelStart\' is invalid')
-    return
-  end
-  if type(level.internalObjects.PE_LevelEnd) ~= "string" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PE_LevelEnd\' is invalid')
-    return
-  end  
-  if type(level.internalObjects.PC_CheckPoints) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PC_CheckPoints\' is invalid')
-    return
-  end  
-  if type(level.internalObjects.PR_ResetPoints) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
-    return
-  end
-  if type(level.sectors) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
-    return
-  end
-  if type(level.floors) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
-    return
-  end  
-  if type(level.groups) ~= "table" then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
-    return
+    DoLevelAutoGroup(level, self._CurrentLevelObject.transform) --配置了 autoGroup 自动归组，则自动生成归组信息
+  else
+    if type(level.internalObjects) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects\' is invalid')
+      return
+    end
+    if type(level.internalObjects.PS_LevelStart) ~= "string" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PS_LevelStart\' is invalid')
+      return
+    end
+    if type(level.internalObjects.PE_LevelEnd) ~= "string" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PE_LevelEnd\' is invalid')
+      return
+    end  
+    if type(level.internalObjects.PC_CheckPoints) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PC_CheckPoints\' is invalid')
+      return
+    end  
+    if type(level.internalObjects.PR_ResetPoints) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'internalObjects.PR_ResetPoints\' is invalid')
+      return
+    end
+    if type(level.sectors) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'sectors\' is invalid')
+      return
+    end
+    if type(level.floors) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'floors\' is invalid')
+      return
+    end  
+    if type(level.groups) ~= "table" then
+      self:UpdateErrStatus(true, 'BAD_CONFIG', '\'groups\' is invalid')
+      return
+    end
   end
 
   Log.D(TAG, 'Load level data')
@@ -418,9 +324,9 @@ function LevelBuilder:_LoadLevelInternal()
   Log.D(TAG, 'Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
 
   if type(level.defaultHighscoreData) == 'table' then
-    HighscoreManagerTryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
+    Game.HighscoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
   else
-    HighscoreManagerTryAddDefaultLevelHighScore(levelName, Clone(DefaultHightScoreLev01_11Data))
+    Game.HighscoreManager.TryAddDefaultLevelHighScore(levelName, nil)
   end
 
   if level.startLife and level.startLife > 0 then
@@ -446,57 +352,41 @@ function LevelBuilder:_LoadLevelInternal()
     --加载出生点和火焰
     -----------------------------
     for i = 1, level.sectorCount, 1 do
+
+      local flame = nil
+
       if i == 1 then
-        local start = self:ReplacePrefab(level.internalObjects.PS_LevelStart, self:FindRegisterModul('PS_LevelStart'))
-        if start == nil then
+        flame = self:ReplacePrefab(level.internalObjects.PS_LevelStart, self:FindRegisterModul('PS_LevelStart'))
+        if flame == nil then
           self:UpdateErrStatus(true, 'OBJECT_MISSING', 'Object \'PS_LevelStart\' is missing')
           return
         end
-
-        local objName = level.internalObjects.PR_ResetPoints["1"]
-        if objName == nil then
-          self:UpdateErrStatus(true, 'FIELD_MISSING', 'Field \'level.internalObjects.PR_ResetPoints[1]\' is nil')
-          return
-        end
-
-        local rp01 = GameObject.Find(objName)
-        if rp01 == nil then
-          self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..objName..'\' is not found')
-          return
-        end
-
-        SectorManager.CurrentLevelRestPoints[i] = {
-          point = rp01,
-          flame = start
-        }
-
-        rp01:SetActive(false)
       else
-        local flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'))
+        flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'))
         if flame == nil then
           self:UpdateErrStatus(true, 'OBJECT_MISSING', 'Object \'PC_CheckPoints.'..i..'\' is missing')
           return
         end
-
-        local objName = level.internalObjects.PR_ResetPoints[tostring(i)]
-        if objName == nil then
-          self:UpdateErrStatus(true, 'FIELD_MISSING', 'Field \'level.internalObjects.PR_ResetPoints['..i..']\' is nil')
-          return
-        end
-
-        local r = GameObject.Find(objName)
-        if r == nil then
-          self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..objName..'\' is not found')
-          return
-        end
-
-        r:SetActive(false)
-
-        SectorManager.CurrentLevelRestPoints[i] = {
-          point = r,
-          flame = flame
-        }
       end
+
+      local objName = level.internalObjects.PR_ResetPoints[tostring(i)]
+      if objName == nil then
+        self:UpdateErrStatus(true, 'FIELD_MISSING', 'Field \'level.internalObjects.PR_ResetPoints['..i..']\' is nil')
+        return
+      end
+
+      local r = GameObject.Find(objName)
+      if r == nil then
+        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..objName..'\' is not found')
+        return
+      end
+
+      r:SetActive(false)
+
+      SectorManager.CurrentLevelRestPoints[i] = {
+        point = r,
+        flame = flame
+      }
       
     end
     --加载结尾
@@ -721,18 +611,26 @@ function LevelBuilder:_LoadLevelInternal()
     -----------------------------
     if level.skyLayer == 'SkyLayer' then
       local oldSkyLayer = GameObject.Find('SkyLayer')
-      self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyLayer.prefab'), 'SkyLayer')
-      self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
-      self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
-      self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
-      oldSkyLayer:SetActive(false)
+      if oldSkyLayer ~= nil then
+        self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyLayer.prefab'), 'SkyLayer')
+        self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
+        self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
+        self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
+        oldSkyLayer:SetActive(false)
+      else
+        Log.W(TAG, 'Not found \'level.skyLayer\': SkyLayer object.')
+      end
     elseif level.skyLayer == 'SkyVoterx' then
       local oldSkyLayer = GameObject.Find('SkyVoterx')
-      self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyVoterx.prefab'), 'SkyVoterx')
-      self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
-      self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
-      self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
-      oldSkyLayer:SetActive(false)
+      if oldSkyLayer ~= nil then
+        self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.SystemPackage:GetPrefabAsset('SkyVoterx.prefab'), 'SkyVoterx')
+        self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
+        self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
+        self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
+        oldSkyLayer:SetActive(false)
+      else
+        Log.W(TAG, 'Not found \'level.skyLayer\': SkyVoterx object.')
+      end
     end
     local GameSettings = GameSettingsManager.GetSettings("core")
     --如果设置禁用了云层，则隐藏
@@ -988,19 +886,22 @@ function LevelBuilder:RegisterModul(name, basePrefab)
     basePrefab = basePrefab,
   }
 end
+
 ---取消注册机关
 ---@param name string 机关名称
 function LevelBuilder:UnRegisterModul(name)
   self._RegisteredModuls[name] = nil
 end
+
 ---获取注册的机关，如果没有注册，则返回nil
 ---@param name string 机关名称
 function LevelBuilder:FindRegisterModul(name) 
   return self._RegisteredModuls[name] 
 end
+
 ---注册自定义加载步骤
 ---@param name string 名称
----@param callback function 回调
+---@param callback function(levelBuilder, type) 回调， 第一个参数为 levelBuilder 实例；第二个参数是当前步骤的类型。
 ---@param type "pre"|"modul"|"last"|"unload" 回调
 function LevelBuilder:RegisterLoadStep(name, callback, type)
   if self._RegisteredLoadSteps[name] ~= nil then
@@ -1013,6 +914,7 @@ function LevelBuilder:RegisterLoadStep(name, callback, type)
     callback = callback
   }
 end
+
 ---取消注册自定义加载步骤
 ---@param name string 名称
 function LevelBuilder:UnRegisterLoadStep(name)
@@ -1028,7 +930,7 @@ end
 function LevelBuilder:_CallLoadStep(type)
   for _, value in pairs(self._RegisteredLoadSteps) do
     if value ~= nil and value.type == type then
-      value.callback()
+      value.callback(self, type)
     end
   end
 end

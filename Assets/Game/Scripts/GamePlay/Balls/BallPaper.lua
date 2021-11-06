@@ -2,6 +2,7 @@ local GameSoundType = Ballance2.Sys.Services.GameSoundType
 
 ---纸球定义
 ---@class BallPaper : Ball
+---@field super Ball
 ---@field _PaperPiecesSound AudioSource
 BallPaper = Ball:extend()
 
