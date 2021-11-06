@@ -60,8 +60,13 @@ namespace Ballance2.Sys.Utils
         os.remove = nil
         os.rename = nil
         os.setlocale = nil
-        if Ballance2 ~= nil and Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require ~= nil then
-          require = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require
+        if Ballance2 ~= nil then
+          if Ballance2.Sys.Bridge.Lua.LuaGlobalApi.loadAsset ~= nil then
+            loadAsset = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.loadAsset
+          end
+          if Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require ~= nil then
+            require = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require
+          end
         end
       ", "SecurityUtils");
     }

@@ -28,7 +28,8 @@ end
 ---@param needle string 
 ---@return boolean
 function string.startWith(input, needle)
-  return string.find(input, needle) == 0
+  local s, _ = string.find(input, needle)
+  return s == 1
 end
 
 ---检测字符串是否以某个字符串结尾
@@ -37,5 +38,5 @@ end
 ---@return boolean
 function string.endWith(input, needle)
   local _, e = string.find(input, needle)
-  return e ~= nil and e == 0
+  return e ~= nil and e == 1
 end

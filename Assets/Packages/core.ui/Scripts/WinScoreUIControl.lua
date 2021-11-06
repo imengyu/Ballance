@@ -159,7 +159,7 @@ function WinScoreUIControl:Skip()
   end)
 end
 function WinScoreUIControl:SaveHighscore(entryName) 
-  HighscoreManagerAddItem(GamePlay.GamePlayManager.CurrentLevelName, entryName, self._ScoreNTotal)
+  Game.HighScoreManager.AddItem(GamePlay.GamePlayManager.CurrentLevelName, entryName, self._ScoreNTotal)
 end
 function WinScoreUIControl:_ShowHighscore() 
   Game.UIManager:GoPage('PageHighscoreEntry')
@@ -171,7 +171,7 @@ function WinScoreUIControl:_ShowHighscore()
   HighscoreEntryNameTextScore.text = tostring(self._ScoreNTotal)..' <size=20>'..I18N.Tr('ui.gameWin.points')..'</size>';
   
   self._HighscoreSound:Play()
-  if HighscoreManagerCheckLevelHighScore(GamePlay.GamePlayManager.CurrentLevelName, self._ScoreNTotal) then
+  if Game.HighScoreManager.CheckLevelHighScore(GamePlay.GamePlayManager.CurrentLevelName, self._ScoreNTotal) then
     PageHighscoreEntry.Content:Find('TextNewHighScore').gameObject:SetActive(true)
     PageHighscoreEntry.Content:Find('TextWin').gameObject:SetActive(false)
   else

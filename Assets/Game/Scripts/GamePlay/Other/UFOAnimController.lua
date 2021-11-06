@@ -1,10 +1,7 @@
 local Vector3 = UnityEngine.Vector3
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
-
-local GamePackage = Ballance2.Sys.Package.GamePackage
-
-local ufoPositions = GamePackage.GetSystemPackage():RequireLuaFile('UFOPositions') ---@type UFOPositionItem[]
+local ufoPositions = require('UFOPositions') ---@type UFOPositionItem[]
 
 ---UFO动画管理器
 ---@class UFOAnimController : GameLuaObjectHostClass

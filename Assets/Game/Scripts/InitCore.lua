@@ -6,7 +6,8 @@ local GameError = Ballance2.Sys.Debug.GameError
 local Log = Ballance2.Utils.Log
 local SystemPackage = GamePackage.GetSystemPackage()
 
-ClassicObject = SystemPackage:RequireLuaFile("classic") ---@type ClassicObject
+---全局 ClassicObject 引入
+ClassicObject = require("classic")
 
 local TAG = 'Core'
 
@@ -30,6 +31,8 @@ Game = {
   LevelBuilder = nil, ---@type LevelBuilder
   --获取调试命令 [R]
   CommandServer = nil, ---@type GameDebugCommandServer
+  --获取分数管理器 [R]
+  HighScoreManager = nil, ---@type HighscoreManager
 }
 
 function CoreInit()
@@ -40,6 +43,7 @@ function CoreInit()
   Game.PackageManager = GameManagerInstance:GetSystemService('GamePackageManager')
   Game.UIManager = GameManagerInstance:GetSystemService('GameUIManager')
   Game.SoundManager = GameManagerInstance:GetSystemService('GameSoundManager')
+  Game.HighScoreManager = require('./Highscore/HighscoreManager')
 
   SystemPackage:RequireLuaFile('ConstLinks')
   SystemPackage:RequireLuaFile('GameLayers')
@@ -50,8 +54,6 @@ function CoreInit()
   SystemPackage:RequireLuaFile('InitGamePlay')
   SystemPackage:RequireLuaFile('InitLevelBuilder')
   SystemPackage:RequireLuaFile('InitBulitInModuls')
-  SystemPackage:RequireLuaFile('DefaultHighscoreData')
-  SystemPackage:RequireLuaFile('HighscoreManager')
   SystemPackage:RequireLuaClass('ModulBase')
   SystemPackage:RequireLuaClass('ModulSingalPhysics')
   SystemPackage:RequireLuaClass('ModulComplexPhysics')
@@ -59,7 +61,7 @@ function CoreInit()
   
   LevelBuilderInit()
   --加载分数数据
-  HighscoreManagerLoad()
+  Game.HighScoreManager.Load()
 
   --调试入口
   if GameManager.DebugMode then
@@ -103,6 +105,7 @@ function CoreInit()
     end
     return false
   end)
+  
   --加载关卡入口
   GameMediator:SubscribeSingleEvent(SystemPackage, "CoreStartLoadLevel", TAG, function (evtName, params)
     if type(params[1]) ~= 'string' then
@@ -119,7 +122,7 @@ function CoreInit()
   --退出
   GameMediator:RegisterEventHandler(SystemPackage, GameEventNames.EVENT_BEFORE_GAME_QUIT, TAG, function ()
     ---保存分数数据
-    HighscoreManagerSave()
+    Game.HighScoreManager.Save()
     return false
   end)
 
@@ -127,6 +130,7 @@ function CoreInit()
 end
 function CoreUnload()
   Log.D(TAG, 'CoreUnload')
+
   GamePlayUnload()
   LevelBuilderDestroy()
 end

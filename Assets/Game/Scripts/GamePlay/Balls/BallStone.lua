@@ -1,5 +1,6 @@
 ---纸球定义
 ---@class BallStone : Ball
+---@field super Ball
 BallStone = Ball:extend()
 
 function BallStone:new()
