@@ -1,4 +1,5 @@
 require('AutoGroup')
+local json = require('json') ---@type json
 
 local GameErrorChecker = Ballance2.Sys.Debug.GameErrorChecker
 local GameError = Ballance2.Sys.Debug.GameError
@@ -11,7 +12,6 @@ local DebugUtils = Ballance2.Utils.DebugUtils
 local StringUtils = Ballance2.Utils.StringUtils
 local Log = Ballance2.Utils.Log
 local I18N = Ballance2.Sys.Language.I18N
-local json = Game.SystemPackage:RequireLuaFile('json') ---@type json
 
 local PhysicsBody = PhysicsRT.PhysicsBody
 local PhysicsShape = PhysicsRT.PhysicsShape
@@ -324,9 +324,9 @@ function LevelBuilder:_LoadLevelInternal()
   Log.D(TAG, 'Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
 
   if type(level.defaultHighscoreData) == 'table' then
-    Game.HighscoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
+    Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
   else
-    Game.HighscoreManager.TryAddDefaultLevelHighScore(levelName, nil)
+    Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, nil)
   end
 
   if level.startLife and level.startLife > 0 then
@@ -377,7 +377,7 @@ function LevelBuilder:_LoadLevelInternal()
 
       local r = GameObject.Find(objName)
       if r == nil then
-        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..objName..'\' is not found')
+        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PR_ResetPoints['..i..']\' => \''..objName..'\' is not found')
         return
       end
 
@@ -393,7 +393,7 @@ function LevelBuilder:_LoadLevelInternal()
     -----------------------------
     SectorManager.CurrentLevelEndBalloon = self:ReplacePrefab(level.internalObjects.PE_LevelEnd, self:FindRegisterModul('PE_LevelEnd'))
     if SectorManager.CurrentLevelEndBalloon == nil then
-      self:UpdateErrStatus(true, 'OBJECT_MISSING', '\''..level.internalObjects.PE_LevelEnd..'\' is not found')
+      self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PE_LevelEnd\' => \''..level.internalObjects.PE_LevelEnd..'\' is not found')
       return
     end
 

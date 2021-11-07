@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2627139891906442269}
   m_RootOrder: 2
@@ -177,6 +178,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2627139891906442269}
   m_RootOrder: 5
@@ -326,6 +328,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2627139891906442269}
   m_RootOrder: 3
@@ -475,6 +478,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 10.9508, z: 0.0169}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8454124386684465908}
   m_RootOrder: 3
@@ -558,6 +562,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2627139891906442269}
   m_RootOrder: 4
@@ -711,6 +716,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: -0.7755, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1307240454034145990}
   - {fileID: 827577827122287854}
@@ -993,6 +999,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2627139891906442269}
   m_RootOrder: 0
@@ -1142,6 +1149,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2627139891906442269}
   m_RootOrder: 1
@@ -1290,6 +1298,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5892630108785099380}
   - {fileID: 5892630110379348671}
@@ -1456,7 +1465,7 @@ MonoBehaviour:
     boolVal: 0
     floatVal: 0
     componentClassVal: PhysicsRT.PhysicsBody
-  - Type: 15
+  - Type: 16
     Name: P_Modul_08_ForcePovit_1
     vector2: {x: 0, y: 0}
     vector2Int: {x: 0, y: 0}
@@ -1526,7 +1535,7 @@ MonoBehaviour:
     boolVal: 0
     floatVal: 0
     componentClassVal: PhysicsRT.PhysicsBody
-  - Type: 15
+  - Type: 16
     Name: P_Modul_08_ForcePovit_2
     vector2: {x: 0, y: 0}
     vector2Int: {x: 0, y: 0}
@@ -1595,7 +1604,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: PhysicsRT.PhysicsBody
+    componentClassVal: UnityEngine.Transform
   LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0

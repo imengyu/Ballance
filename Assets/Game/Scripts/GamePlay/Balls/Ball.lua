@@ -2,6 +2,7 @@ local LuaUtils = Ballance2.Utils.LuaUtils
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local PhysicsBody = PhysicsRT.PhysicsBody
 local Vector3 = UnityEngine.Vector3
+local Table = require('Table')
 
 ---纸球定义
 ---@class Ball : GameLuaObjectHostClass
@@ -84,7 +85,7 @@ function Ball:_InitPeices()
       local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
       table.insert(data.bodys, body);
 
-      if piecesSound ~= nil and IndexOf(self._PiecesHaveColSound, body.name) ~= -1 then
+      if piecesSound ~= nil and Table.IndexOf(self._PiecesHaveColSound, body.name) ~= -1 then
         local sound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, piecesSound, false, true, 'PiecesSound'..child.name)
         sound.spatialBlend = 1
         sound.maxDistance = 30

@@ -8,6 +8,15 @@ local SystemPackage = GamePackage.GetSystemPackage()
 
 ---全局 ClassicObject 引入
 ClassicObject = require("classic")
+require('ConstLinks')
+require('GameLayers')
+require('GamePhysBall')
+require('GamePhysFloor')
+require('GameCoreLibInit')
+require('LevelBuilder') 
+require('InitGamePlay')
+require('InitLevelBuilder')
+require('InitBulitInModuls')
 
 local TAG = 'Core'
 
@@ -43,17 +52,8 @@ function CoreInit()
   Game.PackageManager = GameManagerInstance:GetSystemService('GamePackageManager')
   Game.UIManager = GameManagerInstance:GetSystemService('GameUIManager')
   Game.SoundManager = GameManagerInstance:GetSystemService('GameSoundManager')
-  Game.HighScoreManager = require('./Highscore/HighscoreManager')
+  Game.HighScoreManager = require('HighscoreManager')
 
-  SystemPackage:RequireLuaFile('ConstLinks')
-  SystemPackage:RequireLuaFile('GameLayers')
-  SystemPackage:RequireLuaFile('GamePhysBall')
-  SystemPackage:RequireLuaFile('GamePhysFloor')
-  SystemPackage:RequireLuaFile('GameCoreLibInit')
-  SystemPackage:RequireLuaFile('LevelBuilder') 
-  SystemPackage:RequireLuaFile('InitGamePlay')
-  SystemPackage:RequireLuaFile('InitLevelBuilder')
-  SystemPackage:RequireLuaFile('InitBulitInModuls')
   SystemPackage:RequireLuaClass('ModulBase')
   SystemPackage:RequireLuaClass('ModulSingalPhysics')
   SystemPackage:RequireLuaClass('ModulComplexPhysics')
@@ -65,9 +65,9 @@ function CoreInit()
 
   --调试入口
   if GameManager.DebugMode then
-    SystemPackage:RequireLuaFile('GamePlayDebug')
-    SystemPackage:RequireLuaFile('CoreLuaDebug')
-    SystemPackage:RequireLuaFile('LevelBuilderDebug')
+    require('GamePlayDebug')
+    require('CoreLuaDebug')
+    require('LevelBuilderDebug')
 
     GameMediator:RegisterEventHandler(SystemPackage, "CoreDebugGamePlayEntry", TAG, function ()
       CoreDebugGamePlay()

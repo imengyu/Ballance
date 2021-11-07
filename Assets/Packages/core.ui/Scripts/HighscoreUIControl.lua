@@ -1,5 +1,6 @@
 local Text = UnityEngine.UI.Text
 local I18N = Ballance2.Sys.Language.I18N
+local Table = require('Table')
 
 ---分数统计界面控制
 ---@class HighscoreUIControl : GameLuaObjectHostClass
@@ -37,7 +38,7 @@ function HighscoreUIControl:LoadLevelData(name)
   local data = Game.HighScoreManager.GetData(name)
   if data ~= nil then
     if setIndex then
-      self._CurrentIndex = IndexOf(self.LevelNames, name)
+      self._CurrentIndex = Table.IndexOf(self.LevelNames, name)
     end
 
     for i = 1, 10, 1 do

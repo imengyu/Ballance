@@ -38,7 +38,7 @@ namespace Ballance2.Sys.Bridge.Lua
     }
 
     private static string[] internalLuaLib = { "string","utf8","table","math","os","debug" };
-    private static string[] internalLuaFile = { "json","classic","debugger","vscode-debuggee","mobdebug","dkjson" };
+    private static string[] internalLuaFile = { "json","classic","debugger","vscode-debuggee","mobdebug","dkjson", "Table" };
 
     /// <summary>
     /// 从Lua文件路径获取它属于那个模块包
@@ -118,8 +118,8 @@ namespace Ballance2.Sys.Bridge.Lua
                 else
                   ret = pack.RequireLuaFile(PathUtils.JoinTwoPath( Path.GetDirectoryName(fileName).Replace("\\","/"), pathOrName));//相对路径加载
               } else
-                //无斜杠，从当前目录加载文件
-                ret = pack.RequireLuaFile(Path.GetDirectoryName(fileName).Replace("\\","/") + "/" + pathOrName);
+                //无斜杠
+                ret = pack.RequireLuaFile(pathOrName);
             }
           }
         }

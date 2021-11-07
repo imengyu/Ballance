@@ -1,4 +1,4 @@
-function print_r ( t )  
+local function print_r ( t )  
   local print_r_cache={}
   local function sub_print_r(t,indent)
       if (print_r_cache[tostring(t)]) then
