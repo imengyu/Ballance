@@ -204,28 +204,28 @@ namespace BallancePhysics.Wapper
               return;
             }
             var mesh = meshFilter.sharedMesh;
-            if(m_Fixed) 
-              pConcavies.Add(PhysicsApi.API.create_polyhedron(mesh.vertices, mesh.triangles, transform.lossyScale));
-            else
+            //if(m_Fixed) 
+            //  pConcavies.Add(PhysicsApi.API.create_polyhedron(mesh.vertices, mesh.triangles, transform.lossyScale));
+            //else 
               pConvexs.Add(PhysicsApi.API.create_points_buffer(mesh.vertices, transform.lossyScale));
           }
         }
 
         Handle = PhysicsApi.API.physicalize(currentEnvironment.Handle, name, m_Layer, currentEnvironment.GetSystemGroup(m_SystemGroupName),
-          m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
-          m_RotSpeedDamping, m_BallRadius, m_UseBall, m_EnableConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
-          m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, m_SurfaceName,
-          pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius);
+         m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
+         m_RotSpeedDamping, m_BallRadius, m_UseBall, m_EnableConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
+         m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, m_SurfaceName,
+         pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius);
         
-        if(Handle == IntPtr.Zero)
-          return;
-
-        Id = PhysicsApi.API.physics_get_id(Handle);
-
         foreach (var ptr in pConvexs)
           PhysicsApi.API.delete_points_buffer(ptr);
         foreach (var ptr in pConcavies)
           PhysicsApi.API.delete_points_buffer(ptr);
+
+        if(Handle == IntPtr.Zero)
+          return;
+
+        Id = PhysicsApi.API.physics_get_id(Handle);
 
         currentEnvironment.AddPhysicsObject(Id, this);
 

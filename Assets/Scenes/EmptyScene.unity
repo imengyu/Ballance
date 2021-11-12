@@ -347,7 +347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &820011693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,7 +716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1191960624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,7 +969,7 @@ MonoBehaviour:
   Gravity: {x: 0, y: -20, z: 0}
   SimulationRate: 66
   DeleteAllSurfacesWhenDestroy: 1
-  Simulate: 1
+  Simulate: 0
 --- !u!1 &1859497821
 GameObject:
   m_ObjectHideFlags: 0
