@@ -38,7 +38,7 @@
 可以加载关卡，加载机关，游戏UI基本完成。
 目前仅剩物理参数的调试。
 
-物理引擎暂时使用Havok，但是我找到了ivp的源代码，通过反编译virtools的physics.dll，我发现virtools引擎就是这个源代码编译出来的，里面的字符串一模一样，因此假如用这个物理引擎，**可以达到和原版一模一样的物理效果**。目前正在努力调试这个物理引擎。。
+物理引擎暂时使用Havok，但是我找到了ivp的源代码，通过反编译virtools的physics.dll，我发现virtools物理引擎就是这个源代码编译出来的，里面的字符串一模一样，因此假如用这个物理引擎，**可以达到和原版一模一样的物理效果**。目前正在努力调试这个物理引擎。。
 
 ## TODO: 项目待完成内容
 
@@ -137,4 +137,14 @@
 
 ## 联系我
 
-wechart: brave_imengyu
+微信: brave_imengyu
+
+## 项目运行步骤
+
+提示：*(目前暂无Mac版本的物理引擎文件，请使用Win版本的Unity进行调试)*
+
+1. 请下载 Unity 2021.2.0+ 版本打开项目。
+2. 点击菜单“SLua”>“All”>“Make”以生成Lua相关文件。
+3. 打开 Assets/Scenes/Game.unity 场景。
+4. 选择 GameEntry 对象，设置“Debug Type”为“FullDebug”。
+5. 点击运行
