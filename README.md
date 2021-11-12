@@ -2,6 +2,10 @@
 
 这是2004年Arail 发布的Ballance游戏的开源重制版（制作中）。
 
+## 先睹为快
+
+[先看看演示视频](https://www.bilibili.com/video/BV1Dg411P7xp/)
+
 ## 简介
 
 作者是一个Ballance忠实粉丝，从最初为原版Ballance作图，到后面开发相关的小工具，最后又想让这个老游戏重新焕发生机。
@@ -14,6 +18,10 @@
 游戏主要流程大都使用Lua作为语言（为了兼顾MOD与热更），游戏框架使用C#写。
 
 本项目从2019年开始开发，中间断断续续，到现在积攒大约3-4万行代码（大部分是游戏框架的）。
+
+---
+
+![Demo](https://imengyu.top/assets/images/demo.png)
 
 ## 目标
 
