@@ -34,7 +34,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_physics_get_id(IntPtr body);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate void fn_physics_set_name(IntPtr body, [MarshalAs(UnmanagedType.LPStr)] string name);
+  public delegate void fn_physics_set_name(IntPtr body, IntPtr name);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_physics_set_layer(IntPtr world, IntPtr body, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -102,7 +102,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_motion_controller(IntPtr controller);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_physicalize(IntPtr world, [MarshalAs(UnmanagedType.LPStr)] string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, int use_ball, int enable_convex_hull, int auto_mass_center, int enable_collision, int start_frozen, int physical_unmoveable, IntPtr position, IntPtr shfit_mass_center, IntPtr rotation, int use_exists_surface, [MarshalAs(UnmanagedType.LPStr)] string surface_name, int convex_count, IntPtr convex_data, int concave_count, IntPtr concave_data, float extra_radius);
+  public delegate IntPtr fn_physicalize(IntPtr world, IntPtr name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, int use_ball, int enable_convex_hull, int auto_mass_center, int enable_collision, int start_frozen, int physical_unmoveable, IntPtr position, IntPtr shfit_mass_center, IntPtr rotation, int use_exists_surface, IntPtr surface_name, int convex_count, IntPtr convex_data, int concave_count, IntPtr concave_data, float extra_radius);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_unphysicalize(IntPtr world, IntPtr body, int silently);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -154,7 +154,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_physics_spring(IntPtr spring);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate int fn_surface_exist_by_name([MarshalAs(UnmanagedType.LPStr)] string name);
+  public delegate int fn_surface_exist_by_name(IntPtr name);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_motion_controller_set_target_pos(IntPtr controller, IntPtr pos_ws);
 }

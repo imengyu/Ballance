@@ -41,7 +41,7 @@ namespace BallancePhysics.Api
     public fn_physics_disable_collision_detection physics_disable_collision_detection;
     public fn_physics_wakeup physics_wakeup;
     public fn_physics_get_speed physics_get_speed;    
-    public fn_physics_set_name physics_set_name;
+    public fn_physics_set_name _physics_set_name;
     public fn_physics_set_layer physics_set_layer;
     public fn_physics_change_mass physics_change_mass;
     public fn_delete_points_buffer delete_points_buffer;
@@ -55,6 +55,12 @@ namespace BallancePhysics.Api
     public fn_physics_get_id physics_get_id;
     private fn_delete_raycast_result delete_raycast_result;
     private fn_surface_exist_by_name _surface_exist_by_name;
+
+    public void physics_set_name(IntPtr body, string name) {
+      var namePtr = Marshal.StringToHGlobalAnsi(name);
+      _physics_set_name(body, namePtr);
+      Marshal.FreeHGlobal(namePtr);
+    }
 
     private fn_create_environment _create_environment;
     public IntPtr create_environment(Vector3 gravity, float suimRate, int layerMask, int[] layerToMask) {  
@@ -74,18 +80,22 @@ namespace BallancePhysics.Api
       var pt_shfit_mass_center = create_point(shfit_mass_center);
       var pt_rotation = create_quat(rotation);
 
+      var p_name = Marshal.StringToHGlobalAnsi(name);
+      var p_surface_name = Marshal.StringToHGlobalAnsi(surface_name);
       var p_convex_data = Marshal.AllocHGlobal(convex_data.Count * Marshal.SizeOf<IntPtr>());
       var p_concave_data = Marshal.AllocHGlobal(concave_data.Count * Marshal.SizeOf<IntPtr>());
 
       Marshal.Copy(convex_data.ToArray(), 0, p_convex_data, convex_data.Count);
       Marshal.Copy(concave_data.ToArray(), 0, p_concave_data, concave_data.Count);
 
-      var rs = _physicalize(world, name, layer, systemGroup, subSystemId, subSystemDontCollideWith, mass, friction, 
+      var rs = _physicalize(world, p_name, layer, systemGroup, subSystemId, subSystemDontCollideWith, mass, friction, 
         elasticity, linear_speed_damp, rot_speed_damp, ball_radius, PhysicsApi.boolToSbool(use_ball), PhysicsApi.boolToSbool(enable_convex_hull), PhysicsApi.boolToSbool(auto_mass_center), 
         PhysicsApi.boolToSbool(enable_collision), PhysicsApi.boolToSbool(start_frozen), PhysicsApi.boolToSbool(physical_unmoveable), pt_position, pt_shfit_mass_center,
-        pt_rotation, PhysicsApi.boolToSbool(use_exists_surface), surface_name, convex_count, p_convex_data, concave_count, p_concave_data, extra_radius);
+        pt_rotation, PhysicsApi.boolToSbool(use_exists_surface), p_surface_name, convex_count, p_convex_data, concave_count, p_concave_data, extra_radius);
       
       Marshal.FreeHGlobal(p_convex_data);
+      Marshal.FreeHGlobal(p_surface_name);
+      Marshal.FreeHGlobal(p_name);
       Marshal.FreeHGlobal(p_concave_data);
       destroy_point(pt_position);
       destroy_point(pt_shfit_mass_center);
@@ -380,7 +390,10 @@ namespace BallancePhysics.Api
     }
   
     public bool surface_exist_by_name(string name) {
-      return _surface_exist_by_name(name) > 0;
+      var p_name = Marshal.StringToHGlobalAnsi(name);
+      var rs = _surface_exist_by_name(p_name) > 0;
+      Marshal.FreeHGlobal(p_name);
+      return rs;
     }
 
     public Vector3 ptr_to_vec3(IntPtr p) {
@@ -428,7 +441,7 @@ namespace BallancePhysics.Api
       physics_get_speed = Marshal.GetDelegateForFunctionPointer<fn_physics_get_speed>(apiArray[i++]);
       _physics_get_speed_vec = Marshal.GetDelegateForFunctionPointer<fn_physics_get_speed_vec>(apiArray[i++]);
       _physics_get_rot_speed = Marshal.GetDelegateForFunctionPointer<fn_physics_get_rot_speed>(apiArray[i++]);
-      physics_set_name = Marshal.GetDelegateForFunctionPointer<fn_physics_set_name>(apiArray[i++]);
+      _physics_set_name = Marshal.GetDelegateForFunctionPointer<fn_physics_set_name>(apiArray[i++]);
       physics_set_layer = Marshal.GetDelegateForFunctionPointer<fn_physics_set_layer>(apiArray[i++]);
       physics_change_mass = Marshal.GetDelegateForFunctionPointer<fn_physics_change_mass>(apiArray[i++]);
       _physics_change_unmovable_flag = Marshal.GetDelegateForFunctionPointer<fn_physics_change_unmovable_flag>(apiArray[i++]);
