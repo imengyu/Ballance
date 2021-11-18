@@ -53,6 +53,10 @@ namespace BallancePhysics.Api
     public fn_set_physics_force_value set_physics_force_value;
     public fn_set_physics_fixed_constraint set_physics_fixed_constraint;
     public fn_physics_get_id physics_get_id;
+    public fn_get_quat_x get_quat_x;
+    public fn_get_quat_y get_quat_y;
+    public fn_get_quat_z get_quat_z;
+    public fn_get_quat_w get_quat_w;
     private fn_delete_raycast_result delete_raycast_result;
     private fn_surface_exist_by_name _surface_exist_by_name;
 
@@ -189,9 +193,6 @@ namespace BallancePhysics.Api
 
     private fn_physics_is_motion_enabled _physics_is_motion_enabled;
     public bool physics_is_motion_enabled(IntPtr body) { return _physics_is_motion_enabled(body) > 0; }
-
-    private fn_physics_is_controlling _physics_is_controlling;
-    public bool physics_is_controlling(IntPtr body, IntPtr controller) { return _physics_is_controlling(body, controller) > 0; }
 
     private fn_physics_is_phantom _physics_is_phantom;
     public bool physics_is_phantom(IntPtr body) { return _physics_is_phantom(body) > 0; }
@@ -452,7 +453,6 @@ namespace BallancePhysics.Api
       _physics_is_inside_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_inside_phantom>(apiArray[i++]);
       _physics_is_contact = Marshal.GetDelegateForFunctionPointer<fn_physics_is_contact>(apiArray[i++]);
       _physics_is_motion_enabled = Marshal.GetDelegateForFunctionPointer<fn_physics_is_motion_enabled>(apiArray[i++]);
-      _physics_is_controlling = Marshal.GetDelegateForFunctionPointer<fn_physics_is_controlling>(apiArray[i++]);
       _physics_is_fixed = Marshal.GetDelegateForFunctionPointer<fn_physics_is_fixed>(apiArray[i++]);
       _physics_is_gravity_enabled = Marshal.GetDelegateForFunctionPointer<fn_physics_is_gravity_enabled>(apiArray[i++]);
       _physics_enable_gravity = Marshal.GetDelegateForFunctionPointer<fn_physics_enable_gravity>(apiArray[i++]);
@@ -485,6 +485,10 @@ namespace BallancePhysics.Api
       _raycasting_one = Marshal.GetDelegateForFunctionPointer<fn_raycasting_one>(apiArray[i++]);
       _physics_is_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_phantom>(apiArray[i++]);
       _motion_controller_set_target_pos = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_target_pos>(apiArray[i++]);
+      get_quat_x = Marshal.GetDelegateForFunctionPointer<fn_get_quat_x>(apiArray[i++]);
+      get_quat_y = Marshal.GetDelegateForFunctionPointer<fn_get_quat_y>(apiArray[i++]);
+      get_quat_z = Marshal.GetDelegateForFunctionPointer<fn_get_quat_z>(apiArray[i++]);
+      get_quat_w = Marshal.GetDelegateForFunctionPointer<fn_get_quat_w>(apiArray[i++]);
       
       InitSuccess = true;
     }

@@ -26,7 +26,7 @@ namespace BallancePhysics
     public delegate void InitFinishCallback();
 
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
-    private static extern IntPtr entry(int init, IntPtr options);
+    private static extern IntPtr ballance_physics_entry(int init, IntPtr options);
 
     public static InitFinishCallback InitFinish;
 
@@ -73,7 +73,7 @@ namespace BallancePhysics
       Marshal.StructureToPtr(initStruct, initStructPtr, false);
 
       //调用初始化
-      IntPtr apiStructPtr = entry(sTrue, initStructPtr);
+      IntPtr apiStructPtr = ballance_physics_entry(sTrue, initStructPtr);
 
       //获取所有函数指针
       API.initAll(apiStructPtr, 256);
@@ -83,17 +83,17 @@ namespace BallancePhysics
     }
     public static void PhysicsApiDestroy()
     {
-      entry(sFalse, IntPtr.Zero);
+      ballance_physics_entry(sFalse, IntPtr.Zero);
     }
 
 #if UNITY_EDITOR
     [UnityEditor.MenuItem("Ballance/Physics/Open Console")]
     public static void OpenConsole() {
-      entry(3, IntPtr.Zero);
+      ballance_physics_entry(3, IntPtr.Zero);
     }
     [UnityEditor.MenuItem("Ballance/Physics/Close Console")]
     public static void CloseConsole() {
-      entry(2, IntPtr.Zero);
+      ballance_physics_entry(2, IntPtr.Zero);
     }
 #endif
   }

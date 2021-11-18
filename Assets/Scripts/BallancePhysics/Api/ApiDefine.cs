@@ -50,8 +50,6 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_physics_is_motion_enabled(IntPtr body);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate int fn_physics_is_controlling(IntPtr body, IntPtr controller);
-  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_physics_is_fixed(IntPtr body);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_physics_is_gravity_enabled(IntPtr body);
