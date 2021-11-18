@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using BallancePhysics.Api;
+using static BallancePhysics.Api.ApiStruct;
 using UnityEngine;
 
 namespace BallancePhysics
@@ -25,7 +26,7 @@ namespace BallancePhysics
     public delegate void InitFinishCallback();
 
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
-    private static extern IntPtr entry(int init, IntPtr _eventCallback, int showConsole, int smallPoolSize);
+    private static extern IntPtr entry(int init, IntPtr options);
 
     public static InitFinishCallback InitFinish;
 
@@ -61,24 +62,38 @@ namespace BallancePhysics
     public static void PhysicsApiInit()
     {
       ErrorReportCallback callback = ErrorReport;
+
+      //拷贝初始配置结构
+      sInitStruct initStruct = new sInitStruct();
+      initStruct.smallPoolSize = PhysicsOptions.Instance.SmallPoolSize;
+      initStruct.showConsole = boolToSbool(PhysicsOptions.Instance.ShowConsole);
+      initStruct.eventCallback = Marshal.GetFunctionPointerForDelegate(callback);
+
+      IntPtr initStructPtr = Marshal.AllocHGlobal(Marshal.SizeOf<sInitStruct>());
+      Marshal.StructureToPtr(initStruct, initStructPtr, false);
+
       //调用初始化
-      IntPtr apiStructPtr = entry(sTrue, 
-        Marshal.GetFunctionPointerForDelegate(callback), 
-        boolToSbool(PhysicsOptions.Instance.ShowConsole),
-        PhysicsOptions.Instance.SmallPoolSize);
+      IntPtr apiStructPtr = entry(sTrue, initStructPtr);
 
       //获取所有函数指针
       API.initAll(apiStructPtr, 256);
+      
+      //释放
+      Marshal.FreeHGlobal(initStructPtr);
     }
     public static void PhysicsApiDestroy()
     {
-      entry(sFalse, IntPtr.Zero, boolToSbool(PhysicsOptions.Instance.ShowConsole), 0);
+      entry(sFalse, IntPtr.Zero);
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.MenuItem("Ballance/Physics/Close console")]
+    [UnityEditor.MenuItem("Ballance/Physics/Open Console")]
+    public static void OpenConsole() {
+      entry(3, IntPtr.Zero);
+    }
+    [UnityEditor.MenuItem("Ballance/Physics/Close Console")]
     public static void CloseConsole() {
-      entry(2, IntPtr.Zero, 0, 0);
+      entry(2, IntPtr.Zero);
     }
 #endif
   }

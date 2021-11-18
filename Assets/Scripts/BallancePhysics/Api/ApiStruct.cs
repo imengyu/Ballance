@@ -495,6 +495,13 @@ namespace BallancePhysics.Api
       public IntPtr hit_objects; // sPhysicsBody** hit_objects;
       public IntPtr hit_distances; // float* hit_distances; 
     }
+    [StructLayout(LayoutKind.Sequential)]
+    public struct sInitStruct
+    {
+      public IntPtr eventCallback; //EventCallback eventCallback;
+      public int showConsole; //sBool showConsole;
+      public int smallPoolSize;
+    }
   }
 
   /// <summary>
