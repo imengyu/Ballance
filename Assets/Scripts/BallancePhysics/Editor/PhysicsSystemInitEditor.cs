@@ -6,8 +6,6 @@ namespace BallancePhysics.Editor
   [InitializeOnLoad]
   public class PhysicsSystemInitEditor
   {
-    static bool firstPlay = false;
-
     static PhysicsSystemInitEditor()
     {
       EditorApplication.pauseStateChanged += PauseStateChanged;
@@ -18,9 +16,6 @@ namespace BallancePhysics.Editor
 
     static void PauseStateChanged(PauseState state)
     {
-      if (firstPlay)
-        return;
-      firstPlay = true;
       PhysicsSystemInit.DoInit();
     }
     static void Quitting()
