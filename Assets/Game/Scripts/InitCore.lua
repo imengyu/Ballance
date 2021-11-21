@@ -57,8 +57,7 @@ function CoreInit()
   Game.HighScoreManager = require('HighscoreManager')
 
   SystemPackage:RequireLuaClass('ModulBase')
-  SystemPackage:RequireLuaClass('ModulSingalPhysics')
-  SystemPackage:RequireLuaClass('ModulComplexPhysics')
+  SystemPackage:RequireLuaClass('ModulPhysics')
   SystemPackage:RequireLuaClass('Ball')
   
   LevelBuilderInit()

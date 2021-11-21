@@ -55,7 +55,7 @@ function PE_Balloon:Start()
   distanceChecker.CheckEnabled = true
 
   --PE_Balloon 过关触发器
-  self.PE_Balloon_BallTigger.onTiggerEnter = function (body, other)
+  self.PE_Balloon_BallTigger.onTriggerEnter = function (body, other)
     if other and other.gameObject.tag == "Ball" then
       self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
       self._MusicActived = false

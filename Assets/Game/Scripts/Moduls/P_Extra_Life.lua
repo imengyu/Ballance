@@ -8,17 +8,16 @@ local Vector3 = UnityEngine.Vector3
 ---@field P_Extra_Life_Sphere GameObject
 ---@field P_Extra_Life_Shadow GameObject
 ---@field P_Extra_Life_Animator Animator
----@field P_Extra_Life_Tigger PhysicsPhantom
+---@field P_Extra_Life_Tigger TiggerTester
 P_Extra_Life = ModulBase:extend()
 
 function P_Extra_Life:new()
 end
 
 function P_Extra_Life:Start()
-  ---@param phantom PhysicsPhantom
-  ---@param otherBody PhysicsBody
-  self.P_Extra_Life_Tigger.onOverlappingCollidableAdd = function (phantom, otherBody)
-    if not self._Actived and otherBody.gameObject.tag == 'Ball' then
+  ---@param otherBody GameObject
+  self.P_Extra_Life_Tigger.onTriggerEnter = function (_, otherBody)
+    if not self._Actived and otherBody.tag == 'Ball' then
       self._Actived = true
       self.P_Extra_Life_Sphere:SetActive(false)
       self.P_Extra_Life_Shadow:SetActive(false)

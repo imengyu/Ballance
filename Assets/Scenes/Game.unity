@@ -546,7 +546,7 @@ MonoBehaviour:
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
-  DebugType: 2
+  DebugType: 1
   DebugInitPackages:
   - Enable: 1
     PackageName: core.debug
@@ -560,7 +560,7 @@ MonoBehaviour:
     PackageName: core.ui
   - Enable: 1
     PackageName: core.language
-  DebugCustomEntryEvent: CoreDebugLevelEnvironmentEntry
+  DebugCustomEntryEvent: CoreDebugGamePlayEntry
   DebugCustomEntries:
   - CoreDebugGamePlayEntry
   - CoreDebugLevelBuliderEntry

@@ -10,7 +10,7 @@ function ModulPhysics:new()
 end
 function ModulPhysics:Start()
   if self._PhysicsObject == nil then 
-    self._PhysicsObject = self.gameObject:GetComponent(PhysicsRT.PhysicsObject) ---@type PhysicsObject
+    self._PhysicsObject = self.gameObject:GetComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
   end
   if not IsNilOrEmpty(self._PhysicsObjectCustomLayerName) then
     self._PhysicsObject.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsObjectCustomLayerName)

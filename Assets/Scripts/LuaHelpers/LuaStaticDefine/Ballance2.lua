@@ -28,7 +28,6 @@ JetBrains = JetBrainsGlobalNamespace
 Unity = UnityGlobalNamespace
 ---创建类接口
 CreateClass = {}
-PhysicsRT = {}
 BallancePhysics = {}
 BallancePhysics.Wapper = {}
 Ballance2.Sys = {}

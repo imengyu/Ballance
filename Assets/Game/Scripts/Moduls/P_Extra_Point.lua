@@ -7,7 +7,7 @@ local Vector3 = UnityEngine.Vector3
 local AudioSource = UnityEngine.AudioSource
 
 ---@class P_Extra_Point : ModulBase 
----@field P_Extra_Point_Tigger PhysicsPhantom
+---@field P_Extra_Point_Tigger TiggerTester
 ---@field P_Extra_Point_Floor GameObject
 ---@field P_Extra_Point_Ball0 GameObject
 ---@field P_Extra_Point_Ball1 GameObject
@@ -70,10 +70,9 @@ function P_Extra_Point:Start()
     end
   end
 
-  ---@param phantom PhysicsPhantom
-  ---@param otherBody PhysicsBody
-  self.P_Extra_Point_Tigger.onOverlappingCollidableAdd = function (phantom, otherBody)
-    if not self._Actived and otherBody.gameObject.tag == 'Ball' then
+  ---@param otherBody GameObject
+  self.P_Extra_Point_Tigger.onTriggerEnter = function (_, otherBody)
+    if not self._Actived and otherBody.tag == 'Ball' then
       self._Actived = true
       self:StartFly()
       GamePlay.GamePlayManager:AddPoint(100) --大球是100分

@@ -804,7 +804,7 @@ namespace BallancePhysics.Wapper
         Physicalize();
     }
     private void FixedUpdate() {
-      if(EnableConstantForce) doApplyConstantForce();
+      if(EnableConstantForce && Handle != IntPtr.Zero) doApplyConstantForce();
     }
   }
 }

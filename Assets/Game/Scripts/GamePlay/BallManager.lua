@@ -230,6 +230,8 @@ function BallManager:RegisterBall(name, gameObject)
     return
   end
 
+  gameObject:SetActive(true)
+
   --添加刚体组件
   local body = gameObject:AddComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
   --查找物理参数
@@ -306,6 +308,10 @@ function BallManager:RegisterBall(name, gameObject)
 
   --初始化球声音
   self:_InitBallSounds(ball, speedMeter, body)
+
+  LuaTimer.Add(300, function ()
+    gameObject:SetActive(false)
+  end)
 end
 ---取消注册球 
 ---@param name string 球名称
