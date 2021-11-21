@@ -25,6 +25,6 @@ function BallStone:new()
   }
 end
 
-function CreateClass_BallStone()
+function CreateClass:BallStone()
   return BallStone(nil)
 end

@@ -214,7 +214,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
           }
 
           LuaDebugMini.LuaState.doString(File.ReadAllText(path));
-          classInit = LuaDebugMini.LuaState.getFunction("CreateClass_" + LuaClassName);
+          classInit = LuaDebugMini.LuaState.getFunction("CreateClass:" + LuaClassName);
 #else
                         Log.E(TAG + ":" + Name, "DebugLoadScript can only use in editor");
 #endif

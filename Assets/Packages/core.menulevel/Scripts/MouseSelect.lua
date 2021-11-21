@@ -10,7 +10,7 @@ local MouseSelect = {
   MessageSender = nil,---@type GameUIControlMessageSender
 }
 
-function CreateClass_MouseSelect()
+function CreateClass:MouseSelect()
   
   function MouseSelect:new(o)
     o = o or {}

@@ -1,15 +1,15 @@
-using PhysicsRT;
 using UnityEngine;
+using Ballance2.Game;
 
 namespace Ballance2
 {
     public class TimeCheck : MonoBehaviour
     {
-        public PhysicsBody currentBody = null;
+        public GameObject currentBody = null;
         public float currentTime = 0;
 
-        public PhysicsPhantom startTigger = null;
-        public PhysicsPhantom endTigger = null;
+        public TiggerTester startTigger = null;
+        public TiggerTester endTigger = null;
 
         public bool isTesting = false;
         public bool isTestFinish = false;
@@ -17,14 +17,14 @@ namespace Ballance2
 
         void Start()
         {
-            startTigger.onOverlappingCollidableAdd += (self, other) => {
+            startTigger.onTriggerEnter += (self, other) => {
                 currentBody = other;
                 currentTime = 0;
                 startGuiTick = 50;
                 isTesting = true;
                 isTestFinish = false;
             };
-            endTigger.onOverlappingCollidableAdd += (self, other) => {
+            endTigger.onTriggerEnter += (self, other) => {
                 if(currentBody == other) {
                     isTesting = false;
                     isTestFinish = true;

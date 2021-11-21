@@ -31,7 +31,7 @@ DebugOptWindow = {
 }
 
 ---调试功能列表窗口
-function CreateClass_DebugOptWindow()
+function CreateClass:DebugOptWindow()
   function DebugOptWindow:new(o)
     o = o or {}
     setmetatable(o, self)

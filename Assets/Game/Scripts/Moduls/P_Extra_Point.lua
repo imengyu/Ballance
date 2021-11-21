@@ -208,6 +208,6 @@ function P_Extra_Point:Backup()
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball6)
 end
 
-function CreateClass_P_Extra_Point()
+function CreateClass:P_Extra_Point()
   return P_Extra_Point()
 end

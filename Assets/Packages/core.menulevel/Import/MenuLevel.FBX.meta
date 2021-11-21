@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: c0acd9cfb86a2d545845c6e9446062bb
 ModelImporter:
-  serializedVersion: 20200
+  serializedVersion: 21202
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
@@ -11,62 +11,62 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Ball_Stone
-    second: {fileID: 2100000, guid: 456cdb1c3804a154ab306cb1c7f94774, type: 2}
+    second: {fileID: 2100000, guid: 9fe145a79f262a84a9d1279dcefc5a7b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Columns_beige_fade
-    second: {fileID: 2100000, guid: e0b625c75007d91408e6ea87a1415847, type: 2}
+    second: {fileID: 2100000, guid: 2a1f38039065894489dc49be4ca87ead, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Colums_beige
-    second: {fileID: 2100000, guid: cba8335627d875f4381404e0b255b422, type: 2}
+    second: {fileID: 2100000, guid: aafa34ed96da6ca489588f918fb0cdbe, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Colums_blue
-    second: {fileID: 2100000, guid: fb4a5bea7659a9c439482cc5b46df518, type: 2}
+    second: {fileID: 2100000, guid: 8afc1e8d1925ed14f9a8280db3c05f72, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Dome
-    second: {fileID: 2100000, guid: f19bf66724991a44b981bcd2c0a3d746, type: 2}
+    second: {fileID: 2100000, guid: ae8fbb6f53508374287aaab23d784e53, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_DomeShadow
-    second: {fileID: 2100000, guid: 4a188d0679b24fb4e9500b388ee300d4, type: 2}
+    second: {fileID: 2100000, guid: c492201075737c2489ed68aa9a464f3f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Side
-    second: {fileID: 2100000, guid: 2d0b3a37724641845a06171b222d9b20, type: 2}
+    second: {fileID: 2100000, guid: 618a93596a9fee34bbf6dad8801c87b2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Top_Boderless
-    second: {fileID: 2100000, guid: ccc886496f0b01b4182dc49c53a6a6c2, type: 2}
+    second: {fileID: 2100000, guid: 58fb8afde889e3a47b0c0aa81369e51e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Top_Checkpoint
-    second: {fileID: 2100000, guid: 66147b4cd2774704fb77e71331b0cb2d, type: 2}
+    second: {fileID: 2100000, guid: f36980d0850fd7f42be3df65ae666fee, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Top_Flat
-    second: {fileID: 2100000, guid: c361ef40a1c0ad24a937226da554e6b3, type: 2}
+    second: {fileID: 2100000, guid: 7c593523c8d2337439151593e8f5c798, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Top_Profile
-    second: {fileID: 2100000, guid: c0afadb9a5e72e44bab0100af6b0724a, type: 2}
+    second: {fileID: 2100000, guid: 021e6d404dff278449c9a6ec25168d78, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Top_ProfileFlat
-    second: {fileID: 2100000, guid: fed43b58dc48b524c91421a658880e9b, type: 2}
+    second: {fileID: 2100000, guid: 418b04c25acc29245af4dad6bd459fdb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -86,47 +86,47 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Floor_Wood
-    second: {fileID: 2100000, guid: aa15eb02b87f8ca4e898a984f5a9dfeb, type: 2}
+    second: {fileID: 2100000, guid: a03f0b3e0eee3ff4690b8788a7d974fe, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Laterne_Glas
-    second: {fileID: 2100000, guid: 5fdd9e78ed72a68458284ff5e181c2e7, type: 2}
+    second: {fileID: 2100000, guid: f06eaebf9b4796a42a3419758353a1d4, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Laterne_Metal
-    second: {fileID: 2100000, guid: 8870bc2e9aa005a4390ad05798eb4686, type: 2}
+    second: {fileID: 2100000, guid: abd8b98f9e027224a91beabdc9d0d8f8, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Laterne_Schatten
-    second: {fileID: 2100000, guid: 2e4dfc2023f99c04e8f615378aad2c54, type: 2}
+    second: {fileID: 2100000, guid: 3ab7094be3abecb4eb4ef3bca82a90dd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Laterne_Verlauf
-    second: {fileID: 2100000, guid: 09ffbdc7895cb224d8cfbcfd86e0eda4, type: 2}
+    second: {fileID: 2100000, guid: 3ab7cda77608e2845bf09ed6ffa38fa2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Misc_MetalButtons
-    second: {fileID: 2100000, guid: 11407f800d590d04b9afc8fa5d60733f, type: 2}
+    second: {fileID: 2100000, guid: 4043d7579e4bce9409bead204b7d3272, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Misc_Schelle
-    second: {fileID: 2100000, guid: 5749baeb424b5fc4ca04d563d4ba9938, type: 2}
+    second: {fileID: 2100000, guid: 9ec8d101c5e4fb14e9dae339549bb979, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Modul_11_Wood01
-    second: {fileID: 2100000, guid: f2b88072396176b4bb565f3510d769d4, type: 2}
+    second: {fileID: 2100000, guid: 187fa3c9f526d804aa444aacba4954a9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Modul_11_Wood02
-    second: {fileID: 2100000, guid: 91e7cb2fd0dea744ab91b707d31e391e, type: 2}
+    second: {fileID: 2100000, guid: b764182dffd0a8b4eae35f875f742fc4, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -136,42 +136,42 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Modul_13_Wood
-    second: {fileID: 2100000, guid: 6768457165b50c74b87953e6bac700be, type: 2}
+    second: {fileID: 2100000, guid: f0d2ed3a3524cf04095f1d881d3dab2f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Rail
-    second: {fileID: 2100000, guid: 714e6aac5338f2641824ce728008c8da, type: 2}
+    second: {fileID: 2100000, guid: f85ef732b14c163458238163b3238780, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_TowerRail
-    second: {fileID: 2100000, guid: 74251e0b59ce8cd4ab9f90277095046d, type: 2}
+    second: {fileID: 2100000, guid: 76c442f97f0404f418f61b32e730ca27, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_TowerRoof
-    second: {fileID: 2100000, guid: bf0c9c8253c27944e828b28099bf237c, type: 2}
+    second: {fileID: 2100000, guid: 9d529980e635ba447bb7046f34fa285c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_TowerRoof_Brim
-    second: {fileID: 2100000, guid: f21865fdf1bca86488f054f5dfac5124, type: 2}
+    second: {fileID: 2100000, guid: 9b2b1edcee703a740b528be54a4ff489, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Tower_Floor_Side
-    second: {fileID: 2100000, guid: df787c93d0c5cbf46aff724768879d5c, type: 2}
+    second: {fileID: 2100000, guid: 8aea1665ee2c90f46a914cf32908d16c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Tower_Floor_Top_Flat_illu
-    second: {fileID: 2100000, guid: c139055131bfe5d49b3c32a5a8287e8d, type: 2}
+    second: {fileID: 2100000, guid: 46994ae32e214e74faee65f600194d2f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Trafo_Paper
-    second: {fileID: 2100000, guid: 60ad479c759b7184a8e1dd75283d0f31, type: 2}
+    second: {fileID: 2100000, guid: c38919676957d7d4aaa5e4ede55e3eb9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -181,12 +181,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Trafo_Paper_Shadow
-    second: {fileID: 2100000, guid: c50aee7cd7cd1bc45bc176f62666f2f9, type: 2}
+    second: {fileID: 2100000, guid: a5536b0f49412eb44811666707076daf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Trafo_Stone
-    second: {fileID: 2100000, guid: 103f3fc49b17ebb4c8729aef5c39c335, type: 2}
+    second: {fileID: 2100000, guid: c38919676957d7d4aaa5e4ede55e3eb9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -196,12 +196,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Trafo_Stone_Shadow
-    second: {fileID: 2100000, guid: 91aba730cf2d52f459907334fb42bc5d, type: 2}
+    second: {fileID: 2100000, guid: a5536b0f49412eb44811666707076daf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Trafo_Wood
-    second: {fileID: 2100000, guid: f9ac853a072ab1b4db032bc7cab75fdb, type: 2}
+    second: {fileID: 2100000, guid: c38919676957d7d4aaa5e4ede55e3eb9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -211,7 +211,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: I_Trafo_Wood_Shadow
-    second: {fileID: 2100000, guid: af9b25b911ce27b4f8b7313f76ed13e1, type: 2}
+    second: {fileID: 2100000, guid: a5536b0f49412eb44811666707076daf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -377,6 +377,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -406,6 +407,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -417,6 +419,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

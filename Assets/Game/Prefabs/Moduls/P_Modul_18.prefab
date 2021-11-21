@@ -266,7 +266,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: PhysicsRT.PhysicsPhantom
+    componentClassVal: Ballance2.Game.TiggerTester
   - Type: 16
     Name: P_Modul_18_Rotor
     vector2: {x: 0, y: 0}
@@ -615,7 +615,7 @@ MonoBehaviour:
     intVal: 0
     doubleVal: 0
     boolVal: 0
-    floatVal: 50
+    floatVal: 0.1
     componentClassVal: UnityEngine.AudioSource
   LuaPublicVars: []
   ExecuteOrder: 0
@@ -635,7 +635,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8986970877920006922}
   - component: {fileID: 6326045603744362818}
-  - component: {fileID: 3197264412200521023}
+  - component: {fileID: 8742445457673812954}
+  - component: {fileID: 3619324921323826245}
   m_Layer: 0
   m_Name: P_Modul_18_Kollisionsquader
   m_TagString: Untagged
@@ -666,7 +667,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3197264412200521020}
   m_Mesh: {fileID: 1745261108831346517, guid: 6f489ebf196d0e14eb79ba3cce04a787, type: 3}
---- !u!114 &3197264412200521023
+--- !u!65 &8742445457673812954
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197264412200521020}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 16, z: 2}
+  m_Center: {x: 0, y: 8, z: 0}
+--- !u!114 &3619324921323826245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -675,15 +689,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3197264412200521020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4479bf253979e394d9f9525083d66d81, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 0
-  m_Min: {x: -1.00002, y: -0.0010509491, z: -0.99999905}
-  m_Max: {x: 1, y: 13.05, z: 1.06721}
-  m_Layer: 7
-  m_EnableListener: 1
-  m_DoNotAutoCreateAtAwake: 1
 --- !u!1 &5484142357838056765
 GameObject:
   m_ObjectHideFlags: 0

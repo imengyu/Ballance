@@ -49,7 +49,7 @@ BallLightningSphere = {
 }
 
 ---@return BallLightningSphere
-function CreateClass_BallLightningSphere()
+function CreateClass:BallLightningSphere()
 
   function BallLightningSphere:new(o)
     o = o or {}

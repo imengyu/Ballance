@@ -69,8 +69,8 @@ namespace BallancePhysics.Wapper
         foreach(var o in list)
           o.UnPhysicalize(true);
 
+        PhysicsApi.API.delete_all_surfaces(Handle);
         PhysicsApi.API.destroy_environment(Handle);
-        PhysicsApi.API.delete_all_surfaces();
         Handle = IntPtr.Zero;
 
         int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
@@ -148,7 +148,7 @@ namespace BallancePhysics.Wapper
     /// 删除物理系统中的所有碰撞层
     /// </summary>
     [LuaApiDescription("删除物理系统中的所有碰撞层")]
-    public void DeleteAllSurfaces() { PhysicsApi.API.delete_all_surfaces(); }
+    public void DeleteAllSurfaces() { PhysicsApi.API.delete_all_surfaces(Handle); }
     /// <summary>
     /// 通过ID查找世界中的物理物体
     /// </summary>

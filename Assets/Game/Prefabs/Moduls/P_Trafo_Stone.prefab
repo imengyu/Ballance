@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4563521970223823415}
   - component: {fileID: 5902649918193914021}
   - component: {fileID: 831865546933478610}
+  - component: {fileID: 7071287740308974624}
+  - component: {fileID: 2976840918208467118}
   m_Layer: 0
   m_Name: P_Trafo_Stone_MF
   m_TagString: Untagged
@@ -28,6 +30,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7057552714626735241}
   m_RootOrder: 0
@@ -51,6 +54,7 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -82,55 +86,31 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1864736132333901760
-GameObject:
+--- !u!65 &7071287740308974624
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 595222683819502499}
-  - component: {fileID: 635626843890909938}
-  m_Layer: 0
-  m_Name: P_Trafo_Stone_Tigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &595222683819502499
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1864736132333901760}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7057552714626735241}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &635626843890909938
+  m_GameObject: {fileID: 275325326541823740}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.9317, y: 4.931701, z: 0.48350623}
+  m_Center: {x: 0, y: 0, z: 0.233249}
+--- !u!114 &2976840918208467118
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1864736132333901760}
+  m_GameObject: {fileID: 275325326541823740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4479bf253979e394d9f9525083d66d81, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 0
-  m_Min: {x: -2, y: 0, z: -2}
-  m_Max: {x: 2, y: 1, z: 2}
-  m_Layer: 8
-  m_EnableListener: 1
-  m_DoNotAutoCreateAtAwake: 0
 --- !u!1 &6730452989418452412
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +139,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7057552714626735241}
   m_RootOrder: 1
@@ -182,6 +163,7 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -239,10 +221,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4563521970223823415}
   - {fileID: 5055773060514588723}
-  - {fileID: 595222683819502499}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -325,14 +307,14 @@ MonoBehaviour:
       m_Center: {x: 0, y: 0, z: 0}
       m_Extent: {x: 0, y: 0, z: 0}
     objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 1864736132333901760}
+    gameObjectVal: {fileID: 275325326541823740}
     longVal: 0
     stringVal: 
     intVal: 0
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: PhysicsRT.PhysicsPhantom
+    componentClassVal: Ballance2.Game.TiggerTester
   - Type: 19
     Name: _TargetBallType
     vector2: {x: 0, y: 0}

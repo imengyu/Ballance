@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using BallancePhysics.Utils;
 using BallancePhysics.Wapper;
 using Unity.Mathematics;
-using Unity.Physics.Editor;
 using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
@@ -56,7 +54,7 @@ namespace BallancePhysics.Editor
       var sScale = shape.transform.lossyScale;
 
       var handleColor = shape.enabled ? k_ShapeHandleColor : k_ShapeHandleColorDisabled;
-      var handleMatrix = new float4x4(MathUtils.DecomposeRigidBodyTransform(shape.transform.localToWorldMatrix));
+      var handleMatrix = new float4x4(BallancePhysics.MathUtils.DecomposeRigidBodyTransform(shape.transform.localToWorldMatrix));
       using (new Handles.DrawingScope(handleColor, handleMatrix))
       {
         if(shape.UseBall) {
@@ -81,7 +79,7 @@ namespace BallancePhysics.Editor
                 foreach(var points in data.ConcaveEdges)
                   if (points != null && points.Length > 0)
                     Handles.DrawLines(points);
-                Handles.color = Color.magenta;
+                Handles.color = k_ShapeHandleColor;
                 foreach(var points in data.ConvexEdges)
                   if (points != null && points.Length > 0)
                     Handles.DrawLines(points);
@@ -138,20 +136,19 @@ namespace BallancePhysics.Editor
         ConcaveEdges.Add(m_Edges);
       }
       private void GenerateConvexHullEdges(Vector3[] vertices, int[] triangles) {
-        List<int> ind = new List<int>(triangles);
-        ConvexHullAlgorithm.Execute(ref ind, vertices, Vector3.up);
+        int[] ind = ConvexHull.Generate(vertices);
         int ie = 0;
-        Vector3[] m_Edges = new Vector3[ind.Count * 2];
-        for (int i = 0; i < ind.Count; i += 3)
+        Vector3[] m_Edges = new Vector3[ind.Length * 2];
+        for (int i = 0; i < ind.Length; i += 3)
         {
-          if(i + 2 >= ind.Count || ind[i + 2] >= vertices.Length)
-            break;
-          m_Edges[ie++] = vertices[ind[i]];
-          m_Edges[ie++] = vertices[ind[i + 1]];
-          m_Edges[ie++] = vertices[ind[i + 1]];
-          m_Edges[ie++] = vertices[ind[i + 2]];
-          m_Edges[ie++] = vertices[ind[i + 2]];
-          m_Edges[ie++] = vertices[ind[i]];
+          if(i + 2 <= ind.Length && ind[i + 2] < vertices.Length) {
+            m_Edges[ie++] = vertices[ind[i]];
+            m_Edges[ie++] = vertices[ind[i + 1]];
+            m_Edges[ie++] = vertices[ind[i + 1]];
+            m_Edges[ie++] = vertices[ind[i + 2]];
+            m_Edges[ie++] = vertices[ind[i + 2]];
+            m_Edges[ie++] = vertices[ind[i]];
+          }
         }
         ConvexEdges.Add(m_Edges);
       }

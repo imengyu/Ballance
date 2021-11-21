@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace BallancePhysics.Wapper
@@ -23,13 +24,15 @@ namespace BallancePhysics.Wapper
     [Tooltip("较高的“阻尼系数”也意味着运动控制器BB尝试以更慢的速度到达其所需位置。“力系数/阻尼系数”是最重要的值。当该值低于1.0时，运动会更加平滑，不会跳跃或有弹性。")]
     public float damp_factor = 1.0f;
 
+    [EnumFlagProperty]
     public CoordinateIndex translation_limit;
     
     [Tooltip("此参数细分为3对。每对定义一个平移轴的自由度最小值。")]
     public Vector3 translation_freedom_min;
     [Tooltip("此参数细分为3对。每对定义一个平移轴的自由度最大值。")]
     public Vector3 translation_freedom_max;
-
+    
+    [EnumFlagProperty]
     public CoordinateIndex rotation_limit;
 
     [Tooltip("此参数细分为3对。每对定义一个旋转轴的自由度最小值。")]

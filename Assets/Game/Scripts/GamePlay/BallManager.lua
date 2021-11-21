@@ -51,7 +51,7 @@ BallControlStatus = {
 local BallRegStorage = {
   name = '',
   ball = nil, ---@type Ball
-  rigidbody = nil, ---@type PhysicsBody
+  rigidbody = nil, ---@type PhysicsObject
 }
 
 ---球管理器
@@ -93,6 +93,12 @@ function BallManager:new()
     ---当前激活的球
     currentBall = nil, ---@type BallRegStorage 
     currentActiveBall = nil, ---@type BallRegStorage 
+    currentBallPushIds = {
+      left = 0,
+      right = 0,
+      forward = 0,
+      back = 0,
+    },
     keyListener = nil, ---@type KeyListener
     ---控制按键设置
     keySets = {
@@ -182,11 +188,7 @@ function BallManager:OnDestroy()
   self._private.GameSettings:UnRegisterSettingsUpdateCallback(self._private.settingsCallbackId)
   self._private.keyListener:ClearKeyListen()
 end
-function BallManager:FixedUpdate()
-  if self.CanControll then
-    self.CurrentBall:Push(self.PushType)
-  end
-end
+
 --[[
 function BallManager:OnGUI()
   if(self._DebugMode) then
@@ -228,15 +230,36 @@ function BallManager:RegisterBall(name, gameObject)
     return
   end
 
-  --检查是否添加了刚体组件
-  local body = gameObject:GetComponent(PhysicsRT.PhysicsBody) ---@type PhysicsBody
-  if(body == nil) then
-    GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, TAG, 'Not fuoud PhysicsBody on Ball {0} , please add it before call RegisterBall', { name })
+  --添加刚体组件
+  local body = gameObject:AddComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
+  --查找物理参数
+  local physicsData = GamePhysBall[name]
+  if(physicsData == nil) then
+    GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotFound, TAG, 'Not fuoud GamePhysBall data for Ball {0} , please add it before call RegisterBall', { name })
     return
   end
+  body.DoNotAutoCreateAtAwake = true
+  --设置物理参数
+  body.Fixed = false
+  body.Mass = physicsData.Mass
+  if physicsData.BallRadius >= 0 then
+    body.UseBall = true
+    body.BallRadius = physicsData.BallRadius
+  else
+    body.UseBall = false
+  end
+  body.Friction = physicsData.Friction
+  body.Elasticity = physicsData.Elasticity
+  body.RotSpeedDamping = physicsData.RotDamp
+  body.LinearSpeedDamping = physicsData.LinearDamp
+  body.EnableCollision = true
+
+  --设置恒力
+  body.ConstantForceDirectionRef = GamePlay.CamManager.CamDirectionRef
+  body.EnableConstantForce = false
 
   --添加刚体的接触事件，为球声音做准备
-  body.AddContactListener = true
+  body.EnableCollisionEvent = true
   --添加速度计
   local speedMeter = gameObject:GetComponent(SpeedMeter) ---@type SpeedMeter
   if(speedMeter == nil) then
@@ -244,14 +267,31 @@ function BallManager:RegisterBall(name, gameObject)
     speedMeter.Enabled = true
   end
 
-  local ball = GameLuaObjectHost.GetLuaClassFromGameObject(gameObject)
+  local ball = GameLuaObjectHost.GetLuaClassFromGameObject(gameObject) ---@type Ball
   if(ball == nil) then
     GameErrorChecker.SetLastErrorAndLog(GameError.ClassNotFound, TAG, 'Not found Ball class on {0} !', { name })
+    return
   end
+
   local pieces = ball:GetPieces()
+  --设置球相关物理参数
+  ball._PiecesPhysicsData = physicsData.PiecesPhysicsData
+  --设置推动物理参数
+  ball._PiecesMinForce = physicsData.PiecesMinForce
+  ball._PiecesMaxForce = physicsData.PiecesMaxForce
+  ball._Force = physicsData.Force
+  ball._UpForce = physicsData.UpForce
+  ball._DownForce = physicsData.DownForce
   if(pieces ~= nil) then
     ObjectStateBackupUtils.BackUpObjectAndChilds(pieces) --备份碎片的状态
   end
+
+  --还需要设置一个Unity的碰撞器，用于死亡区的检测
+  local collder = gameObject:AddComponent(UnityEngine.SphereCollider) ---@type SphereCollider
+  collder.radius = physicsData.BallRadius or 2
+  local rigidbody = gameObject:AddComponent(UnityEngine.Rigidbody) ---@type Rigidbody
+  rigidbody.isKinematic = true
+  rigidbody.useGravity = false
 
   --设置名称
   if(gameObject.name ~= name) then gameObject.name = name end
@@ -320,10 +360,6 @@ function BallManager:SetControllingStatus(status)
   elseif(status ~= self._private.controllingStatus) then
     self:_FlushCurrentBallAllStatus()
   end
-end
----重新恢复 LockMode 之前的速度值
-function BallManager:RestoreCurrentBallSpeed()
-  self:_RestoreRigidbodySpeed(self._private.currentBall.rigidbody)
 end
 ---设置下一次球出生位置
 ---@param pos Vector3
@@ -398,10 +434,12 @@ function BallManager:_DeactiveCurrentBall()
   if current ~= nil then
     --停止球的声音
     GamePlay.BallSoundManager:ForceDisableBallAllSound(current.ball)
+    --取消推动
+    self:RemoveAllBallPush()
     --取消激活
-    if current.rigidbody:IsPhysicsed() then
+    if current.rigidbody.IsPhysicalized then
       current.ball:Deactive()
-      current.rigidbody:ForceDePhysics()
+      current.rigidbody:UnPhysicalize(true)
     end
     current.ball.gameObject:SetActive(false)
     --清空摄像机跟随对象
@@ -427,30 +465,17 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
   local current = self._private.currentActiveBall
   if current ~= nil then
     --激活
-    local physicsed = current.rigidbody:IsPhysicsed()
+    local physicsed = current.rigidbody.IsPhysicalized
     current.ball.gameObject:SetActive(true)
     if physics and not physicsed then
-      current.rigidbody.InitialLinearVelocity = Vector3.zero
-      current.rigidbody.InitialAngularVelocity = Vector3.zero
-      current.rigidbody:ForcePhysics() 
+      current.rigidbody:Physicalize() 
+      current.rigidbody:WakeUp() 
     end
     if not physics and physicsed then
-      current.rigidbody:ForceDePhysics() 
+      current.rigidbody:UnPhysicalize(true) 
     end
     current.ball:Active()
   end
-end
----设置刚体的速度为0
----@param rigidbody PhysicsBody
-function BallManager:_ZeroSpeedRigidbody(rigidbody) 
-  self._private.lastSaveLinearVelocity = rigidbody.LinearVelocity
-  self._private.lastSaveAngularVelocity = rigidbody.AngularVelocity
-  rigidbody.LinearVelocity = Vector3.zero
-  rigidbody.AngularVelocity = Vector3.zero
-end
-function BallManager:_RestoreRigidbodySpeed(rigidbody) 
-  rigidbody.LinearVelocity = self._private.lastSaveLinearVelocit
-  rigidbody.AngularVelocity = self._private.lastSaveAngularVelocity
 end
 
   --#endregion
@@ -668,12 +693,59 @@ end
 ---添加球推动方向
 ---@param t BallPushType 推动方向
 function BallManager:AddBallPush(t)
-  self.PushType = LuaUtils.Or(self.PushType, t)
+  if(t == BallPushType.Back) then
+    self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.back)
+  elseif(t == BallPushType.Forward) then
+    self._private.currentBallPushIds.forward = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.forward)
+  elseif(t == BallPushType.Left) then
+    self._private.currentBallPushIds.left = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.left)
+  elseif(t == BallPushType.Right) then
+    self._private.currentBallPushIds.right = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.right)
+  end
 end
 ---去除球推动方向
 ---@param t BallPushType 推动方向
 function BallManager:RemoveBallPush(t)
-  self.PushType = LuaUtils.And(self.PushType, LuaUtils.Not(t))
+  if(t == BallPushType.Back) then
+    if self._private.currentBallPushIds.back ~= 0 then
+      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
+      self._private.currentBallPushIds.back = 0
+    end
+  elseif(t == BallPushType.Forward) then
+    if self._private.currentBallPushIds.forward ~= 0 then
+      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.forward)
+      self._private.currentBallPushIds.forward = 0
+    end
+  elseif(t == BallPushType.Left) then
+    if self._private.currentBallPushIds.left ~= 0 then
+      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.left)
+      self._private.currentBallPushIds.left = 0
+    end
+  elseif(t == BallPushType.Right) then
+    if self._private.currentBallPushIds.right ~= 0 then
+      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.right)
+      self._private.currentBallPushIds.right = 0
+    end
+  end
+end
+---去除当前球所有推动方向
+function BallManager:RemoveAllBallPush()
+  if self._private.currentBallPushIds.back ~= 0 then
+    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
+    self._private.currentBallPushIds.back = 0
+  end
+  if self._private.currentBallPushIds.forward ~= 0 then
+    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.forward)
+    self._private.currentBallPushIds.forward = 0
+  end
+  if self._private.currentBallPushIds.left ~= 0 then
+    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.left)
+    self._private.currentBallPushIds.left = 0
+  end
+  if self._private.currentBallPushIds.right ~= 0 then
+    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.right)
+    self._private.currentBallPushIds.right = 0
+  end
 end
 
 --#endregion
@@ -682,24 +754,18 @@ end
 
 ---@param ball Ball
 ---@param speedMeter SpeedMeter
----@param body PhysicsBody
+---@param body PhysicsObject
 function BallManager:_InitBallSounds(ball, speedMeter, body)
   speedMeter.Enabled = true
+
+
   
-  body.onCollisionEnter = function (body, other, info)
-    GamePlay.BallSoundManager:HandlerBallCollisionEnter(ball, speedMeter, body, other, info)
-  end 
-  body.onCollisionStay = function (body, other, info)
-    GamePlay.BallSoundManager:HandlerBallCollisionStay(ball, speedMeter, body, other, info)
-  end 
-  body.onCollisionLeave = function (body, other)
-    GamePlay.BallSoundManager:HandlerBallCollisionLeave(ball, speedMeter, body, other)
-  end 
+  --TODO: 声音
 end
 
 --#endregion
 
 
-function CreateClass_BallManager()
+function CreateClass:BallManager()
   return BallManager() 
 end

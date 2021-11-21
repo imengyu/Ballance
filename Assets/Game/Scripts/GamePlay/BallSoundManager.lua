@@ -226,6 +226,6 @@ function BallSoundManager:ForceDisableBallAllSound(ball)
   end   
 end
 
-function CreateClass_BallSoundManager() 
+function CreateClass:BallSoundManager() 
   return BallSoundManager()
 end

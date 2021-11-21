@@ -27,6 +27,6 @@ end
 function PS_FourFlames:Backup()
 end
 
-function CreateClass_PS_FourFlames()
+function CreateClass:PS_FourFlames()
   return PS_FourFlames()
 end

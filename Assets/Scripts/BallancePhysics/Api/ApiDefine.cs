@@ -33,7 +33,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_delete_points_buffer(IntPtr b);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate void fn_delete_all_surfaces();
+  public delegate void fn_delete_all_surfaces(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_physics_get_id(IntPtr body);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -155,7 +155,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_physics_spring(IntPtr spring);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate int fn_surface_exist_by_name(IntPtr name);
+  public delegate int fn_surface_exist_by_name(IntPtr world, IntPtr name);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_motion_controller_set_target_pos(IntPtr controller, IntPtr pos_ws);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

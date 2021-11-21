@@ -35,7 +35,7 @@ local CameraControl = {
 
 EVENT_SWITCH_LIGHTZONE = 'swicth_menulevel_lightzone'
 
-function CreateClass_CameraControl()
+function CreateClass:CameraControl()
   
   function CameraControl:new(o)
     o = o or {}

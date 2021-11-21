@@ -11,11 +11,11 @@ namespace BallancePhysics
     #region 基础定义
 
 #if UNITY_EDITOR
-    private const string DLL_NNAME = "BallancePhysicsEditor";
+    private const string DLL_NNAME = "bphysics_unity";
 #elif UNITY_IPHONE
 	  private const string DLL_NNAME = "_Internal";
 #else
-    private const string DLL_NNAME = "BallancePhysics";
+    private const string DLL_NNAME = "bphysics";
 #endif
 
     public const int sError = 0;

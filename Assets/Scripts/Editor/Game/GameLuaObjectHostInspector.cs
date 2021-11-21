@@ -213,12 +213,25 @@ class GameLuaObjectHostInspector : Editor
                             GUI.Label(rect, "类全名");
                             if(pValGo.objectReferenceValue != null && pValGo.objectReferenceValue is GameObject) {
                                 List<string> componentNames = new List<string>(); 
+                                Dictionary<string, int> componentNameConter = new Dictionary<string, int>(); 
                                 int selectIndex = -1, i = 0;
                                 foreach(Component c in ((GameObject)pValGo.objectReferenceValue).GetComponents<Component>()) {
-                                    string s = c.GetType().FullName;
-                                    componentNames.Add(s);
-                                    if(selectIndex == -1 && s == pVal.stringValue) selectIndex = i;
-                                    i++;
+                                    Type t = c.GetType();
+                                    if(t != null) {
+                                      string s = t.FullName;
+                                      string str = "";
+                                      if(componentNames.Contains(s)) {
+                                        componentNameConter[s] = componentNameConter[s] + 1;
+                                        str = s + ":" + componentNameConter[s];
+                                      }
+                                      else {
+                                        str = s;
+                                        componentNameConter.Add(s, 0);
+                                      }
+                                      componentNames.Add(str);
+                                      if(selectIndex == -1 && str == pVal.stringValue) selectIndex = i;
+                                      i++;
+                                    }
                                 }
                                 rect.x += 40;
                                 rect.width -= 40;

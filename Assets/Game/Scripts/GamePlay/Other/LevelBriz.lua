@@ -59,6 +59,6 @@ function LevelBriz:LightFlash()
   Game.SoundManager:PlayFastVoice('core.sounds.music:Music_thunder.wav', GameSoundType.Normal)
 end
 
-function CreateClass_LevelBriz()
+function CreateClass:LevelBriz()
   return LevelBriz()
 end

@@ -1,5 +1,4 @@
 using UnityEngine;
-using PhysicsRT;
 using UnityEngine.EventSystems;
 using System.Collections;
 
@@ -162,12 +161,12 @@ public class Test : MonoBehaviour {
         go.transform.rotation = Random.rotation;
 
         //发射数来的球沿着摄像机到鼠标点击的方向进行移动
-        PhysicsBody ball = go.GetComponent<PhysicsBody>();   
-        StartCoroutine(LateAddForce(ball, shootForce * ray.direction));
+        //PhysicsBody ball = go.GetComponent<PhysicsBody>();   
+        //StartCoroutine(LateAddForce(ball, shootForce * ray.direction));
     }
 
-    private IEnumerator LateAddForce(PhysicsBody ball, Vector3 f) {
-      yield return new WaitForSeconds(0.1f);
-      ball.ApplyLinearImpulse(f);
-    }
+    //private IEnumerator LateAddForce(PhysicsBody ball, Vector3 f) {
+    //  yield return new WaitForSeconds(0.1f);
+      //ball.ApplyLinearImpulse(f);
+    //}
 }

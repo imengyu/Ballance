@@ -192,6 +192,6 @@ function GamePlayUIControl:_MoveLifeLeftBaffle()
   self._CurrentMoveBaffleStart = self._LifeBoardLeftBaffle.rectTransform.anchoredPosition.x
 end
 
-function CreateClass_GamePlayUIControl() 
+function CreateClass:GamePlayUIControl() 
   return GamePlayUIControl()
 end

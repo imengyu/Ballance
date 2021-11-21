@@ -80,6 +80,6 @@ function HighscoreUIControl:Prev()
 end
 
 
-function CreateClass_HighscoreUIControl() 
+function CreateClass:HighscoreUIControl() 
   return HighscoreUIControl
 end

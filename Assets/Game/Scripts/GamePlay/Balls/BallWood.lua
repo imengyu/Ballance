@@ -25,6 +25,6 @@ function BallWood:new()
   }
 end
 
-function CreateClass_BallWood()
+function CreateClass:BallWood()
   return BallWood(nil)
 end

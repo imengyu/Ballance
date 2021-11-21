@@ -8,7 +8,6 @@ using Ballance2.Sys.Res;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.Utils;
 using Ballance2.Utils;
-using PhysicsRT;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -211,7 +210,7 @@ namespace Ballance2.Sys
                 }
 
                 //Init physics system
-                PhysicsSystemInit.Init();
+                BallancePhysics.PhysicsSystemInit.Init();
 
                 //Init system services
                 RegSystemService("GameMediator", new GameMediator());

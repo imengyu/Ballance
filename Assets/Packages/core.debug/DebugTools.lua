@@ -30,7 +30,7 @@ DebugTools = {
   logCount = 0,
 }
 
-function CreateClass_DebugTools()
+function CreateClass:DebugTools()
   function DebugTools:new(o)
     o = o or {}
     setmetatable(o, self)

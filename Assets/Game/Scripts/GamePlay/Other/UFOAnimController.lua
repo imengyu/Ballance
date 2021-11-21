@@ -86,6 +86,6 @@ end))
 
 end
 
-function CreateClass_UFOAnimController()
+function CreateClass:UFOAnimController()
   return UFOAnimController()
 end

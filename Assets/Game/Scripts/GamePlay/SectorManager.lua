@@ -187,6 +187,6 @@ function SectorManager:ResetAllSector(active)
   self.CurrentLevelEndBalloon:Reset()
 end
 
-function CreateClass_SectorManager() 
+function CreateClass:SectorManager() 
   return SectorManager()
 end

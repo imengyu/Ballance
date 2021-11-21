@@ -69,6 +69,6 @@ function P_Extra_Life:Reset()
   self.P_Extra_Life_Animator.speed = 0
 end
 
-function CreateClass_P_Extra_Life()
+function CreateClass:P_Extra_Life()
   return P_Extra_Life()
 end

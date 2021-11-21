@@ -1,15 +1,12 @@
-local PhysicsBody = PhysicsRT.PhysicsBody
-local Vector3 = UnityEngine.Vector3
 local CommonUtils = Ballance2.Utils.CommonUtils
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
-local WaitForSeconds = UnityEngine.WaitForSeconds
 local FadeManager = Game.UIManager.UIFadeManager
 
 ---球碎片回收器
 ---@class BallPiecesControll : GameLuaObjectHostClass
 BallPiecesControll = {
   _CamMgr = nil, ---@type CamManager
-  _Rigidbody = nil, ---@type PhysicsBody,
+  _Rigidbody = nil, ---@type PhysicsObject,
   _Force = 0,
   _UpForce = 0,
   _DownForce = 0,
@@ -18,12 +15,12 @@ BallPiecesControll = {
 
 ---球碎片数据
 ---@class BallPiecesData
----@field bodys PhysicsBody[]
+---@field bodys PhysicsObject[]
 ---@field parent GameObject
 ---@field throwed boolean
 BallPiecesData = {}
 
-function CreateClass_BallPiecesControll()
+function CreateClass:BallPiecesControll()
   
   function BallPiecesControll:new(o)
     o = o or {}
@@ -58,8 +55,8 @@ function CreateClass_BallPiecesControll()
         local forceDir = body.transform.localPosition
         body.gameObject:SetActive(true)
         forceDir:Normalize() --力的方向是从原点向碎片位置
-        body:ForcePhysics() --物理
-        body:ApplyLinearImpulse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
+        body:Physicalize() --物理
+        body:Impluse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
       end
 
       ---延时消失
@@ -87,7 +84,7 @@ function CreateClass_BallPiecesControll()
 
       --去除物理
       for _, body in ipairs(data.bodys) do
-        body:ForceDePhysics() 
+        body:UnPhysicalize(true) 
       end
 
       --渐变淡出隐藏其材质

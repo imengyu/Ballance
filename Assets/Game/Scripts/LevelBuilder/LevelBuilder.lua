@@ -13,11 +13,8 @@ local StringUtils = Ballance2.Utils.StringUtils
 local Log = Ballance2.Utils.Log
 local I18N = Ballance2.Sys.Language.I18N
 
-local PhysicsBody = PhysicsRT.PhysicsBody
-local PhysicsShape = PhysicsRT.PhysicsShape
-local PhysicsPhantom = PhysicsRT.PhysicsPhantom
-local ShapeType = PhysicsRT.ShapeType
-local MotionType = PhysicsRT.MotionType
+local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
+local TiggerTester = Ballance2.Game.TiggerTester
 
 local Application = UnityEngine.Application
 local GUIUtility = UnityEngine.GUIUtility
@@ -44,7 +41,7 @@ local LevelBuilderModulRegStorage = {}
 ---@class LevelBuilder : GameLuaObjectHostClass
 LevelBuilder = ClassicObject:extend()
 
-function CreateClass_LevelBuilder()
+function CreateClass:LevelBuilder()
   return LevelBuilder()
 end
 
@@ -412,14 +409,6 @@ function LevelBuilder:_LoadLevelInternal()
 
         --StaticCompound
         local floorStatic = Game.Manager:InstanceNewGameObject(self.gameObject.transform, floor.name)
-        local shape = floorStatic:AddComponent(PhysicsShape) ---@type PhysicsShape
-        shape.ShapeType = ShapeType.StaticCompound
-        local body = floorStatic:AddComponent(PhysicsBody) ---@type PhysicsBody
-        body.DoNotAutoCreateAtAwake = true
-        body.MotionType = MotionType.Fixed
-        body.Friction = physicsData.Friction
-        body.Restitution = physicsData.Restitution
-        body.Layer = physicsData.Layer
         table.insert(self._CurrentLevelFloors, floorStatic)
         
         --Floor childs
@@ -431,10 +420,15 @@ function LevelBuilder:_LoadLevelInternal()
             if meshFilter ~= nil and meshFilter.mesh  ~= nil then
               go.transform:SetParent(floorStatic.transform)
               go.tag = floor.name
-              local shape = go:AddComponent(PhysicsShape) ---@type PhysicsShape
-              shape.ShapeType = ShapeType.BvCompressedMesh
-              shape.ShapeConvexRadius = 0.1
-              shape.ShapeMesh = meshFilter.mesh
+              local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+              body.Fixed = true
+              body.DoNotAutoCreateAtAwake = true
+              body.ShapeConvexRadius = 0.1
+              body.Concave:Add(meshFilter.mesh)
+              body.Friction = physicsData.Friction
+              body.Elasticity = physicsData.Elasticity
+              body.Layer = physicsData.Layer
+              body:Physicalize()
               if go:GetComponent(MeshCollider) == nil then
                 go:AddComponent(MeshCollider)
               end
@@ -450,8 +444,7 @@ function LevelBuilder:_LoadLevelInternal()
         if floorCount == 0 then
           ---没有路面，则隐藏当前静态父级
           floorStatic:SetActive(false)
-        else  
-          body:ForcePhysics()
+        else
           Log.D(TAG, 'Loaded floor '..floor.name..' count: '..floorCount)
         end
         
@@ -472,20 +465,17 @@ function LevelBuilder:_LoadLevelInternal()
         local renderer = go:GetComponent(Renderer) ---@type Renderer
         if renderer ~= nil then renderer.enabled = false end
         
-        --添加幻影
-        local phantom = go:AddComponent(PhysicsPhantom) ---@type PhysicsPhantom
-        phantom.EnableListener = true
-        phantom.DoNotAutoCreateAtAwake = true
-        phantom:SetAabbBySelf()
-        ---@param self PhysicsPhantom
-        ---@param other PhysicsBody
-        phantom.onOverlappingCollidableAdd = function (self, other)
+        --添加坠落检测区Mesh
+        local tigger = go:AddComponent(TiggerTester) ---@type TiggerTester
+        
+        ---@param _self GameObject
+        ---@param other GameObject
+        tigger.onTriggerEnter = function (_self, other)
           --触发球坠落
-          if other.gameObject.tag == 'Ball' then
+          if other.tag == 'Ball' then
             GamePlayManager:Fall()
           end
         end
-        phantom:ForceReCreate()
       else
         Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
       end

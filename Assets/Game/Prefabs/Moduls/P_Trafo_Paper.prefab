@@ -27,10 +27,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3344258905931326625}
   - {fileID: 5417238459909725823}
-  - {fileID: 365916251523862570}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -113,14 +113,14 @@ MonoBehaviour:
       m_Center: {x: 0, y: 0, z: 0}
       m_Extent: {x: 0, y: 0, z: 0}
     objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 365916251523862569}
+    gameObjectVal: {fileID: 6684867353911723141}
     longVal: 0
     stringVal: 
     intVal: 0
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: PhysicsRT.PhysicsPhantom
+    componentClassVal: Ballance2.Game.TiggerTester
   - Type: 19
     Name: _TargetBallType
     vector2: {x: 0, y: 0}
@@ -269,55 +269,6 @@ MonoBehaviour:
   ManualInputScript: 0
   UpdateDelta: 0
   FixUpdateDelta: 0
---- !u!1 &365916251523862569
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 365916251523862570}
-  - component: {fileID: 365916251523862571}
-  m_Layer: 0
-  m_Name: P_Trafo_Paper_Tigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &365916251523862570
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365916251523862569}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 365916250524178757}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &365916251523862571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365916251523862569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4479bf253979e394d9f9525083d66d81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Type: 0
-  m_Min: {x: -2, y: 0, z: -2}
-  m_Max: {x: 2, y: 1, z: 2}
-  m_Layer: 8
-  m_EnableListener: 1
-  m_DoNotAutoCreateAtAwake: 0
 --- !u!1 &5726748937027950348
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +297,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 365916250524178757}
   m_RootOrder: 1
@@ -369,6 +321,7 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -410,6 +363,8 @@ GameObject:
   - component: {fileID: 3344258905931326625}
   - component: {fileID: 2083946596759162704}
   - component: {fileID: 2840934663894311805}
+  - component: {fileID: 1469589099434979581}
+  - component: {fileID: 8745170190370485299}
   m_Layer: 0
   m_Name: P_Trafo_Paper_MF
   m_TagString: Untagged
@@ -427,6 +382,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 365916250524178757}
   m_RootOrder: 0
@@ -450,6 +406,7 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -481,3 +438,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1469589099434979581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684867353911723141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &8745170190370485299
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684867353911723141}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.9317, y: 4.931701, z: 0.48350623}
+  m_Center: {x: 0, y: 0, z: 0.233249}

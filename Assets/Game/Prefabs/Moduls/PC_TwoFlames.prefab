@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8987545620122118470}
   - {fileID: 8987545620664145689}
@@ -331,12 +332,11 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: PhysicsRT.PhysicsPhantom
+    componentClassVal: Ballance2.Game.TiggerTester
   LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0
   CreateActionStore: 0
-  DebugScript: 
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -350,7 +350,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3433791696667959808}
-  - component: {fileID: 3433791696667959811}
+  - component: {fileID: 587399204375134970}
+  - component: {fileID: 968003862080909027}
   m_Layer: 0
   m_Name: CheckPointTigger
   m_TagString: Untagged
@@ -368,11 +369,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1077635805636035366}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3433791696667959811
+--- !u!114 &587399204375134970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,15 +383,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 3433791696667959809}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4479bf253979e394d9f9525083d66d81, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 0
-  m_Min: {x: -1, y: -0.17, z: -2}
-  m_Max: {x: 1, y: 7.63, z: 2}
-  m_Layer: 0
-  m_EnableListener: 1
-  m_DoNotAutoCreateAtAwake: 0
+--- !u!65 &968003862080909027
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3433791696667959809}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 10, z: 4}
+  m_Center: {x: 0, y: 5, z: 0}
 --- !u!1001 &3433791696123532545
 PrefabInstance:
   m_ObjectHideFlags: 0

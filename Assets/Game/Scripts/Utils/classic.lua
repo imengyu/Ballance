@@ -8,6 +8,7 @@
 --
 
 ---@class ClassicObject
+---@field super ClassicObject
 local ClassicObject = {}
 ClassicObject.__index = ClassicObject
 

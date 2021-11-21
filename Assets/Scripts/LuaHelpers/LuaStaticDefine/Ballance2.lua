@@ -26,7 +26,11 @@ UnityEngine.UI = UnityEngineUIGlobalNamespace
 UnityEngine.Yield = function (wait) end
 JetBrains = JetBrainsGlobalNamespace
 Unity = UnityGlobalNamespace
+---创建类接口
+CreateClass = {}
 PhysicsRT = {}
+BallancePhysics = {}
+BallancePhysics.Wapper = {}
 Ballance2.Sys = {}
 Ballance2.Sys.Bridge = {}
 Ballance2.Sys.Debug = {}

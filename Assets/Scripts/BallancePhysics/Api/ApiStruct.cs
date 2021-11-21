@@ -390,9 +390,9 @@ namespace BallancePhysics.Api
       return rs;
     }
   
-    public bool surface_exist_by_name(string name) {
+    public bool surface_exist_by_name(IntPtr world, string name) {
       var p_name = Marshal.StringToHGlobalAnsi(name);
-      var rs = _surface_exist_by_name(p_name) > 0;
+      var rs = _surface_exist_by_name(world, p_name) > 0;
       Marshal.FreeHGlobal(p_name);
       return rs;
     }

@@ -1,22 +1,21 @@
 ---@class P_Trafo_Base : ModulBase 
----@field _Tigger PhysicsPhantom
+---@field _Tigger TiggerTester
 ---@field _TargetBallType string
 ---@field _Color Color
 P_Trafo_Base = ModulBase:extend()
 
 function P_Trafo_Base:new()
-  self._Tigger = nil ---@type PhysicsPhantom
+  self._Tigger = nil ---@type TiggerTester
   self._TargetBallType = ''
   self._Color = nil
   self.TranfoActived = false
 end
 
 function P_Trafo_Base:Start()
-  ---@param phantom PhysicsPhantom
-  ---@param otherBody PhysicsBody
-  self._Tigger.onOverlappingCollidableAdd = function (phantom, otherBody)
+  ---@param other GameObject
+  self._Tigger.onTriggerEnter = function (_, other)
     --球，并且球类型于目标类型不一致
-    if not self._TranfoActived and otherBody.gameObject.tag == 'Ball' and otherBody.gameObject.name ~= self._TargetBallType then
+    if not self._TranfoActived and other.tag == 'Ball' and other.name ~= self._TargetBallType then
       --触发变球
       self._TranfoActived = true
       GamePlay.GamePlayManager:ActiveTranfo(self, self._TargetBallType, self._Color)
@@ -36,6 +35,6 @@ function P_Trafo_Base:Backup()
 
 end
 
-function CreateClass_P_Trafo_Base()
+function CreateClass:P_Trafo_Base()
   return P_Trafo_Base()
 end

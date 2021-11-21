@@ -55,7 +55,7 @@ DebugWindow = {
   cmdServer = nil, 
 }
 
-function CreateClass_DebugWindow()
+function CreateClass:DebugWindow()
   function DebugWindow:new(o)
     o = o or {}
     setmetatable(o, self)

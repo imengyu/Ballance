@@ -52,8 +52,13 @@ namespace BallancePhysics.Editor
       m_EnableCollisionEvent = serializedObject.FindProperty("m_EnableCollisionEvent");
       m_CollisionEventCallSleep = serializedObject.FindProperty("m_CollisionEventCallSleep");
       m_CustomLayer = serializedObject.FindProperty("m_CustomLayer");
+      m_StaticConstantForceDirection = serializedObject.FindProperty("m_StaticConstantForceDirection");
+      m_StaticConstantForce = serializedObject.FindProperty("m_StaticConstantForce");
+      m_ConstantForceDirectionRef = serializedObject.FindProperty("m_ConstantForceDirectionRef");
+      m_EnableConstantForce = serializedObject.FindProperty("m_EnableConstantForce");
 
       bOpenCollisionFilterInfo = EditorPrefs.GetBool("PhysicsObjectEditor_bOpenCollisionFilterInfo", false);
+      bOpenConstantForce = EditorPrefs.GetBool("PhysicsObjectEditor_bOpenConstantForce", false);
       bSurface = EditorPrefs.GetBool("PhysicsObjectEditor_bSurface", false);
 
       var names = AssetDatabase.LoadAssetAtPath<PhysicsLayerNames>("Assets/Resources/BallancePhysicsLayerNames.asset");
@@ -66,6 +71,7 @@ namespace BallancePhysics.Editor
     private void OnDisable()
     {
       EditorPrefs.SetBool("PhysicsObjectEditor_bOpenCollisionFilterInfo", bOpenCollisionFilterInfo);
+      EditorPrefs.SetBool("PhysicsObjectEditor_bOpenConstantForce", bOpenConstantForce);
       EditorPrefs.SetBool("PhysicsObjectEditor_bSurface", bSurface);
 
 
@@ -99,8 +105,13 @@ namespace BallancePhysics.Editor
     private SerializedProperty m_EnableCollisionEvent;
     private SerializedProperty m_CollisionEventCallSleep;
     private SerializedProperty m_CustomLayer;
+    private SerializedProperty m_StaticConstantForce;
+    private SerializedProperty m_StaticConstantForceDirection;
+    private SerializedProperty m_ConstantForceDirectionRef;
+    private SerializedProperty m_EnableConstantForce ;
 
     private bool bOpenCollisionFilterInfo = false;
+    private bool bOpenConstantForce = false;
     private bool bSurface = false;
 
     public override void OnInspectorGUI()
@@ -136,12 +147,8 @@ namespace BallancePhysics.Editor
           EditorGUILayout.PropertyField(m_BallRadius);
         } else {
           EditorGUILayout.PropertyField(m_UseExistsSurface);
-          
-          if(!m_UseExistsSurface.boolValue) {
-            EditorGUILayout.PropertyField(m_Convex);
-            EditorGUILayout.PropertyField(m_Concave);
-          }
-          
+          EditorGUILayout.PropertyField(m_Convex);
+          EditorGUILayout.PropertyField(m_Concave);
           EditorGUILayout.PropertyField(m_SurfaceName);
           EditorGUILayout.PropertyField(m_EnableConvexHull);
         }
@@ -175,9 +182,21 @@ namespace BallancePhysics.Editor
 
       EditorGUILayout.PropertyField(m_CustomLayer);
       EditorGUILayout.PropertyField(m_EnableCollisionEvent);
-
       if(m_EnableCollisionEvent.boolValue) {
         EditorGUILayout.PropertyField(m_CollisionEventCallSleep);
+      }
+
+      bOpenConstantForce = EditorGUILayout.Foldout(bOpenConstantForce, "Constant Force");
+      if (bOpenConstantForce)
+      {
+        EditorGUI.indentLevel++;
+
+        EditorGUILayout.PropertyField(m_EnableConstantForce);
+        EditorGUILayout.PropertyField(m_StaticConstantForceDirection);
+        EditorGUILayout.PropertyField(m_StaticConstantForce);
+        EditorGUILayout.PropertyField(m_ConstantForceDirectionRef);
+
+        EditorGUI.indentLevel--;
       }
 
       if (EditorApplication.isPlaying) EditorGUILayout.LabelField("Handle: 0x" + instance.Handle.ToString("X"));

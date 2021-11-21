@@ -514,4 +514,4 @@ function GamePlayManager:AddPoint(count)
   GameUI.GamePlayUI:TwinklePoint()
 end
 
-function CreateClass_GamePlayManager() return GamePlayManager() end
+function CreateClass:GamePlayManager() return GamePlayManager() end

@@ -1,30 +1,32 @@
-local LuaUtils = Ballance2.Utils.LuaUtils
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
-local PhysicsBody = PhysicsRT.PhysicsBody
-local Vector3 = UnityEngine.Vector3
+local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local Table = require('Table')
 
----纸球定义
+---Ballance 基础球定义
+---可继承此类来重写你自己的球
 ---@class Ball : GameLuaObjectHostClass
 ---@field _CamMgr CamManager
----@field _Rigidbody PhysicsBody
+---@field _Rigidbody PhysicsObject
 ---@field _Pieces GameObject
 ---@field _PiecesData BallPiecesData
 ---@field _PiecesSoundName string
 ---@field _PiecesMinForce number
 ---@field _PiecesMaxForce number
+---@field _PiecesPhysicsData table
+---@field _PiecesPhysCallback function 物理化碎片自定义处理回调 (gameObject, physicsData) => PhysicsObject，如果为nil，则碎片将使用默认参数来物理化
 ---@field _Force number
 ---@field _UpForce number
 ---@field _DownForce number
 Ball = ClassicObject:extend()
 
 function Ball:new()
-  self._CamMgr = nil
   self._Rigidbody = nil
   self._Pieces = nil
   self._PiecesMinForce = 0
   self._PiecesMaxForce = 5
+  self._PiecesMass = 1
   self._PiecesHaveColSound = {}
+  self._PiecesPhysCallback = nil
   self._PiecesColSoundMaxSpeed = 25
   self._PiecesColSoundMinSpeed = 2
   self._Force = 0
@@ -59,8 +61,7 @@ function Ball:new()
 end
 
 function Ball:Start()
-  self._CamMgr = GamePlay.CamManager
-  self._Rigidbody = self.gameObject:GetComponent(PhysicsBody)
+  self._Rigidbody = self.gameObject:GetComponent(PhysicsObject)
   self:_InitPeices()
   self:_InitSounds()
 end
@@ -82,9 +83,21 @@ function Ball:_InitPeices()
     }
     for i = 0, parent.transform.childCount - 1 do
       local child = parent.transform:GetChild(i)
-      local body = child.gameObject:GetComponent(PhysicsBody) ---@type PhysicsBody
+      local body = nil ---@type PhysicsObject
+      if self._PiecesPhysCallback then
+        body = self._PiecesPhysCallback(child.gameObject, self._PiecesPhysicsData)
+      else
+        body = child.gameObject:AddComponent(PhysicsObject)
+        body.Mass = self._PiecesPhysicsData.Mass
+        body.Elasticity = self._PiecesPhysicsData.Elasticity
+        body.Friction = self._PiecesPhysicsData.Friction
+        body.LinearSpeedDamping = self._PiecesPhysicsData.LinearDamp
+        body.RotSpeedDamping = self._PiecesPhysicsData.RotDamp
+      end
+      body.DoNotAutoCreateAtAwake = true
       table.insert(data.bodys, body);
 
+      --碎片声音
       if piecesSound ~= nil and Table.IndexOf(self._PiecesHaveColSound, body.name) ~= -1 then
         local sound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, piecesSound, false, true, 'PiecesSound'..child.name)
         sound.spatialBlend = 1
@@ -93,12 +106,14 @@ function Ball:_InitPeices()
         sound.dopplerLevel = 0
         sound.volume = 1
         body.AddContactListener = true
-        ---@param this PhysicsBody
-        ---@param other PhysicsBody
-        ---@param info PhysicsBodyCollisionInfo
-        body.onCollisionEnter = function (this, other, info)
+        ---@param this PhysicsObject
+        ---@param other PhysicsObject
+        ---@param contact_point_ws Vector3
+        ---@param speed Vector3
+        ---@param surf_normal Vector3
+        body.OnPhysicsCollision = function (this, other, contact_point_ws, speed, surf_normal)
           if data.throwed then
-            sound.volume = (info.separatingVelocity - self._PiecesColSoundMinSpeed) / (self._PiecesColSoundMaxSpeed - self._PiecesColSoundMinSpeed)
+            sound.volume = (speed.sqrMagnitude - self._PiecesColSoundMinSpeed) / (self._PiecesColSoundMaxSpeed - self._PiecesColSoundMinSpeed)
             sound:Play()
           end
         end
@@ -107,7 +122,6 @@ function Ball:_InitPeices()
 
     self._PiecesData = data
   end
-  
 end
 function Ball:_InitSounds() 
   --加载球的撞击和滚动声音
@@ -125,29 +139,6 @@ function Ball:_InitSounds()
       sound.volume = 0
       self._RollSound['Sound'..key] = sound
     end
-  end
-end
-
----推动
----@param pushType number
-function Ball:Push(pushType)
-  if self._CamMgr == nil then
-    self._CamMgr = GamePlay.CamManager
-  end
-  if LuaUtils.And(pushType, BallPushType.Left) == BallPushType.Left then
-    self._Rigidbody:ApplyLinearImpulse(self._CamMgr.CamLeftVector * self._Force)
-  elseif LuaUtils.And(pushType, BallPushType.Right) == BallPushType.Right then
-    self._Rigidbody:ApplyLinearImpulse(self._CamMgr.CamRightVector * self._Force)
-  end
-  if LuaUtils.And(pushType, BallPushType.Forward) == BallPushType.Forward then
-    self._Rigidbody:ApplyLinearImpulse(self._CamMgr.CamForwerdVector * self._Force)
-  elseif LuaUtils.And(pushType, BallPushType.Back) == BallPushType.Back then
-    self._Rigidbody:ApplyLinearImpulse(self._CamMgr.CamBackVector * self._Force)
-  end
-  if LuaUtils.And(pushType, BallPushType.Up) == BallPushType.Up then
-    self._Rigidbody:ApplyLinearImpulse(Vector3.up * self._UpForce)
-  elseif LuaUtils.And(pushType, BallPushType.Down) == BallPushType.Down then
-    self._Rigidbody:ApplyLinearImpulse(Vector3.down * self._DownForce)
   end
 end
 
@@ -186,6 +177,6 @@ function Ball:ResetPieces()
   GamePlay.BallPiecesControll:ResetPieces(self._PiecesData)
 end
 
-function CreateClass_Ball()
+function CreateClass:Ball()
   return Ball()
 end

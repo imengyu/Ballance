@@ -180,6 +180,6 @@ function WinScoreUIControl:_ShowHighscore()
   end
 end
 
-function CreateClass_WinScoreUIControl() 
+function CreateClass:WinScoreUIControl() 
   return WinScoreUIControl
 end

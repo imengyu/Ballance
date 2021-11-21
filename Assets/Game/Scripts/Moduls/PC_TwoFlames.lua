@@ -5,17 +5,17 @@ function PC_TwoFlames:new()
   self.FlameSmallLeft = nil ---@type GameObject
   self.FlameSmallRight = nil ---@type GameObject
   self.Flame = nil ---@type GameObject
-  self.CheckPointTigger = nil ---@type PhysicsPhantom
+  self.CheckPointTigger = nil ---@type TiggerTester
   self.CheckPointActived = false
 end
 function PC_TwoFlames:Start()
   self.FlameSmallLeft:SetActive(false)
   self.FlameSmallRight:SetActive(false)
   self.Flame:SetActive(false)
-  ---@param phantom PhysicsPhantom
-  ---@param otherBody PhysicsBody
-  self.CheckPointTigger.onOverlappingCollidableAdd = function (phantom, otherBody)
-    if not self.CheckPointActived and otherBody.gameObject.tag == 'Ball' then
+  --Tigger 进入事件
+  ---@param otherBody GameObject
+  self.CheckPointTigger.onTriggerEnter = function (s, otherBody)
+    if not self.CheckPointActived and otherBody.tag == 'Ball' then
       --触发下一关
       self.CheckPointActived = true
       self.Flame:SetActive(false)
@@ -45,6 +45,6 @@ function PC_TwoFlames:InternalActive()
   self.CheckPointActived = false
 end
 
-function CreateClass_PC_TwoFlames()
+function CreateClass:PC_TwoFlames()
   return PC_TwoFlames()
 end

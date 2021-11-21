@@ -24,6 +24,7 @@ CamRotateType = {
 ---@field _CameraNormalY number
 ---@field _CameraSpaceY number
 ---@field _PosFrame Transform 
+---@field CamDirectionRef Transform 获取球参照的摄像机旋转方向变换 [R]
 ---@field CamRightVector Vector3 获取摄像机右侧向量 [R]
 ---@field CamLeftVector Vector3 获取摄像机左侧向量 [R]
 ---@field CamForwerdVector Vector3 获取摄像机向前向量 [R]
@@ -45,6 +46,7 @@ function CamManager:new()
   self.CamLeftVector = Vector3.left
   self.CamForwerdVector = Vector3.forward
   self.CamBackVector = Vector3.back
+  self.CamDirectionRef = nil
   self.CamFollowSpeed = 0.05
   self.CamIsSpaced = false
   self.Target = nil
@@ -74,6 +76,7 @@ function CamManager:Start()
   self.CamFollow = self._CameraHost:GetComponent(CamFollow) ---@type CamFollow
   self.transform.localPosition = Vector3(self._CameraNormalX, self._CameraNormalY, 0)
   self.transform:LookAt(Vector3.zero)
+  self.CamDirectionRef = self._CameraHost.transform
 
   self._CommandId = Game.Manager.GameDebugCommandServer:RegisterCommand('cam', function (eyword, fullCmd, argsCount, args)
     local type = args[1]
@@ -282,6 +285,6 @@ end
 
 --#endregion
 
-function CreateClass_CamManager()
+function CreateClass:CamManager()
   return CamManager()
 end

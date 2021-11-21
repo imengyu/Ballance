@@ -181,6 +181,6 @@ function MusicManager:DisableInSec(sec)
   end)
 end
 
-function CreateClass_MusicManager() 
+function CreateClass:MusicManager() 
   return MusicManager()
 end

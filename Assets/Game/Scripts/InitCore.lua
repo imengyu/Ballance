@@ -6,6 +6,8 @@ local GameError = Ballance2.Sys.Debug.GameError
 local Log = Ballance2.Utils.Log
 local SystemPackage = GamePackage.GetSystemPackage()
 
+---全局 CreateClass 引入
+CreateClass = {}
 ---全局 ClassicObject 引入
 ClassicObject = require("classic")
 require('ConstLinks')

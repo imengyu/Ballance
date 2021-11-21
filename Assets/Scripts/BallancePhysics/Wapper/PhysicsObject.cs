@@ -63,6 +63,9 @@ namespace BallancePhysics.Wapper
     [Tooltip("是否在gameObject激活时自动切换刚体的激活状态")]
     [SerializeField]
     private bool m_AutoControlActive = true;
+    [Tooltip("是否启用施加在这个物体上的恒力")]
+    [SerializeField]
+    private bool m_EnableConstantForce = true;
     [Tooltip("物体的碰撞层")]
     [SerializeField]
     private int m_Layer = -1;
@@ -102,6 +105,15 @@ namespace BallancePhysics.Wapper
     [Tooltip("设置自定义层")]
     [SerializeField]
     private int m_CustomLayer = 0;
+    [Tooltip("设置静态恒力恒力方向")]
+    [SerializeField]
+    private Vector3 m_StaticConstantForceDirection = Vector3.forward;
+    [Tooltip("设置静态恒力恒力")]
+    [SerializeField]
+    private float m_StaticConstantForce = 0;
+    [Tooltip("设置静态恒力恒力方向参考")]
+    [SerializeField]
+    private Transform m_ConstantForceDirectionRef = null;
 
     #endregion
 
@@ -175,17 +187,34 @@ namespace BallancePhysics.Wapper
           return;
         }
 
-        if (m_UseExistsSurface && m_SurfaceName == "")
-          Debug.LogWarning("UseExistsSurface is true but this SurfaceName is not set");
-
+        string surfaceName = m_SurfaceName;
         bool doNotCreateSurface = false;
-        if (m_SurfaceName != "" && (PhysicsApi.API.surface_exist_by_name(m_SurfaceName) || m_UseExistsSurface))
-        {
-          Debug.LogWarning("Surface " + m_SurfaceName + " already exist");
+
+        if (m_UseBall)
+          doNotCreateSurface = true; //球体就不生成网格
+        else if (surfaceName == "") {
+          //根据当前物体的Mesh自动生成相对的名字
+          string scaleName = gameObject.transform.lossyScale != Vector3.one ? ("_" + gameObject.transform.lossyScale.ToString()) : "";
+          if(m_Convex.Count == 1)
+            surfaceName = m_Convex[0].name + scaleName;
+          else if(m_Concave.Count == 1) 
+            surfaceName = m_Concave[0].name + scaleName;
+          else {
+            if(m_Concave.Count == 0 && m_Convex.Count == 0) {
+              var meshFilter = GetComponent<MeshFilter>();
+              if(meshFilter != null && meshFilter.sharedMesh != null) {
+                var mesh = meshFilter.sharedMesh;
+                surfaceName = mesh.name + scaleName;
+              }
+            } else
+              surfaceName = gameObject.name + scaleName;
+          }
+        } 
+        else if(PhysicsApi.API.surface_exist_by_name(currentEnvironment.Handle, surfaceName) || m_UseExistsSurface) {
+          //检查 SurfaceName 是否存在，否则不生成
+          Debug.LogWarning("Surface " + surfaceName + " already exist");
           doNotCreateSurface = true;
         }
-        if(m_UseBall)
-          doNotCreateSurface = true;
 
         List<IntPtr> pConvexs = new List<IntPtr>();
         List<IntPtr> pConcavies = new List<IntPtr>();
@@ -214,7 +243,7 @@ namespace BallancePhysics.Wapper
         Handle = PhysicsApi.API.physicalize(currentEnvironment.Handle, name, m_Layer, currentEnvironment.GetSystemGroup(m_SystemGroupName),
          m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
          m_RotSpeedDamping, m_BallRadius, m_UseBall, m_EnableConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
-         m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, m_SurfaceName,
+         m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, surfaceName,
          pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius);
         
         foreach (var ptr in pConvexs)
@@ -463,6 +492,71 @@ namespace BallancePhysics.Wapper
 
     #region 推动
 
+    [LuaApiDescription("是否启用施加在这个物体上的恒力")]
+    public bool EnableConstantForce { get => m_EnableConstantForce; set => m_EnableConstantForce = value; }
+    [LuaApiDescription("设置静态恒力恒力数值")]
+    public float StaticConstantForce { get => m_StaticConstantForce; set => m_StaticConstantForce = value; }
+    [LuaApiDescription("设置静态恒力恒力方向")]
+    public Vector3 StaticConstantForceDirection { get => m_StaticConstantForceDirection; set => m_StaticConstantForceDirection = value; }
+    [LuaApiDescription("施加在这个物体上的恒力方向参考")]
+    public Transform ConstantForceDirectionRef { get => m_ConstantForceDirectionRef; set => m_ConstantForceDirectionRef = value; }
+
+    private int m_ConstantForce_ID = 0;
+    private Dictionary<int, Vector3> m_ConstantForces = new Dictionary<int, Vector3>();
+
+    /// <summary>
+    /// 添加施加在这个物体上的恒力
+    /// </summary>
+    /// <param name="force">推动施加力的向量（世界坐标系）</param>
+    /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
+    [LuaApiDescription("添加施加在这个物体上的恒力", "返回恒力ID，可使用DeleteConstantForce删除恒力")]
+    [LuaApiParamDescription("force", "推动施加力的向量（世界坐标系）")]
+    public int AddConstantForce(Vector3 force) {
+      if(m_ConstantForce_ID < int.MaxValue - 1) m_ConstantForce_ID++;
+      else m_ConstantForce_ID = 0;
+
+      m_ConstantForces.Add(m_ConstantForce_ID, force);
+      return m_ConstantForce_ID;
+    }
+    /// <summary>
+    /// 删除施加在这个物体上的恒力
+    /// </summary>
+    /// <param name="forceId">AddConstantForce 返回的ID</param>
+    [LuaApiDescription("删除施加在这个物体上的恒力")]
+    [LuaApiParamDescription("forceId", "AddConstantForce 返回的ID")]
+    public void DeleteConstantForce(int forceId) {
+      m_ConstantForces.Remove(forceId);
+    }
+    /// <summary>
+    /// 清除所有施加在这个物体上的恒力
+    /// </summary>
+    [LuaApiDescription("清除所有施加在这个物体上的恒力")]
+    public void ClearConstantForce() {
+      m_ConstantForces.Clear();
+      m_ConstantForce_ID = 0;
+    }
+
+    private void doApplyConstantForce() {
+      Transform dref = ConstantForceDirectionRef == null ? transform : ConstantForceDirectionRef;
+      foreach(var f in m_ConstantForces) {
+        Impluse(dref.TransformVector(f.Value) * Time.fixedDeltaTime);
+      }
+      if(m_StaticConstantForce > 0)
+        Impluse(dref.TransformVector(m_StaticConstantForceDirection) * m_StaticConstantForce * Time.fixedDeltaTime);
+    }
+
+    /// <summary>
+    /// 给物体施加一个推动
+    /// </summary>
+    /// <param name="pos">推动坐标（世界坐标系）</param>
+    /// <param name="impluse">力的方向和大小（世界坐标系）</param>
+    [LuaApiDescription("给物体施加一个推动")]
+    [LuaApiParamDescription("pos", "推动施加力的坐标（世界坐标系）")]
+    [LuaApiParamDescription("impluse", "力的方向和大小（kg*m/s, 世界坐标系）")]
+    public void Impluse(Vector3 impluse) {
+      Impluse(Vector3.zero, impluse);
+    }
+
     /// <summary>
     /// 给物体施加一个推动
     /// </summary>
@@ -701,6 +795,7 @@ namespace BallancePhysics.Wapper
     #endregion
 
     private void OnDestroy() {
+      m_ConstantForces.Clear();
       if(IsPhysicalized)
         UnPhysicalize(true);
     }
@@ -708,6 +803,8 @@ namespace BallancePhysics.Wapper
       if(!m_DoNotAutoCreateAtAwake) 
         Physicalize();
     }
-
+    private void FixedUpdate() {
+      if(EnableConstantForce) doApplyConstantForce();
+    }
   }
 }

@@ -498,7 +498,7 @@ namespace Ballance2.Sys.Package
 
         /// <summary>
         /// 导入 Lua 类到当前模块虚拟机中。
-        /// 注意，类函数以 “CreateClass_类名” 开头，
+        /// 注意，类函数以 “CreateClass:类名” 开头，
         /// 关于 Lua 类，请参考 Docs/LuaClass 。
         /// </summary>
         /// <param name="className">类名</param>
@@ -517,7 +517,11 @@ namespace Ballance2.Sys.Package
             if (requiredLuaClasses.TryGetValue(className, out classInit))
                 return classInit;
 
-            classInit = PackageLuaState.getFunction("CreateClass_" + className);
+            var CreateClass = (PackageLuaState["CreateClass"] as LuaTable);
+            if(CreateClass == null)
+                throw new MissingReferenceException("This shouldn't happen: CreateClass is null! ");
+
+            classInit = CreateClass[className] as LuaFunction;
             if (classInit != null)
             {
                 requiredLuaClasses.Add(className, classInit);
@@ -539,11 +543,11 @@ namespace Ballance2.Sys.Package
                 throw new Exception(PackageName + " 无法导入 Lua class : " + e.Message);
             }
 
-            classInit = PackageLuaState.getFunction("CreateClass_" + className);
+            classInit = CreateClass[className] as LuaFunction;
             if (classInit == null)
             {
                 throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " +
-                    className + ", 未找到初始类函数: CreateClass_" + className);
+                    className + ", 未找到初始类函数: CreateClass:" + className);
             }
 
             requiredLuaClasses.Add(className, classInit);
@@ -555,7 +559,7 @@ namespace Ballance2.Sys.Package
         /// <param name="fileName">LUA文件名</param>
         /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
@@ -569,7 +573,7 @@ namespace Ballance2.Sys.Package
         /// <param name="fileName">LUA文件名</param>
         /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
@@ -583,7 +587,7 @@ namespace Ballance2.Sys.Package
         /// <param name="fileName">LUA文件名</param>
         /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。
@@ -597,7 +601,7 @@ namespace Ballance2.Sys.Package
         /// <param name="fileName">LUA文件名</param>
         /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
         /// <exception cref="MissingReferenceException">
-        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass_* ，则抛出 MissingReferenceException 异常。
+        /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
         /// </exception>
         /// <exception cref="Exception">
         /// 如果Lua执行失败，则抛出此异常。

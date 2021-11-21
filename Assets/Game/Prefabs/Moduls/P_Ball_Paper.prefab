@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 1300828165197587028}
   - component: {fileID: 3748225458641366415}
   - component: {fileID: 6739363268183128160}
-  - component: {fileID: 1130734195420087568}
-  - component: {fileID: 6934722005532638579}
+  - component: {fileID: 7875554090901726670}
   m_Layer: 0
   m_Name: P_Ball_Paper
   m_TagString: Untagged
@@ -31,6 +30,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,6 +54,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -97,8 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: 
-  LuaClassName: ModulSingalPhysics
-  LuaFileName: Assets/Game/Scripts/GamePlay/ModulBase/ModulSingalPhysics
+  LuaClassName: ModulPhysics
+  LuaFileName: Assets/Game/Scripts/GamePlay/ModulBase/ModulPhysics
   LuaPackageName: core
   LuaInitialVars: []
   LuaPublicVars: []
@@ -109,7 +110,7 @@ MonoBehaviour:
   ManualInputScript: 0
   UpdateDelta: 0
   FixUpdateDelta: 0
---- !u!114 &1130734195420087568
+--- !u!114 &7875554090901726670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,164 +119,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 4496237636056940438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28c05039a7674a348b345b6c2bc08bf3, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e6108379294ece4d9a6b90635da294b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShapeType: 5
-  m_Wrap: 0
-  m_Translation: {x: 0, y: 0, z: 0}
-  m_Rotation: {x: 0, y: 0, z: 0}
-  m_Scale: {x: 1, y: 1, z: 1}
-  m_CustomTags:
-    Tag00: 0
-    Tag01: 0
-    Tag02: 0
-    Tag03: 0
-    Tag04: 0
-    Tag05: 0
-    Tag06: 0
-    Tag07: 0
-  m_ShapeMesh: {fileID: -4562164109846000059, guid: a230a675e7aacf54ebc47afc51891726,
-    type: 3}
-  m_ShapeSize: {x: 1, y: 1, z: 1}
-  m_ShapeRadius: 2.0047
-  m_ShapeConvexRadius: 0
-  m_ShapeHeight: 1
-  m_ShapeSideCount: 32
-  m_MinimumSkinnedVertexWeight: 0.1
-  m_BelongsToCategories:
-    Layer00: 1
-    Layer01: 1
-    Layer02: 1
-    Layer03: 1
-    Layer04: 1
-    Layer05: 1
-    Layer06: 1
-    Layer07: 1
-    Layer08: 1
-    Layer09: 1
-    Layer10: 1
-    Layer11: 1
-    Layer12: 1
-    Layer13: 1
-    Layer14: 1
-    Layer15: 1
-    Layer16: 1
-    Layer17: 1
-    Layer18: 1
-    Layer19: 1
-    Layer20: 1
-    Layer21: 1
-    Layer22: 1
-    Layer23: 1
-    Layer24: 1
-    Layer25: 1
-    Layer26: 1
-    Layer27: 1
-    Layer28: 1
-    Layer29: 1
-    Layer30: 1
-    Layer31: 1
-  m_CollidesWithCategories:
-    Layer00: 1
-    Layer01: 1
-    Layer02: 1
-    Layer03: 1
-    Layer04: 1
-    Layer05: 1
-    Layer06: 1
-    Layer07: 1
-    Layer08: 1
-    Layer09: 1
-    Layer10: 1
-    Layer11: 1
-    Layer12: 1
-    Layer13: 1
-    Layer14: 1
-    Layer15: 1
-    Layer16: 1
-    Layer17: 1
-    Layer18: 1
-    Layer19: 1
-    Layer20: 1
-    Layer21: 1
-    Layer22: 1
-    Layer23: 1
-    Layer24: 1
-    Layer25: 1
-    Layer26: 1
-    Layer27: 1
-    Layer28: 1
-    Layer29: 1
-    Layer30: 1
-    Layer31: 1
-  m_CustomMaterialTags:
-    Tag00: 0
-    Tag01: 0
-    Tag02: 0
-    Tag03: 0
-    Tag04: 0
-    Tag05: 0
-    Tag06: 0
-    Tag07: 0
---- !u!114 &6934722005532638579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4496237636056940438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79fa0ed245b7514ba47c4268200698e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MotionType: 0
-  m_CollidableQualityType: -1
-  m_Mass: 0.2
-  m_LinearDamping: 1.5
-  m_AngularDamping: 0.4
-  m_InitialLinearVelocity: {x: 0, y: 0, z: 0}
-  m_InitialAngularVelocity: {x: 0, y: 0, z: 0}
-  m_GravityFactor: 1
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_CustomTags:
-    Tag00: 0
-    Tag01: 0
-    Tag02: 0
-    Tag03: 0
-    Tag04: 0
-    Tag05: 0
-    Tag06: 0
-    Tag07: 0
-  m_Friction: 0.65
-  m_Restitution: 0.4
-  m_Layer: 3
-  m_InertiaTensor:
-    e00: 1
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 1
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 1
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 1
-  m_MaxAngularVelocity: 200
-  m_MaxLinearVelocity: 200
-  m_IsTigger: 0
-  m_AddContactListener: 0
+  m_Mass: 1
+  m_Friction: 0.5
+  m_Elasticity: 0.4
+  m_LinearSpeedDamping: 1.5
+  m_RotSpeedDamping: 0.1
+  m_BallRadius: 1
+  m_UseBall: 0
+  m_EnableConvexHull: 1
+  m_EnableCollision: 1
+  m_StartFrozen: 0
+  m_Fixed: 0
+  m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoComputeCenterOfMass: 1
+  m_AutoMassCenter: 1
   m_AutoControlActive: 1
+  m_SetForce: 1
+  m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
-  DeactiveWhenLeaveBroadphase: 1
+  m_Convex: []
+  m_Concave: []
+  m_SurfaceName: 
+  m_UseExistsSurface: 0
+  m_ExtraRadius: 0.1
+  m_EnableGravity: 1
+  m_EnableCollisionEvent: 0
+  m_CollisionEventCallSleep: 0
+  m_CustomLayer: 0

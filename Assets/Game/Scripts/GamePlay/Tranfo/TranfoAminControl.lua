@@ -103,6 +103,6 @@ function TranfoAminControl:PlayAnim(transform, color, placeholder, ballChangeCal
   end))
 end
 
-function CreateClass_TranfoAminControl()
+function CreateClass:TranfoAminControl()
   return TranfoAminControl()
 end
