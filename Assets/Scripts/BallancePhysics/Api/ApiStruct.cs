@@ -330,7 +330,7 @@ namespace BallancePhysics.Api
       Marshal.Copy(pointFloats, 0, pointsPtr, pointFloats.Length);
       Marshal.Copy(indices, 0, indicesPtr, indices.Length);
 
-      var rs = _create_polyhedron(points.Length, indices.Length / 3, pointsPtr, indicesPtr);
+      var rs = _create_polyhedron(points.Length, indices.Length, pointsPtr, indicesPtr);
 
       Marshal.FreeHGlobal(pointsPtr);
       Marshal.FreeHGlobal(indicesPtr);
