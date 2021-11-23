@@ -1,5 +1,6 @@
 ﻿using Ballance2.Config;
 using Ballance2.Sys.Debug;
+using Ballance2.Sys.Language;
 using Ballance2.Sys.Services;
 using Ballance2.Sys.UI.Utils;
 using Ballance2.UI.Parts;
@@ -218,6 +219,8 @@ namespace Ballance2.Sys.Entry
 
         private IEnumerator InitMain()
         {
+            GameSystem.PreInit();
+            
             if (TestAndroidPermission())
             {
                 GlobalGamePermissionTipDialog.SetActive(true);

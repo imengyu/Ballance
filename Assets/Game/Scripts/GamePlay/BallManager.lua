@@ -269,7 +269,12 @@ function BallManager:RegisterBall(name, gameObject)
     speedMeter.Enabled = true
   end
 
-  local ball = GameLuaObjectHost.GetLuaClassFromGameObject(gameObject) ---@type Ball
+  local gameLuaObjectHost = gameObject:GetComponent(GameLuaObjectHost) ---@type GameLuaObjectHost
+  if(gameLuaObjectHost == nil) then
+    gameLuaObjectHost = gameObject:AddComponent(GameLuaObjectHost) ---@type GameLuaObjectHost
+    gameLuaObjectHost.Enabled = true
+  end
+  local ball = gameLuaObjectHost:CreateClass() ---@type Ball
   if(ball == nil) then
     GameErrorChecker.SetLastErrorAndLog(GameError.ClassNotFound, TAG, 'Not found Ball class on {0} !', { name })
     return

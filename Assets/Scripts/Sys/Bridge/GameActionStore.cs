@@ -39,28 +39,23 @@ namespace Ballance2.Sys.Bridge
         {
             _Package = package;
             _Name = name;
-            actions = new Dictionary<string, GameAction>();
         }
 
         [DoNotToLua]
         public void Destroy()
         {
-            if (actions != null)
+            foreach (var v in actions)
             {
-                foreach (var v in actions)
-                {
-                    if (v.Value.Package != null)
-                        v.Value.Package.ActionRemove(v.Value);
-                    v.Value.Dispose();
-                }
-                actions.Clear();
-                actions = null;
+                if (v.Value.Package != null)
+                    v.Value.Package.ActionRemove(v.Value);
+                v.Value.Dispose();
             }
+            actions.Clear();
         }
 
         private GamePackage _Package;
         private string _Name;
-        private Dictionary<string, GameAction> actions = null;
+        private Dictionary<string, GameAction> actions = new Dictionary<string, GameAction>();
 
         /// <summary>
         /// 获取此存储库的标签

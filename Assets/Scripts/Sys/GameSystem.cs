@@ -181,6 +181,14 @@ namespace Ballance2.Sys
 
         public static bool IsRestart = false;
 
+        public static void PreInit() {
+            //初始化设置
+            GameSettingsManager.Init();
+            //初始化I18N 和系统字符串资源
+            I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
+            I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLang/I18N").text);
+        }
+
         /// <summary>
         /// 初始化主入口
         /// </summary> 
@@ -196,11 +204,6 @@ namespace Ballance2.Sys
                 GameStaticResourcesPool.InitStaticPrefab(
                     gameStaticResEntryInstance.GamePrefab,
                     gameStaticResEntryInstance.GameAssets);
-                //初始化设置
-                GameSettingsManager.Init();
-                //初始化I18N 和系统字符串资源
-                I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
-                I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLang/I18N").text);
                 
                 //Call game init
                 if(sysHandler == null) {

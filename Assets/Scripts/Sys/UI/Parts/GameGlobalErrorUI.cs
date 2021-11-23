@@ -47,6 +47,7 @@ namespace Ballance2.UI.Parts
 
         public void ShowErrorUI(string err)
         {
+            GameObject.Find("GlobalMask").SetActive(false);
             gameObject.SetActive(true);
             TextGameErrorText.text = err;
         }

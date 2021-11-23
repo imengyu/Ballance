@@ -546,7 +546,7 @@ MonoBehaviour:
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
-  DebugType: 1
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.debug
@@ -560,7 +560,7 @@ MonoBehaviour:
     PackageName: core.ui
   - Enable: 1
     PackageName: core.language
-  DebugCustomEntryEvent: CoreDebugGamePlayEntry
+  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
   DebugCustomEntries:
   - CoreDebugGamePlayEntry
   - CoreDebugLevelBuliderEntry
@@ -4695,8 +4695,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff2fac9b9333df4fa1f3913a83dbaa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextGameErrorTitle: {fileID: 0}
-  TextGameErrorHelp: {fileID: 0}
+  TextGameErrorTitle: {fileID: 1840944283}
+  TextGameErrorHelp: {fileID: 1167168049}
   TextGameErrorText: {fileID: 2125938129}
   ButtonShowErrorContent: {fileID: 911140202}
   ButtonHideErrorContent: {fileID: 1035197105}

@@ -83,8 +83,8 @@ namespace Ballance2.Sys.Services
         #region 全局事件控制器
 
         [SerializeField, SetProperty("Events")]
-        private Dictionary<string, GameEvent> events = null;
-        private Dictionary<string, GameHandler> singleEvents = null;
+        private Dictionary<string, GameEvent> events = new Dictionary<string, GameEvent>();
+        private Dictionary<string, GameHandler> singleEvents = new Dictionary<string, GameHandler>();
 
         public Dictionary<string, GameEvent> Events { get { return events; } }
 
@@ -422,19 +422,15 @@ namespace Ballance2.Sys.Services
         //卸载所有事件
         private void UnLoadAllEvents()
         {
-            if (events != null)
-            {
-                foreach (var gameEvent in events)
-                    gameEvent.Value.Dispose();
-                events.Clear();
-                events = null;
-            }
+            foreach (var gameEvent in events)
+                gameEvent.Value.Dispose();
+            events.Clear();
+            foreach (var gameEvent in singleEvents)
+                gameEvent.Value.Dispose();
+            singleEvents.Clear();
         }
         private void InitAllEvents()
         {
-            events = new Dictionary<string, GameEvent>();
-            singleEvents = new Dictionary<string, GameHandler>();
-
             //注册内置事件
             RegisterGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED);
             RegisterGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT);

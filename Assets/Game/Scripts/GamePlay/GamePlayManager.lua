@@ -14,7 +14,7 @@ local Log = Ballance2.Utils.Log
 
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass
----@field GamePhysicsWorld PhysicsWorld
+---@field GamePhysicsWorld PhysicsEnvironment
 GamePlayManager = ClassicObject:extend()
 
 function GamePlayManager:new()
