@@ -264,6 +264,8 @@ namespace Ballance2.Sys
                 serviceNames.Clear();
                 systemService.Clear();
 
+                GameManager.GameMediator = null;
+
                 //释放其他组件
                 I18NProvider.ClearAllLanguageResources();
                 GameSettingsManager.Destroy();

@@ -57,7 +57,8 @@ namespace Ballance2
     }
     private void OnDestroy()
     {
-      GameManager.GameMediator.UnRegisterSingleEvent("DebugToolsClear");
+      if(GameManager.GameMediator != null)
+        GameManager.GameMediator.UnRegisterSingleEvent("DebugToolsClear");
       Log.UnRegisterLogObserver(logObserver);
       Clear();
     }

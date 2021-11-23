@@ -205,11 +205,7 @@ namespace Ballance2.Config
         }
         internal void Destroy()
         {
-            if (settingUpdateCallbacks != null)
-            {
-                settingUpdateCallbacks.Clear();
-                settingUpdateCallbacks = null;
-            }
+            settingUpdateCallbacks.Clear();
         }
 
         /// <summary>

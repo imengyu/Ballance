@@ -421,11 +421,13 @@ function LevelBuilder:_LoadLevelInternal()
               go.transform:SetParent(floorStatic.transform)
               go.tag = floor.name
               local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+              body.DoNotAutoCreateAtAwake = true
               body.Fixed = true
               body.Concave:Add(meshFilter.mesh)
               body.Friction = physicsData.Friction
               body.Elasticity = physicsData.Elasticity
               body.Layer = physicsData.Layer
+              body:Physicalize()
               if go:GetComponent(MeshCollider) == nil then
                 go:AddComponent(MeshCollider)
               end

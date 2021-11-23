@@ -85,8 +85,10 @@ class DebugStat : MonoBehaviour
         LoadSysinfoWindowData();
     }
     private void OnDestroy() {
-        GameManager.Instance.GameStore.RemoveParameter("DbgStatShowSystemInfo");
-        GameManager.Instance.GameStore.RemoveParameter("DbgStatShowStats");
+        if(GameManager.Instance != null) {
+            GameManager.Instance.GameStore.RemoveParameter("DbgStatShowSystemInfo");
+            GameManager.Instance.GameStore.RemoveParameter("DbgStatShowStats");
+        }
         if(WindowSystemInfo != null) {
             WindowSystemInfo.Destroy();
             WindowSystemInfo = null;

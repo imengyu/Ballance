@@ -160,7 +160,14 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
     private int _ExecuteOrder = 0;
 
-    private GamePackageManager GamePackageManager;
+    private GamePackageManager _GamePackageManager;
+    private GamePackageManager GamePackageManager {
+      get {
+        if(_GamePackageManager == null && GameManager.Instance != null)
+          _GamePackageManager = GameManager.Instance.GetSystemService<GamePackageManager>();
+        return _GamePackageManager;
+      }
+    }
     private string _PackageName = null;
 
     private LuaTable self = null;
@@ -213,15 +220,21 @@ namespace Ballance2.Sys.Bridge.LuaWapper
             return null;
           }
 
-          LuaDebugMini.LuaState.doString(File.ReadAllText(path));
-          classInit = LuaDebugMini.LuaState.getFunction("CreateClass:" + LuaClassName);
+          LuaDebugMini.LuaState.doString(File.ReadAllText(path)); 
+          var CreateClass = (LuaDebugMini.LuaState["CreateClass"] as LuaTable);
+          if(CreateClass == null)
+            throw new MissingReferenceException("This shouldn't happen: CreateClass is null! ");
+
+          classInit = CreateClass["LuaClassName"] as LuaFunction;
 #else
-                        Log.E(TAG + ":" + Name, "DebugLoadScript can only use in editor");
+          Log.E(TAG + ":" + Name, "DebugLoadScript can only use in editor");
 #endif
         }
-        else if (Package == null && !InitPackage())
+        else if (Package == null && !InitPackage()) {
+          Log.W(TAG + ":" + Name, "Package is null or not init: " + GameErrorChecker.LastError);
+          GameErrorChecker.LastError = GameError.NotLoad;
           return null;
-        else
+        } else
           classInit = Package.RequireLuaClass(LuaClassName);
 
         //Create class
@@ -262,9 +275,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
     private void DoInit()
     {
-      if (GameManager.Instance != null)
-        GamePackageManager = GameManager.Instance.GetSystemService<GamePackageManager>();
-
       if (!LuaInit())
       {
         enabled = false;

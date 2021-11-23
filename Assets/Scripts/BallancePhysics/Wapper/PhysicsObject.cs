@@ -794,16 +794,24 @@ namespace BallancePhysics.Wapper
 
     #endregion
 
+    private int createTick = 0;
+
     private void OnDestroy() {
       m_ConstantForces.Clear();
       if(IsPhysicalized)
         UnPhysicalize(true);
     }
     private void Awake() {
-      if(!m_DoNotAutoCreateAtAwake) 
-        Physicalize();
+      createTick = 2;
     }
     private void FixedUpdate() {
+      if(createTick > 0) {
+        createTick--;
+        if(createTick == 0) {
+          if(!m_DoNotAutoCreateAtAwake) 
+            Physicalize();
+        }
+      }
       if(EnableConstantForce && Handle != IntPtr.Zero) doApplyConstantForce();
     }
   }

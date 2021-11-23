@@ -827,6 +827,9 @@ namespace Ballance2.Sys
         internal void Destroy()
         {
             Log.D(TAG, "Destroy");
+
+            Instance = null;
+            
             if (GameMainLuaState != null) 
                 GameMainLuaState = null;
         }
