@@ -42,6 +42,9 @@ namespace Ballance2.Game
     private bool CheckOnce = false;
     private SpeedMeterDelegate CheckOnceCallback = null;
 
+    [LuaApiDescription("检查回调")]
+    public SpeedMeterDelegate Callback = null;
+
     private void Start() {
       if(Target == null)
         Target = transform;
@@ -56,6 +59,8 @@ namespace Ballance2.Game
           NowAbsoluteSpeed = len;
           NowRelativeSpeed = (NowAbsoluteSpeed - MinSpeed) / (MaxSpeed - MinSpeed);
 
+          if(Callback != null)
+            Callback.Invoke(this);
           if(CheckOnce) {
             CheckOnceCallback?.Invoke(this);
             CheckOnce = false;

@@ -39,74 +39,50 @@ end
 function InitBulitInModulCustomSounds()
   ---@param type string
   ---@param ball Ball
-  ---@param vol number
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Dome', function (type, ball, vol)
+  ---@param data table
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Dome', false, function (type, ball, data)
     if type == 'hit' then
-      local sound = ball._HitSound.SoundDome ---@type AudioSource
-      if sound then
-        sound.volume = vol
-        if not sound.isPlaying then
-          sound:Play()
-        end
-      end
+      return ball._HitSound.Sounds.Dome
     end
   end)
   ---@param type string
   ---@param ball Ball
-  ---@param vol number
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Wood', function (type, ball, vol)
+  ---@param data table
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Wood',true, function (type, ball, data)
     if type == 'hit' then
-      if ball._HitSound.SoundWood then
-        ball._HitSound.SoundWood.volume = vol
-        ball._HitSound.SoundWood:Play()
-      end
-    elseif type == 'roll' then
-      if ball._RollSound.SoundWood then
-        ball._RollSound.SoundWood.volume = vol
-      end
+      return ball._HitSound.Sounds.Wood
+    elseif type == 'contact' then
+      return ball._RollSound.Sounds.Wood
+    elseif type == 'rollschange' then
+      return ball._RollSound.Sounds.Wood
     end
   end)
   ---@param type string
   ---@param ball Ball
-  ---@param vol number
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Stone', function (type, ball, vol)
+  ---@param data table
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Stone', true, function (type, ball, data)
     if type == 'hit' then
-      if ball._HitSound.SoundStone then
-        ball._HitSound.SoundStone.volume = vol
-        ball._HitSound.SoundStone:Play()
-      end
-    elseif type == 'roll' then
-      if ball._RollSound.SoundStone then
-        ball._RollSound.SoundStone.volume = vol
-      end
+      return ball._HitSound.Sounds.Stone
+    elseif type == 'contact' then
+      return ball._RollSound.Sounds.Stone
+    elseif type == 'rollschange' then
+      return ball._RollSound.Sounds.Stone
     end
   end)
   ---@param type string
   ---@param ball Ball
-  ---@param vol number
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('WoodOnlyHit', function (type, ball, vol)
+  ---@param data table
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('WoodOnlyHit', false, function (type, ball, data)
     if type == 'hit' then
-      local sound = ball._HitSound.SoundWood
-      if sound then
-        sound.volume = vol
-        if not sound.isPlaying then
-          sound:Play()
-        end
-      end
+      return ball._HitSound.Sounds.Wood
     end
   end)
   ---@param type string
   ---@param ball Ball
-  ---@param vol number
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('StoneOnlyHit', function (type, ball, vol)
+  ---@param data table
+  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('StoneOnlyHit', false, function (type, ball, data)
     if type == 'hit' then
-      local sound = ball._HitSound.SoundStone
-      if sound then
-        sound.volume = vol
-        if not sound.isPlaying then
-          sound:Play()
-        end
-      end
+      return ball._HitSound.Sounds.Stone
     end
   end)
 end

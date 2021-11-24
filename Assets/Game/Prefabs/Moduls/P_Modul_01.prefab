@@ -142,7 +142,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 1
   m_AutoControlActive: 1
-  m_SetForce: 1
+  m_EnableConstantForce: 1
   m_Layer: 5
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -159,6 +159,9 @@ MonoBehaviour:
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
   m_CustomLayer: 0
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
+  m_StaticConstantForce: 0
+  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!1 &1866175489965466434
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +311,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_SetForce: 1
+  m_EnableConstantForce: 1
   m_Layer: 5
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -325,6 +328,9 @@ MonoBehaviour:
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
   m_CustomLayer: 0
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
+  m_StaticConstantForce: 0
+  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!1 &5253768105185388426
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +640,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 0
   m_AutoMassCenter: 1
   m_AutoControlActive: 1
-  m_SetForce: 1
+  m_EnableConstantForce: 1
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -643,12 +649,15 @@ MonoBehaviour:
   - {fileID: -7402325741564597146, guid: ab9c1533a97446f4c9e0ffeaaf0c6a49, type: 3}
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
+  m_UseExistsSurface: 1
   m_ExtraRadius: 0.1
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
   m_CustomLayer: 0
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
+  m_StaticConstantForce: 0
+  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!1 &9052374040560591088
 GameObject:
   m_ObjectHideFlags: 0

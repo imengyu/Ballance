@@ -52,6 +52,7 @@ local BallRegStorage = {
   name = '',
   ball = nil, ---@type Ball
   rigidbody = nil, ---@type PhysicsObject
+  speedMeter = nil, ---@type SpeedMeter
 }
 
 ---球管理器
@@ -230,8 +231,6 @@ function BallManager:RegisterBall(name, gameObject)
     return
   end
 
-  gameObject:SetActive(true)
-
   --添加刚体组件
   local body = gameObject:AddComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
   --查找物理参数
@@ -260,8 +259,6 @@ function BallManager:RegisterBall(name, gameObject)
   body.ConstantForceDirectionRef = GamePlay.CamManager.CamDirectionRef
   body.EnableConstantForce = false
 
-  --添加刚体的接触事件，为球声音做准备
-  body.EnableCollisionEvent = true
   --添加速度计
   local speedMeter = gameObject:GetComponent(SpeedMeter) ---@type SpeedMeter
   if(speedMeter == nil) then
@@ -272,7 +269,6 @@ function BallManager:RegisterBall(name, gameObject)
   local gameLuaObjectHost = gameObject:GetComponent(GameLuaObjectHost) ---@type GameLuaObjectHost
   if(gameLuaObjectHost == nil) then
     gameLuaObjectHost = gameObject:AddComponent(GameLuaObjectHost) ---@type GameLuaObjectHost
-    gameLuaObjectHost.Enabled = true
   end
   local ball = gameLuaObjectHost:CreateClass() ---@type Ball
   if(ball == nil) then
@@ -303,27 +299,25 @@ function BallManager:RegisterBall(name, gameObject)
   --设置名称
   if(gameObject.name ~= name) then gameObject.name = name end
 
-  gameObject:SetActive(false)
-
   table.insert(self._private.registerBalls, {
     name = name,
     ball = ball,
-    rigidbody = body
+    rigidbody = body,
+    speedMeter = speedMeter
   })
 
   --初始化球声音
   self:_InitBallSounds(ball, speedMeter, body)
-
-  LuaTimer.Add(300, function ()
-    gameObject:SetActive(false)
-  end)
 end
 ---取消注册球 
 ---@param name string 球名称
 function BallManager:UnRegisterBall(name)
   local registerBalls = self._private.registerBalls
   for i = 1, #registerBalls do  
-    if(registerBalls[i].name == name) then
+    local ball = registerBalls[i]
+    if(ball.name == name) then
+      GamePlay.BallSoundManager:ForceDisableBallAllSound(ball.ball)
+      self:_UnInitBallSounds(ball.rigidbody, ball.speedMeter);
       table.remove(registerBalls, i)
       return true
     end 
@@ -763,15 +757,53 @@ end
 
 --#region 球声音方法
 
+---初始化球声音相关事件处理函数
 ---@param ball Ball
 ---@param speedMeter SpeedMeter
 ---@param body PhysicsObject
 function BallManager:_InitBallSounds(ball, speedMeter, body)
   speedMeter.Enabled = true
+  speedMeter.Callback = function ()
+    GamePlay.BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
+  end
 
+  body.CollisionEventCallSleep = 0.1
+  body.EnableCollisionEvent = true
 
-  
-  --TODO: 声音
+  ---碰撞事件
+  ---@param _self PhysicsObject
+  ---@param other PhysicsObject
+  ---@param contact_point_ws Vector3
+  ---@param speed Vector3
+  ---@param surf_normal Vector3
+  body.OnPhysicsCollision = function (_self, other, contact_point_ws, speed, surf_normal)
+    GamePlay.BallSoundManager:HandlerBallHitEvent(ball, speedMeter, _self, other, contact_point_ws, speed, surf_normal)
+  end
+  ---碰撞接触
+  ---@param _self PhysicsObject
+  ---@param other PhysicsObject
+  body.OnPhysicsContactOn = function (_self, other)
+    GamePlay.BallSoundManager:HandlerBallContract(ball, true, _self, other)
+  end
+  ---碰撞分离
+  ---@param _self PhysicsObject
+  ---@param other PhysicsObject
+  body.OnPhysicsContactOff = function (_self, other)
+    GamePlay.BallSoundManager:HandlerBallContract(ball, false, _self, other)
+  end
+
+end
+
+---删除球声音相关事件处理函数
+---@param body PhysicsObject
+---@param speedMeter SpeedMeter
+function BallManager:_UnInitBallSounds(body, speedMeter)
+  speedMeter.Enabled = false
+  speedMeter.Callback = nil
+  body.EnableCollisionEvent = false
+  body.OnPhysicsCollision = nil
+  body.OnPhysicsContactOn = nil
+  body.OnPhysicsContactOff = nil
 end
 
 --#endregion

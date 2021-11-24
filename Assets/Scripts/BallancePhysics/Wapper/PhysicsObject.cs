@@ -102,6 +102,9 @@ namespace BallancePhysics.Wapper
     [Tooltip("设置当前物体碰撞事件调用的休息时间（秒）")]
     [SerializeField]
     private float m_CollisionEventCallSleep = 0;
+    [Tooltip("设置当前物体接触事件调用的休息时间（秒）")]
+    [SerializeField]
+    private float m_ContractEventSleep = 0;
     [Tooltip("设置自定义层")]
     [SerializeField]
     private int m_CustomLayer = 0;
@@ -167,6 +170,8 @@ namespace BallancePhysics.Wapper
     public float ExtraRadius { get => m_ExtraRadius; set => m_ExtraRadius = value; }
     [LuaApiDescription("设置当前物体碰撞事件调用的休息时间（秒）")]
     public float CollisionEventCallSleep { get => m_CollisionEventCallSleep; set => m_CollisionEventCallSleep = value; }
+    [LuaApiDescription("设置当前物体接触事件调用的休息时间（秒）")]
+    public float ContractEventSleep { get => m_ContractEventSleep; set => m_ContractEventSleep = value; }
     [LuaApiDescription("设置自定义层")]
     public int CustomLayer { get => m_CustomLayer; set => m_CustomLayer = value; }
 
@@ -259,6 +264,7 @@ namespace BallancePhysics.Wapper
         currentEnvironment.AddPhysicsObject(Id, this);
 
         CreateComponents();
+        contactOnObjects.Clear();
 
         EnableGravity = m_EnableGravity;
         EnableCollisionEvent = m_EnableCollisionEvent;
@@ -279,6 +285,7 @@ namespace BallancePhysics.Wapper
         PhysicsApi.API.unphysicalize(currentEnvironment.Handle, Handle, silently);
         Handle = IntPtr.Zero;
         currentEnvironment.RemovePhysicsObject(this);
+        contactOnObjects.Clear();
       }
     }
     /// <summary>
@@ -685,6 +692,8 @@ namespace BallancePhysics.Wapper
     public delegate void OnPhysicsFrictionEventCallback(PhysicsObject self, PhysicsObject other, IntPtr friction_handle, Vector3 contact_point_ws, Vector3 speed, Vector3 surf_normal);
     [SLua.CustomLuaClass]
     public delegate void OnPhysicsCallback(PhysicsObject self);
+    [SLua.CustomLuaClass]
+    public delegate void OnPhysicsContactEventCallback(PhysicsObject self, PhysicsObject other);
 
     /// <summary>
     /// 物理对象进入幻影事件
@@ -711,10 +720,23 @@ namespace BallancePhysics.Wapper
     /// </summary>
     [LuaApiDescription("物理对象摩擦删除事件")]
     public OnPhysicsFrictionEventCallback OnPhysicsFrictionDeleted;
+    /// <summary>
+    /// 物理对象开始接触事件
+    /// </summary>
+    [LuaApiDescription("物理对象开始接触事件")]
+    public OnPhysicsContactEventCallback OnPhysicsContactOn;
+    /// <summary>
+    /// 物理对象停止接触事件
+    /// </summary>
+    [LuaApiDescription("物理对象停止接触事件")]
+    public OnPhysicsContactEventCallback OnPhysicsContactOff;
 
     private PhantomEventCallback phantomEventCallback = null;
     private CollisionEventCallback collisionEventCallback = null;
     private FrictionEventCallback frictionEventCallback = null;
+
+    private Dictionary<int, PhysicsObject> contactOnObjects = new Dictionary<int, PhysicsObject>();
+    private Dictionary<int, float> contactOnObjectSleepLock = new Dictionary<int, float>();
 
     private void OnCollisionEvent(IntPtr self, IntPtr other, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal) {
       if(self == Handle && OnPhysicsCollision != null) {
@@ -729,22 +751,53 @@ namespace BallancePhysics.Wapper
     }
     private void OnFrictionEvent(int create, IntPtr self, IntPtr other, IntPtr friction_handle, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal) {
       if(self == Handle) {
+        var obj = currentEnvironment.GetObjectById(GetIdByHandle(other));
         if(create > 0) {
+
+          //接触事件 
+          if(!contactOnObjects.ContainsKey(obj.Id)) {
+
+            //延时检测
+            if(contactOnObjectSleepLock.ContainsKey(obj.Id)) {
+              float time = contactOnObjectSleepLock[obj.Id];
+              contactOnObjectSleepLock[obj.Id] = Time.time;
+              if(Time.time - time < m_ContractEventSleep) 
+                return; //时间过短，此事件不生效
+            } else 
+              contactOnObjectSleepLock.Add(obj.Id, Time.time);
+
+            contactOnObjects.Add(obj.Id, obj);
+            if(OnPhysicsContactOn != null) 
+              OnPhysicsContactOn.Invoke(this, obj);
+          }
+
+          //摩擦事件
           if(OnPhysicsFrictionCreated != null) {
             OnPhysicsFrictionCreated.Invoke(
               this, 
-              currentEnvironment.GetObjectById(GetIdByHandle(other)),
+              obj,
               friction_handle,
               PhysicsApi.API.ptr_to_vec3(contact_point_ws),
               PhysicsApi.API.ptr_to_vec3(speed),
               PhysicsApi.API.ptr_to_vec3(surf_normal)
             );
-          }
+          } 
+
         } else {
+
+          //接触事件
+          if(contactOnObjects.ContainsKey(obj.Id)) {
+            contactOnObjects.Remove(obj.Id);
+
+            if(OnPhysicsContactOff != null) 
+              OnPhysicsContactOff.Invoke(this, obj);
+          }
+
+          //摩擦事件
           if(OnPhysicsFrictionDeleted != null) {
             OnPhysicsFrictionDeleted.Invoke(
               this, 
-              currentEnvironment.GetObjectById(GetIdByHandle(other)),
+              obj,
               friction_handle,
               PhysicsApi.API.ptr_to_vec3(contact_point_ws),
               PhysicsApi.API.ptr_to_vec3(speed),

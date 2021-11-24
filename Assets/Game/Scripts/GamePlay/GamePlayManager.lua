@@ -262,7 +262,7 @@ function GamePlayManager:_InitAndStart()
     Yield(WaitForSeconds(1))
 
     --模拟
-    self.GamePhysicsWorld.Simulating = true
+    self.GamePhysicsWorld.Simulate = true
     --开始
     self:_Start(true)
   end))
@@ -351,7 +351,7 @@ function GamePlayManager:PauseLevel(showPauseUI)
   self:_Stop(BallControlStatus.FreeMode)
 
   --停止模拟
-  self.GamePhysicsWorld.Simulating = false
+  self.GamePhysicsWorld.Simulate = false
 
   Game.Mediator:DispatchGlobalEvent('GAME_PAUSE', '*', {})
 
@@ -365,7 +365,7 @@ end
 function GamePlayManager:ResumeLevel() 
 
   --停止继续
-  self.GamePhysicsWorld.Simulating = true
+  self.GamePhysicsWorld.Simulate = true
 
   Game.Mediator:DispatchGlobalEvent('GAME_RESUME', '*', {})
 

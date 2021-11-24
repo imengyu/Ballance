@@ -1,6 +1,7 @@
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local Table = require('Table')
+local Log = Ballance2.Utils.Log
 
 ---Ballance 基础球定义
 ---可继承此类来重写你自己的球
@@ -40,10 +41,9 @@ function Ball:new()
       Stone = '',
       Wood = '',
     },
+    Sounds = {}, --请勿设置此字段
     MaxSpeed = 15,
     MinSpeed = 2,
-    ---声音播放延时，多个声音一起播放时如果未到达延时，则后面的声音不会播放
-    SoundDelay = 10
   }
   self._RollSoundLockTick = 0
   self._RollSound = {
@@ -53,10 +53,9 @@ function Ball:new()
       Stone = '',
       Wood = '',
     },
+    Sounds = {}, --请勿设置此字段
     MaxSpeed = 0.35,
     MinSpeed = 0.01,
-    ---声音播放延时，多个声音一起播放时如果未到达延时，则后面的声音不会播放
-    SoundDelay = 8,
   }
 end
 
@@ -88,11 +87,15 @@ function Ball:_InitPeices()
         body = self._PiecesPhysCallback(child.gameObject, self._PiecesPhysicsData)
       else
         body = child.gameObject:AddComponent(PhysicsObject)
-        body.Mass = self._PiecesPhysicsData.Mass
-        body.Elasticity = self._PiecesPhysicsData.Elasticity
-        body.Friction = self._PiecesPhysicsData.Friction
-        body.LinearSpeedDamping = self._PiecesPhysicsData.LinearDamp
-        body.RotSpeedDamping = self._PiecesPhysicsData.RotDamp
+        if(self._PiecesPhysicsData) then
+          body.Mass = self._PiecesPhysicsData.Mass
+          body.Elasticity = self._PiecesPhysicsData.Elasticity
+          body.Friction = self._PiecesPhysicsData.Friction
+          body.LinearSpeedDamping = self._PiecesPhysicsData.LinearDamp
+          body.RotSpeedDamping = self._PiecesPhysicsData.RotDamp
+        else
+          Log.W('Ball '..self.gameObject.name, 'No _PiecesPhysCallback or _PiecesPhysicsData found for this ball')
+        end
       end
       body.DoNotAutoCreateAtAwake = true
       table.insert(data.bodys, body);
@@ -128,8 +131,13 @@ function Ball:_InitSounds()
   local SoundManager = Game.SoundManager
   for key, value in pairs(self._HitSound.Names) do
     if type(value) == 'string' and value ~= '' then
-      local sound = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSound'..key)
-      self._HitSound['Sound'..key] = sound
+      local sound2 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSound'..key..'2')
+      local sound1 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSound'..key..'1')
+      self._HitSound.Sounds[key] = {
+        isSound1 = true,
+        sound2 = sound2,
+        sound1 = sound1,
+      }
     end
   end
   for key, value in pairs(self._RollSound.Names) do
@@ -137,31 +145,16 @@ function Ball:_InitSounds()
       local sound = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, true, true, 'BallSound'..key)
       sound.loop = true
       sound.volume = 0
-      self._RollSound['Sound'..key] = sound
+      self._RollSound.Sounds[key] = sound
     end
   end
 end
 
-function Ball:Update()
-  if self._RollSoundLockTick > 0 then
-    self._RollSoundLockTick = self._RollSoundLockTick - 1
-  end
-end
 ---激活时
 function Ball:Active()
-  for key, value in pairs(self._RollSound.Names) do
-    if type(value) == 'string' and value ~= '' then
-      self._RollSound['Sound'..key]:Play()
-    end
-  end
 end
 ---取消激活时
 function Ball:Deactive()
-  for key, value in pairs(self._RollSound.Names) do
-    if type(value) == 'string' and value ~= '' then
-      self._RollSound['Sound'..key]:Stop()
-    end
-  end
 end
 ---获取碎片
 function Ball:GetPieces()

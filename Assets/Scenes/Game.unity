@@ -545,7 +545,7 @@ MonoBehaviour:
   DebugMode: 1
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugEnableLuaDebugger: 0
+  DebugEnableLuaDebugger: 1
   DebugType: 2
   DebugInitPackages:
   - Enable: 1
@@ -2224,7 +2224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -49.099915, y: -2.5999756}
+  m_AnchoredPosition: {x: -49.099854, y: -2.5999756}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &935015850

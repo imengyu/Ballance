@@ -37,7 +37,7 @@ namespace Ballance2.Sys.Bridge.Lua
       originalRequire = fun.cast<RequireDelegate>();
     }
 
-    private static string[] internalLuaLib = { "string","utf8","table","math","os","debug" };
+    private static string[] internalLuaLib = { "string","utf8","table","math","os","debug", "socket.core", "socket", "table", "string", "coroutine" };
     private static string[] internalLuaFile = { "json","classic","debugger","vscode-debuggee","mobdebug","dkjson", "Table" };
 
     /// <summary>
