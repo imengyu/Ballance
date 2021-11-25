@@ -23,6 +23,7 @@ local GameObject = UnityEngine.GameObject
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local MeshFilter = UnityEngine.MeshFilter
+local BoxCollider = UnityEngine.BoxCollider
 local MeshCollider = UnityEngine.MeshCollider
 local Renderer = UnityEngine.Renderer
 
@@ -420,6 +421,7 @@ function LevelBuilder:_LoadLevelInternal()
             if meshFilter ~= nil and meshFilter.mesh  ~= nil then
               go.transform:SetParent(floorStatic.transform)
               go.tag = floor.name
+              go:AddComponent(BoxCollider)
               local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
               body.DoNotAutoCreateAtAwake = true
               body.Fixed = true

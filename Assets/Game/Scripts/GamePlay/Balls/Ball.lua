@@ -108,7 +108,8 @@ function Ball:_InitPeices()
         sound.minDistance = 10
         sound.dopplerLevel = 0
         sound.volume = 1
-        body.AddContactListener = true
+        body.CollisionEventCallSleep = 0.3
+        body.EnableCollisionEvent = true
         ---@param this PhysicsObject
         ---@param other PhysicsObject
         ---@param contact_point_ws Vector3

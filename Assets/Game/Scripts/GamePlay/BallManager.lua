@@ -99,6 +99,8 @@ function BallManager:new()
       right = 0,
       forward = 0,
       back = 0,
+      up = 0,
+      down = 0,
     },
     keyListener = nil, ---@type KeyListener
     ---控制按键设置
@@ -254,10 +256,11 @@ function BallManager:RegisterBall(name, gameObject)
   body.RotSpeedDamping = physicsData.RotDamp
   body.LinearSpeedDamping = physicsData.LinearDamp
   body.EnableCollision = true
+  body.AutoMassCenter = false
 
   --设置恒力
   body.ConstantForceDirectionRef = GamePlay.CamManager.CamDirectionRef
-  body.EnableConstantForce = false
+  body.EnableConstantForce = true
 
   --添加速度计
   local speedMeter = gameObject:GetComponent(SpeedMeter) ---@type SpeedMeter
@@ -698,14 +701,19 @@ end
 ---添加球推动方向
 ---@param t BallPushType 推动方向
 function BallManager:AddBallPush(t)
+  local force = self.CurrentBall._Force
   if(t == BallPushType.Back) then
-    self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.back)
+    self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.back * force)
   elseif(t == BallPushType.Forward) then
-    self._private.currentBallPushIds.forward = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.forward)
+    self._private.currentBallPushIds.forward = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.forward * force)
   elseif(t == BallPushType.Left) then
-    self._private.currentBallPushIds.left = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.left)
+    self._private.currentBallPushIds.left = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.left * force)
   elseif(t == BallPushType.Right) then
-    self._private.currentBallPushIds.right = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.right)
+    self._private.currentBallPushIds.right = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.right * force)
+  elseif(t == BallPushType.Up) then
+    self._private.currentBallPushIds.up = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.up * self.CurrentBall._UpForce)
+  elseif(t == BallPushType.Down) then
+    self._private.currentBallPushIds.down = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.down * self.CurrentBall._DownForce)
   end
 end
 ---去除球推动方向
@@ -730,6 +738,16 @@ function BallManager:RemoveBallPush(t)
     if self._private.currentBallPushIds.right ~= 0 then
       self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.right)
       self._private.currentBallPushIds.right = 0
+    end
+  elseif(t == BallPushType.Up) then
+    if self._private.currentBallPushIds.up ~= 0 then
+      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.up)
+      self._private.currentBallPushIds.up = 0
+    end
+  elseif(t == BallPushType.Down) then
+    if self._private.currentBallPushIds.down ~= 0 then
+      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.down)
+      self._private.currentBallPushIds.down = 0
     end
   end
 end

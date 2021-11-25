@@ -11,6 +11,11 @@ function BallSoundManager:new()
   self._CustomSoundLayer = {}
   self._CustomSoundLayerHandlers = {}
   self._CustomSoundLayerRollHandlers = {}
+
+  --正在播放的滚动声音组
+  self._CurrentRollSoundPitch = 0
+  self._CurrentRollSoundVolume = 0
+  self._CurrentPlayingRollSounds = {}
 end
 
 ---通过名称获取自定义的声音组
@@ -70,10 +75,10 @@ function BallSoundManager:HandlerBallHitEvent(ball, speedMeter, body, other, con
 
   --使用速度计算声音音量
   local vol = (voc - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)
+  local sound = nil
 
   if ball._HitSound.Sounds.All == nil then
 
-    local sound = nil
     local layer = other.CustomLayer
     if layer > 31 then
       --判断自定义声音层
@@ -81,45 +86,40 @@ function BallSoundManager:HandlerBallHitEvent(ball, speedMeter, body, other, con
       if type(customHandler) == 'function' then
         sound = customHandler('hit', ball, { vol, speedMeter, body, other, contact_point_ws, speed, surf_normal })
       end
-      return
-    end
+    else
+      --判断路面层
+      layer = other.Layer
 
-    --判断路面层
-    layer = other.Layer
-
-    if layer == GameLayers.LAYER_PHY_FLOOR then
-      sound = ball._HitSound.Sounds.Stone
-    elseif layer == GameLayers.LAYER_PHY_FLOOR_WOODS then
-      sound = ball._HitSound.Sounds.Wood
-    elseif layer == GameLayers.LAYER_PHY_FLOOR_RAIL then
-      sound = ball._HitSound.Sounds.Metal
-    end
-
-    if sound then
-      --这里是切换了两个sound的播放，因为碰撞声音很可能
-      --一个没有播放完成另一个就来了
-      sound.isSound1 = ~sound.isSound1
-      if sound.isSound1 then
-        sound.sound1.volume = vol
-        if not sound.sound1.isPlaying then
-          sound.sound1:Play() 
-        end
-      else
-        sound.sound2.volume = vol
-        if not sound.sound2.isPlaying then
-          sound.sound2:Play() 
-        end
+      if layer == GameLayers.LAYER_PHY_FLOOR then
+        sound = ball._HitSound.Sounds.Stone
+      elseif layer == GameLayers.LAYER_PHY_FLOOR_WOODS then
+        sound = ball._HitSound.Sounds.Wood
+      elseif layer == GameLayers.LAYER_PHY_FLOOR_RAIL then
+        sound = ball._HitSound.Sounds.Metal
       end
     end
   else
-    local sound = ball._HitSound.Sounds.All
-    if sound then
-      sound.volume = vol
-      if not sound.isPlaying then
-        sound:Play() 
+    sound = ball._HitSound.Sounds.All
+  end
+
+  if sound then
+    --这里是切换了两个sound的播放，因为碰撞声音很可能
+    --一个没有播放完成另一个就来了
+    if sound.isSound1 then
+      sound.isSound1 = false
+      sound.sound1.volume = vol
+      if not sound.sound1.isPlaying then
+        sound.sound1:Play() 
+      end
+    else
+      sound.isSound1 = true
+      sound.sound2.volume = vol
+      if not sound.sound2.isPlaying then
+        sound.sound2:Play() 
       end
     end
   end
+
 end
 
 ---球接触声音处理
@@ -134,6 +134,8 @@ function BallSoundManager:HandlerBallContract(ball, isOn, body, other)
   end
 
   local sound = nil ---@type AudioSource
+  local soundId = 0 ---@type AudioSource
+
   if ball._RollSound.Sounds.All == nil then
 
     local layer = other.CustomLayer
@@ -141,28 +143,35 @@ function BallSoundManager:HandlerBallContract(ball, isOn, body, other)
       --判断自定义声音层
       local customHandler = self._CustomSoundLayerHandlers[layer]
       if type(customHandler) == 'function' then
+        soundId = layer
         sound = customHandler('contact', ball, { isOn, body, other })
       end
-      return
-    end
-
-    --判断路面层
-    layer = other.Layer
-    if layer == GameLayers.LAYER_PHY_FLOOR then
-      sound = ball._RollSound.Sounds.Stone
-    elseif layer == GameLayers.LAYER_PHY_FLOOR_WOODS then
-      sound = ball._RollSound.Sounds.Wood
-    elseif layer == GameLayers.LAYER_PHY_FLOOR_RAIL then
-      sound = ball._RollSound.Sounds.Metal   
+    else
+      --判断路面层
+      layer = other.Layer
+      if layer == GameLayers.LAYER_PHY_FLOOR then
+        sound = ball._RollSound.Sounds.Stone
+      elseif layer == GameLayers.LAYER_PHY_FLOOR_WOODS then
+        sound = ball._RollSound.Sounds.Wood
+      elseif layer == GameLayers.LAYER_PHY_FLOOR_RAIL then
+        sound = ball._RollSound.Sounds.Metal   
+      end
+      soundId = layer
     end
   elseif ball._RollSound.Sounds.All then
     sound = ball._RollSound.Sounds.All
+    soundId = 0
   end   
   
   if sound then
     if isOn then
+      --加入正在播放声音中
+      self._CurrentPlayingRollSounds[soundId] = sound
+      sound.pitch = self._CurrentRollSoundPitch
+      sound.volume = self._CurrentRollSoundVolume
       sound:Play()
     else
+      self._CurrentPlayingRollSounds[soundId] = nil
       sound:Pause()
     end
   end
@@ -177,33 +186,11 @@ function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   local vol = (speedMeter.NowAbsoluteSpeed - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed);
   local pit = 0.5 + (speedMeter.NowAbsoluteSpeed * 0.01);
 
-  if ball._RollSound.Sounds.All then
-    ball._RollSound.Sounds.All.volume = vol
-    ball._RollSound.Sounds.All.pitch = pit
-  else
-    if ball._RollSound.Sounds.Stone then
-      ball._RollSound.Sounds.Stone.volume = vol
-      ball._RollSound.Sounds.Stone.pitch = pit
-    end
-    if ball._RollSound.Sounds.Wood then
-      ball._RollSound.Sounds.Wood.volume = vol
-      ball._RollSound.Sounds.Wood.pitch = pit
-    end
-    if ball._RollSound.Sounds.Metal then
-      ball._RollSound.Sounds.Metal.volume = vol
-      ball._RollSound.Sounds.Metal.pitch = pit
-    end
-
-    --更新自定义声音层
-    for _, value in ipairs(self._CustomSoundLayerRollHandlers) do
-      local customHandler = self._CustomSoundLayerHandlers[value]
-      if type(customHandler) == 'function' then
-        local sound = customHandler('rollschange', ball, { vol, pit })
-        if sound then
-          sound.volume = vol
-          sound.pitch = pit
-        end
-      end
+  --将音量设置到正在播放的声音中
+  for _, value in pairs(self._CurrentPlayingRollSounds) do
+    if value then
+      value.volume = vol
+      value.pitch = pit
     end
   end
 end
@@ -211,13 +198,12 @@ end
 ---强制禁止指定球所有声音
 ---@param ball Ball 球
 function BallSoundManager:ForceDisableBallAllSound(ball) 
-  if ball._RollSound.Sounds.All == nil then
-    if ball._RollSound.Sounds.Stone then ball._RollSound.Sounds.Stone:Stop() end
-    if ball._RollSound.Sounds.Wood then ball._RollSound.Sounds.Wood:Stop() end
-    if ball._RollSound.Sounds.Metal then ball._RollSound.Sounds.Metal:Stop()  end
-  else
-    ball._RollSound.Sounds.All:Stop() 
-  end   
+  for i, value in pairs(self._CurrentPlayingRollSounds) do
+    if value then
+      value:Stop()
+      self._CurrentPlayingRollSounds[i] = nil
+    end
+  end
 end
 
 function CreateClass:BallSoundManager() 

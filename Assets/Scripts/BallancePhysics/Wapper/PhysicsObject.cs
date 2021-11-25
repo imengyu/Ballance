@@ -544,12 +544,12 @@ namespace BallancePhysics.Wapper
     }
 
     private void doApplyConstantForce() {
-      Transform dref = ConstantForceDirectionRef == null ? transform : ConstantForceDirectionRef;
+      Transform dref = ConstantForceDirectionRef;
       foreach(var f in m_ConstantForces) {
-        Impluse(dref.TransformVector(f.Value) * Time.fixedDeltaTime);
+        Impluse((ConstantForceDirectionRef == null ? f.Value : dref.TransformVector(f.Value)));
       }
       if(m_StaticConstantForce > 0)
-        Impluse(dref.TransformVector(m_StaticConstantForceDirection) * m_StaticConstantForce * Time.fixedDeltaTime);
+        Impluse((ConstantForceDirectionRef == null ? m_StaticConstantForceDirection : dref.TransformVector(m_StaticConstantForceDirection)) * m_StaticConstantForce);
     }
 
     /// <summary>
@@ -561,7 +561,7 @@ namespace BallancePhysics.Wapper
     [LuaApiParamDescription("pos", "推动施加力的坐标（世界坐标系）")]
     [LuaApiParamDescription("impluse", "力的方向和大小（kg*m/s, 世界坐标系）")]
     public void Impluse(Vector3 impluse) {
-      Impluse(Vector3.zero, impluse);
+      Impluse(transform.position, impluse);
     }
 
     /// <summary>

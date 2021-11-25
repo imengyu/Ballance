@@ -38,7 +38,7 @@ CamManager = ClassicObject:extend()
 function CamManager:new()
   self._CameraRotateTime = 0.5
   self._CameraRotateUpTime = 0.8
-  self._CameraNormalX = -14
+  self._CameraNormalX = 14
   self._CameraNormalY = 22
   self._CameraSpaceY = 60
   self._CameraSpaceX = -10
@@ -74,7 +74,7 @@ end
 
 function CamManager:Start()
   self.CamFollow = self._CameraHost:GetComponent(CamFollow) ---@type CamFollow
-  self.transform.localPosition = Vector3(self._CameraNormalX, self._CameraNormalY, 0)
+  self.transform.localPosition = Vector3(0, self._CameraNormalY, -self._CameraNormalX)
   self.transform:LookAt(Vector3.zero)
   self.CamDirectionRef = self._CameraHost.transform
 
@@ -154,10 +154,10 @@ end
 ---通过旋转方向获取目标角度
 ---@param type number CamRotateType
 function CamManager:GetRotateDegreeByType(type)
-  if type == CamRotateType.North then return 0
-  elseif type == CamRotateType.East then return 90
-  elseif type == CamRotateType.South then return 180
-  elseif type == CamRotateType.West then return 270
+  if type == CamRotateType.North then return 90
+  elseif type == CamRotateType.East then return 180
+  elseif type == CamRotateType.South then return 270
+  elseif type == CamRotateType.West then return 0
   end
   return 0
 end

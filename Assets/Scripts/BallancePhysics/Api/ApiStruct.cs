@@ -30,9 +30,7 @@ namespace BallancePhysics.Api
     public fn_create_quat _create_quat;
     public fn_destroy_point destroy_point;
     public fn_destroy_quat destroy_quat;
-    public fn_get_point_x get_point_x;
-    public fn_get_point_y get_point_y;
-    public fn_get_point_z get_point_z;
+    public fn_get_point get_point;
     public fn_get_pi get_pi;
     public fn_get_pi2 get_pi2;
     public fn_physics_recheck_collision_filter physics_recheck_collision_filter;
@@ -53,10 +51,7 @@ namespace BallancePhysics.Api
     public fn_set_physics_force_value set_physics_force_value;
     public fn_set_physics_fixed_constraint set_physics_fixed_constraint;
     public fn_physics_get_id physics_get_id;
-    public fn_get_quat_x get_quat_x;
-    public fn_get_quat_y get_quat_y;
-    public fn_get_quat_z get_quat_z;
-    public fn_get_quat_w get_quat_w;
+    public fn_get_quat get_quat;
     private fn_delete_raycast_result delete_raycast_result;
     private fn_surface_exist_by_name _surface_exist_by_name;
 
@@ -134,11 +129,7 @@ namespace BallancePhysics.Api
     public void physics_get_speed_vec(IntPtr body, out Vector3 speed_ws_out) {
       var pt_speed_ws_out = create_point(Vector3.zero);
       _physics_get_speed_vec(body, pt_speed_ws_out);
-      speed_ws_out = new Vector3(
-        get_point_x(pt_speed_ws_out),
-        get_point_y(pt_speed_ws_out),
-        get_point_z(pt_speed_ws_out)
-      );
+      speed_ws_out = ptr_to_vec3(pt_speed_ws_out);
       destroy_point(pt_speed_ws_out);
     }
     
@@ -146,11 +137,7 @@ namespace BallancePhysics.Api
     public void physics_get_rot_speed(IntPtr body, out Vector3 normized_axis_cs_out) {
       var pt_normized_axis_cs_out = create_point(Vector3.zero);
       _physics_get_rot_speed(body, pt_normized_axis_cs_out);
-      normized_axis_cs_out = new Vector3(
-        get_point_x(pt_normized_axis_cs_out),
-        get_point_y(pt_normized_axis_cs_out),
-        get_point_z(pt_normized_axis_cs_out)
-      );
+      normized_axis_cs_out = ptr_to_vec3(pt_normized_axis_cs_out);
       destroy_point(pt_normized_axis_cs_out);
     }
 
@@ -398,7 +385,24 @@ namespace BallancePhysics.Api
     }
 
     public Vector3 ptr_to_vec3(IntPtr p) {
-      return new Vector3(get_point_x(p), get_point_y(p), get_point_z(p));
+      
+      IntPtr buf = Marshal.AllocHGlobal(Marshal.SizeOf<float>() * 3);
+      get_point(p, buf);
+      float[] bufOut = new float[3];
+      Marshal.Copy(buf, bufOut, 0, 3);
+      Marshal.FreeHGlobal(buf);
+
+      return new Vector3(bufOut[0], bufOut[1], bufOut[2]);
+    }
+    public Quaternion ptr_to_quat(IntPtr p) {
+      
+      IntPtr buf = Marshal.AllocHGlobal(Marshal.SizeOf<float>() * 4);
+      get_quat(p, buf);
+      float[] bufOut = new float[4];
+      Marshal.Copy(buf, bufOut, 0, 4);
+      Marshal.FreeHGlobal(buf);
+
+      return new Quaternion(bufOut[0], bufOut[1], bufOut[2], bufOut[3]);
     }
 
     //获取所有函数指针
@@ -425,9 +429,9 @@ namespace BallancePhysics.Api
       _create_quat = Marshal.GetDelegateForFunctionPointer<fn_create_quat>(apiArray[i++]);
       destroy_point = Marshal.GetDelegateForFunctionPointer<fn_destroy_point>(apiArray[i++]);
       destroy_quat = Marshal.GetDelegateForFunctionPointer<fn_destroy_quat>(apiArray[i++]);
-      get_point_x = Marshal.GetDelegateForFunctionPointer<fn_get_point_x>(apiArray[i++]);
-      get_point_y = Marshal.GetDelegateForFunctionPointer<fn_get_point_y>(apiArray[i++]);
-      get_point_z= Marshal.GetDelegateForFunctionPointer<fn_get_point_z>(apiArray[i++]);
+      get_point = Marshal.GetDelegateForFunctionPointer<fn_get_point>(apiArray[i++]);
+      i++;
+      i++;
       get_pi = Marshal.GetDelegateForFunctionPointer<fn_get_pi>(apiArray[i++]);
       get_pi2 = Marshal.GetDelegateForFunctionPointer<fn_get_pi2>(apiArray[i++]);
       _physicalize = Marshal.GetDelegateForFunctionPointer<fn_physicalize>(apiArray[i++]);
@@ -485,10 +489,7 @@ namespace BallancePhysics.Api
       _raycasting_one = Marshal.GetDelegateForFunctionPointer<fn_raycasting_one>(apiArray[i++]);
       _physics_is_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_phantom>(apiArray[i++]);
       _motion_controller_set_target_pos = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_target_pos>(apiArray[i++]);
-      get_quat_x = Marshal.GetDelegateForFunctionPointer<fn_get_quat_x>(apiArray[i++]);
-      get_quat_y = Marshal.GetDelegateForFunctionPointer<fn_get_quat_y>(apiArray[i++]);
-      get_quat_z = Marshal.GetDelegateForFunctionPointer<fn_get_quat_z>(apiArray[i++]);
-      get_quat_w = Marshal.GetDelegateForFunctionPointer<fn_get_quat_w>(apiArray[i++]);
+      get_quat = Marshal.GetDelegateForFunctionPointer<fn_get_quat>(apiArray[i++]);
       
       InitSuccess = true;
     }

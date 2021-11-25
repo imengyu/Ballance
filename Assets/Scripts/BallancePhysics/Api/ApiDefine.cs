@@ -121,11 +121,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate float fn_get_pi2();
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_point_x(IntPtr qt);
-  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_point_y(IntPtr qt);
-  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_point_z(IntPtr qt);
+  public delegate float fn_get_point(IntPtr qt, IntPtr buf);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_delete_raycast_result(IntPtr rs);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -159,11 +155,5 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_motion_controller_set_target_pos(IntPtr controller, IntPtr pos_ws);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_quat_z(IntPtr qt);
-  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_quat_x(IntPtr qt);
-  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_quat_y(IntPtr qt);
-  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate float fn_get_quat_w(IntPtr qt);
+  public delegate float fn_get_quat(IntPtr qt, IntPtr buf);
 }
