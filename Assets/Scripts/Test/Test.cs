@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using BallancePhysics.Wapper;
 
 public class Test : MonoBehaviour {
 
@@ -161,12 +162,12 @@ public class Test : MonoBehaviour {
         go.transform.rotation = Random.rotation;
 
         //发射数来的球沿着摄像机到鼠标点击的方向进行移动
-        //PhysicsBody ball = go.GetComponent<PhysicsBody>();   
-        //StartCoroutine(LateAddForce(ball, shootForce * ray.direction));
+        PhysicsObject ball = go.GetComponent<PhysicsObject>();   
+        StartCoroutine(LateAddForce(ball, shootForce * ray.direction));
     }
 
-    //private IEnumerator LateAddForce(PhysicsBody ball, Vector3 f) {
-    //  yield return new WaitForSeconds(0.1f);
-      //ball.ApplyLinearImpulse(f);
-    //}
+    private IEnumerator LateAddForce(PhysicsObject ball, Vector3 f) { 
+      yield return new WaitForSeconds(0.1f);
+      ball.Impluse(f);
+    }
 }
