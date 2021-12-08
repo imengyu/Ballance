@@ -793,14 +793,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900936538}
-  m_LocalRotation: {x: 0.124005795, y: 0.79736567, z: -0.15431784, w: 0.5701022}
-  m_LocalPosition: {x: -32.2, y: 13.4, z: 11}
+  m_LocalRotation: {x: 0.07943483, y: 0.91851366, z: -0.18133032, w: 0.34226033}
+  m_LocalPosition: {x: -19.1, y: 13.4, z: 40.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 22.798, y: 109.145, z: 1.355}
+  m_LocalEulerAnglesHint: {x: 22.798, y: 139.4, z: 1.355}
 --- !u!114 &900936542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1639,7 +1639,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 0
   m_Fixed: 1
@@ -1648,7 +1648,7 @@ MonoBehaviour:
   m_AutoMassCenter: 1
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
-  m_Layer: -1
+  m_Layer: 11
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
