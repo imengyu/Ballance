@@ -257,6 +257,7 @@ namespace Ballance2.Sys.Bridge.LuaWapper
 
       //初始化Lua引入参数
       InitLuaInternalVars();
+      InitLuaVars(); //初始化引入参数
 
       return self;
     }
@@ -391,7 +392,6 @@ namespace Ballance2.Sys.Bridge.LuaWapper
     {
       if (CreateClass() == null)
         return false;
-      InitLuaVars(); //初始化引入参数
       InitLuaEvents();
       //调用其他Lua初始化脚本
 

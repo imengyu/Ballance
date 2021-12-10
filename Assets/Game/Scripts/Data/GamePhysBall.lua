@@ -4,6 +4,7 @@
 ---@field Elasticity number
 ---@field Mass number
 ---@field LinearDamp number
+---@field Layer number
 ---@field RotDamp number
 ---@field PiecesMinForce number
 ---@field PiecesMaxForce number
@@ -36,6 +37,7 @@ GamePhysBall = {
     UpForce = 0.6,
     DownForce = 0.3,
     BallRadius = 2,
+    Layer = GameLayers.LAYER_PHY_BALL,
   },
   BallStone = {
     Force = 0.92,
@@ -56,6 +58,7 @@ GamePhysBall = {
     UpForce = 1.9,
     DownForce = 0.05,
     BallRadius = 2,
+    Layer = GameLayers.LAYER_PHY_BALL,
   },
   BallPaper = {
     Force = 0.065,
@@ -74,6 +77,7 @@ GamePhysBall = {
     UpForce = 0.08,
     DownForce = 0.01,
     BallRadius = 0,
+    Layer = GameLayers.LAYER_PHY_BALL,
   },
 }
 

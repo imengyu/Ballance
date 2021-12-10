@@ -245,7 +245,7 @@ function BallManager:RegisterBall(name, gameObject)
   --设置物理参数
   body.Fixed = false
   body.Mass = physicsData.Mass
-  if physicsData.BallRadius >= 0 then
+  if physicsData.BallRadius > 0 then
     body.UseBall = true
     body.BallRadius = physicsData.BallRadius
   else
@@ -255,6 +255,7 @@ function BallManager:RegisterBall(name, gameObject)
   body.Elasticity = physicsData.Elasticity
   body.RotSpeedDamping = physicsData.RotDamp
   body.LinearSpeedDamping = physicsData.LinearDamp
+  body.Layer = physicsData.Layer
   body.EnableCollision = true
   body.AutoMassCenter = false
 
@@ -788,26 +789,17 @@ function BallManager:_InitBallSounds(ball, speedMeter, body)
   body.CollisionEventCallSleep = 0.1
   body.EnableCollisionEvent = true
 
-  ---碰撞事件
-  ---@param _self PhysicsObject
-  ---@param other PhysicsObject
-  ---@param contact_point_ws Vector3
-  ---@param speed Vector3
-  ---@param surf_normal Vector3
-  body.OnPhysicsCollision = function (_self, other, contact_point_ws, speed, surf_normal)
-    GamePlay.BallSoundManager:HandlerBallHitEvent(ball, speedMeter, _self, other, contact_point_ws, speed, surf_normal)
-  end
   ---碰撞接触
   ---@param _self PhysicsObject
   ---@param other PhysicsObject
-  body.OnPhysicsContactOn = function (_self, other)
-    GamePlay.BallSoundManager:HandlerBallContract(ball, true, _self, other)
+  body.OnPhysicsContactOn = function (_self, other, contact_point_ws, speed, surf_normal)
+    GamePlay.BallSoundManager:HandlerBallContract(ball, true, _self, other, contact_point_ws, speed, surf_normal)
   end
   ---碰撞分离
   ---@param _self PhysicsObject
   ---@param other PhysicsObject
-  body.OnPhysicsContactOff = function (_self, other)
-    GamePlay.BallSoundManager:HandlerBallContract(ball, false, _self, other)
+  body.OnPhysicsContactOff = function (_self, other, contact_point_ws, speed, surf_normal)
+    GamePlay.BallSoundManager:HandlerBallContract(ball, false, _self, other, contact_point_ws, speed, surf_normal)
   end
 
 end

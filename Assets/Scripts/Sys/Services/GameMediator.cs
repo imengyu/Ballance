@@ -188,7 +188,6 @@ namespace Ballance2.Sys.Services
             }
             else
             {
-                Log.W(TAG, "事件 {0} 未注册", evtName);
                 GameErrorChecker.LastError = GameError.NotRegister;
                 return false;
             }
@@ -412,10 +411,7 @@ namespace Ballance2.Sys.Services
             if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
                 return DispatchGlobalEvent(gameEvent, handlerFilter, pararms);
             else
-            {
-                Log.W(TAG, "事件 {0} 未注册", evtName);
                 GameErrorChecker.LastError = GameError.NotRegister;
-            }
             return handledCount;
         }
 

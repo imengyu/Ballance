@@ -56,13 +56,12 @@ end
 
 ---碰撞声音处理
 ---@param ball Ball
----@param speedMeter SpeedMeter
 ---@param body PhysicsObject
 ---@param other PhysicsObject
 ---@param contact_point_ws Vector3
 ---@param speed Vector3
 ---@param surf_normal Vector3
-function BallSoundManager:HandlerBallHitEvent(ball, speedMeter, body, other, contact_point_ws, speed, surf_normal)
+function BallSoundManager:HandlerBallHitEvent(ball, body, other, contact_point_ws, speed, surf_normal)
   if other == nil then
     return
   end
@@ -76,6 +75,7 @@ function BallSoundManager:HandlerBallHitEvent(ball, speedMeter, body, other, con
   --使用速度计算声音音量
   local vol = (voc - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)
   local sound = nil
+  local soundId = 0
 
   if ball._HitSound.Sounds.All == nil then
 
@@ -84,7 +84,8 @@ function BallSoundManager:HandlerBallHitEvent(ball, speedMeter, body, other, con
       --判断自定义声音层
       local customHandler = self._CustomSoundLayerHandlers[layer]
       if type(customHandler) == 'function' then
-        sound = customHandler('hit', ball, { vol, speedMeter, body, other, contact_point_ws, speed, surf_normal })
+        soundId = layer
+        sound = customHandler('hit', ball, { vol, body, other, contact_point_ws, speed, surf_normal })
       end
     else
       --判断路面层
@@ -97,12 +98,14 @@ function BallSoundManager:HandlerBallHitEvent(ball, speedMeter, body, other, con
       elseif layer == GameLayers.LAYER_PHY_FLOOR_RAIL then
         sound = ball._HitSound.Sounds.Metal
       end
+      soundId = layer
     end
   else
+    soundId = 0
     sound = ball._HitSound.Sounds.All
   end
 
-  if sound then
+  if sound and self._CurrentPlayingRollSounds[soundId] ~= nil then
     --这里是切换了两个sound的播放，因为碰撞声音很可能
     --一个没有播放完成另一个就来了
     if sound.isSound1 then
@@ -126,15 +129,20 @@ end
 ---@param ball Ball
 ---@param isOn boolean
 ---@param body PhysicsBody
----@param other PhysicsBody
-function BallSoundManager:HandlerBallContract(ball, isOn, body, other)
+---@param other PhysicsObject
+---@param contact_point_ws Vector3
+---@param speed Vector3
+---@param surf_normal Vector3
+function BallSoundManager:HandlerBallContract(ball, isOn, body, other, contact_point_ws, speed, surf_normal)
 
   if other == nil then
     return
   end
 
+  self:HandlerBallHitEvent(ball,  body, other, contact_point_ws, speed, surf_normal);
+
   local sound = nil ---@type AudioSource
-  local soundId = 0 ---@type AudioSource
+  local soundId = 0
 
   if ball._RollSound.Sounds.All == nil then
 

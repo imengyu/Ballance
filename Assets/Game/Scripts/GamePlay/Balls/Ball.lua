@@ -42,8 +42,8 @@ function Ball:new()
       Wood = '',
     },
     Sounds = {}, --请勿设置此字段
-    MaxSpeed = 15,
-    MinSpeed = 2,
+    MaxSpeed = 30,
+    MinSpeed = 10,
   }
   self._RollSoundLockTick = 0
   self._RollSound = {
@@ -164,11 +164,15 @@ end
 ---丢出此作类的碎片时
 ---@param pos Vector3
 function Ball:ThrowPieces(pos)
-  GamePlay.BallPiecesControll:ThrowPieces(self._PiecesData, pos, self._PiecesMinForce, self._PiecesMaxForce)
+  if self._PiecesData then
+    GamePlay.BallPiecesControll:ThrowPieces(self._PiecesData, pos, self._PiecesMinForce, self._PiecesMaxForce)
+  end
 end
 ---回收此作类的碎片时
 function Ball:ResetPieces() 
-  GamePlay.BallPiecesControll:ResetPieces(self._PiecesData)
+  if self._PiecesData then
+    GamePlay.BallPiecesControll:ResetPieces(self._PiecesData)
+  end
 end
 
 function CreateClass:Ball()

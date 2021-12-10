@@ -92,7 +92,7 @@ namespace BallancePhysics.Wapper
     [SerializeField]
     private bool m_UseExistsSurface = false;
     [SerializeField]
-    private float m_ExtraRadius = 0.1f;
+    private float m_ExtraRadius = 0.0f;
     [Tooltip("设置当前物体是否启用重力")]
     [SerializeField]
     private bool m_EnableGravity = true;
@@ -545,9 +545,8 @@ namespace BallancePhysics.Wapper
 
     private void doApplyConstantForce() {
       Transform dref = ConstantForceDirectionRef;
-      foreach(var f in m_ConstantForces) {
-        Impluse((ConstantForceDirectionRef == null ? f.Value : dref.TransformVector(f.Value)));
-      }
+      foreach(var f in m_ConstantForces)
+        Impluse(((ConstantForceDirectionRef == null ? f.Value : dref.TransformVector(f.Value))) * 2);
       if(m_StaticConstantForce > 0)
         Impluse((ConstantForceDirectionRef == null ? m_StaticConstantForceDirection : dref.TransformVector(m_StaticConstantForceDirection)) * m_StaticConstantForce);
     }
@@ -693,7 +692,7 @@ namespace BallancePhysics.Wapper
     [SLua.CustomLuaClass]
     public delegate void OnPhysicsCallback(PhysicsObject self);
     [SLua.CustomLuaClass]
-    public delegate void OnPhysicsContactEventCallback(PhysicsObject self, PhysicsObject other);
+    public delegate void OnPhysicsContactEventCallback(PhysicsObject self, PhysicsObject other, Vector3 contact_point_ws, Vector3 speed, Vector3 surf_normal);
 
     /// <summary>
     /// 物理对象进入幻影事件
@@ -738,6 +737,14 @@ namespace BallancePhysics.Wapper
     private Dictionary<int, PhysicsObject> contactOnObjects = new Dictionary<int, PhysicsObject>();
     private Dictionary<int, float> contactOnObjectSleepLock = new Dictionary<int, float>();
 
+    [LuaApiDescription("检查当前物体是否与其他某个物体相碰撞（在缓冲区）", "如果碰撞返回true，否则返回false")]
+    [LuaApiParamDescription("other", "某个物体")]
+    public bool IsObjectContactInCache(PhysicsObject other) {
+      if(other == null)
+        return false;
+      return contactOnObjects.ContainsKey(other.Id);
+    }
+
     private void OnCollisionEvent(IntPtr self, IntPtr other, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal) {
       if(self == Handle && OnPhysicsCollision != null) {
         OnPhysicsCollision.Invoke(
@@ -768,7 +775,12 @@ namespace BallancePhysics.Wapper
 
             contactOnObjects.Add(obj.Id, obj);
             if(OnPhysicsContactOn != null) 
-              OnPhysicsContactOn.Invoke(this, obj);
+              OnPhysicsContactOn.Invoke(
+                this,
+                obj,
+                PhysicsApi.API.ptr_to_vec3(contact_point_ws),
+                PhysicsApi.API.ptr_to_vec3(speed),
+                PhysicsApi.API.ptr_to_vec3(surf_normal));
           }
 
           //摩擦事件
@@ -790,7 +802,13 @@ namespace BallancePhysics.Wapper
             contactOnObjects.Remove(obj.Id);
 
             if(OnPhysicsContactOff != null) 
-              OnPhysicsContactOff.Invoke(this, obj);
+              OnPhysicsContactOff.Invoke(
+                this, 
+                obj,
+                PhysicsApi.API.ptr_to_vec3(contact_point_ws),
+                PhysicsApi.API.ptr_to_vec3(speed),
+                PhysicsApi.API.ptr_to_vec3(surf_normal)
+              );
           }
 
           //摩擦事件
