@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gravity: {x: 0, y: -20, z: 0}
   SimulationRate: 66
+  TimeFactor: 2
   DeleteAllSurfacesWhenDestroy: 1
   Simulate: 1
 --- !u!1 &6175279464452074422

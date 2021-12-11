@@ -546,7 +546,7 @@ namespace BallancePhysics.Wapper
     private void doApplyConstantForce() {
       Transform dref = ConstantForceDirectionRef;
       foreach(var f in m_ConstantForces)
-        Impluse(((ConstantForceDirectionRef == null ? f.Value : dref.TransformVector(f.Value))) * 2);
+        Impluse(((ConstantForceDirectionRef == null ? f.Value : dref.TransformVector(f.Value))));
       if(m_StaticConstantForce > 0)
         Impluse((ConstantForceDirectionRef == null ? m_StaticConstantForceDirection : dref.TransformVector(m_StaticConstantForceDirection)) * m_StaticConstantForce);
     }

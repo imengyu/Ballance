@@ -286,8 +286,8 @@ function BallManager:RegisterBall(name, gameObject)
   --设置推动物理参数
   ball._PiecesMinForce = physicsData.PiecesMinForce
   ball._PiecesMaxForce = physicsData.PiecesMaxForce
-  ball._Force = physicsData.Force
-  ball._UpForce = physicsData.UpForce
+  ball._Force = physicsData.Force * 2.2
+  ball._UpForce = physicsData.UpForce * 5
   ball._DownForce = physicsData.DownForce
   if(pieces ~= nil) then
     ObjectStateBackupUtils.BackUpObjectAndChilds(pieces) --备份碎片的状态

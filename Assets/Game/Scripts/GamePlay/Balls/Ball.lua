@@ -93,6 +93,8 @@ function Ball:_InitPeices()
           body.Friction = self._PiecesPhysicsData.Friction
           body.LinearSpeedDamping = self._PiecesPhysicsData.LinearDamp
           body.RotSpeedDamping = self._PiecesPhysicsData.RotDamp
+          body.UseExistsSurface = true
+          body.Layer = GameLayers.LAYER_PHY_BALL_PEICES
         else
           Log.W('Ball '..self.gameObject.name, 'No _PiecesPhysCallback or _PiecesPhysicsData found for this ball')
         end

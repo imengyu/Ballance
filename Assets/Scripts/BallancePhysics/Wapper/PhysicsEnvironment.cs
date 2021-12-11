@@ -18,6 +18,8 @@ namespace BallancePhysics.Wapper
     public Vector3 Gravity = new Vector3(0, -9.81f, 0);
     [Tooltip("模拟速率（10-100，一秒钟进行物理模拟的速率）(模拟开始后更改此值无效)")]
     public int SimulationRate = 66;
+    [Tooltip("用于物理对象模拟的时间乘以的因子。因此，如果“物理时间因子”为2.0，而不是1.0（正常速度），则物理对象下落的速度将加倍。")]
+    public int TimeFactor = 1;
     [Tooltip("是否在销毁环境时自动删除所有碰撞层")]
     public bool DeleteAllSurfacesWhenDestroy = true;
     [Tooltip("是否启用模拟")]
@@ -79,7 +81,7 @@ namespace BallancePhysics.Wapper
     }
     private void FixedUpdate() {
       if(Simulate && Handle != IntPtr.Zero) {
-        PhysicsApi.API.environment_simulate_dtime(Handle, Time.fixedDeltaTime);
+        PhysicsApi.API.environment_simulate_dtime(Handle, Time.fixedDeltaTime * TimeFactor);
         PhysicsApi.API.do_update_all(Handle);
 
         float[] dat = new float[4];
