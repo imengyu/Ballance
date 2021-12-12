@@ -468,11 +468,12 @@ function LevelBuilder:_LoadLevelInternal()
         if renderer ~= nil then renderer.enabled = false end
         
         --添加坠落检测区Mesh
+        local collider = go:AddComponent(BoxCollider) ---@type BoxCollider
         local tigger = go:AddComponent(TiggerTester) ---@type TiggerTester
         
-        ---@param _self GameObject
+        collider.isTrigger = true
         ---@param other GameObject
-        tigger.onTriggerEnter = function (_self, other)
+        tigger.onTriggerEnter = function (_, other)
           --触发球坠落
           if other.tag == 'Ball' then
             GamePlayManager:Fall()

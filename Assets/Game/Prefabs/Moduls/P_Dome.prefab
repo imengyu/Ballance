@@ -205,7 +205,7 @@ MonoBehaviour:
     floatVal: 0
     componentClassVal: BallancePhysics.Wapper.PhysicsObject
   - Type: 19
-    Name: _PhysicsBodyCustomLayerName
+    Name: _PhysicsObjectCustomLayerName
     vector2: {x: 0, y: 0}
     vector2Int: {x: 0, y: 0}
     vector3: {x: 0, y: 0, z: 0}
@@ -388,11 +388,11 @@ MonoBehaviour:
   m_EnableConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 0
-  m_Fixed: 0
+  m_Fixed: 1
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
-  m_DoNotAutoCreateAtAwake: 0
+  m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 1
-  m_AutoControlActive: 1
+  m_AutoControlActive: 0
   m_EnableConstantForce: 1
   m_Layer: 3
   m_SystemGroupName: 
@@ -401,11 +401,12 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
+  m_UseExistsSurface: 1
   m_ExtraRadius: 0.1
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
   m_StaticConstantForce: 0

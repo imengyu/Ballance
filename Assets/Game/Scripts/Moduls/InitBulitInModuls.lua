@@ -53,8 +53,6 @@ function InitBulitInModulCustomSounds()
       return ball._HitSound.Sounds.Wood
     elseif type == 'contact' then
       return ball._RollSound.Sounds.Wood
-    elseif type == 'rollschange' then
-      return ball._RollSound.Sounds.Wood
     end
   end)
   ---@param type string
@@ -64,8 +62,6 @@ function InitBulitInModulCustomSounds()
     if type == 'hit' then
       return ball._HitSound.Sounds.Stone
     elseif type == 'contact' then
-      return ball._RollSound.Sounds.Stone
-    elseif type == 'rollschange' then
       return ball._RollSound.Sounds.Stone
     end
   end)

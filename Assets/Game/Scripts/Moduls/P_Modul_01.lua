@@ -13,13 +13,14 @@ function P_Modul_01:new()
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 60
 end
-
+function P_Modul_01:Start()
+  self.P_Modul_01_Pusher.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('WoodOnlyHit')
+end
 function P_Modul_01:Active()
   self.gameObject:SetActive(true)
   self.P_Modul_01_Rinne:Physicalize()
   self.P_Modul_01_Filter:Physicalize()
   self.P_Modul_01_Pusher:Physicalize()
-  self.P_Modul_01_Pusher.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('WoodOnlyHit')
 end
 function P_Modul_01:Deactive()
   self.P_Modul_01_Rinne:UnPhysicalize(true)

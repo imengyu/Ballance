@@ -44,8 +44,8 @@ function MusicManager:Start()
         Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Theme_'..i..'_2.wav'),
         Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Theme_'..i..'_3.wav')
       },
-      baseInterval = 10,
-      maxInterval = 25,
+      baseInterval = 20,
+      maxInterval = 35,
       atmoInterval = 15,
       atmoMaxInterval = 30,
     }
@@ -91,7 +91,7 @@ function MusicManager:FixedUpdate()
         end
         self._CurrentAudioTick = math.random(self.CurrentAudioTheme.atmoInterval, self.CurrentAudioTheme.atmoMaxInterval)
       else
-        self._CurrentIsAtmo = math.random() > 0.5
+        self._CurrentIsAtmo = math.random() > 0.3
         local musicIndex = math.random(#self.CurrentAudioTheme.musics)
         if musicIndex == self._LastMusicIndex then
           if musicIndex < #self.CurrentAudioTheme.musics then

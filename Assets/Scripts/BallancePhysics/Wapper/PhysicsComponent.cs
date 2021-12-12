@@ -13,7 +13,7 @@ namespace BallancePhysics.Wapper
 
     protected virtual void DoCreate() {
     }
-    protected virtual void DoDestry(IntPtr ptr) {
+    protected virtual void DoDestroy(IntPtr ptr) {
       Handle = IntPtr.Zero;
     }
     protected virtual void Awake() {
@@ -28,9 +28,9 @@ namespace BallancePhysics.Wapper
         DoCreate();
     }
     [LuaApiDescription("销毁")]
-    public virtual void Destry() {
+    public virtual void Destroy() {
       if(Handle != IntPtr.Zero) {
-        DoDestry(Handle);
+        DoDestroy(Handle);
         Handle = IntPtr.Zero;
       }
     }

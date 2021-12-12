@@ -45,10 +45,10 @@ namespace BallancePhysics.Wapper
         Position2Ref.transform.position, Force, PushObject2
       );
     }
-    protected override void DoDestry(IntPtr ptr)
+    protected override void DoDestroy(IntPtr ptr)
     {
       PhysicsApi.API.destroy_physics_force(ptr);
-      base.DoDestry(ptr);
+      base.DoDestroy(ptr);
     }
   }
 }

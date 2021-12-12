@@ -488,9 +488,15 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
   GamePlay.BallManager:FastMoveTo(targetPos, 0.1, function ()
     --播放变球动画
     GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform, color, tranfo.gameObject, function ()
+      
+      GamePlay.BallManager:SetNoCurrentBall()
+
       --切换球并且抛出碎片
       GamePlay.BallManager:ThrowPeices(oldBallType, targetPos)
+
+      --激活新球
       GamePlay.BallManager:SetCurrentBall(targetType, BallControlStatus.Control)
+
       --重置状态
       tranfo:Reset()
       self._IsTranfoIn = false

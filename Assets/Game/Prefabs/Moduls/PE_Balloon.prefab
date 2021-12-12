@@ -110,9 +110,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -253,9 +254,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -268,6 +269,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -370,7 +372,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -378,7 +380,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -392,11 +394,12 @@ MonoBehaviour:
   - {fileID: 2235035295902700654, guid: 61811ac0610073546a24cfca57d5d577, type: 3}
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -470,7 +473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 4849579494648616909}
-  Other: {fileID: 2379127249858198256}
+  Other: {fileID: 6003420625713407597}
 --- !u!114 &9116460403174883827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,13 +619,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 3
@@ -632,11 +635,12 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
   m_StaticConstantForce: 0.3
@@ -745,13 +749,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 4
@@ -761,13 +765,14 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0.2}
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: -0.2}
   m_StaticConstantForce: 0.3
   m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &3013646957924526791
@@ -1060,9 +1065,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -1075,6 +1080,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -1205,7 +1211,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 0
+  m_EnableConstantForce: 1
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -1213,11 +1219,12 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
+  m_UseExistsSurface: 1
   m_ExtraRadius: 0.1
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: -1, y: 0, z: 0}
   m_StaticConstantForce: 0.2
@@ -1348,13 +1355,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 4
@@ -1364,13 +1371,14 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: -0.2}
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0.2}
   m_StaticConstantForce: 0.3
   m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &3328450893882065067
@@ -1490,13 +1498,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 3
@@ -1506,11 +1514,12 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
   m_StaticConstantForce: 0.3
@@ -1708,9 +1717,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -1723,6 +1732,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -1851,9 +1861,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -1866,6 +1876,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -1988,13 +1999,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 4
@@ -2004,13 +2015,14 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: -0.2}
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0.2}
   m_StaticConstantForce: 0.3
   m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &2234583765719065808
@@ -2131,13 +2143,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 4
@@ -2147,13 +2159,14 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0.2}
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: -0.2}
   m_StaticConstantForce: 0.3
   m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &4431918086376863840
@@ -2280,9 +2293,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -2295,6 +2308,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -4131,13 +4145,13 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_EnableConvexHull: 0
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 3
@@ -4147,11 +4161,12 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_UseExistsSurface: 1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
   m_StaticConstantForce: 0.3
@@ -4312,7 +4327,7 @@ MonoBehaviour:
   m_UseBall: 0
   m_EnableConvexHull: 1
   m_EnableCollision: 1
-  m_StartFrozen: 0
+  m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
@@ -4326,11 +4341,12 @@ MonoBehaviour:
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
-  m_UseExistsSurface: 0
+  m_UseExistsSurface: 1
   m_ExtraRadius: 0.1
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
   m_StaticConstantForce: 0.3
@@ -4445,9 +4461,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -4460,6 +4476,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -4588,9 +4605,9 @@ MonoBehaviour:
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 1
+  m_EnableConstantForce: 0
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -4603,6 +4620,7 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
@@ -4632,8 +4650,8 @@ GameObject:
   - component: {fileID: 4765093357749632511}
   - component: {fileID: 1216601549312521937}
   - component: {fileID: 109243961586178951}
-  - component: {fileID: 3203870497032027153}
   - component: {fileID: 4960522416815752363}
+  - component: {fileID: 8547088859356119210}
   m_Layer: 0
   m_Name: PE_Balloon_BallTigger
   m_TagString: Untagged
@@ -4649,7 +4667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8560517709751689187}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.15, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4706,19 +4724,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3203870497032027153
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8560517709751689187}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4960522416815752363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4731,6 +4736,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8547088859356119210
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560517709751689187}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.38, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8967739682849560157
 GameObject:
   m_ObjectHideFlags: 0

@@ -195,7 +195,7 @@ namespace Ballance2.Sys.Bridge
             }
             if(!actions.ContainsKey(action.Name)) 
             {
-                GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, "UnRegisterAction action " + action.Name + " 未注册");
+                GameErrorChecker.LastError = GameError.NotRegister;
                 return;
             }
 
@@ -226,7 +226,6 @@ namespace Ballance2.Sys.Bridge
             }
             else
             {
-                Log.W(TAG, "操作 {0} 未注册", name);
                 GameErrorChecker.LastError = GameError.NotRegister;
             }
         }

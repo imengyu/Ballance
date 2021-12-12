@@ -103,7 +103,7 @@ MonoBehaviour:
   LuaPackageName: core
   LuaInitialVars:
   - Type: 19
-    Name: _PhysicsBodyCustomLayerName
+    Name: _PhysicsObjectCustomLayerName
     vector2: {x: 0, y: 0}
     vector2Int: {x: 0, y: 0}
     vector3: {x: 0, y: 0, z: 0}
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 1
   m_AutoControlActive: 1
-  m_SetForce: 1
+  m_EnableConstantForce: 1
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -220,4 +220,8 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+  m_ContractEventSleep: 0
   m_CustomLayer: 0
+  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
+  m_StaticConstantForce: 0
+  m_ConstantForceDirectionRef: {fileID: 0}

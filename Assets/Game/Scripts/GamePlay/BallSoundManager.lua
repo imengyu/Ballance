@@ -13,8 +13,6 @@ function BallSoundManager:new()
   self._CustomSoundLayerRollHandlers = {}
 
   --正在播放的滚动声音组
-  self._CurrentRollSoundPitch = 0
-  self._CurrentRollSoundVolume = 0
   self._CurrentPlayingRollSounds = {}
 end
 
@@ -67,7 +65,7 @@ function BallSoundManager:HandlerBallHitEvent(ball, body, other, contact_point_w
   end
 
   --速度低于限定值，不播放声音
-  local voc = math.abs(speed.sqrMagnitude)
+  local voc = (math.abs(speed.x) + math.abs(speed.z)) / 2
   if voc < ball._HitSound.MinSpeed then
     return
   end
@@ -75,7 +73,6 @@ function BallSoundManager:HandlerBallHitEvent(ball, body, other, contact_point_w
   --使用速度计算声音音量
   local vol = (voc - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed)
   local sound = nil
-  local soundId = 0
 
   if ball._HitSound.Sounds.All == nil then
 
@@ -84,7 +81,6 @@ function BallSoundManager:HandlerBallHitEvent(ball, body, other, contact_point_w
       --判断自定义声音层
       local customHandler = self._CustomSoundLayerHandlers[layer]
       if type(customHandler) == 'function' then
-        soundId = layer
         sound = customHandler('hit', ball, { vol, body, other, contact_point_ws, speed, surf_normal })
       end
     else
@@ -98,14 +94,12 @@ function BallSoundManager:HandlerBallHitEvent(ball, body, other, contact_point_w
       elseif layer == GameLayers.LAYER_PHY_FLOOR_RAIL then
         sound = ball._HitSound.Sounds.Metal
       end
-      soundId = layer
     end
   else
-    soundId = 0
     sound = ball._HitSound.Sounds.All
   end
 
-  if sound and self._CurrentPlayingRollSounds[soundId] ~= nil then
+  if sound then
     --这里是切换了两个sound的播放，因为碰撞声音很可能
     --一个没有播放完成另一个就来了
     if sound.isSound1 then
@@ -130,16 +124,11 @@ end
 ---@param isOn boolean
 ---@param body PhysicsBody
 ---@param other PhysicsObject
----@param contact_point_ws Vector3
----@param speed Vector3
----@param surf_normal Vector3
-function BallSoundManager:HandlerBallContract(ball, isOn, body, other, contact_point_ws, speed, surf_normal)
+function BallSoundManager:HandlerBallContract(ball, isOn, body, other)
 
   if other == nil then
     return
   end
-
-  self:HandlerBallHitEvent(ball,  body, other, contact_point_ws, speed, surf_normal);
 
   local sound = nil ---@type AudioSource
   local soundId = 0
@@ -175,12 +164,9 @@ function BallSoundManager:HandlerBallContract(ball, isOn, body, other, contact_p
     if isOn then
       --加入正在播放声音中
       self._CurrentPlayingRollSounds[soundId] = sound
-      sound.pitch = self._CurrentRollSoundPitch
-      sound.volume = self._CurrentRollSoundVolume
-      sound:Play()
     else
       self._CurrentPlayingRollSounds[soundId] = nil
-      sound:Pause()
+      sound.volume = 0
     end
   end
 
@@ -191,8 +177,12 @@ end
 ---@param speedMeter SpeedMeter
 function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   
-  local vol = (speedMeter.NowAbsoluteSpeed - ball._HitSound.MinSpeed) / (ball._HitSound.MaxSpeed - ball._HitSound.MinSpeed);
-  local pit = 0.5 + (speedMeter.NowAbsoluteSpeed * 0.01);
+  local speed = speedMeter.NowAbsoluteSpeed;
+  local vol = 0
+  if speed > ball._RollSound.MinSpeed then
+    vol = (speed - ball._RollSound.MinSpeed) / (ball._RollSound.MaxSpeed - ball._RollSound.MinSpeed);
+  end
+  local pit = 0.9 + (vol * 0.1);
 
   --将音量设置到正在播放的声音中
   for _, value in pairs(self._CurrentPlayingRollSounds) do

@@ -79,6 +79,7 @@ end
 function PE_Balloon:Active()
   ModulBase.Active(self)
 
+  self.PE_Balloon_Platform:Physicalize()
   self.PE_Balloon_BoxSlide:Physicalize()
   self.PE_Balloon_Ballon04:Physicalize()
   self.PE_Balloon_Ballon03:Physicalize()
@@ -142,6 +143,7 @@ function PE_Balloon:Deactive()
   self.PE_Balloon_Platte06:UnPhysicalize(true)
   self.PE_Balloon_Platte07:UnPhysicalize(true)
   self.PE_Balloon_Platte08:UnPhysicalize(true)
+  self.PE_Balloon_Platform:UnPhysicalize(true)
 
   GamePlay.GamePlayManager._SoundLastSector:Stop()
 

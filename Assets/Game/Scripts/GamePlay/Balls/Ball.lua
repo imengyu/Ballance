@@ -1,5 +1,6 @@
 local GameSoundType = Ballance2.Sys.Services.GameSoundType
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
+local MeshFilter = UnityEngine.MeshFilter
 local Table = require('Table')
 local Log = Ballance2.Utils.Log
 
@@ -42,10 +43,9 @@ function Ball:new()
       Wood = '',
     },
     Sounds = {}, --请勿设置此字段
-    MaxSpeed = 30,
-    MinSpeed = 10,
+    MaxSpeed = 20,
+    MinSpeed = 2,
   }
-  self._RollSoundLockTick = 0
   self._RollSound = {
     Names = {
       All = '',
@@ -54,7 +54,7 @@ function Ball:new()
       Wood = '',
     },
     Sounds = {}, --请勿设置此字段
-    MaxSpeed = 0.35,
+    MaxSpeed = 0.10,
     MinSpeed = 0.01,
   }
 end
@@ -88,13 +88,24 @@ function Ball:_InitPeices()
       else
         body = child.gameObject:AddComponent(PhysicsObject)
         if(self._PiecesPhysicsData) then
-          body.Mass = self._PiecesPhysicsData.Mass
-          body.Elasticity = self._PiecesPhysicsData.Elasticity
-          body.Friction = self._PiecesPhysicsData.Friction
-          body.LinearSpeedDamping = self._PiecesPhysicsData.LinearDamp
-          body.RotSpeedDamping = self._PiecesPhysicsData.RotDamp
-          body.UseExistsSurface = true
-          body.Layer = GameLayers.LAYER_PHY_BALL_PEICES
+          --Mesh
+          local meshFilter = child:GetComponent(MeshFilter) ---@type MeshFilter
+          if meshFilter ~= nil and meshFilter.mesh  ~= nil then
+            body.Mass = self._PiecesPhysicsData.Mass
+            body.Elasticity = self._PiecesPhysicsData.Elasticity
+            body.Friction = self._PiecesPhysicsData.Friction
+            body.LinearSpeedDamping = self._PiecesPhysicsData.LinearDamp
+            body.RotSpeedDamping = self._PiecesPhysicsData.RotDamp
+            body.AutoControlActive = false
+            body.DoNotAutoCreateAtAwake = true
+            body.EnableCollision = true
+            body.AutoMassCenter = false
+            body.UseExistsSurface = true
+            body.Layer = GameLayers.LAYER_PHY_BALL_PEICES
+            body.Convex:Add(meshFilter.mesh)
+          else
+            Log.W('Ball '..self.gameObject.name, 'Not found MeshFilter or mesh in peices  \''..child.name..'\'')
+          end
         else
           Log.W('Ball '..self.gameObject.name, 'No _PiecesPhysCallback or _PiecesPhysicsData found for this ball')
         end
@@ -110,7 +121,7 @@ function Ball:_InitPeices()
         sound.minDistance = 10
         sound.dopplerLevel = 0
         sound.volume = 1
-        body.CollisionEventCallSleep = 0.3
+        body.CollisionEventCallSleep = 0.5
         body.EnableCollisionEvent = true
         ---@param this PhysicsObject
         ---@param other PhysicsObject
@@ -134,8 +145,8 @@ function Ball:_InitSounds()
   local SoundManager = Game.SoundManager
   for key, value in pairs(self._HitSound.Names) do
     if type(value) == 'string' and value ~= '' then
-      local sound2 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSound'..key..'2')
-      local sound1 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSound'..key..'1')
+      local sound2 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSoundHit'..key..'2')
+      local sound1 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSoundHit'..key..'1')
       self._HitSound.Sounds[key] = {
         isSound1 = true,
         sound2 = sound2,
@@ -145,9 +156,11 @@ function Ball:_InitSounds()
   end
   for key, value in pairs(self._RollSound.Names) do
     if type(value) == 'string' and value ~= '' then
-      local sound = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, true, true, 'BallSound'..key)
+      local sound = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, true, true, 'BallSoundRoll'..key)
       sound.loop = true
+      sound.playOnAwake = true
       sound.volume = 0
+      sound:Play()
       self._RollSound.Sounds[key] = sound
     end
   end

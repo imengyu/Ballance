@@ -55,7 +55,7 @@ GamePhysBall = {
     },
     PiecesMinForce = 4,
     PiecesMaxForce = 9,
-    UpForce = 1.9,
+    UpForce = 3,
     DownForce = 0.05,
     BallRadius = 2,
     Layer = GameLayers.LAYER_PHY_BALL,

@@ -1,6 +1,7 @@
 local CommonUtils = Ballance2.Utils.CommonUtils
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 local FadeManager = Game.UIManager.UIFadeManager
+local Vector3 = UnityEngine.Vector3
 
 ---球碎片回收器
 ---@class BallPiecesControll : GameLuaObjectHostClass
@@ -54,6 +55,7 @@ function CreateClass:BallPiecesControll()
       for _, body in ipairs(data.bodys) do
         local forceDir = body.transform.localPosition
         body.gameObject:SetActive(true)
+        forceDir.y = forceDir.y + 2
         forceDir:Normalize() --力的方向是从原点向碎片位置
         body:Physicalize() --物理
         body:Impluse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
@@ -82,11 +84,6 @@ function CreateClass:BallPiecesControll()
         LuaTimer.Delete(id)
       end
 
-      --去除物理
-      for _, body in ipairs(data.bodys) do
-        body:UnPhysicalize(true) 
-      end
-
       --渐变淡出隐藏其材质
       for i = 0, parent.transform.childCount - 1 do
         FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 3, true, nil)
@@ -96,6 +93,12 @@ function CreateClass:BallPiecesControll()
 
       --延时
       LuaTimer.Add(2990, function ()
+        
+        --去除物理
+        for _, body in ipairs(data.bodys) do
+          body:UnPhysicalize(true) 
+        end
+
         parent:SetActive(false) --隐藏
       end)
     end

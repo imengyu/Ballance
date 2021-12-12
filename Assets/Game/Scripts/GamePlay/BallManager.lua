@@ -257,6 +257,7 @@ function BallManager:RegisterBall(name, gameObject)
   body.LinearSpeedDamping = physicsData.LinearDamp
   body.Layer = physicsData.Layer
   body.EnableCollision = true
+  body.AutoControlActive = false
   body.AutoMassCenter = false
 
   --设置恒力
@@ -286,8 +287,8 @@ function BallManager:RegisterBall(name, gameObject)
   --设置推动物理参数
   ball._PiecesMinForce = physicsData.PiecesMinForce
   ball._PiecesMaxForce = physicsData.PiecesMaxForce
-  ball._Force = physicsData.Force * 2.2
-  ball._UpForce = physicsData.UpForce * 5
+  ball._Force = physicsData.Force * 2
+  ball._UpForce = physicsData.UpForce * 3
   ball._DownForce = physicsData.DownForce
   if(pieces ~= nil) then
     ObjectStateBackupUtils.BackUpObjectAndChilds(pieces) --备份碎片的状态
@@ -359,6 +360,10 @@ function BallManager:SetCurrentBall(name, status)
     self.CurrentBallName = ball.name
     self:SetControllingStatus(status)
   end
+end
+---设置禁用当前正在控制的球
+function BallManager:SetNoCurrentBall()
+  self:_DeactiveCurrentBall()
 end
 ---设置当前球的控制的状态
 ---@param status number|nil 新的状态值（@see BallControlStatus）,为 nil 时不改变状态只刷新
@@ -702,6 +707,9 @@ end
 ---添加球推动方向
 ---@param t BallPushType 推动方向
 function BallManager:AddBallPush(t)
+  if self.CurrentBall == nil or self._private.currentActiveBall == nil then
+    return
+  end
   local force = self.CurrentBall._Force
   if(t == BallPushType.Back) then
     self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.back * force)
@@ -792,14 +800,20 @@ function BallManager:_InitBallSounds(ball, speedMeter, body)
   ---碰撞接触
   ---@param _self PhysicsObject
   ---@param other PhysicsObject
-  body.OnPhysicsContactOn = function (_self, other, contact_point_ws, speed, surf_normal)
-    GamePlay.BallSoundManager:HandlerBallContract(ball, true, _self, other, contact_point_ws, speed, surf_normal)
+  body.OnPhysicsCollision = function (_self, other, contact_point_ws, speed, surf_normal)
+    GamePlay.BallSoundManager:HandlerBallHitEvent(ball, _self, other, contact_point_ws, speed, surf_normal)
+  end
+  ---碰撞接触
+  ---@param _self PhysicsObject
+  ---@param other PhysicsObject
+  body.OnPhysicsContactOn = function (_self, other)
+    GamePlay.BallSoundManager:HandlerBallContract(ball, true, _self, other)
   end
   ---碰撞分离
   ---@param _self PhysicsObject
   ---@param other PhysicsObject
-  body.OnPhysicsContactOff = function (_self, other, contact_point_ws, speed, surf_normal)
-    GamePlay.BallSoundManager:HandlerBallContract(ball, false, _self, other, contact_point_ws, speed, surf_normal)
+  body.OnPhysicsContactOff = function (_self, other)
+    GamePlay.BallSoundManager:HandlerBallContract(ball, false, _self, other)
   end
 
 end

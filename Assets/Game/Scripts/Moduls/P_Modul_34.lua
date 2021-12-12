@@ -13,6 +13,8 @@ end
 
 function P_Modul_34:Start()
   ModulBase.Start(self)
+  self.P_Modul_34_Kiste.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('WoodOnlyHit')
+  self.P_Modul_34_Schiebestein.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('Stone')
 end
 function P_Modul_34:Active()
   self.P_Modul_34_Kiste:Physicalize()

@@ -16,9 +16,9 @@ namespace BallancePhysics.Wapper
       DoCreateConstraint();
     }
     [LuaApiDescription("销毁约束")]
-    protected override void DoDestry(IntPtr handle) {
+    protected override void DoDestroy(IntPtr handle) {
       PhysicsApi.API.destroy_physics_constraint(handle);
-      base.DoDestry(handle);
+      base.DoDestroy(handle);
     }
   }
 }

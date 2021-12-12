@@ -41,10 +41,10 @@ namespace BallancePhysics.Wapper
         global_damping, use_stiff_spring
       );
     }
-    protected override void DoDestry(IntPtr ptr)
+    protected override void DoDestroy(IntPtr ptr)
     {
       PhysicsApi.API.destroy_physics_force(ptr);
-      base.DoDestry(ptr);
+      base.DoDestroy(ptr);
     }
   }
 }
