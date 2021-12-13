@@ -51,7 +51,7 @@ namespace BallancePhysics.Editor
       m_EnableGravity = serializedObject.FindProperty("m_EnableGravity");
       m_EnableCollisionEvent = serializedObject.FindProperty("m_EnableCollisionEvent");
       m_CollisionEventCallSleep = serializedObject.FindProperty("m_CollisionEventCallSleep");
-      m_CustomLayer = serializedObject.FindProperty("m_CustomLayer");
+      m_CollisionID = serializedObject.FindProperty("m_CollisionID");
       m_StaticConstantForceDirection = serializedObject.FindProperty("m_StaticConstantForceDirection");
       m_StaticConstantForce = serializedObject.FindProperty("m_StaticConstantForce");
       m_ConstantForceDirectionRef = serializedObject.FindProperty("m_ConstantForceDirectionRef");
@@ -104,7 +104,7 @@ namespace BallancePhysics.Editor
     private SerializedProperty m_EnableGravity;
     private SerializedProperty m_EnableCollisionEvent;
     private SerializedProperty m_CollisionEventCallSleep;
-    private SerializedProperty m_CustomLayer;
+    private SerializedProperty m_CollisionID;
     private SerializedProperty m_StaticConstantForce;
     private SerializedProperty m_StaticConstantForceDirection;
     private SerializedProperty m_ConstantForceDirectionRef;
@@ -180,7 +180,7 @@ namespace BallancePhysics.Editor
         EditorGUI.indentLevel--;
       }
 
-      EditorGUILayout.PropertyField(m_CustomLayer);
+      EditorGUILayout.PropertyField(m_CollisionID);
       EditorGUILayout.PropertyField(m_EnableCollisionEvent);
       if(m_EnableCollisionEvent.boolValue) {
         EditorGUILayout.PropertyField(m_CollisionEventCallSleep);

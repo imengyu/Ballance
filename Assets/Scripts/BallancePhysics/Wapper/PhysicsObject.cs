@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ballance2.LuaHelpers;
 using BallancePhysics.Api;
+using System.Runtime.InteropServices;
 
 namespace BallancePhysics.Wapper
 {
@@ -78,6 +79,9 @@ namespace BallancePhysics.Wapper
     [Tooltip("指定当前碰撞组不与那个子组碰撞，默认为0。创建之后再修改则必须调用 ForceUpdateCollisionFilterInfo 才能生效")]
     [SerializeField]
     private int m_SubSystemDontCollideWith = 0;
+    [Tooltip("指定当前碰撞组ID, 用于碰撞事件的判断")]
+    [SerializeField]
+    private int m_CollisionID = 0;
 
     [Tooltip("指定此物体的凸体网格")]
     [SerializeField]
@@ -108,9 +112,6 @@ namespace BallancePhysics.Wapper
     [Tooltip("设置当前物体接触事件调用的休息时间（Tick）")]
     [SerializeField]
     private int m_ContractEventSleep = 10;
-    [Tooltip("设置自定义层")]
-    [SerializeField]
-    private int m_CustomLayer = 0;
     [Tooltip("设置静态恒力恒力方向")]
     [SerializeField]
     private Vector3 m_StaticConstantForceDirection = Vector3.forward;
@@ -177,8 +178,8 @@ namespace BallancePhysics.Wapper
     public float CollisionEventSpeedThreshold { get; set; } = 100;
     [LuaApiDescription("设置当前物体接触事件调用的休息时间（秒）")]
     public int ContractEventSleep { get => m_ContractEventSleep; set => m_ContractEventSleep = value; }
-    [LuaApiDescription("设置自定义层")]
-    public int CustomLayer { get => m_CustomLayer; set => m_CustomLayer = value; }
+    [LuaApiDescription("指定当前碰撞组ID, 用于碰撞事件的判断")]
+    public int CollisionID { get => m_CollisionID; set => m_CollisionID = value; }
 
     private PhysicsEnvironment currentEnvironment = null;
     
@@ -694,8 +695,11 @@ namespace BallancePhysics.Wapper
     public delegate void OnPhysicsFrictionEventCallback(PhysicsObject self, PhysicsObject other, IntPtr friction_handle, Vector3 contact_point_ws, Vector3 speed, Vector3 surf_normal);
     [SLua.CustomLuaClass]
     public delegate void OnPhysicsCallback(PhysicsObject self);
+    
     [SLua.CustomLuaClass]
-    public delegate void OnPhysicsContactEventCallback(PhysicsObject self, PhysicsObject other);
+    public delegate void OnPhysicsCollDetectionEventCallback(PhysicsObject self, int col_id, float speed_precent);
+    [SLua.CustomLuaClass]
+    public delegate void OnPhysicsContactEventCallback(PhysicsObject self, int col_id);
 
     /// <summary>
     /// 物理对象进入幻影事件
@@ -723,6 +727,11 @@ namespace BallancePhysics.Wapper
     [LuaApiDescription("物理对象摩擦删除事件")]
     public OnPhysicsFrictionEventCallback OnPhysicsFrictionDeleted;
     /// <summary>
+    /// 物理对象工具碰撞事件
+    /// </summary>
+    [LuaApiDescription("物理对象工具碰撞事件")]
+    public OnPhysicsCollDetectionEventCallback OnPhysicsCollDetection;
+    /// <summary>
     /// 物理对象开始接触事件
     /// </summary>
     [LuaApiDescription("物理对象开始接触事件")]
@@ -740,6 +749,7 @@ namespace BallancePhysics.Wapper
     private PhantomEventCallback phantomEventCallback = null;
     private CollisionEventCallback collisionEventCallback = null;
     private FrictionEventCallback frictionEventCallback = null;
+    private ContractEventCallback contractEventCallback = null;
 
     private void OnCollisionEvent(IntPtr self, IntPtr other, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal) {
       if(self == Handle && OnPhysicsCollision != null) {
@@ -792,6 +802,96 @@ namespace BallancePhysics.Wapper
           OnPhantomEnter?.Invoke(this, currentEnvironment.GetObjectById(GetIdByHandle(other)));
         else 
           OnPhantomLeave?.Invoke(this, currentEnvironment.GetObjectById(GetIdByHandle(other)));
+      }
+    }
+    private void OnContractEvent(IntPtr self, int col_id, short type, float speed_precent, short isOn) {
+      if(type == 1) {
+        OnPhysicsCollDetection?.Invoke(this, col_id, speed_precent);
+      } else if(type == 2) {
+        if(isOn == 1) OnPhysicsContactOn?.Invoke(this, col_id);
+        else OnPhysicsContactOff?.Invoke(this, col_id);
+      } 
+    }
+
+    /// <summary>
+    /// 启用当前物体上的接触工具事件发生器
+    /// </summary>
+    [LuaApiDescription("启用当前物体上的接触工具事件发生器")]
+    public void EnableContractEventCallback() {
+      contractEventCallback = OnContractEvent;
+      PhysicsApi.API.physics_set_contract_listener(Handle, Marshal.GetFunctionPointerForDelegate(contractEventCallback));
+    }
+    /// <summary>
+    /// 禁用当前物体上的接触工具事件发生器
+    /// </summary>
+    [LuaApiDescription("禁用当前物体上的接触工具事件发生器")]
+    public void DisableContractEventCallback() {
+      contractEventCallback = null;
+
+    }
+
+    private Dictionary<int, IntPtr> onCollDetection = new Dictionary<int, IntPtr>();
+    private Dictionary<int, IntPtr> onContractDetection = new Dictionary<int, IntPtr>();
+
+    /// <summary>
+    /// 添加指定层的碰撞工具事件处理
+    /// </summary>
+    /// <param name="col_id">自定义碰撞层ID</param>
+    /// <param name="min_speed">最小速度</param>
+    /// <param name="max_speed">最大速度</param>
+    /// <param name="sleep_afterwards">延迟</param>
+    /// <param name="speed_threadhold">速度变换阈值</param>
+    [LuaApiDescription("添加指定层的碰撞工具事件处理")]
+    [LuaApiParamDescription("col_id","自定义碰撞层ID")]
+    [LuaApiParamDescription("min_speed","最小速度")]
+    [LuaApiParamDescription("max_speed","最大速度")]
+    [LuaApiParamDescription("sleep_afterwards","延迟")]
+    [LuaApiParamDescription("speed_threadhold","速度变换阈值")]
+    public void AddCollDetection(int col_id, float min_speed, float max_speed, float sleep_afterwards, float speed_threadhold) {
+      if(onCollDetection.ContainsKey(col_id))
+        return;
+      var ptr = PhysicsApi.API.physics_coll_detection(Handle, col_id, min_speed, max_speed, sleep_afterwards, speed_threadhold);
+      onCollDetection.Add(col_id, ptr);
+    }
+    /// <summary>
+    /// 移除指定层的碰撞工具事件处理
+    /// </summary>
+    /// <param name="col_id">自定义碰撞层ID</param>
+    [LuaApiDescription("移除指定层的碰撞工具事件处理")]
+    [LuaApiParamDescription("col_id","自定义碰撞层ID")]
+    public void DeleteCollDetection(int col_id) {
+      if(onCollDetection.ContainsKey(col_id)) {
+        PhysicsApi.API.destroy_physics_coll_detection(onCollDetection[col_id]);
+        onCollDetection.Remove(col_id);
+      }
+    }
+
+    /// <summary>
+    /// 添加指定层的接触工具事件处理
+    /// </summary>
+    /// <param name="col_id">自定义碰撞层ID</param>
+    /// <param name="time_delay_start">接触前延时</param>
+    /// <param name="time_delay_end">接触后延时</param>
+    [LuaApiDescription("添加指定层的接触工具事件处理")]
+    [LuaApiParamDescription("col_id","自定义碰撞层ID")]
+    [LuaApiParamDescription("time_delay_end","接触后延时")]
+    [LuaApiParamDescription("time_delay_start","接触前延时")]
+    public void AddContractDetection(int col_id, float time_delay_start, float time_delay_end) {
+      if(onContractDetection.ContainsKey(col_id))
+        return;
+      var ptr = PhysicsApi.API.physics_contract_detection(Handle, col_id, time_delay_start, time_delay_end);
+      onContractDetection.Add(col_id, ptr);
+    }
+    /// <summary>
+    /// 移除指定层的接触工具事件处理
+    /// </summary>
+    /// <param name="col_id">自定义碰撞层ID</param>
+    [LuaApiDescription("移除指定层的接触工具事件处理")]
+    [LuaApiParamDescription("col_id","自定义碰撞层ID")]
+    public void DeleteContractDetection(int col_id) {
+      if(onContractDetection.ContainsKey(col_id)) {
+        PhysicsApi.API.destroy_physics_contract_detection(onContractDetection[col_id]);
+        onContractDetection.Remove(col_id);
       }
     }
 

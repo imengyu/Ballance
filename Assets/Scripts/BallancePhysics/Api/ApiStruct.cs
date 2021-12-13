@@ -52,6 +52,12 @@ namespace BallancePhysics.Api
     public fn_set_physics_fixed_constraint set_physics_fixed_constraint;
     public fn_physics_get_id physics_get_id;
     public fn_get_quat get_quat;
+    public fn_physics_coll_detection physics_coll_detection;
+    public fn_physics_contract_detection physics_contract_detection;
+    public fn_destroy_physics_contract_detection destroy_physics_contract_detection;
+    public fn_destroy_physics_coll_detection destroy_physics_coll_detection;
+    public fn_physics_set_contract_listener physics_set_contract_listener;
+    public fn_physics_remove_contract_listener physics_remove_contract_listener;
     private fn_delete_raycast_result delete_raycast_result;
     private fn_surface_exist_by_name _surface_exist_by_name;
 
@@ -490,7 +496,14 @@ namespace BallancePhysics.Api
       _physics_is_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_phantom>(apiArray[i++]);
       _motion_controller_set_target_pos = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_target_pos>(apiArray[i++]);
       get_quat = Marshal.GetDelegateForFunctionPointer<fn_get_quat>(apiArray[i++]);
-      
+      physics_coll_detection = Marshal.GetDelegateForFunctionPointer<fn_physics_coll_detection>(apiArray[i++]);
+      physics_contract_detection = Marshal.GetDelegateForFunctionPointer<fn_physics_contract_detection>(apiArray[i++]);
+      destroy_physics_coll_detection = Marshal.GetDelegateForFunctionPointer<fn_destroy_physics_coll_detection>(apiArray[i++]);
+      i++;
+      destroy_physics_contract_detection = Marshal.GetDelegateForFunctionPointer<fn_destroy_physics_contract_detection>(apiArray[i++]);
+      i++;
+      physics_set_contract_listener = Marshal.GetDelegateForFunctionPointer<fn_physics_set_contract_listener>(apiArray[i++]);
+      physics_remove_contract_listener = Marshal.GetDelegateForFunctionPointer<fn_physics_remove_contract_listener>(apiArray[i++]);
       InitSuccess = true;
     }
       

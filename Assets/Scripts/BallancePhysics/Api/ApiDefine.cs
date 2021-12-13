@@ -9,6 +9,8 @@ namespace BallancePhysics.Api
   public delegate void CollisionEventCallback(IntPtr self, IntPtr other, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void FrictionEventCallback(int create, IntPtr self, IntPtr other, IntPtr friction_handle, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void ContractEventCallback(IntPtr self, int col_id, short type, float speed_precent, short isOn);
     
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_get_version();
@@ -156,4 +158,16 @@ namespace BallancePhysics.Api
   public delegate void fn_motion_controller_set_target_pos(IntPtr controller, IntPtr pos_ws);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate float fn_get_quat(IntPtr qt, IntPtr buf);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate IntPtr fn_physics_coll_detection(IntPtr body, int col_id, float min_speed, float max_speed, float sleep_afterwards, float speed_threadhold);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate IntPtr fn_physics_contract_detection(IntPtr body, int col_id, float time_delay_start, float time_delay_end);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_destroy_physics_coll_detection(IntPtr info);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_destroy_physics_contract_detection(IntPtr info);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_physics_set_contract_listener(IntPtr body, IntPtr callback);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_physics_remove_contract_listener(IntPtr body);
 }
