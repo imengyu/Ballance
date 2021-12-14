@@ -29,7 +29,7 @@ function P_Modul_03:Active()
   self.P_Modul_03_Wall05:Physicalize()
   self.P_Modul_03_Wall06:Physicalize()
   self.P_Modul_03_Wall07:Physicalize()
-  self.P_Modul_03_Floor.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('Wood')
+  self.P_Modul_03_Floor.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 function P_Modul_03:Deactive()
   self.P_Modul_03_Floor:UnPhysicalize(true)

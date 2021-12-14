@@ -492,7 +492,6 @@ namespace Ballance2.Sys.Services
 
             if (!singleEvents.ContainsKey(evtName))
             {
-                Log.W(TAG, "单一事件 {0} 未注册", evtName);
                 GameErrorChecker.LastError = GameError.NotRegister;
                 return false;
             } 
@@ -620,7 +619,6 @@ namespace Ballance2.Sys.Services
                 gameEvent.EventHandlers.Remove(handler);
             else
             {
-                Log.W(TAG, "事件 {0} 未注册", evtName);
                 GameErrorChecker.LastError = GameError.NotRegister;
             }
         }

@@ -375,7 +375,7 @@ function LevelBuilder:_LoadLevelInternal()
 
       local r = GameObject.Find(objName)
       if r == nil then
-        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PR_ResetPoints['..i..']\' => \''..objName..'\' is not found')
+        self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PR_ResetPoints['..i..']\' => \''..objName..'\' not found')
         return
       end
 
@@ -391,7 +391,7 @@ function LevelBuilder:_LoadLevelInternal()
     -----------------------------
     SectorManager.CurrentLevelEndBalloon = self:ReplacePrefab(level.internalObjects.PE_LevelEnd, self:FindRegisterModul('PE_LevelEnd'))
     if SectorManager.CurrentLevelEndBalloon == nil then
-      self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PE_LevelEnd\' => \''..level.internalObjects.PE_LevelEnd..'\' is not found')
+      self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PE_LevelEnd\' => \''..level.internalObjects.PE_LevelEnd..'\' not found')
       return
     end
 
@@ -523,7 +523,7 @@ function LevelBuilder:_LoadLevelInternal()
 
         Log.D(TAG, 'Loaded modul '..group.name..' count : '..modulCount)
       else
-        Log.W(TAG, 'Modul \''..group.name..'\' is not registered')
+        Log.W(TAG, 'Modul \''..group.name..'\' not register')
       end
 
     end
@@ -769,6 +769,9 @@ function LevelBuilder:UnLoadLevel(endCallback)
   self._IsLoading = true
   --
   coroutine.resume(coroutine.create(function()
+
+    --发送开始事件
+    Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_UNLOAD_START', '*', nil)
 
     Log.D(TAG, 'UnLoad moduls')
 

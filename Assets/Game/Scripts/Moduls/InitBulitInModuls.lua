@@ -37,48 +37,36 @@ end
 
 ---注册内置机关的自定义声音组
 function InitBulitInModulCustomSounds()
-  ---@param type string
-  ---@param ball Ball
-  ---@param data table
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Dome', false, function (type, ball, data)
-    if type == 'hit' then
-      return ball._HitSound.Sounds.Dome
-    end
-  end)
-  ---@param type string
-  ---@param ball Ball
-  ---@param data table
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Wood',true, function (type, ball, data)
-    if type == 'hit' then
-      return ball._HitSound.Sounds.Wood
-    elseif type == 'contact' then
-      return ball._RollSound.Sounds.Wood
-    end
-  end)
-  ---@param type string
-  ---@param ball Ball
-  ---@param data table
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('Stone', true, function (type, ball, data)
-    if type == 'hit' then
-      return ball._HitSound.Sounds.Stone
-    elseif type == 'contact' then
-      return ball._RollSound.Sounds.Stone
-    end
-  end)
-  ---@param type string
-  ---@param ball Ball
-  ---@param data table
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('WoodOnlyHit', false, function (type, ball, data)
-    if type == 'hit' then
-      return ball._HitSound.Sounds.Wood
-    end
-  end)
-  ---@param type string
-  ---@param ball Ball
-  ---@param data table
-  GamePlay.BallSoundManager:AddCustomSoundLayerHandler('StoneOnlyHit', false, function (type, ball, data)
-    if type == 'hit' then
-      return ball._HitSound.Sounds.Stone
-    end
-  end)
+  local BallSoundManager = GamePlay.BallSoundManager
+  BallSoundManager:AddSoundCollData(BallSoundManager:GetSoundCollIDByName('Dome'), {
+    MinSpeed = 5,
+    MaxSpeed = 15,
+    SleepAfterwards = 0.6,
+    SpeedThreadhold = 10,
+    TimeDelayStart = 0.3,
+    TimeDelayEnd = 0.3,
+    HasRollSound = true,
+    RollSoundName = 'Stone',
+    HitSoundName = 'Stone'
+  })
+  BallSoundManager:AddSoundCollData(BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), {
+    MinSpeed = 5,
+    MaxSpeed = 20,
+    SleepAfterwards = 0.6,
+    SpeedThreadhold = 20,
+    TimeDelayStart = 0.3,
+    TimeDelayEnd = 0.3,
+    HasRollSound = false,
+    HitSoundName = 'Wood'
+  })
+  BallSoundManager:AddSoundCollData(BallSoundManager:GetSoundCollIDByName('StoneOnlyHit'), {
+    MinSpeed = 5,
+    MaxSpeed = 20,
+    SleepAfterwards = 0.6,
+    SpeedThreadhold = 20,
+    TimeDelayStart = 0.3,
+    TimeDelayEnd = 0.3,
+    HasRollSound = false,
+    HitSoundName = 'Stone'
+  })
 end

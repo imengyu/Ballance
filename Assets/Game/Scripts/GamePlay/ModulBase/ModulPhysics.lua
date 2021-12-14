@@ -6,7 +6,7 @@ ModulPhysics = ModulBase:extend()
 function ModulPhysics:new()
   ModulBase.super.new(self)
   self._PhysicsObject = nil
-  self._PhysicsObjectCustomLayerName = nil
+  self._PhysicsObjectCollIDName = nil
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 50
 end
@@ -14,8 +14,8 @@ function ModulPhysics:Start()
   if self._PhysicsObject == nil then 
     self._PhysicsObject = self.gameObject:GetComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
   end
-  if not IsNilOrEmpty(self._PhysicsObjectCustomLayerName) then
-    self._PhysicsObject.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName(self._PhysicsObjectCustomLayerName)
+  if not IsNilOrEmpty(self._PhysicsObjectCollIDName) then
+    self._PhysicsObject.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName(self._PhysicsObjectCollIDName)
   end
 end
 function ModulPhysics:BallEnterRange()

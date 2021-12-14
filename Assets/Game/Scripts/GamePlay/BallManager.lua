@@ -321,7 +321,9 @@ function BallManager:UnRegisterBall(name)
   for i = 1, #registerBalls do  
     local ball = registerBalls[i]
     if(ball.name == name) then
-      GamePlay.BallSoundManager:ForceDisableBallAllSound(ball.ball)
+      if ball == self._private.currentActiveBall then
+        self:_DeactiveCurrentBall()
+      end
       self:_UnInitBallSounds(ball.rigidbody, ball.speedMeter);
       table.remove(registerBalls, i)
       return true
@@ -447,7 +449,7 @@ function BallManager:_DeactiveCurrentBall()
   local current = self._private.currentActiveBall
   if current ~= nil then
     --停止球的声音
-    GamePlay.BallSoundManager:ForceDisableBallAllSound(current.ball)
+    GamePlay.BallSoundManager:RemoveSoundableBall(current)
     --取消推动
     self:RemoveAllBallPush()
     --取消激活
@@ -466,9 +468,9 @@ function BallManager:_ActiveCurrentBall()
   if current == nil and self._private.currentBall ~= nil then
     current = self._private.currentBall
     self._private.currentActiveBall = self._private.currentBall
-
-    --停止球的声音
-    GamePlay.BallSoundManager:ForceDisableBallAllSound(current.ball)
+    
+    --启动球的声音
+    GamePlay.BallSoundManager:AddSoundableBall(current)
     ---设置位置
     current.ball.transform.position = self._private.nextRecoverPos
     --设置摄像机跟随对象
@@ -793,29 +795,7 @@ function BallManager:_InitBallSounds(ball, speedMeter, body)
   speedMeter.Callback = function ()
     GamePlay.BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   end
-
-  body.CollisionEventCallSleep = 0.1
   body.EnableCollisionEvent = true
-
-  ---碰撞接触
-  ---@param _self PhysicsObject
-  ---@param other PhysicsObject
-  body.OnPhysicsCollision = function (_self, other, contact_point_ws, speed, surf_normal)
-    GamePlay.BallSoundManager:HandlerBallHitEvent(ball, _self, other, contact_point_ws, speed, surf_normal)
-  end
-  ---碰撞接触
-  ---@param _self PhysicsObject
-  ---@param other PhysicsObject
-  body.OnPhysicsContactOn = function (_self, other)
-    GamePlay.BallSoundManager:HandlerBallContract(ball, true, _self, other)
-  end
-  ---碰撞分离
-  ---@param _self PhysicsObject
-  ---@param other PhysicsObject
-  body.OnPhysicsContactOff = function (_self, other)
-    GamePlay.BallSoundManager:HandlerBallContract(ball, false, _self, other)
-  end
-
 end
 
 ---删除球声音相关事件处理函数
@@ -825,9 +805,6 @@ function BallManager:_UnInitBallSounds(body, speedMeter)
   speedMeter.Enabled = false
   speedMeter.Callback = nil
   body.EnableCollisionEvent = false
-  body.OnPhysicsCollision = nil
-  body.OnPhysicsContactOn = nil
-  body.OnPhysicsContactOff = nil
 end
 
 --#endregion

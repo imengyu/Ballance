@@ -1,20 +1,20 @@
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 
-P_Modul_01 = ModulBase:extend()
-
 ---P_Modul_01
 ---栅栏机关
 ---@class P_Modul_01 : ModulBase
 ---@field P_Modul_01_Rinne PhysicsObject
 ---@field P_Modul_01_Filter PhysicsObject
 ---@field P_Modul_01_Pusher PhysicsObject
+P_Modul_01 = ModulBase:extend()
+
 function P_Modul_01:new()
   ModulBase.super.new(self)
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 60
 end
 function P_Modul_01:Start()
-  self.P_Modul_01_Pusher.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('WoodOnlyHit')
+  self.P_Modul_01_Pusher.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
 end
 function P_Modul_01:Active()
   self.gameObject:SetActive(true)

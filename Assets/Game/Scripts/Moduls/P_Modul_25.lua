@@ -15,7 +15,7 @@ end
 function P_Modul_25:Active()
   ModulBase.Active(self)
   self.P_Modul_25_Bridge:Physicalize()
-  self.P_Modul_25_Bridge.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('WoodOnlyHit')
+  self.P_Modul_25_Bridge.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
 end
 function P_Modul_25:Deactive()
   self.P_Modul_25_Bridge:UnPhysicalize(true)

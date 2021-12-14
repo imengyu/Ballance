@@ -64,7 +64,7 @@ function PE_Balloon:Start()
   end
   self._MusicActived = false
 
-  local iWoodOnlyHit = GamePlay.BallSoundManager:GetCustomSoundLayerByName('WoodOnlyHit')
+  local iWoodOnlyHit = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
   self.PE_Balloon_Platte01.CustomLayer = iWoodOnlyHit
   self.PE_Balloon_Platte02.CustomLayer = iWoodOnlyHit
   self.PE_Balloon_Platte03.CustomLayer = iWoodOnlyHit
@@ -73,7 +73,7 @@ function PE_Balloon:Start()
   self.PE_Balloon_Platte06.CustomLayer = iWoodOnlyHit
   self.PE_Balloon_Platte07.CustomLayer = iWoodOnlyHit
   self.PE_Balloon_Platte08.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platform.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('Wood')
+  self.PE_Balloon_Platform.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 
 function PE_Balloon:Active()

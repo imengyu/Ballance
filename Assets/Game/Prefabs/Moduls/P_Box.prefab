@@ -103,7 +103,7 @@ MonoBehaviour:
   LuaPackageName: core
   LuaInitialVars:
   - Type: 19
-    Name: _PhysicsObjectCustomLayerName
+    Name: _PhysicsObjectCollIDName
     vector2: {x: 0, y: 0}
     vector2Int: {x: 0, y: 0}
     vector3: {x: 0, y: 0, z: 0}

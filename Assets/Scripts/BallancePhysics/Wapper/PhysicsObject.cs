@@ -106,12 +106,6 @@ namespace BallancePhysics.Wapper
     [Tooltip("设置当前物体碰撞事件调用的休息时间（秒）")]
     [SerializeField]
     private float m_CollisionEventCallSleep = 0.5f;
-    [Tooltip("设置当前物体碰撞事件调用后的休息时间（Tick）")]
-    [SerializeField]
-    private int m_CollisionEventSleep = 10;
-    [Tooltip("设置当前物体接触事件调用的休息时间（Tick）")]
-    [SerializeField]
-    private int m_ContractEventSleep = 10;
     [Tooltip("设置静态恒力恒力方向")]
     [SerializeField]
     private Vector3 m_StaticConstantForceDirection = Vector3.forward;
@@ -174,11 +168,7 @@ namespace BallancePhysics.Wapper
     public float ExtraRadius { get => m_ExtraRadius; set => m_ExtraRadius = value; }
     [LuaApiDescription("设置当前物体碰撞事件调用的休息时间（秒）")]
     public float CollisionEventCallSleep { get => m_CollisionEventCallSleep; set => m_CollisionEventCallSleep = value; }
-    [LuaApiDescription("设置当前物体碰撞事件判断阈值")]
-    public float CollisionEventSpeedThreshold { get; set; } = 100;
-    [LuaApiDescription("设置当前物体接触事件调用的休息时间（秒）")]
-    public int ContractEventSleep { get => m_ContractEventSleep; set => m_ContractEventSleep = value; }
-    [LuaApiDescription("指定当前碰撞组ID, 用于碰撞事件的判断")]
+    [LuaApiDescription("指定当前自定义碰撞组ID, 用于声音组碰撞事件的判断")]
     public int CollisionID { get => m_CollisionID; set => m_CollisionID = value; }
 
     private PhysicsEnvironment currentEnvironment = null;
@@ -808,8 +798,10 @@ namespace BallancePhysics.Wapper
       if(type == 1) {
         OnPhysicsCollDetection?.Invoke(this, col_id, speed_precent);
       } else if(type == 2) {
-        if(isOn == 1) OnPhysicsContactOn?.Invoke(this, col_id);
-        else OnPhysicsContactOff?.Invoke(this, col_id);
+        if(isOn == 1) 
+          OnPhysicsContactOn?.Invoke(this, col_id);
+        else
+          OnPhysicsContactOff?.Invoke(this, col_id);
       } 
     }
 
@@ -826,8 +818,8 @@ namespace BallancePhysics.Wapper
     /// </summary>
     [LuaApiDescription("禁用当前物体上的接触工具事件发生器")]
     public void DisableContractEventCallback() {
+      PhysicsApi.API.physics_disable_collision_detection(Handle);
       contractEventCallback = null;
-
     }
 
     private Dictionary<int, IntPtr> onCollDetection = new Dictionary<int, IntPtr>();

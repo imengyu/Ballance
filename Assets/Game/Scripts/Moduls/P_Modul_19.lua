@@ -15,7 +15,7 @@ end
 function P_Modul_19:Active()
   ModulBase.Active(self)
   self.P_Modul_19_Flaps:Physicalize()
-  self.P_Modul_19_Flaps.CustomLayer = GamePlay.BallSoundManager:GetCustomSoundLayerByName('Wood')
+  self.P_Modul_19_Flaps.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 function P_Modul_19:Deactive()
   self.P_Modul_19_Flaps:UnPhysicalize(true)
