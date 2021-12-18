@@ -674,11 +674,16 @@ namespace Ballance2.Sys.Services
 
             if (managedWindows != null)
             {
-                foreach (var w in managedWindows)
-                    w.Value.Destroy();
+                var list = new List<Window>(managedWindows.Values);
+                foreach (var w in list)
+                    w.Destroy();
                 managedWindows.Clear();
                 managedWindows = null;
             }
+        }
+
+        internal void InternalRemoveWindow(Window window) {
+          managedWindows.Remove(window.windowId);
         }
 
         //窗口

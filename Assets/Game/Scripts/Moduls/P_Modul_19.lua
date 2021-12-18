@@ -1,11 +1,11 @@
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 
-P_Modul_19 = ModulBase:extend()
-
 ---P_Modul_19
 ---双向推板机关
 ---@class P_Modul_19 : ModulBase
 ---@field P_Modul_19_Flaps PhysicsObject
+P_Modul_19 = ModulBase:extend()
+
 function P_Modul_19:new()
   ModulBase.super.new(self)
   self.EnableBallRangeChecker = true
@@ -15,7 +15,7 @@ end
 function P_Modul_19:Active()
   ModulBase.Active(self)
   self.P_Modul_19_Flaps:Physicalize()
-  self.P_Modul_19_Flaps.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.P_Modul_19_Flaps.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 function P_Modul_19:Deactive()
   self.P_Modul_19_Flaps:UnPhysicalize(true)

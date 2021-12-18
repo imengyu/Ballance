@@ -141,7 +141,6 @@ namespace Ballance2.Sys
             GameStore = GameMediator.RegisterGlobalDataStore("core");
             GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
             GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-            
             GameMainLuaSvr = new LuaSvr();
             
             Profiler.BeginSample("BindLua");
@@ -208,6 +207,10 @@ namespace Ballance2.Sys
         /// <returns></returns>
         private IEnumerator InitAsysc() 
         {
+            //Init Debug
+            if(DebugMode)
+              DebugInit.InitSystemDebug();
+
             //检测lua绑定状态
             object o = GameMainLuaState.doString(@"return Ballance2.Sys.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
             if (o != null &&  (
@@ -875,6 +878,9 @@ namespace Ballance2.Sys
             pm.SavePackageRegisterInfo();
 
             ObjectStateBackupUtils.ClearAll();
+
+            if(DebugMode)
+              DebugInit.UnInitSystemDebug();
 
             GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
             ReqGameQuit();

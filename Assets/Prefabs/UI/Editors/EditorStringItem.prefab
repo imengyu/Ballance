@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7383357205461439960}
   m_RootOrder: 0
@@ -106,6 +107,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 828207702763435304}
   - {fileID: 2740041734917067629}
@@ -115,7 +117,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 23.1}
+  m_SizeDelta: {x: 318.91, y: 23.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3705832871208394872
 CanvasRenderer:
@@ -147,6 +149,11 @@ PrefabInstance:
       propertyPath: m_Interactable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404,
+        type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 2805924397415430479}
     - target: {fileID: 6322723725673039328, guid: 811d2a41527d36c43a3ec02653a15404,
         type: 3}
       propertyPath: m_FontData.m_FontSize
@@ -265,3 +272,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4937346621116610357}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2805924397415430479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7094400628871204474, guid: 811d2a41527d36c43a3ec02653a15404,
+    type: 3}
+  m_PrefabInstance: {fileID: 4937346621116610357}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -14,7 +14,7 @@ function P_Modul_01:new()
   self.BallCheckeRange = 60
 end
 function P_Modul_01:Start()
-  self.P_Modul_01_Pusher.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+  self.P_Modul_01_Pusher.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
 end
 function P_Modul_01:Active()
   self.gameObject:SetActive(true)

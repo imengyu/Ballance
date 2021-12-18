@@ -15,7 +15,7 @@ function ModulPhysics:Start()
     self._PhysicsObject = self.gameObject:GetComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
   end
   if not IsNilOrEmpty(self._PhysicsObjectCollIDName) then
-    self._PhysicsObject.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName(self._PhysicsObjectCollIDName)
+    self._PhysicsObject.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(self._PhysicsObjectCollIDName)
   end
 end
 function ModulPhysics:BallEnterRange()

@@ -28,6 +28,10 @@ namespace Ballance2.Sys.UI
     [AddComponentMenu("Ballance/UI/Controls/Window")]
     public class Window : MonoBehaviour
     {
+        private void OnDestroy() {
+          UIManager.InternalRemoveWindow(this);
+        }
+
         internal int windowId = 0;
         private bool firstShow = true;
 

@@ -231,6 +231,7 @@ namespace Ballance2.Sys
                 RegSystemService("GamePackageManager", new GamePackageManager());
                 RegSystemService("GameSoundManager", new GameSoundManager());
 
+
                 //Call init
                 sysHandler(ACTION_INIT);
 

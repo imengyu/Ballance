@@ -15,7 +15,7 @@ end
 function P_Modul_37:Active()
   ModulBase.Active(self)
   self.P_Modul_37_Bridge:Physicalize()
-  self.P_Modul_37_Bridge.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.P_Modul_37_Bridge.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 function P_Modul_37:Deactive()
   self.P_Modul_37_Bridge:UnPhysicalize(true)

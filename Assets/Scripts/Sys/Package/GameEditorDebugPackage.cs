@@ -43,7 +43,7 @@ namespace Ballance2.Sys.Package
             {
                 GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
                 LoadError = "模块并不包含 PackageDef.xml";
-                return await base.LoadPackage();
+                return false;
             } 
             else
             {

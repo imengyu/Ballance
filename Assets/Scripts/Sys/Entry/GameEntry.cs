@@ -45,6 +45,8 @@ namespace Ballance2.Sys.Entry
         public bool DebugSetFrameRate = true;
         [Tooltip("是否启用Lua调试器")]
         public bool DebugEnableLuaDebugger = true;
+        [Tooltip("Lua调试器")]
+        public GameLuaDebuggger DebugLuaDebugger = GameLuaDebuggger.VscodeDebuggee;
         [Tooltip("调试类型")]
         public GameDebugType DebugType = GameDebugType.NoDebug;
         [Tooltip("当前调试中需要初始化的包名")]
@@ -86,7 +88,6 @@ namespace Ballance2.Sys.Entry
         void Start()
         {
             Instance = this;
-            GameDebugBeginStats.text = string.Format("Ballance Version {0} ({1})", GameConst.GameVersion, GameConst.GameBulidDate);
 
             InitCommandLine();
             InitBaseSettings(); 
@@ -266,6 +267,19 @@ namespace Ballance2.Sys.Entry
         /// 系统调试。此模式不会加载游戏运行环境。
         /// </summary>
         SystemDebug
+    }
+    /// <summary>
+    /// Lua调试类型
+    /// </summary>
+    public enum GameLuaDebuggger {
+        /// <summary>
+        /// vscode-debuggee
+        /// </summary>
+        VscodeDebuggee,
+        /// <summary>
+        /// Mobdebug
+        /// </summary>
+        Mobdebug,
     }
     [Serializable]
     public class GameDebugPackageInfo

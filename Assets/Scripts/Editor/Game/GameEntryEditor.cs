@@ -30,6 +30,7 @@ public class GameEntryEditor : Editor
     private SerializedProperty DebugCustomEntries;
     private SerializedProperty DebugLoadCustomPackages;
     private SerializedProperty DebugSkipIntro;
+    private SerializedProperty DebugLuaDebugger;
 
     private void OnEnable()
     {
@@ -47,7 +48,8 @@ public class GameEntryEditor : Editor
         CheckBoxAllowUserAgreement = serializedObject.FindProperty("CheckBoxAllowUserAgreement");
         LinkPrivacyPolicy = serializedObject.FindProperty("LinkPrivacyPolicy");
         LinkUserAgreement = serializedObject.FindProperty("LinkUserAgreement");
-        
+
+        DebugLuaDebugger = serializedObject.FindProperty("DebugLuaDebugger");
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
         DebugSetFrameRate = serializedObject.FindProperty("DebugSetFrameRate");
@@ -103,6 +105,7 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(DebugTargetFrameRate);
         EditorGUI.EndDisabledGroup();
         EditorGUILayout.PropertyField(DebugEnableLuaDebugger);
+        EditorGUILayout.PropertyField(DebugLuaDebugger);
         EditorGUILayout.PropertyField(DebugType);
         EditorGUILayout.PropertyField(DebugSkipIntro);
         

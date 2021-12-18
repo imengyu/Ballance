@@ -118,7 +118,10 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
-  m_Convex: []
+  m_CollisionID: 0
+  m_Convex:
+  - {fileID: 1122359797296144349, guid: 383c26b8a38b42a40bde711aa34d1d64, type: 3}
+  - {fileID: -6767502768494131842, guid: cde0b9a9c8ecc9e4e97b42f9a2f07ebf, type: 3}
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
@@ -126,7 +129,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}

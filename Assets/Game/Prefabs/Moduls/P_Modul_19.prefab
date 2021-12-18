@@ -248,6 +248,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  m_CollisionID: 0
   m_Convex:
   - {fileID: 2850605203211501103, guid: fefa538582fccf047bbb33b01ab8d598, type: 3}
   - {fileID: 188355067430909471, guid: 75768168d84bb574289f8b8d73b6ee80, type: 3}
@@ -260,7 +261,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_CustomLayer: 0
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}

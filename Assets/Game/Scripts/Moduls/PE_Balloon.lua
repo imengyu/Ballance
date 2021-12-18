@@ -65,15 +65,15 @@ function PE_Balloon:Start()
   self._MusicActived = false
 
   local iWoodOnlyHit = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
-  self.PE_Balloon_Platte01.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte02.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte03.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte04.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte05.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte06.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte07.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platte08.CustomLayer = iWoodOnlyHit
-  self.PE_Balloon_Platform.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.PE_Balloon_Platte01.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte02.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte03.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte04.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte05.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte06.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte07.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platte08.CollisionID = iWoodOnlyHit
+  self.PE_Balloon_Platform.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 
 function PE_Balloon:Active()

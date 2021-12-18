@@ -13,8 +13,8 @@ end
 
 function P_Modul_34:Start()
   ModulBase.Start(self)
-  self.P_Modul_34_Kiste.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
-  self.P_Modul_34_Schiebestein.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Stone')
+  self.P_Modul_34_Kiste.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+  self.P_Modul_34_Schiebestein.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Stone')
 end
 function P_Modul_34:Active()
   self.P_Modul_34_Kiste:Physicalize()

@@ -1,7 +1,5 @@
 local ObjectStateBackupUtils = Ballance2.Sys.Utils.ObjectStateBackupUtils
 
-P_Modul_03 = ModulBase:extend()
-
 ---@class P_Modul_03 : ModulBase
 ---@field P_Modul_03_Floor PhysicsObject
 ---@field P_Modul_03_Gate PhysicsObject
@@ -12,6 +10,8 @@ P_Modul_03 = ModulBase:extend()
 ---@field P_Modul_03_Wall05 PhysicsObject
 ---@field P_Modul_03_Wall06 PhysicsObject
 ---@field P_Modul_03_Wall07 PhysicsObject
+P_Modul_03 = ModulBase:extend()
+
 function P_Modul_03:new()
   ModulBase.super.new(self)
   self.EnableBallRangeChecker = true
@@ -29,7 +29,7 @@ function P_Modul_03:Active()
   self.P_Modul_03_Wall05:Physicalize()
   self.P_Modul_03_Wall06:Physicalize()
   self.P_Modul_03_Wall07:Physicalize()
-  self.P_Modul_03_Floor.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.P_Modul_03_Floor.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 function P_Modul_03:Deactive()
   self.P_Modul_03_Floor:UnPhysicalize(true)

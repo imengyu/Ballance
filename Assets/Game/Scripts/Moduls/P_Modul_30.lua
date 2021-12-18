@@ -15,7 +15,7 @@ end
 function P_Modul_30:Active()
   ModulBase.Active(self)
   self.P_Modul_30_Wippe:Physicalize()
-  self.P_Modul_30_Wippe.CustomLayer = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.P_Modul_30_Wippe.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
 function P_Modul_30:Deactive()
   self.P_Modul_30_Wippe:UnPhysicalize(true)
