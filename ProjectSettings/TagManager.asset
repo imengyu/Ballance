@@ -3,18 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - DebugWindow
-  - Ball
-  - Phys_Floors
-  - Phys_FloorWoods
-  - Phys_FloorRails
-  - Phys_FloorStopper
-  - Phys_FloorCustom1
-  - Phys_FloorCustom2
-  - Phys_FloorCustom3
-  - Phys_FloorCustom4
-  - Phys_Dome
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -49,12 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: BottomLayer
-    uniqueID: 639072969
-    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: TopLayer
-    uniqueID: 2525728205
     locked: 0

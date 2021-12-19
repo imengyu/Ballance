@@ -28,7 +28,6 @@ using UnityEngine.Rendering;
 
 namespace cakeslice
 {
-	[SLua.CustomLuaClass]
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Camera))]
 	/* [ExecuteInEditMode] */

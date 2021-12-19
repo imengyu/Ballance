@@ -28,7 +28,6 @@ using System.Collections.Generic;
 
 namespace cakeslice
 {
-	[SLua.CustomLuaClass]
 	[RequireComponent(typeof(Renderer))]
 	/* [ExecuteInEditMode] */
 	public class Outline : MonoBehaviour

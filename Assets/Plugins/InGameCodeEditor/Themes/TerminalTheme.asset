@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ba2a8d87fef664987bd401c378f014, type: 3}
+  m_Name: TerminalTheme
+  m_EditorClassIdentifier: 
+  caretColor: {r: 0, g: 0.9529412, b: 0.08235294, a: 1}
+  textColor: {r: 0, g: 0.9528302, b: 0.080819994, a: 1}
+  backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  lineHighlightColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
+  lineNumberBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  lineNumberTextColor: {r: 0, g: 0.9529412, b: 0.08235294, a: 1}
+  scrollbarColor: {r: 0.75686276, g: 0.75686276, b: 0.7529412, a: 1}
+  allowSyntaxHighlighting: 0
