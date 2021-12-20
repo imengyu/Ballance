@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using Ballance2.Base;
 using Ballance2.Config;
+using Ballance2.Config.Settings;
 using Ballance2.Entry;
+using Ballance2.Package;
+using Ballance2.Res;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using Puerts;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Profiling;
 
 /*
 * Copyright(c) 2021 imengyu
@@ -33,8 +38,7 @@ namespace Ballance2.Services
   /// </summary>
   public class GameManager : GameService
   {
-    public GameManager() : base("GameManager") {
-    }
+    public GameManager() : base("GameManager") {}
 
     #region 全局关键组件变量
 
@@ -46,11 +50,6 @@ namespace Ballance2.Services
     /// GameMediator 实例
     /// </summary>
     public static GameMediator GameMediator { get; internal set; }
-
-    /// <summary>
-    /// 游戏全局JS虚拟机
-    /// </summary>
-    public JsEnv GameMainEnv { get; private set; }
     /// <summary>
     /// 系统设置实例
     /// </summary>
@@ -64,10 +63,18 @@ namespace Ballance2.Services
     /// </summary>
     public RectTransform GameCanvas { get; internal set; }
     /// <summary>
+    /// 主js虚拟机
+    /// </summary>
+    public JsEnv GameMainEnv { get; internal set; }
+    /// <summary>
     /// 调试命令控制器
     /// </summary>
     /// <value></value>
     public GameDebugCommandServer GameDebugCommandServer { get; private set; }
+    /// <summary>
+    /// 根GameActionStore
+    /// </summary>
+    public GameActionStore GameActionStore { get; internal set; }
 
     public static bool DebugMode { get; private set; }
 
@@ -109,19 +116,10 @@ namespace Ballance2.Services
       InitCommands();
       InitVideoSettings();
 
-      GameStore = GameMediator.RegisterGlobalDataStore("core");
       GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
       GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-      GameMainLuaSvr = new LuaSvr();
 
-      Profiler.BeginSample("BindLua");
-      GameMainLuaSvr.init(null, () =>
-      {
-        Profiler.EndSample();
-        GameMainLuaState = LuaSvr.mainState;
-        GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
-        finish.Invoke();
-      });
+      finish.Invoke();
     }
 
     private bool sLoadUserPackages = true;
@@ -147,37 +145,7 @@ namespace Ballance2.Services
         }
       }
     }
-    /// <summary>
-    /// 加载调试操作
-    /// </summary>
-    private void InitDebugAction()
-    {
-      GameActionStore.RegisterAction(GameSystemPackage.GetSystemPackage(), "EnableDebugMode", "", (pararms) =>
-      {
-        DebugMode = true;
-        PlayerPrefs.SetInt("core.DebugMode", 1);
-
-        //加载core.debug包
-        var pm = GetSystemService<GamePackageManager>();
-        if (!pm.IsPackageLoaded("core.debug"))
-#pragma warning disable 4014
-          pm.LoadPackage("core.debug");
-#pragma warning restore 4014
-        return GameActionCallResult.SuccessResult;
-      }, null);
-      GameActionStore.RegisterAction(GameSystemPackage.GetSystemPackage(), "DisableDebugMode", "", (pararms) =>
-      {
-        DebugMode = false;
-        PlayerPrefs.SetInt("core.DebugMode", 0);
-
-        //卸载core.debug包
-        var pm = GetSystemService<GamePackageManager>();
-        if (pm.IsPackageLoaded("core.debug"))
-          pm.UnLoadPackage("core.debug", true);
-        return GameActionCallResult.SuccessResult;
-      }, null);
-    }
-
+    
     /// <summary>
     /// 异步初始化主流程。
     /// </summary>
@@ -187,32 +155,36 @@ namespace Ballance2.Services
       //Init Debug
       if (DebugMode)
         DebugInit.InitSystemDebug();
+   
+      //创建 GameMainEnv
+      Profiler.BeginSample("CreateJsEnv");
 
-      //检测lua绑定状态
-      object o = GameMainLuaState.doString(@"return Ballance2.Sys.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
+      GameMainEnv = new JsEnv();
+
+      Profiler.EndSample();
+
+      //检测JS绑定状态
+      object o = GameMainEnv.Eval<int>(@"const csharp = require('csharp'); return csharp.Ballance.Services.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
       if (o != null && (
               (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
               || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
           ))
-        Log.D(TAG, "Game Lua bind check ok.");
+        Log.D(TAG, "Game JsEnv bind check ok.");
       else
       {
-        Log.E(TAG, "Game Lua bind check failed, did you bind lua functions?");
-        GameErrorChecker.LastError = GameError.LuaBindCheckFailed;
+        Log.E(TAG, "Game JsEnv bind check failed, did you bind lua functions?");
+        GameErrorChecker.LastError = GameError.EnvBindCheckFailed;
 #if UNITY_EDITOR // 编辑器中
-        GameErrorChecker.ThrowGameError(GameError.LuaBindCheckFailed,
-            "Lua接口没有绑定。请点击“SLua”>“All”>“Make”生成 Lua 接口绑定。");
+        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed,
+            "JS接口没有绑定。请点击“Puerts”>“Generate”生成 JsEnv 接口绑定。");
 #else
-                GameErrorChecker.ThrowGameError(GameError.LuaBindCheckFailed, "错误的发行配置，请检查。");  
+        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "错误的发行配置，请检查。");  
 #endif
         yield break;
       }
 
-      SecurityUtils.FixLuaSecure(GameMainLuaState);
-
-      //初始化宏定义
-      LuaUtils.InitMacros(GameMainLuaState);
-
+      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
+      
       //加载系统 packages
       yield return StartCoroutine(LoadSystemCore());
 
@@ -289,7 +261,7 @@ namespace Ballance2.Services
       }
       else
 #else
-            if(true) 
+      if(true) 
 #endif
       {
         string url = GamePathManager.GetResRealPath("systeminit", "");
@@ -386,12 +358,7 @@ namespace Ballance2.Services
       if (GameEntry.Instance.DebugEnableLuaDebugger)
       {
         Profiler.BeginSample("GameManagerStartDebugger");
-        //初始化lua调试器
-        GameMainLuaState.doString(@"
-                    local SystemPackage = Ballance2.Sys.Package.GamePackage.GetSystemPackage()
-                    SystemPackage:RequireLuaFile('debugger');
-                    StartVscodeDebuggee();
-                ", "GameManagerStartDebugger");
+        
         Profiler.EndSample();
       }
 

@@ -49,7 +49,7 @@ namespace Ballance2.Package
       PackageFilePath = filePath;
       return null;
     }
-    public virtual async Task<bool> LoadPackage()
+    public virtual Task<bool> LoadPackage()
     {
       FixBundleShader();
       LoadI18NResource();
@@ -59,29 +59,25 @@ namespace Ballance2.Package
       {
         if (CodeType == GamePackageCodeType.Lua)
         {
-          //启动LUA 虚拟机
-          await InitLuaState();
+          LoadPackageCodeBase();
         }
         else if (CodeType == GamePackageCodeType.CSharp)
         {
           //加载C#程序集
           CSharpAssembly = LoadCodeCSharp(EntryCode);
           if (CSharpAssembly != null)
-            baseInited = true;
+            LoadPackageCodeBase();
         }
         else
         {
           Log.W(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
         }
       }
-
-      return true;
+      return new Task<bool>(() => true);
     }
     public virtual void Destroy()
     {
       Log.D(TAG, "Destroy package {0}", PackageName);
-
-      baseInited = false;
 
       RunPackageBeforeUnLoadCode();
 
@@ -97,27 +93,10 @@ namespace Ballance2.Package
         AssetBundle = null;
       }
 
-
-      DestroyLuaState();
-
-      //Lua释放
-      if (luaObjects != null)
-      {
-        //释放所有LUA 虚拟机
-        foreach (GameLuaObjectHost o in luaObjects)
-        {
-          o.enabled = false;
-          o.StopAllCoroutines();
-          UnityEngine.Object.Destroy(o);
-        }
-        luaObjects.Clear();
-        luaObjects = null;
-      }
-
       if (CSharpAssembly != null)
         CSharpAssembly = null;
-      if (CSharpPackageEntry != null)
-        CSharpPackageEntry = null;
+      if (PackageEntry != null)
+        PackageEntry = null;
     }
 
     #region 系统包
@@ -139,91 +118,18 @@ namespace Ballance2.Package
     /// </summary>
     public Assembly CSharpAssembly { get; protected set; }
     /// <summary>
-    /// C# 程序入口
+    /// 程序入口
     /// </summary>
-    private object CSharpPackageEntry = null;
-    /// <summary>
-    /// LUA程序入口
-    /// </summary>
-    private LuaTable LuaPackageEntry = null;
+    private GamePackageEntry PackageEntry = null;
 
-    /// <summary>
-    /// 获取模块启动代码是否已经执行
-    /// </summary>
-    /// <returns></returns>
-    public bool IsEntryCodeExecuted() { return mainLuaCodeLoaded; }
-
-    private bool mainLuaCodeLoaded = false;
-    private bool luaStateInited = false;
-    private bool luaStateIniting = false;
-    private bool runExecutionCodeWhenLuaStateInit = false;
-    protected bool baseInited = false;
-
-    //初始化LUA虚拟机
-    private async Task<bool> InitLuaState()
-    {
-      mainLuaCodeLoaded = false;
-
-      if (!string.IsNullOrEmpty(ShareLuaState))
-      {
-        //如果指定了core，则代码载入到全局lua虚拟机中
-        if (ShareLuaState == "core")
-        {
-          PackageLuaState = GameManager.Instance.GameMainLuaState;
-          SetLuaStateInitFinished();
-          return false;
-        }
-
-        GamePackage m = GameManager.Instance.GetSystemService<GamePackageManager>().FindPackage(ShareLuaState);
-
-        if (m != null && m.PackageLuaState != null && m.luaStateInited)
-        {
-          PackageLuaState = m.PackageLuaState;
-          SetLuaStateInitFinished();
-          return false;
-        }
-        else Log.E(TAG, "package {0} can not be load because " +
-            "the target mod lua environment is not ready or not load. now use independent LuaServer",
-            ShareLuaState);
-      }
-
-      PackageLuaServer = new PackageLuaServer(PackageName);
-      PackageLuaState = PackageLuaServer.getLuaState();
-      PackageLuaServer.init(null, SetLuaStateInitFinished);
-      luaStateIniting = true;
-
-      await new WaitUntil(IsLuaStateInitFinished);
-
-      SecurityUtils.FixLuaSecure(PackageLuaState);
-      LuaUtils.InitMacros(PackageLuaState);
-      return true;
+    //加载运行环境代码
+    private bool LoadPackageCodeBase() {
+      
     }
+
     protected void SystemPackageSetInitFinished()
     {
-      baseInited = true;
-      luaStateInited = true;
-      luaStateIniting = false;
-      mainLuaCodeLoaded = false;
-
       GameManager.Instance.Delay(0.05f, () => RunPackageExecutionCode());
-    }
-    private void SetLuaStateInitFinished()
-    {
-      luaStateInited = true;
-      luaStateIniting = false;
-      baseInited = true;
-
-      if (runExecutionCodeWhenLuaStateInit)
-        GameManager.Instance.Delay(0.05f, () => RunPackageExecutionCode());
-    }
-
-    /// <summary>
-    /// 获取Lua虚拟机是否初始化完成
-    /// </summary>
-    /// <returns></returns>
-    public bool IsLuaStateInitFinished()
-    {
-      return luaStateInited;
     }
 
     /// <summary>
@@ -479,10 +385,6 @@ namespace Ballance2.Package
       XmlNode nodeType = nodePackage.SelectSingleNode("Type");
       if (nodeType != null)
         Type = ConverUtils.StringToEnum(nodeType.InnerText, GamePackageType.Asset, "Type");
-      XmlNode nodeShareLuaState = nodePackage.SelectSingleNode("ShareLuaState");
-      if (nodeShareLuaState != null)
-        ShareLuaState = nodeShareLuaState.InnerText;
-
 
       return true;
     }
@@ -551,24 +453,17 @@ namespace Ballance2.Package
     /// 获取模块代码类型
     /// </summary>
     public GamePackageCodeType CodeType { get; protected set; } = GamePackageCodeType.None;
-    /// <summary>
-    /// 获取模块共享Lua虚拟机
-    /// </summary>
-    public string ShareLuaState { get; protected set; }
 
     internal GamePackageStatus _Status = GamePackageStatus.NotLoad;
 
     /// <summary>
     /// 获取模块状态
     /// </summary>
-    [LuaApiDescription("获取模块状态")]
     public GamePackageStatus Status { get { return _Status; } }
-
     /// <summary>
     /// 转为字符串显示
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("转为字符串显示")]
     public override string ToString()
     {
       return "Package: " + PackageName + "(" + PackageVersion + ") => " + _Status;
