@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package name="core" version="{internal.core.version}">
+  <BaseInfo>
+    <Name>Core</Name>
+    <Author>Ballance</Author>
+    <Introduction>基础游戏系统包</Introduction>
+    <Description></Description>
+    <Logo>PackageLogo.png</Logo>
+    <Link>https://imengyu.top/ballanceProject</Link>
+    <AuthorLink>https://imengyu.top/</AuthorLink>
+    <DocLink>https://imengyu.top/ballanceProject/doc</DocLink>
+    <VersionName>{internal.core.versionName}</VersionName>
+    <Dependencies></Dependencies>
+  </BaseInfo>
+  <EntryCode>PackageEntry</EntryCode>
+  <Type>Module</Type>
+  <CodeType>JS</CodeType>
+  <ShareLuaState>core</ShareLuaState>
+  <CompileLuaCode>True</CompileLuaCode>
+</Package>

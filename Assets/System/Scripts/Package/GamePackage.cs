@@ -31,6 +31,7 @@ namespace Ballance2.Package
   /// <summary>
   /// 模块包实例
   /// </summary>
+  [JSExport]
   public class GamePackage
   {
     /// <summary>
@@ -55,25 +56,11 @@ namespace Ballance2.Package
       LoadI18NResource();
 
       //模块代码环境初始化
-      if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
-      {
-        if (CodeType == GamePackageCodeType.Lua)
-        {
-          LoadPackageCodeBase();
-        }
-        else if (CodeType == GamePackageCodeType.CSharp)
-        {
-          //加载C#程序集
-          CSharpAssembly = LoadCodeCSharp(EntryCode);
-          if (CSharpAssembly != null)
-            LoadPackageCodeBase();
-        }
-        else
-        {
-          Log.W(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
-        }
-      }
-      return new Task<bool>(() => true);
+      return new Task<bool>(() => {
+        if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
+          return LoadPackageCodeBase();
+        return true;
+      });
     }
     public virtual void Destroy()
     {
@@ -120,16 +107,72 @@ namespace Ballance2.Package
     /// <summary>
     /// 程序入口
     /// </summary>
-    private GamePackageEntry PackageEntry = null;
+    public GamePackageEntry PackageEntry = null;
+    private bool entryCodeRun = false;
+    private bool unloadCodeRun = false;
 
-    //加载运行环境代码
+    /// <summary>
+    /// 获取入口代码是否已经运行过
+    /// </summary>
+    /// <returns></returns>
+    public bool IsEntryCodeExecuted() { return entryCodeRun; }
+
+    /// <summary>
+    /// 加载运行环境代码
+    /// </summary>
+    /// <returns></returns>
     private bool LoadPackageCodeBase() {
-      
-    }
+      if (CodeType == GamePackageCodeType.JS)
+      {
+        var ret = GameManager.Instance.GameMainEnv.Eval<bool>("SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", "ballance-internal:///packageLoader.js?name=" + PackageName);
+        if (!ret)
+        {
+          Log.E(TAG, "模块 PackageEntry 返回了错误");
+          GameErrorChecker.LastError = GameError.ExecutionFailed;
+          return false;
+        }
+        return true;
+      }
+      else if (CodeType == GamePackageCodeType.CSharp)
+      {
+        //加载C#程序集
+        CSharpAssembly = LoadCodeCSharp(EntryCode);
+        if (CSharpAssembly == null) {
+          Log.E(TAG, "无法加载DLL：" + EntryCode);
+          return false;
+        }
+        
+        Type type = CSharpAssembly.GetType("Package");
+        if (type == null)
+        {
+          Log.E(TAG, "未找到 Package ");
+          GameErrorChecker.LastError = GameError.ClassNotFound;
+          return false;
+        }
 
-    protected void SystemPackageSetInitFinished()
-    {
-      GameManager.Instance.Delay(0.05f, () => RunPackageExecutionCode());
+        object CSharpPackageEntry = Activator.CreateInstance(type);
+        MethodInfo methodInfo = type.GetMethod("PackageEntry");  //根据方法名获取MethodInfo对象
+        if (type == null)
+        {
+          Log.E(TAG, "未找到 PackageEntry()");
+          GameErrorChecker.LastError = GameError.FunctionNotFound;
+          return false;
+        }
+
+        object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this });
+        if (b is bool && !((bool)b))
+        {
+          Log.E(TAG, "模块 PackageEntry 返回了错误");
+          GameErrorChecker.LastError = GameError.ExecutionFailed;
+          return (bool)b;
+        }
+        return true;
+      }
+      else
+      {
+        Log.E(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
+      }
+      return false;
     }
 
     /// <summary>
@@ -143,127 +186,15 @@ namespace Ballance2.Package
         GameErrorChecker.LastError = GameError.PackageCanNotRun;
         return false;
       }
-      if (!baseInited)
-      {
-        if (luaStateIniting)
-          runExecutionCodeWhenLuaStateInit = true;
-        else
-        {
-          Log.E(TAG, "RunPackageExecutionCode failed, package not load, status {0}", Status);
-          GameErrorChecker.LastError = GameError.NotLoad;
-          return false;
-        }
+      if(entryCodeRun) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "Run ExecutionCode failed, an not run twice");
+        return false;
       }
 
-      if (CodeType == GamePackageCodeType.Lua)
-      {
-        //运行Lua入口代码
-        if (!string.IsNullOrWhiteSpace(EntryCode))
-        {
-          if (!luaStateInited)
-          {
-            Log.E(TAG, "RunModExecutionCode failed, Lua state not init, mod maybe cannot run");
-            GameErrorChecker.LastError = GameError.PackageCanNotRun;
-            return false;
-          }
-
-          byte[] lua = TryLoadLuaCodeAsset(EntryCode, out var realpath);
-          if (lua == null)
-            Log.E(TAG, "Run package EntryCode failed, function {0} not found", EntryCode);
-          else if (!mainLuaCodeLoaded)
-          {
-            Log.D(TAG, "Run package EntryCode {0} ", EntryCode);
-
-            try
-            {
-              if (PackageLuaState.doBuffer(lua, realpath, out var ret))
-              {
-                mainLuaCodeLoaded = true;
-                LuaPackageEntry = ret as LuaTable;
-                requiredLuaFiles.Add(EntryCode, LuaPackageEntry);
-              }
-              else if (ret == null)
-              {
-                Log.E(TAG, "模块 {0} 运行启动代码失败! 启动代码未返回指定结构体。\n请检查代码 ->\n{1}",
-                    PackageName, DebugUtils.PrintCodeWithLine(lua));
-                GameErrorChecker.LastError = GameError.ExecutionFailed;
-                return false;
-              }
-              else
-              {
-                Log.E(TAG, "模块 {0} 运行启动代码失败! \n请检查代码 ->\n{1}",
-                    PackageName, DebugUtils.PrintCodeWithLine(lua));
-              }
-            }
-            catch (Exception e)
-            {
-              Log.E(TAG, "模块 {0} 运行启动代码失败! {1}\n请检查代码 ->\n{2}",
-                  PackageName, e.Message,
-                  DebugUtils.PrintCodeWithLine(lua));
-              Log.E(TAG, e.ToString());
-              GameErrorChecker.LastError = GameError.ExecutionFailed;
-              return false;
-            }
-
-            LuaFunction fPackageEntry = LuaPackageEntry["PackageEntry"] as LuaFunction;
-            if (fPackageEntry != null)
-            {
-              object b = fPackageEntry.call(this);
-              if (b is bool && !((bool)b))
-              {
-                Log.E(TAG, "模块 {0} PackageEntry 返回了错误", PackageName);
-                GameErrorChecker.LastError = GameError.ExecutionFailed;
-                return (bool)b;
-              }
-              return false;
-            }
-            else
-            {
-              Log.E(TAG, "模块 {0} 未找到 PackageEntry ", PackageName);
-              GameErrorChecker.LastError = GameError.FunctionNotFound;
-            }
-          }
-          else
-          {
-            Log.E(TAG, "无法重复运行模块启动代码 {0} {1} ", EntryCode, PackageName);
-            GameErrorChecker.LastError = GameError.AlreadyRegistered;
-          }
-        }
-      }
-      else if (CodeType == GamePackageCodeType.CSharp)
-      {
-        //运行C#入口
-        if (CSharpAssembly != null)
-        {
-          Type type = CSharpAssembly.GetType("Package");
-          if (type == null)
-          {
-            Log.E(TAG, "未找到 Package ");
-            GameErrorChecker.LastError = GameError.ClassNotFound;
-            return false;
-          }
-
-          CSharpPackageEntry = Activator.CreateInstance(type);
-          MethodInfo methodInfo = type.GetMethod("PackageEntry");  //根据方法名获取MethodInfo对象
-          if (type == null)
-          {
-            Log.E(TAG, "未找到 PackageEntry()");
-            GameErrorChecker.LastError = GameError.FunctionNotFound;
-            return false;
-          }
-
-          object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this });
-          if (b is bool && !((bool)b))
-          {
-            Log.E(TAG, "模块 PackageEntry 返回了错误");
-            GameErrorChecker.LastError = GameError.ExecutionFailed;
-            return (bool)b;
-          }
-          return true;
-        }
-      }
-
-      return false;
+      entryCodeRun = true;
+      if(PackageEntry.OnLoad != null)
+        return PackageEntry.OnLoad.Invoke(this);
+      return true;
     }
     /// <summary>
     /// 运行模块卸载回调
@@ -275,28 +206,16 @@ namespace Ballance2.Package
         GameErrorChecker.LastError = GameError.PackageCanNotRun;
         return false;
       }
-      if (CodeType == GamePackageCodeType.Lua)
-      {
-        if (mainLuaCodeLoaded && !PackageLuaState.Destroyed)
-        {
-          LuaFunction fPackageBeforeUnLoad = LuaPackageEntry["PackageBeforeUnLoad"] as LuaFunction;
-          if (fPackageBeforeUnLoad != null)
-            fPackageBeforeUnLoad.call(this);
-          return true;
-        }
-      }
-      else if (CodeType == GamePackageCodeType.CSharp)
-      {
-        if (CSharpAssembly != null)
-        {
-          Type type = CSharpAssembly.GetType("Package");
-          MethodInfo methodInfo = type.GetMethod("PackageBeforeUnLoad");
-          methodInfo.Invoke(CSharpPackageEntry, null);
-          return true;
-        }
+      if (unloadCodeRun) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "Run BeforeUnLoadCode failed, an not run twice");
+        return false;
       }
 
-      return false;
+      unloadCodeRun = false;
+
+      if(PackageEntry.OnBeforeUnLoad != null)
+        return PackageEntry.OnBeforeUnLoad.Invoke(this);
+      return true;
     }
 
     #endregion
@@ -381,7 +300,7 @@ namespace Ballance2.Package
         EntryCode = nodeEntryCode.InnerText;
       XmlNode nodeCodeType = nodePackage.SelectSingleNode("CodeType");
       if (nodeCodeType != null)
-        CodeType = ConverUtils.StringToEnum(nodeCodeType.InnerText, GamePackageCodeType.Lua, "CodeType");
+        CodeType = ConverUtils.StringToEnum(nodeCodeType.InnerText, GamePackageCodeType.None, "CodeType");
       XmlNode nodeType = nodePackage.SelectSingleNode("Type");
       if (nodeType != null)
         Type = ConverUtils.StringToEnum(nodeType.InnerText, GamePackageType.Asset, "Type");
@@ -539,6 +458,14 @@ namespace Ballance2.Package
     /// <returns>返回 AudioClip 实例，如果未找到，则返回null</returns>
     public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
 
+    /// <summary>
+    /// 获取指定路径的代码是否存在。
+    /// </summary>
+    /// <param name="pathorname">代码路径</param>
+    /// <returns>返回是否存在</returns>
+    public virtual bool CheckCodeAssetExists(string pathorname) {
+      return AssetBundle.Contains(pathorname);
+    }
     /// <summary>
     /// 读取模块资源包中的代码资源
     /// </summary>
@@ -732,7 +659,6 @@ namespace Ballance2.Package
     }
 
     #endregion
-
 
   }
 }

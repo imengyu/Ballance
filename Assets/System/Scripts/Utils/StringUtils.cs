@@ -23,6 +23,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串工具类
   /// </summary>
+  [JSExport]
   public static class StringUtils
   {
     /// <summary>

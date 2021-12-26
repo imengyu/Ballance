@@ -43,10 +43,10 @@ namespace Ballance2.Entry
     public int DebugTargetFrameRate = 60;
     [Tooltip("是否设置固定帧率（仅Editor中有效）")]
     public bool DebugSetFrameRate = true;
-    [Tooltip("是否启用Lua调试器")]
-    public bool DebugEnableLuaDebugger = true;
-    [Tooltip("Lua调试器")]
-    public GameLuaDebuggger DebugLuaDebugger = GameLuaDebuggger.VscodeDebuggee;
+    [Tooltip("是否启用JS调试器")]
+    public bool DebugEnableV8Debugger = true;
+    [Tooltip("JS调试器默认端口")]
+    public int DebugV8DebuggerPort = 9229;
     [Tooltip("调试类型")]
     public GameDebugType DebugType = GameDebugType.NoDebug;
     [Tooltip("当前调试中需要初始化的包名")]
@@ -75,10 +75,6 @@ namespace Ballance2.Entry
 
     public GameObject GlobalGamePermissionTipDialog = null;
     public GameObject GlobalGameUserAgreementTipDialog = null;
-    public Button ButtonUserAgreementAllow = null;
-    public Toggle CheckBoxAllowUserAgreement = null;
-    public GameObject LinkPrivacyPolicy = null;
-    public GameObject LinkUserAgreement = null;
 
     private bool GlobalGamePermissionTipDialogClosed = false;
     private bool GlobalGameUserAgreementTipDialogClosed = false;
@@ -91,7 +87,6 @@ namespace Ballance2.Entry
 
       InitCommandLine();
       InitBaseSettings();
-      InitUI();
 
       if (DebugMode && DebugSetFrameRate) Application.targetFrameRate = DebugTargetFrameRate;
 
@@ -117,7 +112,6 @@ namespace Ballance2.Entry
       if (PlayerPrefs.GetInt("UserAgreementAgreed", 0) == 0)
       {
         GlobalGameUserAgreementTipDialog.SetActive(true);
-        GlobalGameUserAgreementTipDialog.GetComponent<Animator>().Play("GlobalTipDialogShowAnimation");
         return true;
       }
       return false;
@@ -142,15 +136,6 @@ namespace Ballance2.Entry
     {
       PlayerPrefs.SetInt("UserAgreementAgreed", 1);
       GlobalGameUserAgreementTipDialogClosed = true;
-      GlobalGameUserAgreementTipDialog.SetActive(false);
-    }
-    /// <summary>
-    /// 同意选择框改变
-    /// </summary>
-    /// <param name=""></param>
-    public void ArgeedUserArgeementChackChinged(bool check)
-    {
-      ButtonUserAgreementAllow.interactable = check;
     }
     /// <summary>
     /// 请求安卓权限
@@ -158,10 +143,9 @@ namespace Ballance2.Entry
     public void RequestAndroidPermission()
     {
 #if UNITY_ANDROID
-            Permission.RequestUserPermission(Permission.ExternalStorageWrite);
+      Permission.RequestUserPermission(Permission.ExternalStorageWrite);
 #endif
       GlobalGamePermissionTipDialogClosed = true;
-      GlobalGamePermissionTipDialog.SetActive(false);
     }
     /// <summary>
     /// 退出游戏
@@ -181,7 +165,6 @@ namespace Ballance2.Entry
     public void DisallowAndroidPermission()
     {
       GlobalGameUserAgreementTipDialogClosed = true;
-      GlobalGamePermissionTipDialog.SetActive(false);
     }
 
     #endregion
@@ -198,13 +181,6 @@ namespace Ballance2.Entry
             PlayerPrefs.SetInt("core.DebugMode", 1);
         }
       }
-    }
-    private void InitUI()
-    {
-      CheckBoxAllowUserAgreement.onValueChanged.AddListener(ArgeedUserArgeementChackChinged);
-
-      EventTriggerListener.Get(LinkPrivacyPolicy).onClick += (go) => Application.OpenURL(GameConst.BallancePrivacyPolicy);
-      EventTriggerListener.Get(LinkUserAgreement).onClick += (go) => Application.OpenURL(GameConst.BallanceUserAgreement);
     }
     private void InitBaseSettings()
     {
@@ -223,7 +199,6 @@ namespace Ballance2.Entry
       if (TestAndroidPermission())
       {
         GlobalGamePermissionTipDialog.SetActive(true);
-        GlobalGamePermissionTipDialog.GetComponent<Animator>().Play("GlobalTipDialogShowAnimation");
 
         yield return new WaitUntil(() => GlobalGamePermissionTipDialogClosed);
       }
@@ -267,20 +242,6 @@ namespace Ballance2.Entry
     /// 系统调试。此模式不会加载游戏运行环境。
     /// </summary>
     SystemDebug
-  }
-  /// <summary>
-  /// Lua调试类型
-  /// </summary>
-  public enum GameLuaDebuggger
-  {
-    /// <summary>
-    /// vscode-debuggee
-    /// </summary>
-    VscodeDebuggee,
-    /// <summary>
-    /// Mobdebug
-    /// </summary>
-    Mobdebug,
   }
   [Serializable]
   public class GameDebugPackageInfo

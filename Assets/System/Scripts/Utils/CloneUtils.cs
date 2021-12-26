@@ -22,6 +22,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 克隆工具类
   /// </summary>
+  [JSExport]
   public static class CloneUtils
   {
     /// <summary>

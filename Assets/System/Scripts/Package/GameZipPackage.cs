@@ -203,6 +203,18 @@ namespace Ballance2.Package
       ms.Dispose();
     }
 
+    public override bool CheckCodeAssetExists(string pathorname)
+    {
+      foreach (string key in packageCodeAsset.Keys)
+      {
+        if (key == pathorname
+                || key == "class" + pathorname
+                || key == "class/" + pathorname
+                || Path.GetFileName(key) == pathorname)
+          return true;
+      }
+      return false;
+    }
     public override byte[] GetCodeAsset(string pathorname, out string realPath)
     {
       foreach (string key in packageCodeAsset.Keys)

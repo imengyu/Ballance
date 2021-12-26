@@ -21,6 +21,7 @@ namespace Ballance2.Services.InputManager
   /// <summary>
   /// 键盘按键事件事件侦听器
   /// </summary>
+  [JSExport]
   public class KeyListener : MonoBehaviour
   {
     /// <summary>

@@ -18,6 +18,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 材质工具类。材质相关的一些工具方法。
   /// </summary>
+  [JSExport]
   public static class MaterialUtils
   {
     /// <summary>
@@ -36,6 +37,7 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="material">材质</param>
     /// <param name="renderingMode">渲染模式</param>
+    [JSExport]
     public static void SetMaterialRenderingMode(Material material, RenderingMode renderingMode)
     {
       switch (renderingMode)
@@ -83,6 +85,7 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="material"></param>
     /// <returns></returns>
+    [JSExport]
     public static RenderingMode GetMaterialRenderingMode(Material material) {
       if(material.renderQueue == -1) return RenderingMode.Opaque;
       else if(material.renderQueue == 2450) return RenderingMode.Cutout;

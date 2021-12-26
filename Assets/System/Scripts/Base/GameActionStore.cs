@@ -23,6 +23,7 @@ namespace Ballance2.Base
   /// <summary>
   /// 操作存储库
   /// </summary>
+  [JSExport]
   public class GameActionStore
   {
     /// <summary>
@@ -100,7 +101,7 @@ namespace Ballance2.Base
     /// 如果不需要参数检查，也可以为null，则当前操作将不会进行类型检查
     /// </param>
     /// <returns>返回注册的操作实例，如果注册失败则返回 null ，请查看 LastError 的值</returns>
-     public GameAction RegisterAction(GamePackage package, string name, GameHandler handler, string[] callTypeCheck)
+    public GameAction RegisterAction(GamePackage package, string name, GameHandler handler, string[] callTypeCheck)
     {
       if (string.IsNullOrEmpty(name))
       {

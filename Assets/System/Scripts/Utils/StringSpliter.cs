@@ -20,6 +20,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串分割器
   /// </summary>
+  [JSExport]
   public class StringSpliter
   {
     /// <summary>

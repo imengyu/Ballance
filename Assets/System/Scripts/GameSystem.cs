@@ -1,4 +1,4 @@
-using Ballance2.Log.Utils;
+using Ballance2.Utils;
 using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ballance2.Package;
 using Ballance2.Base;
-using Ballance2.Utils;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -191,7 +190,7 @@ namespace Ballance2
       GameSettingsManager.Init();
       //初始化I18N 和系统字符串资源
       I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
-      I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLang/I18N").text);
+      I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLangResource").text);
     }
 
     /// <summary>
@@ -204,7 +203,7 @@ namespace Ballance2
         sysInit = true;
 
         //Init system
-        Ballance2.Log.Utils.UnityLogCatcher.Init();
+        Ballance2.Utils.UnityLogCatcher.Init();
 
         //初始化静态资源入口
         GameStaticResourcesPool.InitStaticPrefab(gameStaticResEntryInstance.GamePrefab, gameStaticResEntryInstance.GameAssets);
@@ -280,7 +279,7 @@ namespace Ballance2
         //释放其他组件
         I18NProvider.ClearAllLanguageResources();
         GameSettingsManager.Destroy();
-        Ballance2.Log.Utils.UnityLogCatcher.Destroy();
+        Ballance2.Utils.UnityLogCatcher.Destroy();
 
         if (IsRestart)
         {

@@ -30,6 +30,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 文件工具类
   /// </summary>
+  [JSExport]
   public class FileUtils
   {
     private static byte[] zipHead = new byte[4] { 0x50, 0x4B, 0x03, 0x04 };

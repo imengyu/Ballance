@@ -29,9 +29,9 @@ namespace Ballance2.Package
     /// </summary>
     None,
     /// <summary>
-    /// 代码类型是 Lua
+    /// 代码类型是 JS
     /// </summary>
-    Lua,
+    JS,
     /// <summary>
     /// 代码类型是 C# DLL
     /// </summary>

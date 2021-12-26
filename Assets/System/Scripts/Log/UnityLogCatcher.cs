@@ -14,7 +14,7 @@ using UnityEngine;
 * mengyu
 */
 
-namespace Ballance2.Log.Utils
+namespace Ballance2.Utils
 {
   class UnityLogCatcher
   {

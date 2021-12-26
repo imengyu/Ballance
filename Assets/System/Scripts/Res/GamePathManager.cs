@@ -22,6 +22,7 @@ namespace Ballance2.Res
   /// <summary>
   /// 路径管理器
   /// </summary>
+  [JSExport]
   public static class GamePathManager
   {
     /// <summary>

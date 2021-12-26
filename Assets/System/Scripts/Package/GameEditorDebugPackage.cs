@@ -37,9 +37,9 @@ namespace Ballance2.Package
     {
       PackageFilePath = filePath;
 #if !UNITY_EDITOR
-            GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "This package can only use in editor.");
-            await base.LoadInfo(filePath);
-            return false;
+      GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "This package can only use in editor.");
+      await base.LoadInfo(filePath);
+      return false;
 #else
 
       string defPath = filePath + "/PackageDef.xml";
@@ -114,7 +114,33 @@ namespace Ballance2.Package
         Log.E(TAG, "在加载模块的 Logo {0} 失败\n错误信息：{1}", path, e.ToString());
       }
     }
-
+    public override bool CheckCodeAssetExists(string pathorname)
+    {
+      if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
+      {
+        if (File.Exists(pathorname))
+        {
+          return true;
+        }
+      }
+      else
+      {
+        string path = PackageFilePath + "/" + pathorname;
+        if (File.Exists(path))
+        {
+          return true;
+        }
+        else
+        {
+          string fullPath = GetFullPathByName(pathorname);
+          if (fullPath != null && File.Exists(fullPath))
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
     public override byte[] GetCodeAsset(string pathorname, out string realPath)
     {
       if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
@@ -180,8 +206,8 @@ namespace Ballance2.Package
         return asset;
       }
 #else
-            GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "Package can only use in editor.");
-            return null;
+      GameErrorChecker.SetLastErrorAndLog(GameError.OnlyCanUseInEditor, TAG, "Package can only use in editor.");
+      return null;
 #endif
     }
   }

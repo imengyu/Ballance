@@ -20,6 +20,7 @@ namespace Ballance2.Base.Handler
   /// <summary>
   /// 游戏通用接收器
   /// </summary>
+  [JSExport]
   public class GameHandler
   {
     private static readonly string TAG = "GameHandler";

@@ -23,6 +23,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// Zip 帮助类
   /// </summary>
+  [JSExport]
   public class ZipUtils
   {
     /// <summary>

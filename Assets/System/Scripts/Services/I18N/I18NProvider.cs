@@ -17,6 +17,10 @@ using UnityEngine;
 
 namespace Ballance2.Services.I18N
 {
+  /// <summary>
+  /// 国际化字符串提供类
+  /// </summary>
+  [JSExport]
   public static class I18NProvider
   {
     private const string TAG = "I18NProvider";

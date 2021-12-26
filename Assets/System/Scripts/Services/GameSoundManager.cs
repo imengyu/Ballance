@@ -26,6 +26,7 @@ namespace Ballance2.Services
   /// <summary>
   /// 声音管理器
   /// </summary>
+  [JSExport]
   public class GameSoundManager : GameService
   {
     #region 初始化和定义

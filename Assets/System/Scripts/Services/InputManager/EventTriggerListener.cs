@@ -21,6 +21,7 @@ namespace Ballance2.Services.InputManager
   /// <summary>
   /// UI 事件侦听器
   /// </summary>
+  [JSExport]
   public class EventTriggerListener : EventTrigger
   {
     /// <summary>

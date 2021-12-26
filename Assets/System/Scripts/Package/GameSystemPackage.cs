@@ -61,9 +61,7 @@ namespace Ballance2.Package
     {
       if (disableLoadFileInUnity)
       {
-        var rs = await base.LoadPackage();
-        SystemPackageSetInitFinished();
-        return rs;
+        return await base.LoadPackage();
       }
       else
       {
@@ -72,7 +70,6 @@ namespace Ballance2.Package
 
         DoSearchScriptNames();
         LoadAllFileNames();
-        SystemPackageSetInitFinished();
 
         disableZipLoad = true;
         return await base.LoadPackage();
@@ -107,7 +104,7 @@ namespace Ballance2.Package
       { //遍历文件
         string path = NextFile.FullName.Replace("\\", "/");
         if (path.EndsWith(".meta")) continue;
-        if (path.EndsWith(".lua")) continue;
+        if (path.EndsWith(".js")) continue;
         int index = path.IndexOf("Assets/");
         if (index > 0)
           path = path.Substring(index);
@@ -138,7 +135,7 @@ namespace Ballance2.Package
 #if UNITY_EDITOR
       //构建一下所有脚本名称和路径的列表
       DirectoryInfo dir = new DirectoryInfo(ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH);
-      FileInfo[] fi = dir.GetFiles("*.lua", SearchOption.AllDirectories);
+      FileInfo[] fi = dir.GetFiles("*.js", SearchOption.AllDirectories);
       foreach (var f in fi)
       {
         string path = f.FullName.Replace("\\", "/");
@@ -147,7 +144,7 @@ namespace Ballance2.Package
           path = path.Substring(index);
         packageCodeAsset.Add(f.Name, path);
       }
-      packageCodeAsset.Add("PackageEntry.lua", ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH + "PackageEntry.lua");
+      packageCodeAsset.Add("PackageEntry.js", ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH + "PackageEntry.js");
 #endif
     }
 
@@ -174,6 +171,37 @@ namespace Ballance2.Package
 #else
       return base.GetAsset<T>(pathorname);
 #endif
+    }
+    public override bool CheckCodeAssetExists(string pathorname)
+    {
+   #if UNITY_EDITOR
+      if (disableLoadFileInUnity)
+      {
+        return base.CheckCodeAssetExists(pathorname);
+      }
+      else
+      {
+        //绝对路径
+        if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets"))
+        {
+          return File.Exists(pathorname);
+        }
+        //直接拼接路径
+        var scriptPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH + pathorname;
+        if (File.Exists(scriptPath))
+        {
+          return true;
+        }
+        //尝试使用路径列表里的路径
+        if (packageCodeAsset.TryGetValue(pathorname, out var path))
+        {
+          return File.Exists(path);
+        }
+        return false;
+      }
+#else
+      return base.CheckCodeAssetExists(pathorname);
+#endif  
     }
     public override byte[] GetCodeAsset(string pathorname, out string realPath)
     {
@@ -208,7 +236,7 @@ namespace Ballance2.Package
         return null;
       }
 #else
-            return base.GetCodeLuaAsset(pathorname, out realPath);
+      return base.GetCodeLuaAsset(pathorname, out realPath);
 #endif
     }
   }

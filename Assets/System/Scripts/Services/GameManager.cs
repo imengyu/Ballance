@@ -6,10 +6,12 @@ using System.Xml;
 using Ballance2.Base;
 using Ballance2.Config;
 using Ballance2.Config.Settings;
+using Ballance2.DebugTools;
 using Ballance2.Entry;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
+using Ballance2.Services.JSService.JSLoader;
 using Ballance2.Utils;
 using Puerts;
 using UnityEngine;
@@ -36,6 +38,7 @@ namespace Ballance2.Services
   /// <summary>
   /// 游戏管理器
   /// </summary>
+  [JSExport]
   public class GameManager : GameService
   {
     public GameManager() : base("GameManager") {}
@@ -159,7 +162,7 @@ namespace Ballance2.Services
       //创建 GameMainEnv
       Profiler.BeginSample("CreateJsEnv");
 
-      GameMainEnv = new JsEnv();
+      GameMainEnv = new JsEnv(new GameJSLoader(), GameEntry.Instance.DebugV8DebuggerPort);
 
       Profiler.EndSample();
 
@@ -182,6 +185,13 @@ namespace Ballance2.Services
 #endif
         yield break;
       }
+
+      Profiler.BeginSample("InitJsEnv");
+
+      ExecuteCode("__system__/env/SystemEnvInit.js");
+      ExecuteCode("__system__/env/PackageLoader.js");
+
+      Profiler.EndSample();
 
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
       
@@ -320,6 +330,17 @@ namespace Ballance2.Services
 
       #region 加载系统内核包
 
+      
+      if (GameEntry.Instance.DebugEnableV8Debugger)
+      {
+        Profiler.BeginSample("GameManagerWaitDebuggerAsync");
+
+        Task task = GameMainEnv.WaitDebuggerAsync();
+        yield return new WaitUntil(() => task.IsCompleted);
+        
+        Profiler.EndSample();
+      }
+
       {
         //加载系统内核包
         Task<bool> task = pm.LoadPackage(corePackageName);
@@ -333,33 +354,21 @@ namespace Ballance2.Services
         //检查系统包版本是否与内核版本一致
         var systemPackage = pm.FindPackage(GamePackageManager.SYSTEM_PACKAGE_NAME);
         systemPackage.SystemPackage = true;
+        systemPackage.RunPackageExecutionCode();
 
         yield return new WaitForSeconds(0.5f);
 
-        LuaFunction f = systemPackage.GetLuaFun("CoreVersion");
-        if (f == null)
-        {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package (1)");
-          yield break;
-        }
-        object ver = f.call();
-        if (ver == null)
+        var ver = systemPackage.PackageEntry.Version;
+        if (ver <= 0)
         {
           GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package (2)");
           yield break;
         }
-        if ((double)(ver) != GameConst.GameBulidVersion)
+        if (ver != GameConst.GameBulidVersion)
         {
           GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包版本与游戏内核版本不符（" + ver + "!=" + GameConst.GameBulidVersion + "）\n您可尝试重新安装游戏");
           yield break;
         }
-      }
-
-      if (GameEntry.Instance.DebugEnableLuaDebugger)
-      {
-        Profiler.BeginSample("GameManagerStartDebugger");
-        
-        Profiler.EndSample();
       }
 
       #endregion
@@ -713,15 +722,15 @@ namespace Ballance2.Services
               "  vsync <fullScreenMode:number(0-2)>                                   ▶ 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
               "  full <fullScreenMode::number(0-3)>                                   ▶ 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
               "  device > 获取当前设备信息");
-      srv.RegisterCommand("c", (keyword, fullCmd, argsCount, args) =>
-      {
-        var cmd = fullCmd.Substring(2);
-        if (!cmd.Contains("\n") && !cmd.StartsWith("return "))
-          cmd = "return " + cmd;
-        var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
-        Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
-        return true;
-      }, 1, "c <code:string> ▶ 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
+      // srv.RegisterCommand("c", (keyword, fullCmd, argsCount, args) =>
+      // {
+      //   var cmd = fullCmd.Substring(2);
+      //   if (!cmd.Contains("\n") && !cmd.StartsWith("return "))
+      //     cmd = "return " + cmd;
+      //   var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
+      //   Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
+      //   return true;
+      // }, 1, "c <code:string> ▶ 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
       srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
       {
         Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
@@ -924,6 +933,8 @@ namespace Ballance2.Services
           }
         }
       }
+
+      GameMainEnv.Tick();
     }
 
     #endregion
@@ -947,6 +958,22 @@ namespace Ballance2.Services
     public GameService GetSystemService(string name)
     {
       return GameSystem.GetSystemService(name);
+    }
+
+    #endregion
+
+    #region 虚拟机执行方法
+
+    /// <summary>
+    /// 执行js代码文件
+    /// </summary>
+    /// <param name="assetPath"></param>
+    /// <returns></returns>
+    public object ExecuteCode(string assetPath) 
+    {
+      var pm = GetSystemService<GamePackageManager>();
+      var code = pm.GetCodeAsset(assetPath, out var realPath);
+      return GameMainEnv.Eval<object>(code.ToString(), realPath);
     }
 
     #endregion

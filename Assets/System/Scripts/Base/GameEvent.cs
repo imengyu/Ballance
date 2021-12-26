@@ -18,10 +18,11 @@ using UnityEngine;
 
 namespace Ballance2.Base
 {
-  [Serializable]
   /// <summary>
   /// 全局事件存储类
   /// </summary>
+  [JSExport]
+  [Serializable]
   public class GameEvent
   {
     /// <summary>

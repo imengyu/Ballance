@@ -28,11 +28,33 @@ using UnityEngine;
 namespace Ballance2.Package
 {
   /// <summary>
-  /// 模块入口结构变量
+  /// 模块代码入口反馈体。
+  /// 所有模块代码层的处理事件、回调都将在这里触发。
   /// </summary>
+  [JSExport]
   public class GamePackageEntry {
+
+    //事件回调
+
+    /// <summary>
+    /// 包加载回调
+    /// </summary>
     public GamePackageEntryDelogate OnLoad;
+    /// <summary>
+    /// 包卸载回调
+    /// </summary>
     public GamePackageEntryDelogate OnBeforeUnLoad;
+
+    //返回C#端的参数
+
+    /// <summary>
+    /// 模块版本参数
+    /// </summary>
+    public int Version = 0;
+
+    //Internal
+    
+
   }
   
   /// <summary>

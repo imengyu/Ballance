@@ -30,6 +30,7 @@ namespace Ballance2.Services
   /// <summary>
   /// 系统设置管理器
   /// </summary>
+  [JSExport]
   public static class GameSettingsManager
   {
     private static Dictionary<string, GameSettingsActuator> settingsActuators = null;
@@ -81,6 +82,7 @@ namespace Ballance2.Services
   /// <summary>
   /// 设置执行器
   /// </summary>
+  [JSExport]
   public class GameSettingsActuator
   {
     /// <summary>

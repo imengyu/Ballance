@@ -25,6 +25,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 路径字符串工具类
   /// </summary>
+  [JSExport]
   public static class PathUtils
   {
     /// <summary>

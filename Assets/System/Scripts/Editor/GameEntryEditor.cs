@@ -13,24 +13,20 @@ public class GameEntryEditor : Editor
     private SerializedProperty GameBaseCamera;
     private SerializedProperty GameCanvas;
     private SerializedProperty GameGlobalErrorUI;
-    private SerializedProperty GameDebugBeginStats;
     private SerializedProperty GlobalGamePermissionTipDialog;
     private SerializedProperty GlobalGameUserAgreementTipDialog;
-    private SerializedProperty ButtonUserAgreementAllow;
-    private SerializedProperty CheckBoxAllowUserAgreement;
-    private SerializedProperty LinkPrivacyPolicy;
-    private SerializedProperty LinkUserAgreement;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
-    private SerializedProperty DebugEnableLuaDebugger;
+    private SerializedProperty DebugEnableV8Debugger;
+    private SerializedProperty DebugV8DebuggerPort;
     private SerializedProperty DebugType;
     private SerializedProperty DebugInitPackages;
     private SerializedProperty DebugCustomEntryEvent;
     private SerializedProperty DebugCustomEntries;
     private SerializedProperty DebugLoadCustomPackages;
     private SerializedProperty DebugSkipIntro;
-    private SerializedProperty DebugLuaDebugger;
+
 
     private void OnEnable()
     {
@@ -41,19 +37,14 @@ public class GameEntryEditor : Editor
         GameBaseCamera = serializedObject.FindProperty("GameBaseCamera");
         GameCanvas = serializedObject.FindProperty("GameCanvas");
         GameGlobalErrorUI = serializedObject.FindProperty("GameGlobalErrorUI");
-        GameDebugBeginStats = serializedObject.FindProperty("GameDebugBeginStats");
         GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
         GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
-        ButtonUserAgreementAllow = serializedObject.FindProperty("ButtonUserAgreementAllow");
-        CheckBoxAllowUserAgreement = serializedObject.FindProperty("CheckBoxAllowUserAgreement");
-        LinkPrivacyPolicy = serializedObject.FindProperty("LinkPrivacyPolicy");
-        LinkUserAgreement = serializedObject.FindProperty("LinkUserAgreement");
 
-        DebugLuaDebugger = serializedObject.FindProperty("DebugLuaDebugger");
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
         DebugSetFrameRate = serializedObject.FindProperty("DebugSetFrameRate");
-        DebugEnableLuaDebugger = serializedObject.FindProperty("DebugEnableLuaDebugger");
+        DebugEnableV8Debugger = serializedObject.FindProperty("DebugEnableV8Debugger");
+        DebugV8DebuggerPort = serializedObject.FindProperty("DebugEnableV8Debugger");
         DebugType = serializedObject.FindProperty("DebugType");
         DebugInitPackages = serializedObject.FindProperty("DebugInitPackages");
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
@@ -104,8 +95,8 @@ public class GameEntryEditor : Editor
         EditorGUI.BeginDisabledGroup(!DebugSetFrameRate.boolValue);
         EditorGUILayout.PropertyField(DebugTargetFrameRate);
         EditorGUI.EndDisabledGroup();
-        EditorGUILayout.PropertyField(DebugEnableLuaDebugger);
-        EditorGUILayout.PropertyField(DebugLuaDebugger);
+        EditorGUILayout.PropertyField(DebugEnableV8Debugger);
+        EditorGUILayout.PropertyField(DebugV8DebuggerPort);
         EditorGUILayout.PropertyField(DebugType);
         EditorGUILayout.PropertyField(DebugSkipIntro);
         
@@ -135,13 +126,8 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GameBaseCamera);
         EditorGUILayout.PropertyField(GameCanvas);
         EditorGUILayout.PropertyField(GameGlobalErrorUI);
-        EditorGUILayout.PropertyField(GameDebugBeginStats);
         EditorGUILayout.PropertyField(GlobalGamePermissionTipDialog);
         EditorGUILayout.PropertyField(GlobalGameUserAgreementTipDialog);
-        EditorGUILayout.PropertyField(ButtonUserAgreementAllow);
-        EditorGUILayout.PropertyField(CheckBoxAllowUserAgreement);
-        EditorGUILayout.PropertyField(LinkPrivacyPolicy);
-        EditorGUILayout.PropertyField(LinkUserAgreement);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();

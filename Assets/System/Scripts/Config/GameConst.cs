@@ -13,31 +13,32 @@
 
 namespace Ballance2.Config
 {
+  /// <summary>
+  /// 静态常量配置
+  /// </summary>
+  [JSExport]
+  public static class GameConst
+  {
     /// <summary>
-    /// 静态常量配置
+    /// 游戏版本
     /// </summary>
-    public static class GameConst
-    {
-        /// <summary>
-        /// 游戏版本
-        /// </summary>
-        public const string GameVersion = "1.0";
-        /// <summary>
-        /// 游戏编译版本
-        /// </summary>
-        public const int GameBulidVersion = 1;
-        /// <summary>
-        /// 游戏编译版本
-        /// </summary>
-        public const string GameBulidDate = "2020.06.25";
+    public const string GameVersion = "1.0";
+    /// <summary>
+    /// 游戏编译版本
+    /// </summary>
+    public const int GameBulidVersion = 1;
+    /// <summary>
+    /// 游戏编译版本
+    /// </summary>
+    public const string GameBulidDate = "2020.06.25";
 
-        #region Unity 环境静态常量
+    #region Unity 环境静态常量
 
-        /// <summary>
-        /// 游戏编译平台
-        /// </summary>
+    /// <summary>
+    /// 游戏编译平台
+    /// </summary>
 #if UNITY_EDITOR && UNITY_EDITOR_WIN
-        public const string GamePlatform = "Windows Editor Mode";
+    public const string GamePlatform = "Windows Editor Mode";
 #elif UNITY_EDITOR && UNITY_EDITOR_OSX
         public const string GamePlatform = "OS X Editor Mode";
 #elif UNITY_EDITOR
@@ -63,11 +64,11 @@ namespace Ballance2.Config
 #else
         public const string GamePlatform = "Other Platform";
 #endif
-        /// <summary>
-        /// 游戏编译平台标识符
-        /// </summary>
+    /// <summary>
+    /// 游戏编译平台标识符
+    /// </summary>
 #if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX
-        public const string GamePlatformIdentifier = "win";
+    public const string GamePlatformIdentifier = "win";
 #elif (UNITY_EDITOR && UNITY_EDITOR_OSX) || UNITY_STANDALONE_OSX
         public const string GamePlatformIdentifier = "osx";
 #elif UNITY_IOS
@@ -87,11 +88,11 @@ namespace Ballance2.Config
 #endif
 
 
-        /// <summary>
-        /// 游戏编译脚本后端
-        /// </summary>
+    /// <summary>
+    /// 游戏编译脚本后端
+    /// </summary>
 #if ENABLE_MONO
-        public const string GameScriptBackend = "Mono";
+    public const string GameScriptBackend = "Mono";
 #elif ENABLE_IL2CPP
         public const string GameScriptBackend = "IL2CPP";
 #elif ENABLE_DOTNET
@@ -100,34 +101,34 @@ namespace Ballance2.Config
         public const string GameScriptBackend = "Unknow Script Backend";
 #endif
 
-        #endregion
+    #endregion
 
-        #region 静态配置
+    #region 静态配置
 
-        /// <summary>
-        /// 配置游戏日志记录器是否启动
-        /// </summary>
-        public const bool GameLoggerOn = true;
-        /// <summary>
-        /// 配置游戏日志记录器是否记录至文件
-        /// </summary>
-        public const bool GameLoggerLogToFile = false;
-        /// <summary>
-        /// 配置游戏日志记录器记录至文件的路径
-        /// </summary>
-        public const string GameLoggerLogFile = "./BallanceOutput.log";
-        /// <summary>
-        /// 配置游戏日志记录器缓冲区最大条数
-        /// </summary>
-        public const int GameLoggerBufferMax = 1000;
+    /// <summary>
+    /// 配置游戏日志记录器是否启动
+    /// </summary>
+    public const bool GameLoggerOn = true;
+    /// <summary>
+    /// 配置游戏日志记录器是否记录至文件
+    /// </summary>
+    public const bool GameLoggerLogToFile = false;
+    /// <summary>
+    /// 配置游戏日志记录器记录至文件的路径
+    /// </summary>
+    public const string GameLoggerLogFile = "./BallanceOutput.log";
+    /// <summary>
+    /// 配置游戏日志记录器缓冲区最大条数
+    /// </summary>
+    public const int GameLoggerBufferMax = 1000;
 
-        #endregion
+    #endregion
 
-        public const string BallancePrivacyPolicy = "https://imengyu.top/linkJump?to=ballance_argeement";
-        public const string BallanceUserAgreement = "https://imengyu.top/linkJump?to=ballance_privacy_policy";
-        public const string BallanceHomePage = "https://imengyu.top/ballance";
-        public const string BallanceDocPage = "https://imengyu.top/ballance/doc";
-        public const string MengyuHomePage = "https://imengyu.top";
+    public const string BallancePrivacyPolicy = "https://imengyu.top/linkJump?to=ballance_argeement";
+    public const string BallanceUserAgreement = "https://imengyu.top/linkJump?to=ballance_privacy_policy";
+    public const string BallanceHomePage = "https://imengyu.top/ballance";
+    public const string BallanceDocPage = "https://imengyu.top/ballance/doc";
+    public const string MengyuHomePage = "https://imengyu.top";
 
-    }
+  }
 }

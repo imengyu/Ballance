@@ -14,10 +14,10 @@
 
 namespace Ballance2.Config
 {
-    public class ConstStrings
-    {
-        public const string DEFAULT_PACKAGE_STATUS_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?><PackageConfig><PackageList></PackageList><NoPackageMode>False</NoPackageMode></PackageConfig>";
-        public const string EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH = "Assets/Game/";
-        public const string EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH = "Assets/Game/Scripts/";
-    }
+  public class ConstStrings
+  {
+    public const string DEFAULT_PACKAGE_STATUS_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?><PackageConfig><PackageList></PackageList><NoPackageMode>False</NoPackageMode></PackageConfig>";
+    public const string EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH = "Assets/Game/";
+    public const string EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH = "Assets/Game/Scripts/";
+  }
 }

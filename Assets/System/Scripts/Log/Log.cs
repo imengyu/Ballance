@@ -33,6 +33,7 @@ namespace Ballance2
   /// <summary>
   /// 基础日志类
   /// </summary>
+  [JSExport]
   public static class Log
   {
     private static string TAG = "Log";

@@ -19,6 +19,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串转换类
   /// </summary>
+  [JSExport]
   public static class ConverUtils
   {
     private static readonly string TAG = "ConverUtils";

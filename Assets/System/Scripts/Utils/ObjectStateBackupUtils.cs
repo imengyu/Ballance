@@ -24,6 +24,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// 对象变换状态保存器
   /// </summary>
+  [JSExport]
   public static class ObjectStateBackupUtils
   {
     private struct ObjectStateBackup
