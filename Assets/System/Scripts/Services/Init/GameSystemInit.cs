@@ -47,10 +47,8 @@ namespace Ballance2.Services.Init
       if (act == GameSystem.ACTION_INIT)
       {
         GameObject newGameManager = CloneUtils.CreateEmptyObjectWithParent(gameEntryInstance.transform);
-        newGameManager.name = "GameManager";
+        newGameManager.name = "GameSystemInit";
         newGameManager.AddComponent<GameSystemInit>();
-        gameManagerInstance = newGameManager.AddComponent<GameManager>();
-        gameManagerInstance.Initialize(gameEntryInstance);
       }
       else if (act == GameSystem.ACTION_DESTROY)
       {

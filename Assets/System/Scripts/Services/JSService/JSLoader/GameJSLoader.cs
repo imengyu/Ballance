@@ -1,7 +1,8 @@
 
 using Puerts;
-using System;
+using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace Ballance2.Services.JSService.JSLoader {
 
@@ -19,11 +20,21 @@ namespace Ballance2.Services.JSService.JSLoader {
 
     public bool FileExists(string filepath)
     {
-      return _GamePackageManager.CheckCodeAssetExists(filepath);
+      if(filepath.StartsWith("puerts/"))
+        return Resources.Load<TextAsset>(filepath) != null;
+      return GamePackageManager.CheckCodeAssetExists(filepath);
     }
     public string ReadFile(string filepath, out string debugpath)
-    {
-      return Encoding.UTF8.GetString(_GamePackageManager.GetCodeAsset(filepath, out debugpath));
+    { 
+      if(filepath.StartsWith("puerts/")) {
+#if UNITY_EDITOR
+        debugpath = Directory.GetCurrentDirectory() + "/Assets/Plugins/Puerts/Src/Resources/" + filepath;
+#else
+        debugpath = "puerts://" + filepath;
+#endif
+        return Resources.Load<TextAsset>(filepath).text;
+      }
+      return Encoding.UTF8.GetString(GamePackageManager.GetCodeAsset(filepath, out debugpath));
     }
   }
 

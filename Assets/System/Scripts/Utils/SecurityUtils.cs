@@ -1,5 +1,6 @@
 using System.IO;
 using Ballance2.Config.Settings;
+using Ballance2.Res;
 using UnityEngine;
 
 /*
@@ -55,7 +56,7 @@ namespace Ballance2.Utils
 #if UNITY_EDITOR
       if (!(path.StartsWith(currentDir)
           || path.StartsWith(DebugSettings.Instance.DebugFolder)
-          || path.StartsWith(DebugSettings.Instance.OutputFolder)))
+          || path.StartsWith(GamePathManager.DEBUG_OUTPUT_PATH)))
         throw new FileAccessException(path);
 
       if (!(path.StartsWith(currentDir)

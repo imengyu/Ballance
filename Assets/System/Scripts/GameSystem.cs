@@ -218,9 +218,6 @@ namespace Ballance2
         //Call init
         sysHandler(ACTION_INIT);
 
-        //Add GameManager
-        systemService.Add("GameManager", GameManager.Instance);
-
         //Init physics system
         BallancePhysics.PhysicsSystemInit.Init();
 
@@ -234,8 +231,9 @@ namespace Ballance2
         });
 
         //Init base services
-        RegSystemService<GameUIManager>();
+        RegSystemService<GameManager>();
         RegSystemService<GamePackageManager>();
+        RegSystemService<GameUIManager>();
         RegSystemService<GameSoundManager>();
 
         Log.D(TAG, "System init ok");

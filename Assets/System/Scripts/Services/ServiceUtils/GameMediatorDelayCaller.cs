@@ -67,7 +67,7 @@ namespace Ballance2.Utils.ServiceUtils
       var d = new DelayCallData();
       d.type = GameMediatorDelayCallType.SingleEvent;
       d.name = name;
-      d.tick = (int)(60 * delayeSecond);
+      d.tick = (int)(delayeSecond / Time.deltaTime);
       d.args = args;
       data.Add(d);
     }
@@ -77,7 +77,7 @@ namespace Ballance2.Utils.ServiceUtils
       d.type = GameMediatorDelayCallType.NormalEvent;
       d.name = name;
       d.filter = filter;
-      d.tick = (int)(60 * delayeSecond);
+      d.tick = (int)(delayeSecond / Time.deltaTime);
       d.args = args;
       data.Add(d);
     }

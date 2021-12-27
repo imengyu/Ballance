@@ -36,7 +36,7 @@ namespace Ballance2.Editor.Modding
         static void CopyDebugFolderToOutput()
         {
             string debugFolder = DebugSettings.Instance.DebugFolder;
-            string folder = DebugSettings.Instance.OutputFolder;
+            string folder = GamePathManager.DEBUG_OUTPUT_PATH;
             if (Directory.Exists(folder) && Directory.Exists(folder))
             {
                 if (folder != GamePathManager.DEBUG_PATH)

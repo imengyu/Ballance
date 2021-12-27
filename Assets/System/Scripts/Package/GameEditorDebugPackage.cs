@@ -118,7 +118,7 @@ namespace Ballance2.Package
     {
       if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
       {
-        if (File.Exists(pathorname))
+        if (File.Exists(pathorname) || File.Exists(pathorname + ".js"))
         {
           return true;
         }
@@ -126,7 +126,7 @@ namespace Ballance2.Package
       else
       {
         string path = PackageFilePath + "/" + pathorname;
-        if (File.Exists(path))
+        if (File.Exists(path) || File.Exists(path + ".js"))
         {
           return true;
         }
@@ -149,7 +149,12 @@ namespace Ballance2.Package
         {
           realPath = pathorname;
           return FileUtils.ReadAllToBytes(pathorname);
-        }
+        } 
+        else if (File.Exists(pathorname + ".js"))
+        {
+          realPath = pathorname + ".js";
+          return FileUtils.ReadAllToBytes(pathorname + ".js");
+        } 
       }
       else
       {
@@ -158,6 +163,11 @@ namespace Ballance2.Package
         {
           realPath = path;
           return FileUtils.ReadAllToBytes(path);
+        }
+        else if (File.Exists(path + ".js"))
+        {
+          realPath = path + ".js";
+          return FileUtils.ReadAllToBytes(path + ".js");
         }
         else
         {

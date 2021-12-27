@@ -1,4 +1,5 @@
-﻿using Ballance2.Res;
+﻿using Ballance2.Entry;
+using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Ballance2.Utils
         GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, "CloneUtils", "Can not clone {0}, The prefab is null", name);
         return null;
       }
-      GameObject go = Object.Instantiate(prefab, GameManager.Instance.transform);
+      GameObject go = Object.Instantiate(prefab, GameManager.Instance != null ? GameManager.Instance.transform : GameEntry.Instance.transform);
       go.name = name;
       return go;
     }
@@ -103,7 +104,7 @@ namespace Ballance2.Utils
     /// <returns>返回生成的新对象</returns>
     public static GameObject CreateEmptyObject(string name)
     {
-      GameObject go = Object.Instantiate(GameStaticResourcesPool.PrefabEmpty, GameManager.Instance.transform);
+      GameObject go = Object.Instantiate(GameStaticResourcesPool.PrefabEmpty, GameManager.Instance != null ? GameManager.Instance.transform : GameEntry.Instance.transform);
       go.name = name;
       return go;
     }

@@ -321,6 +321,10 @@ namespace Ballance2
       public LogObserver Observer;
       public LogLevel AcceptLevel;
     }
+
+    internal static void StartLogFile() {
+      new LogFileObserver();
+    }
   }
 
   /// <summary>

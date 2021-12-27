@@ -56,11 +56,13 @@ namespace Ballance2.Package
       LoadI18NResource();
 
       //模块代码环境初始化
-      return new Task<bool>(() => {
+      var t = new Task<bool>(() => {
         if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
           return LoadPackageCodeBase();
         return true;
       });
+      t.Start();
+      return t;
     }
     public virtual void Destroy()
     {
@@ -121,7 +123,7 @@ namespace Ballance2.Package
     /// 加载运行环境代码
     /// </summary>
     /// <returns></returns>
-    private bool LoadPackageCodeBase() {
+    protected bool LoadPackageCodeBase() {
       if (CodeType == GamePackageCodeType.JS)
       {
         var ret = GameManager.Instance.GameMainEnv.Eval<bool>("SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", "ballance-internal:///packageLoader.js?name=" + PackageName);

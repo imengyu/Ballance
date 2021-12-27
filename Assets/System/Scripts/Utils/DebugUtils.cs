@@ -129,10 +129,17 @@ namespace Ballance2.Utils
         for (int i = lineCountMumLength; i > lineNumStr.Length; i--)
           sb.Append(' ');
 
-        sb.Append(line);
+        if(line.Length > 512) {
+          sb.Append(line.Substring(0, 512));
+          sb.Append(" ");
+          sb.Append(512 - line.Length);
+          sb.Append(" cols more...");
+        }
+        else
+          sb.Append(line);
         sb.Append('\n');
 
-        if (lineNum > 2048)
+        if (lineNum > 1024)
         {
           sb.Append(lineCount - lineNum);
           sb.Append(" lines more...\n");
@@ -159,6 +166,34 @@ namespace Ballance2.Utils
     public static string PrintArrVar(object[] any)
     {
       return StringUtils.ValueArrayToString(any);
+    }
+    /// <summary>
+    /// 打印对象
+    /// </summary>
+    /// <param name="o">对象</param>
+    /// <returns></returns>
+    public static string PrintVarAuto(object any, string prefix = "") {
+      StringBuilder stringBuilder = new StringBuilder();
+      var type = any.GetType() ;
+      if(any == null) 
+          stringBuilder.AppendFormat("{0} null\n", prefix);
+      else if(type == typeof(int)) 
+          stringBuilder.AppendFormat("{0} int: {1}\n", prefix, (int)any);
+      else if(type == typeof(long)) 
+          stringBuilder.AppendFormat("{0} long: {1}\n", prefix, (long)any);
+      else if(type == typeof(double)) 
+          stringBuilder.AppendFormat("{0} double: {1}\n", prefix, (double)any);
+      else if(type == typeof(float)) 
+          stringBuilder.AppendFormat("{0} float: {1}\n", prefix, (float)any);
+      else if(type == typeof(bool))
+          stringBuilder.AppendFormat("{0} bool: {1}\n", prefix, (bool)any);
+      else if(type == typeof(char))
+          stringBuilder.AppendFormat("{0} char: \'{1}\'\n", prefix, (char)any);
+      else if(type == typeof(string)) 
+          stringBuilder.AppendFormat("{0} string: \"{1}\"\n", prefix, (string)any);
+      else
+          stringBuilder.AppendFormat("{0} unknow var: {1}\n", prefix, any);
+      return stringBuilder.ToString();
     }
 
     /// <summary>

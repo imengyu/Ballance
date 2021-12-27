@@ -21,9 +21,26 @@ using Ballance2.Services.Debug;
 */
 
 namespace Ballance2.Package
-{
+{  
   class GameSystemPackage : GameZipPackage
   {
+    class CodeAsset
+    {
+      public string fullPath;
+      public string realtivePath;
+      public string name;
+
+      public CodeAsset(string name, string realtivePath, string fullPath)
+      {
+        this.name = name;
+        this.fullPath = fullPath;
+        this.realtivePath = realtivePath;
+      }
+      public bool Match(string pathOrName) {
+        return pathOrName == name || pathOrName == realtivePath || pathOrName == fullPath || Path.GetFileName(pathOrName) == name;
+      }
+    }
+
     public override async Task<bool> LoadInfo(string filePath)
     {
       PackageFilePath = filePath;
@@ -93,7 +110,7 @@ namespace Ballance2.Package
       }
     }
 
-    private Dictionary<string, string> packageCodeAsset = new Dictionary<string, string>();
+    private List<CodeAsset> packageCodeAsset = new List<CodeAsset>();
     private Dictionary<string, string> fileList = new Dictionary<string, string>();
 
     private void LoadAllFileNames()
@@ -130,21 +147,47 @@ namespace Ballance2.Package
     {
       disableLoadFileInUnity = true;
     }
+    public void ManualLoadPackageCodeBase() {
+      LoadPackageCodeBase();
+    }
+    
+    private CodeAsset FindScriptName(string pathOrName) {
+      foreach (var item in packageCodeAsset)
+      {
+        if(item.Match(pathOrName))
+          return item;
+      }
+      return null;
+    }
     private void DoSearchScriptNames()
     {
 #if UNITY_EDITOR
       //构建一下所有脚本名称和路径的列表
-      DirectoryInfo dir = new DirectoryInfo(ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH);
+      DirectoryInfo dir = new DirectoryInfo(ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH);//扫描game模块下的代码
       FileInfo[] fi = dir.GetFiles("*.js", SearchOption.AllDirectories);
+      string pathFinder = "Assets/Game/Scripts/";
       foreach (var f in fi)
       {
-        string path = f.FullName.Replace("\\", "/");
-        int index = path.IndexOf("Assets/");
+        string path = f.FullName.Replace("\\", "/"), realtivePath = path;
+        int index = path.IndexOf(pathFinder);
         if (index > 0)
-          path = path.Substring(index);
-        packageCodeAsset.Add(f.Name, path);
+          realtivePath = path.Substring(index + pathFinder.Length);
+        packageCodeAsset.Add(new CodeAsset(f.Name, realtivePath, path));
       }
-      packageCodeAsset.Add("PackageEntry.js", ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH + "PackageEntry.js");
+      dir = new DirectoryInfo(ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH);//扫描system模块下的代码
+      fi = dir.GetFiles("*.js", SearchOption.AllDirectories);
+      pathFinder = "Assets/System/Scripts/";
+      foreach (var f in fi)
+      {
+        string path = f.FullName.Replace("\\", "/"), realtivePath = path;
+        int index = path.IndexOf(pathFinder);
+        if (index > 0)
+          realtivePath = path.Substring(index + pathFinder.Length);
+        packageCodeAsset.Add(new CodeAsset(f.Name, realtivePath, path));
+      }
+      //添加PackageEntry.js
+      string entryPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH + "PackageEntry.js";
+      packageCodeAsset.Add(new CodeAsset("PackageEntry.js", entryPath, Directory.GetCurrentDirectory() + "/" + entryPath));
 #endif
     }
 
@@ -174,7 +217,7 @@ namespace Ballance2.Package
     }
     public override bool CheckCodeAssetExists(string pathorname)
     {
-   #if UNITY_EDITOR
+#if UNITY_EDITOR
       if (disableLoadFileInUnity)
       {
         return base.CheckCodeAssetExists(pathorname);
@@ -184,18 +227,24 @@ namespace Ballance2.Package
         //绝对路径
         if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets"))
         {
-          return File.Exists(pathorname);
+          return File.Exists(pathorname) || File.Exists(pathorname + ".js") ;
         }
         //直接拼接路径
         var scriptPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH + pathorname;
-        if (File.Exists(scriptPath))
+        if (File.Exists(scriptPath) || File.Exists(scriptPath + ".js"))
         {
           return true;
         }
         //尝试使用路径列表里的路径
-        if (packageCodeAsset.TryGetValue(pathorname, out var path))
+        var code = FindScriptName(pathorname);
+        if (code != null)
         {
-          return File.Exists(path);
+          return true;
+        }
+        code = FindScriptName(pathorname + ".js");
+        if (code != null)
+        {
+          return true;
         }
         return false;
       }
@@ -215,8 +264,13 @@ namespace Ballance2.Package
         //绝对路径
         if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets"))
         {
-          realPath = pathorname;
-          return FileUtils.ReadAllToBytes(pathorname);
+          if(File.Exists(pathorname)) {
+            realPath = pathorname;
+            return FileUtils.ReadAllToBytes(pathorname);
+          } else if(File.Exists(pathorname + ".js")) {
+            realPath = pathorname + ".js";
+            return FileUtils.ReadAllToBytes(pathorname + ".js");
+          } 
         }
         //直接拼接路径
         var scriptPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_SCRIPT_PATH + pathorname;
@@ -224,14 +278,25 @@ namespace Ballance2.Package
         {
           realPath = scriptPath;
           return FileUtils.ReadAllToBytes(scriptPath);
-        }
-        //尝试使用路径列表里的路径
-        if (packageCodeAsset.TryGetValue(pathorname, out var path))
+        } 
+        else if (File.Exists(scriptPath + ".js"))
         {
-          realPath = path;
-          return FileUtils.ReadAllToBytes(path);
+          realPath = scriptPath + ".js";
+          return FileUtils.ReadAllToBytes(scriptPath + ".js");
+        } 
+        //尝试使用路径列表里的路径
+        var code = FindScriptName(pathorname);
+        if (code != null)
+        {
+          realPath = code.fullPath;
+          return FileUtils.ReadAllToBytes(code.fullPath);
         }
-
+        code = FindScriptName(pathorname + ".js");
+        if (code != null)
+        {
+          realPath = code.fullPath;
+          return FileUtils.ReadAllToBytes(code.fullPath);
+        }
         realPath = "";
         return null;
       }

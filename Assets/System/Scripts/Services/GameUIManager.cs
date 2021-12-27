@@ -48,25 +48,28 @@ namespace Ballance2.Services
       DestroyWindowManagement();
       Object.Destroy(uiManagerGameObject);
 
-      Log.D(TAG, "Destroy {0} ui objects", UIRoot.transform.childCount);
-      for (int i = 0, c = UIRoot.transform.childCount; i < c; i++)
-        Object.Destroy(UIRoot.transform.GetChild(i).gameObject);
+      if(UIRoot != null) {
+        Log.D(TAG, "Destroy {0} ui objects", UIRoot.transform.childCount);
+        for (int i = 0, c = UIRoot.transform.childCount; i < c; i++)
+          Object.Destroy(UIRoot.transform.GetChild(i).gameObject);
+      }
     }
     public override bool Initialize()
     {
+      UIRoot = GameManager.Instance.GameCanvas;
+      UIFadeManager = UIRoot.gameObject.AddComponent<UIFadeManager>();
+
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED);
       //等待基础加载完成
       GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
           GameEventNames.EVENT_BASE_INIT_FINISHED, TAG, (evtName, param) =>
           {
-            UIRoot = GameManager.Instance.GameCanvas;
-            UIFadeManager = UIRoot.gameObject.AddComponent<UIFadeManager>();
-            var GlobalMask = UIRoot.transform.Find("GlobalMask");
-            GlobalFadeMaskWhite = GlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
-            GlobalFadeMaskBlack = GlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
+            var GameGlobalMask = UIRoot.transform.Find("GameGlobalMask");
+            GlobalFadeMaskWhite = GameGlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
+            GlobalFadeMaskBlack = GameGlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
 
             //隐藏遮住初始化的遮罩  
-            var GlobalBlackMask = GlobalMask.Find("GlobalBlackMask");
+            var GlobalBlackMask = GameGlobalMask.Find("GlobalBlackMask");
             if (GlobalBlackMask != null) GlobalBlackMask.gameObject.SetActive(false);
 
             //黑色遮罩
@@ -78,13 +81,9 @@ namespace Ballance2.Services
             InitWindowManagement();
             InitCommands();
 
-            var GameDebugBeginStats = GameObject.Find("GameDebugBeginStats");
-            if (GameDebugBeginStats)
-              GameDebugBeginStats.transform.SetParent(TopViewsRectTransform);
-
             //更新主管理器中的Canvas变量
             GameManager.Instance.GameCanvas = ViewsRectTransform;
-            GlobalMask.SetAsLastSibling();
+            GameGlobalMask.SetAsLastSibling();
             TopViewsRectTransform.SetAsLastSibling();
             TopWindowsRectTransform.SetAsLastSibling();
             GlobalWindowRectTransform.SetAsLastSibling();

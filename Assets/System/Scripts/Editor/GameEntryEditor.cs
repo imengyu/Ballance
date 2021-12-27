@@ -15,6 +15,7 @@ public class GameEntryEditor : Editor
     private SerializedProperty GameGlobalErrorUI;
     private SerializedProperty GlobalGamePermissionTipDialog;
     private SerializedProperty GlobalGameUserAgreementTipDialog;
+    private SerializedProperty GlobalGameWaitDebuggerTipDialog;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
@@ -39,12 +40,13 @@ public class GameEntryEditor : Editor
         GameGlobalErrorUI = serializedObject.FindProperty("GameGlobalErrorUI");
         GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
         GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
+        GlobalGameWaitDebuggerTipDialog = serializedObject.FindProperty("GlobalGameWaitDebuggerTipDialog");
 
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
         DebugSetFrameRate = serializedObject.FindProperty("DebugSetFrameRate");
         DebugEnableV8Debugger = serializedObject.FindProperty("DebugEnableV8Debugger");
-        DebugV8DebuggerPort = serializedObject.FindProperty("DebugEnableV8Debugger");
+        DebugV8DebuggerPort = serializedObject.FindProperty("DebugV8DebuggerPort");
         DebugType = serializedObject.FindProperty("DebugType");
         DebugInitPackages = serializedObject.FindProperty("DebugInitPackages");
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
@@ -128,6 +130,7 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GameGlobalErrorUI);
         EditorGUILayout.PropertyField(GlobalGamePermissionTipDialog);
         EditorGUILayout.PropertyField(GlobalGameUserAgreementTipDialog);
+        EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipDialog);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();

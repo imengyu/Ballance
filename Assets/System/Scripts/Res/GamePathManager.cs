@@ -34,6 +34,9 @@ namespace Ballance2.Res
     /// </summary>
     public const string DEBUG_LEVEL_FOLDER = "Assets/Levels";
 
+    private static string _DEBUG_PATH = "";
+    private static string _DEBUG_OUTPUT_PATH = "";
+
     /// <summary>
     /// 调试路径（输出目录）<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
     /// </summary>
@@ -41,10 +44,37 @@ namespace Ballance2.Res
     {
       get
       {
-        DebugSettings debugSettings = DebugSettings.Instance;
-        if (debugSettings != null)
-          return debugSettings.DebugFolder.Replace("\\", "/");
-        return "";
+        if(_DEBUG_PATH == "") {
+          DebugSettings debugSettings = DebugSettings.Instance;
+          if (debugSettings != null) {
+            var realtivePath = debugSettings.DebugFolder.Replace("\\", "/");
+            if(PathUtils.IsAbsolutePath(realtivePath))
+              _DEBUG_PATH = realtivePath;
+            else
+              _DEBUG_PATH = PathUtils.JoinTwoPath(System.IO.Directory.GetCurrentDirectory(), realtivePath);
+          }
+        }
+        return _DEBUG_PATH;
+      }
+    }
+    /// <summary>
+    /// 输出目录<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
+    /// </summary>
+    public static string DEBUG_OUTPUT_PATH
+    {
+      get
+      {
+        if(_DEBUG_OUTPUT_PATH == "") {
+          DebugSettings debugSettings = DebugSettings.Instance;
+          if (debugSettings != null) {
+            var realtivePath = debugSettings.OutputFolder.Replace("\\", "/");
+            if(PathUtils.IsAbsolutePath(realtivePath))
+              _DEBUG_OUTPUT_PATH = realtivePath;
+            else
+              _DEBUG_OUTPUT_PATH = PathUtils.JoinTwoPath(System.IO.Directory.GetCurrentDirectory(), realtivePath);
+          }
+        }
+        return _DEBUG_OUTPUT_PATH;
       }
     }
     /// <summary>
@@ -76,7 +106,7 @@ namespace Ballance2.Res
     /// <param name="pathorname">相对路径或名称</param>
     /// <param name="replacePlatform">是否替换文件路径中的[Platform]</param>
     /// <returns></returns>
-    public static string GetResRealPath(string type, string pathorname, bool replacePlatform = true)
+    public static string GetResRealPath(string type, string pathorname, bool replacePlatform = true, bool withFileSheme = true)
     {
       string result = null;
       string pathbuf = "";
@@ -95,9 +125,9 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
         result = DEBUG_PATH + "/Core/game.init.xml";
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                result = Application.dataPath + "/Core/game.init.xml";
+        result = Application.dataPath + "/Core/game.init.xml";
 #elif UNITY_IOS
-                result = Application.streamingAssetsPath + "/Core/game.init.xml";
+        result = Application.streamingAssetsPath + "/Core/game.init.xml";
 #endif
       }
       else if (type == "systeminit")
@@ -105,9 +135,9 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
         result = DEBUG_PATH + "/Core/system.init.xml";
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                result = Application.dataPath + "/Core/system.init.xml";
+        result = Application.dataPath + "/Core/system.init.xml";
 #elif UNITY_IOS
-                result = Application.streamingAssetsPath + "/Core/system.init.xml";
+        result = Application.streamingAssetsPath + "/Core/system.init.xml";
 #endif
       }
       else if (type == "logfile")
@@ -115,25 +145,26 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
         result = DEBUG_PATH + "/output.log";
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                result = Application.dataPath + "/output.log";
+        result = Application.dataPath + "/output.log";
 #elif UNITY_IOS
-                result = Application.persistentDataPath + "/output.log";
+        result = Application.persistentDataPath + "/output.log";
 #endif
       }
-      else if (type == "level") return GetLevelRealPath(pathbuf);
+      else if (type == "level") return GetLevelRealPath(pathbuf, withFileSheme);
       else if (type == "package")
       {
         if (pathbuf.Contains(":"))
         {
-          if (PathUtils.IsAbsolutePath(pathbuf)) return pathbuf;
+          if (PathUtils.IsAbsolutePath(pathbuf)) 
+            return pathbuf;
 #if UNITY_EDITOR
           pathbuf = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
-                    pathbuf= Application.dataPath + "/Packages/" + pathbuf;
+          pathbuf= Application.dataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID
-                    pathbuf = ANDROID_PACKAGES_PATH + pathbuf;
+          pathbuf = ANDROID_PACKAGES_PATH + pathbuf;
 #elif UNITY_IOS
-                    pathbuf = pathbuf;
+          pathbuf = pathbuf;
 #endif
           result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
         }
@@ -142,11 +173,11 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
           result = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
-                    result = Application.dataPath + "/Packages/" + pathbuf;
+          result = Application.dataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID
-                    result = ANDROID_PACKAGES_PATH + pathbuf;
+          result = ANDROID_PACKAGES_PATH + pathbuf;
 #elif UNITY_IOS
-                    result = pathorname;
+          result = pathorname;
 #endif
         }
       }
@@ -154,13 +185,14 @@ namespace Ballance2.Res
       {
         if (pathbuf.Contains(":"))
         {
-          if (PathUtils.IsAbsolutePath(pathbuf)) return pathbuf;
+          if (PathUtils.IsAbsolutePath(pathbuf)) 
+            return pathbuf;
 #if UNITY_EDITOR
           pathbuf = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                    pathbuf = Application.dataPath + "/Core/" + pathbuf;
+          pathbuf = Application.dataPath + "/Core/" + pathbuf;
 #elif UNITY_IOS
-                    pathbuf = Application.streamingAssetsPath + "/Core/" + pathbuf;
+          pathbuf = Application.streamingAssetsPath + "/Core/" + pathbuf;
 #endif
           result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
         }
@@ -169,9 +201,9 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
           result = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE || UNITY_ANDROID
-                    result = Application.dataPath + "/Core/" + pathbuf;
+          result = Application.dataPath + "/Core/" + pathbuf;
 #elif UNITY_IOS
-                    result = Application.streamingAssetsPath + "/Core/" + pathbuf;
+          result = Application.streamingAssetsPath + "/Core/" + pathbuf;
 #endif
         }
       }
@@ -181,14 +213,14 @@ namespace Ballance2.Res
         return pathorname;
       }
 
-      return "file:///" + result;
+      return (withFileSheme ? "file:///" : "") + result;
     }
     /// <summary>
     /// 将关卡资源的相对路径转为关卡资源真实路径
     /// </summary>
     /// <param name="pathorname">关卡的相对路径或名称</param>
     /// <returns></returns>
-    public static string GetLevelRealPath(string pathorname)
+    public static string GetLevelRealPath(string pathorname, bool withFileSheme = true)
     {
       string result = "";
       string pathbuf = "";
@@ -198,15 +230,16 @@ namespace Ballance2.Res
       {
         spbuf = SplitResourceIdentifier(pathorname, out pathbuf);
 
-        if (PathUtils.IsAbsolutePath(pathbuf)) return pathbuf;
+        if (PathUtils.IsAbsolutePath(pathbuf)) 
+          return pathbuf;
 #if UNITY_EDITOR
         pathbuf = DEBUG_LEVELS_PATH + pathbuf;
 #elif UNITY_STANDALONE
-                pathbuf= Application.dataPath + "/Levels/" + pathbuf;
+        pathbuf=  Application.dataPath + "/Levels/" + pathbuf;
 #elif UNITY_ANDROID
-                pathbuf= ANDROID_LEVELS_PATH + pathbuf;
+        pathbuf = ANDROID_LEVELS_PATH + pathbuf;
 #elif UNITY_IOS
-                pathbuf = pathbuf;
+        pathbuf = pathbuf;
 #endif
         result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
       }
@@ -215,15 +248,15 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
         result = DEBUG_LEVELS_PATH + pathorname;
 #elif UNITY_STANDALONE
-                result = Application.dataPath + "/Levels/" + pathorname;
+        result = Application.dataPath + "/Levels/" + pathorname;
 #elif UNITY_ANDROID
-                result = ANDROID_LEVELS_PATH + pathorname;
+        result = ANDROID_LEVELS_PATH + pathorname;
 #elif UNITY_IOS
-                result = pathorname;
+        result = pathorname;
 #endif
       }
 
-      return "file:///" + result;
+      return (withFileSheme ? "file:///" : "") + result;
     }
     /// <summary>
     /// Replace Path In Resource Identifier (Identifier:Path:Arg0:Arg1)

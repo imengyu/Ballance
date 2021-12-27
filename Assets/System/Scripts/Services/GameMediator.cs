@@ -59,12 +59,13 @@ namespace Ballance2.Services
     {
       InitAllEvents();
       InitAllActions();
+      
+      DelayCaller = gameObject.AddComponent<GameMediatorDelayCaller>();
+      DelayCaller.GameMediator = this;
+
       RegisterEventHandler(GamePackage.GetSystemPackage(),
           GameEventNames.EVENT_BASE_INIT_FINISHED, TAG, (evtName, param) =>
           {
-            go = GameManager.Instance.InstanceNewGameObject("GameMediator");
-            DelayCaller = go.AddComponent<GameMediatorDelayCaller>();
-            DelayCaller.GameMediator = this;
             InitCommands();
             return false;
           });

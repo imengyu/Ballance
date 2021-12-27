@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Ballance2.Base;
@@ -11,6 +12,7 @@ using Ballance2.Entry;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
+using Ballance2.Services.JSService;
 using Ballance2.Services.JSService.JSLoader;
 using Ballance2.Utils;
 using Puerts;
@@ -87,19 +89,18 @@ namespace Ballance2.Services
 
     #region 初始化
 
-    /// <summary>
-    /// 初始化入口，由 GameSystem 调用
-    /// </summary>
-    internal void Initialize(GameEntry gameEntryInstance)
+    public override bool Initialize()
     {
       Log.D(TAG, "Initialize");
 
+      GameEntry gameEntryInstance = GameEntry.Instance;
       GameBaseCamera = gameEntryInstance.GameBaseCamera;
       GameCanvas = gameEntryInstance.GameCanvas;
       DebugMode = gameEntryInstance.DebugMode;
       GameDebugCommandServer = new GameDebugCommandServer();
 
       InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
+      return true;
     }
 
     /// <summary>
@@ -121,8 +122,16 @@ namespace Ballance2.Services
 
       GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
       GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-
-      finish.Invoke();
+      GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
+        finish.Invoke();
+        return false;
+      });
+      GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
+        //Init Debug
+        if (DebugMode)
+          DebugInit.InitSystemDebug();
+        return false;
+      });
     }
 
     private bool sLoadUserPackages = true;
@@ -155,9 +164,6 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator InitAsysc()
     {
-      //Init Debug
-      if (DebugMode)
-        DebugInit.InitSystemDebug();
    
       //创建 GameMainEnv
       Profiler.BeginSample("CreateJsEnv");
@@ -166,32 +172,50 @@ namespace Ballance2.Services
 
       Profiler.EndSample();
 
-      //检测JS绑定状态
-      object o = GameMainEnv.Eval<int>(@"const csharp = require('csharp'); return csharp.Ballance.Services.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
-      if (o != null && (
-              (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
-              || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
-          ))
-        Log.D(TAG, "Game JsEnv bind check ok.");
-      else
+      if (GameEntry.Instance.DebugEnableV8Debugger)
       {
-        Log.E(TAG, "Game JsEnv bind check failed, did you bind lua functions?");
+        Profiler.BeginSample("GameManagerWaitDebuggerAsync");
+
+        var GlobalGameWaitDebuggerTipDialog = GameEntry.Instance.GlobalGameWaitDebuggerTipDialog;
+        GlobalGameWaitDebuggerTipDialog.SetActive(true);
+
+        Task task = GameMainEnv.WaitDebuggerAsync();
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        yield return new WaitForSeconds(2.0f);
+        
+        GlobalGameWaitDebuggerTipDialog.SetActive(false);
+        Profiler.EndSample();
+      }
+
+      try {
+        //检测JS绑定状态
+        object o = GameMainEnv.Eval<int>(@"const csharp = require('csharp'); csharp.Ballance2.Services.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
+        if (o != null && (
+                (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
+                || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
+            ))
+          Log.D(TAG, "Game JsEnv bind check ok.");
+        else
+        {
+          Log.E(TAG, "Game JsEnv bind check failed, did you bind lua functions?");
+          GameErrorChecker.LastError = GameError.EnvBindCheckFailed;
+#if UNITY_EDITOR // 编辑器中
+          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "JS接口没有绑定。请点击“Puerts”>“Generate”生成 JsEnv 接口绑定。");
+#else
+          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "错误的发行配置，请检查。");  
+#endif
+          yield break;
+        }
+      } catch(System.Exception e) {
         GameErrorChecker.LastError = GameError.EnvBindCheckFailed;
 #if UNITY_EDITOR // 编辑器中
-        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed,
-            "JS接口没有绑定。请点击“Puerts”>“Generate”生成 JsEnv 接口绑定。");
+        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "无法检查JS接口绑定。发生异常，请检查是否绑定接口？\n" + e.ToString());
 #else
-        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "错误的发行配置，请检查。");  
+        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "无法检查JS接口绑定。发生异常\n" + e.ToString());
 #endif
         yield break;
       }
-
-      Profiler.BeginSample("InitJsEnv");
-
-      ExecuteCode("__system__/env/SystemEnvInit.js");
-      ExecuteCode("__system__/env/PackageLoader.js");
-
-      Profiler.EndSample();
 
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
       
@@ -214,9 +238,11 @@ namespace Ballance2.Services
         //进入场景
         if (DebugMode && GameEntry.Instance.DebugSkipIntro) RequestEnterLogicScense("MenuLevel");
         else if (firstScense != "") RequestEnterLogicScense(firstScense);
+        else Log.D(TAG, "No firstScense was set.");
       }
       else
       {
+        Log.D(TAG, "Enter GameDebug.");
         RequestEnterLogicScense("GameDebug");
         GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
       }
@@ -299,9 +325,7 @@ namespace Ballance2.Services
         corePackageName = CorePackageName.InnerText;
       XmlNode LogToFileEnabled = systemInit.SelectSingleNode("System/SystemOptions/LogToFileEnabled");
       if (LogToFileEnabled != null && LogToFileEnabled.InnerText.ToLower() == "true")
-      {
-
-      }
+        Log.StartLogFile();
 
       #endregion
 
@@ -330,16 +354,6 @@ namespace Ballance2.Services
 
       #region 加载系统内核包
 
-      
-      if (GameEntry.Instance.DebugEnableV8Debugger)
-      {
-        Profiler.BeginSample("GameManagerWaitDebuggerAsync");
-
-        Task task = GameMainEnv.WaitDebuggerAsync();
-        yield return new WaitUntil(() => task.IsCompleted);
-        
-        Profiler.EndSample();
-      }
 
       {
         //加载系统内核包
@@ -351,8 +365,24 @@ namespace Ballance2.Services
           yield break;
         }
 
+        Log.D(TAG, "Load system core ok");
+      }
+
+      {
+        Profiler.BeginSample("ExecuteSystemCore");
+
+        ExecuteCode("__system__/Env/SystemEnvInit.js");
+        ExecuteCode("__system__/Env/PackageLoader.js");
+
+        Profiler.EndSample();
+
+        Log.D(TAG, "ExecuteSystemCore ok");
+      }
+
+      {
         //检查系统包版本是否与内核版本一致
-        var systemPackage = pm.FindPackage(GamePackageManager.SYSTEM_PACKAGE_NAME);
+        var systemPackage = pm.FindPackage(corePackageName);
+        (systemPackage as GameSystemPackage).ManualLoadPackageCodeBase();
         systemPackage.SystemPackage = true;
         systemPackage.RunPackageExecutionCode();
 
@@ -369,6 +399,8 @@ namespace Ballance2.Services
           GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包版本与游戏内核版本不符（" + ver + "!=" + GameConst.GameBulidVersion + "）\n您可尝试重新安装游戏");
           yield break;
         }
+      
+        Log.D(TAG, "Check core version ok");
       }
 
       #endregion
@@ -379,6 +411,7 @@ namespace Ballance2.Services
 
       XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
 
+      int loadedPackageCount = 0, failedPackageCount = 0;
       for (int loadStepNow = 0; loadStepNow < 2; loadStepNow++)
       {
         for (int i = 0; i < nodeSystemPackages.ChildNodes.Count; i++)
@@ -431,9 +464,11 @@ namespace Ballance2.Services
                 yield break;
               }
               package.SystemPackage = true;
+              loadedPackageCount++;
             }
             else
             {
+              failedPackageCount++;
               if (mustLoad)
               {
                 StopAllCoroutines();
@@ -445,6 +480,7 @@ namespace Ballance2.Services
             }
           }
         }
+        Log.D(TAG, "Load " + loadedPackageCount + " packages, " + failedPackageCount + " failed.");
 
         //第一次加载基础包，等待其运行
         if (loadStepNow == 0)
@@ -722,15 +758,13 @@ namespace Ballance2.Services
               "  vsync <fullScreenMode:number(0-2)>                                   ▶ 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
               "  full <fullScreenMode::number(0-3)>                                   ▶ 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
               "  device > 获取当前设备信息");
-      // srv.RegisterCommand("c", (keyword, fullCmd, argsCount, args) =>
-      // {
-      //   var cmd = fullCmd.Substring(2);
-      //   if (!cmd.Contains("\n") && !cmd.StartsWith("return "))
-      //     cmd = "return " + cmd;
-      //   var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
-      //   Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
-      //   return true;
-      // }, 1, "c <code:string> ▶ 运行 Lua 命令。此命令将会在全局Lua虚拟机中运行");
+      srv.RegisterCommand("eval", (keyword, fullCmd, argsCount, args) =>
+      {
+        var cmd = fullCmd.Substring(4);
+        var ret = GameMainEnv.Eval<object>(cmd, "GameManagerLuaConsole");
+        Log.V(TAG, "> " + DebugUtils.PrintVarAuto(ret));
+        return true;
+      }, 1, "c <code:string> ▶ 运行 JS 命令。");
       srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
       {
         Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
@@ -934,7 +968,8 @@ namespace Ballance2.Services
         }
       }
 
-      GameMainEnv.Tick();
+      if(GameMainEnv != null)
+        GameMainEnv.Tick();
     }
 
     #endregion
@@ -972,8 +1007,25 @@ namespace Ballance2.Services
     public object ExecuteCode(string assetPath) 
     {
       var pm = GetSystemService<GamePackageManager>();
-      var code = pm.GetCodeAsset(assetPath, out var realPath);
-      return GameMainEnv.Eval<object>(code.ToString(), realPath);
+      var code = pm.GetCodeAsset(assetPath, out var realPath, out var pack);
+      if(code != null) {
+        string codeStr = "";
+        if(Path.GetFileName(assetPath) != "SystemEnvInit.js") 
+          codeStr = JSCodePresolve.PrePresolveChunkCode(Encoding.UTF8.GetString(code), pack.PackageName, realPath);
+        else
+          codeStr = Encoding.UTF8.GetString(code);
+        try {
+          return GameMainEnv.Eval<object>(codeStr, realPath);
+        } catch(System.Exception e) {
+          Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + "\n" + e.ToString());
+          if(e.Message.Contains("SyntaxError")) {
+            Log.D(TAG, "Check code: \n" + DebugUtils.PrintCodeWithLine(codeStr));
+          }
+        }
+      }
+      else
+        Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + " , not found code asset.");
+      return null;
     }
 
     #endregion

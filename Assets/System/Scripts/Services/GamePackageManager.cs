@@ -75,13 +75,14 @@ namespace Ballance2.Services
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNREGISTERED);
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
       GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
-          GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "GamePackageManagerHandler", (evtName, param) =>
-          {
-                  //初始化调试窗口
-                  InitPackageManageWindow();
-            InitPackageCommands();
-            return false;
-          });
+        GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "GamePackageManagerHandler", (evtName, param) =>
+        {
+          //初始化调试窗口
+          InitPackageManageWindow();
+          InitPackageCommands();
+          return false;
+        });
+      GameManager.GameMediator.DelayedNotifySingleEvent("GameManagerWaitPackageManagerReady", 0.5f);
 
       return true;
     }
@@ -798,9 +799,10 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
-    public byte[] GetCodeAsset(string pathorname, out string realPath)
+    public byte[] GetCodeAsset(string pathorname, out string realPath, out GamePackage package)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
+      package = pack;
       return pack.GetCodeAsset(path, out realPath);
     }  
     /// <summary>
