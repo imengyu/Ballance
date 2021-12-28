@@ -24,22 +24,6 @@ namespace Ballance2.Package
 {  
   class GameSystemPackage : GameZipPackage
   {
-    class CodeAsset
-    {
-      public string fullPath;
-      public string realtivePath;
-      public string name;
-
-      public CodeAsset(string name, string realtivePath, string fullPath)
-      {
-        this.name = name;
-        this.fullPath = fullPath;
-        this.realtivePath = realtivePath;
-      }
-      public bool Match(string pathOrName) {
-        return pathOrName == name || pathOrName == realtivePath || pathOrName == fullPath || Path.GetFileName(pathOrName) == name;
-      }
-    }
 
     public override async Task<bool> LoadInfo(string filePath)
     {

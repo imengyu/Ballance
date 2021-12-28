@@ -18,7 +18,7 @@ const SystemRequire = function(package, refPath, str) {
 
   //处理相对路径
   if(str.indexOf('./') >= 0)
-     return require(`__${package}__/` +  str);
+     return require(`__${package}__/` + CS.Ballance2.Utils.PathUtils.JoinTwoPath(str));
   if(str.indexOf('/') > 0)
     return require(`__${package}__/` + str);
   

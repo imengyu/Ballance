@@ -7,7 +7,9 @@ using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
@@ -460,6 +462,35 @@ namespace Ballance2.Package
     /// <returns>返回 AudioClip 实例，如果未找到，则返回null</returns>
     public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
 
+    protected List<CodeSearchAsset> packageCodeSearchAssets = new List<CodeSearchAsset>();
+    protected class CodeSearchAsset
+    {
+      public string fullPath;
+      public string realtivePath;
+      public string name;
+
+      public CodeSearchAsset(string name, string realtivePath, string fullPath)
+      {
+        this.name = name;
+        this.fullPath = fullPath;
+        this.realtivePath = realtivePath;
+      }
+      public bool Match(string pathOrName) {
+        return pathOrName == name || pathOrName == realtivePath || pathOrName == fullPath || Path.GetFileName(pathOrName) == name;
+      }
+    }
+
+    /// <summary>
+    /// 预处理包中的代码文件名
+    /// </summary>
+    protected void PreLoadCodeAssetNames() {
+      var names = AssetBundle.GetAllAssetNames();
+      foreach (var item in names)
+      {
+        packageCodeSearchAssets.Add(new CodeSearchAsset())
+      }
+    }
+
     /// <summary>
     /// 获取指定路径的代码是否存在。
     /// </summary>
@@ -473,17 +504,13 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="pathorname">文件名称或路径</param>
     /// <returns>如果读取成功则返回代码内容，否则返回null</returns>
-    public virtual byte[] GetCodeAsset(string pathorname, out string realPath)
+    public virtual CodeAsset GetCodeAsset(string pathorname)
     {
       TextAsset textAsset = GetTextAsset(pathorname);
       if (textAsset != null)
-      {
-        realPath = pathorname;
-        return textAsset.bytes;
-      }
+        return new CodeAsset(textAsset.bytes, pathorname, pathorname);
 
       GameErrorChecker.LastError = GameError.FileNotFound;
-      realPath = "";
       return null;
     }
     /// <summary>
@@ -495,6 +522,39 @@ namespace Ballance2.Package
     {
       GameErrorChecker.SetLastErrorAndLog(GameError.NotSupportFileType, TAG, "当前模块不支持加载 CSharp 代码");
       return null;
+    }
+
+    /// <summary>
+    /// 表示代码资源
+    /// </summary>
+    [JSExport]
+    public class CodeAsset {
+      /// <summary>
+      /// 代码字符串
+      /// </summary>
+      public byte[] data;
+      /// <summary>
+      /// 获取当前代码的真实路径（一般用于调试）
+      /// </summary>
+      public string realPath;
+      /// <summary>
+      /// 代码文件的相对路径
+      /// </summary>
+      public string relativePath;
+
+      public CodeAsset(byte[] data, string realPath, string relativePath) {
+        this.data = data;
+        this.realPath = realPath;
+        this.relativePath = relativePath;
+      }
+
+      /// <summary>
+      /// 获取代码字符串
+      /// </summary>
+      /// <returns></returns>
+      public string GetCodeString() {
+        return Encoding.UTF8.GetString(data);
+      }
     }
 
     #endregion
