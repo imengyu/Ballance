@@ -218,8 +218,7 @@ namespace Ballance2
         //Call init
         sysHandler(ACTION_INIT);
 
-        //Init physics system
-        BallancePhysics.PhysicsSystemInit.Init();
+        GamePackageManager.PreRegSystemPackage();
 
         //Init system services
         RegSystemService<GameMediator>();

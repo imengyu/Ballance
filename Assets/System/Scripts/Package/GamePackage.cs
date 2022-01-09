@@ -59,7 +59,7 @@ namespace Ballance2.Package
 
       //模块代码环境初始化
       var t = new Task<bool>(() => {
-        if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
+        if (Type == GamePackageType.Module)
           return LoadPackageCodeBase();
         return true;
       });
@@ -92,13 +92,25 @@ namespace Ballance2.Package
 
     #region 系统包
 
-    private static GamePackage _SystemPackage = new GameSystemPackage();
+    private static GamePackage _SystemPackage = null;
 
     /// <summary>
     /// 获取系统的模块结构
     /// </summary>
     /// <returns></returns>
-    public static GamePackage GetSystemPackage() { return _SystemPackage; }
+    public static void SetSystemPackage(GamePackage pack) { 
+      if(_SystemPackage == null)
+        _SystemPackage = pack; 
+      else 
+        GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, "GamePackage", "Not allow to chage GamePackage");
+    }
+    /// <summary>
+    /// 获取系统的模块结构
+    /// </summary>
+    /// <returns></returns>
+    public static GamePackage GetSystemPackage() { 
+      return _SystemPackage; 
+    }
 
     #endregion
 
@@ -128,7 +140,7 @@ namespace Ballance2.Package
     protected bool LoadPackageCodeBase() {
       if (CodeType == GamePackageCodeType.JS)
       {
-        var ret = GameManager.Instance.GameMainEnv.Eval<bool>("SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", "ballance-internal:///packageLoader.js?name=" + PackageName);
+        var ret = GameManager.Instance.GameMainEnv.Eval<bool>("ballance.internal.SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", "ballance-internal:///packageLoader.js?name=" + PackageName);
         if (!ret)
         {
           Log.E(TAG, "模块 PackageEntry 返回了错误");
@@ -461,35 +473,6 @@ namespace Ballance2.Package
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 AudioClip 实例，如果未找到，则返回null</returns>
     public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
-
-    protected List<CodeSearchAsset> packageCodeSearchAssets = new List<CodeSearchAsset>();
-    protected class CodeSearchAsset
-    {
-      public string fullPath;
-      public string realtivePath;
-      public string name;
-
-      public CodeSearchAsset(string name, string realtivePath, string fullPath)
-      {
-        this.name = name;
-        this.fullPath = fullPath;
-        this.realtivePath = realtivePath;
-      }
-      public bool Match(string pathOrName) {
-        return pathOrName == name || pathOrName == realtivePath || pathOrName == fullPath || Path.GetFileName(pathOrName) == name;
-      }
-    }
-
-    /// <summary>
-    /// 预处理包中的代码文件名
-    /// </summary>
-    protected void PreLoadCodeAssetNames() {
-      var names = AssetBundle.GetAllAssetNames();
-      foreach (var item in names)
-      {
-        packageCodeSearchAssets.Add(new CodeSearchAsset())
-      }
-    }
 
     /// <summary>
     /// 获取指定路径的代码是否存在。

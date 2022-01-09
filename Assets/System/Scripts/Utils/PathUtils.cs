@@ -45,6 +45,25 @@ namespace Ballance2.Utils
 #endif
       return false;
     }
+    /// <summary>
+    /// 替换绝对路径至当前项目相对路径
+    /// </summary>
+    /// <param name="path">绝对路径</param>
+    /// <returns></returns>
+    public static string ReplaceAbsolutePathToRelativePath(string path)
+    {
+      path = path.Replace("\\", "/");
+      if(IsAbsolutePath(path)) {
+        var dir = Directory.GetCurrentDirectory().Replace("\\", "/");
+        var index = path.IndexOf(dir);
+        return path.Substring(index + dir.Length);
+      } else if(path.StartsWith("Assets/"))
+        return path.Substring(7);
+      else if(path.StartsWith("/Assets/")) 
+        return path.Substring(8);
+
+      return path;
+    }
 #if UNITY_EDITOR
     /**
       * 物理路径转为项目路径

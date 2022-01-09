@@ -76,7 +76,6 @@ namespace Ballance2.Package
             else UpdateTime = System.IO.File.GetLastWriteTime(PathUtils.FixFilePathScheme(filePath));
 
             ReadInfo(PackageDef);
-            PreLoadCodeAssetNames();
 
             return true;
           }

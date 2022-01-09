@@ -114,7 +114,7 @@ namespace Ballance2.Services
 
     private GameObject uiManagerGameObject = null;
 
-    private void Update()
+    protected override void Update()
     {
       UpdateToastShow();
     }

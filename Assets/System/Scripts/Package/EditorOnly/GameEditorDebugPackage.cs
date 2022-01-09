@@ -28,11 +28,6 @@ namespace Ballance2.Package
 {
   public class GameEditorDebugPackage : GamePackage
   {
-    public override void Destroy()
-    {
-
-    }
-
     public override async Task<bool> LoadInfo(string filePath)
     {
       PackageFilePath = filePath;
@@ -83,7 +78,10 @@ namespace Ballance2.Package
       foreach (FileInfo NextFile in thefileInfo)
       { //遍历文件
         string path = NextFile.FullName.Replace("\\", "/");
+
         if (path.EndsWith(".meta")) continue;
+        if (path.EndsWith(".map")) continue;
+
         int index = path.IndexOf("Assets/");
         if (index > 0)
           path = path.Substring(index);
@@ -114,6 +112,7 @@ namespace Ballance2.Package
         Log.E(TAG, "在加载模块的 Logo {0} 失败\n错误信息：{1}", path, e.ToString());
       }
     }
+    
     public override bool CheckCodeAssetExists(string pathorname)
     {
       if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
@@ -141,47 +140,31 @@ namespace Ballance2.Package
       }
       return false;
     }
-    public override byte[] GetCodeAsset(string pathorname, out string realPath)
+    public override CodeAsset GetCodeAsset(string pathorname)
     {
       if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
       {
         if (File.Exists(pathorname))
-        {
-          realPath = pathorname;
-          return FileUtils.ReadAllToBytes(pathorname);
-        } 
+          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname), pathorname, PathUtils.ReplaceAbsolutePathToRelativePath(pathorname));
         else if (File.Exists(pathorname + ".js"))
-        {
-          realPath = pathorname + ".js";
-          return FileUtils.ReadAllToBytes(pathorname + ".js");
-        } 
+          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname + ".js"), pathorname + ".js", PathUtils.ReplaceAbsolutePathToRelativePath(pathorname + ".js"));
       }
       else
       {
         string path = PackageFilePath + "/" + pathorname;
         if (File.Exists(path))
-        {
-          realPath = path;
-          return FileUtils.ReadAllToBytes(path);
-        }
+          return new CodeAsset(FileUtils.ReadAllToBytes(path), path, PathUtils.ReplaceAbsolutePathToRelativePath(path));
         else if (File.Exists(path + ".js"))
-        {
-          realPath = path + ".js";
-          return FileUtils.ReadAllToBytes(path + ".js");
-        }
+          return new CodeAsset(FileUtils.ReadAllToBytes(path + ".js"), path + ".js", PathUtils.ReplaceAbsolutePathToRelativePath(path + ".js"));
         else
         {
           string fullPath = GetFullPathByName(pathorname);
           if (fullPath != null && File.Exists(fullPath))
-          {
-            realPath = fullPath;
-            return FileUtils.ReadAllToBytes(fullPath);
-          }
+            return new CodeAsset(FileUtils.ReadAllToBytes(fullPath), fullPath, PathUtils.ReplaceAbsolutePathToRelativePath(fullPath));
         }
       }
 
       GameErrorChecker.LastError = GameError.FileNotFound;
-      realPath = "";
       return null;
     }
     public override Assembly LoadCodeCSharp(string pathorname)

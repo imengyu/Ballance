@@ -26,18 +26,6 @@ namespace Ballance2.Package
 {
   public class GameZipPackage : GamePackage
   {
-    private struct CodeAsset
-    {
-      public byte[] asset;
-      public string fullPath;
-      public CodeAsset(byte[] asset, string fullPath)
-      {
-        this.asset = asset;
-        this.fullPath = fullPath;
-      }
-    }
-    private Dictionary<string, CodeAsset> packageCodeAsset = new Dictionary<string, CodeAsset>();
-
     public override void Destroy()
     {
       packageCodeAsset.Clear();
@@ -83,12 +71,20 @@ namespace Ballance2.Package
       return defFileLoadSuccess;
     }
 
-    protected bool disableZipLoad = false;
+    private struct CodeAssetStorage
+    {
+      public byte[] asset;
+      public string fullPath;
+      public CodeAssetStorage(byte[] asset, string fullPath)
+      {
+        this.asset = asset;
+        this.fullPath = fullPath;
+      }
+    }
+    private Dictionary<string, CodeAssetStorage> packageCodeAsset = new Dictionary<string, CodeAssetStorage>();
 
     public override async Task<bool> LoadPackage()
     {
-      if (disableZipLoad)
-        return await base.LoadPackage();
       //从zip读取AssetBundle
       ZipInputStream zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
       if (zip == null)
@@ -195,9 +191,7 @@ namespace Ballance2.Package
     {
       MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
-      packageCodeAsset.Add(theEntry.Name, new CodeAsset(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name));
-
-      //Log.D(TAG, "LoadCodeAsset: {0} -> \n{1}", theEntry.Name, LuaUtils.PrintBytes(ms.ToArray()));
+      packageCodeAsset.Add(theEntry.Name, new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name));
 
       ms.Close();
       ms.Dispose();
@@ -215,7 +209,7 @@ namespace Ballance2.Package
       }
       return false;
     }
-    public override byte[] GetCodeAsset(string pathorname, out string realPath)
+    public override CodeAsset GetCodeAsset(string pathorname)
     {
       foreach (string key in packageCodeAsset.Keys)
       {
@@ -225,13 +219,11 @@ namespace Ballance2.Package
                 || Path.GetFileName(key) == pathorname)
         {
           var k = packageCodeAsset[key];
-          realPath = k.fullPath;
-          return k.asset;
+          return new CodeAsset(k.asset, k.fullPath, k.fullPath);
         }
       }
 
       GameErrorChecker.LastError = GameError.FileNotFound;
-      realPath = "";
       return null;
     }
     public override Assembly LoadCodeCSharp(string pathorname)

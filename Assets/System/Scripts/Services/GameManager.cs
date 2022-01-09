@@ -236,14 +236,24 @@ namespace Ballance2.Services
       if (string.IsNullOrEmpty(sCustomDebugName))
       {
         //进入场景
-        if (DebugMode && GameEntry.Instance.DebugSkipIntro) RequestEnterLogicScense("MenuLevel");
-        else if (firstScense != "") RequestEnterLogicScense(firstScense);
-        else Log.D(TAG, "No firstScense was set.");
+        if (DebugMode && GameEntry.Instance.DebugSkipIntro) {
+          if(!RequestEnterLogicScense("MenuLevel"))
+            GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+        }
+        else if (firstScense != "") {
+          if(RequestEnterLogicScense(firstScense))
+            GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+        }
+        else {
+          GameErrorChecker.ShowSystemErrorMessage("No firstScense was set.");
+          Log.D(TAG, "No firstScense was set.");
+        }
       }
       else
       {
         Log.D(TAG, "Enter GameDebug.");
-        RequestEnterLogicScense("GameDebug");
+        if(RequestEnterLogicScense("GameDebug"))
+          GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
         GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
       }
     }
@@ -382,7 +392,6 @@ namespace Ballance2.Services
       {
         //检查系统包版本是否与内核版本一致
         var systemPackage = pm.FindPackage(corePackageName);
-        (systemPackage as GameSystemPackage).ManualLoadPackageCodeBase();
         systemPackage.SystemPackage = true;
         systemPackage.RunPackageExecutionCode();
 
@@ -944,7 +953,7 @@ namespace Ballance2.Services
     {
       nextGameQuitTick = 40;
     }
-    private void Update()
+    protected override void Update()
     {
       if (nextGameQuitTick >= 0)
       {
@@ -1007,15 +1016,15 @@ namespace Ballance2.Services
     public object ExecuteCode(string assetPath) 
     {
       var pm = GetSystemService<GamePackageManager>();
-      var code = pm.GetCodeAsset(assetPath, out var realPath, out var pack);
+      var code = pm.GetCodeAsset(assetPath, out var pack);
       if(code != null) {
         string codeStr = "";
         if(Path.GetFileName(assetPath) != "SystemEnvInit.js") 
-          codeStr = JSCodePresolve.PrePresolveChunkCode(Encoding.UTF8.GetString(code), pack.PackageName, realPath);
+          codeStr = JSCodePresolve.PrePresolveChunkCode(Encoding.UTF8.GetString(code.data), pack.PackageName, code.realPath);
         else
-          codeStr = Encoding.UTF8.GetString(code);
+          codeStr = Encoding.UTF8.GetString(code.data);
         try {
-          return GameMainEnv.Eval<object>(codeStr, realPath);
+          return GameMainEnv.Eval<object>(codeStr, code.realPath);
         } catch(System.Exception e) {
           Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + "\n" + e.ToString());
           if(e.Message.Contains("SyntaxError")) {

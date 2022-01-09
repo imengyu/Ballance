@@ -1,4 +1,5 @@
-﻿using Ballance2.UI.CoreUI;
+﻿using Ballance2.Entry;
+using Ballance2.UI.CoreUI;
 using Ballance2.Utils;
 using System.Text;
 
@@ -86,6 +87,19 @@ namespace Ballance2.Services.Debug
     {
       LastError = code;
       Log.E(tag, message);
+    }
+
+    /// <summary>
+    /// 显示系统错误信息提示提示对话框
+    /// </summary>
+    /// <param name="message">错误信息</param>
+    public static void ShowSystemErrorMessage(string message)
+    {
+      GameEntry entry = GameEntry.Instance;
+      if(entry) {
+        entry.GlobalGameSysErrMessageDebuggerTipDialogText.text = message;
+        entry.GlobalGameSysErrMessageDebuggerTipDialog.SetActive(true);
+      }
     }
   }
 }

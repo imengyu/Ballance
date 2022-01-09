@@ -48,5 +48,9 @@ namespace Ballance2.Services
     {
       Object.Destroy(this);
     }
+
+    protected virtual void Update() {
+
+    }
   }
 }

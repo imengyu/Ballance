@@ -12,7 +12,7 @@ const GameManager = csharp.Ballance2.Services.GameManager;
  * @returns {boolean}
  * @keep
  */
-function SystemLoadPackage(entryCode, packageName) {
+ballance.internal['SystemLoadPackage'] = function SystemLoadPackage(entryCode, packageName) {
 
   //引用
   const enteyRet = require(entryCode);

@@ -198,6 +198,21 @@ namespace Ballance2.Services
 
     #region 模块包管理API
 
+    internal static void PreRegSystemPackage() {
+      #if UNITY_EDITOR
+        var realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
+        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
+          GamePackage.SetSystemPackage(new GameEditorSystemPackage());
+        } 
+        else
+#else
+        if(true) 
+#endif
+        {
+          GamePackage.SetSystemPackage(new GameSystemPackage());
+        }
+    }
+
     /// <summary>
     /// 注册模块
     /// </summary>
@@ -233,15 +248,14 @@ namespace Ballance2.Services
       {
 #if UNITY_EDITOR
         realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
-        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
+        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
           gamePackage = GamePackage.GetSystemPackage();
-        else
+        } else
 #else
-                if(true) 
+        if(true) 
 #endif
         {
           gamePackage = GamePackage.GetSystemPackage();
-          ((GameSystemPackage)gamePackage).SetDisableLoadFileInUnity();
           realPackagePath = GamePathManager.GetResRealPath("core", "core.ballance");
         }
       }
@@ -254,7 +268,7 @@ namespace Ballance2.Services
       }
       else
 #else
-            else if(true) 
+      else if(true) 
 #endif
       {
         //路径转换
@@ -799,11 +813,11 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
-    public byte[] GetCodeAsset(string pathorname, out string realPath, out GamePackage package)
+    public GamePackage.CodeAsset GetCodeAsset(string pathorname, out GamePackage package)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
       package = pack;
-      return pack.GetCodeAsset(path, out realPath);
+      return pack.GetCodeAsset(path);
     }  
     /// <summary>
     /// 全局读取资源包中的文字资源
