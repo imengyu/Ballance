@@ -1,6 +1,7 @@
 ﻿using Ballance2.Entry;
 using Ballance2.UI.CoreUI;
 using Ballance2.Utils;
+using System.Collections.Generic;
 using System.Text;
 
 /*
@@ -27,6 +28,8 @@ namespace Ballance2.Services.Debug
   public class GameErrorChecker
   {
     private static GameGlobalErrorUI gameGlobalErrorUI;
+    private static List<string> gameErrorLogPools;
+    private static int gameErrorLogObserver = 0;
 
     internal static void SetGameErrorUI(GameGlobalErrorUI errorUI)
     {
@@ -46,6 +49,16 @@ namespace Ballance2.Services.Debug
       stringBuilder.Append(string.IsNullOrEmpty(message) ? GameErrorInfo.GetErrorMessage(code) : message);
       stringBuilder.Append("\n");
       stringBuilder.Append(DebugUtils.GetStackTrace(1));
+      stringBuilder.Append("\n");
+
+      if(gameErrorLogPools != null && gameErrorLogPools.Count > 0) {
+        stringBuilder.Append("Errors:\n");
+        foreach (var item in gameErrorLogPools)
+        {
+          stringBuilder.Append(item);
+          stringBuilder.Append("\n");
+        }
+      }
 
       GameSystem.ForceInterruptGame();
       gameGlobalErrorUI.ShowErrorUI(stringBuilder.ToString());
@@ -63,6 +76,30 @@ namespace Ballance2.Services.Debug
     public static string GetLastErrorMessage()
     {
       return GameErrorInfo.GetErrorMessage(LastError);
+    }
+
+
+    internal static void Init() {
+      gameErrorLogPools = new List<string>();
+      gameErrorLogObserver = Log.RegisterLogObserver(LogObserver, LogLevel.Error | LogLevel.Warning);
+    }
+    internal static void Destroy() {
+      gameErrorLogPools.Clear();
+      gameErrorLogPools = null;
+      Log.UnRegisterLogObserver(gameErrorLogObserver);
+    }
+
+    private static void LogObserver(LogLevel level, string tag, string message, string stackTrace) {
+      if(gameErrorLogPools.Count > 10)
+        gameErrorLogPools.RemoveAt(0);
+      StringBuilder sb = new StringBuilder();
+      sb.Append('[');
+      sb.Append(tag);
+      sb.Append("] ");
+      sb.Append(message);
+      sb.Append('\n');
+      sb.Append(stackTrace);
+      gameErrorLogPools.Add(sb.ToString());
     }
 
     /// <summary>

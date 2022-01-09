@@ -15,9 +15,9 @@ const GameManager = csharp.Ballance2.Services.GameManager;
 ballance.internal['SystemLoadPackage'] = function SystemLoadPackage(entryCode, packageName) {
 
   //引用
-  const enteyRet = require(entryCode);
-  if(typeof enteyRet != "undefined") {
-    GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, "SystemLoadPackage" + packageName, `EntryCode: ${entryCode} does not return init structure.`);
+  const enteyRet = require(`__${packageName}__/${entryCode}`);
+  if(typeof enteyRet == "undefined") {
+    GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, "SystemLoadPackage " + packageName, `EntryCode: ${entryCode} does not return init structure.`);
     return false;
   }
 
@@ -27,9 +27,9 @@ ballance.internal['SystemLoadPackage'] = function SystemLoadPackage(entryCode, p
   const GamePackageManager = GameManager.Instance.GetSystemService("GamePackageManager");
 
   //加载包
-  const package = GamePackageManager.FindPackage(packageName);
+  const package = GamePackageManager.FindRegisteredPackage(packageName);
   if(!package) {
-    GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, "SystemLoadPackage" + packageName, `Not found package: ${packageName}.`);
+    GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, "SystemLoadPackage " + packageName, `Not found package: ${packageName}.`);
     return false;
   }
   

@@ -38,11 +38,10 @@ namespace Ballance2.Services.JSService.JSLoader {
     public string ReadFile(string filepath, out string debugpath)
     { 
       if(filepath.StartsWith("puerts/")) {
+        debugpath = "/" + filepath;
 #if UNITY_EDITOR
-        debugpath = Directory.GetCurrentDirectory() + "/Assets/Plugins/Puerts/Src/Resources/" + filepath;
-        return File.ReadAllText(debugpath);
+        return File.ReadAllText(Directory.GetCurrentDirectory() + "/Assets/Plugins/Puerts/Src/Resources/" + filepath);
 #else
-        debugpath = "puerts://" + filepath;
         TextAsset asset = Resources.Load<TextAsset>(PathToUse(filepath));
         if(asset == null)
           throw new FileNotFoundException("Filed to load js file: \"" + filepath + "\" !");

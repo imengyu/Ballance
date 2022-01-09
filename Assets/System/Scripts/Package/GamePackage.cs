@@ -50,7 +50,9 @@ namespace Ballance2.Package
     public virtual Task<bool> LoadInfo(string filePath)
     {
       PackageFilePath = filePath;
-      return null;
+      var t = new Task<bool>(() => { return true; });
+      t.Start();
+      return t;
     }
     public virtual Task<bool> LoadPackage()
     {
@@ -59,7 +61,7 @@ namespace Ballance2.Package
 
       //模块代码环境初始化
       var t = new Task<bool>(() => {
-        if (Type == GamePackageType.Module)
+        if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
           return LoadPackageCodeBase();
         return true;
       });
@@ -92,17 +94,25 @@ namespace Ballance2.Package
 
     #region 系统包
 
-    private static GamePackage _SystemPackage = null;
+    private static GamePackage _CorePackage = null;
+    private static GamePackage _SystemPackage = new GameSystemPackage();
 
     /// <summary>
     /// 获取系统的模块结构
     /// </summary>
     /// <returns></returns>
-    public static void SetSystemPackage(GamePackage pack) { 
-      if(_SystemPackage == null)
-        _SystemPackage = pack; 
+    public static void SetCorePackage(GamePackage pack) { 
+      if(_CorePackage == null)
+        _CorePackage = pack; 
       else 
         GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, "GamePackage", "Not allow to chage GamePackage");
+    }
+    /// <summary>
+    /// 获取系统的模块结构
+    /// </summary>
+    /// <returns></returns>
+    public static GamePackage GetCorePackage() { 
+      return _CorePackage; 
     }
     /// <summary>
     /// 获取系统的模块结构
@@ -111,6 +121,18 @@ namespace Ballance2.Package
     public static GamePackage GetSystemPackage() { 
       return _SystemPackage; 
     }
+
+    #endregion
+
+    #region 常量定义
+
+    public const int FLAG_CODE_BASE_LOADED = 0x000000001;
+    public const int FLAG_CODE_JS_PACK = 0x000000002;
+    public const int FLAG_CODE_CS_PACK = 0x000000004;
+    public const int FLAG_CODE_ENTRY_CODE_RUN = 0x000000008;
+    public const int FLAG_CODE_UNLOD_CODE_RUN = 0x000000010;
+    public const int FLAG_PACK_NOT_UNLOADABLE = 0x000000020;
+    public const int FLAG_PACK_SYSTEM_PACKAGE = 0x000000040;
 
     #endregion
 
@@ -123,31 +145,77 @@ namespace Ballance2.Package
     /// <summary>
     /// 程序入口
     /// </summary>
-    public GamePackageEntry PackageEntry = null;
-    private bool entryCodeRun = false;
-    private bool unloadCodeRun = false;
+    public GamePackageEntry PackageEntry = new GamePackageEntry();
+    
+    protected int flag = 0;
+
+    protected string MakeDebugJSPath(string p) {
+      return "ballance://" + PackageName + "/" + p;
+    }
 
     /// <summary>
     /// 获取入口代码是否已经运行过
     /// </summary>
     /// <returns></returns>
-    public bool IsEntryCodeExecuted() { return entryCodeRun; }
+    public bool IsEntryCodeExecuted() { return (flag & FLAG_CODE_ENTRY_CODE_RUN) == FLAG_CODE_ENTRY_CODE_RUN; }
+    /// <summary>
+    /// 获取出口代码是否已经运行过
+    /// </summary>
+    /// <returns></returns>
+    public bool IsUnloadCodeExecuted() { return (flag & FLAG_CODE_UNLOD_CODE_RUN) == FLAG_CODE_UNLOD_CODE_RUN; }
+
+    /// <summary>
+    /// 设置标志位
+    /// </summary>
+    /// <param name="flag"></param>
+    public void SetFlag(int flag)  {
+
+      if((this.flag & FLAG_PACK_NOT_UNLOADABLE) == FLAG_PACK_NOT_UNLOADABLE && (flag & FLAG_PACK_NOT_UNLOADABLE) != FLAG_PACK_NOT_UNLOADABLE) {
+        Log.E(TAG, "Not allow set FLAG_PACK_NOT_UNLOADABLE flag for not unloadable packages.");
+        flag &= FLAG_PACK_NOT_UNLOADABLE;
+      }
+
+      //internal
+      if(this.flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
+        LoadPackageCodeBase();
+
+      this.flag = flag;
+    }
+    /// <summary>
+    /// 获取标志位
+    /// </summary>
+    /// <param name="flag"></param>
+    public int GetFlag() { return flag; }
 
     /// <summary>
     /// 加载运行环境代码
     /// </summary>
     /// <returns></returns>
     protected bool LoadPackageCodeBase() {
+      //判断是否初始化
+      if((FLAG_CODE_BASE_LOADED & flag) == FLAG_CODE_BASE_LOADED) {
+        Log.E(TAG, "不能重复初始化");
+        return false;
+      }
+
       if (CodeType == GamePackageCodeType.JS)
       {
-        var ret = GameManager.Instance.GameMainEnv.Eval<bool>("ballance.internal.SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", "ballance-internal:///packageLoader.js?name=" + PackageName);
-        if (!ret)
-        {
-          Log.E(TAG, "模块 PackageEntry 返回了错误");
+        try {
+          var ret = GameManager.Instance.GameMainEnv.Eval<bool>("ballance.internal.SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", 
+            "ballance://internal/PackageLoader.js?name=" + PackageName);
+          if (!ret)
+          {
+            Log.E(TAG, "模块 PackageEntry 返回了错误");
+            GameErrorChecker.LastError = GameError.ExecutionFailed;
+            return false;
+          }
+          flag &= FLAG_CODE_BASE_LOADED;
+          return true;
+        } catch(Exception e) {
+          GameManager.Instance.PrintErrorToJSConsole(e);
           GameErrorChecker.LastError = GameError.ExecutionFailed;
           return false;
         }
-        return true;
       }
       else if (CodeType == GamePackageCodeType.CSharp)
       {
@@ -182,6 +250,8 @@ namespace Ballance2.Package
           GameErrorChecker.LastError = GameError.ExecutionFailed;
           return (bool)b;
         }
+        
+        flag &= FLAG_CODE_BASE_LOADED;
         return true;
       }
       else
@@ -202,12 +272,12 @@ namespace Ballance2.Package
         GameErrorChecker.LastError = GameError.PackageCanNotRun;
         return false;
       }
-      if(entryCodeRun) {
+      if (IsEntryCodeExecuted()) {
         GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "Run ExecutionCode failed, an not run twice");
         return false;
       }
 
-      entryCodeRun = true;
+      flag &= FLAG_CODE_ENTRY_CODE_RUN;
       if(PackageEntry.OnLoad != null)
         return PackageEntry.OnLoad.Invoke(this);
       return true;
@@ -222,13 +292,12 @@ namespace Ballance2.Package
         GameErrorChecker.LastError = GameError.PackageCanNotRun;
         return false;
       }
-      if (unloadCodeRun) {
+      if (IsUnloadCodeExecuted()) {
         GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "Run BeforeUnLoadCode failed, an not run twice");
         return false;
       }
 
-      unloadCodeRun = false;
-
+      flag &= FLAG_CODE_UNLOD_CODE_RUN;
       if(PackageEntry.OnBeforeUnLoad != null)
         return PackageEntry.OnBeforeUnLoad.Invoke(this);
       return true;
@@ -491,7 +560,7 @@ namespace Ballance2.Package
     {
       TextAsset textAsset = GetTextAsset(pathorname);
       if (textAsset != null)
-        return new CodeAsset(textAsset.bytes, pathorname, pathorname);
+        return new CodeAsset(textAsset.bytes, pathorname, pathorname, MakeDebugJSPath(pathorname));
 
       GameErrorChecker.LastError = GameError.FileNotFound;
       return null;
@@ -524,11 +593,16 @@ namespace Ballance2.Package
       /// 代码文件的相对路径
       /// </summary>
       public string relativePath;
+      /// <summary>
+      /// 调试器中显示的路径
+      /// </summary>
+      public string debugPath;
 
-      public CodeAsset(byte[] data, string realPath, string relativePath) {
+      public CodeAsset(byte[] data, string realPath, string relativePath, string debugPath) {
         this.data = data;
         this.realPath = realPath;
         this.relativePath = relativePath;
+        this.debugPath = debugPath;
       }
 
       /// <summary>

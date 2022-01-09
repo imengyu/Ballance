@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 using Ballance2.Services.Debug;
+using Ballance2.Services;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -22,7 +23,11 @@ using Ballance2.Services.Debug;
 
 namespace Ballance2.Package
 {  
-  class GameEditorSystemPackage : GameEditorDebugPackage
+  class GameEditorCorePackage : GameEditorDebugPackage
   {
+    public GameEditorCorePackage() {
+      SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
+      PackageName = GamePackageManager.CORE_PACKAGE_NAME;
+    }
   }
 }

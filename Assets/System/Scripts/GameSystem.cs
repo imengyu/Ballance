@@ -204,6 +204,7 @@ namespace Ballance2
 
         //Init system
         Ballance2.Utils.UnityLogCatcher.Init();
+        GameErrorChecker.Init();
 
         //初始化静态资源入口
         GameStaticResourcesPool.InitStaticPrefab(gameStaticResEntryInstance.GamePrefab, gameStaticResEntryInstance.GameAssets);
@@ -218,7 +219,7 @@ namespace Ballance2
         //Call init
         sysHandler(ACTION_INIT);
 
-        GamePackageManager.PreRegSystemPackage();
+        GamePackageManager.PreRegInternalPackage();
 
         //Init system services
         RegSystemService<GameMediator>();
@@ -277,6 +278,7 @@ namespace Ballance2
         I18NProvider.ClearAllLanguageResources();
         GameSettingsManager.Destroy();
         Ballance2.Utils.UnityLogCatcher.Destroy();
+        GameErrorChecker.Destroy();
 
         if (IsRestart)
         {

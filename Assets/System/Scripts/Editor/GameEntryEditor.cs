@@ -18,10 +18,13 @@ public class GameEntryEditor : Editor
     private SerializedProperty GlobalGameWaitDebuggerTipDialog;
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialog;
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialogText;
+    private SerializedProperty GlobalGameWaitDebuggerTipText;
+    private SerializedProperty GlobalGameWaitDebuggerTipOpenButton;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
     private SerializedProperty DebugEnableV8Debugger;
+    private SerializedProperty DebugWaitV8Debugger;
     private SerializedProperty DebugV8DebuggerPort;
     private SerializedProperty DebugType;
     private SerializedProperty DebugInitPackages;
@@ -45,12 +48,15 @@ public class GameEntryEditor : Editor
         GlobalGameWaitDebuggerTipDialog = serializedObject.FindProperty("GlobalGameWaitDebuggerTipDialog");
         GlobalGameSysErrMessageDebuggerTipDialog = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialog");
         GlobalGameSysErrMessageDebuggerTipDialogText = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialogText");
+        GlobalGameWaitDebuggerTipText = serializedObject.FindProperty("GlobalGameWaitDebuggerTipText");
+        GlobalGameWaitDebuggerTipOpenButton = serializedObject.FindProperty("GlobalGameWaitDebuggerTipOpenButton");
 
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
         DebugSetFrameRate = serializedObject.FindProperty("DebugSetFrameRate");
         DebugEnableV8Debugger = serializedObject.FindProperty("DebugEnableV8Debugger");
         DebugV8DebuggerPort = serializedObject.FindProperty("DebugV8DebuggerPort");
+        DebugWaitV8Debugger = serializedObject.FindProperty("DebugWaitV8Debugger");
         DebugType = serializedObject.FindProperty("DebugType");
         DebugInitPackages = serializedObject.FindProperty("DebugInitPackages");
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
@@ -103,6 +109,7 @@ public class GameEntryEditor : Editor
         EditorGUI.EndDisabledGroup();
         EditorGUILayout.PropertyField(DebugEnableV8Debugger);
         EditorGUILayout.PropertyField(DebugV8DebuggerPort);
+        EditorGUILayout.PropertyField(DebugWaitV8Debugger);
         EditorGUILayout.PropertyField(DebugType);
         EditorGUILayout.PropertyField(DebugSkipIntro);
         
@@ -137,6 +144,8 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialogText);
+        EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipOpenButton);
+        EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipText);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();

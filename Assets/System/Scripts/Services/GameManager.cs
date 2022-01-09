@@ -168,11 +168,11 @@ namespace Ballance2.Services
       //创建 GameMainEnv
       Profiler.BeginSample("CreateJsEnv");
 
-      GameMainEnv = new JsEnv(new GameJSLoader(), GameEntry.Instance.DebugV8DebuggerPort);
+      GameMainEnv = new JsEnv(new GameJSLoader(), GameEntry.Instance.DebugEnableV8Debugger ? GameEntry.Instance.DebugV8DebuggerPort : -1);
 
       Profiler.EndSample();
 
-      if (GameEntry.Instance.DebugEnableV8Debugger)
+      if (GameEntry.Instance.DebugEnableV8Debugger && GameEntry.Instance.DebugWaitV8Debugger)
       {
         Profiler.BeginSample("GameManagerWaitDebuggerAsync");
 
@@ -190,7 +190,7 @@ namespace Ballance2.Services
 
       try {
         //检测JS绑定状态
-        object o = GameMainEnv.Eval<int>(@"const csharp = require('csharp'); csharp.Ballance2.Services.GameManager.LuaBindingCallback()", "GameManagerSystemInit");
+        object o = GameMainEnv.Eval<int>(@"const csharp = require('csharp'); csharp.Ballance2.Services.GameManager.JSBindingCheckCallback()", "ballance://internal/GameManagerSystemInit.js");
         if (o != null && (
                 (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
                 || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
@@ -293,7 +293,7 @@ namespace Ballance2.Services
     {
       UnityWebRequest request = null;
       var pm = GetSystemService<GamePackageManager>();
-      var corePackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
+      var corePackageName = GamePackageManager.CORE_PACKAGE_NAME;
 
       #region 读取读取SystemInit文件
 
@@ -364,20 +364,6 @@ namespace Ballance2.Services
 
       #region 加载系统内核包
 
-
-      {
-        //加载系统内核包
-        Task<bool> task = pm.LoadPackage(corePackageName);
-        yield return new WaitUntil(() => task.IsCompleted);
-        if (!task.Result)
-        {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包 “" + corePackageName + "” 加载失败：" + GameErrorChecker.LastError + "\n您可尝试重新安装游戏");
-          yield break;
-        }
-
-        Log.D(TAG, "Load system core ok");
-      }
-
       {
         Profiler.BeginSample("ExecuteSystemCore");
 
@@ -390,8 +376,22 @@ namespace Ballance2.Services
       }
 
       {
+        //加载游戏主内核包
+        Task<bool> task = pm.LoadPackage(corePackageName);
+        yield return new WaitUntil(() => task.IsCompleted);
+        if (!task.Result)
+        {
+          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包 “" + corePackageName + "” 加载失败：" + GameErrorChecker.LastError + "\n您可尝试重新安装游戏");
+          yield break;
+        }
+
+        Log.D(TAG, "Load system core ok");
+      }
+
+      {
         //检查系统包版本是否与内核版本一致
         var systemPackage = pm.FindPackage(corePackageName);
+        systemPackage.SetFlag(0xF0);
         systemPackage.SystemPackage = true;
         systemPackage.RunPackageExecutionCode();
 
@@ -977,8 +977,13 @@ namespace Ballance2.Services
         }
       }
 
-      if(GameMainEnv != null)
-        GameMainEnv.Tick();
+      if(GameMainEnv != null) {
+        try {
+          GameMainEnv.Tick();
+        } catch(System.Exception e) {
+          PrintErrorToJSConsole(e);
+        } 
+      }
     }
 
     #endregion
@@ -1011,7 +1016,22 @@ namespace Ballance2.Services
     /// <summary>
     /// 执行js代码文件
     /// </summary>
-    /// <param name="assetPath"></param>
+    /// <param name="assetPath">资源路径</param>
+    /// <returns></returns>
+    public JSObject ExecuteCodeModul(string assetPath) 
+    {
+      try {
+        return GameMainEnv.ExecuteModule<JSObject>(assetPath);
+      } catch(System.Exception e) {
+        PrintErrorToJSConsole(e);
+        Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + "\n" + e.ToString());
+        return null;
+      }
+    }
+    /// <summary>
+    /// 执行js代码文件
+    /// </summary>
+    /// <param name="assetPath">资源路径</param>
     /// <returns></returns>
     public object ExecuteCode(string assetPath) 
     {
@@ -1024,17 +1044,35 @@ namespace Ballance2.Services
         else
           codeStr = Encoding.UTF8.GetString(code.data);
         try {
-          return GameMainEnv.Eval<object>(codeStr, code.realPath);
+          return GameMainEnv.Eval<object>(codeStr, code.debugPath);
         } catch(System.Exception e) {
+          PrintErrorToJSConsole(e);
           Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + "\n" + e.ToString());
-          if(e.Message.Contains("SyntaxError")) {
-            Log.D(TAG, "Check code: \n" + DebugUtils.PrintCodeWithLine(codeStr));
-          }
-        }
+        } 
       }
       else
         Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + " , not found code asset.");
       return null;
+    }
+    
+    public System.Exception LastDisplayException = null;
+    public VoidDelegate DisplayExceptionCallback = null;
+
+    /// <summary>
+    /// 获取打印错误
+    /// </summary>
+    /// <returns></returns>
+    public string GetLastPrintError() {
+      return LastDisplayException != null ? LastDisplayException.Message.Replace("(puerts/", "(/puerts/") : "";
+    }
+    /// <summary>
+    /// 输出错误到Chrome 控制台，方便调试
+    /// </summary>
+    /// <param name="err"></param>
+    public void PrintErrorToJSConsole(System.Exception err) {
+      LastDisplayException = err;
+      if(DisplayExceptionCallback != null)
+        DisplayExceptionCallback();
     }
 
     #endregion
@@ -1071,7 +1109,7 @@ namespace Ballance2.Services
     /// Lua绑定检查回调
     /// </summary>
     /// <returns></returns>
-    public static int LuaBindingCallback()
+    public static int JSBindingCheckCallback()
     {
       return GameConst.GameBulidVersion;
     }

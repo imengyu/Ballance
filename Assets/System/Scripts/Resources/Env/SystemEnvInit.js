@@ -8,6 +8,8 @@ global.ballance = {
 };
 
 (function() {
+  const GameManager = CS.Ballance2.Services.GameManager;
+
   /**
    * 自动处理require路径，以方便require模块包中的代码。
    * @param {string} package 当前包名
@@ -35,14 +37,9 @@ global.ballance = {
 
   ballance.internal.SystemRequire = SystemRequire;
 
-  const GamePackageManager = CS.Ballance2.Services.GamePackageManager;
-  const GameManager = CS.Ballance2.Services.GameManager;
-
-  console.log('Test!!!');
-  console.log(GamePackageManager);
-  console.log(GameManager);
-  console.log(GameManager.Instance.GetSystemService("GamePackageManager"));
-
+  GameManager.Instance.DisplayExceptionCallback = function() {
+    console.error(GameManager.Instance.GetLastPrintError());
+  };
 })();
 
 

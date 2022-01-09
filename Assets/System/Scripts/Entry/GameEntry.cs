@@ -45,6 +45,8 @@ namespace Ballance2.Entry
     public bool DebugSetFrameRate = true;
     [Tooltip("是否启用JS调试器")]
     public bool DebugEnableV8Debugger = true;
+    [Tooltip("是否在启动时等待JS调试器")]
+    public bool DebugWaitV8Debugger = true;
     [Tooltip("JS调试器默认端口")]
     public int DebugV8DebuggerPort = 9229;
     [Tooltip("调试类型")]
@@ -78,6 +80,8 @@ namespace Ballance2.Entry
     public GameObject GlobalGameWaitDebuggerTipDialog = null;
     public GameObject GlobalGameSysErrMessageDebuggerTipDialog = null;
     public Text GlobalGameSysErrMessageDebuggerTipDialogText = null;
+    public Text GlobalGameWaitDebuggerTipText = null;
+    public Button GlobalGameWaitDebuggerTipOpenButton = null;
 
     private bool GlobalGamePermissionTipDialogClosed = false;
     private bool GlobalGameUserAgreementTipDialogClosed = false;
@@ -194,10 +198,17 @@ namespace Ballance2.Entry
       else DebugMode = false;
 #endif
     }
+    private void InitUi() {
+      GlobalGameWaitDebuggerTipText.text = "Waiting debugger to connect...\nGo devtools://devtools/bundled/inspector.html?v8only=true&ws=127.0.0.1:" + DebugV8DebuggerPort + " in chorme to connect.";
+      GlobalGameWaitDebuggerTipOpenButton.onClick.AddListener(() => {
+        Application.OpenURL("devtools://devtools/bundled/inspector.html?v8only=true&ws=127.0.0.1:" + DebugV8DebuggerPort);
+      });
+    }
 
     private IEnumerator InitMain()
     {
       GameSystem.PreInit();
+      InitUi();
 
       if (TestAndroidPermission())
       {

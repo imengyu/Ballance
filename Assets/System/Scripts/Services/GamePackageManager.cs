@@ -40,7 +40,11 @@ namespace Ballance2.Services
     /// <summary>
     /// 系统模块的包名
     /// </summary>
-    public const string SYSTEM_PACKAGE_NAME = "core";
+    public const string SYSTEM_PACKAGE_NAME = "system";
+    /// <summary>
+    /// 游戏主模块的包名
+    /// </summary>
+    public const string CORE_PACKAGE_NAME = "core";
 
     public GamePackageManager() : base(TAG) { }
 
@@ -69,12 +73,14 @@ namespace Ballance2.Services
     }
     public override bool Initialize()
     {
+      var systemPackage = GamePackage.GetSystemPackage();
+
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED);
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS);
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNREGISTERED);
       GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
-      GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(),
+      GameManager.GameMediator.RegisterEventHandler(systemPackage,
         GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "GamePackageManagerHandler", (evtName, param) =>
         {
           //初始化调试窗口
@@ -83,6 +89,9 @@ namespace Ballance2.Services
           return false;
         });
       GameManager.GameMediator.DelayedNotifySingleEvent("GameManagerWaitPackageManagerReady", 0.5f);
+
+      systemPackage._Status = GamePackageStatus.LoadSuccess;
+      loadedPackages.Add(SYSTEM_PACKAGE_NAME, systemPackage);
 
       return true;
     }
@@ -198,19 +207,19 @@ namespace Ballance2.Services
 
     #region 模块包管理API
 
-    internal static void PreRegSystemPackage() {
-      #if UNITY_EDITOR
-        var realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
-        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
-          GamePackage.SetSystemPackage(new GameEditorSystemPackage());
-        } 
-        else
+    internal static void PreRegInternalPackage() {
+#if UNITY_EDITOR
+      var realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
+      if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
+        GamePackage.SetCorePackage(new GameEditorCorePackage());
+      } 
+      else
 #else
-        if(true) 
+      if(true) 
 #endif
-        {
-          GamePackage.SetSystemPackage(new GameSystemPackage());
-        }
+      {
+        GamePackage.SetCorePackage(new GameCorePackage());
+      }
     }
 
     /// <summary>
@@ -244,18 +253,18 @@ namespace Ballance2.Services
       GamePackage gamePackage = null;
 
       realPackagePath = GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + packageName;
-      if (packageName == SYSTEM_PACKAGE_NAME)
+      if (packageName == CORE_PACKAGE_NAME)
       {
 #if UNITY_EDITOR
         realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
         if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
-          gamePackage = GamePackage.GetSystemPackage();
+          gamePackage = GamePackage.GetCorePackage();
         } else
 #else
         if(true) 
 #endif
         {
-          gamePackage = GamePackage.GetSystemPackage();
+          gamePackage = GamePackage.GetCorePackage();
           realPackagePath = GamePathManager.GetResRealPath("core", "core.ballance");
         }
       }
@@ -435,12 +444,6 @@ namespace Ballance2.Services
     /// <returns>返回加载是否成功</returns>
     public async Task<bool> LoadPackage(string packageName)
     {
-      if (!StringUtils.IsPackageName(packageName) && packageName != SYSTEM_PACKAGE_NAME)
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.InvalidPackageName, TAG,
-            "Invalid packageName {0}", packageName);
-        return false;
-      }
       if (IsPackageLoaded(packageName))
         return true;
       if (IsPackageLoading(packageName))
@@ -575,6 +578,14 @@ namespace Ballance2.Services
       if (package == null)
       {
         GameErrorChecker.SetLastErrorAndLog(GameError.NotLoad, TAG, "Can not unload package " + packageName + " because it isn't load! ");
+        return false;
+      }
+      if ((package.GetFlag() & GamePackage.FLAG_PACK_SYSTEM_PACKAGE) == GamePackage.FLAG_PACK_SYSTEM_PACKAGE) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG, "Can not unload system package " + packageName + " ! ");
+        return false;
+      }
+      if ((package.GetFlag() & GamePackage.FLAG_PACK_NOT_UNLOADABLE) == GamePackage.FLAG_PACK_NOT_UNLOADABLE) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG, "Can not unload package " + packageName + " with flag FLAG_PACK_NOT_UNLOADABLE ! ");
         return false;
       }
       if (package.UnLoadWhenDependencyRefNone)
@@ -779,7 +790,20 @@ namespace Ballance2.Services
       if (pathOrName.StartsWith("__") && lastIdx >= 0)
       {
         var packname = pathOrName.Substring(2, lastIdx - 2);
-        var pack = packname == "system" ? GamePackage.GetSystemPackage() : FindPackage(packname);
+        GamePackage pack = null;
+        switch(packname) {
+          case "system":
+            pack = GamePackage.GetSystemPackage();
+            break;
+          case "game":
+          case "ballance":
+          case "core":
+            pack = GamePackage.GetCorePackage();
+            break;
+          default:
+            pack = FindPackage(packname);
+            break;
+        }
         if (pack == null)
           throw new System.Exception("Package " + packname + " not found");
         resName = pathOrName.Substring(lastIdx + 3);

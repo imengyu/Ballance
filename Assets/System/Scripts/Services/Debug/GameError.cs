@@ -85,7 +85,7 @@ namespace Ballance2.Services.Debug
         case GameError.AssetNotFound: return "未找到指定的资源。";
         case GameError.IsLoading: return "正在加载，请稍后。";
         case GameError.AccessDenined: return "不能执行这个操作。";
-        case GameError.ExecutionFailed: return "执行 Lua 代码失败。";
+        case GameError.ExecutionFailed: return "执行代码失败。";
         case GameError.NetworkError: return "网络错误。";
         case GameError.ParamNotFound: return "未找到参数。";
         case GameError.ParamReadOnly: return "参数只读。";

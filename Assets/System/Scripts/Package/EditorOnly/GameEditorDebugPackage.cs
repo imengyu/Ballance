@@ -142,27 +142,34 @@ namespace Ballance2.Package
     }
     public override CodeAsset GetCodeAsset(string pathorname)
     {
+      string realtivePath = "";
+      bool enableDebugger = Entry.GameEntry.Instance.DebugEnableV8Debugger;
       if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
       {
-        if (File.Exists(pathorname))
-          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname), pathorname, PathUtils.ReplaceAbsolutePathToRelativePath(pathorname));
-        else if (File.Exists(pathorname + ".js"))
-          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname + ".js"), pathorname + ".js", PathUtils.ReplaceAbsolutePathToRelativePath(pathorname + ".js"));
+        if (File.Exists(pathorname)) {
+          realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
+          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname), pathorname, realtivePath, enableDebugger ? MakeDebugJSPath(realtivePath) : pathorname);
+        }
       }
       else
       {
         string path = PackageFilePath + "/" + pathorname;
-        if (File.Exists(path))
-          return new CodeAsset(FileUtils.ReadAllToBytes(path), path, PathUtils.ReplaceAbsolutePathToRelativePath(path));
-        else if (File.Exists(path + ".js"))
-          return new CodeAsset(FileUtils.ReadAllToBytes(path + ".js"), path + ".js", PathUtils.ReplaceAbsolutePathToRelativePath(path + ".js"));
+        if (File.Exists(path)) {
+          realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(path);
+          return new CodeAsset(FileUtils.ReadAllToBytes(path), path, realtivePath, enableDebugger ? MakeDebugJSPath(realtivePath) : path);
+        }
         else
         {
           string fullPath = GetFullPathByName(pathorname);
-          if (fullPath != null && File.Exists(fullPath))
-            return new CodeAsset(FileUtils.ReadAllToBytes(fullPath), fullPath, PathUtils.ReplaceAbsolutePathToRelativePath(fullPath));
+          if (fullPath != null && File.Exists(fullPath)) {
+            realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(fullPath);
+            return new CodeAsset(FileUtils.ReadAllToBytes(fullPath), fullPath, realtivePath, enableDebugger ? MakeDebugJSPath(realtivePath) : fullPath);
+          }
         }
       }
+
+      if(!pathorname.EndsWith(".js"))
+        return GetCodeAsset(pathorname + ".js");
 
       GameErrorChecker.LastError = GameError.FileNotFound;
       return null;

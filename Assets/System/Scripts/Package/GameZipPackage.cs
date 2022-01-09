@@ -219,7 +219,7 @@ namespace Ballance2.Package
                 || Path.GetFileName(key) == pathorname)
         {
           var k = packageCodeAsset[key];
-          return new CodeAsset(k.asset, k.fullPath, k.fullPath);
+          return new CodeAsset(k.asset, k.fullPath, k.fullPath, MakeDebugJSPath(k.fullPath));
         }
       }
 
