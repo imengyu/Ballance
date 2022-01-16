@@ -24,7 +24,7 @@ namespace Ballance2.Services.Debug
   /// <summary>
   /// 错误检查器。使用错误检查器获取游戏API的调用错误。
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameErrorChecker
   {
     private static GameGlobalErrorUI gameGlobalErrorUI;

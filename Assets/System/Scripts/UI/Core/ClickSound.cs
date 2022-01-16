@@ -22,7 +22,7 @@ namespace Ballance2.UI.Core
   /// </summary>
   [Tooltip("点击触发声音组件")]
   [AddComponentMenu("Ballance/UI/Controls/ClickSound")]
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class ClickSound : UIBehaviour, IPointerDownHandler
   {
     [Tooltip("声音资源名称。与 GameSoundManager 约定的声音资源路径格式一致。")]

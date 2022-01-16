@@ -37,7 +37,7 @@ namespace Ballance2.Services
   /// 游戏中介者
   /// </summary>
   [Serializable]
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameMediator : GameService
   {
     private readonly string TAG = "GameMediator";

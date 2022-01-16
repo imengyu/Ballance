@@ -16,7 +16,7 @@ namespace Ballance2.Services.Debug
   /// <summary>
   /// 游戏发生错误的枚举
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public enum GameError
   {
     /// <summary>
@@ -64,7 +64,7 @@ namespace Ballance2.Services.Debug
   /// <summary>
   /// 错误信息
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public static class GameErrorInfo
   {
     /// <summary>

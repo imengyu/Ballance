@@ -20,7 +20,7 @@ namespace Ballance2.UI.Core.Controls
   /// 进度条组件
   /// </summary>
   [ExecuteInEditMode]
-  [JSExport]
+  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/Progress")]
   public class Progress : MonoBehaviour
   {

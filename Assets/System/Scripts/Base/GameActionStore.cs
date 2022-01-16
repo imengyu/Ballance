@@ -23,7 +23,7 @@ namespace Ballance2.Base
   /// <summary>
   /// 操作存储库
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameActionStore
   {
     /// <summary>

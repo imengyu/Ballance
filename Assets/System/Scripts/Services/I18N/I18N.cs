@@ -17,7 +17,7 @@ namespace Ballance2.Services.I18N
   /// <summary>
   /// 国际化字符串提供类，可快速获取当前游戏语言的对应本地化字符串。
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public static class I18N
   {
     /// <summary>

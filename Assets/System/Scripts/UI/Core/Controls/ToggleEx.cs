@@ -22,7 +22,7 @@ namespace Ballance2.UI.Core.Controls
   /// 一个开关组件
   /// </summary>
   [ExecuteInEditMode]
-  [JSExport]
+  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/ToggleEx")]
   public class ToggleEx : MonoBehaviour
   {

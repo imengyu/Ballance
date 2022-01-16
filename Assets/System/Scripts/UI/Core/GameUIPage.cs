@@ -25,7 +25,8 @@ namespace Ballance2.UI.Core
   /// <summary>
   /// UI页实例
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("UI页实例")]
   public class GameUIPage : MonoBehaviour
   {
     public RectTransform Content;
@@ -40,6 +41,10 @@ namespace Ballance2.UI.Core
     private GameUIManager uIManager;
     private int escBackId = 0;
 
+    /// <summary>
+    /// 显示页
+    /// </summary>
+    [LuaApiDescription("显示页")]
     public void Show()
     {
       uIManager = GameManager.Instance.GetSystemService<GameUIManager>();
@@ -53,6 +58,11 @@ namespace Ballance2.UI.Core
         });
       }
     }
+
+    /// <summary>
+    /// 隐藏页
+    /// </summary>
+    [LuaApiDescription("隐藏页")]
     public void Hide()
     {
       gameObject.SetActive(false);
@@ -69,6 +79,9 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="package">资源所在模块</param>
     /// <param name="resourceName">资源模板路径</param>
+    [LuaApiDescription("创建指定资源的内容")]
+    [LuaApiParamDescription("package", "资源所在模块")]
+    [LuaApiParamDescription("resourceName", "资源模板路径")]
     public void CreateContent(GamePackage package, string resourceName)
     {
       var go = CloneUtils.CloneNewObjectWithParent(package.GetPrefabAsset(resourceName), ContentHost, PageName);
@@ -91,6 +104,8 @@ namespace Ballance2.UI.Core
     /// 使用页名称自动创建指定资源的内容
     /// </summary>
     /// <param name="package">资源所在模块</param>
+    [LuaApiDescription("使用页名称自动创建指定资源的内容")]
+    [LuaApiParamDescription("package", "资源所在模块")]
     public void CreateContent(GamePackage package)
     {
       CreateContent(package, PageName + ".prefab");
@@ -101,6 +116,8 @@ namespace Ballance2.UI.Core
     /// 将内容设置至当前页的内容容器中
     /// </summary>
     /// <param name="content">内容RectTransform</param>
+    [LuaApiDescription("将内容设置至当前页的内容容器中")]
+    [LuaApiParamDescription("content", "内容RectTransform")]
     public void SetContent(RectTransform content)
     {
       content.transform.SetParent(ContentHost);

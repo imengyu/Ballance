@@ -6,6 +6,7 @@ using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Xml;
 using System.Collections.Generic;
+using Ballance2.Editor.Lua;
 
 namespace Ballance2.Editor.Modding
 {
@@ -137,7 +138,17 @@ namespace Ballance2.Editor.Modding
             //添加lua代码
             int i = 0, len = allLuaPath.Count;
             foreach (string path in allLuaPath) {
-                ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
+                if(packShouldCompile) { //编译为字节码
+                    var outPath = "";
+                    if(LuaCompiler.CompileLuaFile(path, false, out outPath)) {
+                        EditorUtility.DisplayProgressBar("正在打包", path, i / (float)len);
+                        ZipUtils.AddFileToZip(zipStream, outPath, "/class" + path.Substring(basePath.Length, path.Length - basePath.Length - 4) + ".luac", ref crc);
+                        File.Delete(outPath);
+                    } else {
+                        Debug.LogError("编译 " + path + " 失败, 将lua文件原样打包至zip中。");
+                        ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
+                    }
+                } else ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
                 i++;
             }
 

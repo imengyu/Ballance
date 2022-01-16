@@ -23,9 +23,8 @@ public class GameEntryEditor : Editor
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
-    private SerializedProperty DebugEnableV8Debugger;
-    private SerializedProperty DebugWaitV8Debugger;
-    private SerializedProperty DebugV8DebuggerPort;
+    private SerializedProperty DebugEnableLuaDebugger;
+    private SerializedProperty DebugLuaDebugger;
     private SerializedProperty DebugType;
     private SerializedProperty DebugInitPackages;
     private SerializedProperty DebugCustomEntryEvent;
@@ -54,9 +53,8 @@ public class GameEntryEditor : Editor
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
         DebugSetFrameRate = serializedObject.FindProperty("DebugSetFrameRate");
-        DebugEnableV8Debugger = serializedObject.FindProperty("DebugEnableV8Debugger");
-        DebugV8DebuggerPort = serializedObject.FindProperty("DebugV8DebuggerPort");
-        DebugWaitV8Debugger = serializedObject.FindProperty("DebugWaitV8Debugger");
+        DebugEnableLuaDebugger = serializedObject.FindProperty("DebugEnableLuaDebugger");
+        DebugLuaDebugger = serializedObject.FindProperty("DebugLuaDebugger");
         DebugType = serializedObject.FindProperty("DebugType");
         DebugInitPackages = serializedObject.FindProperty("DebugInitPackages");
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
@@ -107,9 +105,8 @@ public class GameEntryEditor : Editor
         EditorGUI.BeginDisabledGroup(!DebugSetFrameRate.boolValue);
         EditorGUILayout.PropertyField(DebugTargetFrameRate);
         EditorGUI.EndDisabledGroup();
-        EditorGUILayout.PropertyField(DebugEnableV8Debugger);
-        EditorGUILayout.PropertyField(DebugV8DebuggerPort);
-        EditorGUILayout.PropertyField(DebugWaitV8Debugger);
+        EditorGUILayout.PropertyField(DebugEnableLuaDebugger);
+        EditorGUILayout.PropertyField(DebugLuaDebugger);
         EditorGUILayout.PropertyField(DebugType);
         EditorGUILayout.PropertyField(DebugSkipIntro);
         

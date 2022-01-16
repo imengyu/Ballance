@@ -21,7 +21,7 @@ namespace Ballance2.Base
   /// <summary>
   /// 全局事件存储类
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   [Serializable]
   public class GameEvent
   {

@@ -32,7 +32,9 @@ ballance.internal['SystemLoadPackage'] = function SystemLoadPackage(entryCode, p
     GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, "SystemLoadPackage " + packageName, `Not found package: ${packageName}.`);
     return false;
   }
-  
+
+  console.log('enteyRet', enteyRet);
+
   if(typeof enteyRet.OnLoad === 'function')
     package.PackageEntry.OnLoad = enteyRet.OnLoad;
   if(typeof enteyRet.OnBeforeUnLoad === 'function')

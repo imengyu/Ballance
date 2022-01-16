@@ -23,7 +23,8 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串工具类
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("字符串工具类")]
   public static class StringUtils
   {
     /// <summary>
@@ -31,6 +32,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="text">要检测的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("检测字符串是否为空", "")]
+    [LuaApiParamDescription("text", "要检测的字符串")]
     public static bool isNullOrEmpty(string text)
     {
       return string.IsNullOrEmpty(text);
@@ -40,6 +43,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="text">要检测的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("检测字符串是否为空或空白", "")]
+    [LuaApiParamDescription("text", "要检测的字符串")]
     public static bool IsNullOrWhiteSpace(string text)
     {
       return string.IsNullOrWhiteSpace(text);
@@ -49,6 +54,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="text">要检测的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("检测字符串是否是URL", "")]
+    [LuaApiParamDescription("text", "要检测的字符串")]
     public static bool IsUrl(string text)
     {
       return !isNullOrEmpty(text) && Regex.IsMatch(text, "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
@@ -58,6 +65,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="text">要检测的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("检测字符串是否是整数", "")]
+    [LuaApiParamDescription("text", "要检测的字符串")]
     public static bool IsNumber(string text)
     {
       return !isNullOrEmpty(text) && Regex.IsMatch(text, "^-?[1-9]\\d*$");
@@ -67,6 +76,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="text">要检测的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("检测字符串是否是浮点数", "")]
+    [LuaApiParamDescription("text", "要检测的字符串")]
     public static bool IsFloatNumber(string text)
     {
       return !isNullOrEmpty(text) && Regex.IsMatch(text, "^(-?\\d+)(\\.\\d+)?");
@@ -76,6 +87,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="text">要检测的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("检测字符串是否是包名", "")]
+    [LuaApiParamDescription("text", "要检测的字符串")]
     public static bool IsPackageName(string text)
     {
       if (isNullOrEmpty(text)) return false;
@@ -87,6 +100,9 @@ namespace Ballance2.Utils
     /// <param name="version1">版本1</param>
     /// <param name="version2">版本2</param>
     /// <returns>1 小于 2 返回 -1 ，大于返回 1，等于返回 0</returns>
+    [LuaApiDescription("比较两个版本字符串的先后", "1 小于 2 返回 -1 ，大于返回 1，等于返回 0")]
+    [LuaApiParamDescription("version1", "版本1")]
+    [LuaApiParamDescription("version2", "版本2")]
     public static int CompareTwoVersion(string version1, string version2)
     {
       if (version1 == version2) return 0;
@@ -114,6 +130,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="str">要替换的字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("替换字符串的 <br> 转为换行符", "")]
+    [LuaApiParamDescription("str", "要替换的字符串")]
     public static string ReplaceBrToLine(string str)
     {
       return str.Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n"); ;
@@ -123,6 +141,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="color">要转换的颜色字符串,支持Color中定义的颜色名称，或者是#ffffff格式或者是255,255,255格式的颜色数值字符串</param>
     /// <returns></returns>
+    [LuaApiDescription("颜色字符串转为 Color", "")]
+    [LuaApiParamDescription("color", "要转换的颜色字符串,支持Color中定义的颜色名称，或者是#ffffff格式或者是255,255,255格式的颜色数值字符串")]
     public static Color StringToColor(string color)
     {
       switch (color)
@@ -166,6 +186,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="arr">要转换的字符串数组</param>
     /// <returns></returns>
+    [LuaApiDescription("尝试把字符串数组转为参数数组", "")]
+    [LuaApiParamDescription("arr", "要转换的字符串数组")]
     public static object[] TryConvertStringArrayToValueArray(string[] arr)
     {
       return TryConvertStringArrayToValueArray(arr, 0);
@@ -177,6 +199,9 @@ namespace Ballance2.Utils
     /// <param name="arr">要转换的字符串数组</param>
     /// <param name="startIndex">数组转换起始索引</param>
     /// <returns></returns>
+    [LuaApiDescription("尝试把字符串数组转为参数数组", "")]
+    [LuaApiParamDescription("arr", "要转换的字符串数组")]
+    [LuaApiParamDescription("startIndex", "数组转换起始索引")]
     public static object[] TryConvertStringArrayToValueArray(string[] arr, int startIndex)
     {
       object[] rs = new object[arr.Length];
@@ -193,6 +218,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="value">要转换的字符串</param>
     /// <returns>如果转换失败则返回原字符串</returns>
+    [LuaApiDescription("尝试转换字符串为参数", "如果转换失败则返回原字符串")]
+    [LuaApiParamDescription("arr", "要转换的字符串")]
     public static object TryConvertStringToValue(string value)
     {
       object rs = null;
@@ -221,6 +248,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="arr">要转换的参数数组</param>
     /// <returns></returns>
+    [LuaApiDescription("尝试把参数数组数组转为字符串", "")]
+    [LuaApiParamDescription("arr", "要转换的参数数组")]
     public static string ValueArrayToString(object[] arr)
     {
       StringBuilder sb = new StringBuilder();
@@ -245,6 +274,9 @@ namespace Ballance2.Utils
     /// <param name="inV">bytes数组1</param>
     /// <param name="outV">bytes数组2</param>
     /// <returns>返回两个Bytes是否相等</returns>
+    [LuaApiDescription("比较Bytes", "返回两个Bytes是否相等")]
+    [LuaApiParamDescription("inV", "bytes数组1")]
+    [LuaApiParamDescription("outV", "bytes数组2")]
     public static bool TestBytesMatch(byte[] inV, byte[] outV)
     {
       bool rs = true;
@@ -270,6 +302,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="buffer">内容数组</param>
     /// <returns>返回处理完成的数组</returns>
+    [LuaApiDescription("修复UTF8的BOM头", "返回处理完成的数组")]
+    [LuaApiParamDescription("buffer", "内容数组")]
     public static byte[] FixUtf8BOM(byte[] buffer)
     {
       byte[] bomBuffer = new byte[] { 0xef, 0xbb, 0xbf };
@@ -290,6 +324,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="buffer">字符串</param>
     /// <returns>返回MD5</returns>
+    [LuaApiDescription("计算字符串的MD5值", "返回MD5")]
+    [LuaApiParamDescription("input", "字符串")]
     public static string MD5String(string input)
     {
       byte[] inputBytes = Encoding.UTF8.GetBytes(input);
@@ -300,6 +336,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="inputBytes">字节数组</param>
     /// <returns>返回MD5</returns>
+    [LuaApiDescription("计算字节数组的MD5值", "返回MD5")]
+    [LuaApiParamDescription("inputBytes", "字节数组")]
     public static string MD5(byte[] inputBytes)
     {
       // Step 1, calculate MD5 hash from input
@@ -320,6 +358,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="inputBytes">字节数组</param>
     /// <returns>返回解码的字符串</returns>
+    [LuaApiDescription("Encoding.ASCII.GetString 函数包装", "返回解码的字符串")]
+    [LuaApiParamDescription("inputBytes", "字节数组")]
     public static string GetASCIIBytes(byte[] inputBytes)
     {
       return Encoding.ASCII.GetString(inputBytes);
@@ -329,6 +369,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="inputBytes">字节数组</param>
     /// <returns>返回解码的字符串</returns>
+    [LuaApiDescription("Encoding.UTF8.GetString 函数包装", "返回解码的字符串")]
+    [LuaApiParamDescription("inputBytes", "字节数组")]
     public static string GetUtf8Bytes(byte[] inputBytes)
     {
       return Encoding.UTF8.GetString(inputBytes);
@@ -338,6 +380,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="inputBytes">字节数组</param>
     /// <returns>返回解码的字符串</returns>
+    [LuaApiDescription("Encoding.Unicode.GetString 函数包装", "返回解码的字符串")]
+    [LuaApiParamDescription("inputBytes", "字节数组")]
     public static string GetUnicodeBytes(byte[] inputBytes)
     {
       return Encoding.Unicode.GetString(inputBytes);
@@ -347,6 +391,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="input">输入字符串</param>
     /// <returns>返回字节数组</returns>
+    [LuaApiDescription("Encoding.ASCII.GetBytes 函数包装", "返回字节数组")]
+    [LuaApiParamDescription("input", "输入字符串")]
     public static byte[] StringToASCIIBytes(string input)
     {
       return Encoding.ASCII.GetBytes(input);
@@ -356,6 +402,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="input">输入字符串</param>
     /// <returns>返回字节数组</returns>
+    [LuaApiDescription("Encoding.UTF8.GetBytes 函数包装", "返回字节数组")]
+    [LuaApiParamDescription("input", "输入字符串")]
     public static byte[] StringToUtf8Bytes(string input)
     {
       return Encoding.UTF8.GetBytes(input);
@@ -365,6 +413,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="input">输入字符串</param>
     /// <returns>返回字节数组</returns>
+    [LuaApiDescription("Encoding.Unicode.GetBytes 函数包装", "返回字节数组")]
+    [LuaApiParamDescription("input", "输入字符串")]
     public static byte[] StringToUnicodeBytes(string input)
     {
       return Encoding.Unicode.GetBytes(input);

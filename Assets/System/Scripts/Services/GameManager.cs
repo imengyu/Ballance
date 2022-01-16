@@ -12,10 +12,9 @@ using Ballance2.Entry;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
-using Ballance2.Services.JSService;
-using Ballance2.Services.JSService.JSLoader;
+using Ballance2.Services.LuaService;
 using Ballance2.Utils;
-using Puerts;
+using SLua;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Profiling;
@@ -40,7 +39,7 @@ namespace Ballance2.Services
   /// <summary>
   /// 游戏管理器
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameManager : GameService
   {
     public GameManager() : base("GameManager") {}
@@ -68,9 +67,13 @@ namespace Ballance2.Services
     /// </summary>
     public RectTransform GameCanvas { get; internal set; }
     /// <summary>
-    /// 主js虚拟机
+    /// 主虚拟机
     /// </summary>
-    public JsEnv GameMainEnv { get; internal set; }
+    public LuaSvr GameMainEnv { get; internal set; }
+    /// <summary>
+    /// 游戏全局Lua虚拟机
+    /// </summary>
+    public LuaSvr.MainState GameMainLuaState { get; private set; }
     /// <summary>
     /// 调试命令控制器
     /// </summary>
@@ -121,16 +124,24 @@ namespace Ballance2.Services
       InitVideoSettings();
 
       GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
-      GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-      GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
-        finish.Invoke();
-        return false;
-      });
-      GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
-        //Init Debug
-        if (DebugMode)
-          DebugInit.InitSystemDebug();
-        return false;
+      Profiler.BeginSample("BindLua");
+      
+      GameMainEnv = new LuaSvr();      
+      GameMainEnv.init(null, () =>
+      {
+          Profiler.EndSample();
+          GameMainLuaState = LuaSvr.mainState;
+          GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
+          GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
+            finish.Invoke();
+            return false;
+          });
+          GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
+            //Init Debug
+            if (DebugMode)
+              DebugInit.InitSystemDebug();
+            return false;
+          });
       });
     }
 
@@ -164,58 +175,40 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator InitAsysc()
     {
-   
-      //创建 GameMainEnv
-      Profiler.BeginSample("CreateJsEnv");
-
-      GameMainEnv = new JsEnv(new GameJSLoader(), GameEntry.Instance.DebugEnableV8Debugger ? GameEntry.Instance.DebugV8DebuggerPort : -1);
-
-      Profiler.EndSample();
-
-      if (GameEntry.Instance.DebugEnableV8Debugger && GameEntry.Instance.DebugWaitV8Debugger)
+      if(GameEntry.Instance.DebugEnableLuaDebugger)
       {
-        Profiler.BeginSample("GameManagerWaitDebuggerAsync");
-
-        var GlobalGameWaitDebuggerTipDialog = GameEntry.Instance.GlobalGameWaitDebuggerTipDialog;
-        GlobalGameWaitDebuggerTipDialog.SetActive(true);
-
-        Task task = GameMainEnv.WaitDebuggerAsync();
-        yield return new WaitUntil(() => task.IsCompleted);
-
-        yield return new WaitForSeconds(2.0f);
-        
-        GlobalGameWaitDebuggerTipDialog.SetActive(false);
+        Profiler.BeginSample("GameManagerStartDebugger");
+        //初始化lua调试器
+        GameMainLuaState.doString(@"
+            local SystemPackage = Ballance2.Package.GamePackage.GetSystemPackage()
+            SystemPackage:RequireLuaFile('debugger')
+            InternalStart('" + GameEntry.Instance.DebugLuaDebugger + "')", "GameManagerStartDebugger");
         Profiler.EndSample();
       }
 
-      try {
-        //检测JS绑定状态
-        object o = GameMainEnv.Eval<int>(@"const csharp = require('csharp'); csharp.Ballance2.Services.GameManager.JSBindingCheckCallback()", "ballance://internal/GameManagerSystemInit.js");
-        if (o != null && (
-                (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
-                || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
-            ))
-          Log.D(TAG, "Game JsEnv bind check ok.");
-        else
-        {
-          Log.E(TAG, "Game JsEnv bind check failed, did you bind lua functions?");
+      //检测lua绑定状态
+      object o = GameMainLuaState.doString(@"return Ballance2.Services.GameManager.EnvBindingCheckCallback()", "GameManagerSystemInit");
+      if (o != null &&  (
+              (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
+              || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
+          ))
+          Log.D(TAG, "Game Lua bind check ok.");
+      else
+      {
+          Log.E(TAG, "Game Lua bind check failed, did you bind lua functions?");
           GameErrorChecker.LastError = GameError.EnvBindCheckFailed;
 #if UNITY_EDITOR // 编辑器中
-          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "JS接口没有绑定。请点击“Puerts”>“Generate”生成 JsEnv 接口绑定。");
+          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "Lua接口没有绑定。请点击“SLua”>“All”>“Make”生成 Lua 接口绑定。");
 #else
-          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "错误的发行配置，请检查。");  
+          GameErrorChecker.ThrowGameError(GameError.LuaBindCheckFailed, "错误的发行配置，请检查。");  
 #endif
           yield break;
-        }
-      } catch(System.Exception e) {
-        GameErrorChecker.LastError = GameError.EnvBindCheckFailed;
-#if UNITY_EDITOR // 编辑器中
-        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "无法检查JS接口绑定。发生异常，请检查是否绑定接口？\n" + e.ToString());
-#else
-        GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "无法检查JS接口绑定。发生异常\n" + e.ToString());
-#endif
-        yield break;
       }
+
+      SecurityUtils.FixLuaSecure(GameMainLuaState);
+
+      //初始化宏定义
+      LuaUtils.InitMacros(GameMainLuaState);
 
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
       
@@ -367,8 +360,7 @@ namespace Ballance2.Services
       {
         Profiler.BeginSample("ExecuteSystemCore");
 
-        ExecuteCode("__system__/Env/SystemEnvInit.js");
-        ExecuteCode("__system__/Env/PackageLoader.js");
+
 
         Profiler.EndSample();
 
@@ -769,11 +761,13 @@ namespace Ballance2.Services
               "  device > 获取当前设备信息");
       srv.RegisterCommand("eval", (keyword, fullCmd, argsCount, args) =>
       {
-        var cmd = fullCmd.Substring(4);
-        var ret = GameMainEnv.Eval<object>(cmd, "GameManagerLuaConsole");
-        Log.V(TAG, "> " + DebugUtils.PrintVarAuto(ret));
+        var cmd = fullCmd.Substring(2);
+        if(!cmd.Contains("\n") && !cmd.StartsWith("return "))
+            cmd = "return " + cmd;
+        var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
+        Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
         return true;
-      }, 1, "c <code:string> ▶ 运行 JS 命令。");
+      }, 1, "c <code:string> ▶ 运行 Lua 命令");
       srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
       {
         Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
@@ -876,7 +870,6 @@ namespace Ballance2.Services
       Instance = null;
 
       if (GameMainEnv != null) {
-        GameMainEnv.Dispose();
         GameMainEnv = null;
       }
     }
@@ -976,14 +969,6 @@ namespace Ballance2.Services
           }
         }
       }
-
-      if(GameMainEnv != null) {
-        try {
-          GameMainEnv.Tick();
-        } catch(System.Exception e) {
-          PrintErrorToJSConsole(e);
-        } 
-      }
     }
 
     #endregion
@@ -1013,67 +998,7 @@ namespace Ballance2.Services
 
     #region 虚拟机执行方法
 
-    /// <summary>
-    /// 执行js代码文件
-    /// </summary>
-    /// <param name="assetPath">资源路径</param>
-    /// <returns></returns>
-    public JSObject ExecuteCodeModul(string assetPath) 
-    {
-      try {
-        return GameMainEnv.ExecuteModule<JSObject>(assetPath);
-      } catch(System.Exception e) {
-        PrintErrorToJSConsole(e);
-        Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + "\n" + e.ToString());
-        return null;
-      }
-    }
-    /// <summary>
-    /// 执行js代码文件
-    /// </summary>
-    /// <param name="assetPath">资源路径</param>
-    /// <returns></returns>
-    public object ExecuteCode(string assetPath) 
-    {
-      var pm = GetSystemService<GamePackageManager>();
-      var code = pm.GetCodeAsset(assetPath, out var pack);
-      if(code != null) {
-        string codeStr = "";
-        if(Path.GetFileName(assetPath) != "SystemEnvInit.js") 
-          codeStr = JSCodePresolve.PrePresolveChunkCode(Encoding.UTF8.GetString(code.data), pack.PackageName, code.realPath);
-        else
-          codeStr = Encoding.UTF8.GetString(code.data);
-        try {
-          return GameMainEnv.Eval<object>(codeStr, code.debugPath);
-        } catch(System.Exception e) {
-          PrintErrorToJSConsole(e);
-          Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + "\n" + e.ToString());
-        } 
-      }
-      else
-        Log.E(TAG, "Failed to ExecuteCode for: " + assetPath + " , not found code asset.");
-      return null;
-    }
-    
-    public System.Exception LastDisplayException = null;
-    public VoidDelegate DisplayExceptionCallback = null;
 
-    /// <summary>
-    /// 获取打印错误
-    /// </summary>
-    /// <returns></returns>
-    public string GetLastPrintError() {
-      return LastDisplayException != null ? LastDisplayException.Message.Replace("(puerts/", "(/puerts/") : "";
-    }
-    /// <summary>
-    /// 输出错误到Chrome 控制台，方便调试
-    /// </summary>
-    /// <param name="err"></param>
-    public void PrintErrorToJSConsole(System.Exception err) {
-      LastDisplayException = err;
-      if(DisplayExceptionCallback != null)
-        DisplayExceptionCallback();
-    }
 
     #endregion
 
@@ -1109,7 +1034,7 @@ namespace Ballance2.Services
     /// Lua绑定检查回调
     /// </summary>
     /// <returns></returns>
-    public static int JSBindingCheckCallback()
+    public static int EnvBindingCheckCallback()
     {
       return GameConst.GameBulidVersion;
     }

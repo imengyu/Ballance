@@ -19,7 +19,8 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串转换类
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("字符串转换类")]
   public static class ConverUtils
   {
     private static readonly string TAG = "ConverUtils";

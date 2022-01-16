@@ -25,7 +25,8 @@ namespace Ballance2.Utils
   /// <summary>
   /// 路径字符串工具类
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("路径字符串工具类")]
   public static class PathUtils
   {
     /// <summary>
@@ -33,6 +34,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">路径</param>
     /// <returns>是否是绝对路径</returns>
+    [LuaApiDescription("检测一个路径是否是绝对路径", "是否是绝对路径")]
+    [LuaApiParamDescription("path", "路径")]
     public static bool IsAbsolutePath(string path)
     {
 #if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN
@@ -50,6 +53,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">绝对路径</param>
     /// <returns></returns>
+    [LuaApiDescription("替换绝对路径至当前项目相对路径")]
+    [LuaApiParamDescription("path", "绝对路径")]
     public static string ReplaceAbsolutePathToRelativePath(string path)
     {
       path = path.Replace("\\", "/");
@@ -68,6 +73,7 @@ namespace Ballance2.Utils
     /**
       * 物理路径转为项目路径
       */
+    [SLua.DoNotToLua]
     public static string AbsPathToRelPath(string path) {
       path = path.Replace('\\', '/');
       if(PathUtils.IsAbsolutePath(path)) {
@@ -89,6 +95,9 @@ namespace Ballance2.Utils
     /// <param name="path1">主路径</param>
     /// <param name="path2">副路径</param>
     /// <returns>处理完成的完整路径</returns>
+    [LuaApiDescription("合并两个相对路径为完整路径，它会处理当前目录（./）和上级目录（../）", "处理完成的完整路径")]
+    [LuaApiParamDescription("path1", "主路径")]
+    [LuaApiParamDescription("path2", "副路径")]
     public static string JoinTwoPath(string path1, string path2)
     {
       StringBuilder sb = new StringBuilder();
@@ -118,6 +127,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">路径</param>
     /// <returns></returns>
+    [LuaApiDescription("获取路径中的文件名（不包括后缀）", "")]
+    [LuaApiParamDescription("path", "路径")]
     public static string GetFileNameWithoutExt(string path)
     {
       bool chooseRight = path.Contains("/") && !path.Contains("\\");
@@ -143,6 +154,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">路径</param>
     /// <returns></returns>
+    [LuaApiDescription("获取路径中的文件名（包括后缀）", "")]
+    [LuaApiParamDescription("path", "路径")]
     public static string GetFileName(string path)
     {
       bool chooseRight = path.Contains("/") && !path.Contains("\\");
@@ -163,6 +176,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <returns></returns>
+    [LuaApiDescription("检查文件是否存在", "")]
+    [LuaApiParamDescription("path", "文件路径")]
     public static bool Exists(string path)
     {
       if (path.StartsWith("file:///"))
@@ -174,6 +189,8 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">路径</param>
     /// <returns></returns>
+    [LuaApiDescription("修复文件路径的 file:/// 前缀", "")]
+    [LuaApiParamDescription("path", "路径")]
     public static string FixFilePathScheme(string path)
     {
       if (path.StartsWith("file:///"))

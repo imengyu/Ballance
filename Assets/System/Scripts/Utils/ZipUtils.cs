@@ -23,7 +23,7 @@ namespace Ballance2.Utils
   /// <summary>
   /// Zip 帮助类
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class ZipUtils
   {
     /// <summary>

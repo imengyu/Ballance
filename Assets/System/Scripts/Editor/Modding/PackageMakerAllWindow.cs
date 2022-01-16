@@ -1,11 +1,7 @@
 ﻿using Ballance2.Config.Settings;
 using Ballance2.Res;
-using Ballance2.Utils;
-using ICSharpCode.SharpZipLib.Checksum;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,7 +24,7 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding
 {
-    public class PackageMakerAllWindow : EditorWindow
+  public class PackageMakerAllWindow : EditorWindow
     {
         public PackageMakerAllWindow()
         {

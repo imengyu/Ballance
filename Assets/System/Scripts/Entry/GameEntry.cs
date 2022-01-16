@@ -43,12 +43,10 @@ namespace Ballance2.Entry
     public int DebugTargetFrameRate = 60;
     [Tooltip("是否设置固定帧率（仅Editor中有效）")]
     public bool DebugSetFrameRate = true;
-    [Tooltip("是否启用JS调试器")]
-    public bool DebugEnableV8Debugger = true;
-    [Tooltip("是否在启动时等待JS调试器")]
-    public bool DebugWaitV8Debugger = true;
-    [Tooltip("JS调试器默认端口")]
-    public int DebugV8DebuggerPort = 9229;
+    [Tooltip("是否启用Lua调试器")]
+    public bool DebugEnableLuaDebugger = true;
+    [Tooltip("Lua调试器类型")]
+    public GameLuaDebuggerType DebugLuaDebugger = GameLuaDebuggerType.VscodeDebuggee;
     [Tooltip("调试类型")]
     public GameDebugType DebugType = GameDebugType.NoDebug;
     [Tooltip("当前调试中需要初始化的包名")]
@@ -199,10 +197,6 @@ namespace Ballance2.Entry
 #endif
     }
     private void InitUi() {
-      GlobalGameWaitDebuggerTipText.text = "Waiting debugger to connect...\nGo devtools://devtools/bundled/inspector.html?v8only=true&ws=127.0.0.1:" + DebugV8DebuggerPort + " in chorme to connect.";
-      GlobalGameWaitDebuggerTipOpenButton.onClick.AddListener(() => {
-        Application.OpenURL("devtools://devtools/bundled/inspector.html?v8only=true&ws=127.0.0.1:" + DebugV8DebuggerPort);
-      });
     }
 
     private IEnumerator InitMain()
@@ -234,6 +228,20 @@ namespace Ballance2.Entry
       else
         GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "DebugMode not right.");
     }
+  }
+  /// <summary>
+  /// Lua调试器类型
+  /// </summary>
+  public enum GameLuaDebuggerType
+  {
+    /// <summary>
+    /// mobdebug
+    /// </summary>
+    Mobdebug,
+    /// <summary>
+    /// vscode-debuggee
+    /// </summary>
+    VscodeDebuggee,
   }
   /// <summary>
   /// 调试类型

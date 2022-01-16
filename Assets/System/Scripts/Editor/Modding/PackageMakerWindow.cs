@@ -24,7 +24,7 @@ namespace Ballance2.Editor.Modding
         private int modVersion = 1;
         private bool GenEntryCodeTemplate = true;
         private GamePackageType PackageType = GamePackageType.Module;
-        private GamePackageCodeType CodeType = GamePackageCodeType.JS;
+        private GamePackageCodeType CodeType = GamePackageCodeType.Lua;
         private string EntryCode = "Entry.lua";
 
         private SerializedObject serializedObject;

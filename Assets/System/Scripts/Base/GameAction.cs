@@ -22,7 +22,7 @@ namespace Ballance2.Base
   /// 全局操作
   /// </summary>
   [Serializable]
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameAction
   {
     /// <summary>

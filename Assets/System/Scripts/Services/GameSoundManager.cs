@@ -26,7 +26,8 @@ namespace Ballance2.Services
   /// <summary>
   /// 声音管理器
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("声音管理器")]
   public class GameSoundManager : GameService
   {
     #region 初始化和定义
@@ -39,6 +40,7 @@ namespace Ballance2.Services
     private GamePackageManager GamePackageManager;
     private GameObject GameSoundManagerObject;
 
+    [SLua.DoNotToLua]
     public override bool Initialize()
     {
 
@@ -62,6 +64,7 @@ namespace Ballance2.Services
       GameSettings.RequireSettingsLoad("voice");
       return true;
     }
+    [SLua.DoNotToLua]
     public override void Destroy()
     {
       if (null != fastPlayVoices)
@@ -95,10 +98,12 @@ namespace Ballance2.Services
     /// <summary>
     /// 游戏主AudioMixer
     /// </summary>
+    [LuaApiDescription("游戏主AudioMixer")]
     public AudioMixer GameMainAudioMixer;
     /// <summary>
     /// 游戏UI AudioMix
     /// </summary>
+    [LuaApiDescription("游戏UI AudioMixer")]
     public AudioMixer GameUIAudioMixer;
 
     private AudioMixerGroup GameUIAudioMixerGroupMaster;
@@ -129,6 +134,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="assets">资源路径（模块:音乐路径）</param>
     /// <returns>如果加载失败则返回null，否则返回AudioClip实例</returns>
+    [LuaApiDescription("加载模块中的音乐资源", "如果加载失败则返回null，否则返回AudioClip实例")]
+    [LuaApiParamDescription("assets", "资源路径（模块:音乐路径）")]
     public AudioClip LoadAudioResource(string assets)
     {
       string[] names = assets.Split(':');
@@ -163,6 +170,9 @@ namespace Ballance2.Services
     /// <param name="package">所属模块</param>
     /// <param name="assets">音乐路径</param>
     /// <returns>如果加载失败则返回null，否则返回AudioClip实例</returns>
+    [LuaApiDescription("加载模块中的音乐资源", "如果加载失败则返回null，否则返回AudioClip实例")]
+    [LuaApiParamDescription("package", "所属模块")]
+    [LuaApiParamDescription("assets", "音乐路径")]
     public AudioClip LoadAudioResource(GamePackage package, string assets)
     {
       if (package == null)
@@ -189,6 +199,11 @@ namespace Ballance2.Services
     /// <param name="activeStart">播放对象是否开始时激活</param>
     /// <param name="name">播放对象的名称</param>
     /// <returns></returns>
+    [LuaApiDescription("注册 SoundPlayer", "")]
+    [LuaApiParamDescription("assets", "音频资源字符串")]
+    [LuaApiParamDescription("playOnAwake", "是否在开始时播放")]
+    [LuaApiParamDescription("activeStart", "播放对象是否开始时激活")]
+    [LuaApiParamDescription("name", "播放对象的名称")]
     public AudioSource RegisterSoundPlayer(GameSoundType type, string assets, bool playOnAwake = false, bool activeStart = true, string name = "")
     {
       AudioClip audioClip = null;
@@ -220,6 +235,11 @@ namespace Ballance2.Services
     /// <param name="activeStart">播放对象是否开始时激活</param>
     /// <param name="name">播放对象的名称</param>
     /// <returns></returns>
+    [LuaApiDescription("注册 SoundPlayer", "")]
+    [LuaApiParamDescription("audioClip", "音频源文件")]
+    [LuaApiParamDescription("playOnAwake", "是否在开始时播放")]
+    [LuaApiParamDescription("activeStart", "播放对象是否开始时激活")]
+    [LuaApiParamDescription("name", "播放对象的名称")]
     public AudioSource RegisterSoundPlayer(GameSoundType type, AudioClip audioClip, bool playOnAwake = false, bool activeStart = true, string name = "")
     {
       AudioSource audioSource = Object.Instantiate(audioSourcePrefab, GameSoundManagerObject.transform).GetComponent<AudioSource>();
@@ -241,6 +261,9 @@ namespace Ballance2.Services
     /// <param name="type">声音所属类型</param>
     /// <param name="audioSource">AudioSource</param>
     /// <returns></returns>
+    [LuaApiDescription("注册已有 AudioSource 为 SoundPlayer", "")]
+    [LuaApiParamDescription("type", "声音所属类型")]
+    [LuaApiParamDescription("audioSource", "AudioSource")]
     public AudioSource RegisterSoundPlayer(GameSoundType type, AudioSource audioSource)
     {
       if (!IsSoundPlayerRegistered(audioSource))
@@ -253,6 +276,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="audioSource">AudioSource</param>
     /// <returns></returns>
+    [LuaApiDescription("检查指定 SoundPlayer 是否注册", "")]
+    [LuaApiParamDescription("audioSource", "AudioSource")]
     public bool IsSoundPlayerRegistered(AudioSource audioSource)
     {
       foreach (AudioGlobalControl a in audios)
@@ -266,6 +291,8 @@ namespace Ballance2.Services
     /// 销毁 SoundPlayer
     /// </summary>
     /// <param name="assets">SoundPlayer</param>
+    [LuaApiDescription("销毁 SoundPlayer")]
+    [LuaApiParamDescription("audioSource", "SoundPlayer")]
     public bool DestroySoundPlayer(AudioSource audioSource)
     {
       AudioGlobalControl audioGlobalControl = null;
@@ -356,6 +383,9 @@ namespace Ballance2.Services
     /// <param name="soundName">声音资源字符串</param>
     /// <param name="type">声音类型</param>
     /// <returns></returns>
+    [LuaApiDescription("快速播放一个短声音", "")]
+    [LuaApiParamDescription("soundName", "声音资源字符串")]
+    [LuaApiParamDescription("type", "声音类型")]
     public bool PlayFastVoice(string soundName, GameSoundType type)
     {
       return PlayFastVoice(null, soundName, type);
@@ -367,6 +397,10 @@ namespace Ballance2.Services
     /// <param name="soundName">声音资源字符串</param>
     /// <param name="type">声音类型</param>
     /// <returns></returns>
+    [LuaApiDescription("快速播放一个短声音", "")]
+    [LuaApiParamDescription("package", "所属模块")]
+    [LuaApiParamDescription("soundName", "声音资源字符串")]
+    [LuaApiParamDescription("type", "声音类型")]
     public bool PlayFastVoice(GamePackage package, string soundName, GameSoundType type)
     {
       string key = soundName + "@" + type;
@@ -426,27 +460,34 @@ namespace Ballance2.Services
   /// <summary>
   /// 指定声音类型
   /// </summary>
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("指定声音类型")]
   public enum GameSoundType
   {
     /// <summary>
     /// 普通声音
     /// </summary>
+    [LuaApiDescription("普通声音")]
     Normal,
     /// <summary>
     /// 游戏音效 关于球的
     /// </summary>
+    [LuaApiDescription("游戏音效 关于球的")]
     BallEffect,
     /// <summary>
     /// 游戏音效 关于机关的
     /// </summary>
+    [LuaApiDescription("游戏音效 关于机关的")]
     ModulEffect,
     /// <summary>
     /// UI 发出的声音
     /// </summary>
+    [LuaApiDescription("UI 发出的声音")]
     UI,
     /// <summary>
     /// 背景音乐
     /// </summary>
+    [LuaApiDescription("背景音乐")]
     Background,
   }
 }

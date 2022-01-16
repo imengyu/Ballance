@@ -21,7 +21,7 @@ namespace Ballance2.Res
   /// <summary>
   /// 游戏静态资源池
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameStaticResourcesPool
   {
     public static GameObject PrefabUIEmpty { get; private set; }

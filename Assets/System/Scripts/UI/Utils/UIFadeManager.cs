@@ -23,7 +23,8 @@ namespace Ballance2.UI.Utils
   /// <summary>
   /// 渐变自管理类
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("渐变自管理类")]
   public class UIFadeManager : MonoBehaviour
   {
     private List<FadeObject> fadeObjects = new List<FadeObject>();
@@ -104,6 +105,7 @@ namespace Ballance2.UI.Utils
     /// <summary>
     /// 渐变类型
     /// </summary>
+    [LuaApiDescription("渐变类型")]
     public enum FadeType
     {
       None,
@@ -113,6 +115,7 @@ namespace Ballance2.UI.Utils
     /// <summary>
     /// 渐变管理对象信息
     /// </summary>
+    [LuaApiDescription("渐变管理对象信息")]
     public class FadeObject
     {
       public GameObject gameObject;
@@ -173,6 +176,11 @@ namespace Ballance2.UI.Utils
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
     /// <param name="material">执行材质</param>
+    [LuaApiDescription("运行淡出动画")]
+    [LuaApiParamDescription("gameObject", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
+    [LuaApiParamDescription("material", "执行材质")]
+    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
     public FadeObject AddFadeOut(GameObject gameObject, float timeInSecond, bool hidden, Material material)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeOut);
@@ -213,6 +221,10 @@ namespace Ballance2.UI.Utils
     /// <param name="gameObject">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="material">执行材质</param>
+    [LuaApiDescription("运行淡入动画")]
+    [LuaApiParamDescription("gameObject", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
+    [LuaApiParamDescription("material", "执行材质")]
     public FadeObject AddFadeIn(GameObject gameObject, float timeInSecond, Material material)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeIn);
@@ -256,6 +268,11 @@ namespace Ballance2.UI.Utils
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
     /// <param name="materials">执行材质数组</param>
+    [LuaApiDescription("运行淡出动画")]
+    [LuaApiParamDescription("gameObject", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
+    [LuaApiParamDescription("materials", "执行材质数组")]
+    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
     public FadeObject AddFadeOut2(GameObject gameObject, float timeInSecond, bool hidden, Material[] materials)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeOut);
@@ -286,6 +303,10 @@ namespace Ballance2.UI.Utils
     /// <param name="gameObject">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="material">执行材质</param>
+    [LuaApiDescription("运行淡入动画")]
+    [LuaApiParamDescription("gameObject", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
+    [LuaApiParamDescription("materials", "执行材质数组")]
     public FadeObject AddFadeIn2(GameObject gameObject, float timeInSecond, Material[] materials)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeIn);
@@ -318,6 +339,10 @@ namespace Ballance2.UI.Utils
     /// <param name="image">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
+    [LuaApiDescription("运行淡出动画")]
+    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
+    [LuaApiParamDescription("image", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddFadeOut(Image image, float timeInSecond, bool hidden)
     {
       if (image != null)
@@ -346,6 +371,9 @@ namespace Ballance2.UI.Utils
     /// </summary>
     /// <param name="image">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
+    [LuaApiDescription("运行淡入动画")]
+    [LuaApiParamDescription("image", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddFadeIn(Image image, float timeInSecond)
     {
       if (image != null)
@@ -377,6 +405,10 @@ namespace Ballance2.UI.Utils
     /// <param name="text">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
+    [LuaApiDescription("运行淡出动画")]
+    [LuaApiParamDescription("text", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
+    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
     public FadeObject AddFadeOut(Text text, float timeInSecond, bool hidden)
     {
       if (text != null)
@@ -405,6 +437,9 @@ namespace Ballance2.UI.Utils
     /// </summary>
     /// <param name="text">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
+    [LuaApiDescription("运行淡入动画")]
+    [LuaApiParamDescription("text", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddFadeIn(Text text, float timeInSecond)
     {
       if (text != null)
@@ -435,6 +470,9 @@ namespace Ballance2.UI.Utils
     /// </summary>
     /// <param name="audio">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
+    [LuaApiDescription("运行声音淡出")]
+    [LuaApiParamDescription("audio", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddAudioFadeOut(AudioSource audio, float timeInSecond)
     {
       if (audio != null)
@@ -463,6 +501,9 @@ namespace Ballance2.UI.Utils
     /// </summary>
     /// <param name="audio">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
+    [LuaApiDescription("运行声音淡入")]
+    [LuaApiParamDescription("audio", "执行对象")]
+    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddAudioFadeIn(AudioSource audio, float timeInSecond)
     {
       if (audio != null)

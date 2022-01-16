@@ -130,9 +130,11 @@ namespace Ballance2.Package
         GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
         return false;
       }
-
-      ms.Close();
-      ms.Dispose();
+      finally
+      {
+        ms.Close();
+        ms.Dispose();
+      }
 
       return ReadInfo(PackageDef);
     }
@@ -197,18 +199,6 @@ namespace Ballance2.Package
       ms.Dispose();
     }
 
-    public override bool CheckCodeAssetExists(string pathorname)
-    {
-      foreach (string key in packageCodeAsset.Keys)
-      {
-        if (key == pathorname
-                || key == "class" + pathorname
-                || key == "class/" + pathorname
-                || Path.GetFileName(key) == pathorname)
-          return true;
-      }
-      return false;
-    }
     public override CodeAsset GetCodeAsset(string pathorname)
     {
       foreach (string key in packageCodeAsset.Keys)
@@ -219,7 +209,7 @@ namespace Ballance2.Package
                 || Path.GetFileName(key) == pathorname)
         {
           var k = packageCodeAsset[key];
-          return new CodeAsset(k.asset, k.fullPath, k.fullPath, MakeDebugJSPath(k.fullPath));
+          return new CodeAsset(k.asset, k.fullPath, k.fullPath, k.fullPath);
         }
       }
 
@@ -248,6 +238,11 @@ namespace Ballance2.Package
           {
             Log.E(TAG, "模组包 {0} 加载代码 {1} 错误, 错误：\n{2}", PackageName, pathorname, e.ToString());
             return null;
+          } 
+          finally 
+          {
+            if(ms != null)
+              ms.Dispose();
           }
         }
       }

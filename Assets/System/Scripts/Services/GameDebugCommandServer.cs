@@ -20,7 +20,7 @@ namespace Ballance2.Services
   /// <summary>
   /// 调试命令服务，使用此服务添加自定义调试命令。
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GameDebugCommandServer
   {   
     private const string TAG = "DebugCommand";

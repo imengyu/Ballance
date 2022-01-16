@@ -32,7 +32,8 @@ namespace Ballance2.Services
   /// <summary>
   /// 框架模块管理器
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("框架模块管理器")]
   public class GamePackageManager : GameService
   {
     private static readonly string TAG = "GamePackageManager";
@@ -40,10 +41,12 @@ namespace Ballance2.Services
     /// <summary>
     /// 系统模块的包名
     /// </summary>
+    [LuaApiDescription("系统模块的包名")]
     public const string SYSTEM_PACKAGE_NAME = "system";
     /// <summary>
     /// 游戏主模块的包名
     /// </summary>
+    [LuaApiDescription("游戏主模块的包名")]
     public const string CORE_PACKAGE_NAME = "core";
 
     public GamePackageManager() : base(TAG) { }
@@ -52,8 +55,10 @@ namespace Ballance2.Services
     /// 是否是无模块模式
     /// </summary>
     /// <value></value>
+    [LuaApiDescription("是否是无模块模式")]
     public bool NoPackageMode { get; set; }
 
+    [SLua.DoNotToLua]
     public override void Destroy()
     {
       DestroyPackageManageWindow();
@@ -71,6 +76,7 @@ namespace Ballance2.Services
       GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
       GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
     }
+    [SLua.DoNotToLua]
     public override bool Initialize()
     {
       var systemPackage = GamePackage.GetSystemPackage();
@@ -228,6 +234,9 @@ namespace Ballance2.Services
     /// <param name="packageName">包名</param>
     /// <param name="load">是否立即加载</param>
     /// <returns>返回是否加载成功。要获得错误代码，请获取 <see cref="GameErrorChecker.LastError"/></returns>
+    [LuaApiDescription("注册模块", "返回是否加载成功。要获得错误代码，请获取 GameErrorChecker.LastError")]
+    [LuaApiParamDescription("packageName", "包名")]
+    [LuaApiParamDescription("load", "是否立即加载")]
     public async Task<bool> RegisterPackage(string packageName)
     {
       bool forceEnablePackage = false;
@@ -348,6 +357,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">包名</param>
     /// <returns>返回模块实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("查找已注册的模块", "返回模块实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("packageName", "包名")]
     public GamePackage FindRegisteredPackage(string packageName)
     {
       registeredPackages.TryGetValue(packageName, out var outPackage);
@@ -358,6 +369,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">包名</param>
     /// <returns></returns>
+    [LuaApiDescription("检测模块是否用户选择了启用", "")]
+    [LuaApiParamDescription("packageName", "包名")]
     public bool IsPackageEnableLoad(string packageName)
     {
       registeredPackages.TryGetValue(packageName, out var outPackage);
@@ -369,6 +382,9 @@ namespace Ballance2.Services
     /// <param name="packageName">包名</param>
     /// <param name="unLoadImmediately">是否立即卸载</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("取消注册模块", "返回是否成功")]
+    [LuaApiParamDescription("packageName", "包名")]
+    [LuaApiParamDescription("unLoadImmediately", "是否立即卸载")]
     public bool UnRegisterPackage(string packageName, bool unLoadImmediately)
     {
       bool success = false;
@@ -400,6 +416,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">包名</param>
     /// <returns></returns>
+    [LuaApiDescription("获取模块是否正在加载", "")]
+    [LuaApiParamDescription("packageName", "包名")]
     public bool IsPackageLoading(string packageName)
     {
       return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 2;
@@ -409,6 +427,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">包名</param>
     /// <returns></returns>
+    [LuaApiDescription("获取模块是否正在注册", "")]
+    [LuaApiParamDescription("packageName", "包名")]
     public bool IsPackageRegistering(string packageName)
     {
       return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 1;
@@ -418,6 +438,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">包名</param>
     /// <returns></returns>
+    [LuaApiDescription("获取模块是否已加载", "")]
+    [LuaApiParamDescription("packageName", "包名")]
     public bool IsPackageLoaded(string packageName)
     {
       return loadedPackages.ContainsKey(packageName);
@@ -427,6 +449,8 @@ namespace Ballance2.Services
     /// 通知模块运行
     /// </summary>
     /// <param name="packageNameFilter">包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。</param>
+    [LuaApiDescription("通知模块运行")]
+    [LuaApiParamDescription("packageNameFilter", "包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。")]
     public void NotifyAllPackageRun(string packageNameFilter)
     {
       foreach (GamePackage package in loadedPackages.Values)
@@ -442,6 +466,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">模块包名</param>
     /// <returns>返回加载是否成功</returns>
+    [LuaApiDescription("加载模块", "返回加载是否成功")]
+    [LuaApiParamDescription("packageName", "模块包名")]
     public async Task<bool> LoadPackage(string packageName)
     {
       if (IsPackageLoaded(packageName))
@@ -572,6 +598,9 @@ namespace Ballance2.Services
     /// 将等待至依赖它的模块全部卸载之后才会卸载
     /// </param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("卸载模块", "返回加载是否成功")]
+    [LuaApiParamDescription("packageName", "模块包名")]
+    [LuaApiParamDescription("unLoadImmediately", "是否立即卸载，如果为false，此模块将等待至依赖它的模块全部卸载之后才会卸载")]
     public bool UnLoadPackage(string packageName, bool unLoadImmediately)
     {
       GamePackage package = FindPackage(packageName);
@@ -635,6 +664,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">模块包名</param>
     /// <returns>返回模块实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("查找已加载的模块", "返回模块实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("packageName", "模块包名")]
     public GamePackage FindPackage(string packageName)
     {
       loadedPackages.TryGetValue(packageName, out var outPackage);
@@ -647,6 +678,9 @@ namespace Ballance2.Services
     /// <param name="packageName">模块包名</param>
     /// <param name="ver">模块所须最小版本</param>
     /// <returns>如果已加载并且版本符合</returns>
+    [LuaApiDescription("检查指定需求的模块是否加载", "如果已加载并且版本符合")]
+    [LuaApiParamDescription("packageName", "模块包名")]
+    [LuaApiParamDescription("ver", "模块所须最小版本")]
     public bool CheckRequiredPackage(string packageName, int ver)
     {
       if (loadedPackages.TryGetValue(packageName, out var outPackage))
@@ -817,26 +851,15 @@ namespace Ballance2.Services
     }
     
     /// <summary>
-    /// 获取指定路径的代码是否存在。
-    /// </summary>
-    /// <param name="pathorname">代码路径</param>
-    /// <returns>返回是否存在</returns>
-    public bool CheckCodeAssetExists(string pathorname) {
-      try {
-        var pack = TryGetPackageByPath(pathorname, out var path);
-        return pack.CheckCodeAssetExists(path);
-      } catch {
-        return false;
-      }
-    }
-    /// <summary>
     /// 全局读取资源包中的代码资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
-    /// <returns>返回TextAsset实例，如果未找到，则返回null</returns>
+    /// <returns>返回CodeAsset实例，如果未找到，则返回null</returns>
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("全局读取资源包中的代码资源", "返回CodeAsset实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public GamePackage.CodeAsset GetCodeAsset(string pathorname, out GamePackage package)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -851,6 +874,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的文字资源", "返回TextAsset实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public TextAsset GetTextAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -864,6 +889,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public GameObject GetPrefabAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -877,6 +904,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的 Texture 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public Texture GetTextureAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -890,6 +919,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的 Texture2D 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public Texture2D GetTexture2DAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -903,6 +934,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的 Sprite 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public Sprite GetSpriteAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -916,6 +949,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的 Material 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public Material GetMaterialAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -929,6 +964,8 @@ namespace Ballance2.Services
     /// <exception cref="RequireFailedException">
     /// 未找到指定的模块包。
     /// </exception>
+    [LuaApiDescription("读取模块资源包中的 AudioClip 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public AudioClip GetAudioClipAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);

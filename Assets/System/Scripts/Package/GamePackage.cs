@@ -4,10 +4,12 @@ using Ballance2.Config;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
 using Ballance2.Services.I18N;
+using Ballance2.Services.LuaService.Lua;
+using Ballance2.Services.LuaService.LuaWapper;
 using Ballance2.Utils;
+using SLua;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +35,7 @@ namespace Ballance2.Package
   /// <summary>
   /// 模块包实例
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public class GamePackage
   {
     /// <summary>
@@ -59,8 +61,8 @@ namespace Ballance2.Package
       FixBundleShader();
       LoadI18NResource();
 
-      //模块代码环境初始化
       var t = new Task<bool>(() => {
+        //模块代码环境初始化
         if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
           return LoadPackageCodeBase();
         return true;
@@ -78,6 +80,19 @@ namespace Ballance2.Package
       GameManager.GameMediator.UnloadAllPackageActionStore(this);
       HandlerClear();
       ActionClear();
+
+      if (requiredLuaClasses != null)
+      {
+        requiredLuaClasses.Clear();
+        requiredLuaClasses = null;
+      }
+      if (requiredLuaFiles != null)
+      {
+        requiredLuaFiles.Clear();
+        requiredLuaFiles = null;
+      }
+      //TODO: CLEAR
+      luaObjects.Clear();
 
       //释放AssetBundle
       if (AssetBundle != null)
@@ -127,7 +142,7 @@ namespace Ballance2.Package
     #region 常量定义
 
     public const int FLAG_CODE_BASE_LOADED = 0x000000001;
-    public const int FLAG_CODE_JS_PACK = 0x000000002;
+    public const int FLAG_CODE_LUA_PACK = 0x000000002;
     public const int FLAG_CODE_CS_PACK = 0x000000004;
     public const int FLAG_CODE_ENTRY_CODE_RUN = 0x000000008;
     public const int FLAG_CODE_UNLOD_CODE_RUN = 0x000000010;
@@ -148,10 +163,6 @@ namespace Ballance2.Package
     public GamePackageEntry PackageEntry = new GamePackageEntry();
     
     protected int flag = 0;
-
-    protected string MakeDebugJSPath(string p) {
-      return "ballance://" + PackageName + "/" + p;
-    }
 
     /// <summary>
     /// 获取入口代码是否已经运行过
@@ -188,6 +199,12 @@ namespace Ballance2.Package
     public int GetFlag() { return flag; }
 
     /// <summary>
+    /// Lua 虚拟机
+    /// </summary>
+    [DoNotToLua]
+    public LuaState PackageLuaState => GameManager.Instance.GameMainLuaState;
+
+    /// <summary>
     /// 加载运行环境代码
     /// </summary>
     /// <returns></returns>
@@ -198,24 +215,21 @@ namespace Ballance2.Package
         return false;
       }
 
-      if (CodeType == GamePackageCodeType.JS)
+      if (CodeType == GamePackageCodeType.Lua)
       {
-        try {
-          var ret = GameManager.Instance.GameMainEnv.Eval<bool>("ballance.internal.SystemLoadPackage('" + EntryCode + "','" + PackageName +"')", 
-            "ballance://internal/PackageLoader.js?name=" + PackageName);
-          if (!ret)
-          {
-            Log.E(TAG, "模块 PackageEntry 返回了错误");
-            GameErrorChecker.LastError = GameError.ExecutionFailed;
-            return false;
-          }
-          flag &= FLAG_CODE_BASE_LOADED;
-          return true;
-        } catch(Exception e) {
-          GameManager.Instance.PrintErrorToJSConsole(e);
+        requiredLuaFiles = new Dictionary<string, object>();
+        requiredLuaClasses = new Dictionary<string, LuaFunction>();
+
+        object b = PackageLuaState.doString(@"IntneralLoadLuaPackage('" + PackageName + "','" + EntryCode + "')");
+        if (b is bool && !((bool)b))
+        {
+          Log.E(TAG, "模块初始化返回了错误");
           GameErrorChecker.LastError = GameError.ExecutionFailed;
-          return false;
+          return (bool)b;
         }
+
+        flag &= FLAG_CODE_LUA_PACK;
+        flag &= FLAG_CODE_BASE_LOADED;
       }
       else if (CodeType == GamePackageCodeType.CSharp)
       {
@@ -251,6 +265,7 @@ namespace Ballance2.Package
           return (bool)b;
         }
         
+        flag &= FLAG_CODE_CS_PACK;
         flag &= FLAG_CODE_BASE_LOADED;
         return true;
       }
@@ -259,7 +274,7 @@ namespace Ballance2.Package
         Log.E(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
       }
       return false;
-    }
+    }    
 
     /// <summary>
     /// 运行模块初始化代码
@@ -302,6 +317,339 @@ namespace Ballance2.Package
         return PackageEntry.OnBeforeUnLoad.Invoke(this);
       return true;
     }
+
+    #region LUA 文件导入
+
+    /// <summary>
+    /// 导入 Lua 类到当前模块虚拟机中。
+    /// 注意，类函数以 “CreateClass:类名” 开头，
+    /// 关于 Lua 类，请参考 Docs/LuaClass 。
+    /// </summary>
+    /// <param name="className">类名</param>
+    /// <returns>类创建函数</returns>
+    /// <exception cref="MissingReferenceException">
+    /// 如果没有在当前模块包中找到类文件或是类创建函数 @* ，则抛出 MissingReferenceException 异常。
+    /// </exception>
+    /// <exception cref="Exception">
+    /// 如果Lua执行失败，则抛出此异常。
+    /// </exception>
+    [LuaApiDescription("导入 Lua 类到当前模块虚拟机中", "类创建函数")]
+    [LuaApiParamDescription("className", "类名")]
+    public LuaFunction RequireLuaClass(string className)
+    {
+        LuaFunction classInit;
+        if (requiredLuaClasses.TryGetValue(className, out classInit))
+            return classInit;
+
+        var CreateClass = (PackageLuaState["CreateClass"] as LuaTable);
+        if(CreateClass == null)
+            throw new MissingReferenceException("This shouldn't happen: CreateClass is null! ");
+
+        classInit = CreateClass[className] as LuaFunction;
+        if (classInit != null)
+        {
+            requiredLuaClasses.Add(className, classInit);
+            return classInit;
+        }
+
+        byte[] lua = TryLoadLuaCodeAsset(className, out var realPath);
+        if(lua.Length == 0)
+            throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 该文件为空");
+        try
+        {
+            PackageLuaState.doBuffer(lua, realPath/*PackageName + ":" + className*/, out var v);
+        }
+        catch (Exception e)
+        {
+            Log.E(TAG, e.ToString());
+            GameErrorChecker.LastError = GameError.ExecutionFailed;
+
+            throw new Exception(PackageName + " 无法导入 Lua class : " + e.Message);
+        }
+
+        classInit = CreateClass[className] as LuaFunction;
+        if (classInit == null)
+        {
+            throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " +
+                className + ", 未找到初始类函数: CreateClass:" + className);
+        }
+
+        requiredLuaClasses.Add(className, classInit);
+        return classInit;
+    }
+    /// <summary>
+    /// 导入Lua文件到当前模块虚拟机中
+    /// </summary>
+    /// <param name="fileName">LUA文件名</param>
+    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <exception cref="MissingReferenceException">
+    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// </exception>
+    /// <exception cref="Exception">
+    /// 如果Lua执行失败，则抛出此异常。
+    /// </exception>
+    [LuaApiDescription("导入Lua文件到当前模块虚拟机中。不重复导入", "返回执行结果")]
+    [LuaApiParamDescription("fileName", "LUA文件名")]
+    public object RequireLuaFile(string fileName) { return RequireLuaFileInternal(this, fileName, true); }
+    /// <summary>
+    /// 导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
+    /// </summary>
+    /// <param name="fileName">LUA文件名</param>
+    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <exception cref="MissingReferenceException">
+    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// </exception>
+    /// <exception cref="Exception">
+    /// 如果Lua执行失败，则抛出此异常。
+    /// </exception>
+    [LuaApiDescription("导入Lua文件到当前模块虚拟机中，允许重复导入", "返回执行结果")]
+    [LuaApiParamDescription("fileName", "LUA文件名")]
+    public object RequireLuaFileNoOnce(string fileName) { return RequireLuaFileInternal(this, fileName, false); }
+    /// <summary>
+    /// 从其他模块导入Lua文件到当前模块虚拟机中
+    /// </summary>
+    /// <param name="fileName">LUA文件名</param>
+    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <exception cref="MissingReferenceException">
+    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// </exception>
+    /// <exception cref="Exception">
+    /// 如果Lua执行失败，则抛出此异常。
+    /// </exception>
+    [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中。不重复导入", "返回执行结果")]
+    [LuaApiParamDescription("fileName", "LUA文件名")]
+    public object RequireLuaFile(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, true); }
+    /// <summary>
+    /// 从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
+    /// </summary>
+    /// <param name="fileName">LUA文件名</param>
+    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <exception cref="MissingReferenceException">
+    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// </exception>
+    /// <exception cref="Exception">
+    /// 如果Lua执行失败，则抛出此异常。
+    /// </exception>
+    [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中，允许重复导入", "返回执行结果")]
+    [LuaApiParamDescription("fileName", "LUA文件名")]
+    public object RequireLuaFileNoOnce(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, false); }
+    
+    private Dictionary<string, object> requiredLuaFiles = null;
+    private Dictionary<string, LuaFunction> requiredLuaClasses = null;
+
+    private byte[] TryLoadLuaCodeAsset(string className, out string realPath) {
+
+        var lua = GetCodeAsset(className);
+        if (lua == null) 
+            lua = GetCodeAsset(className + ".lua");
+        if (lua == null) 
+            lua = GetCodeAsset(className + ".luac");
+        if (lua == null) 
+            lua = GetCodeAsset("Scripts/" + className);
+        if (lua == null) 
+            lua = GetCodeAsset("Scripts/" + className + ".lua");
+        if (lua == null) 
+            lua = GetCodeAsset("Scripts/" + className + ".luac");
+        if (lua == null)
+            throw new MissingReferenceException(PackageName + " 无法导入 " + className + " , 未找到文件");
+        realPath = lua.realPath;
+        return lua.data;
+    }
+    private object RequireLuaFileInternal(GamePackage pack, string fileName, bool once)
+    {
+        object rs = null;
+        byte[] lua = pack.TryLoadLuaCodeAsset(fileName, out var realPath);
+        if (lua.Length == 0)
+            throw new EmptyFileException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
+        try
+        {
+            //不重复导入
+            if(once && requiredLuaFiles.TryGetValue(realPath, out var lastRet)) 
+                return lastRet;
+
+            if(PackageLuaState.doBuffer(lua, realPath, out var v))
+                rs = v;
+            else
+                throw new Exception(PackageName + " 无法导入 Lua : 执行失败");
+
+            //添加结果，用于下一次不重复导入
+            if(requiredLuaFiles.ContainsKey(realPath))
+                requiredLuaFiles[realPath] = rs;
+            else
+                requiredLuaFiles.Add(realPath, rs);
+        }
+        catch (Exception e)
+        {
+            Log.E(TAG, e.ToString());
+            GameErrorChecker.LastError = GameError.ExecutionFailed;
+
+            throw new Exception(PackageName + " 无法导入 Lua : " + e.Message);
+        }
+
+        return rs;
+    }
+
+    #endregion
+
+    #region LUA 函数调用
+
+    /// <summary>
+    /// 获取当前 模块主代码 的指定函数
+    /// </summary>
+    /// <param name="funName">函数名</param>
+    /// <returns>返回函数，未找到返回null</returns>
+    [LuaApiDescription("获取当前 模块主代码 的指定函数", "返回函数，未找到返回null")]
+    [LuaApiParamDescription("funName", "函数名")]
+    public LuaFunction GetLuaFun(string funName)
+    {
+        if (PackageLuaState == null)
+        {
+            Log.E(TAG, "GetLuaFun Failed because package cannot run");
+            GameErrorChecker.LastError = GameError.PackageCanNotRun;
+            return null;
+        }
+        return PackageLuaState.getFunction(funName);
+    }
+    /// <summary>
+    /// 调用模块主代码的lua无参函数
+    /// </summary>
+    /// <param name="funName">lua函数名称</param>
+    [LuaApiDescription("调用模块主代码的lua无参函数")]
+    [LuaApiParamDescription("funName", "lua函数名称")]
+    public void CallLuaFun(string funName)
+    {
+        LuaFunction f = GetLuaFun(funName);
+        if (f != null) f.call();
+        else Log.E(TAG, "CallLuaFun Failed because function {0} not founnd", funName);
+    }
+    /// <summary>
+    /// 尝试调用模块主代码的lua无参函数
+    /// </summary>
+    /// <param name="funName">lua函数名称</param>
+    /// <returns>如果调用成功则返回true，否则返回false</returns>
+    [LuaApiDescription("尝试调用模块主代码的lua无参函数", "如果调用成功则返回true，否则返回false")]
+    [LuaApiParamDescription("funName", "lua函数名称")]
+    public bool TryCallLuaFun(string funName)
+    {
+        LuaFunction f = GetLuaFun(funName);
+        if (f != null) {
+            f.call();
+            return true;
+        }
+        return false;
+    }
+    /// <summary>
+    /// 调用模块主代码的lua函数
+    /// </summary>
+    /// <param name="funName">lua函数名称</param>
+    /// <param name="pararms">参数</param>
+    [LuaApiDescription("调用模块主代码的lua函数")]
+    [LuaApiParamDescription("funName", "lua函数名称")]
+    [LuaApiParamDescription("pararms", "参数")]
+    public void CallLuaFun(string funName, params object[] pararms)
+    {
+        LuaFunction f = GetLuaFun(funName);
+        if (f != null) f.call(pararms);
+        else Log.E(TAG, "CallLuaFun Failed because function {0} not founnd", funName);
+    }
+    /// <summary>
+    /// 调用指定的lua虚拟脚本中的lua无参函数
+    /// </summary>
+    /// <param name="luaObjectName">lua虚拟脚本名称</param>
+    /// <param name="funName">lua函数名称</param>
+    [LuaApiDescription("调用指定的lua虚拟脚本中的lua无参函数")]
+    [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
+    [LuaApiParamDescription("funName", "lua函数名称")]
+    public void CallLuaFun(string luaObjectName, string funName)
+    {
+        GameLuaObjectHost targetObject = null;
+        if (FindLuaObject(luaObjectName, out targetObject))
+            targetObject.CallLuaFun(funName);
+        else Log.E(TAG, "CallLuaFun Failed because object {0} not founnd", luaObjectName);
+    }
+    /// <summary>
+    /// 调用指定的lua虚拟脚本中的lua函数
+    /// </summary>
+    /// <param name="luaObjectName">lua虚拟脚本名称</param>
+    /// <param name="funName">lua函数名称</param>
+    /// <param name="pararms">参数</param>
+    /// <returns>Lua函数返回的对象，如果调用该函数失败，则返回null</returns>
+    [LuaApiDescription("调用指定的lua虚拟脚本中的lua函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
+    [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
+    [LuaApiParamDescription("funName", "lua函数名称")]
+    [LuaApiParamDescription("pararms", "参数")]
+    public object CallLuaFunWithParam(string luaObjectName, string funName, params object[] pararms)
+    {
+        GameLuaObjectHost targetObject = null;
+        if (FindLuaObject(luaObjectName, out targetObject))
+            return targetObject.CallLuaFunWithParam(funName, pararms);
+        else 
+            Log.E(TAG, "CallLuaFun Failed because object {0} not founnd", luaObjectName);
+        return null;
+    }
+
+    #endregion
+
+    #region LUA 组件
+
+    //管理当前模块下的所有lua虚拟脚本，统一管理、释放
+    private List<GameLuaObjectHost> luaObjects = new List<GameLuaObjectHost>();
+
+    /// <summary>
+    /// 注册lua虚拟脚本到物体上
+    /// </summary>
+    /// <param name="name">lua虚拟脚本的名称</param>
+    /// <param name="gameObject">要附加的物体</param>
+    /// <param name="className">目标代码类名</param>
+    [LuaApiDescription("注册lua虚拟脚本到物体上")]
+    [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
+    [LuaApiParamDescription("gameObject", "要附加的物体")]
+    [LuaApiParamDescription("className", "目标代码类名")]
+    public GameLuaObjectHost RegisterLuaObject(string name, GameObject gameObject, string className)
+    {
+        GameLuaObjectHost newGameLuaObjectHost = gameObject.AddComponent<GameLuaObjectHost>();
+        newGameLuaObjectHost.Name = name;
+        newGameLuaObjectHost.Package = this;
+        newGameLuaObjectHost.LuaState = PackageLuaState;
+        newGameLuaObjectHost.LuaClassName = className;
+        luaObjects.Add(newGameLuaObjectHost);
+        return newGameLuaObjectHost;
+    }
+    /// <summary>
+    /// 查找lua虚拟脚本
+    /// </summary>
+    /// <param name="name">lua虚拟脚本的名称</param>
+    /// <param name="gameLuaObjectHost">输出lua虚拟脚本</param>
+    /// <returns>返回是否找到对应脚本</returns>
+    [LuaApiDescription("查找lua虚拟脚本", "返回是否找到对应脚本")]
+    [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
+    [LuaApiParamDescription("gameLuaObjectHost", "输出lua虚拟脚本")]
+    public bool FindLuaObject(string name, out GameLuaObjectHost gameLuaObjectHost)
+    {
+        foreach (GameLuaObjectHost luaObjectHost in luaObjects)
+        {
+            if (luaObjectHost.Name == name)
+            {
+                gameLuaObjectHost = luaObjectHost;
+                return true;
+            }
+        }
+        gameLuaObjectHost = null;
+        return false;
+    }
+    //清除已释放的lua虚拟脚本
+    internal void RemoveLuaObject(GameLuaObjectHost o)
+    {
+        if (luaObjects != null)
+            luaObjects.Remove(o);
+    }
+    internal void AddeLuaObject(GameLuaObjectHost o)
+    {
+        if (luaObjects != null && !luaObjects.Contains(o))
+            luaObjects.Add(o);
+    }
+
+    #endregion
 
     #endregion
 
@@ -544,14 +892,6 @@ namespace Ballance2.Package
     public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
 
     /// <summary>
-    /// 获取指定路径的代码是否存在。
-    /// </summary>
-    /// <param name="pathorname">代码路径</param>
-    /// <returns>返回是否存在</returns>
-    public virtual bool CheckCodeAssetExists(string pathorname) {
-      return AssetBundle.Contains(pathorname);
-    }
-    /// <summary>
     /// 读取模块资源包中的代码资源
     /// </summary>
     /// <param name="pathorname">文件名称或路径</param>
@@ -560,7 +900,7 @@ namespace Ballance2.Package
     {
       TextAsset textAsset = GetTextAsset(pathorname);
       if (textAsset != null)
-        return new CodeAsset(textAsset.bytes, pathorname, pathorname, MakeDebugJSPath(pathorname));
+        return new CodeAsset(textAsset.bytes, pathorname, pathorname, pathorname);
 
       GameErrorChecker.LastError = GameError.FileNotFound;
       return null;
@@ -579,7 +919,7 @@ namespace Ballance2.Package
     /// <summary>
     /// 表示代码资源
     /// </summary>
-    [JSExport]
+    [SLua.CustomLuaClass]
     public class CodeAsset {
       /// <summary>
       /// 代码字符串

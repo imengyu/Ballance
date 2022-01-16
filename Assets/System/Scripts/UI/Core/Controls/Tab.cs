@@ -28,7 +28,7 @@ namespace Ballance2.UI.Core.Controls
   /// 一个Tab组件
   /// </summary>
   [ExecuteInEditMode]
-  [JSExport]
+  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/Tab")]
   public class Tab : UIBehaviour
   {

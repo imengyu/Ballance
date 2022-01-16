@@ -24,7 +24,8 @@ namespace Ballance2.UI.Core
   /// </summary>
   [ExecuteInEditMode]
   [AddComponentMenu("Ballance/UI/Controls/Window")]
-  [JSExport]
+  [LuaApiDescription("基础 UI 窗口")]
+  [SLua.CustomLuaClass]
   public class Window : MonoBehaviour
   {
     private void OnDestroy()
@@ -40,6 +41,7 @@ namespace Ballance2.UI.Core
     /// 获取窗口是否显示
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取窗口是否显示")]
     public bool GetVisible()
     {
       return gameObject.activeSelf;
@@ -48,6 +50,8 @@ namespace Ballance2.UI.Core
     /// 设置窗口是否显示
     /// </summary>
     /// <param name="visible">是否显示</param>
+    [LuaApiDescription("设置窗口是否显示")]
+    [LuaApiParamDescription("visible", "是否显示")]
     public void SetVisible(bool visible)
     {
 
@@ -70,6 +74,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 销毁窗口
     /// </summary>
+    [LuaApiDescription("销毁窗口")]
     public void Destroy()
     {
       Destroy(gameObject);
@@ -77,6 +82,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 获取窗口ID
     /// </summary>
+    [LuaApiDescription("获取窗口ID")]
     public int GetWindowId() { return windowId; }
 
     public RectTransform WindowRectTransform;
@@ -139,6 +145,7 @@ namespace Ballance2.UI.Core
     /// 获取或设置窗口大小
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取或设置窗口大小")]
     public Vector2 Size
     {
       get { return WindowRectTransform.sizeDelta; }
@@ -155,6 +162,7 @@ namespace Ballance2.UI.Core
     /// 获取或设置窗口最小大小
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取或设置窗口最小大小")]
     public Vector2 MinSize
     {
       get { return minSize; }
@@ -164,6 +172,7 @@ namespace Ballance2.UI.Core
     /// 获取或设置窗口位置
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取或设置窗口位置")]
     public Vector2 Position
     {
       get { return WindowRectTransform.anchoredPosition; }
@@ -175,6 +184,8 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="view">要绑定的子视图</param>
     /// <returns></returns>
+    [LuaApiDescription("设置窗口的自定义区域视图")]
+    [LuaApiParamDescription("view", "要绑定的子视图")]
     public RectTransform SetView(RectTransform view)
     {
       RectTransform oldView = GetView();
@@ -193,6 +204,7 @@ namespace Ballance2.UI.Core
     /// 获取窗口的自定义区域已绑定的视图
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取窗口的自定义区域已绑定的视图")]
     public RectTransform GetView()
     {
       if (WindowClientArea.transform.childCount > 0)
@@ -203,6 +215,7 @@ namespace Ballance2.UI.Core
     /// 获取窗口本体的 RectTransform
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取窗口本体的 RectTransform")]
     public RectTransform GetRectTransform()
     {
       return WindowRectTransform;
@@ -221,6 +234,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口的图标
     /// </summary>
+    [LuaApiDescription("窗口的图标")]
     public Sprite Icon
     {
       get { return _Icon; }
@@ -245,6 +259,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口是否可以拖动改变大小
     /// </summary>
+    [LuaApiDescription("窗口是否可以拖动改变大小")]
     public bool CanResize
     {
       get { return _CanResize; }
@@ -258,6 +273,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口是否可以拖动
     /// </summary>
+    [LuaApiDescription("窗口是否可以拖动")]
     public bool CanDrag
     {
       get { return _CanDrag; }
@@ -271,6 +287,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口是否可关闭
     /// </summary>
+    [LuaApiDescription("窗口是否可关闭")]
     public bool CanClose
     {
       get { return _CanClose; }
@@ -284,6 +301,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口是否可以最小化
     /// </summary>
+    [LuaApiDescription("窗口是否可以最小化")]
     public bool CanMin
     {
       get { return _CanMin; }
@@ -297,6 +315,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口是否可以最大化
     /// </summary>
+    [LuaApiDescription("窗口是否可以最大化")]
     public bool CanMax
     {
       get { return _CanMax; }
@@ -305,10 +324,12 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 点击窗口关闭按钮是否替换为隐藏窗口
     /// </summary>
+    [LuaApiDescription("点击窗口关闭按钮是否替换为隐藏窗口")]
     public bool CloseAsHide { get; set; }
     /// <summary>
     /// 窗口标题
     /// </summary>
+    [LuaApiDescription("窗口标题")]
     public string Title
     {
       get { return _Title; }
@@ -323,6 +344,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 关闭并销毁窗口
     /// </summary>
+    [LuaApiDescription("关闭并销毁窗口")]
     public void Close()
     {
       onClose?.Invoke(windowId);
@@ -330,6 +352,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 显示窗口
     /// </summary>
+    [LuaApiDescription("显示窗口")]
     public void Show()
     {
       if (_WindowState == WindowState.Hidden && oldWindowState != WindowState.Hidden)
@@ -343,6 +366,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 隐藏窗口
     /// </summary>
+    [LuaApiDescription("隐藏窗口")]
     public void Hide()
     {
       oldWindowState = _WindowState;
@@ -354,6 +378,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 窗口居中
     /// </summary>
+    [LuaApiDescription("窗口居中")]
     public void MoveToCenter()
     {
       Position = new Vector2(
@@ -427,6 +452,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 获取窗口当前状态
     /// </summary>
+    [LuaApiDescription("获取窗口当前状态")]
     public WindowState WindowState
     {
       get { return _WindowState; }
@@ -448,6 +474,7 @@ namespace Ballance2.UI.Core
     /// 获取窗口类型
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取窗口类型")]
     public WindowType WindowType { get; set; } = WindowType.Normal;
 
     #endregion
@@ -457,46 +484,58 @@ namespace Ballance2.UI.Core
   /// <summary>
   /// 窗口状态
   /// </summary>
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("窗口状态")]
   public enum WindowState
   {
     /// <summary>
     /// 窗口未显示
     /// </summary>
+    [LuaApiDescription("窗口未显示")]
     Hidden,
     /// <summary>
     /// 正常
     /// </summary>
+    [LuaApiDescription("正常")]
     Normal,
     /// <summary>
     /// 已经最大化
     /// </summary>
+    [LuaApiDescription("已经最大化")]
     Max,
     /// <summary>
     /// 已经最小化
     /// </summary>
+    [LuaApiDescription("已经最小化")]
     Min
   }
 
   /// <summary>
   /// 窗口类型
   /// </summary>
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("窗口类型")]
   public enum WindowType
   {
     /// <summary>
     /// 正常窗口
     /// </summary>
+    [LuaApiDescription("正常窗口")]
     Normal,
     /// <summary>
     /// 置顶窗口
     /// </summary>
+    [LuaApiDescription("置顶窗口")]
     TopWindow,
     /// <summary>
     /// 全局弹出窗口
     /// </summary>
+    [LuaApiDescription("全局弹出窗口")]
     GlobalAlert,
     /// <summary>
     /// 页
     /// </summary>
+    [LuaApiDescription("页")]
     Page
   }
 }

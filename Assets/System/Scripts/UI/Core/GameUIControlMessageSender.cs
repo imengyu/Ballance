@@ -20,13 +20,15 @@ namespace Ballance2.UI.Core
   /// </summary>
   [AddComponentMenu("Ballance/UI/MessageSender")]
   [RequireComponent(typeof(RectTransform))]
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("UI事件发送器。该绑定器用在需要发送事件的UI控件上")]
   public class GameUIControlMessageSender : MonoBehaviour
   {
     /// <summary>
     /// 指定对应UI消息中心名字
     /// </summary>
     [Tooltip("指定对应UI消息中心名字")]
+    [LuaApiDescription("指定对应UI消息中心名字")]
     public string MessageCenterName = null;
 
     public GameUIMessageCenter MessageCenter = null;
@@ -47,6 +49,8 @@ namespace Ballance2.UI.Core
     /// 发送事件至消息中心
     /// </summary>
     /// <param name="name">事件名称</param>
+    [LuaApiDescription("发送事件至消息中心")]
+    [LuaApiParamDescription("name", "事件名称")]
     public void NotifyEvent(string name)
     {
       if (MessageCenter != null)

@@ -21,7 +21,7 @@ namespace Ballance2.UI.Core.Controls
   /// <summary>
   /// 一个键盘按键选择组件
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/KeyChoose")]
   public class KeyChoose : MonoBehaviour
   {

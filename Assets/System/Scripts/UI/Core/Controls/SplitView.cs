@@ -22,7 +22,7 @@ namespace Ballance2.UI.Core.Controls
   /// 分割两个视图控件，用户可以手动拖动调整两个视图的大小
   /// </summary>
   [ExecuteInEditMode]
-  [JSExport]
+  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/SplitView")]
   public class SplitView : UIBehaviour
   {

@@ -32,7 +32,8 @@ namespace Ballance2.Services
   /// <summary>
   /// UI 管理器
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("UI 管理器")]
   public class GameUIManager : GameService
   {
     #region 基础
@@ -43,6 +44,7 @@ namespace Ballance2.Services
 
     private GameObject GameUICommonHost;
 
+    [SLua.DoNotToLua]
     public override void Destroy()
     {
       DestroyWindowManagement();
@@ -53,7 +55,8 @@ namespace Ballance2.Services
         for (int i = 0, c = UIRoot.transform.childCount; i < c; i++)
           Object.Destroy(UIRoot.transform.GetChild(i).gameObject);
       }
-    }
+    } 
+    [SLua.DoNotToLua]
     public override bool Initialize()
     {
       UIRoot = GameManager.Instance.GameCanvas;
@@ -106,10 +109,12 @@ namespace Ballance2.Services
     /// <summary>
     /// UI 根
     /// </summary>
+    [LuaApiDescription("UI 根")]
     public RectTransform UIRoot;
     /// <summary>
     /// 渐变管理器
     /// </summary>
+    [LuaApiDescription("渐变管理器")]
     public UIFadeManager UIFadeManager;
 
     private GameObject uiManagerGameObject = null;
@@ -132,6 +137,7 @@ namespace Ballance2.Services
     /// <summary>
     /// UI 根 RectTransform
     /// </summary>
+    [LuaApiDescription("UI 根 RectTransform")]
     public RectTransform UIRootRectTransform { get; private set; }
 
     private void InitAllObects()
@@ -182,6 +188,10 @@ namespace Ballance2.Services
     /// <param name="pressedOrReleased">如果为true，则侦听按下事件，否则侦听松开事件</param>
     /// <param name="callback">回调</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+    [LuaApiDescription("侦听某个按键一次", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    [LuaApiParamDescription("key", "键值")]
+    [LuaApiParamDescription("pressedOrReleased", "如果为true，则侦听按下事件，否则侦听松开事件")]
+    [LuaApiParamDescription("callBack", "回调函数")]
     public int WaitKey(KeyCode code, bool pressedOrReleased, VoidDelegate callback)
     {
       int id = 0;
@@ -201,6 +211,9 @@ namespace Ballance2.Services
     /// <param name="key">键值。</param>
     /// <param name="callBack">回调函数。</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+    [LuaApiDescription("添加侦听器侦听键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    [LuaApiParamDescription("key", "键值")]
+    [LuaApiParamDescription("callBack", "回调函数")]
     public int ListenKey(KeyCode key, KeyListener.KeyDelegate callBack)
     {
       return keyListener.AddKeyListen(key, callBack);
@@ -209,6 +222,8 @@ namespace Ballance2.Services
     /// 删除侦听按键
     /// </summary>
     /// <param name="id">AddKeyListen 返回的ID</param>
+    [LuaApiDescription("删除侦听按键")]
+    [LuaApiParamDescription("id", "AddKeyListen 返回的ID")]
     public void DeleteKeyListen(int id)
     {
       keyListener.DeleteKeyListen(id);
@@ -218,6 +233,7 @@ namespace Ballance2.Services
     /// 获取当前鼠标是否在UI上
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取当前鼠标是否在UI上")]
     public bool IsUiFocus()
     {
       return EventSystem.current.IsPointerOverGameObject() || GUIUtility.hotControl != 0;
@@ -239,6 +255,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">名称</param>
     /// <returns></returns>
+    [LuaApiDescription("获取 UI 控件预制体")]
+    [LuaApiParamDescription("name", "名称")]
     public GameObject GetUIPrefab(string name, GameUIPrefabType type)
     {
       if (uIPrefabs.ContainsKey(name))
@@ -254,6 +272,9 @@ namespace Ballance2.Services
     /// <param name="name">名称</param>
     /// <param name="perfab">预制体</param>
     /// <returns>返回注册是否成功</returns>
+    [LuaApiDescription("注册 UI 控件预制体", "返回注册是否成功")]
+    [LuaApiParamDescription("name", "名称")]
+    [LuaApiParamDescription("perfab", "预制体")]
     public bool RegisterUIPrefab(string name, GameUIPrefabType type, GameObject perfab)
     {
       if (uIPrefabs.ContainsKey(name))
@@ -272,6 +293,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">名称</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("清除已注册的 UI 控件预制体", "返回是否成功")]
+    [LuaApiParamDescription("name", "名称")]
     public bool RemoveUIPrefab(string name)
     {
       if (uIPrefabs.ContainsKey(name))
@@ -304,6 +327,9 @@ namespace Ballance2.Services
     /// <param name="name">页名称</param>
     /// <param name="prefabName">页模板名称</param>
     /// <returns>返回新创建的页实例，如果失败则返回null，请查看LastError</returns>
+    [LuaApiDescription("注册页", "返回新创建的页实例，如果失败则返回null，请查看LastError")]
+    [LuaApiParamDescription("name", "页名称")]
+    [LuaApiParamDescription("prefabName", "页模板名称")]
     public GameUIPage RegisterPage(string name, string prefabName)
     {
       if (pages.TryGetValue(name, out GameUIPage pageOld))
@@ -341,6 +367,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">页名称</param>
     /// <returns></returns>
+    [LuaApiDescription("跳转到页")]
+    [LuaApiParamDescription("name", "页名称")]
     public bool GoPage(string name)
     {
 
@@ -364,11 +392,13 @@ namespace Ballance2.Services
     /// 获取当前显示页
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取当前显示页")]
     public GameUIPage GetCurrentPage() { return currentPage; }
     /// <summary>
     /// 隐藏当前显示页
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("隐藏当前显示页")]
     public void HideCurrentPage()
     {
       if (currentPage != null)
@@ -377,6 +407,7 @@ namespace Ballance2.Services
     /// <summary>
     /// 关闭所有显示的页
     /// </summary>
+    [LuaApiDescription("关闭所有显示的页")]
     public void CloseAllPage()
     {
       foreach (var p in pageStack)
@@ -388,6 +419,7 @@ namespace Ballance2.Services
     /// 返回上一页
     /// </summary>
     /// <returns>如果可以返回，则返回true，否则返回false</returns>
+    [LuaApiDescription("返回上一页", "如果可以返回，则返回true，否则返回false")]
     public bool BackPreviusPage()
     {
       if (pageStack.Count > 0)
@@ -412,6 +444,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">页名称</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("取消注册页", "返回是否成功")]
+    [LuaApiParamDescription("name", "页名称")]
     public bool UnRegisterPage(string name)
     {
       if (pages.TryGetValue(name, out GameUIPage page))
@@ -455,6 +489,8 @@ namespace Ballance2.Services
     /// 显示全局土司提示
     /// </summary>
     /// <param name="text">提示文字</param>
+    [LuaApiDescription("显示全局土司提示")]
+    [LuaApiParamDescription("text", "提示文字")]
     public void GlobalToast(string text)
     {
       GlobalToast(text, text.Length / 30.0f);
@@ -464,6 +500,9 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="text">提示文字</param>
     /// <param name="showSec">显示时长（秒）</param>
+    [LuaApiDescription("显示全局土司提示")]
+    [LuaApiParamDescription("text", "提示文字")]
+    [LuaApiParamDescription("showSec", "显示时长（秒）")]
     public void GlobalToast(string text, float showSec)
     {
       if (showSec <= 0.5f) showSec = 0.5f;
@@ -517,6 +556,10 @@ namespace Ballance2.Services
     /// <param name="title">标题</param>
     /// <param name="okText">OK 按钮文字</param>
     /// <returns>返回对话框ID</returns>
+    [LuaApiDescription("显示全局 Alert 对话框（窗口模式）", "返回对话框ID")]
+    [LuaApiParamDescription("text", "内容")]
+    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("okText", "OK 按钮文字")]
     public int GlobalAlertWindow(string text, string title, string okText = "确定")
     {
       GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIAlertWindow, WindowsRectTransform.transform, "");
@@ -554,6 +597,11 @@ namespace Ballance2.Services
     /// <param name="okText">OK 按钮文字</param>
     /// <param name="cancelText">Cancel 按钮文字</param>
     /// <returns></returns>
+    [LuaApiDescription("显示全局 Confirm 对话框（窗口模式）", "返回对话框ID")]
+    [LuaApiParamDescription("text", "内容")]
+    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("okText", "OK 按钮文字")]
+    [LuaApiParamDescription("cancelText", "Cancel 按钮文字")]
     public int GlobalConfirmWindow(string text, string title, string okText = "确定", string cancelText = "取消")
     {
       GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIConfirmWindow, WindowsRectTransform.transform, "");
@@ -662,6 +710,9 @@ namespace Ballance2.Services
     /// <param name="title">标题</param>
     /// <param name="customView">窗口自定义View</param>
     /// <returns>返回窗口实例</returns>
+    [LuaApiDescription("创建自定义窗口（默认不显示）", "返回窗口实例")]
+    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("customView", "窗口自定义View")]
     public Window CreateWindow(string title, RectTransform customView)
     {
       return CreateWindow(title, customView, false);
@@ -673,6 +724,10 @@ namespace Ballance2.Services
     /// <param name="show">创建后是否立即显示</param>
     /// <param name="customView">窗口自定义View</param>
     /// <returns>返回窗口实例</returns>
+    [LuaApiDescription("创建自定义窗口", "返回窗口实例")]
+    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("show", "创建后是否立即显示")]
+    [LuaApiParamDescription("title", "标题")]
     public Window CreateWindow(string title, RectTransform customView, bool show)
     {
       return CreateWindow(title, customView, show, 0, 0, 0, 0);
@@ -688,6 +743,14 @@ namespace Ballance2.Services
     /// <param name="w">宽度，0 使用默认</param>
     /// <param name="h">高度，0 使用默认</param>
     /// <returns>返回窗口实例</returns>
+    [LuaApiDescription("创建自定义窗口", "返回窗口实例")]
+    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("show", "创建后是否立即显示")]
+    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("x", "X 坐标")]
+    [LuaApiParamDescription("y", "Y 坐标")]
+    [LuaApiParamDescription("w", "宽度，0 使用默认")]
+    [LuaApiParamDescription("h", "高度，0 使用默认")]
     public Window CreateWindow(string title, RectTransform customView, bool show, float x, float y, float w, float h)
     {
       GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIWindow, WindowsRectTransform.transform);
@@ -718,6 +781,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="window">窗口实例</param>
     /// <returns></returns>
+    [LuaApiDescription("注册窗口到管理器中")]
+    [LuaApiParamDescription("window", "窗口实例")]
     public Window RegisterWindow(Window window)
     {
       int id = window.GetWindowId();
@@ -733,6 +798,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="windowId">窗口ID</param>
     /// <returns>返回找到的窗口实例，如果找不到则返回null</returns>
+    [LuaApiDescription("通过 ID 查找窗口", "返回找到的窗口实例，如果找不到则返回null")]
+    [LuaApiParamDescription("windowId", "窗口ID")]
     public Window FindWindowById(int windowId)
     {
       managedWindows.TryGetValue(windowId, out Window w);
@@ -774,11 +841,14 @@ namespace Ballance2.Services
     /// 获取当前激活的窗口
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取当前激活的窗口")]
     public Window GetCurrentActiveWindow() { return currentActiveWindow; }
     /// <summary>
     /// 显示窗口
     /// </summary>
     /// <param name="window">窗口实例</param>
+    [LuaApiDescription("显示窗口")]
+    [LuaApiParamDescription("window", "窗口实例")]
     public void ShowWindow(Window window)
     {
       window.Show();
@@ -787,11 +857,15 @@ namespace Ballance2.Services
     /// 隐藏窗口
     /// </summary>
     /// <param name="window">窗口实例</param>
+    [LuaApiDescription("隐藏窗口")]
+    [LuaApiParamDescription("window", "窗口实例")]
     public void HideWindow(Window window) { window.Hide(); }
     /// <summary>
     /// 关闭窗口
     /// </summary>
     /// <param name="window">窗口实例</param>
+    [LuaApiDescription("关闭窗口")]
+    [LuaApiParamDescription("window", "窗口实例")]
     public void CloseWindow(Window window)
     {
       window.Close();
@@ -800,6 +874,8 @@ namespace Ballance2.Services
     /// 激活窗口至最顶层
     /// </summary>
     /// <param name="window">窗口实例</param>
+    [LuaApiDescription("激活窗口至最顶层")]
+    [LuaApiParamDescription("window", "窗口实例")]
     public void ActiveWindow(Window window)
     {
       if (currentActiveWindow != null)
@@ -820,6 +896,8 @@ namespace Ballance2.Services
     /// 全局黑色遮罩控制（无渐变动画）
     /// </summary>
     /// <param name="show">为true则显示遮罩，否则隐藏</param>
+    [LuaApiDescription("全局黑色遮罩隐藏（无渐变动画）")]
+    [LuaApiParamDescription("全局黑色遮罩控制", "为true则显示遮罩，否则隐藏")]
     public void MaskBlackSet(bool show)
     {
       GlobalFadeMaskBlack.color = new Color(GlobalFadeMaskBlack.color.r,
@@ -831,6 +909,8 @@ namespace Ballance2.Services
     /// 全局白色遮罩控制（无渐变动画）
     /// </summary>
     /// <param name="show">为true则显示遮罩，否则隐藏</param>
+    [LuaApiDescription("全局白色遮罩控制（无渐变动画）")]
+    [LuaApiParamDescription("show", "为true则显示遮罩，否则隐藏")]
     public void MaskWhiteSet(bool show)
     {
       GlobalFadeMaskWhite.color = new Color(GlobalFadeMaskWhite.color.r,
@@ -842,6 +922,8 @@ namespace Ballance2.Services
     /// 全局黑色遮罩渐变淡入
     /// </summary>
     /// <param name="second">耗时（秒）</param>
+    [LuaApiDescription("全局黑色遮罩渐变淡入")]
+    [LuaApiParamDescription("second", "耗时（秒）")]
     public void MaskBlackFadeIn(float second)
     {
       UIFadeManager.AddFadeIn(GlobalFadeMaskBlack, second);
@@ -851,6 +933,8 @@ namespace Ballance2.Services
     /// 全局白色遮罩渐变淡入
     /// </summary>
     /// <param name="second">耗时（秒）</param>
+    [LuaApiDescription("全局白色遮罩渐变淡入")]
+    [LuaApiParamDescription("second", "耗时（秒）")]
     public void MaskWhiteFadeIn(float second)
     {
       UIFadeManager.AddFadeIn(GlobalFadeMaskWhite, second);
@@ -860,6 +944,8 @@ namespace Ballance2.Services
     /// 全局黑色遮罩渐变淡出
     /// </summary>
     /// <param name="second">耗时（秒）</param>
+    [LuaApiDescription("全局黑色遮罩渐变淡出")]
+    [LuaApiParamDescription("second", "耗时（秒）")]
     public void MaskBlackFadeOut(float second)
     {
       UIFadeManager.AddFadeOut(GlobalFadeMaskBlack, second, true);
@@ -869,6 +955,8 @@ namespace Ballance2.Services
     /// 全局白色遮罩渐变淡出
     /// </summary>
     /// <param name="second">耗时（秒）</param>
+    [LuaApiDescription("全局白色遮罩渐变淡出")]
+    [LuaApiParamDescription("second", "耗时（秒）")]
     public void MaskWhiteFadeOut(float second)
     {
       UIFadeManager.AddFadeOut(GlobalFadeMaskWhite, second, true);
@@ -883,6 +971,8 @@ namespace Ballance2.Services
     /// 设置一个UI至临时区域
     /// </summary>
     /// <param name="view">指定UI</param>
+    [LuaApiDescription("设置一个UI至临时区域")]
+    [LuaApiParamDescription("view", "指定UI")]
     public void SetViewToTemporarily(RectTransform view)
     {
       view.SetParent(TemporarilyRectTransform.gameObject.transform);
@@ -891,6 +981,8 @@ namespace Ballance2.Services
     /// 将一个UI附加到主Canvas
     /// </summary>
     /// <param name="view">指定UI</param>
+    [LuaApiDescription("将一个UI附加到主Canvas")]
+    [LuaApiParamDescription("view", "指定UI")]
     public void AttatchViewToCanvas(RectTransform view)
     {
       view.SetParent(UIRoot.gameObject.transform);
@@ -901,6 +993,10 @@ namespace Ballance2.Services
     /// <param name="prefab">Prefab</param>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象的RectTransform</returns>
+    [LuaApiDescription("使用Prefab初始化一个对象并附加到主Canvas", "返回新对象的RectTransform")]
+    [LuaApiParamDescription("prefab", "Prefab")]
+    [LuaApiParamDescription("name", "新对象名称")]
+    [LuaApiParamDescription("topMost", "是否置顶，置顶后会在遮罩层上出现，不会被遮挡")]
     public RectTransform InitViewToCanvas(GameObject prefab, string name, bool topMost)
     {
       GameObject go = CloneUtils.CloneNewObjectWithParent(prefab, (topMost ? TopViewsRectTransform : ViewsRectTransform).transform, name);
@@ -914,6 +1010,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">名称</param>
     /// <returns>返回UI消息中心实例</returns>
+    [LuaApiDescription("创建一个UI消息中心", "返回UI消息中心实例")]
+    [LuaApiParamDescription("name", "名称")]
     public GameUIMessageCenter CreateUIMessageCenter(string name)
     {
       var old = GameUIMessageCenter.FindGameUIMessageCenter(name);
@@ -930,6 +1028,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">名称</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("销毁一个UI消息中心", "返回是否成功")]
+    [LuaApiParamDescription("name", "名称")]
     public bool DestroyUIMessageCenter(string name)
     {
       var old = GameUIMessageCenter.FindGameUIMessageCenter(name);
@@ -1089,6 +1189,7 @@ namespace Ballance2.Services
   /// <summary>
   /// UIPrefab的类型
   /// </summary>
+  [SLua.CustomLuaClass]
   public enum GameUIPrefabType
   {
     /// <summary>

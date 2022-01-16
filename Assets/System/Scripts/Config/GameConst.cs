@@ -16,7 +16,7 @@ namespace Ballance2.Config
   /// <summary>
   /// 静态常量配置
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
   public static class GameConst
   {
     /// <summary>

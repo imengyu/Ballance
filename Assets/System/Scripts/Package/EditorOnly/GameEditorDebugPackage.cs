@@ -112,43 +112,15 @@ namespace Ballance2.Package
         Log.E(TAG, "在加载模块的 Logo {0} 失败\n错误信息：{1}", path, e.ToString());
       }
     }
-    
-    public override bool CheckCodeAssetExists(string pathorname)
-    {
-      if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
-      {
-        if (File.Exists(pathorname) || File.Exists(pathorname + ".js"))
-        {
-          return true;
-        }
-      }
-      else
-      {
-        string path = PackageFilePath + "/" + pathorname;
-        if (File.Exists(path) || File.Exists(path + ".js"))
-        {
-          return true;
-        }
-        else
-        {
-          string fullPath = GetFullPathByName(pathorname);
-          if (fullPath != null && File.Exists(fullPath))
-          {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
+  
     public override CodeAsset GetCodeAsset(string pathorname)
     {
       string realtivePath = "";
-      bool enableDebugger = Entry.GameEntry.Instance.DebugEnableV8Debugger;
       if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
       {
         if (File.Exists(pathorname)) {
           realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
-          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname), pathorname, realtivePath, enableDebugger ? MakeDebugJSPath(realtivePath) : pathorname);
+          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname), pathorname, realtivePath, pathorname);
         }
       }
       else
@@ -156,20 +128,17 @@ namespace Ballance2.Package
         string path = PackageFilePath + "/" + pathorname;
         if (File.Exists(path)) {
           realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(path);
-          return new CodeAsset(FileUtils.ReadAllToBytes(path), path, realtivePath, enableDebugger ? MakeDebugJSPath(realtivePath) : path);
+          return new CodeAsset(FileUtils.ReadAllToBytes(path), path, realtivePath, path);
         }
         else
         {
           string fullPath = GetFullPathByName(pathorname);
           if (fullPath != null && File.Exists(fullPath)) {
             realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(fullPath);
-            return new CodeAsset(FileUtils.ReadAllToBytes(fullPath), fullPath, realtivePath, enableDebugger ? MakeDebugJSPath(realtivePath) : fullPath);
+            return new CodeAsset(FileUtils.ReadAllToBytes(fullPath), fullPath, realtivePath, fullPath);
           }
         }
       }
-
-      if(!pathorname.EndsWith(".js"))
-        return GetCodeAsset(pathorname + ".js");
 
       GameErrorChecker.LastError = GameError.FileNotFound;
       return null;

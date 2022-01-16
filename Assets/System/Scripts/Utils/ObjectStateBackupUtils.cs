@@ -24,7 +24,8 @@ namespace Ballance2.Utils
   /// <summary>
   /// 对象变换状态保存器
   /// </summary>
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("对象变换状态保存器")]
   public static class ObjectStateBackupUtils
   {
     private struct ObjectStateBackup
@@ -35,6 +36,7 @@ namespace Ballance2.Utils
     private static Dictionary<int, ObjectStateBackup> objectBackup = new Dictionary<int, ObjectStateBackup>();
 
     // 由 GameManager 调用。
+    [LuaApiDescription("由 GameManager 调用。手动调用将清空所有信息。")]
     public static void ClearAll()
     {
       objectBackup.Clear();
@@ -44,6 +46,7 @@ namespace Ballance2.Utils
     /// 清除对象的备份
     /// </summary>
     /// <param name="gameObject"></param>
+    [LuaApiDescription("清除对象的备份")]
     public static void ClearObjectBackUp(GameObject gameObject)
     {
       objectBackup.Remove(gameObject.GetInstanceID());
@@ -53,6 +56,7 @@ namespace Ballance2.Utils
     /// 备份对象的变换状态
     /// </summary>
     /// <param name="gameObject"></param>
+    [LuaApiDescription("备份对象的变换状态")]
     public static void BackUpObject(GameObject gameObject)
     {
       var key = gameObject.GetInstanceID();
@@ -69,6 +73,7 @@ namespace Ballance2.Utils
     /// 备份对象和他的一级子对象的变换状态
     /// </summary>
     /// <param name="gameObject"></param>
+    [LuaApiDescription("备份对象和他的一级子对象的变换状态")]
     public static void BackUpObjectAndChilds(GameObject gameObject)
     {
       BackUpObject(gameObject);
@@ -80,6 +85,7 @@ namespace Ballance2.Utils
     /// 从备份还原对象的变换状态
     /// </summary>
     /// <param name="gameObject"></param>
+    [LuaApiDescription("从备份还原对象的变换状态")]
     public static void RestoreObject(GameObject gameObject)
     {
       var key = gameObject.GetInstanceID();
@@ -94,6 +100,7 @@ namespace Ballance2.Utils
     /// 从备份还原对象和他的一级子对象的变换状态
     /// </summary>
     /// <param name="gameObject"></param>
+    [LuaApiDescription("从备份还原对象和他的一级子对象的变换状态")]
     public static void RestoreObjectAndChilds(GameObject gameObject)
     {
       RestoreObject(gameObject);

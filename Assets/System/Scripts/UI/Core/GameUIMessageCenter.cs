@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Ballance2.Services.LuaService.LuaWapper;
+using SLua;
 using UnityEngine;
 using static Ballance2.Services.GameManager;
 
@@ -22,9 +24,11 @@ namespace Ballance2.UI.Core
   /// </summary>
   [RequireComponent(typeof(RectTransform))]
   [AddComponentMenu("Ballance/UI/MessageCenter")]
-  [JSExport]
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("UI 消息中心，方便Lua层处理UI事件")]
   public class GameUIMessageCenter : MonoBehaviour
   {
+
     private static Dictionary<string, GameUIMessageCenter> messageCenters = new Dictionary<string, GameUIMessageCenter>();
 
     /// <summary>
@@ -32,6 +36,8 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="name">名字</param>
     /// <returns>找到则返回 UI 消息中心实例，否则返回null</returns>
+    [LuaApiDescription("查找系统中的 UI 消息中心", "找到则返回 UI 消息中心实例，否则返回null")]
+    [LuaApiParamDescription("name", "名字")]
     public static GameUIMessageCenter FindGameUIMessageCenter(string name)
     {
       if (messageCenters.ContainsKey(name))
@@ -47,6 +53,8 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="binder"></param>
     /// <returns></returns>
+    [LuaApiDescription("注册数据更新器（该方法无需手动调用）", "")]
+    [LuaApiParamDescription("binder", "")]
     public bool RegisterValueBinder(GameUIControlValueBinder binder)
     {
       if (!valueBinders.ContainsKey(binder.Name))
@@ -62,6 +70,8 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="binder"></param>
     /// <returns></returns>
+    [LuaApiDescription("取消注册数据更新器（该方法无需手动调用）", "")]
+    [LuaApiParamDescription("binder", "")]
     public bool UnRegisterValueBinder(GameUIControlValueBinder binder)
     {
       if (valueBinders.ContainsKey(binder.Name))
@@ -78,6 +88,9 @@ namespace Ballance2.UI.Core
     /// <param name="binderName">数据更新器名称</param>
     /// <param name="callbackFun">数据更新回调</param>
     /// <returns>返回一个可供更新数据的回调，调用此回调更新控件上的数据</returns>
+    [LuaApiDescription("订阅数据更新器", "返回一个可供更新数据的回调，调用此回调更新控件上的数据")]
+    [LuaApiParamDescription("binderName", "数据更新器名称")]
+    [LuaApiParamDescription("callbackFun", "数据更新回调")]
     public GameUIControlValueBinderSupplierCallback SubscribeValueBinder(string binderName, GameUIControlValueBinderUserUpdateCallback callbackFun)
     {
       if (valueBinders.TryGetValue(binderName, out GameUIControlValueBinder binder))
@@ -93,6 +106,8 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="binderName">数据更新器名称</param>
     /// <returns></returns>
+    [LuaApiDescription("使用数据更新器获取控件实例", "")]
+    [LuaApiParamDescription("binderName", "数据更新器名称")]
     public GameObject GetComponentInstance(string binderName)
     {
       if (valueBinders.TryGetValue(binderName, out GameUIControlValueBinder binder))
@@ -106,6 +121,9 @@ namespace Ballance2.UI.Core
     /// <param name="binderName">数据更新器名称</param>
     /// <param name="callbackFun">数据更新回调</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("取消订阅数据更新器", "返回是否成功")]
+    [LuaApiParamDescription("binderName", "数据更新器名称")]
+    [LuaApiParamDescription("callbackFun", "数据更新回调")]
     public bool UnSubscribeValueBinder(string binderName, GameUIControlValueBinderUserUpdateCallback callbackFun)
     {
       if (valueBinders.TryGetValue(binderName, out GameUIControlValueBinder binder))
@@ -121,6 +139,9 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="evtName">消息名称</param>
     /// <param name="callBack">消息回调</param>
+    [LuaApiDescription("订阅单一消息", "")]
+    [LuaApiParamDescription("evtName", "消息名称")]
+    [LuaApiParamDescription("callBack", "消息回调")]
     public void SubscribeEvent(string evtName, VoidDelegate callBack)
     {
       if (!events.TryGetValue(evtName, out var handlers))
@@ -136,6 +157,9 @@ namespace Ballance2.UI.Core
     /// </summary>
     /// <param name="evtName">消息名称</param>
     /// <param name="callBack">消息回调</param>
+    [LuaApiDescription("取消订阅单一消息", "")]
+    [LuaApiParamDescription("evtName", "消息名称")]
+    [LuaApiParamDescription("callBack", "消息回调")]
     public bool UnSubscribeEvent(string evtName, VoidDelegate callBack)
     {
       if (events.TryGetValue(evtName, out var handlers))
@@ -150,18 +174,29 @@ namespace Ballance2.UI.Core
     /// 发送单一消息
     /// </summary>
     /// <param name="evtName">消息名称</param>
+    [LuaApiDescription("发送单一消息", "")]
+    [LuaApiParamDescription("evtName", "消息名称")]
     public void NotifyEvent(string evtName)
     {
       if (events.TryGetValue(evtName, out var handlers))
         handlers.ForEach((h) => h.Invoke());
     }
 
+    private GameLuaObjectHost GameLuaObjectHost;
+    private LuaFunction LuaBinderBegin;
+    private bool LuaBinderErrLogged = false;
+
     private void Start()
     {
+      GameLuaObjectHost = GetComponent<GameLuaObjectHost>();
+      if (!messageCenters.ContainsKey(Name))
+        messageCenters.Add(Name, this);
+      if (GameLuaObjectHost != null)
+        GameLuaObjectHost.LuaInitFinished = InitLua;
     }
     private void InitLua()
     {
-      //FIXME: TO ADD JS
+      LuaBinderBegin = GameLuaObjectHost.GetLuaFun("LuaBinderBegin");
     }
     private void OnDestroy()
     {
@@ -175,9 +210,19 @@ namespace Ballance2.UI.Core
     /// 调用数据更新器的Lua处理器（勿手动调用该方法）
     /// </summary>
     /// <param name="binder"></param>
+    [SLua.DoNotToLua]
     public void CallLuaBinderBegin(GameUIControlValueBinder binder)
     {
-      //FIXME: !!!
+      if (LuaBinderBegin == null)
+      {
+        if (!LuaBinderErrLogged)
+        {
+          Log.E("GameUIMessageCenter", "No lua or lua function LuaBinderBegin was found in this component. This message only log once in this component.");
+          LuaBinderErrLogged = true;
+        }
+        return;
+      }
+      LuaBinderBegin.call(GameLuaObjectHost.LuaSelf, binder.Name, binder);
     }
   }
 }
