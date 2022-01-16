@@ -17,19 +17,23 @@ namespace Ballance2.Config
   /// 静态常量配置
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("静态常量配置")]
   public static class GameConst
   {
     /// <summary>
     /// 游戏版本
     /// </summary>
+    [LuaApiDescription("游戏版本")]
     public const string GameVersion = "1.0";
     /// <summary>
     /// 游戏编译版本
     /// </summary>
+    [LuaApiDescription("游戏编译版本")]
     public const int GameBulidVersion = 1;
     /// <summary>
     /// 游戏编译版本
     /// </summary>
+    [LuaApiDescription("游戏编译版本")]
     public const string GameBulidDate = "2020.06.25";
 
     #region Unity 环境静态常量
@@ -37,6 +41,7 @@ namespace Ballance2.Config
     /// <summary>
     /// 游戏编译平台
     /// </summary>
+    [LuaApiDescription("游戏编译平台")]
 #if UNITY_EDITOR && UNITY_EDITOR_WIN
     public const string GamePlatform = "Windows Editor Mode";
 #elif UNITY_EDITOR && UNITY_EDITOR_OSX
@@ -67,6 +72,7 @@ namespace Ballance2.Config
     /// <summary>
     /// 游戏编译平台标识符
     /// </summary>
+    [LuaApiDescription("游戏编译平台标识符")]
 #if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX
     public const string GamePlatformIdentifier = "win";
 #elif (UNITY_EDITOR && UNITY_EDITOR_OSX) || UNITY_STANDALONE_OSX
@@ -91,6 +97,7 @@ namespace Ballance2.Config
     /// <summary>
     /// 游戏编译脚本后端
     /// </summary>
+    [LuaApiDescription("游戏编译脚本后端")]
 #if ENABLE_MONO
     public const string GameScriptBackend = "Mono";
 #elif ENABLE_IL2CPP
@@ -108,27 +115,25 @@ namespace Ballance2.Config
     /// <summary>
     /// 配置游戏日志记录器是否启动
     /// </summary>
+    [LuaApiDescription("配置游戏日志记录器是否启动")]
     public const bool GameLoggerOn = true;
     /// <summary>
     /// 配置游戏日志记录器是否记录至文件
     /// </summary>
+    [LuaApiDescription("配置游戏日志记录器是否记录至文件")]
     public const bool GameLoggerLogToFile = false;
     /// <summary>
     /// 配置游戏日志记录器记录至文件的路径
     /// </summary>
+    [LuaApiDescription("配置游戏日志记录器记录至文件的路径")]
     public const string GameLoggerLogFile = "./BallanceOutput.log";
     /// <summary>
     /// 配置游戏日志记录器缓冲区最大条数
     /// </summary>
+    [LuaApiDescription("配置游戏日志记录器缓冲区最大条数")]
     public const int GameLoggerBufferMax = 1000;
 
     #endregion
-
-    public const string BallancePrivacyPolicy = "https://imengyu.top/linkJump?to=ballance_argeement";
-    public const string BallanceUserAgreement = "https://imengyu.top/linkJump?to=ballance_privacy_policy";
-    public const string BallanceHomePage = "https://imengyu.top/ballance";
-    public const string BallanceDocPage = "https://imengyu.top/ballance/doc";
-    public const string MengyuHomePage = "https://imengyu.top";
 
   }
 }

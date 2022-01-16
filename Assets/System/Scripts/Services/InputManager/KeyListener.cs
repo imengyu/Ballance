@@ -22,12 +22,15 @@ namespace Ballance2.Services.InputManager
   /// 键盘按键事件事件侦听器
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("键盘按键事件事件侦听器")]
   public class KeyListener : MonoBehaviour
   {
     /// <summary>
     /// 键盘按键事件回调
     /// </summary>
     /// <param name="downed">是否按下</param>
+    [SLua.CustomLuaClass]
+    [LuaApiDescription("键盘按键事件回调")]
     public delegate void KeyDelegate(KeyCode key, bool downed);
 
     /// <summary>
@@ -35,6 +38,8 @@ namespace Ballance2.Services.InputManager
     /// </summary>
     /// <param name="go">指定 GameObject</param>
     /// <returns>返回事件侦听器实例</returns> 
+    [LuaApiDescription("从 指定 GameObject 创建键事件侦听器", "返回事件侦听器实例")]
+    [LuaApiParamDescription("go", "指定 GameObject")]
     public static KeyListener Get(GameObject go)
     {
       KeyListener listener = go.GetComponent<KeyListener>();
@@ -60,11 +65,13 @@ namespace Ballance2.Services.InputManager
     /// <summary>
     /// 是否开启监听
     /// </summary>
+    [LuaApiDescription("是否开启监听")]
     public bool IsListenKey { get { return isListenKey; } set { isListenKey = value; } }
 
     /// <summary>
     /// 如果UI激活时是否禁用键盘事件
     /// </summary>
+    [LuaApiDescription("如果UI激活时是否禁用键盘事件")]
     public bool DisableWhenUIFocused = true;
 
     /// <summary>
@@ -74,6 +81,10 @@ namespace Ballance2.Services.InputManager
     /// <param name="key2">键值2。</param>
     /// <param name="callBack">回调函数。</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+    [LuaApiDescription("添加侦听器侦听键", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    [LuaApiParamDescription("key", "键值")]
+    [LuaApiParamDescription("key2", "键值2")]
+    [LuaApiParamDescription("callBack", "回调函数")]
     public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
     {
       KeyListener.KeyListenerItem item = new KeyListener.KeyListenerItem();
@@ -92,6 +103,9 @@ namespace Ballance2.Services.InputManager
     /// <param name="key">键值。</param>
     /// <param name="callBack">回调函数。</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+    [LuaApiDescription("添加侦听器侦听键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    [LuaApiParamDescription("key", "键值")]
+    [LuaApiParamDescription("callBack", "回调函数")]
     public int AddKeyListen(KeyCode key, KeyDelegate callBack)
     {
       KeyListener.KeyListenerItem item = new KeyListener.KeyListenerItem();
@@ -106,6 +120,8 @@ namespace Ballance2.Services.InputManager
     /// 删除指定侦听器。
     /// </summary>
     /// <param name="id">AddKeyListen 返回的ID</param>
+    [LuaApiDescription("删除指定侦听器。")]
+    [LuaApiParamDescription("id", "AddKeyListen 返回的ID")]
     public void DeleteKeyListen(int id)
     {
       itemsDownStatus.Remove(listenKeyId);
@@ -115,6 +131,7 @@ namespace Ballance2.Services.InputManager
     /// <summary>
     /// 清空事件侦听器所有侦听键。
     /// </summary>
+    [LuaApiDescription("清空事件侦听器所有侦听键。")]
     public void ClearKeyListen()
     {
       items.Clear();

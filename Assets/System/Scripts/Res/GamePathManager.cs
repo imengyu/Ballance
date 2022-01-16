@@ -23,15 +23,18 @@ namespace Ballance2.Res
   /// 路径管理器
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("路径管理器")]
   public static class GamePathManager
   {
     /// <summary>
     /// 调试模组包存放路径
     /// </summary>
+    [LuaApiDescription("调试模组包存放路径")]
     public const string DEBUG_PACKAGE_FOLDER = "Assets/Packages";
     /// <summary>
     /// 调试关卡存放路径
     /// </summary>
+    [LuaApiDescription("调试关卡存放路径")]
     public const string DEBUG_LEVEL_FOLDER = "Assets/Levels";
 
     private static string _DEBUG_PATH = "";
@@ -40,6 +43,7 @@ namespace Ballance2.Res
     /// <summary>
     /// 调试路径（输出目录）<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
     /// </summary>
+    [LuaApiDescription("调试路径（输出目录）")]
     public static string DEBUG_PATH
     {
       get
@@ -60,6 +64,7 @@ namespace Ballance2.Res
     /// <summary>
     /// 输出目录<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
     /// </summary>
+    [LuaApiDescription("输出目录（您在调试时请点击菜单 \"Ballance\">\"开发设置\">\"Debug Settings\" 将其更改为自己调试输出存放目录）")]
     public static string DEBUG_OUTPUT_PATH
     {
       get
@@ -80,23 +85,28 @@ namespace Ballance2.Res
     /// <summary>
     /// 调试路径（模组目录）
     /// </summary>
+    [LuaApiDescription("调试路径（模组目录）")]
     public static string DEBUG_PACKAGES_PATH { get { return DEBUG_PATH + "/Packages/"; } }
     /// <summary>
     /// 调试路径（关卡目录）
     /// </summary>
+    [LuaApiDescription("调试路径（关卡目录）")]
     public static string DEBUG_LEVELS_PATH { get { return DEBUG_PATH + "/Levels/"; } }
 
     /// <summary>
     /// 安卓系统数据目录
     /// </summary>
+    [LuaApiDescription("安卓系统数据目录")]
     public const string ANDROID_FOLDER_PATH = "/sdcard/games/com.imengyu.ballance2/";
     /// <summary>
     /// 安卓系统模组目录
     /// </summary>
+    [LuaApiDescription("安卓系统模组目录")]
     public const string ANDROID_PACKAGES_PATH = ANDROID_FOLDER_PATH + "Packages/";
     /// <summary>
     /// 安卓系统关卡目录
     /// </summary>
+    [LuaApiDescription("安卓系统关卡目录")]
     public const string ANDROID_LEVELS_PATH = ANDROID_FOLDER_PATH + "Levels/";
 
     /// <summary>
@@ -106,6 +116,10 @@ namespace Ballance2.Res
     /// <param name="pathorname">相对路径或名称</param>
     /// <param name="replacePlatform">是否替换文件路径中的[Platform]</param>
     /// <returns></returns>
+    [LuaApiDescription("将资源的相对路径转为资源真实路径")]
+    [LuaApiParamDescription("type", "资源种类（gameinit、core: 核心文件、level：关卡、package：模块）")]
+    [LuaApiParamDescription("pathorname", "相对路径或名称")]
+    [LuaApiParamDescription("replacePlatform", "是否替换文件路径中的[Platform]")]
     public static string GetResRealPath(string type, string pathorname, bool replacePlatform = true, bool withFileSheme = true)
     {
       string result = null;
@@ -220,6 +234,8 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="pathorname">关卡的相对路径或名称</param>
     /// <returns></returns>
+    [LuaApiDescription("将关卡资源的相对路径转为关卡资源真实路径", "")]
+    [LuaApiParamDescription("pathorname", "关卡的相对路径或名称")]
     public static string GetLevelRealPath(string pathorname, bool withFileSheme = true)
     {
       string result = "";

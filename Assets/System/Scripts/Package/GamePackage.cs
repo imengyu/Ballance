@@ -36,11 +36,13 @@ namespace Ballance2.Package
   /// 模块包实例
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("模块包实例")]
   public class GamePackage
   {
     /// <summary>
     /// 标签
     /// </summary>
+    [LuaApiDescription("标签")]
     public string TAG
     {
       get { return "GamePackage:" + PackageName; }
@@ -49,6 +51,7 @@ namespace Ballance2.Package
     internal int DependencyRefCount = 0;
     internal bool UnLoadWhenDependencyRefNone = false;
 
+    [DoNotToLua]
     public virtual Task<bool> LoadInfo(string filePath)
     {
       PackageFilePath = filePath;
@@ -56,6 +59,7 @@ namespace Ballance2.Package
       t.Start();
       return t;
     }
+    [DoNotToLua]
     public virtual Task<bool> LoadPackage()
     {
       FixBundleShader();
@@ -70,6 +74,7 @@ namespace Ballance2.Package
       t.Start();
       return t;
     }
+    [DoNotToLua]
     public virtual void Destroy()
     {
       Log.D(TAG, "Destroy package {0}", PackageName);
@@ -113,9 +118,10 @@ namespace Ballance2.Package
     private static GamePackage _SystemPackage = new GameSystemPackage();
 
     /// <summary>
-    /// 获取系统的模块结构
+    /// 设置核心的模块包
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("设置核心的模块包")]
     public static void SetCorePackage(GamePackage pack) { 
       if(_CorePackage == null)
         _CorePackage = pack; 
@@ -123,16 +129,18 @@ namespace Ballance2.Package
         GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, "GamePackage", "Not allow to chage GamePackage");
     }
     /// <summary>
-    /// 获取系统的模块结构
+    /// 获取核心的模块包
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取核心的模块包")]
     public static GamePackage GetCorePackage() { 
       return _CorePackage; 
     }
     /// <summary>
-    /// 获取系统的模块结构
+    /// 获取系统的模块包
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取系统模块包")]
     public static GamePackage GetSystemPackage() { 
       return _SystemPackage; 
     }
@@ -156,10 +164,12 @@ namespace Ballance2.Package
     /// <summary>
     /// C# 程序集
     /// </summary>
+    [LuaApiDescription("C# 程序集")]
     public Assembly CSharpAssembly { get; protected set; }
     /// <summary>
     /// 程序入口
     /// </summary>
+    [LuaApiDescription("程序入口")]
     public GamePackageEntry PackageEntry = new GamePackageEntry();
     
     protected int flag = 0;
@@ -168,17 +178,21 @@ namespace Ballance2.Package
     /// 获取入口代码是否已经运行过
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取入口代码是否已经运行过")]
     public bool IsEntryCodeExecuted() { return (flag & FLAG_CODE_ENTRY_CODE_RUN) == FLAG_CODE_ENTRY_CODE_RUN; }
     /// <summary>
     /// 获取出口代码是否已经运行过
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取出口代码是否已经运行过")]
     public bool IsUnloadCodeExecuted() { return (flag & FLAG_CODE_UNLOD_CODE_RUN) == FLAG_CODE_UNLOD_CODE_RUN; }
 
     /// <summary>
     /// 设置标志位
     /// </summary>
-    /// <param name="flag"></param>
+    /// <param name="flag">标志位，（GamePackage.FLAG_*）</param>
+    [LuaApiDescription("设置标志位")]
+    [LuaApiParamDescription("flag", "标志位，（GamePackage.FLAG_*）")]
     public void SetFlag(int flag)  {
 
       if((this.flag & FLAG_PACK_NOT_UNLOADABLE) == FLAG_PACK_NOT_UNLOADABLE && (flag & FLAG_PACK_NOT_UNLOADABLE) != FLAG_PACK_NOT_UNLOADABLE) {
@@ -195,7 +209,7 @@ namespace Ballance2.Package
     /// <summary>
     /// 获取标志位
     /// </summary>
-    /// <param name="flag"></param>
+    [LuaApiDescription("获取标志位")]
     public int GetFlag() { return flag; }
 
     /// <summary>
@@ -279,7 +293,8 @@ namespace Ballance2.Package
     /// <summary>
     /// 运行模块初始化代码
     /// </summary>
-    /// <returns></returns>
+    /// <returns>返回是否成功</returns>
+    [LuaApiDescription("运行模块初始化代码", "返回是否成功")]
     public bool RunPackageExecutionCode()
     {
       if (Type != GamePackageType.Module)
@@ -300,6 +315,8 @@ namespace Ballance2.Package
     /// <summary>
     /// 运行模块卸载回调
     /// </summary>
+    /// <returns>返回是否成功</returns>
+    [LuaApiDescription("运行模块卸载回调", "返回是否成功")]
     public bool RunPackageBeforeUnLoadCode()
     {
       if (Type != GamePackageType.Module)
@@ -830,6 +847,8 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回资源实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual T GetAsset<T>(string pathorname) where T : UnityEngine.Object
     {
       if (AssetBundle == null)
@@ -846,6 +865,8 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回TextAsset实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的文字资源", "返回TextAsset实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual TextAsset GetTextAsset(string pathorname) { return GetAsset<TextAsset>(pathorname); }
 
     /// <summary>
@@ -853,42 +874,56 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 GameObject 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回 GameObject 实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual GameObject GetPrefabAsset(string pathorname) { return GetAsset<GameObject>(pathorname); }
     /// <summary>
     /// 读取模块资源包中的 Texture 资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 Texture 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 Texture 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual Texture GetTextureAsset(string pathorname) { return GetAsset<Texture>(pathorname); }
     /// <summary>
     /// 读取模块资源包中的 Texture2D 资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 Texture2D 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 Texture2D 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual Texture2D GetTexture2DAsset(string pathorname) { return GetAsset<Texture2D>(pathorname); }
     /// <summary>
     /// 读取模块资源包中的 Sprite 资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 Sprite 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 Sprite 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual Sprite GetSpriteAsset(string pathorname) { return GetAsset<Sprite>(pathorname); }
     /// <summary>
     /// 读取模块资源包中的 Material 资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 Material 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 Material 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual Material GetMaterialAsset(string pathorname) { return GetAsset<Material>(pathorname); }
     /// <summary>
     /// 读取模块资源包中的 PhysicMaterial 资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 PhysicMaterial 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 PhysicMaterial 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual PhysicMaterial GetPhysicMaterialAsset(string pathorname) { return GetAsset<PhysicMaterial>(pathorname); }
     /// <summary>
     /// 读取模块资源包中的 AudioClip 资源
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>返回 AudioClip 实例，如果未找到，则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的 AudioClip 资源", "返回资源实例，如果未找到，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual AudioClip GetAudioClipAsset(string pathorname) { return GetAsset<AudioClip>(pathorname); }
 
     /// <summary>
@@ -896,6 +931,8 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="pathorname">文件名称或路径</param>
     /// <returns>如果读取成功则返回代码内容，否则返回null</returns>
+    [LuaApiDescription("读取模块资源包中的Lua代码资源", "如果读取成功则返回代码内容，否则返回null")]
+    [LuaApiParamDescription("pathorname", "文件名称或路径")]
     public virtual CodeAsset GetCodeAsset(string pathorname)
     {
       TextAsset textAsset = GetTextAsset(pathorname);
@@ -910,6 +947,8 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="pathorname">资源路径</param>
     /// <returns>如果加载成功则返回已加载的Assembly，否则将抛出异常，若当前环境并不支持加载，则返回null</returns>
+    [LuaApiDescription("加载模块资源包中的c#代码资源", "如果加载成功则返回已加载的Assembly，否则将抛出异常，若当前环境并不支持加载，则返回null")]
+    [LuaApiParamDescription("pathorname", "资源路径")]
     public virtual Assembly LoadCodeCSharp(string pathorname)
     {
       GameErrorChecker.SetLastErrorAndLog(GameError.NotSupportFileType, TAG, "当前模块不支持加载 CSharp 代码");
@@ -919,23 +958,28 @@ namespace Ballance2.Package
     /// <summary>
     /// 表示代码资源
     /// </summary>
+    [LuaApiDescription("表示代码资源")]
     [SLua.CustomLuaClass]
     public class CodeAsset {
       /// <summary>
       /// 代码字符串
       /// </summary>
+      [LuaApiDescription("代码字符串")]
       public byte[] data;
       /// <summary>
       /// 获取当前代码的真实路径（一般用于调试）
       /// </summary>
+      [LuaApiDescription("获取当前代码的真实路径（一般用于调试）")]
       public string realPath;
       /// <summary>
       /// 代码文件的相对路径
       /// </summary>
+      [LuaApiDescription("代码文件的相对路径")]
       public string relativePath;
       /// <summary>
       /// 调试器中显示的路径
       /// </summary>
+      [LuaApiDescription("调试器中显示的路径")]
       public string debugPath;
 
       public CodeAsset(byte[] data, string realPath, string relativePath, string debugPath) {
@@ -949,8 +993,9 @@ namespace Ballance2.Package
       /// 获取代码字符串
       /// </summary>
       /// <returns></returns>
+      [LuaApiDescription("获取代码字符串")]
       public string GetCodeString() {
-        return Encoding.UTF8.GetString(data);
+        return Encoding.UTF8.GetString(StringUtils.FixUtf8BOM(data));
       }
     }
 
@@ -1023,6 +1068,9 @@ namespace Ballance2.Package
     /// <param name="name">数据名称</param>
     /// <param name="data">数据值</param>
     /// <returns>返回数据值</returns>
+    [LuaApiDescription("添加自定义数据", "返回数据值")]
+    [LuaApiParamDescription("name", "数据名称")]
+    [LuaApiParamDescription("data", "数据值")]
     public object AddCustomProp(string name, object data)
     {
       if (packageCustomData.ContainsKey(name))
@@ -1038,6 +1086,9 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="name">数据名称</param>
     /// <returns>返回数据值</returns>
+    [LuaApiDescription("获取自定义数据", "返回数据值")]
+    [LuaApiParamDescription("name", "数据名称")]
+    [LuaApiParamDescription("data", "数据值")]
     public object GetCustomProp(string name)
     {
       if (packageCustomData.ContainsKey(name))
@@ -1050,6 +1101,9 @@ namespace Ballance2.Package
     /// <param name="name">数据名称</param>
     /// <param name="data"></param>
     /// <returns>返回旧的数据值，如果之前没有该数据，则返回null</returns>
+    [LuaApiDescription("设置自定义数据", "返回旧的数据值，如果之前没有该数据，则返回null")]
+    [LuaApiParamDescription("name", "数据名称")]
+    [LuaApiParamDescription("data", "数据值")]
     public object SetCustomProp(string name, object data)
     {
       if (packageCustomData.ContainsKey(name))
@@ -1065,6 +1119,8 @@ namespace Ballance2.Package
     /// </summary>
     /// <param name="name">数据名称</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("清除自定义数据", "返回是否成功")]
+    [LuaApiParamDescription("name", "数据名称")]
     public bool RemoveCustomProp(string name)
     {
       if (packageCustomData.ContainsKey(name))

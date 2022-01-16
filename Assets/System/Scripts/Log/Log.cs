@@ -34,6 +34,7 @@ namespace Ballance2
   /// 基础日志类
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("基础日志类")]
   public static class Log
   {
     private static string TAG = "Log";
@@ -43,6 +44,9 @@ namespace Ballance2
     /// </summary>
     /// <param name="tag">标签</param>
     /// <param name="message">要打印的日志信息</param>
+    [LuaApiDescription("打印一些最为繁琐、意义不大的日志信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("message", "要打印的日志信息")]
     public static void V(string tag, string message)
     {
       LogInternal(LogLevel.Verbose, tag, message);
@@ -53,6 +57,10 @@ namespace Ballance2
     /// <param name="tag">标签</param>
     /// <param name="format">格式化字符串，此字符串格式与 string.Format 格式相同</param>
     /// <param name="param">格式化参数</param>
+    [LuaApiDescription("打印可格式化字符串的日志信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("format", "格式化字符串，此字符串格式与 string.Format 格式相同")]
+    [LuaApiParamDescription("param", "格式化参数")]
     public static void V(string tag, string format, params object[] param)
     {
       V(tag, string.Format(format, param));
@@ -62,6 +70,9 @@ namespace Ballance2
     /// </summary>
     /// <param name="tag">标签</param>
     /// <param name="message">要打印的日志信息</param>
+    [LuaApiDescription("打印一些调试信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("message", "要打印的日志信息")]
     public static void D(string tag, string message)
     {
       LogInternal(LogLevel.Debug, tag, message);
@@ -72,6 +83,10 @@ namespace Ballance2
     /// <param name="tag">标签</param>
     /// <param name="format">格式化字符串，此字符串格式与 string.Format 格式相同</param>
     /// <param name="param">格式化参数</param>
+    [LuaApiDescription("打印可格式化字符串的调试信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("format", "格式化字符串，此字符串格式与 string.Format 格式相同")]
+    [LuaApiParamDescription("param", "格式化参数")]
     public static void D(string tag, string format, params object[] param)
     {
       D(tag, string.Format(format, param));
@@ -81,6 +96,9 @@ namespace Ballance2
     /// </summary>
     /// <param name="tag">标签</param>
     /// <param name="message">要打印的日志信息</param>
+    [LuaApiDescription("打印一些信息字符串")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("message", "要打印的日志信息")]
     public static void I(string tag, string message)
     {
       LogInternal(LogLevel.Info, tag, message);
@@ -91,6 +109,10 @@ namespace Ballance2
     /// <param name="tag">标签</param>
     /// <param name="format">格式化字符串，此字符串格式与 string.Format 格式相同</param>
     /// <param name="param">格式化参数</param>
+    [LuaApiDescription("打印可格式化字符串的信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("format", "格式化字符串，此字符串格式与 string.Format 格式相同")]
+    [LuaApiParamDescription("param", "格式化参数")]
     public static void I(string tag, string format, params object[] param)
     {
       I(tag, string.Format(format, param));
@@ -100,6 +122,9 @@ namespace Ballance2
     /// </summary>
     /// <param name="tag">标签</param>
     /// <param name="message">要打印的日志信息</param>
+    [LuaApiDescription("打印一些警告信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("param", "格式化参数")]
     public static void W(string tag, string message)
     {
       LogInternal(LogLevel.Warning, tag, message);
@@ -110,6 +135,10 @@ namespace Ballance2
     /// <param name="tag">标签</param>
     /// <param name="format">格式化字符串，此字符串格式与 string.Format 格式相同</param>
     /// <param name="param">格式化参数</param>
+    [LuaApiDescription("打印可格式化字符串的警告信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("format", "格式化字符串，此字符串格式与 string.Format 格式相同")]
+    [LuaApiParamDescription("param", "格式化参数")]
     public static void W(string tag, string format, params object[] param)
     {
       W(tag, string.Format(format, param));
@@ -119,6 +148,9 @@ namespace Ballance2
     /// </summary>
     /// <param name="tag">标签</param>
     /// <param name="message">要打印的日志信息</param>
+    [LuaApiDescription("打印错误信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("message", "要打印的日志信息")]
     public static void E(string tag, string message)
     {
       LogInternal(LogLevel.Error, tag, message);
@@ -129,6 +161,10 @@ namespace Ballance2
     /// <param name="tag">标签</param>
     /// <param name="format">格式化字符串，此字符串格式与 string.Format 格式相同</param>
     /// <param name="param">格式化参数</param>
+    [LuaApiDescription("打印可格式化字符串的错误信息")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("format", "格式化字符串，此字符串格式与 string.Format 格式相同")]
+    [LuaApiParamDescription("param", "格式化参数")]
     public static void E(string tag, string format, params object[] param)
     {
       E(tag, string.Format(format, param));
@@ -146,6 +182,11 @@ namespace Ballance2
     /// <param name="tag">标签</param>
     /// <param name="message">信息</param>
     /// <param name="stackTrace">堆栈信息</param>
+    [LuaApiDescription("手动写入日志")]
+    [LuaApiParamDescription("level", "日志等级")]
+    [LuaApiParamDescription("tag", "标签")]
+    [LuaApiParamDescription("message", "信息")]
+    [LuaApiParamDescription("stackTrace", "堆栈信息")]
     public static void LogWrite(LogLevel level, string tag, string message, string stackTrace)
     {
       if (logWriteLock)
@@ -194,6 +235,7 @@ namespace Ballance2
     /// <summary>
     /// 重新发送暂存区中的日志条目
     /// </summary>
+    [LuaApiDescription("重新发送暂存区中的日志条目")]
     public static void SendLogsInTemporary()
     {
       logTemporaryForeachLock = true;
@@ -220,6 +262,9 @@ namespace Ballance2
     ///   //捕获Warning和Error等级的日志信息
     /// }, LogLevel.Warning | LogLevel.Error);
     /// </example>
+    [LuaApiDescription("注册日志观察者", "返回大于0的数字表示观察者ID，返回-1表示错误")]
+    [LuaApiParamDescription("observer", "观察者回调")]
+    [LuaApiParamDescription("acceptLevel", "指定观察者要捕获的日志等级")]
     public static int RegisterLogObserver(LogObserver observer, LogLevel acceptLevel)
     {
       if (acceptLevel == LogLevel.None)
@@ -247,6 +292,8 @@ namespace Ballance2
     /// 取消注册日志观察者
     /// </summary>
     /// <param name="id">观察者ID（由 RegisterLogObserver 返回）</param>
+    [LuaApiDescription("取消注册日志观察者")]
+    [LuaApiParamDescription("id", "观察者ID（由 RegisterLogObserver 返回）")]
     public static void UnRegisterLogObserver(int id)
     {
       LogObserverInternal logObserverInternal = observers.Find((o) => o.Id == id);
@@ -259,6 +306,8 @@ namespace Ballance2
     /// </summary>
     /// <param name="id">观察者ID（由 RegisterLogObserver 返回）</param>
     /// <returns>如果找到则返回观察者，如果找不到则返回null</returns>
+    [LuaApiDescription("获取日志观察者", "如果找到则返回观察者，如果找不到则返回null-1表示错误")]
+    [LuaApiParamDescription("id", "观察者ID（由 RegisterLogObserver 返回）")]
     public static LogObserver GetLogObserver(int id)
     {
       LogObserverInternal logObserverInternal = observers.Find((o) => o.Id == id);
@@ -272,6 +321,8 @@ namespace Ballance2
     /// </summary>
     /// <param name="logLevel">日志等级</param>
     /// <returns></returns>
+    [LuaApiDescription("日志等级转为对应字符串")]
+    [LuaApiParamDescription("logLevel", "日志等级")]
     public static string LogLevelToString(LogLevel logLevel)
     {
       switch (logLevel)
@@ -295,6 +346,13 @@ namespace Ballance2
       public string stackTrace;
     }
 
+    /// <summary>
+    /// 获取指定等级的文字颜色
+    /// </summary>
+    /// <param name="level">日志等级</param>
+    /// <returns>返回十六进制颜色字符串，例如 ffffff</returns>
+    [LuaApiDescription("日志等级转为对应字符串", "返回十六进制颜色字符串，例如 ffffff")]
+    [LuaApiParamDescription("level", "日志等级")]
     public static string GetLogColor(LogLevel level)
     {
       switch (level)
@@ -330,40 +388,51 @@ namespace Ballance2
   /// <summary>
   /// 日志等级
   /// </summary>
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("日志等级")]
   public enum LogLevel
   {
     /// <summary>
     /// 无
     /// </summary>
+    [LuaApiDescription("无")]
     None = 0,
     /// <summary>
     /// 无关紧要的调试信息
     /// </summary>
+    [LuaApiDescription("无关紧要的调试信息")]
     Verbose = 0x1,
     /// <summary>
     /// 调试信息
     /// </summary>
+    [LuaApiDescription("调试信息")]
     Debug = 0x2,
     /// <summary>
     /// 信息
     /// </summary>
+    [LuaApiDescription("信息")]
     Info = 0x4,
     /// <summary>
     /// 警告
     /// </summary>
+    [LuaApiDescription("警告")]
     Warning = 0x8,
     /// <summary>
     /// 错误
     /// </summary>
+    [LuaApiDescription("错误")]
     Error = 0x10,
     /// <summary>
     /// 表示全部日志等级
     /// </summary>
+    [LuaApiDescription("表示全部日志等级")]
     All = Verbose | Debug | Info | Warning | Error,
   }
 
   /// <summary>
   /// 日志观察者接口
   /// </summary>
+  [SLua.CustomLuaClass]
+  [LuaApiDescription("日志观察者接口")]
   public delegate void LogObserver(LogLevel level, string tag, string message, string stackTrace);
 }

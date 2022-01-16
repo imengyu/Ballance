@@ -25,6 +25,7 @@ namespace Ballance2.Services.Debug
   /// 错误检查器。使用错误检查器获取游戏API的调用错误。
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("错误检查器。使用错误检查器获取游戏API的调用错误")]
   public class GameErrorChecker
   {
     private static GameGlobalErrorUI gameGlobalErrorUI;
@@ -41,6 +42,9 @@ namespace Ballance2.Services.Debug
     /// </summary>
     /// <param name="code">错误代码</param>
     /// <param name="message">关于错误的异常信息</param>
+    [LuaApiDescription("抛出游戏异常，此操作会直接停止游戏。类似于 Windows 蓝屏功能。")]
+    [LuaApiParamDescription("code", "错误代码")]
+    [LuaApiParamDescription("message", "关于错误的异常信息")]
     public static void ThrowGameError(GameError code, string message)
     {
       StringBuilder stringBuilder = new StringBuilder("错误代码：");
@@ -68,11 +72,13 @@ namespace Ballance2.Services.Debug
     /// <summary>
     /// 获取或设置上一个操作的错误
     /// </summary>
+    [LuaApiDescription("获取或设置上一个操作的错误")]
     public static GameError LastError { get; set; }
     /// <summary>
     /// 获取上一个操作的错误说明文字
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("获取上一个操作的错误说明文字")]
     public static string GetLastErrorMessage()
     {
       return GameErrorInfo.GetErrorMessage(LastError);
@@ -109,6 +115,11 @@ namespace Ballance2.Services.Debug
     /// <param name="tag">日志标签</param>
     /// <param name="message">日志信息格式化字符串</param>
     /// <param name="param">日志信息格式化参数</param>
+    [LuaApiDescription("设置错误码并打印日志")]
+    [LuaApiParamDescription("code", "错误代码")]
+    [LuaApiParamDescription("tag", "日志标签")]
+    [LuaApiParamDescription("message", "日志信息格式化字符串")]
+    [LuaApiParamDescription("param", "日志信息格式化参数")]
     public static void SetLastErrorAndLog(GameError code, string tag, string message, params object[] param)
     {
       LastError = code;
@@ -120,6 +131,10 @@ namespace Ballance2.Services.Debug
     /// <param name="code">错误码</param>
     /// <param name="tag">TAG</param>
     /// <param name="message">错误信息</param>
+    [LuaApiDescription("设置错误码并打印日志")]
+    [LuaApiParamDescription("code", "错误代码")]
+    [LuaApiParamDescription("tag", "日志标签")]
+    [LuaApiParamDescription("message", "日志信息")]
     public static void SetLastErrorAndLog(GameError code, string tag, string message)
     {
       LastError = code;
@@ -130,10 +145,13 @@ namespace Ballance2.Services.Debug
     /// 显示系统错误信息提示提示对话框
     /// </summary>
     /// <param name="message">错误信息</param>
+    [LuaApiDescription("显示系统错误信息提示提示对话框")]
+    [LuaApiParamDescription("message", "错误信息")]
     public static void ShowSystemErrorMessage(string message)
     {
       GameEntry entry = GameEntry.Instance;
       if(entry) {
+        GameSystem.ForceInterruptGame();
         entry.GlobalGameSysErrMessageDebuggerTipDialogText.text = message;
         entry.GlobalGameSysErrMessageDebuggerTipDialog.SetActive(true);
       }

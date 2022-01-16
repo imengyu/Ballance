@@ -22,6 +22,7 @@ namespace Ballance2.Res
   /// 游戏静态资源池
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("游戏静态资源池")]
   public class GameStaticResourcesPool
   {
     public static GameObject PrefabUIEmpty { get; private set; }
@@ -32,6 +33,8 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns></returns>
+    [LuaApiDescription("在静态引入资源中查找", "")]
+    [LuaApiParamDescription("name", "资源名称")]
     public static GameObject FindStaticPrefabs(string name)
     {
       if (GamePrefab == null)
@@ -48,6 +51,8 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns></returns>
+    [LuaApiDescription("在静态引入资源中查找", "")]
+    [LuaApiParamDescription("name", "资源名称")]
     public static T FindStaticAssets<T>(string name) where T : UnityEngine.Object
     {
       if (GameAssets == null)
@@ -64,6 +69,8 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns></returns>
+    [LuaApiDescription("在静态引入资源中查找", "")]
+    [LuaApiParamDescription("name", "资源名称")]
     public static Object FindStaticAssets(string name)
     {
       if (GameAssets == null)
@@ -95,10 +102,12 @@ namespace Ballance2.Res
     /// <summary>
     /// 静态引入 Prefab
     /// </summary>
+    [LuaApiDescription("静态引入 Prefab")]
     public static List<GameObjectInfo> GamePrefab { get; private set; }
     /// <summary>
     /// 静态引入资源
     /// </summary>
+    [LuaApiDescription("静态引入资源")]
     public static List<GameAssetsInfo> GameAssets { get; private set; }
   }
 }

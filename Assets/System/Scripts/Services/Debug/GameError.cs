@@ -17,11 +17,13 @@ namespace Ballance2.Services.Debug
   /// 游戏发生错误的枚举
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("游戏发生错误的枚举")]
   public enum GameError
   {
     /// <summary>
     /// 无错误
     /// </summary>
+    [LuaApiDescription("无错误")]
     None,
     UnKnow,
     AlreadyRegistered,
@@ -65,6 +67,7 @@ namespace Ballance2.Services.Debug
   /// 错误信息
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("错误信息")]
   public static class GameErrorInfo
   {
     /// <summary>
@@ -72,6 +75,8 @@ namespace Ballance2.Services.Debug
     /// </summary>
     /// <param name="err">错误代码</param>
     /// <returns>错误代码的说明信息</returns>
+    [LuaApiDescription("获取错误代码的说明信息", "错误代码的说明信息")]
+    [LuaApiParamDescription("err", "错误代码")]
     public static string GetErrorMessage(GameError err)
     {
       switch (err)

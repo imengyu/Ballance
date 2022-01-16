@@ -21,6 +21,7 @@ namespace Ballance2.Services
   /// 调试命令服务，使用此服务添加自定义调试命令。
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiDescription("调试命令服务，使用此服务添加自定义调试命令")]
   public class GameDebugCommandServer
   {   
     private const string TAG = "DebugCommand";
@@ -45,6 +46,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="cmd">命令字符串</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("运行命令", "返回是否成功")]
+    [LuaApiParamDescription("cmd", "命令字符串")]
     public bool ExecuteCommand(string cmd)
     {
       if (string.IsNullOrEmpty(cmd))
@@ -90,6 +93,11 @@ namespace Ballance2.Services
     /// <param name="limitArgCount">命令最低参数，默认 0 表示无参数或不限制</param>
     /// <param name="helpText">命令帮助文字</param>
     /// <returns>成功返回命令ID，不成功返回-1</returns>
+    [LuaApiDescription("注册调试命令", "成功返回命令ID，不成功返回-1")]
+    [LuaApiParamDescription("keyword", "命令单词")]
+    [LuaApiParamDescription("callback", "命令回调")]
+    [LuaApiParamDescription("limitArgCount", "命令最低参数，默认 0 表示无参数或不限制")]
+    [LuaApiParamDescription("helpText", "命令帮助文字")]
     public int RegisterCommand(string keyword, CommandDelegate callback, int limitArgCount, string helpText)
     {
       if (!IsCommandRegistered(keyword))
@@ -115,6 +123,8 @@ namespace Ballance2.Services
     /// 取消注册命令
     /// </summary>
     /// <param name="cmdId">命令ID</param>
+    [LuaApiDescription("取消注册命令")]
+    [LuaApiParamDescription("cmdId", "命令ID")]
     public void UnRegisterCommand(int cmdId)
     {
       CmdItem removeItem = null;
@@ -134,6 +144,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="keyword">命令单词</param>
     /// <returns>返回命令是否注册</returns>
+    [LuaApiDescription("获取命令是否注册", "返回命令是否注册")]
+    [LuaApiParamDescription("keyword", "命令单词")]
     public bool IsCommandRegistered(string keyword)
     {
       foreach (CmdItem cmdItem in commands)
@@ -172,5 +184,6 @@ namespace Ballance2.Services
   /// <param name="fullCmd">完整命令</param>
   /// <param name="args">命令参数</param>
   /// <returns>须返回命令是否执行成功</returns>
+  [SLua.CustomLuaClass]
   public delegate bool CommandDelegate(string keyword, string fullCmd, int argsCount, string[] args);
 }

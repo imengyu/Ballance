@@ -49,39 +49,48 @@ namespace Ballance2.Services
     /// <summary>
     /// 实例
     /// </summary>
+    [LuaApiDescription("实例")]
     public static GameManager Instance { get; private set; }
     /// <summary>
     /// GameMediator 实例
     /// </summary>
+    [LuaApiDescription("GameMediator 实例")]
     public static GameMediator GameMediator { get; internal set; }
     /// <summary>
     /// 系统设置实例
     /// </summary>
+    [LuaApiDescription("系统设置实例")]
     public GameSettingsActuator GameSettings { get; private set; }
     /// <summary>
     /// 基础摄像机
     /// </summary>
+    [LuaApiDescription("基础摄像机")]
     public Camera GameBaseCamera { get; private set; }
     /// <summary>
     /// 根Canvas
     /// </summary>
+    [LuaApiDescription("根Canvas")]
     public RectTransform GameCanvas { get; internal set; }
     /// <summary>
     /// 主虚拟机
     /// </summary>
+    [LuaApiDescription("主虚拟机")]
     public LuaSvr GameMainEnv { get; internal set; }
     /// <summary>
     /// 游戏全局Lua虚拟机
     /// </summary>
+    [LuaApiDescription("游戏全局Lua虚拟机")]
     public LuaSvr.MainState GameMainLuaState { get; private set; }
     /// <summary>
     /// 调试命令控制器
     /// </summary>
     /// <value></value>
+    [LuaApiDescription("调试命令控制器")]
     public GameDebugCommandServer GameDebugCommandServer { get; private set; }
     /// <summary>
     /// 根GameActionStore
     /// </summary>
+    [LuaApiDescription("根GameActionStore")]
     public GameActionStore GameActionStore { get; internal set; }
 
     public static bool DebugMode { get; private set; }
@@ -863,6 +872,7 @@ namespace Ballance2.Services
     /// <summary>
     /// 释放
     /// </summary>
+    [DoNotToLua]
     public override void Destroy()
     {
       Log.D(TAG, "Destroy");
@@ -877,6 +887,7 @@ namespace Ballance2.Services
     /// <summary>
     /// 开始退出游戏流程
     /// </summary>
+    [LuaApiDescription("退出游戏")]
     public void QuitGame()
     {
       Log.D(TAG, "QuitGame");
@@ -890,6 +901,7 @@ namespace Ballance2.Services
     /// <summary>
     /// 重启游戏
     /// </summary>
+    [LuaApiDescription("重启游戏")]
     public void RestartGame()
     {
       QuitGame();
@@ -929,6 +941,7 @@ namespace Ballance2.Services
 
     #region Update
 
+    [CustomLuaClass]
     public delegate void VoidDelegate();
 
     private int nextGameQuitTick = -1;
@@ -980,6 +993,7 @@ namespace Ballance2.Services
     /// </summary>
     /// <typeparam name="T">继承于GameService的服务类型</typeparam>
     /// <returns>返回服务实例，如果没有找到，则返回null</returns>
+    [DoNotToLua]
     public T GetSystemService<T>() where T : GameService
     {
       return (T)GameSystem.GetSystemService(typeof(T).Name);
@@ -989,6 +1003,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">服务名称</param>
     /// <returns>返回服务实例，如果没有找到，则返回null</returns>
+    [LuaApiDescription("获取系统服务", "返回服务实例，如果没有找到，则返回null")]
+    [LuaApiParamDescription("name", "服务名称")]
     public GameService GetSystemService(string name)
     {
       return GameSystem.GetSystemService(name);
@@ -1010,6 +1026,8 @@ namespace Ballance2.Services
     /// 设置基础摄像机状态
     /// </summary>
     /// <param name="visible">是否显示</param>
+    [LuaApiDescription("设置基础摄像机状态")]
+    [LuaApiParamDescription("visible", "是否显示")]
     public void SetGameBaseCameraVisible(bool visible)
     {
       if (visible)
@@ -1034,6 +1052,7 @@ namespace Ballance2.Services
     /// Lua绑定检查回调
     /// </summary>
     /// <returns></returns>
+    [LuaApiDescription("Lua绑定检查回调")]
     public static int EnvBindingCheckCallback()
     {
       return GameConst.GameBulidVersion;
@@ -1048,6 +1067,9 @@ namespace Ballance2.Services
     /// <param name="prefab">预制体</param>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
+    [LuaApiDescription("实例化预制体", "返回新对象")]
+    [LuaApiParamDescription("prefab", "预制体")]
+    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstancePrefab(GameObject prefab, string name)
     {
       return InstancePrefab(prefab, transform, name);
@@ -1059,6 +1081,10 @@ namespace Ballance2.Services
     /// <param name="parent">父级</param>
     /// <param name="name">父级</param>
     /// <returns>返回新对象</returns>
+    [LuaApiDescription("实例化预制体", "返回新对象")]
+    [LuaApiParamDescription("prefab", "预制体")]
+    [LuaApiParamDescription("parent", "父级")]
+    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstancePrefab(GameObject prefab, Transform parent, string name)
     {
       return CloneUtils.CloneNewObjectWithParent(prefab, parent, name);
@@ -1069,6 +1095,9 @@ namespace Ballance2.Services
     /// <param name="parent">父级</param>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
+    [LuaApiDescription("新建一个新的 GameObject ", "返回新对象")]
+    [LuaApiParamDescription("parent", "父级")]
+    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstanceNewGameObject(Transform parent, string name)
     {
       GameObject go = new GameObject(name);
@@ -1080,6 +1109,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
+    [LuaApiDescription("新建一个新的 GameObject ", "返回新对象")]
+    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstanceNewGameObject(string name)
     {
       GameObject go = new GameObject(name);
@@ -1096,34 +1127,48 @@ namespace Ballance2.Services
     /// <param name="path">文件路径</param>
     /// <param name="append">是否追加写入文件，否则为覆盖写入</param>
     /// <param name="path">要写入的文件</param>
+    [LuaApiDescription("写入字符串至指定文件")]
+    [LuaApiParamDescription("path", "文件路径")]
+    [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
+    [LuaApiParamDescription("data", "要写入的文件")]
     public void WriteFile(string path, bool append, string data) { FileUtils.WriteFile(path, append, data); }
     /// <summary>
     /// 检查文件是否存在
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <returns>返回文件是否存在</returns>
+    [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
+    [LuaApiParamDescription("path", "文件路径")]
     public bool FileExists(string path) { return FileUtils.FileExists(path); }
     /// <summary>
     /// 检查目录是否存在
     /// </summary>
     /// <param name="path">目录路径</param>
     /// <returns>返回是否存在</returns>
+    [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
+    [LuaApiParamDescription("path", "文件路径")]
     public bool DirectoryExists(string path) { return FileUtils.DirectoryExists(path); }
     /// <summary>
     /// 创建目录
     /// </summary>
     /// <param name="path">目录路径</param>
+    [LuaApiDescription("创建目录")]
+    [LuaApiParamDescription("path", "目录路径")]
     public void CreateDirectory(string path) { FileUtils.CreateDirectory(path); }
     /// <summary>
     /// 读取文件至字符串
     /// </summary>
     /// <param name="path">文件</param>
     /// <returns>返回文件男人</returns>
+    [LuaApiDescription("读取文件至字符串", "返回文件路径")]
+    [LuaApiParamDescription("path", "文件路径")]
     public string ReadFile(string path) { return FileUtils.ReadFile(path); }
     /// <summary>
     /// 删除指定的文件或目录
     /// </summary>
     /// <param name="path">文件</param>
+    [LuaApiDescription("删除指定的文件或目录")]
+    [LuaApiParamDescription("path", "文件")]
     public void RemoveFile(string path) { FileUtils.RemoveFile(path); }
 
     /// <summary>
@@ -1131,6 +1176,7 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="sec">延时时长，秒</param>
     /// <param name="callback">回调</param>
+    [LuaApiDescription("延时. Lua中不推荐使用这个函数，请使用LuaTimer")]
     public void Delay(float sec, VoidDelegate callback)
     {
       var d = new DelayItem();
@@ -1157,6 +1203,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">场景名字</param>
     /// <returns>返回是否成功</returns>
+    [LuaApiDescription("进入指定逻辑场景", "返回是否成功")]
+    [LuaApiParamDescription("name", "场景名字")]
     public bool RequestEnterLogicScense(string name)
     {
       int curIndex = logicScenses.IndexOf(name);
@@ -1179,6 +1227,7 @@ namespace Ballance2.Services
     /// <summary>
     /// 获取所有逻辑场景
     /// </summary>
+    [LuaApiDescription("获取所有逻辑场景")]
     public string[] GetLogicScenses() { return logicScenses.ToArray(); }
 
     #endregion
