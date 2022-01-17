@@ -758,6 +758,7 @@ namespace Ballance2.Services
       window.Title = title;
       window.SetView(customView);
       window.windowId = GenWindowId();
+      window.enabled = true;
       RegisterWindow(window);
 
       window.onClose += (id) =>

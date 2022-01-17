@@ -60,19 +60,17 @@ namespace Ballance2.Package
       return t;
     }
     [DoNotToLua]
-    public virtual Task<bool> LoadPackage()
+    public virtual async Task<bool> LoadPackage()
     {
       FixBundleShader();
       LoadI18NResource();
 
-      var t = new Task<bool>(() => {
-        //模块代码环境初始化
-        if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
-          return LoadPackageCodeBase();
-        return true;
-      });
+      //模块代码环境初始化
+      if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
+        return LoadPackageCodeBase();
+      var t = new Task<bool>(() => { return true; });
       t.Start();
-      return t;
+      return await t;
     }
     [DoNotToLua]
     public virtual void Destroy()
@@ -201,7 +199,7 @@ namespace Ballance2.Package
       }
 
       //internal
-      if(this.flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
+      if(flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
         LoadPackageCodeBase();
 
       this.flag = flag;
@@ -234,16 +232,19 @@ namespace Ballance2.Package
         requiredLuaFiles = new Dictionary<string, object>();
         requiredLuaClasses = new Dictionary<string, LuaFunction>();
 
-        object b = PackageLuaState.doString(@"IntneralLoadLuaPackage('" + PackageName + "','" + EntryCode + "')");
-        if (b is bool && !((bool)b))
-        {
-          Log.E(TAG, "模块初始化返回了错误");
-          GameErrorChecker.LastError = GameError.ExecutionFailed;
-          return (bool)b;
+        if(PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME) {
+          object b = PackageLuaState.doString(@"IntneralLoadLuaPackage('" + PackageName + "','" + EntryCode + "')", "LoadPackageCodeBase(" + TAG + ")");
+          if (b is bool && !((bool)b))
+          {
+            Log.E(TAG, "模块初始化返回了错误");
+            GameErrorChecker.LastError = GameError.ExecutionFailed;
+            return (bool)b;
+          }
         }
 
         flag &= FLAG_CODE_LUA_PACK;
         flag &= FLAG_CODE_BASE_LOADED;
+        return true;
       }
       else if (CodeType == GamePackageCodeType.CSharp)
       {

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1342417960375306300}
   - component: {fileID: 1342417960375306302}
   - component: {fileID: 3776756524009133340}
+  - component: {fileID: 4205585979368953888}
   m_Layer: 5
   m_Name: Window
   m_TagString: Untagged
@@ -56,7 +57,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342417960375306301}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 900948157a002424f83f7e1ff94c2206, type: 3}
   m_Name: 
@@ -76,6 +77,19 @@ MonoBehaviour:
   WindowClientArea: {fileID: 1342417960848458976}
   WindowTitle: {fileID: 1342417960874627061}
   SizeDrag: {fileID: 1342417961311467449}
+--- !u!114 &4205585979368953888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342417960375306301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcee8b58ef0d52243b23db0379e29fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &1342417960848458977
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7474722cd21742c4db3540ac5afd2b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DragWindow: {fileID: 0}
+  DragWindow: {fileID: 3776756524009133340}
   DragWindowRectTransform: {fileID: 1342417960375306300}
   DragImage: {fileID: 1342417961311467448}
 --- !u!1 &3594304047420784479

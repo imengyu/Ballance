@@ -50,5 +50,7 @@ return {
 
     Log.D(TAG, "模块将被卸载 !")
     return true
-  end
+  end,
+  ---返回版本号
+  PackageVersion = 1,
 }

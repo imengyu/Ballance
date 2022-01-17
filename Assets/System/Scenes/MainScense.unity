@@ -513,6 +513,10 @@ MonoBehaviour:
     Name: DebugSysinfoWindow
   - Object: {fileID: 8037047437229278588, guid: b658eea55d1dd9247b039a45801f8a1d, type: 3}
     Name: DebugStatsWindow
+  - Object: {fileID: 2614362693550141177, guid: 620509ee930f2da488b89825384a6dba, type: 3}
+    Name: DebugWindow
+  - Object: {fileID: 6189602029385453990, guid: cfaa12a9938e2b34097d8862effcf4b8, type: 3}
+    Name: PrefabGraphy
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
@@ -533,9 +537,8 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugEnableV8Debugger: 1
-  DebugWaitV8Debugger: 0
-  DebugV8DebuggerPort: 9229
+  DebugEnableLuaDebugger: 0
+  DebugLuaDebugger: 1
   DebugType: 0
   DebugInitPackages: []
   DebugCustomEntryEvent: DebugEntry

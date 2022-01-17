@@ -61,11 +61,11 @@ namespace Ballance2.Services.LuaService
         os.rename = nil
         os.setlocale = nil
         if Ballance2 ~= nil then
-          if Ballance2.Sys.Bridge.Lua.LuaGlobalApi.loadAsset ~= nil then
-            loadAsset = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.loadAsset
+          if Ballance2.Services.LuaService.Lua.LuaGlobalApi.loadAsset ~= nil then
+            loadAsset = Ballance2.Services.LuaService.Lua.LuaGlobalApi.loadAsset
           end
-          if Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require ~= nil then
-            require = Ballance2.Sys.Bridge.Lua.LuaGlobalApi.require
+          if Ballance2.Services.LuaService.Lua.LuaGlobalApi.require ~= nil then
+            require = Ballance2.Services.LuaService.Lua.LuaGlobalApi.require
           end
         end
       ", "SecurityUtils");

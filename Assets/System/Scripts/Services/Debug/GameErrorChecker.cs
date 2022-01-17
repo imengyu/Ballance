@@ -3,6 +3,7 @@ using Ballance2.UI.CoreUI;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -152,6 +153,7 @@ namespace Ballance2.Services.Debug
       GameEntry entry = GameEntry.Instance;
       if(entry) {
         GameSystem.ForceInterruptGame();
+        GameObject.Find("GameGlobalMask").SetActive(false);
         entry.GlobalGameSysErrMessageDebuggerTipDialogText.text = message;
         entry.GlobalGameSysErrMessageDebuggerTipDialog.SetActive(true);
       }

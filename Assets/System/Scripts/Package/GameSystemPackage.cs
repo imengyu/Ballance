@@ -13,7 +13,6 @@
 
 using System.IO;
 using Ballance2.Config;
-using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Utils;
 using UnityEngine;
@@ -23,8 +22,10 @@ namespace Ballance2.Package
   class GameSystemPackage : GamePackage
   {
     public GameSystemPackage() {
-      SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
+      CodeType = GamePackageCodeType.Lua;
       PackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
+      _Status = GamePackageStatus.LoadSuccess;
+      SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
     }
 
     public override T GetAsset<T>(string pathorname)

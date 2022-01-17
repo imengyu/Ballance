@@ -29,17 +29,30 @@ Unity = UnityGlobalNamespace
 CreateClass = {}
 BallancePhysics = {}
 BallancePhysics.Wapper = {}
-Ballance2.Sys = {}
-Ballance2.Sys.Bridge = {}
-Ballance2.Sys.Debug = {}
-Ballance2.Sys.Language = {}
-Ballance2.Sys.Package = {}
-Ballance2.Sys.Res = {}
-Ballance2.Sys.Services = {}
+Ballance2.Base = {}
+Ballance2.Log = {}
+Ballance2.Services = {}
+Ballance2.Services.Debug = {}
+Ballance2.Services.I18N = {}
+Ballance2.Services.LuaService = {}
+Ballance2.Services.LuaService.LuaWapper = {}
+Ballance2.Services.LuaService.LuaWapper.GameLuaWapperEvents = {}
+Ballance2.Package = {}
+Ballance2.Res = {}
 Ballance2.Config.Settings = {}
-Ballance2.Sys.UI = {}
-Ballance2.Sys.Utils = {}
+Ballance2.UI = {}
+Ballance2.UI.Core = {}
+Ballance2.UI.Core.Controls = {}
+Ballance2.UI.Utils.Core.Controls = {}
+Ballance2.Utils = {}
 Ballance2.Config = {}
 Ballance2.Game = {}
 Ballance2.Game.Utils = {}
 Ballance2.Utils = {}
+
+---模块入口结构
+---@class PackageEntryStruct
+---@field public PackageVersion number 返回当前模块版本
+---@field public PackageBeforeUnLoad function 模块卸载事件回调
+---@field public PackageEntry function 模块初始化事件回调
+local PackageEntryStruct={ }

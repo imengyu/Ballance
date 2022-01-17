@@ -110,7 +110,7 @@ namespace Ballance2.UI.Core
       {
         if(GameManager.Instance != null) {
           if (_UIManager == null)
-            _UIManager = (GameUIManager)GameManager.Instance.GetSystemService("GameUIManager");
+            _UIManager = (GameUIManager)GameManager.GetSystemService("GameUIManager");
         }
         return _UIManager;
       }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ballance2.Services;
+using UnityEngine;
 using UnityEngine.UI;
 
 /*
@@ -42,6 +43,14 @@ namespace Ballance2.UI.CoreUI
         ButtonHideErrorContent.gameObject.SetActive(false);
         TextGameErrorHelp.gameObject.SetActive(true);
         ScrollViewErrorContent.gameObject.SetActive(false);
+      });
+      ButtonCloseGame.onClick.AddListener(() =>
+      {
+        GameSystem.QuitPlayer();
+      });
+      ButtonRestartGame.onClick.AddListener(() =>
+      {
+        GameManager.Instance.RestartGame();
       });
     }
 

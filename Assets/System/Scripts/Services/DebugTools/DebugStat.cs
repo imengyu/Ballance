@@ -49,15 +49,16 @@ class DebugStat : MonoBehaviour
 
   private void Start()
   {
+    var SystemPackage = GamePackage.GetSystemPackage();
     GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>();
     //Profiler.enabled = true;
 
     //操作
-    GameManager.Instance.GameActionStore.RegisterAction(GamePackage.GetSystemPackage(), "DbgStatShowSystemInfo", "DebugStat", (param) => {
+    GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowSystemInfo", "DebugStat", (param) => {
       WindowSystemInfo.SetVisible((bool)param[0]);
       return GameActionCallResult.SuccessResult;
     }, new string[] { "bool" });
-      GameManager.Instance.GameActionStore.RegisterAction(GamePackage.GetSystemPackage(), "DbgStatShowStats", "DebugStat", (param) => {
+      GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowStats", "DebugStat", (param) => {
       WindowStats.SetVisible((bool)param[0]);
       return GameActionCallResult.SuccessResult;
     }, new string[] { "bool" });

@@ -62,7 +62,7 @@ namespace Ballance2.UI.Utils
     protected override void Start()
     {
       if (GameManager.Instance != null)
-        UIManager = (GameUIManager)GameManager.Instance.GetSystemService("GameUIManager");
+        UIManager = (GameUIManager)GameManager.GetSystemService("GameUIManager");
     }
 
     public void OnPointerDown(BaseEventData data)

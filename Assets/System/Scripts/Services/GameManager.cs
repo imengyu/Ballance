@@ -296,6 +296,7 @@ namespace Ballance2.Services
       UnityWebRequest request = null;
       var pm = GetSystemService<GamePackageManager>();
       var corePackageName = GamePackageManager.CORE_PACKAGE_NAME;
+      var systemPackage = GamePackage.GetSystemPackage();
 
       #region 读取读取SystemInit文件
 
@@ -369,9 +370,15 @@ namespace Ballance2.Services
       {
         Profiler.BeginSample("ExecuteSystemCore");
 
-
+        systemPackage.SetFlag(0xF0);
+        systemPackage.SystemPackage = true;
+        systemPackage.RunPackageExecutionCode();
+        systemPackage.RequireLuaFile("SystemInternal.lua");
+        systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
 
         Profiler.EndSample();
+
+        yield return new WaitForSeconds(1f);
 
         Log.D(TAG, "ExecuteSystemCore ok");
       }
@@ -391,22 +398,16 @@ namespace Ballance2.Services
 
       {
         //检查系统包版本是否与内核版本一致
-        var systemPackage = pm.FindPackage(corePackageName);
-        systemPackage.SetFlag(0xF0);
-        systemPackage.SystemPackage = true;
-        systemPackage.RunPackageExecutionCode();
-
-        yield return new WaitForSeconds(0.5f);
-
-        var ver = systemPackage.PackageEntry.Version;
+        var corePackage = pm.FindPackage(corePackageName);
+        var ver = corePackage.PackageEntry.Version;
         if (ver <= 0)
         {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid System package (2)");
+          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid Core package (2)");
           yield break;
         }
         if (ver != GameConst.GameBulidVersion)
         {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包版本与游戏内核版本不符（" + ver + "!=" + GameConst.GameBulidVersion + "）\n您可尝试重新安装游戏");
+          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "主包版本与游戏内核版本不符（" + ver + "!=" + GameConst.GameBulidVersion + "）\n您可尝试重新安装游戏");
           yield break;
         }
       
@@ -1005,7 +1006,7 @@ namespace Ballance2.Services
     /// <returns>返回服务实例，如果没有找到，则返回null</returns>
     [LuaApiDescription("获取系统服务", "返回服务实例，如果没有找到，则返回null")]
     [LuaApiParamDescription("name", "服务名称")]
-    public GameService GetSystemService(string name)
+    public static GameService GetSystemService(string name)
     {
       return GameSystem.GetSystemService(name);
     }

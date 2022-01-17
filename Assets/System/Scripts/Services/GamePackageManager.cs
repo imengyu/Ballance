@@ -97,6 +97,7 @@ namespace Ballance2.Services
       GameManager.GameMediator.DelayedNotifySingleEvent("GameManagerWaitPackageManagerReady", 0.5f);
 
       systemPackage._Status = GamePackageStatus.LoadSuccess;
+      registeredPackages.Add(SYSTEM_PACKAGE_NAME, new GamePackageRegisterInfo(systemPackage));
       loadedPackages.Add(SYSTEM_PACKAGE_NAME, systemPackage);
 
       return true;
@@ -217,7 +218,7 @@ namespace Ballance2.Services
 #if UNITY_EDITOR
       var realPackagePath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH;
       if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
-        GamePackage.SetCorePackage(new GameEditorCorePackage());
+        GamePackage.SetCorePackage(new GameEditorCorePackage(realPackagePath));
       } 
       else
 #else
@@ -571,8 +572,8 @@ namespace Ballance2.Services
         packagesLoadStatus.Remove(packageName);
 
         string err = string.Format("Package {0} load failed {1}", packageName, GameErrorChecker.GetLastErrorMessage());
-
         Log.E(TAG, err);
+
         //通知事件
         GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, err);
         return false;
