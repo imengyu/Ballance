@@ -419,5 +419,21 @@ namespace Ballance2.Utils
     {
       return Encoding.Unicode.GetBytes(input);
     }
+    /// <summary>
+    /// 在 input 查找 find ，如果找到，则从input找到find的末尾位置截取input至结尾。 
+    /// </summary>
+    /// <param name="input">要截取的字符串</param>
+    /// <param name="find">要查找的字符串</param>
+    /// <returns></returns>
+    [LuaApiDescription("在 input 查找 find ，如果找到，则从input找到find的末尾位置截取input至结尾。 ", "返回字节数组")]
+    [LuaApiParamDescription("input", "要截取的字符串")]
+    [LuaApiParamDescription("find", "要查找的字符串")]
+    public static string RemoveStringByStringStart(string input, string find)
+    {
+      int index = input.IndexOf(find);
+      if(index > 0) 
+        return input.Substring(index + find.Length);
+      return input;
+    }
   }
 }

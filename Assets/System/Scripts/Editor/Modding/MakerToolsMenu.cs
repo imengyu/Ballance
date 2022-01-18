@@ -2,36 +2,14 @@
 using UnityEditor;
 using Ballance2.Config.Settings;
 using Ballance2.Res;
+using Ballance2.Utils;
+using UnityEngine;
+using Ballance2.Editor.Lua;
 
 namespace Ballance2.Editor.Modding
 {
     class MakerTools
     {
-        [@MenuItem("Ballance/工具/复制系统初始化文件到Debug目录", false, 102)]
-        static void CopySystemInitFileToDebugFolder()
-        {
-            string debugFolder = DebugSettings.Instance.DebugFolder;
-            if (string.IsNullOrEmpty(debugFolder))
-            {
-                EditorUtility.DisplayDialog("提示", "请先设置 DebugFolder ", "确定");
-                return;
-            }
-
-            if (Directory.Exists(debugFolder))
-            {
-                if (!Directory.Exists(debugFolder + "/core"))
-                    Directory.CreateDirectory(debugFolder + "/core");
-
-                File.Copy("Assets/Packages/SystemInit.xml", debugFolder + "/Core/system.init.xml", true);
-                File.Copy("Assets/Packages/GameInit.xml", debugFolder + "/Core/game.init.xml", true);
-
-                EditorUtility.DisplayDialog("提示", "复制成功", "确定");
-            }
-            else
-            {
-                EditorUtility.DisplayDialog("提示", "DebugFolder 不存在", "确定");
-            }
-        }
         [@MenuItem("Ballance/工具/复制Debug文件夹到Output目录", false, 103)]
         static void CopyDebugFolderToOutput()
         {
@@ -70,6 +48,37 @@ namespace Ballance2.Editor.Modding
             }
             else EditorUtility.DisplayDialog("错误", "文件夹不存在：\n" + debugFolder + "\n▼\n" + folder, "确定"); 
         }
+        [@MenuItem("Ballance/工具/编译系统脚本到Reources目录", false, 103)]
+        public static void CopyScriptToReourcesFolder()
+        {
+            const string folderSrc = "Assets/System/Scripts/SystemScrips";
+            const string folderTarget = "Assets/System/Resources/SystemScrips";
+            int count = 0;
+
+            DirectoryInfo direction = new DirectoryInfo(folderSrc);
+            FileInfo[] files = direction.GetFiles("*.lua", SearchOption.AllDirectories);
+            for (int i = 0; i < files.Length; i++)
+            {
+                var rel = StringUtils.RemoveStringByStringStart(files[i].FullName.Replace('\\', '/'), folderSrc);
+                var src = folderSrc + "/" + rel;
+                var dest = folderTarget + "/" + rel + ".bytes";
+                var dir = Path.GetDirectoryName(dest);
+                if(!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                var outPath = "";
+                if(LuaCompiler.CompileLuaFile(src, false, out outPath)) {
+                    File.Copy(outPath, dest, true);
+                    File.Delete(outPath);
+                } else {
+                    Debug.LogError("编译 " + src + " 失败, 将lua文件原样打包。");
+                    File.Copy(src, dest, true);
+                }
+                count++;
+            }
+
+            EditorUtility.DisplayDialog("提示", "成功。编译 " + count + " 个文件", "确定");
+        }
 
         private static void CopyDebugFolder(string name, string debugFolder, string folder)
         {
@@ -88,7 +97,10 @@ namespace Ballance2.Editor.Modding
                         || files[i].Name.EndsWith(".txt")
                         || files[i].Name.EndsWith(".xml"))
                     {
-                        File.Copy(folderCoreSrc + "/" + files[i].Name, folderCoreTarget + "/" + files[i].Name, true);
+                        File.Copy(
+                            folderCoreSrc + "/" + files[i].Name, 
+                            folderCoreTarget + "/" + files[i].Name,
+                            true);
                     }
                 }
             }

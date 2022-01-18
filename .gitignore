@@ -69,5 +69,7 @@ build_win32/
 build_win64/
 Assets/Slua/LuaObject/*
 LuaDefineApi/
+Assets/System/Resources/SystemScrips/*
+!Assets/System/Resources/SystemScrips/.gitkeep
 
 *.hkt

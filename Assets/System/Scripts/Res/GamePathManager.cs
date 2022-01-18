@@ -144,16 +144,6 @@ namespace Ballance2.Res
         result = Application.streamingAssetsPath + "/Core/game.init.xml";
 #endif
       }
-      else if (type == "systeminit")
-      {
-#if UNITY_EDITOR
-        result = DEBUG_PATH + "/Core/system.init.xml";
-#elif UNITY_STANDALONE || UNITY_ANDROID
-        result = Application.dataPath + "/Core/system.init.xml";
-#elif UNITY_IOS
-        result = Application.streamingAssetsPath + "/Core/system.init.xml";
-#endif
-      }
       else if (type == "logfile")
       {
 #if UNITY_EDITOR

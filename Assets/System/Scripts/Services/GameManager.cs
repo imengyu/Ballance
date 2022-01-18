@@ -293,7 +293,6 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator LoadSystemCore()
     {
-      UnityWebRequest request = null;
       var pm = GetSystemService<GamePackageManager>();
       var corePackageName = GamePackageManager.CORE_PACKAGE_NAME;
       var systemPackage = GamePackage.GetSystemPackage();
@@ -301,33 +300,12 @@ namespace Ballance2.Services
       #region 读取读取SystemInit文件
 
       XmlDocument systemInit = new XmlDocument();
-#if UNITY_EDITOR
-      if (DebugSettings.Instance.SystemInitLoadWay == LoadResWay.InUnityEditorProject
-          && File.Exists("Assets/Packages/SystemInit.xml"))
-      {
-        Log.D(TAG, "Load SystemInit in editor.");
-        systemInit.Load("Assets/Packages/SystemInit.xml");
+      TextAsset systemInitAsset = Resources.Load<TextAsset>("Assets/System/Resources/SystemInit.xml");
+      if(systemInitAsset == null) {
+        GameErrorChecker.ThrowGameError(GameError.FileNotFound, "SystemInit.xml missing! ");
+        yield break;
       }
-      else
-#else
-      if(true) 
-#endif
-      {
-        string url = GamePathManager.GetResRealPath("systeminit", "");
-        request = UnityWebRequest.Get(url);
-        yield return request.SendWebRequest();
-        if (!string.IsNullOrEmpty(request.error))
-        {
-          //加载失败
-          StopAllCoroutines();
-          if (request.responseCode == 404)
-            GameErrorChecker.ThrowGameError(GameError.FileNotFound, "未找到 SystemInit\n您可尝试重新安装游戏");
-          else
-            GameErrorChecker.ThrowGameError(GameError.FileNotFound, "读取 SystemInit 失败：" + request.responseCode + "\n您可尝试重新安装游戏");
-          yield break;
-        }
-        systemInit.LoadXml(request.downloadHandler.text);
-      }
+      systemInit.LoadXml(systemInitAsset.text);
 
       #endregion
 
