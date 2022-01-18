@@ -1051,11 +1051,11 @@ namespace Ballance2.Package
     /// </summary>
     private void LoadI18NResource()
     {
-      var res = GetTextAsset("I18n.xml");
+      var res = GetTextAsset("PackageLanguageRes.xml");
       if (res != null)
       {
         if (!I18NProvider.LoadLanguageResources(res.text))
-          Log.E(TAG, "Failed to load I18n.xml for package " + PackageName);
+          Log.E(TAG, "Failed to load PackageLanguageRes.xml for package " + PackageName);
       }
     }
 

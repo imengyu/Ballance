@@ -30,7 +30,7 @@ namespace Ballance2.Editor.Modding
 
         private void OnEnable()
         {
-            logo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Textures/Global/splash_app.bmp");
+            logo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/System/Textures/splash_app.bmp");
         }
 
         private void OnGUI()

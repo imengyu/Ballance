@@ -153,7 +153,9 @@ namespace Ballance2.Services.Debug
       GameEntry entry = GameEntry.Instance;
       if(entry) {
         GameSystem.ForceInterruptGame();
-        GameObject.Find("GameGlobalMask").SetActive(false);
+        var GameGlobalMask = GameObject.Find("GameGlobalMask");
+        if(GameGlobalMask != null)
+          GameGlobalMask.SetActive(false);
         entry.GlobalGameSysErrMessageDebuggerTipDialogText.text = message;
         entry.GlobalGameSysErrMessageDebuggerTipDialog.SetActive(true);
       }

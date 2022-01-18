@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="core.sounds" version="1">
+  <BaseInfo>
+    <Name>声音资源包</Name>
+    <Author>Ballance</Author>
+    <Introduction>声音资源包</Introduction>
+    <Description></Description>
+    <Logo>PackageLogo.png</Logo>
+    <Link>https://imengyu.top/ballanceProject</Link>
+    <AuthorLink>https://imengyu.top/ballanceProject</AuthorLink>
+    <DocLink>https://imengyu.top/ballanceProject</DocLink>
+    <VersionName>1.0</VersionName>
+    <Dependencies>
+
+    </Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>1</MinVersion>
+    <TargetVersion>1</TargetVersion>
+  </Compatibility>
+  <EntryCode></EntryCode>
+  <Type>Asset</Type>
+  <CodeType>None</CodeType>
+  <RunType>GameBase</RunType>
+  <ShareLuaState>core</ShareLuaState>
+</Package>

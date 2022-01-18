@@ -246,10 +246,6 @@ namespace Ballance2.Services
           if(RequestEnterLogicScense(firstScense))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
-        else {
-          GameErrorChecker.ShowSystemErrorMessage("No firstScense was set.");
-          Log.D(TAG, "No firstScense was set.");
-        }
       }
       else
       {
@@ -300,9 +296,10 @@ namespace Ballance2.Services
       #region 读取读取SystemInit文件
 
       XmlDocument systemInit = new XmlDocument();
-      TextAsset systemInitAsset = Resources.Load<TextAsset>("Assets/System/Resources/SystemInit.xml");
+      TextAsset systemInitAsset = Resources.Load<TextAsset>("SystemInit");
       if(systemInitAsset == null) {
         GameErrorChecker.ThrowGameError(GameError.FileNotFound, "SystemInit.xml missing! ");
+        StopAllCoroutines();
         yield break;
       }
       systemInit.LoadXml(systemInitAsset.text);
@@ -332,8 +329,8 @@ namespace Ballance2.Services
         }
       }
       XmlNode FirstEnterScense = systemInit.SelectSingleNode("System/SystemOptions/FirstEnterScense");
-      if (FirstEnterScense != null && !StringUtils.isNullOrEmpty(FirstEnterScense.InnerText))
-        firstScense = FirstEnterScense.InnerText;
+      if (FirstEnterScense != null && !StringUtils.isNullOrEmpty(FirstEnterScense.InnerText)) 
+        firstScense = FirstEnterScense.InnerText; 
       if (!logicScenses.Contains(firstScense))
       {
         GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "FirstEnterScense 配置不正确");
