@@ -1,4 +1,4 @@
-local GameUIControlMessageSender = Ballance2.Sys.UI.GameUIControlMessageSender
+local GameUIControlMessageSender = Ballance2.UI.Core.GameUIControlMessageSender
 
 ---鼠标外框选择小工具
 ---@class MouseSelect : GameLuaObjectHostClass

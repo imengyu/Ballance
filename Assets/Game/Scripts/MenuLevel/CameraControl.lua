@@ -2,10 +2,10 @@ local Vector3 = UnityEngine.Vector3
 local Time = UnityEngine.Time
 local RenderSettings = UnityEngine.RenderSettings
 local Color = UnityEngine.Color
-local GameManager = Ballance2.Sys.GameManager
-local GameUIManager = GameManager.Instance:GetSystemService("GameUIManager") ---@type GameUIManager
-local GameSoundManager = GameManager.Instance:GetSystemService("GameSoundManager") ---@type GameSoundManager
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GameManager = Ballance2.Services.GameManager
+local GameUIManager = GameManager.GetSystemService("GameUIManager") ---@type GameUIManager
+local GameSoundManager = GameManager.GetSystemService("GameSoundManager") ---@type GameSoundManager
+local GameSoundType = Ballance2.Services.GameSoundType
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 
 ---Menu level 摄像机控制类

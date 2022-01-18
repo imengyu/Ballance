@@ -49,8 +49,10 @@ namespace Ballance2.Services.LuaService.Lua
       if(PathUtils.IsAbsolutePath(path))
         path = path.Replace(CurrentPath, "");
       if(path.StartsWith("Assets/Game"))
+        return GamePackageManager.CORE_PACKAGE_NAME;
+      if(path.StartsWith("Assets/System/Scripts/SystemScrips"))
         return GamePackageManager.SYSTEM_PACKAGE_NAME;
-      else if(path.StartsWith("Assets/Packages")) {
+      if(path.StartsWith("Assets/Packages")) {
         var st = path.Substring(16);
         return st.Substring(0, st.IndexOf('/'));
       } else 

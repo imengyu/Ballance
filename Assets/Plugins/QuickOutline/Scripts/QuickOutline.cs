@@ -13,6 +13,7 @@ using System.Linq;
 using UnityEngine;
 
 [DisallowMultipleComponent]
+[SLua.CustomLuaClass]
 public class QuickOutline : MonoBehaviour {
   private static HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
 
