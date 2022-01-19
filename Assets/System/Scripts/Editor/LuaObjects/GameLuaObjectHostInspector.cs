@@ -216,21 +216,23 @@ class GameLuaObjectHostInspector : Editor
                                 Dictionary<string, int> componentNameConter = new Dictionary<string, int>(); 
                                 int selectIndex = -1, i = 0;
                                 foreach(Component c in ((GameObject)pValGo.objectReferenceValue).GetComponents<Component>()) {
-                                    Type t = c.GetType();
-                                    if(t != null) {
-                                      string s = t.FullName;
-                                      string str = "";
-                                      if(componentNames.Contains(s)) {
-                                        componentNameConter[s] = componentNameConter[s] + 1;
-                                        str = s + ":" + componentNameConter[s];
-                                      }
-                                      else {
-                                        str = s;
-                                        componentNameConter.Add(s, 0);
-                                      }
-                                      componentNames.Add(str);
-                                      if(selectIndex == -1 && str == pVal.stringValue) selectIndex = i;
-                                      i++;
+                                    if(c != null) {
+                                        Type t = c.GetType();
+                                        if(t != null) {
+                                        string s = t.FullName;
+                                        string str = "";
+                                        if(componentNames.Contains(s)) {
+                                            componentNameConter[s] = componentNameConter[s] + 1;
+                                            str = s + ":" + componentNameConter[s];
+                                        }
+                                        else {
+                                            str = s;
+                                            componentNameConter.Add(s, 0);
+                                        }
+                                        componentNames.Add(str);
+                                        if(selectIndex == -1 && str == pVal.stringValue) selectIndex = i;
+                                        i++;
+                                        }
                                     }
                                 }
                                 rect.x += 40;

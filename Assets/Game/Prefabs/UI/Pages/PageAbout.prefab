@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ea3ac7321293fe548997ea22333ff7b8, type: 3}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -79,9 +79,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: About
-  m_ResourceKey: 
-  m_DefaultString: About
+  m_Text: core.ui.MainMenuAbout
+  m_ResourceKey: core.ui.MainMenuAbout
+  m_DefaultString: core.ui.MainMenuAbout
   m_I18N: 1
 --- !u!1 &5533956669366193027
 GameObject:
@@ -256,18 +256,18 @@ PrefabInstance:
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3531536114609418341}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: SendMessage
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      value: UnityEngine.Component, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -365,6 +365,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonOpenSourceLicense
       objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_Text
+      value: OpenSourceLicense
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.AbouOpenSourceLicense
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_DefaultString
+      value: OpenSourceLicense
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
 --- !u!224 &1424166067364138361 stripped
@@ -414,18 +426,18 @@ PrefabInstance:
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3531536114609418341}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: SendMessage
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      value: UnityEngine.Component, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -525,6 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 225061699249709466, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+    - {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
 --- !u!224 &1206410136231450728 stripped
 RectTransform:
@@ -569,7 +582,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: VersionString
 --- !u!1001 &1511228375872659896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -612,18 +625,18 @@ PrefabInstance:
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3531536114609418341}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: SendMessage
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      value: UnityEngine.Component, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -721,6 +734,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonProject
       objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_Text
+      value: Project
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.AboutProject
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_DefaultString
+      value: Project
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
 --- !u!224 &791604551865286290 stripped
@@ -739,6 +764,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonBack
       objectReference: {fileID: 0}
+    - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+      propertyPath: m_Text
+      value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+      propertyPath: m_DefaultString
+      value: Back
+      objectReference: {fileID: 0}
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -750,18 +787,18 @@ PrefabInstance:
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3531536114609418341}
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: SendMessage
       objectReference: {fileID: 0}
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      value: UnityEngine.Component, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -904,18 +941,18 @@ PrefabInstance:
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3531536114609418341}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: SendMessage
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      value: UnityEngine.Component, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -1012,6 +1049,18 @@ PrefabInstance:
     - target: {fileID: 2163045131142455083, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Name
       value: ButtonCreators
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_Text
+      value: Creators
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.AboutCreators
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_DefaultString
+      value: Creators
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}

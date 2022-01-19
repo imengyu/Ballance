@@ -113,8 +113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.0007324219, y: 80}
-  m_SizeDelta: {x: -570.69, y: 30}
+  m_AnchoredPosition: {x: 0.41378784, y: 80}
+  m_SizeDelta: {x: -355.0358, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4298490485958042176
 CanvasRenderer:
@@ -157,9 +157,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Load failed title
-  m_ResourceKey: 
-  m_DefaultString: Load failed title
+  m_Text: core.ui.LevelLoaderErrorUITitle
+  m_ResourceKey: core.ui.LevelLoaderErrorUITitle
+  m_DefaultString: core.ui.LevelLoaderErrorUITitle
   m_I18N: 1
 --- !u!1 &4238824071049824291
 GameObject:
@@ -196,8 +196,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 23.2471}
-  m_SizeDelta: {x: -570.6932, y: 69.2422}
+  m_AnchoredPosition: {x: 0.41690063, y: 23.2471}
+  m_SizeDelta: {x: -355.0489, y: 69.2422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8787060456127085088
 CanvasRenderer:
@@ -240,9 +240,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Load failed content
-  m_ResourceKey: 
-  m_DefaultString: Load failed content
+  m_Text: core.ui.LevelLoaderErrorUIMessage
+  m_ResourceKey: core.ui.LevelLoaderErrorUIMessage
+  m_DefaultString: core.ui.LevelLoaderErrorUIMessage
   m_I18N: 1
 --- !u!1 &4606327178789727571
 GameObject:
@@ -389,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 223453340555927753, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Size
-      value: 0.9999999
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 223453340555927753, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Value
@@ -541,7 +541,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8903952888160084671, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -570.69
+      value: -355.05
       objectReference: {fileID: 0}
     - target: {fileID: 8903952888160084671, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -577,7 +577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8903952888160084671, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00024414062
+      value: 0.41772
       objectReference: {fileID: 0}
     - target: {fileID: 8903952888160084671, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -802,6 +802,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonCopyErrInfo
       objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_Text
+      value: core.ui.LevelLoaderErrorUICopyErrInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.LevelLoaderErrorUICopyErrInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_DefaultString
+      value: core.ui.LevelLoaderErrorUICopyErrInfo
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
 --- !u!224 &6684652191702049775 stripped
@@ -923,6 +935,18 @@ PrefabInstance:
     - target: {fileID: 2163045131142455083, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Name
       value: ButtonSubmitBug
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_Text
+      value: core.ui.LevelLoaderErrorUISubmitBug
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.LevelLoaderErrorUISubmitBug
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_DefaultString
+      value: core.ui.LevelLoaderErrorUISubmitBug
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
@@ -1120,6 +1144,18 @@ PrefabInstance:
     - target: {fileID: 1625527765498334793, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 10.6658
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+      propertyPath: m_Text
+      value: core.ui.QuitToMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+      propertyPath: m_ResourceKey
+      value: core.ui.QuitToMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+      propertyPath: m_DefaultString
+      value: core.ui.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_Pivot.x
