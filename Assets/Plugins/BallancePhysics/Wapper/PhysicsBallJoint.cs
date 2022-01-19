@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
+  [SLua.CustomLuaClass]
   [AddComponentMenu("BallancePhysics/PhysicsBallJoint")]
   public class PhysicsBallJoint : PhysicsConstraintBase
   {

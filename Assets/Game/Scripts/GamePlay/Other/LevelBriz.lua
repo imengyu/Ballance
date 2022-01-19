@@ -1,8 +1,8 @@
 local Time = UnityEngine.Time
 local Color = UnityEngine.Color
 
-local GamePackage = Ballance2.Sys.Package.GamePackage
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GamePackage = Ballance2.Package.GamePackage
+local GameSoundType = Ballance2.Services.GameSoundType
 
 ---闪电控制管理器
 ---@class LevelBriz : GameLuaObjectHostClass

@@ -2,7 +2,7 @@ local Vector2 = UnityEngine.Vector2
 local Renderer = UnityEngine.Renderer
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GameSoundType = Ballance2.Services.GameSoundType
 
 ---变球器控制器
 ---@class TranfoAminControl : GameLuaObjectHostClass

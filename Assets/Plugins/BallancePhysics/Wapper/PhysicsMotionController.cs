@@ -5,6 +5,7 @@ using BallancePhysics.Api;
 
 namespace BallancePhysics.Wapper
 {
+  [SLua.CustomLuaClass]
   [AddComponentMenu("BallancePhysics/PhysicsMotionController")]
   [DefaultExecutionOrder(40)]
   [DisallowMultipleComponent]

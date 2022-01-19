@@ -15,7 +15,7 @@ BallSoundManager = ClassicObject:extend()
 BallSoundCollData = {}
 
 local TAG = 'BallSoundManager'
-local GamePackage = Ballance2.Sys.Package.GamePackage
+local GamePackage = Ballance2.Package.GamePackage
 local Log = Ballance2.Utils.Log
 
 function BallSoundManager:new() 

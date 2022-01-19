@@ -1,6 +1,6 @@
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 
 ---节管理器
 ---@class SectorManager : GameLuaObjectHostClass

@@ -55,8 +55,19 @@ namespace SLua
             add(typeof(System.Xml.XmlWriterSettings), null);
 
             add(typeof(UnityEngine.Input), null);
-            add(typeof(QuickOutline), null);
-            
+            add(typeof(BallancePhysics.Wapper.PhysicsBallJoint), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsComponent), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsConstraint), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsConstraintBase), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsEnvironment), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsEnvironment), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsFixedConstraint), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsForce), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsHinge), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsMotionController), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsObject), null);
+            add(typeof(BallancePhysics.Wapper.PhysicsSpring), null);
+
             // add your custom class here
             // add( type, typename)
             // type is what you want to export

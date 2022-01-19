@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
+  [SLua.CustomLuaClass]
   [AddComponentMenu("BallancePhysics/PhysicsHinge")]
   public class PhysicsHinge : PhysicsConstraintBase
   {

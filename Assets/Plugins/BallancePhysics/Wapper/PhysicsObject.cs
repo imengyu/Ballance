@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace BallancePhysics.Wapper
 {
+  [SLua.CustomLuaClass]
   [AddComponentMenu("BallancePhysics/PhysicsObject")]
   [DefaultExecutionOrder(20)]
   [DisallowMultipleComponent]

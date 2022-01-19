@@ -1,7 +1,6 @@
 local Vector3 = UnityEngine.Vector3
 local Quaternion = UnityEngine.Quaternion
 local Time = UnityEngine.Time
-local Log = Ballance2.Utils.Log
 local CamFollow = Ballance2.Game.CamFollow
 
 CamRotateType = {

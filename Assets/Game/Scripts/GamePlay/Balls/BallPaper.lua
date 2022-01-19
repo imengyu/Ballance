@@ -1,4 +1,4 @@
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GameSoundType = Ballance2.Services.GameSoundType
 local CommonUtils = Ballance2.Utils.CommonUtils
 local Vector3 = UnityEngine.Vector3
 

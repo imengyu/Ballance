@@ -5,7 +5,7 @@
 
 ]]--
 
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GameSoundType = Ballance2.Services.GameSoundType
 local Vector3 = UnityEngine.Vector3
 local Yield = UnityEngine.Yield
 local Time = UnityEngine.Time

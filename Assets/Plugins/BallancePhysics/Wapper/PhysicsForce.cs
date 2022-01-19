@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
+  [SLua.CustomLuaClass]
   [AddComponentMenu("BallancePhysics/PhysicsForce")]
   public class PhysicsForce : PhysicsComponent
   {

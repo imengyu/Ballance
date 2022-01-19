@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace BallancePhysics.Wapper
 {
+  [SLua.CustomLuaClass]
   [AddComponentMenu("BallancePhysics/PhysicsEnvironment")]
   [DefaultExecutionOrder(10)]
   [DisallowMultipleComponent]

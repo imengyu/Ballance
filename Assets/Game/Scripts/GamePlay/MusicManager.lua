@@ -1,5 +1,5 @@
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
-local Log = Ballance2.Utils.Log
+local GameSoundType = Ballance2.Services.GameSoundType
+local Log = Ballance2.Log
 local CommonUtils = Ballance2.Utils.CommonUtils
 
 ---背景音乐管理器

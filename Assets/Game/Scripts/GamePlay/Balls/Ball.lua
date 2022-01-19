@@ -1,4 +1,4 @@
-local GameSoundType = Ballance2.Sys.Services.GameSoundType
+local GameSoundType = Ballance2.Services.GameSoundType
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local MeshFilter = UnityEngine.MeshFilter
 local Table = require('Table')

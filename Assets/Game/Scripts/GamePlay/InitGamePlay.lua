@@ -1,5 +1,5 @@
-local CloneUtils = Ballance2.Sys.Utils.CloneUtils
-local Log = Ballance2.Utils.Log
+local CloneUtils = Ballance2.Utils.CloneUtils
+local Log = Ballance2.Log
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 
@@ -33,7 +33,7 @@ function GamePlayInit(callback)
   
   coroutine.resume(coroutine.create(function()
     --GamePlayUI
-    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.PackageManager:GetPrefabAsset('__core.ui__/GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
+    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
     Yield(WaitForSeconds(0.05))
     GamePlayUIGameObject:SetActive(false)
 
