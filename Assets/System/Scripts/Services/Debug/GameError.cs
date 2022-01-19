@@ -61,6 +61,7 @@ namespace Ballance2.Services.Debug
     EnvBindCheckFailed,
     OnlyCanUseInEditor,
     PrefabNotFound,
+    PackageNotFound,
   }
 
   /// <summary>
@@ -116,6 +117,7 @@ namespace Ballance2.Services.Debug
         case GameError.SystemPackageNotLoad: return "系统包未加载。";
         case GameError.SystemNotInit: return "系统未初始化。";
         case GameError.SystemPackageLoadFailed: return "系统包加载失败，这可能是当前版本存在非正式的修改，尝试下载最新版本解决问题。";
+        case GameError.PackageNotFound: return "未找到模块包。";
         default: return "未知错误: " + err.ToString();
       }
     }

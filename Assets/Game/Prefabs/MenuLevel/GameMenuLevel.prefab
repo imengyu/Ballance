@@ -256,7 +256,7 @@ MonoBehaviour:
   Name: I_Zone_LiLiang_Innen
   LuaClassName: MouseSelect
   LuaFileName: 
-  LuaPackageName: core.menulevel
+  LuaPackageName: core
   LuaInitialVars:
   - Type: 19
     Name: MessageName
@@ -570,7 +570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af42d4b464ecf7d4da58797a8a9095b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: GameUIGloobalMessageCenter
+  MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
 --- !u!1 &162136552686541708
 GameObject:
@@ -711,7 +711,7 @@ MonoBehaviour:
   Name: I_Zone_LiLiang_Innen
   LuaClassName: MouseSelect
   LuaFileName: 
-  LuaPackageName: core.menulevel
+  LuaPackageName: core
   LuaInitialVars:
   - Type: 19
     Name: MessageName
@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af42d4b464ecf7d4da58797a8a9095b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: GameUIGloobalMessageCenter
+  MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
 --- !u!1 &176612183018112596
 GameObject:
@@ -3587,7 +3587,7 @@ MonoBehaviour:
   Name: I_Zone_LiLiang_Innen
   LuaClassName: MouseSelect
   LuaFileName: 
-  LuaPackageName: core.menulevel
+  LuaPackageName: core
   LuaInitialVars:
   - Type: 19
     Name: MessageName
@@ -3901,7 +3901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af42d4b464ecf7d4da58797a8a9095b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: GameUIGloobalMessageCenter
+  MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
 --- !u!1 &5742607773671136906
 GameObject:

@@ -195,12 +195,14 @@ namespace Ballance2.Package
 
       if((this.flag & FLAG_PACK_NOT_UNLOADABLE) == FLAG_PACK_NOT_UNLOADABLE && (flag & FLAG_PACK_NOT_UNLOADABLE) != FLAG_PACK_NOT_UNLOADABLE) {
         Log.E(TAG, "Not allow set FLAG_PACK_NOT_UNLOADABLE flag for not unloadable packages.");
-        flag &= FLAG_PACK_NOT_UNLOADABLE;
+        flag |= FLAG_PACK_NOT_UNLOADABLE;
       }
 
       //internal
-      if(flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
+      if(flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME) {
         LoadPackageCodeBase();
+        return;
+      }
 
       this.flag = flag;
     }
@@ -242,8 +244,8 @@ namespace Ballance2.Package
           }
         }
 
-        flag &= FLAG_CODE_LUA_PACK;
-        flag &= FLAG_CODE_BASE_LOADED;
+        flag |= FLAG_CODE_LUA_PACK;
+        flag |= FLAG_CODE_BASE_LOADED;
         return true;
       }
       else if (CodeType == GamePackageCodeType.CSharp)
@@ -280,8 +282,8 @@ namespace Ballance2.Package
           return (bool)b;
         }
         
-        flag &= FLAG_CODE_CS_PACK;
-        flag &= FLAG_CODE_BASE_LOADED;
+        flag |= FLAG_CODE_CS_PACK;
+        flag |= FLAG_CODE_BASE_LOADED;
         return true;
       }
       else
@@ -308,7 +310,8 @@ namespace Ballance2.Package
         return false;
       }
 
-      flag &= FLAG_CODE_ENTRY_CODE_RUN;
+      flag |= FLAG_CODE_ENTRY_CODE_RUN;
+
       if(PackageEntry.OnLoad != null)
         return PackageEntry.OnLoad.Invoke(this);
       return true;
@@ -330,7 +333,7 @@ namespace Ballance2.Package
         return false;
       }
 
-      flag &= FLAG_CODE_UNLOD_CODE_RUN;
+      flag |= FLAG_CODE_UNLOD_CODE_RUN;
       if(PackageEntry.OnBeforeUnLoad != null)
         return PackageEntry.OnBeforeUnLoad.Invoke(this);
       return true;

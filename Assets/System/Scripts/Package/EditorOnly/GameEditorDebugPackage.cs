@@ -86,7 +86,8 @@ namespace Ballance2.Package
         if (index > 0)
           path = path.Substring(index);
 
-        fileList.Add(NextFile.Name, path);
+        if(!fileList.ContainsKey(NextFile.Name))
+          fileList.Add(NextFile.Name, path);
       }
     }
     private string GetFullPathByName(string name)

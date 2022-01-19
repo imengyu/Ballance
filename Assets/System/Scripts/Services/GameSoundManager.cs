@@ -32,7 +32,7 @@ namespace Ballance2.Services
   {
     #region 初始化和定义
 
-    public const string TAG = "SoundManager";
+    public const string TAG = "GameSoundManager";
 
     public GameSoundManager() : base(TAG) { }
 

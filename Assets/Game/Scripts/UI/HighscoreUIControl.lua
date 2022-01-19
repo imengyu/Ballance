@@ -1,5 +1,5 @@
 local Text = UnityEngine.UI.Text
-local I18N = Ballance2.Services.Language.I18N
+local I18N = Ballance2.Services.I18N.I18N
 local Table = require('Table')
 
 ---分数统计界面控制

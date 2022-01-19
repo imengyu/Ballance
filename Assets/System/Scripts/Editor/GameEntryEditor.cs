@@ -15,11 +15,9 @@ public class GameEntryEditor : Editor
     private SerializedProperty GameGlobalErrorUI;
     private SerializedProperty GlobalGamePermissionTipDialog;
     private SerializedProperty GlobalGameUserAgreementTipDialog;
-    private SerializedProperty GlobalGameWaitDebuggerTipDialog;
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialog;
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialogText;
-    private SerializedProperty GlobalGameWaitDebuggerTipText;
-    private SerializedProperty GlobalGameWaitDebuggerTipOpenButton;
+    private SerializedProperty GlobalGameScriptErrDialog;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
@@ -44,11 +42,9 @@ public class GameEntryEditor : Editor
         GameGlobalErrorUI = serializedObject.FindProperty("GameGlobalErrorUI");
         GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
         GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
-        GlobalGameWaitDebuggerTipDialog = serializedObject.FindProperty("GlobalGameWaitDebuggerTipDialog");
+        GlobalGameScriptErrDialog = serializedObject.FindProperty("GlobalGameScriptErrDialog");
         GlobalGameSysErrMessageDebuggerTipDialog = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialog");
         GlobalGameSysErrMessageDebuggerTipDialogText = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialogText");
-        GlobalGameWaitDebuggerTipText = serializedObject.FindProperty("GlobalGameWaitDebuggerTipText");
-        GlobalGameWaitDebuggerTipOpenButton = serializedObject.FindProperty("GlobalGameWaitDebuggerTipOpenButton");
 
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
@@ -138,11 +134,9 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GameGlobalErrorUI);
         EditorGUILayout.PropertyField(GlobalGamePermissionTipDialog);
         EditorGUILayout.PropertyField(GlobalGameUserAgreementTipDialog);
-        EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipDialog);
+        EditorGUILayout.PropertyField(GlobalGameScriptErrDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialogText);
-        EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipOpenButton);
-        EditorGUILayout.PropertyField(GlobalGameWaitDebuggerTipText);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();

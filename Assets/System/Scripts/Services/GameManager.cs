@@ -138,19 +138,21 @@ namespace Ballance2.Services
       GameMainEnv = new LuaSvr();      
       GameMainEnv.init(null, () =>
       {
-          Profiler.EndSample();
-          GameMainLuaState = LuaSvr.mainState;
-          GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-          GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
-            finish.Invoke();
-            return false;
-          });
-          GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
-            //Init Debug
-            if (DebugMode)
-              DebugInit.InitSystemDebug();
-            return false;
-          });
+        GameMainLuaState = LuaSvr.mainState;
+        GameMainLuaState.errorDelegate += (err) => GameErrorChecker.LuaStateErrReport(GameMainLuaState, err);
+
+        Profiler.EndSample();
+        GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
+        GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
+          finish.Invoke();
+          return false;
+        });
+        GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
+          //Init Debug
+          if (DebugMode)
+            DebugInit.InitSystemDebug();
+          return false;
+        });
       });
     }
 
@@ -184,6 +186,8 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator InitAsysc()
     {
+      GameErrorChecker.EnterStrictMode();
+
       if(GameEntry.Instance.DebugEnableLuaDebugger)
       {
         Profiler.BeginSample("GameManagerStartDebugger");

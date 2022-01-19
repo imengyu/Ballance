@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af42d4b464ecf7d4da58797a8a9095b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCenterName: GameUIGloobalMessageCenter
+  MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
 --- !u!1 &2889718997724708642
 GameObject:
@@ -440,7 +440,7 @@ MonoBehaviour:
   Name: 
   LuaClassName: WinScoreUIControl
   LuaFileName: Assets/Packages/core.ui/Scripts/WinScoreUIControl
-  LuaPackageName: core.ui
+  LuaPackageName: core
   LuaInitialVars:
   - Type: 15
     Name: HighlightBar1

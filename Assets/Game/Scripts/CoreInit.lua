@@ -1,6 +1,3 @@
-local Intro = require('IntroInit')
-local MenuLevel = require('MenuLevelInit')
-
 local GameManager = Ballance2.Services.GameManager
 local GamePackage = Ballance2.Package.GamePackage
 local GameEventNames = Ballance2.Base.GameEventNames
@@ -18,11 +15,14 @@ require('ConstLinks')
 require('GameLayers')
 require('GamePhysBall')
 require('GamePhysFloor')
-require('GameCoreLibInit')
 require('LevelBuilder') 
 require('InitGamePlay')
 require('InitLevelBuilder')
 require('InitBulitInModuls')
+
+local Intro = require('IntroInit')
+local MenuLevel = require('MenuLevelInit')
+local UIInit = require('UIInit')
 
 local TAG = 'Core'
 
@@ -53,6 +53,7 @@ Game = {
 
 function CoreInit()
   Log.D(TAG, 'CoreInit')
+  UIInit.Init()
   Intro.Init()
   MenuLevel.Init()
 
@@ -144,6 +145,7 @@ function CoreUnload()
   Log.D(TAG, 'CoreUnload')
   Intro.Unload()
   MenuLevel.Unload()
+  UIInit.Unload()
   GamePlayUnload()
   LevelBuilderDestroy()
 end

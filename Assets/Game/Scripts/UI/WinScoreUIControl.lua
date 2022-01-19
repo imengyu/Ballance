@@ -3,7 +3,7 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 local WaitUntil = UnityEngine.WaitUntil
 local Text = UnityEngine.UI.Text
 local GameSoundType = Ballance2.Services.GameSoundType
-local I18N = Ballance2.Services.I18N
+local I18N = Ballance2.Services.I18N.I18N
 
 WinScoreUIControl = ClassicObject:extend()
 

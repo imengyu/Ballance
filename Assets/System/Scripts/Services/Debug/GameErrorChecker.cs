@@ -1,6 +1,8 @@
 ﻿using Ballance2.Entry;
+using Ballance2.Services.LuaService.Lua;
 using Ballance2.UI.CoreUI;
 using Ballance2.Utils;
+using SLua;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -85,7 +87,49 @@ namespace Ballance2.Services.Debug
       return GameErrorInfo.GetErrorMessage(LastError);
     }
 
+    private static int StrictModeStack = 0;
 
+    /// <summary>
+    /// 获取当前是否是严格模式
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前是否是严格模式")]
+    public static bool StrictMode { get; private set; }
+    /// <summary>
+    /// 进入严格模式。严格模式中如果Lua代码出现异常，则将立即停止游戏。
+    /// </summary>
+    [LuaApiDescription("进入严格模式。严格模式中如果Lua代码出现异常，则将立即停止游戏。")]
+    public static void EnterStrictMode()
+    {
+      StrictModeStack++;
+      StrictMode = true;
+    }
+    /// <summary>
+    /// 退出严格模式
+    /// </summary>
+    [LuaApiDescription("退出严格模式")]
+    public static void QuitStrictMode()
+    {
+      if(StrictModeStack > 0)
+        StrictModeStack--;
+      StrictMode = StrictModeStack == 0;
+    }
+
+    internal static void LuaStateErrReport(LuaState state, string err) {
+      if(StrictMode) 
+      {
+        //尝试分析，如果错误是运行内核包发出，则显示带报错的代码，否则显示普通错误对话框
+        var fileName = LuaUtils.GetLuaCallerFileName(state.L);
+        var packName = LuaGlobalApi.PackageNameByLuaFilePath(fileName);
+        if(packName == GamePackageManager.CORE_PACKAGE_NAME || packName == GamePackageManager.SYSTEM_PACKAGE_NAME) {
+          string errDetail = string.Format("Lua代码异常：\n发生错误的文件：{0} 模块：{1}\n",fileName, packName) + err;
+          ThrowGameError(GameError.ExecutionFailed, errDetail);
+        }
+        else 
+          ShowScriptErrorMessage(fileName, packName, err);
+      } 
+      else Log.E("LuaState", err);
+    }
     internal static void Init() {
       gameErrorLogPools = new List<string>();
       gameErrorLogObserver = Log.RegisterLogObserver(LogObserver, LogLevel.Error | LogLevel.Warning);
@@ -158,6 +202,27 @@ namespace Ballance2.Services.Debug
           GameGlobalMask.SetActive(false);
         entry.GlobalGameSysErrMessageDebuggerTipDialogText.text = message;
         entry.GlobalGameSysErrMessageDebuggerTipDialog.SetActive(true);
+      }
+    }
+    /// <summary>
+    /// 显示脚本错误信息提示提示对话框
+    /// </summary>
+    /// <param name="message">错误信息</param>
+    [LuaApiDescription("显示脚本错误信息提示提示对话框")]
+    [LuaApiParamDescription("message", "错误信息")]
+    public static void ShowScriptErrorMessage(string fileName, string packName, string message)
+    {
+      GameEntry entry = GameEntry.Instance;
+      if(entry) {
+        GameSystem.ForceInterruptGame();
+
+        var GameGlobalMask = GameObject.Find("GameGlobalMask");
+        if(GameGlobalMask != null)
+          GameGlobalMask.SetActive(false);
+
+        string err = string.Format("Lua代码异常：\n发生错误的文件：{0} 模块：{1}\n",fileName, packName) + message;
+        entry.GlobalGameScriptErrDialog.Show(err);
+        UnityEngine.Debug.LogError(err);
       }
     }
   }

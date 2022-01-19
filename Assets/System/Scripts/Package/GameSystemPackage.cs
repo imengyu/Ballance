@@ -12,6 +12,7 @@
 */
 
 using System.IO;
+using System.Collections.Generic;
 using Ballance2.Config;
 using Ballance2.Services;
 using Ballance2.Utils;
@@ -28,6 +29,26 @@ namespace Ballance2.Package
       SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
     }
 
+    
+#if UNITY_EDITOR
+    private Dictionary<string, string> sEditorLuaPath = new Dictionary<string, string>();
+    private void GenerateEditorLuaPath() {
+      const string folderSrc = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH;
+      DirectoryInfo direction = new DirectoryInfo(folderSrc);
+      FileInfo[] files = direction.GetFiles("*.lua", SearchOption.AllDirectories);
+      for (int i = 0; i < files.Length; i++)
+      {
+        var rel = files[i].FullName.Replace('\\', '/');
+        var fileName = Path.GetFileName(rel);
+        var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
+        if(!sEditorLuaPath.ContainsKey(fileName))
+          sEditorLuaPath.Add(fileName, rel);
+        if(!sEditorLuaPath.ContainsKey(fileNameNoExt))
+          sEditorLuaPath.Add(fileNameNoExt, rel);
+      } 
+    }
+#endif
+
     public override T GetAsset<T>(string pathorname)
     {
       return Resources.Load<T>(pathorname);
@@ -35,6 +56,7 @@ namespace Ballance2.Package
     public override CodeAsset GetCodeAsset(string pathorname)
     {
 #if UNITY_EDITOR
+      GenerateEditorLuaPath();
       if(PathUtils.IsAbsolutePath(pathorname) && File.Exists(pathorname)) {
         var bytes = FileUtils.ReadAllToBytes(pathorname);
         var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
@@ -46,6 +68,23 @@ namespace Ballance2.Package
           var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(path);
           return new CodeAsset(bytes, path, realtivePath, path);
         }
+        
+        var fileName = Path.GetFileName(path);
+        if(sEditorLuaPath.ContainsKey(fileName)) {
+          var pathIner = sEditorLuaPath[fileName];
+          var bytes = FileUtils.ReadAllToBytes(pathIner);
+          var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathIner);
+          return new CodeAsset(bytes, pathIner, realtivePath, pathIner);
+        }
+
+        var fileNameNoExt = Path.GetFileNameWithoutExtension(path);
+        if(sEditorLuaPath.ContainsKey(fileName)) {
+          var pathIner = sEditorLuaPath[fileName];
+          var bytes = FileUtils.ReadAllToBytes(pathIner);
+          var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathIner);
+          return new CodeAsset(bytes, pathIner, realtivePath, pathIner);
+        }
+
         return null;
       }
 #else

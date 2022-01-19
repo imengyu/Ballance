@@ -1,7 +1,7 @@
 local GameManager = Ballance2.Services.GameManager
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
-local I18NProvider = Ballance2.Services.Language.I18NProvider
+local I18NProvider = Ballance2.Services.I18NProvider
 
 local Screen = UnityEngine.Screen
 local QualitySettings = UnityEngine.QualitySettings

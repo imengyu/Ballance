@@ -11,7 +11,7 @@ local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local DebugUtils = Ballance2.Utils.DebugUtils
 local StringUtils = Ballance2.Utils.StringUtils
 local Log = Ballance2.Log
-local I18N = Ballance2.Services.Language.I18N
+local I18N = Ballance2.Services.I18N.I18N
 
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local TiggerTester = Ballance2.Game.TiggerTester
@@ -63,7 +63,7 @@ function LevelBuilder:Start()
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY')
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_START')
 
-    self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.PackageManager:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', false)
+    self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', false)
     self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.UI.Core.Controls.Progress) ---@type Progress
     self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
     self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:Find('PanelFailed').gameObject
