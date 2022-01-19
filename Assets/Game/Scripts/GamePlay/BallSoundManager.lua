@@ -16,7 +16,7 @@ BallSoundCollData = {}
 
 local TAG = 'BallSoundManager'
 local GamePackage = Ballance2.Package.GamePackage
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 
 function BallSoundManager:new() 
   GamePlay.BallSoundManager = self

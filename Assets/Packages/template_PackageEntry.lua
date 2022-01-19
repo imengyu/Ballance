@@ -2,7 +2,7 @@
 
 -- 这里来导入C#类定义（一个模块定义一次即可）
 local GameManager = Ballance2.Sys.GameManager
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 
 --[[
   使用slua的 

@@ -10,7 +10,7 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 local WaitUntil = UnityEngine.WaitUntil
 local Vector3 = UnityEngine.Vector3
 local AudioRolloffMode = UnityEngine.AudioRolloffMode
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 
 ---游戏管理器
 ---@class GamePlayManager : GameLuaObjectHostClass

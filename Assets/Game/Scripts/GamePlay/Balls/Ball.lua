@@ -2,7 +2,7 @@ local GameSoundType = Ballance2.Services.GameSoundType
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local MeshFilter = UnityEngine.MeshFilter
 local Table = require('Table')
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 
 ---Ballance 基础球定义
 ---可继承此类来重写你自己的球

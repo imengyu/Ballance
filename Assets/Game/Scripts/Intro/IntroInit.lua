@@ -14,7 +14,7 @@ local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type Gam
 local GameSoundManager = GameManager.GetSystemService('GameSoundManager') ---@type GameSoundManager
 local GameSoundType = Ballance2.Services.GameSoundType
 local GamePackage = Ballance2.Package.GamePackage
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 

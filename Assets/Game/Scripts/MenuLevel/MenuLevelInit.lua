@@ -11,7 +11,7 @@ mengyu
 
 local GameManager = Ballance2.Services.GameManager
 local GamePackage = Ballance2.Package.GamePackage
-local Log = Ballance2.Utils.Log
+local Log = Ballance2.Log
 local GameMenuLevel = nil
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local CloneUtils = Ballance2.Utils.CloneUtils
