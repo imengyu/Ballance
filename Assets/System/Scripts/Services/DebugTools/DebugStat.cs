@@ -1,10 +1,12 @@
-﻿using Ballance2.Base;
+﻿using Ballance2;
+using Ballance2.Base;
 using Ballance2.Config;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.UI.Core;
 using Ballance2.Utils;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -42,6 +44,8 @@ class DebugStat : MonoBehaviour
   private Window WindowSystemInfo = null;
   private Window WindowStats = null;
 
+  private int logObserver = 0;
+
   private Text DebugStatsText;
   private Text DebugSysinfoText;
 
@@ -51,25 +55,34 @@ class DebugStat : MonoBehaviour
   {
     var SystemPackage = GamePackage.GetSystemPackage();
     GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>();
-    //Profiler.enabled = true;
+    StatText.text = "";
 
     //操作
     GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowSystemInfo", "DebugStat", (param) => {
       WindowSystemInfo.SetVisible((bool)param[0]);
       return GameActionCallResult.SuccessResult;
     }, new string[] { "bool" });
-      GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowStats", "DebugStat", (param) => {
+    GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowStats", "DebugStat", (param) => {
       WindowStats.SetVisible((bool)param[0]);
       return GameActionCallResult.SuccessResult;
     }, new string[] { "bool" });
+
+    GameManager.Instance.GameDebugCommandServer.RegisterCommand("debug-stat", (keyword, fullCmd, argsCount, args) => {
+      WindowStats.SetVisible(true);
+      return true;
+    }, 0, "显示系统状态窗口");
+    GameManager.Instance.GameDebugCommandServer.RegisterCommand("debug-sysinfo", (keyword, fullCmd, argsCount, args) => {
+      WindowSystemInfo.SetVisible(true);
+      return true;
+    }, 0, "显示系统状态窗口");
 
     //Window
     var DebugSysinfoWindow = CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("DebugSysinfoWindow"), "DebugSysinfoWindow").GetComponent<RectTransform>();
     var DebugStatsWindow = CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("DebugStatsWindow"), "DebugStatsWindow").GetComponent<RectTransform>();
 
-    WindowSystemInfo = GameUIManager.CreateWindow("System info", DebugSysinfoWindow, false, 9, -309, 385, 306);
+    WindowSystemInfo = GameUIManager.CreateWindow("System info", DebugSysinfoWindow, false, 9, -309, 585, 406);
     WindowSystemInfo.CloseAsHide = true;
-    WindowStats = GameUIManager.CreateWindow("Statistics", DebugStatsWindow, false, 9, -71, 250, 240);
+    WindowStats = GameUIManager.CreateWindow("Statistics", DebugStatsWindow, false, 9, -71, 350, 340);
     WindowStats.CloseAsHide = true;
     WindowStats.CanResize = false;
 
@@ -78,9 +91,16 @@ class DebugStat : MonoBehaviour
     DebugSysinfoText = DebugSysinfoWindow.transform.Find("DebugSysinfoText").GetComponent<Text>();
 
     LoadSysinfoWindowData();
+
+    //Log
+    logObserver = Log.RegisterLogObserver((LogLevel level, string tag, string message, string stackTrace) => AppendLoadToStat(level, tag, message), LogLevel.All);
   }
   private void OnDestroy()
   {
+    if (logObserver > 0) {
+      Log.UnRegisterLogObserver(logObserver);
+      logObserver = 0;
+    }
     if (GameManager.Instance != null)
     {
       GameManager.Instance.GameActionStore.UnRegisterAction("DbgStatShowSystemInfo");
@@ -129,21 +149,24 @@ class DebugStat : MonoBehaviour
 
       if (WindowStats.GetVisible())
         UpdateStatsWindow();
-
-      sb.Clear();
-      sb.Append("Mem A:");
-      sb.Append(allocatedMemory);
-      sb.Append("/U:");
-      sb.Append(usedHeapSizeLong);
-      sb.Append("/R:");
-      sb.Append(monoHeapSizeLong);
-
-      if (StatText != null) StatText.text = sb.ToString();
     }
   }
 
   private bool betterMemorySize = true;
+  private List<string> logStatItems = new List<string>();
 
+  private void AppendLoadToStat(LogLevel level, string tag, string message) {
+    if(logStatItems.Count >= 10) 
+      logStatItems.RemoveAt(0);
+
+    string str = string.Format("<color=#{0}>{1}/{2} {3}</color>", Log.GetLogColor(level), Log.LogLevelToString(level), tag, message);
+    logStatItems.Add(str);
+
+    StringBuilder sb = new StringBuilder();
+    foreach(var s in logStatItems) 
+      sb.AppendLine(s);
+    StatText.text = sb.ToString();
+  }
   private void UpdateStatsWindow()
   {
     StringBuilder sb = new StringBuilder();

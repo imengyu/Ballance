@@ -160,8 +160,8 @@ namespace Ballance2
           child.gameObject.SetActive(true);
           child.anchoredPosition = new Vector2(0, -h);
           UIAnchorPosUtils.SetUILeftBottom(child, 10, UIAnchorPosUtils.GetUIBottom(child));
-          child.sizeDelta = new Vector2(0, 15);
-          h = h + 15;
+          child.sizeDelta = new Vector2(0, 20);
+          h = h + 20;
         }
         else
           child.gameObject.SetActive(false);

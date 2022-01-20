@@ -32,6 +32,22 @@ namespace Ballance2.Services
 
     public GamePoolManager() : base(TAG) { }
 
+    [SLua.DoNotToLua]
+    public override bool Initialize()
+    {
+      base.Initialize();
+      return true;
+    }
+    [SLua.DoNotToLua]
+    public override void Destroy()
+    { 
+      m_ObjectPools.Clear();
+      foreach(var o in m_GameObjectPools)
+        o.Value.Destroy();
+      m_GameObjectPools.Clear();
+      base.Destroy();
+    }
+
     private Transform m_PoolRootObject = null;
     private Dictionary<string, object> m_ObjectPools = new Dictionary<string, object>();
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
@@ -50,13 +66,6 @@ namespace Ballance2.Services
         }
         return m_PoolRootObject;
       }
-    }
-
-    private void OnDestroy() {
-      m_ObjectPools.Clear();
-      foreach(var o in m_GameObjectPools)
-        o.Value.Destroy();
-      m_GameObjectPools.Clear();
     }
 
     /// <summary>

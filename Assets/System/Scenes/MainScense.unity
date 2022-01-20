@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: c796426c90cfa0a4f83d12aeb0ef3460, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 82b88ccd8b7af0c48bfb50fdc9d33e29, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -482,11 +482,15 @@ MonoBehaviour:
     Name: GameUIPageBallanceTransparent
   - Object: {fileID: 6506292068738510000, guid: 943501b38e03e1a4a9dbfe8a82790ef2, type: 3}
     Name: GameUIPageBallanceCommon
+  - Object: {fileID: 1020157385538058060, guid: 8ac8fe753b64b0343a6cab76c4a8f00c, type: 3}
+    Name: GameDebugStats
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
   - Object: {fileID: 24100000, guid: 17d6a9af9fa36a846b6529f6e030b86a, type: 2}
     Name: GameUIAudioMixer
+  - Object: {fileID: 12800000, guid: 261dc829b44835747a23152f3c6f5787, type: 3}
+    Name: FontRebotoMono
 --- !u!114 &876097598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,8 +510,12 @@ MonoBehaviour:
   DebugLuaDebugger: 1
   DebugType: 0
   DebugInitPackages: []
-  DebugCustomEntryEvent: DebugEntry
-  DebugCustomEntries: []
+  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
+  DebugCustomEntries:
+  - CoreDebugLuaEntry
+  - CoreDebugGamePlay
+  - CoreDebugLevelBuliderEntry
+  - CoreDebugLevelEnvironmentEntry
   DebugLoadCustomPackages: 1
   DebugSkipIntro: 0
   GameBaseCamera: {fileID: 963194227}
@@ -860,7 +868,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1024, y: 768}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

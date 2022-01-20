@@ -80,7 +80,8 @@ namespace Ballance2.Package
       RunPackageBeforeUnLoadCode();
 
       //GameManager.DestroyManagersInMod(PackageName);
-      GameManager.GameMediator.UnloadAllPackageActionStore(this);
+      if(GameManager.GameMediator)
+        GameManager.GameMediator.UnloadAllPackageActionStore(this);
       HandlerClear();
       ActionClear();
 

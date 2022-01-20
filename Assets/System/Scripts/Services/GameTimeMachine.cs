@@ -28,6 +28,21 @@ namespace Ballance2.Services
 
     public GameTimeMachine() : base(TAG) {}
 
+    [SLua.DoNotToLua]
+    public override bool Initialize()
+    {
+      base.Initialize();
+      return true;
+    }
+    [SLua.DoNotToLua]
+    public override void Destroy()
+    { 
+      updates.Clear();
+      lateUpdates.Clear();
+      fixUpdates.Clear();
+      base.Destroy();
+    }
+
     /// <summary>
     /// 注册时的更新实例，使用此实例可以取消注册更新函数。
     /// </summary>

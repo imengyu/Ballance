@@ -678,11 +678,13 @@ namespace Ballance2.Services
       PrefabUIConfirmWindow = GameStaticResourcesPool.FindStaticPrefabs("PrefabConfirmWindow");
       PrefabUIWindow = GameStaticResourcesPool.FindStaticPrefabs("PrefabWindow");
 
-      GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE);
+      if(GameManager.GameMediator)
+        GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE);
     }
     private void DestroyWindowManagement()
     {
-      GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE);
+      if(GameManager.GameMediator)
+        GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE);
 
       if (managedWindows != null)
       {

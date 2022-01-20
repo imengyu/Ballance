@@ -71,10 +71,12 @@ namespace Ballance2.Services
       packagesLoadStatus = null;
       loadedPackages = null;
 
-      GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED);
-      GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS);
-      GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
-      GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
+      if(GameManager.GameMediator) {
+        GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED);
+        GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS);
+        GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED);
+        GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD);
+      }
     }
     [SLua.DoNotToLua]
     public override bool Initialize()
@@ -650,7 +652,8 @@ namespace Ballance2.Services
       //卸载
 
       //通知事件
-      GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD, "*", packageName, package);
+      if(GameManager.GameMediator)
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD, "*", packageName, package);
 
       package._Status = GamePackageStatus.NotLoad;
       package.Destroy();
@@ -696,7 +699,7 @@ namespace Ballance2.Services
     {
       List<string> packageNames = new List<string>(loadedPackages.Keys);
       foreach (string key in packageNames)
-        if (key != SYSTEM_PACKAGE_NAME)
+        if (key != SYSTEM_PACKAGE_NAME && key != CORE_PACKAGE_NAME)
           UnLoadPackage(key, true);
       packageNames.Clear();
     }

@@ -10,6 +10,7 @@ namespace Ballance2.DebugTools {
 
   class DebugInit {
     private static Window GlobalDebugWindow = null;
+    private static RectTransform GameDebugStatsArea = null;
     private static int F12KeyListen = 0;
 
     public static void InitSystemDebug() {
@@ -22,13 +23,13 @@ namespace Ballance2.DebugTools {
 
       //创建窗口
       var DebugWindow = GameStaticResourcesPool.FindStaticPrefabs("DebugWindow");
-      GlobalDebugWindow = GameUIManager.CreateWindow("Console", CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, "DebugWindow").transform as RectTransform, false, 9, -140, 600, 400);
+      GlobalDebugWindow = GameUIManager.CreateWindow("Console", CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, "DebugWindow").transform as RectTransform, false, 9, -140, 800, 600);
       GlobalDebugWindow.CloseAsHide = true;
       GlobalDebugWindow.WindowType = WindowType.TopWindow;
       GlobalDebugWindow.gameObject.tag = "DebugWindow";
 
       //创建输出窗口
-      
+      GameDebugStatsArea = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugStats"), "GameDebugStats", true);
       
       //F12 打开调试窗口
       F12KeyListen = GameUIManager.ListenKey(KeyCode.F12, (key, down) => {
@@ -42,8 +43,14 @@ namespace Ballance2.DebugTools {
       var GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>();
       GameUIManager.DeleteKeyListen(F12KeyListen);
 
-      if (GlobalDebugWindow != null) UnityEngine.Object.Destroy(GlobalDebugWindow);
-    
+      if (GlobalDebugWindow != null) {
+        UnityEngine.Object.Destroy(GlobalDebugWindow);
+        GlobalDebugWindow = null;
+      }
+      if (GameDebugStatsArea != null) {
+        UnityEngine.Object.Destroy(GameDebugStatsArea);
+        GameDebugStatsArea = null;
+      }
     }
   }
 
