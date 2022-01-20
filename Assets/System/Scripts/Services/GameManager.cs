@@ -192,8 +192,6 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator InitAsysc()
     {
-      GameErrorChecker.EnterStrictMode();
-
       if(GameEntry.Instance.DebugEnableLuaDebugger)
       {
         Profiler.BeginSample("GameManagerStartDebugger");
@@ -228,6 +226,8 @@ namespace Ballance2.Services
 
       //初始化宏定义
       LuaUtils.InitMacros(GameMainLuaState);
+
+      GameErrorChecker.EnterStrictMode();
 
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
       

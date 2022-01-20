@@ -95,9 +95,10 @@ namespace Ballance2.UI.Core
 
     public Button WindowButtonClose;
     public Button WindowButtonMin;
+    public Button WindowButtonMax;
+    public Button WindowButtonRestore;
     public Image WindowIconImage;
     public Image WindowTitleImage;
-    public Image MinButtonImage;
     public Text WindowTitleText;
     public RectTransform WindowClientArea;
     public RectTransform WindowTitle;
@@ -133,6 +134,14 @@ namespace Ballance2.UI.Core
       {
         if (WindowState == WindowState.Normal) WindowState = WindowState.Min;
         else WindowState = WindowState.Normal;
+      });
+      WindowButtonMax.onClick.AddListener(() =>
+      {
+        if (WindowState != WindowState.Max) WindowState = WindowState.Max;
+      });
+      WindowButtonRestore.onClick.AddListener(() =>
+      {
+        if (WindowState != WindowState.Normal) WindowState = WindowState.Normal;
       });
       EventTriggerListener.Get(gameObject).onDown = (g) =>
       {
@@ -309,7 +318,6 @@ namespace Ballance2.UI.Core
       {
         _CanMin = value;
         WindowButtonMin.gameObject.SetActive(_CanMin);
-        UIAnchorPosUtils.SetUILeft(WindowTitleText.rectTransform, _CanMin ? 46 : 25);
       }
     }
     /// <summary>
@@ -319,7 +327,10 @@ namespace Ballance2.UI.Core
     public bool CanMax
     {
       get { return _CanMax; }
-      set { _CanMax = value; }
+      set { 
+        _CanMax = value;
+        WindowButtonMax.gameObject.SetActive(_CanMax);
+      }
     }
     /// <summary>
     /// 点击窗口关闭按钮是否替换为隐藏窗口
@@ -342,11 +353,21 @@ namespace Ballance2.UI.Core
     }
 
     /// <summary>
+    /// 激活窗口，同 UIManager.ActiveWindow
+    /// </summary>
+    [LuaApiDescription("激活窗口，同 UIManager.ActiveWindow")]
+    public void ActiveWindow()
+    {
+      if (UIManager != null)
+        UIManager.ActiveWindow(this);
+    }
+    /// <summary>
     /// 关闭并销毁窗口
     /// </summary>
     [LuaApiDescription("关闭并销毁窗口")]
     public void Close()
     {
+      UpdateTaskBarState(false);
       onClose?.Invoke(windowId);
     }
     /// <summary>
@@ -359,6 +380,8 @@ namespace Ballance2.UI.Core
         WindowState = oldWindowState;
       else
         WindowState = WindowState.Normal;
+
+      UpdateTaskBarState(true);
 
       if (UIManager != null)
         UIManager.ActiveWindow(this);
@@ -386,6 +409,7 @@ namespace Ballance2.UI.Core
           -(Screen.height / 2 - WindowRectTransform.sizeDelta.y / 2));
     }
 
+    [SLua.CustomLuaClass]
     public delegate void WindowEventDelegate(int windowId);
 
     public WindowEventDelegate onClose;
@@ -397,18 +421,32 @@ namespace Ballance2.UI.Core
     private WindowState oldWindowState = WindowState.Hidden;
     private WindowState _WindowState = WindowState.Hidden;
 
+    private void UpdateTaskBarState(bool show) {
+      //更新状态栏小图标的状态
+      if(show) 
+        UIManager.SideTabBar.AddTab(this);
+      else 
+        UIManager.SideTabBar.RemoveTab(this);
+        
+    }
     private void UpdateWindowState()
     {
+      //更新状态
       switch (_WindowState)
       {
         case WindowState.Hidden:
           SetVisible(false);
+          UpdateTaskBarState(false);
           break;
         case WindowState.Normal:
           SetVisible(true);
-          MinButtonImage.rectTransform.eulerAngles = new Vector3(0, 0, -90);
+          UpdateTaskBarState(true);
           WindowTitleImage.sprite = TitleDefaultSprite;
           WindowClientArea.gameObject.SetActive(true);
+          if(CanMax) {
+            WindowButtonRestore.gameObject.SetActive(false);
+            WindowButtonMax.gameObject.SetActive(true);
+          }
           if (_CanResize) SizeDrag.gameObject.SetActive(true);
           if (oldWindowSize.x > 0 && oldWindowSize.y > 0)
           {
@@ -423,8 +461,11 @@ namespace Ballance2.UI.Core
           break;
         case WindowState.Max:
           SetVisible(true);
+          UpdateTaskBarState(true);
           WindowClientArea.gameObject.SetActive(true);
           WindowTitleImage.sprite = TitleDefaultSprite;
+          WindowButtonRestore.gameObject.SetActive(true);
+          WindowButtonMax.gameObject.SetActive(false);
           if (_CanResize) SizeDrag.gameObject.SetActive(true);
           if (oldWindowState == WindowState.Normal)
           {
@@ -435,8 +476,8 @@ namespace Ballance2.UI.Core
           WindowRectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
           break;
         case WindowState.Min:
-          SetVisible(true);
-          MinButtonImage.rectTransform.eulerAngles = new Vector3(0, 0, 0);
+          SetVisible(false);
+          UpdateTaskBarState(true);
           WindowTitleImage.sprite = TitleMinSprite;
           WindowClientArea.gameObject.SetActive(false);
           if (_CanResize) SizeDrag.gameObject.SetActive(false);
@@ -444,7 +485,6 @@ namespace Ballance2.UI.Core
           {
             oldWindowSize = Size;
           }
-          WindowRectTransform.sizeDelta = new Vector2(250, 20);
           break;
       }
     }

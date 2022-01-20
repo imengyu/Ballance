@@ -484,6 +484,8 @@ MonoBehaviour:
     Name: GameUIPageBallanceCommon
   - Object: {fileID: 1020157385538058060, guid: 8ac8fe753b64b0343a6cab76c4a8f00c, type: 3}
     Name: GameDebugStats
+  - Object: {fileID: 8744669159501323526, guid: ecc1b3df2d68a2b4a9bd3a471047a97e, type: 3}
+    Name: PrefabSideTabBar
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
@@ -510,10 +512,11 @@ MonoBehaviour:
   DebugLuaDebugger: 1
   DebugType: 0
   DebugInitPackages: []
-  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
+  DebugCustomEntryEvent: CoreDebugEmptyEntry
   DebugCustomEntries:
+  - CoreDebugEmptyEntry
   - CoreDebugLuaEntry
-  - CoreDebugGamePlay
+  - CoreDebugGamePlayEntry
   - CoreDebugLevelBuliderEntry
   - CoreDebugLevelEnvironmentEntry
   DebugLoadCustomPackages: 1
@@ -1542,7 +1545,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4527334084443952431, guid: e7258cce79e72b543877bc49dd8b886f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -29.361023
+      value: -29.360962
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7258cce79e72b543877bc49dd8b886f, type: 3}

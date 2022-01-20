@@ -173,9 +173,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ore.ui.SettingsGraphicsTilte
-  m_ResourceKey: ore.ui.SettingsGraphicsTilte
-  m_DefaultString: ore.ui.SettingsGraphicsTilte
+  m_Text: core.ui.SettingsGraphicsTilte
+  m_ResourceKey: core.ui.SettingsGraphicsTilte
+  m_DefaultString: core.ui.SettingsGraphicsTilte
   m_I18N: 1
 --- !u!1 &8652741581363858020
 GameObject:
@@ -884,6 +884,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5705238403932930756, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: UseOptions
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033815402476303036, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: UseOptions
       value: 1
       objectReference: {fileID: 0}

@@ -61,20 +61,11 @@ class DebugStat : MonoBehaviour
     GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowSystemInfo", "DebugStat", (param) => {
       WindowSystemInfo.SetVisible((bool)param[0]);
       return GameActionCallResult.SuccessResult;
-    }, new string[] { "bool" });
+    }, new string[] { "System.Boolean" });
     GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowStats", "DebugStat", (param) => {
       WindowStats.SetVisible((bool)param[0]);
       return GameActionCallResult.SuccessResult;
-    }, new string[] { "bool" });
-
-    GameManager.Instance.GameDebugCommandServer.RegisterCommand("debug-stat", (keyword, fullCmd, argsCount, args) => {
-      WindowStats.SetVisible(true);
-      return true;
-    }, 0, "显示系统状态窗口");
-    GameManager.Instance.GameDebugCommandServer.RegisterCommand("debug-sysinfo", (keyword, fullCmd, argsCount, args) => {
-      WindowSystemInfo.SetVisible(true);
-      return true;
-    }, 0, "显示系统状态窗口");
+    }, new string[] { "System.Boolean" });
 
     //Window
     var DebugSysinfoWindow = CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("DebugSysinfoWindow"), "DebugSysinfoWindow").GetComponent<RectTransform>();

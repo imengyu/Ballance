@@ -96,6 +96,10 @@ function CoreInit()
       CoreDebugLuaEntry()
       return false
     end)
+    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugEmptyEntry", TAG, function ()
+      CoreDebugEmptyEntry()
+      return false
+    end)
   end
 
   local nextLoadLevel = ''

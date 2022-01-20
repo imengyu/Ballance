@@ -845,15 +845,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: ore.ui.SettingsGraphicsTilte
+      value: core.ui.SettingsGraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: ore.ui.SettingsGraphicsTilte
+      value: core.ui.SettingsGraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: ore.ui.SettingsGraphicsTilte
+      value: core.ui.SettingsGraphicsTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}

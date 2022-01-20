@@ -725,6 +725,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f97307d9f747d494182e650eca2e3312, type: 3}
+--- !u!1 &646064024922531256 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3020327682727877677, guid: f97307d9f747d494182e650eca2e3312, type: 3}
+  m_PrefabInstance: {fileID: 2386093926234503573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &946860424151916489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646064024922531256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c46a26d1a55b7a43a178964f4c79543, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MessageCenterName: GameUIGlobalMessageCenter
+  Name: ControlReverse
+  SolveInLua: 0
+  MessageCenter: {fileID: 0}
 --- !u!224 &4210044405056895014 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1977096574704402867, guid: f97307d9f747d494182e650eca2e3312, type: 3}

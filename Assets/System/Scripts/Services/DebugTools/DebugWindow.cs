@@ -35,6 +35,8 @@ namespace Ballance2
     public Text LogStacktraceText = null;
     public Toggle CheckBoxWarningAndErr = null;
     public Toggle CheckBoxMessages = null;
+    public Toggle CheckBoxSysInfo = null;
+    public Toggle CheckBoxMemInfo = null;
     public ToggleEx ToggleAutoScroll = null;
 
     private struct LogItem
@@ -239,6 +241,19 @@ namespace Ballance2
           CommandInputField.text = commandHistory[0];
         }
       }
+    }
+
+    public void ForceGC() {
+      System.GC.Collect();
+      Log.D("Debug", "GC Finish");
+    }
+    public void OnShowSysInfoCheckChange()
+    {
+      GameManager.Instance.GameActionStore.CallAction("DbgStatShowSystemInfo", CheckBoxSysInfo.isOn);
+    }
+    public void OnShowMemInfoCheckChange()
+    {
+      GameManager.Instance.GameActionStore.CallAction("DbgStatShowStats", CheckBoxMemInfo.isOn);
     }
 
     public void CopyStacktrace()

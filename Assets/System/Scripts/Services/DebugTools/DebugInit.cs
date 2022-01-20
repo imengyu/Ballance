@@ -27,6 +27,7 @@ namespace Ballance2.DebugTools {
       GlobalDebugWindow.CloseAsHide = true;
       GlobalDebugWindow.WindowType = WindowType.TopWindow;
       GlobalDebugWindow.gameObject.tag = "DebugWindow";
+      GlobalDebugWindow.MinSize = new Vector2(300, 200);
 
       //创建输出窗口
       GameDebugStatsArea = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugStats"), "GameDebugStats", true);

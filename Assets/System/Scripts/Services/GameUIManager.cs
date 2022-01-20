@@ -4,6 +4,7 @@ using Ballance2.Res;
 using Ballance2.Services.Debug;
 using Ballance2.Services.InputManager;
 using Ballance2.UI.Core;
+using Ballance2.UI.Core.Side;
 using Ballance2.UI.Utils;
 using Ballance2.Utils;
 using System.Collections;
@@ -68,6 +69,7 @@ namespace Ballance2.Services
           GameEventNames.EVENT_BASE_INIT_FINISHED, TAG, (evtName, param) =>
           {
             var GameGlobalMask = UIRoot.transform.Find("GameGlobalMask");
+            var GameGlobalDialog = UIRoot.transform.Find("GameGlobalDialog");
             GlobalFadeMaskWhite = GameGlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
             GlobalFadeMaskBlack = GameGlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
 
@@ -87,6 +89,7 @@ namespace Ballance2.Services
             //更新主管理器中的Canvas变量
             GameManager.Instance.GameCanvas = ViewsRectTransform;
             GameGlobalMask.SetAsLastSibling();
+            GameGlobalDialog.SetAsLastSibling();
             TopViewsRectTransform.SetAsLastSibling();
             TopWindowsRectTransform.SetAsLastSibling();
             GlobalWindowRectTransform.SetAsLastSibling();
@@ -670,6 +673,8 @@ namespace Ballance2.Services
     private GameObject PrefabUIConfirmWindow;
     private GameObject PrefabUIWindow;
 
+    internal SideTabBar SideTabBar;
+
     private void InitWindowManagement()
     {
       managedWindows = new Dictionary<int, Window>();
@@ -677,6 +682,8 @@ namespace Ballance2.Services
       PrefabUIAlertWindow = GameStaticResourcesPool.FindStaticPrefabs("PrefabAlertWindow");
       PrefabUIConfirmWindow = GameStaticResourcesPool.FindStaticPrefabs("PrefabConfirmWindow");
       PrefabUIWindow = GameStaticResourcesPool.FindStaticPrefabs("PrefabWindow");
+
+      SideTabBar = InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("PrefabSideTabBar"), "SideTabBar", true).GetComponent<SideTabBar>();
 
       if(GameManager.GameMediator)
         GameManager.GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE);
@@ -881,11 +888,12 @@ namespace Ballance2.Services
     [LuaApiParamDescription("window", "窗口实例")]
     public void ActiveWindow(Window window)
     {
-      if (currentActiveWindow != null)
+      if (currentActiveWindow != null) 
         currentActiveWindow.WindowTitleImage.color = currentActiveWindow.TitleDefaultColor;
       currentActiveWindow = window;
       currentActiveWindow.WindowTitleImage.color = currentActiveWindow.TitleActiveColor;
       currentActiveWindow.WindowRectTransform.transform.SetAsLastSibling();
+      SideTabBar.ActiveTab(window);
     }
 
     #endregion
