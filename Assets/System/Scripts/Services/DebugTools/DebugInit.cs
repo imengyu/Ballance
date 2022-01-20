@@ -26,6 +26,9 @@ namespace Ballance2.DebugTools {
       GlobalDebugWindow.CloseAsHide = true;
       GlobalDebugWindow.WindowType = WindowType.TopWindow;
       GlobalDebugWindow.gameObject.tag = "DebugWindow";
+
+      //创建输出窗口
+      
       
       //F12 打开调试窗口
       F12KeyListen = GameUIManager.ListenKey(KeyCode.F12, (key, down) => {

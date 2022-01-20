@@ -49,6 +49,8 @@ Ballance2.Config = {}
 Ballance2.Game = {}
 Ballance2.Game.Utils = {}
 Ballance2.Utils = {}
+---@diagnostic disable-next-line: lowercase-global
+winapi={}
 
 ---模块入口结构
 ---@class PackageEntryStruct

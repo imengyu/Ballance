@@ -234,6 +234,8 @@ namespace Ballance2
         RegSystemService<GameManager>();
         RegSystemService<GamePackageManager>();
         RegSystemService<GameUIManager>();
+        RegSystemService<GameTimeMachine>();
+        RegSystemService<GamePoolManager>();
         RegSystemService<GameSoundManager>();
 
         Log.D(TAG, "System init ok");

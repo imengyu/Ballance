@@ -18,6 +18,7 @@ public class GameEntryEditor : Editor
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialog;
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialogText;
     private SerializedProperty GlobalGameScriptErrDialog;
+    private SerializedProperty GlobalSplash;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
@@ -40,6 +41,7 @@ public class GameEntryEditor : Editor
         GameBaseCamera = serializedObject.FindProperty("GameBaseCamera");
         GameCanvas = serializedObject.FindProperty("GameCanvas");
         GameGlobalErrorUI = serializedObject.FindProperty("GameGlobalErrorUI");
+        GlobalSplash = serializedObject.FindProperty("GlobalSplash");
         GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
         GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
         GlobalGameScriptErrDialog = serializedObject.FindProperty("GlobalGameScriptErrDialog");
@@ -137,6 +139,7 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GlobalGameScriptErrDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialogText);
+        EditorGUILayout.PropertyField(GlobalSplash);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();

@@ -75,6 +75,7 @@ namespace Ballance2.Entry
 
     public GameObject GlobalGamePermissionTipDialog = null;
     public GameObject GlobalGameUserAgreementTipDialog = null;
+    public GameObject GlobalSplash = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
     public GameObject GlobalGameSysErrMessageDebuggerTipDialog = null;
     public Text GlobalGameSysErrMessageDebuggerTipDialogText = null;
@@ -195,6 +196,7 @@ namespace Ballance2.Entry
 #endif
     }
     private void InitUi() {
+      GlobalSplash.SetActive(true);
     }
 
     private IEnumerator InitMain()

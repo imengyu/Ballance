@@ -235,5 +235,25 @@ namespace Ballance2.Utils
     {
       return !float.IsNaN(v.x) && !float.IsNaN(v.y);
     }
+
+    /// <summary>
+    /// 判断网络是否可用
+    /// </summary>
+    [LuaApiDescription("判断网络是否可用")]
+    public static bool NetAvailable {
+      get {
+        return Application.internetReachability != NetworkReachability.NotReachable;
+      }
+    }
+
+    /// <summary>
+    /// 判断网络是否是无线
+    /// </summary>
+    [LuaApiDescription("判断网络是否是无线")]
+    public static bool IsWifi {
+      get {
+        return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
+      }
+    }
   }
 }
