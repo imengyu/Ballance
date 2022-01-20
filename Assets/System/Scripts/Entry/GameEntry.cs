@@ -201,7 +201,9 @@ namespace Ballance2.Entry
 
     private IEnumerator InitMain()
     {
+      GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
       GameSystem.PreInit();
+
       InitUi();
 
       if (TestAndroidPermission())
@@ -221,10 +223,7 @@ namespace Ballance2.Entry
       if (DebugMode && DebugType == GameDebugType.SystemDebug)
         GameSystem.RegSysDebugProvider(GameSystemDebugTests.RequestDebug);
       else if (!DebugMode || DebugType != GameDebugType.SystemDebug)
-      {
-        GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
         GameSystem.Init();
-      }
       else
         GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "DebugMode not right.");
     }

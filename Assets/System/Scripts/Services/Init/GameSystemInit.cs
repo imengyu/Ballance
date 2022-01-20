@@ -1,5 +1,8 @@
-﻿using Ballance2.Entry;
+﻿using Ballance2.Base;
+using Ballance2.Entry;
+using Ballance2.Package;
 using Ballance2.Res;
+using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using UnityEngine;
 
@@ -49,6 +52,25 @@ namespace Ballance2.Services.Init
         GameObject newGameManager = CloneUtils.CreateEmptyObjectWithParent(gameEntryInstance.transform);
         newGameManager.name = "GameSystemInit";
         newGameManager.AddComponent<GameSystemInit>();
+
+        GamePackageManager.PreRegInternalPackage();
+
+        //Init system services
+        GameSystem.RegSystemService<GameMediator>();
+
+        GameManager.GameMediator = (GameMediator)GameSystem.GetSystemService("GameMediator");
+        GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_BASE_INIT_FINISHED, "DebuggerHandler", (evtName, param) => {
+          GameSystem.StartRunDebugProvider();
+          return false;
+        });
+
+        //Init base services
+        GameSystem.RegSystemService<GameManager>();
+        GameSystem.RegSystemService<GamePackageManager>();
+        GameSystem.RegSystemService<GameUIManager>();
+        GameSystem.RegSystemService<GameTimeMachine>();
+        GameSystem.RegSystemService<GamePoolManager>();
+        GameSystem.RegSystemService<GameSoundManager>();
       }
       else if (act == GameSystem.ACTION_DESTROY)
       {
@@ -57,7 +79,12 @@ namespace Ballance2.Services.Init
           Destroy(gameManagerInstance);
           gameManagerInstance = null;
         }
+        
+        GameManager.GameMediator = null;
 
+        //释放其他组件
+        I18NProvider.ClearAllLanguageResources();
+        GameSettingsManager.Destroy();
         GameStaticResourcesPool.ReleaseAll();
       }
       else if (act == GameSystem.ACTION_FORCE_INT)
@@ -68,6 +95,14 @@ namespace Ballance2.Services.Init
         {
           gameManagerInstance.ClearScense();
         }
+      }
+      else if (act == GameSystem.ACTION_PRE_INT)
+      {
+        //初始化设置
+        GameSettingsManager.Init();
+        //初始化I18N 和系统字符串资源
+        I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
+        I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLangResource").text);
       }
     }
   }

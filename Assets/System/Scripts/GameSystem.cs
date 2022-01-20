@@ -46,6 +46,7 @@ namespace Ballance2
     public const int ACTION_INIT = 1;
     public const int ACTION_DESTROY = 2;
     public const int ACTION_FORCE_INT = 3;
+    public const int ACTION_PRE_INT = 4;
 
     /// <summary>
     /// 注册系统接管器
@@ -156,13 +157,16 @@ namespace Ballance2
     private static SysDebugProviderCheck sysDebugProviderCheck = null;
 
     /// <summary>
-    /// 注册调试提供者
+    /// 注册系统级调试提供者
     /// </summary>
     public static void RegSysDebugProvider(SysDebugProviderCheck providerCheck)
     {
       sysDebugProviderCheck = providerCheck;
     }
-    private static void StartRunDebugProvider()
+    /// <summary>
+    /// 启动系统级调试
+    /// </summary>
+    public static void StartRunDebugProvider()
     {
       if (sysDebugProviderCheck != null)
       {
@@ -178,21 +182,36 @@ namespace Ballance2
 
     private static bool sysInit = false;
 
+    /// <summary>
+    /// 载入静态资源入口，必须调用，否则系统无法加载静态资源。
+    /// </summary>
+    /// <param name="gameEntry"></param>
     internal static void FillResEntry(GameStaticResEntry gameEntry) { gameStaticResEntryInstance = gameEntry; }
 
     private static GameStaticResEntry gameStaticResEntryInstance = null;
 
+    /// <summary>
+    /// 设置当前是否是重启模式。为true时Destroy完成后会重新启动。
+    /// </summary>
     public static bool IsRestart = false;
 
+    /// <summary>
+    /// 预初始化。仅初始化I18N与设置。
+    /// </summary>
     public static void PreInit()
     {
-      //初始化设置
-      GameSettingsManager.Init();
-      //初始化I18N 和系统字符串资源
-      I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
-      I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLangResource").text);
-    }
+      GameErrorChecker.Init();
 
+      //Call game init
+      if (sysHandler == null)
+      {
+        Log.D(TAG, "Not found SysHandler, did you call RegSysHandler first?");
+        GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, null);
+        return;
+      }        
+      //Call init
+      sysHandler(ACTION_PRE_INT);
+    }
     /// <summary>
     /// 初始化主入口
     /// </summary> 
@@ -204,9 +223,6 @@ namespace Ballance2
 
         //Init system
         Ballance2.Utils.UnityLogCatcher.Init();
-        GameErrorChecker.Init();
-
-        //初始化静态资源入口
         GameStaticResourcesPool.InitStaticPrefab(gameStaticResEntryInstance.GamePrefab, gameStaticResEntryInstance.GameAssets);
 
         //Call game init
@@ -218,25 +234,6 @@ namespace Ballance2
         }        
         //Call init
         sysHandler(ACTION_INIT);
-
-        GamePackageManager.PreRegInternalPackage();
-
-        //Init system services
-        RegSystemService<GameMediator>();
-
-        GameManager.GameMediator = (GameMediator)GetSystemService("GameMediator");
-        GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_BASE_INIT_FINISHED, "DebuggerHandler", (evtName, param) => {
-          StartRunDebugProvider();
-          return false;
-        });
-
-        //Init base services
-        RegSystemService<GameManager>();
-        RegSystemService<GamePackageManager>();
-        RegSystemService<GameUIManager>();
-        RegSystemService<GameTimeMachine>();
-        RegSystemService<GamePoolManager>();
-        RegSystemService<GameSoundManager>();
 
         Log.D(TAG, "System init ok");
       }
@@ -274,11 +271,6 @@ namespace Ballance2
         serviceNames.Clear();
         systemService.Clear();
 
-        GameManager.GameMediator = null;
-
-        //释放其他组件
-        I18NProvider.ClearAllLanguageResources();
-        GameSettingsManager.Destroy();
         Ballance2.Utils.UnityLogCatcher.Destroy();
         GameErrorChecker.Destroy();
 
