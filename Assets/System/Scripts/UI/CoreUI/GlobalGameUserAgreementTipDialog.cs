@@ -15,7 +15,7 @@ public class GlobalGameUserAgreementTipDialog : MonoBehaviour {
     EventTriggerListener.Get(LinkPrivacyPolicy).onClick += (go) => Application.OpenURL(ConstStrings.BallancePrivacyPolicy);
     EventTriggerListener.Get(LinkUserAgreement).onClick += (go) => Application.OpenURL(ConstStrings.BallanceUserAgreement);
     CheckBoxAllowUserAgreement.onValueChanged.AddListener((v) => ButtonUserAgreementAllow.interactable =  v);
-    ButtonUserAgreementDisallow.onClick.AddListener(() => {
+    ButtonUserAgreementAllow.onClick.AddListener(() => {
       gameObject.SetActive(false);
       GameEntry.Instance.ArgeedUserArgeement();
     });

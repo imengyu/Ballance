@@ -1,6 +1,10 @@
 ﻿using Ballance2.Config;
 using Ballance2.Config.Settings;
 using System;
+#if UNITY_EDITOR
+#else
+using UnityEngine;
+#endif
 using Ballance2.Utils;
 using Ballance2.Services.Debug;
 

@@ -210,7 +210,7 @@ namespace Ballance2.Services
 #if UNITY_EDITOR // 编辑器中
           GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "Lua接口没有绑定。请点击“SLua”>“All”>“Make”生成 Lua 接口绑定。");
 #else
-          GameErrorChecker.ThrowGameError(GameError.LuaBindCheckFailed, "错误的发行配置，请检查。");  
+          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "错误的发行配置，请检查。");  
 #endif
           yield break;
       }

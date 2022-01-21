@@ -116,11 +116,19 @@ namespace SLua
             "UnityEngine.MeshRenderer.stitchLightmapSeams",
             "UnityEngine.UI.DefaultControls.factory",
             "UnityEngine.Light.SetLightDirty",
+            "UnityEngine.Light.shadowAngle",
+            "UnityEngine.Light.shadowRadius",
             "UnityEngine.Light.get_shadowAngle",
             "UnityEngine.Light.set_shadowAngle",
             "UnityEngine.Light.get_shadowRadius",
             "UnityEngine.Light.set_shadowRadius",
-
+            "UnityEngine.AudioSource.SetGamepadSpeakerMixLevel",
+            "UnityEngine.AudioSource.SetGamepadSpeakerMixLevelDefault",
+            "UnityEngine.AudioSource.SetGamepadSpeakerRestrictedAudio",
+            "UnityEngine.AudioSource.PlayOnGamepad",
+            "UnityEngine.AudioSource.DisableGamepadOutput",
+            "UnityEngine.AudioSource.GamepadSpeakerSupportsOutputType",
+            "UnityEngine.AudioSource.gamepadSpeakerOutputType",
         };
         // black list if white list not given
         public static void OnGetNoUseList(out List<string> list)
@@ -134,6 +142,9 @@ namespace SLua
                 "ExecuteInEditMode",
                 "AddComponentMenu",
                 "ContextMenu",
+                "GamepadSpeakerOutputType",
+                "GamepadSupportOutputType",
+                "gamepadSpeakerOutputType",
                 "RequireComponent",
                 "DisallowMultipleComponent",
                 "SerializeField",
@@ -166,6 +177,7 @@ namespace SLua
                 "jvalue",
                 "iPhone",
                 "iOS",
+                "shadowAngle",
                 "Windows",
                 "GUIStyleState",
                 "CalendarIdentifier",
@@ -231,6 +243,8 @@ namespace SLua
                 "Unity.Profiling.LowLevel.Unsafe.ProfilerMarkerData",
                 "Unity.Profiling.LowLevel.Unsafe.ProfilerRecorderDescription",
                 "Unity.Profiling.LowLevel.Unsafe.ProfilerUnsafeUtility",
+                "UnityEngine.GamepadSpeakerOutputType",
+                "GamepadSpeakerOutputType",
             };
         }
     }

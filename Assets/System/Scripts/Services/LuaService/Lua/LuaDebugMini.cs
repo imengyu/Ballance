@@ -46,7 +46,7 @@ public class LuaDebugMini : MonoBehaviour {
 
     });
 #else
-  Debug.LogError("LuaDebugMini can only use in editor");
+    Debug.LogError("LuaDebugMini can only use in editor");
 #endif
   }
 
@@ -55,6 +55,7 @@ public class LuaDebugMini : MonoBehaviour {
     return LuaState.doString(File.ReadAllText(name));
 #else
     Debug.LogError("LuaDebugMini can only use in editor");
+    return null;
 #endif
     
   }

@@ -7,7 +7,6 @@ namespace BallancePhysics
   /// <summary>
   /// 物理引擎配置
   /// </summary>
-  [SLua.CustomLuaClass]
   public class PhysicsOptions : ScriptableObject
   {
       [Tooltip("是否显示控制台窗口（仅Win版本有效）")]

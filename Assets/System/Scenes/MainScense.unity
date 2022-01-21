@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af892bd37df8f99459503c4cb759c1c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugMode: 0
+  DebugMode: 1
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
@@ -451,13 +451,13 @@ MonoBehaviour:
   - CoreDebugLevelEnvironmentEntry
   DebugLoadCustomPackages: 1
   DebugSkipIntro: 0
+  DebugSkipSplash: 0
   GameBaseCamera: {fileID: 963194227}
   GameCanvas: {fileID: 2024946136}
   GameGlobalErrorUI: {fileID: 5894142117804493612}
   GameDebugBeginStats: {fileID: 0}
   GlobalGamePermissionTipDialog: {fileID: 1690386674}
   GlobalGameUserAgreementTipDialog: {fileID: 8805385716042553301}
-  GlobalSplash: {fileID: 0}
   GlobalGameScriptErrDialog: {fileID: 6529521019948351875}
   GlobalGameSysErrMessageDebuggerTipDialog: {fileID: 108773122}
   GlobalGameSysErrMessageDebuggerTipDialogText: {fileID: 701774412}
