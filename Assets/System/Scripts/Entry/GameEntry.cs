@@ -62,6 +62,8 @@ namespace Ballance2.Entry
     public bool DebugLoadCustomPackages = true;
     [Tooltip("是否在系统或自定义调试模式中跳过Intro")]
     public bool DebugSkipIntro = false;
+    [Tooltip("是否在系统或自定义调试模式中跳过开场动画")]
+    public bool DebugSkipSplash = false;
 
     #endregion
 
@@ -75,7 +77,6 @@ namespace Ballance2.Entry
 
     public GameObject GlobalGamePermissionTipDialog = null;
     public GameObject GlobalGameUserAgreementTipDialog = null;
-    public GameObject GlobalSplash = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
     public GameObject GlobalGameSysErrMessageDebuggerTipDialog = null;
     public Text GlobalGameSysErrMessageDebuggerTipDialogText = null;
@@ -196,7 +197,6 @@ namespace Ballance2.Entry
 #endif
     }
     private void InitUi() {
-      GlobalSplash.SetActive(true);
     }
 
     private IEnumerator InitMain()

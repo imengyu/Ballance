@@ -152,6 +152,8 @@ namespace Ballance2
       for (var i = 0; i < transform.childCount; i++)
       {
         var child = transform.GetChild(i) as RectTransform;
+        if(i >= logItems.Count)
+          break;
         var log = logItems[i];
         if (
           ((logShowErrAndWarn && (log.level == LogLevel.Warning || log.level == LogLevel.Error)) ||

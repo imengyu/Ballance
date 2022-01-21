@@ -35,7 +35,7 @@ namespace Ballance2.Services.LuaService.Lua
       originalRequire = fun.cast<RequireDelegate>();
     }
 
-    private static string[] internalLuaLib = { "string","utf8","table","math","os","debug", "socket.core", "socket", "table", "string", "coroutine" };
+    private static string[] internalLuaLib = { "string","utf8","table","math","os","debug", "socket.core", "socket", "table", "string", "coroutine", "MikuLuaProfiler", "miku_unpack_return_value" };
     private static string[] internalLuaFile = { "json","classic","debugger","vscode-debuggee","mobdebug","dkjson", "Table" };
 
     /// <summary>

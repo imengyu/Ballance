@@ -151,6 +151,8 @@ namespace Ballance2.Services.InputManager
         foreach (var v in items)
         {
           var item = v.Value;
+          if(!itemsDownStatus.ContainsKey(v.Key))
+            continue;
           var itemDownStatus = itemsDownStatus[v.Key];
           if (item.has2key)
           {

@@ -16,7 +16,6 @@ using Ballance2.Services.LuaService;
 using Ballance2.Utils;
 using SLua;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.Profiling;
 
 /*
@@ -113,12 +112,6 @@ namespace Ballance2.Services
 
       InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
       return true;
-    }
-
-    private void HideSplash() {
-      var GlobalSplash = GameObject.Find("GlobalSplash");
-      if(GlobalSplash != null)
-        GlobalSplash.SetActive(false);
     }
 
     /// <summary>
@@ -249,19 +242,16 @@ namespace Ballance2.Services
       {
         //进入场景
         if (DebugMode && GameEntry.Instance.DebugSkipIntro) {
-          HideSplash();
           if(!RequestEnterLogicScense("MenuLevel"))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
         else if (firstScense != "") {
-          HideSplash();
           if(RequestEnterLogicScense(firstScense))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
       }
       else
       {
-        HideSplash();
         Log.D(TAG, "Enter GameDebug.");
         if(RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
@@ -493,7 +483,6 @@ namespace Ballance2.Services
           //进入Intro
           if (!DebugMode || !GameEntry.Instance.DebugSkipIntro)
           {
-            HideSplash();
             RequestEnterLogicScense(firstScense);
             firstScense = "";
           }
