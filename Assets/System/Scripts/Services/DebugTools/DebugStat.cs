@@ -59,11 +59,17 @@ class DebugStat : MonoBehaviour
 
     //操作
     GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowSystemInfo", "DebugStat", (param) => {
-      WindowSystemInfo.SetVisible((bool)param[0]);
+      if((bool)param[0])
+        WindowSystemInfo.Show();
+      else
+        WindowSystemInfo.Hide();
       return GameActionCallResult.SuccessResult;
     }, new string[] { "System.Boolean" });
     GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowStats", "DebugStat", (param) => {
-      WindowStats.SetVisible((bool)param[0]);
+      if((bool)param[0])
+        WindowStats.Show();
+      else
+        WindowStats.Hide();
       return GameActionCallResult.SuccessResult;
     }, new string[] { "System.Boolean" });
 
@@ -72,10 +78,12 @@ class DebugStat : MonoBehaviour
     var DebugStatsWindow = CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("DebugStatsWindow"), "DebugStatsWindow").GetComponent<RectTransform>();
 
     WindowSystemInfo = GameUIManager.CreateWindow("System info", DebugSysinfoWindow, false, 9, -309, 585, 406);
+    WindowSystemInfo.Icon = GameStaticResourcesPool.FindStaticAssets<Sprite>("IconInfo");
     WindowSystemInfo.CloseAsHide = true;
     WindowStats = GameUIManager.CreateWindow("Statistics", DebugStatsWindow, false, 9, -71, 350, 340);
     WindowStats.CloseAsHide = true;
     WindowStats.CanResize = false;
+    WindowStats.Icon = GameStaticResourcesPool.FindStaticAssets<Sprite>("IconStats");
 
     DebugStatsText = DebugStatsWindow.transform.Find("DebugStatsText").GetComponent<Text>();
     DebugStatsWindow.transform.Find("CheckBoxBetterMem").GetComponent<Toggle>().onValueChanged.AddListener((b) => betterMemorySize = b);
@@ -138,7 +146,7 @@ class DebugStat : MonoBehaviour
         allocatedMemoryForGraphicsDriver = Profiler.GetAllocatedMemoryForGraphicsDriver().ToString();
       }
 
-      if (WindowStats.GetVisible())
+      if (WindowStats != null && WindowStats.GetVisible())
         UpdateStatsWindow();
     }
   }

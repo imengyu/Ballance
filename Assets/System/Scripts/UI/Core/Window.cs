@@ -260,6 +260,7 @@ namespace Ballance2.UI.Core
           else
           {
             WindowIconImage.gameObject.SetActive(true);
+            WindowIconImage.sprite = value;
             UIAnchorPosUtils.SetUILeftBottom(WindowTitleText.rectTransform, 23, 0);
           }
         }

@@ -361,7 +361,7 @@ namespace Ballance2
         case LogLevel.Verbose: return "FFFFFF";
         case LogLevel.Warning: return "FFCE00";
         case LogLevel.Error: return "FF1B00";
-        default: return "CFCFCF";
+        default: return "FFFFFF";
       }
     }
 

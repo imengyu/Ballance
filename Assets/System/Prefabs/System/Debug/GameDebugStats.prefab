@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 1486150183769903824}
   - component: {fileID: 2008938370457882904}
   - component: {fileID: 2296590880838481720}
-  - component: {fileID: 4554618160956069382}
+  - component: {fileID: 3823533597498556524}
   m_Layer: 5
   m_Name: GameDebugStatsText
   m_TagString: Untagged
@@ -129,7 +129,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 261dc829b44835747a23152f3c6f5787, type: 3}
+    m_Font: {fileID: 12800000, guid: 5622c9cee0bffb34ca0fe42aea54056a, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db2f6b6efa37ad4baf10eeef22ab74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4554618160956069382
+--- !u!114 &3823533597498556524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,9 +182,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7850156609294422020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.46666667}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1

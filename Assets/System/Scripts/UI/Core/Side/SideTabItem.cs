@@ -8,7 +8,7 @@ namespace Ballance2.UI.Core.Side
   {
     public Image Image = null;
     public Text TitleText = null;
-    public GameObject TitleTip = null;
+    public GameObject TabTooltip = null;
     public GameObject ActiveBackground = null;
     public Window Window = null;
 
@@ -17,6 +17,7 @@ namespace Ballance2.UI.Core.Side
       eventTriggerListener.onEnter += OnMouseEnter;
       eventTriggerListener.onClick += OnClick;
       eventTriggerListener.onExit += OnMouseExit;
+      TabTooltip.SetActive(false);
     }
 
     public void SetWindow(Window window) {
@@ -30,16 +31,21 @@ namespace Ballance2.UI.Core.Side
 
     private void OnMouseEnter(GameObject go)
     {
-      TitleTip.SetActive(true);
+      if(!TabTooltip.activeSelf)
+        TabTooltip.SetActive(true);
     }
     private void OnClick(GameObject go)
     {
-      TitleTip.SetActive(false);
+      if(TabTooltip.activeSelf)
+        TabTooltip.SetActive(false);
+      if(Window.WindowState == WindowState.Min)
+        Window.WindowState = WindowState.Normal;
       Window.ActiveWindow();
     }
     private void OnMouseExit(GameObject go)
     {
-      TitleTip.SetActive(false);
+      if(TabTooltip.activeSelf)
+        TabTooltip.SetActive(false);
     }
   }
 }

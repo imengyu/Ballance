@@ -25,6 +25,7 @@ namespace Ballance2.DebugTools {
       var DebugWindow = GameStaticResourcesPool.FindStaticPrefabs("DebugWindow");
       GlobalDebugWindow = GameUIManager.CreateWindow("Console", CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, "DebugWindow").transform as RectTransform, false, 9, -140, 800, 600);
       GlobalDebugWindow.CloseAsHide = true;
+      GlobalDebugWindow.Icon = GameStaticResourcesPool.FindStaticAssets<Sprite>("IconDebug");
       GlobalDebugWindow.WindowType = WindowType.TopWindow;
       GlobalDebugWindow.gameObject.tag = "DebugWindow";
       GlobalDebugWindow.MinSize = new Vector2(300, 200);
@@ -49,7 +50,7 @@ namespace Ballance2.DebugTools {
         GlobalDebugWindow = null;
       }
       if (GameDebugStatsArea != null) {
-        UnityEngine.Object.Destroy(GameDebugStatsArea);
+        UnityEngine.Object.Destroy(GameDebugStatsArea.gameObject);
         GameDebugStatsArea = null;
       }
     }

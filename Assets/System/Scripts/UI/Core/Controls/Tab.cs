@@ -31,21 +31,8 @@ namespace Ballance2.UI.Core.Controls
   [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/Tab")]
   public class Tab : UIBehaviour
-  {
-    [Serializable]
-    public class TabContent {
-      public RectTransform Tab;
-      public Image TabImage;
-      public RectTransform TabContentArea;
-      public RectTransform TabContentRect;
-      public string Name;
-      public string Title;
-    }
-    
-    [SerializeField]
+  {   
     public Dictionary<string, TabContent> tabs = new Dictionary<string, TabContent>();
-    [SerializeField]
-    [HideInInspector]
     public TabContent tabActive = null;
 
     public Sprite TabImageActive;
@@ -55,6 +42,28 @@ namespace Ballance2.UI.Core.Controls
     public RectTransform TabPrefab;
     public RectTransform TabArea;
     
+    protected override void Start() {
+      for (var i = 0; i < TabArea.childCount; i++)
+      {
+        var child = TabArea.GetChild(i);
+        if(child.gameObject.activeSelf) {
+          var tab = child.GetComponent<TabContent>();
+          if(tab != null) {
+            InitTab(tab);
+          }
+        }
+      }
+    }
+
+    private void InitTab(TabContent t) {
+      tabs.Add(t.Name, t);
+      EventTriggerListener.Get(t.Tab.gameObject).onClick += (go) => {
+        ActiveTab(t.Name);
+      };
+      if(tabActive == null)
+        ActiveTab(t.Name);
+    }
+
     /// <summary>
     /// 获取指定名称的Tab内容
     /// </summary>
@@ -76,43 +85,38 @@ namespace Ballance2.UI.Core.Controls
     /// <param name="name">名称</param>
     /// <param name="title">标题</param>
     /// <param name="content">内容</param>
-    public bool AddTab(string name, string title, RectTransform content) {
-      if(tabs.ContainsKey(name))
+    public bool AddTab(string tabName, string title, RectTransform content) {
+      if(tabs.ContainsKey(tabName))
         return false;
-      var tab = new TabContent();
-      tab.Name = name;
+      var tabRect = CloneUtils.CloneNewObjectWithParent(TabPrefab.gameObject, TabArea, "Tab_" + tabName).transform as RectTransform;
+      var tab = tabRect.gameObject.AddComponent<TabContent>();
+      tab.Name = tabName;
       tab.Title = title;
-      tab.Tab = CloneUtils.CloneNewObjectWithParent(TabPrefab.gameObject, TabArea, "Tab_" + name).transform as RectTransform;
+      tab.Tab = tabRect;
       tab.TabImage = tab.Tab.GetComponent<Image>();
-
-      EventTriggerListener.Get(tab.Tab.gameObject).onClick += (go) => {
-        ActiveTab(name);
-      };
 
       var text = tab.Tab.Find("Text");
       if(text != null)
         text.GetComponent<Text>().text = title;
 
-      tab.TabContentArea = CloneUtils.CloneNewObjectWithParent(PanelPrefab.gameObject, PanelArea, "TabPanel_" + name).transform as RectTransform;
+      tab.TabContentArea = CloneUtils.CloneNewObjectWithParent(PanelPrefab.gameObject, PanelArea, "TabPanel_" + tabName).transform as RectTransform;
       tab.TabContentRect = content;
       if(content != null) {
         content.SetParent(tab.TabContentArea);
         content.localScale = Vector3.one;
         UIAnchorPosUtils.SetUIPos(content, 0, 0, 0, 0);
       }
-      tabs.Add(name, tab);
-      if(tabActive == null)
-        ActiveTab(name);
+      InitTab(tab);
       return true;
     }    
     /// <summary>
     /// 删除Tab
     /// </summary>
     /// <param name="name">名称</param>
-    public bool DeleteTab(string name) {
-      if(tabs.ContainsKey(name)) {
-        var tab = tabs[name];
-        tabs.Remove(name);
+    public bool DeleteTab(string tabName) {
+      if(tabs.ContainsKey(tabName)) {
+        var tab = tabs[tabName];
+        tabs.Remove(tabName);
 
         if(tabActive == tab) 
           if(tabs.Count > 0)
@@ -120,6 +124,8 @@ namespace Ballance2.UI.Core.Controls
           else
             tabActive = null;
         return true;
+      } else {
+        Log.W("Tab", "Not found tab {0}", tabName);
       }
       return false;
     } 
@@ -127,21 +133,21 @@ namespace Ballance2.UI.Core.Controls
     /// 激活指定名称Tab
     /// </summary>
     /// <param name="name">名称</param>
-    public bool ActiveTab(string name) {
-      if(tabs.TryGetValue(name, out var tab)) {
+    public bool ActiveTab(string tabName) {
+      if(tabs.TryGetValue(tabName, out var tab)) {
         if(tabActive != tab) {
           if(tabActive != null) {
             tabActive.TabContentArea.gameObject.SetActive(false);
-            tabActive.Tab.gameObject.SetActive(false);
             tabActive.TabImage.sprite = TabImageNormal;
           }
 
           tabActive = tab;
           tabActive.TabContentArea.gameObject.SetActive(true);
-          tabActive.Tab.gameObject.SetActive(true);
           tabActive.TabImage.sprite = TabImageActive;
           return true;
         }
+      } else {
+        Log.W("Tab", "Not found tab {0}", tabName);
       }
       return false;
     }

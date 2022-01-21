@@ -318,7 +318,7 @@ TextureImporter:
   serializedVersion: 11
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -363,9 +363,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -402,6 +402,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1698,10 +1710,10 @@ TextureImporter:
       system_gui_22: 8051123311531701542
       system_gui_64: -8983623551252004834
       system_gui_17: -7335684896397817085
-      system_gui_59: -9041830655727726778
+      system_gui_76: -8040666343761393993
       system_gui_28: 4339225749220643467
       system_gui_34: -6685105678880452824
-      system_gui_76: -8040666343761393993
+      system_gui_59: -9041830655727726778
       system_gui_42: -6506581538796598956
       system_gui_25: 8172313790712727047
       system_gui_33: -6748562370134372770

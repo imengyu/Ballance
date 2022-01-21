@@ -829,17 +829,13 @@ namespace Ballance2.Services
         case WindowType.GlobalAlert:
           window.GetRectTransform().transform.SetParent(GlobalWindowRectTransform.transform);
           PagesRectTransform.gameObject.SetActive(false);
-          WindowsRectTransform.gameObject.SetActive(false);
-          WindowsRectTransform.SetAsLastSibling();
           currentVisibleWindowAlert = window;
           break;
         case WindowType.Normal:
           window.GetRectTransform().transform.SetParent(WindowsRectTransform.transform);
-          WindowsRectTransform.SetAsLastSibling();
           break;
         case WindowType.TopWindow:
           window.GetRectTransform().transform.SetParent(TopWindowsRectTransform.transform);
-          WindowsRectTransform.SetAsLastSibling();
           break;
       }
     }

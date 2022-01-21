@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2952453834165548638}
   - component: {fileID: 8588070091991411752}
   - component: {fileID: 2494181200696447261}
-  - component: {fileID: 6374732235252634299}
   m_Layer: 5
   m_Name: ActiveBackground
   m_TagString: Untagged
@@ -77,23 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6374732235252634299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75713684455479731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 766c54f2ad11a884384c570add4427d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Image: {fileID: 0}
-  TitleText: {fileID: 0}
-  TitleTip: {fileID: 0}
-  ActiveBackground: {fileID: 0}
-  Window: {fileID: 0}
 --- !u!1 &1544563253988682645
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +87,6 @@ GameObject:
   - component: {fileID: 8756370939965700280}
   - component: {fileID: 7535810540357913606}
   - component: {fileID: 5652067944045050903}
-  - component: {fileID: 3417098743275228516}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -171,23 +152,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3417098743275228516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544563253988682645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 766c54f2ad11a884384c570add4427d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Image: {fileID: 0}
-  TitleText: {fileID: 0}
-  TitleTip: {fileID: 0}
-  ActiveBackground: {fileID: 0}
-  Window: {fileID: 0}
 --- !u!1 &1826556529585430981
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +244,7 @@ GameObject:
   - component: {fileID: 512189044451522867}
   - component: {fileID: 1205675528184465495}
   m_Layer: 5
-  m_Name: TabTooltop
+  m_Name: TabTooltip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,6 +372,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 5652067944045050903}
   TitleText: {fileID: 858683243305567283}
-  TitleTip: {fileID: 6464952820231963105}
+  TabTooltip: {fileID: 6464952820231963105}
   ActiveBackground: {fileID: 75713684455479731}
   Window: {fileID: 0}
