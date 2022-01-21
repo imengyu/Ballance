@@ -376,7 +376,7 @@ namespace Ballance2.Package
 
         byte[] lua = TryLoadLuaCodeAsset(className, out var realPath);
         if(lua.Length == 0)
-            throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " + className + " , 该文件为空");
+            throw new MissingReferenceException(PackageName + " 无法导入 Lua class \"" + className + "\" : 该文件为空");
         try
         {
             PackageLuaState.doBuffer(lua, realPath/*PackageName + ":" + className*/, out var v);
@@ -386,14 +386,13 @@ namespace Ballance2.Package
             Log.E(TAG, e.ToString());
             GameErrorChecker.LastError = GameError.ExecutionFailed;
 
-            throw new Exception(PackageName + " 无法导入 Lua class : " + e.Message);
+            throw new Exception(PackageName + " 无法导入 Lua class \"" + className + "\" : " + e.Message);
         }
 
         classInit = CreateClass[className] as LuaFunction;
         if (classInit == null)
         {
-            throw new MissingReferenceException(PackageName + " 无法导入 Lua class : " +
-                className + ", 未找到初始类函数: CreateClass:" + className);
+            throw new MissingReferenceException(PackageName + " 无法导入 Lua class \"" + className + "\" : 未找到初始类函数: CreateClass:" + className);
         }
 
         requiredLuaClasses.Add(className, classInit);
@@ -482,7 +481,7 @@ namespace Ballance2.Package
         object rs = null;
         byte[] lua = pack.TryLoadLuaCodeAsset(fileName, out var realPath);
         if (lua.Length == 0)
-            throw new EmptyFileException(PackageName + " 无法导入 Lua : " + fileName + " , 该文件为空");
+            throw new EmptyFileException(PackageName + " 无法导入 Lua \"" + fileName + "\" : 该文件为空");
         try
         {
             //不重复导入
@@ -492,7 +491,7 @@ namespace Ballance2.Package
             if(PackageLuaState.doBuffer(lua, realPath, out var v))
                 rs = v;
             else
-                throw new Exception(PackageName + " 无法导入 Lua : 执行失败");
+                throw new Exception(PackageName + " 无法导入 Lua \"" + fileName + "\" : 执行失败");
 
             //添加结果，用于下一次不重复导入
             if(requiredLuaFiles.ContainsKey(realPath))
@@ -502,10 +501,15 @@ namespace Ballance2.Package
         }
         catch (Exception e)
         {
-            Log.E(TAG, e.ToString());
-            GameErrorChecker.LastError = GameError.ExecutionFailed;
+          string err = e.ToString();
+          Log.E(TAG, err);
+          GameErrorChecker.LastError = GameError.ExecutionFailed;
 
-            throw new Exception(PackageName + " 无法导入 Lua : " + e.Message);
+          if(err.Contains("bad header in precompiled chunk")) {
+            Log.D(TAG, "Check code bytes\n" + DebugUtils.PrintBytes(lua));
+          }
+
+          throw new Exception(PackageName + " 无法导入 Lua \"" + fileName + "\" : " + e.Message);
         }
 
         return rs;

@@ -68,17 +68,6 @@
   -->
   <CodeType>None</CodeType>
   <!--
-    模块共享lua虚拟机，
-    如果填写 core 表示共享模块到全局Lua虚拟机，
-    如果不填写 ShareLuaState 或为空白，则默认情况下每个模块会生成相互独立的虚拟机，不能互相访问。
-    否则，模块将寻找依赖模块的虚拟机，
-    如果找到则当前模块的lua代码全部在对应依赖模块的虚拟机中运行，可以共享变量和函数等等。
-    
-    例如，如果你的模块分成多个模块，你可以仅用一个模块来运行代码，其他的模块作为附属模块，
-    填写 ShareLuaState 为主模块包名，这样子模块可以和主模块共享运行环境。
-  -->
-  <ShareLuaState>core</ShareLuaState>
-  <!--
     是否使用luac编译lua代码为字节码，可保护代码
   -->
   <CompileLuaCode>True</CompileLuaCode>

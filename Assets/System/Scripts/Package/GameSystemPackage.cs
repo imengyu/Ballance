@@ -29,25 +29,30 @@ namespace Ballance2.Package
       SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
     }
 
-    
-#if UNITY_EDITOR
     private Dictionary<string, string> sEditorLuaPath = new Dictionary<string, string>();
-    private void GenerateEditorLuaPath() {
-      const string folderSrc = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH;
-      DirectoryInfo direction = new DirectoryInfo(folderSrc);
-      FileInfo[] files = direction.GetFiles("*.lua", SearchOption.AllDirectories);
-      for (int i = 0; i < files.Length; i++)
-      {
-        var rel = files[i].FullName.Replace('\\', '/');
-        var fileName = Path.GetFileName(rel);
-        var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
-        if(!sEditorLuaPath.ContainsKey(fileName))
-          sEditorLuaPath.Add(fileName, rel);
-        if(!sEditorLuaPath.ContainsKey(fileNameNoExt))
-          sEditorLuaPath.Add(fileNameNoExt, rel);
-      } 
-    }
+
+    private void GenerateLuaPath() {
+      if(sEditorLuaPath.Count == 0) {
+#if UNITY_EDITOR
+        const string folderSrc = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH;
+        DirectoryInfo direction = new DirectoryInfo(folderSrc);
+        FileInfo[] files = direction.GetFiles("*.lua", SearchOption.AllDirectories);
+        for (int i = 0; i < files.Length; i++)
+        {
+          var rel = files[i].FullName.Replace('\\', '/');
+          var fileName = Path.GetFileName(rel);
+          var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
+          if(!sEditorLuaPath.ContainsKey(fileName))
+            sEditorLuaPath.Add(fileName, rel);
+          if(!sEditorLuaPath.ContainsKey(fileNameNoExt))
+            sEditorLuaPath.Add(fileNameNoExt, rel);
+        } 
+#else
+        GameSystemPackagePaths.AddName(sEditorLuaPath);
 #endif
+      }
+    }
+
 
     public override T GetAsset<T>(string pathorname)
     {
@@ -55,8 +60,8 @@ namespace Ballance2.Package
     }
     public override CodeAsset GetCodeAsset(string pathorname)
     {
+      GenerateLuaPath();
 #if UNITY_EDITOR
-      GenerateEditorLuaPath();
       if(PathUtils.IsAbsolutePath(pathorname) && File.Exists(pathorname)) {
         var bytes = FileUtils.ReadAllToBytes(pathorname);
         var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
@@ -88,9 +93,27 @@ namespace Ballance2.Package
         return null;
       }
 #else
-      TextAsset asset = Resources.Load<TextAsset>(pathorname);
+
+      TextAsset asset = Resources.Load<TextAsset>("SystemScrips/" + pathorname);
+      if(asset == null) {
+        var fileName = Path.GetFileName(pathorname);
+        var path2 = "";
+        if(sEditorLuaPath.ContainsKey(fileName)) {
+          path2 = sEditorLuaPath[fileName];
+          asset = Resources.Load<TextAsset>(path2);
+          if(asset != null) pathorname = path2;
+        }
+
+        var fileNameNoExt = Path.GetFileNameWithoutExtension(pathorname);
+        if(asset == null && sEditorLuaPath.ContainsKey(fileName)) {
+          path2 = sEditorLuaPath[fileName];
+          asset = Resources.Load<TextAsset>(path2);
+          if(asset != null) pathorname = path2;
+        }
+      }
       if(asset == null)
         throw new FileNotFoundException("Filed to load code file: \"" + pathorname + "\" !");
+        
       var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
       return new CodeAsset(asset.bytes, pathorname, realtivePath, ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH + pathorname);
 #endif

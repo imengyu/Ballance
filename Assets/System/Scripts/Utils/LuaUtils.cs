@@ -210,7 +210,9 @@ namespace Ballance2.Utils
         fileName = Marshal.PtrToStringAnsi(luaDebug.source);
       }
       Marshal.FreeHGlobal(ar);
-      return fileName;
+      if(fileName.StartsWith("@"))
+        fileName = fileName.Substring(1);
+      return fileName.Replace("//", "/");
     }
   }
 

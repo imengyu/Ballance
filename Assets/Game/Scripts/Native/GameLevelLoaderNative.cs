@@ -143,6 +143,7 @@ namespace Ballance2.Game
           errCallback("FILE_NOT_EXISTS", "文件 " + name + " 不存在");
           return;
         }
+        Log.D(TAG, "Load package : {0}", path);
         //加载资源包
         StartCoroutine(Loader(new LevelAssets(path), callback, errCallback));
       }

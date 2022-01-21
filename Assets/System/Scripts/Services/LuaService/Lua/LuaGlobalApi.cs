@@ -120,6 +120,8 @@ namespace Ballance2.Services.LuaService.Lua
               } else
                 //无斜杠
                 ret = pack.RequireLuaFile(pathOrName);
+            } else {
+              throw new RequireFailedException("Package " + packName + " not found. Lua file name: " + fileName);
             }
           }
         }

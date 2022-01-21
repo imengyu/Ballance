@@ -45,6 +45,7 @@ namespace Ballance2.Editor.Modding
                         for (int i = 0; i < files.Length; i++)
                         {
                             if (files[i].Name.EndsWith(".meta")) continue;
+                            if (files[i].Name.EndsWith(".cs")) continue;
                             //将lua代码取出来，打包到zip中
                             if (files[i].Name.EndsWith(".lua"))
                             {
@@ -140,7 +141,7 @@ namespace Ballance2.Editor.Modding
             foreach (string path in allLuaPath) {
                 if(packShouldCompile) { //编译为字节码
                     var outPath = "";
-                    if(LuaCompiler.CompileLuaFile(path, false, out outPath)) {
+                    if(LuaCompiler.CompileLuaFile(path, true, out outPath)) {
                         EditorUtility.DisplayProgressBar("正在打包", path, i / (float)len);
                         ZipUtils.AddFileToZip(zipStream, outPath, "/class" + path.Substring(basePath.Length, path.Length - basePath.Length - 4) + ".luac", ref crc);
                         File.Delete(outPath);

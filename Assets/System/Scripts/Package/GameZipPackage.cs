@@ -74,10 +74,12 @@ namespace Ballance2.Package
     private struct CodeAssetStorage
     {
       public byte[] asset;
+      public string innerPath;
       public string fullPath;
-      public CodeAssetStorage(byte[] asset, string fullPath)
+      public CodeAssetStorage(byte[] asset, string innerPath, string fullPath)
       {
         this.asset = asset;
+        this.innerPath = innerPath;
         this.fullPath = fullPath;
       }
     }
@@ -99,10 +101,7 @@ namespace Ballance2.Package
         if (theEntry.Name == "assets/" + PackageName + ".assetbundle")
         {
           if (await LoadAssetBundleToMemoryInZipAsync(zip, theEntry))
-          {
             assetbundleFound = true;
-            result = await base.LoadPackage();
-          }
         }
         else if (theEntry.Name.StartsWith("class/"))
         {
@@ -110,7 +109,9 @@ namespace Ballance2.Package
         }
       }
 
-      if (!assetbundleFound)
+      if(assetbundleFound) 
+        result = await base.LoadPackage();
+      else
         GameErrorChecker.SetLastErrorAndLog(GameError.FileNotFound, TAG, "未找到 " + PackageName + ".assetbundle");
 
       return result;
@@ -121,13 +122,17 @@ namespace Ballance2.Package
       MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
       PackageDef = new XmlDocument();
+
+      string content = "";
+
       try
       {
-        PackageDef.LoadXml(StringUtils.GetUtf8Bytes(StringUtils.FixUtf8BOM(ms.ToArray())));
+        content = StringUtils.GetUtf8Bytes(StringUtils.FixUtf8BOM(ms.ToArray()));
+        PackageDef.LoadXml(content);
       }
       catch (System.Exception e)
       {
-        GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
+        GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e + "\nCheck content: " + content);
         return false;
       }
       finally
@@ -193,7 +198,15 @@ namespace Ballance2.Package
     {
       MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
-      packageCodeAsset.Add(theEntry.Name, new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name));
+      var codeAssetStorage = new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name, PackageFilePath + "/" + theEntry.Name);
+      var key = theEntry.Name;
+      packageCodeAsset.Add(key, codeAssetStorage);
+      key = Path.GetFileName(theEntry.Name);
+      if(!packageCodeAsset.ContainsKey(key))
+        packageCodeAsset.Add(key, codeAssetStorage);
+      key = Path.GetFileNameWithoutExtension(theEntry.Name);
+      if(!packageCodeAsset.ContainsKey(key))
+        packageCodeAsset.Add(key, codeAssetStorage);
 
       ms.Close();
       ms.Dispose();
@@ -201,17 +214,12 @@ namespace Ballance2.Package
 
     public override CodeAsset GetCodeAsset(string pathorname)
     {
-      foreach (string key in packageCodeAsset.Keys)
-      {
-        if (key == pathorname
-                || key == "class" + pathorname
-                || key == "class/" + pathorname
-                || Path.GetFileName(key) == pathorname)
-        {
-          var k = packageCodeAsset[key];
-          return new CodeAsset(k.asset, k.fullPath, k.fullPath, k.fullPath);
-        }
-      }
+      if (packageCodeAsset.TryGetValue(pathorname, out var k))
+        return new CodeAsset(k.asset, k.fullPath, k.innerPath, k.fullPath);
+      if (packageCodeAsset.TryGetValue(Path.GetFileName(pathorname), out k))
+        return new CodeAsset(k.asset, k.fullPath, k.innerPath, k.fullPath);
+      if (packageCodeAsset.TryGetValue(Path.GetFileNameWithoutExtension(pathorname), out k))
+        return new CodeAsset(k.asset, k.fullPath, k.innerPath, k.fullPath);
 
       GameErrorChecker.LastError = GameError.FileNotFound;
       return null;

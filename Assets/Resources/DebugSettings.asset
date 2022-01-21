@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c36aee1623c1b84da59e9379a9e48f1, type: 3}
   m_Name: DebugSettings
   m_EditorClassIdentifier: 
-  DebugFolder: ..\Debug
-  OutputFolder: ..\Build
+  DebugFolder: ./Debug
+  OutputFolder: ./Output/Ballance_Data
   EnableSystemDebugTests: 1
   SystemInitLoadWay: 1
   PackageLoadWay: 1

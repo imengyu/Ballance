@@ -56,7 +56,8 @@ namespace Ballance2.UI.Core.Controls
     }
 
     private void InitTab(TabContent t) {
-      tabs.Add(t.Name, t);
+      if(tabs.ContainsKey(t.Name)) tabs[t.Name] = t;
+      else tabs.Add(t.Name, t);
       EventTriggerListener.Get(t.Tab.gameObject).onClick += (go) => {
         ActiveTab(t.Name);
       };

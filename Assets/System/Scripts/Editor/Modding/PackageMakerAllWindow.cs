@@ -123,7 +123,6 @@ namespace Ballance2.Editor.Modding
             }
 
             string dir = "";
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
             EditorUtility.DisplayProgressBar("正在打包", "正在打包，请稍后...", 0);
 
@@ -143,6 +142,7 @@ namespace Ballance2.Editor.Modding
                     Debug.LogWarning("没有在 " + path + " 模块下找到 PackageDef.xml，跳过打包此模块");
                     continue;
                 } 
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
                 string err = PackagePacker.DoPackPackage(packTarget, packageDef, path, dir);
                 if(!string.IsNullOrEmpty(err))

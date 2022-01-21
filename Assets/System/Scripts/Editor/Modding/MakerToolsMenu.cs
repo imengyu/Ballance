@@ -5,6 +5,7 @@ using Ballance2.Res;
 using Ballance2.Utils;
 using UnityEngine;
 using Ballance2.Editor.Lua;
+using System.Collections.Generic;
 
 namespace Ballance2.Editor.Modding
 {
@@ -54,7 +55,9 @@ namespace Ballance2.Editor.Modding
             const string folderSrc = "Assets/System/Scripts/SystemScrips";
             const string folderTarget = "Assets/System/Resources/SystemScrips";
             int count = 0;
+            EditorUtility.DisplayProgressBar("正在编译", "请稍后", 0);
 
+            Dictionary<string, string> sEditorLuaPath = new Dictionary<string, string>();
             DirectoryInfo direction = new DirectoryInfo(folderSrc);
             FileInfo[] files = direction.GetFiles("*.lua", SearchOption.AllDirectories);
             for (int i = 0; i < files.Length; i++)
@@ -66,16 +69,37 @@ namespace Ballance2.Editor.Modding
                 if(!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
+                var fileName = Path.GetFileName(rel);
+                var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
+                if(!sEditorLuaPath.ContainsKey(fileName))
+                  sEditorLuaPath.Add(fileName, "SystemScrips" + rel);
+                if(!sEditorLuaPath.ContainsKey(fileNameNoExt))
+                  sEditorLuaPath.Add(fileNameNoExt, "SystemScrips" + rel);
+
                 var outPath = "";
-                if(LuaCompiler.CompileLuaFile(src, false, out outPath)) {
+                if(LuaCompiler.CompileLuaFile(src, true, out outPath)) {
                     File.Copy(outPath, dest, true);
                     File.Delete(outPath);
                 } else {
                     Debug.LogError("编译 " + src + " 失败, 将lua文件原样打包。");
                     File.Copy(src, dest, true);
                 }
+                
+                EditorUtility.DisplayProgressBar("正在编译", rel, count / (float)files.Length);
                 count++;
             }
+            EditorUtility.ClearProgressBar();
+
+            StreamWriter sw = new StreamWriter("Assets/System/Scripts/Package/EditorInfo/GameSystemPackagePaths.cs", false);
+            sw.WriteLine("using System.Collections.Generic;");
+            sw.WriteLine("");
+            sw.WriteLine("public static class GameSystemPackagePaths {");
+            sw.WriteLine("  public static void AddName(Dictionary<string, string> arr) {");
+            foreach(var k in sEditorLuaPath)
+              sw.WriteLine("    arr.Add(\""+k.Key+"\", \""+k.Value+"\");");
+            sw.WriteLine("  }");
+            sw.WriteLine("}");
+            sw.Close();
 
             EditorUtility.DisplayDialog("提示", "成功。编译 " + count + " 个文件", "确定");
         }

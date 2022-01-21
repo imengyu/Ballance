@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -110,7 +111,12 @@ namespace Ballance2.Services
       DebugMode = gameEntryInstance.DebugMode;
       GameDebugCommandServer = new GameDebugCommandServer();
 
-      InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
+      try {
+        InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));
+      } catch(Exception e) {
+        GameErrorChecker.ThrowGameError(GameError.ExecutionFailed, "系统初始化时发生异常，请反馈此BUG.\n" + e.ToString());
+      }
+
       return true;
     }
 
