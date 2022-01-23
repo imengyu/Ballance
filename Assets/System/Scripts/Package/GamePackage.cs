@@ -174,6 +174,18 @@ namespace Ballance2.Package
     protected int flag = 0;
 
     /// <summary>
+    /// 获取是否可以卸载
+    /// </summary>
+    /// <returns></returns>
+    [LuaApiDescription("获取是否可以卸载")]
+    public bool IsNotUnLoadable() { return (flag & FLAG_PACK_NOT_UNLOADABLE) == FLAG_PACK_NOT_UNLOADABLE; }
+    /// <summary>
+    /// 获取是否是系统包
+    /// </summary>
+    /// <returns></returns>
+    [LuaApiDescription("获取是否是系统包")]
+    public bool IsSystemPackage() { return (flag & FLAG_PACK_SYSTEM_PACKAGE) == FLAG_PACK_SYSTEM_PACKAGE; }
+    /// <summary>
     /// 获取入口代码是否已经运行过
     /// </summary>
     /// <returns></returns>

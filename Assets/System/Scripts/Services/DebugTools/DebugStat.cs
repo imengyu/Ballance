@@ -72,6 +72,10 @@ class DebugStat : MonoBehaviour
         WindowStats.Hide();
       return GameActionCallResult.SuccessResult;
     }, new string[] { "System.Boolean" });
+    GameManager.GameMediator.SubscribeSingleEvent(SystemPackage, "DebugToolsClear", "DebugStat", (evtName, param) => {
+      StatText.text = "";
+      return false;
+    });
 
     //Window
     var DebugSysinfoWindow = CloneUtils.CloneNewObject(GameStaticResourcesPool.FindStaticPrefabs("DebugSysinfoWindow"), "DebugSysinfoWindow").GetComponent<RectTransform>();

@@ -30,6 +30,7 @@
     <VersionName>1.0.DEV</VersionName>
     <!--模块依赖-->
     <Dependencies>
+      <Package name="core" minVer="1" mustLoad="true"></Package>
       <!--
         如果你的模块分成多个模块，你可以在这里写明每个模块的依赖信息，加载器会自动处理并按次序依次加载依赖。
         name ：依赖的包名

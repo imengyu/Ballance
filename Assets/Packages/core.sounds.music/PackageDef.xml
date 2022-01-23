@@ -4,13 +4,15 @@
     <Name>原版音乐包</Name>
     <Author>Ballance</Author>
     <Introduction>原版音乐资源包</Introduction>
-    <Description>原版音乐资源包,包含原版音乐资源</Description>
+    <Description>原版音乐资源包, 包含原版游戏的全部背景音乐资源</Description>
     <Logo>PackageLogo.jpg</Logo>
     <Link>https://imengyu.top/ballanceProject</Link>
     <AuthorLink>https://imengyu.top/ballanceProject</AuthorLink>
     <DocLink>https://imengyu.top/ballanceProject</DocLink>
     <VersionName>1.0</VersionName>
-    <Dependencies></Dependencies>
+    <Dependencies>
+      <Package name="core" minVer="1" mustLoad="true"></Package>
+    </Dependencies>
   </BaseInfo>
   <Compatibility>
     <MinVersion>1</MinVersion>

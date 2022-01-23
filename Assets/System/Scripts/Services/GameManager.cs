@@ -272,6 +272,7 @@ namespace Ballance2.Services
     {
       var pm = GetSystemService<GamePackageManager>();
       var list = pm.LoadPackageRegisterInfo();
+      pm.ScanUserPackages(list);
 
       //Save action
       GameActionStore.RegisterAction(GamePackage.GetSystemPackage(), "SavePackageRegisterInfo", "GameManager", (param) =>
@@ -282,14 +283,13 @@ namespace Ballance2.Services
 
       foreach (var info in list)
       {
+        if (sEnablePackageLoadFilter && !sLoadCustomPackages.Contains(info.Value.packageName)) continue;
 
-        if (sEnablePackageLoadFilter && !sLoadCustomPackages.Contains(info.packageName)) continue;
-
-        var task = pm.RegisterPackage((info.enableLoad ? "Enable:" : "") + info.package);
+        var task = pm.RegisterPackage((info.Value.enableLoad ? "Enable:" : "") + info.Value.packageName);
         yield return task;
 
-        if (task.Result && info.enableLoad)
-          yield return pm.LoadPackage(info.packageName);
+        if (task.Result && info.Value.enableLoad)
+          yield return pm.LoadPackage(info.Value.packageName);
       }
     }
     /// <summary>

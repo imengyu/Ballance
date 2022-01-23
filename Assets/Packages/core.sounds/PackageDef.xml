@@ -4,14 +4,16 @@
     <Name>声音资源包</Name>
     <Author>Ballance</Author>
     <Introduction>声音资源包</Introduction>
-    <Description></Description>
+    <Description>
+      声音资源包。包含原版游戏的全部游戏音效。
+    </Description>
     <Logo>PackageLogo.png</Logo>
     <Link>https://imengyu.top/ballanceProject</Link>
     <AuthorLink>https://imengyu.top/ballanceProject</AuthorLink>
     <DocLink>https://imengyu.top/ballanceProject</DocLink>
     <VersionName>1.0</VersionName>
     <Dependencies>
-
+      <Package name="core" minVer="1" mustLoad="true"></Package>
     </Dependencies>
   </BaseInfo>
   <Compatibility>

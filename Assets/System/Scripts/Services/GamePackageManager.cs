@@ -4,6 +4,7 @@ using Ballance2.Config.Settings;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
+using Ballance2.UI.Core;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using System.IO;
@@ -112,6 +113,8 @@ namespace Ballance2.Services
       public GamePackageRegisterInfo(GamePackage package)
       {
         this.package = package;
+        this.packageName = package.PackageName;
+        this.enableLoad = true;
       }
       public GamePackageRegisterInfo(string packageName, bool enableLoad)
       {
@@ -132,10 +135,27 @@ namespace Ballance2.Services
     private XmlDocument packageEnableStatusListXml = new XmlDocument();
 
     /// <summary>
+    /// 扫描模块
+    /// </summary>
+    internal void ScanUserPackages(Dictionary<string, GamePackageRegisterInfo> list) {
+      var dirPath = GamePathManager.GetResRealPath("package", "", false, false);
+      //扫描文件夹中没有的包，添加到列表中
+      DirectoryInfo direction = new DirectoryInfo(dirPath);
+      FileInfo[] files = direction.GetFiles("*.ballance", SearchOption.TopDirectoryOnly);
+      for (int i = 0; i < files.Length; i++)
+      {
+        var rel = files[i].FullName.Replace('\\', '/');
+        var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
+        if(StringUtils.IsPackageName(fileNameNoExt) && !list.ContainsKey(fileNameNoExt) && !IsPackageRegistered(fileNameNoExt)) {
+          list.Add(fileNameNoExt, new GamePackageRegisterInfo(fileNameNoExt, false));
+        }
+      } 
+    }
+    /// <summary>
     /// 读取模块包状态
     /// </summary>
     /// <returns></returns>
-    internal List<GamePackageRegisterInfo> LoadPackageRegisterInfo()
+    internal Dictionary<string, GamePackageRegisterInfo> LoadPackageRegisterInfo()
     {
       string pathPackageStatus = Application.persistentDataPath + "/PackageStatus.xml";
       if (File.Exists(pathPackageStatus))
@@ -155,15 +175,17 @@ namespace Ballance2.Services
       else//加载默认xml文档
         packageEnableStatusListXml.LoadXml(ConstStrings.DEFAULT_PACKAGE_STATUS_XML);
 
-      List<GamePackageRegisterInfo> lastRegisteredPackages = new List<GamePackageRegisterInfo>();
+      Dictionary<string, GamePackageRegisterInfo> lastRegisteredPackages = new Dictionary<string, GamePackageRegisterInfo>();
       XmlNode nodeNoPackagePackagee = packageEnableStatusListXml.SelectSingleNode("NoPackagePackagee");
       if (nodeNoPackagePackagee != null)
         NoPackageMode = bool.Parse(nodeNoPackagePackagee.InnerText);
       XmlNode nodePackageList = packageEnableStatusListXml.SelectSingleNode("PackageList");
       if (nodePackageList != null)
       {
-        foreach (XmlNode n in nodePackageList)
-          lastRegisteredPackages.Add(new GamePackageRegisterInfo(n.InnerText, n.Attributes["enabled"].Value == "True"));
+        foreach (XmlNode n in nodePackageList) {
+          if(!lastRegisteredPackages.ContainsKey(n.InnerText))
+            lastRegisteredPackages.Add(n.InnerText, new GamePackageRegisterInfo(n.InnerText, n.Attributes["enabled"].Value == "True"));
+        }
       }
 
       return lastRegisteredPackages;
@@ -337,6 +359,12 @@ namespace Ballance2.Services
           var info = new GamePackageRegisterInfo(gamePackage);
           info.enableLoad = forceEnablePackage;
           registeredPackages.Add(packageName, info);
+        } 
+        else 
+        {
+          var info = registeredPackages[packageName];
+          info.enableLoad = forceEnablePackage;
+          info.package = gamePackage;
         }
 
         gamePackage._Status = GamePackageStatus.Registered;
@@ -435,6 +463,17 @@ namespace Ballance2.Services
     public bool IsPackageRegistering(string packageName)
     {
       return packagesLoadStatus.ContainsKey(packageName) && packagesLoadStatus[packageName] == 1;
+    }
+    /// <summary>
+    /// 获取模块是否注册
+    /// </summary>
+    /// <param name="packageName">包名</param>
+    /// <returns></returns>
+    [LuaApiDescription("获取模块是否注册", "")]
+    [LuaApiParamDescription("packageName", "包名")]
+    public bool IsPackageRegistered(string packageName)
+    {
+      return registeredPackages.ContainsKey(packageName);
     }
     /// <summary>
     /// 获取模块是否已加载
@@ -713,11 +752,12 @@ namespace Ballance2.Services
     private void InitPackageManageWindow()
     {
       GameUIManager = GameSystem.GetSystemService("GameUIManager") as GameUIManager;
-      //Todo
+      var PackageManageWindowPage = GameUIManager.RegisterPage("PackageManageWindow", "PageFull");
+      PackageManageWindowPage.CreateContent(GameStaticResourcesPool.FindStaticPrefabs("PackageManageWindow"));
     }
     private void DestroyPackageManageWindow()
     {
-      //Todo
+      GameUIManager.UnRegisterPage("PackageManageWindow");
     }
 
     private void InitPackageCommands()

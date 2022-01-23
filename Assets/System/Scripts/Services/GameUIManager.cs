@@ -314,6 +314,7 @@ namespace Ballance2.Services
 
     private void InitAllPrefabs()
     {
+      RegisterUIPrefab("PageFull", GameUIPrefabType.Page, GameStaticResourcesPool.FindStaticPrefabs("PrefabPageFull"));
     }
 
     #endregion
@@ -374,7 +375,19 @@ namespace Ballance2.Services
     [LuaApiParamDescription("name", "页名称")]
     public bool GoPage(string name)
     {
-
+      return GoPageWithOptions(name, new Dictionary<string, string>());
+    }
+    /// <summary>
+    /// 跳转到页并携带参数
+    /// </summary>
+    /// <param name="name">页名称</param>
+    /// <param name="options">参数</param>
+    /// <returns></returns>
+    [LuaApiDescription("跳转到页并携带参数")]
+    [LuaApiParamDescription("name", "页名称")]
+    [LuaApiParamDescription("options", "参数")]
+    public bool GoPageWithOptions(string name, Dictionary<string, string> options)
+    {
       if (currentPage != null && currentPage.name == name)
         return true;
       if (!pages.TryGetValue(name, out GameUIPage page))
@@ -387,6 +400,7 @@ namespace Ballance2.Services
       if (pageStack.Count > 0) pageStack[pageStack.Count - 1].Hide();
       if (!pageStack.Contains(page)) pageStack.Add(page);
 
+      page.LastOptions = options;
       page.Show();
       currentPage = page;
       return true;
@@ -425,20 +439,35 @@ namespace Ballance2.Services
     [LuaApiDescription("返回上一页", "如果可以返回，则返回true，否则返回false")]
     public bool BackPreviusPage()
     {
+      return BackPreviusPageWithOptions(new Dictionary<string, string>());
+    }
+    /// <summary>
+    /// 返回上一页并携带参数
+    /// </summary>
+    /// <returns>如果可以返回，则返回true，否则返回false</returns>
+    [LuaApiDescription("返回上一页并携带参数", "如果可以返回，则返回true，否则返回false")]
+    [LuaApiParamDescription("options", "参数")]
+    public bool BackPreviusPageWithOptions(Dictionary<string, string> options)
+    {
       if (pageStack.Count > 0)
       {
         //隐藏当前
         var page = pageStack[pageStack.Count - 1];
         pageStack.RemoveAt(pageStack.Count - 1);
-        page.Hide();
-        if (pageStack.Count > 0)
-        {
-          //显示前一个
-          page = pageStack[pageStack.Count - 1];
-          page.Show();
-          currentPage = page;
+
+        if(page != null) {
+          page.Hide();
+          if (pageStack.Count > 0)
+          {
+            //显示前一个
+            page = pageStack[pageStack.Count - 1];
+            page.LastBackOptions = options;
+            page.OnBackFromChild?.Invoke(options);
+            page.Show();
+            currentPage = page;
+          }
+          return true;
         }
-        return true;
       }
       return false;
     }
@@ -453,7 +482,7 @@ namespace Ballance2.Services
     {
       if (pages.TryGetValue(name, out GameUIPage page))
       {
-        if (page == currentPage) BackPreviusPage();
+        if (page == currentPage && pageStack.Count > 1) BackPreviusPage();
         if (pageStack.Contains(page)) pageStack.Remove(page);
         Object.Destroy(page.gameObject);
         pages.Remove(name);
@@ -562,8 +591,9 @@ namespace Ballance2.Services
     [LuaApiDescription("显示全局 Alert 对话框（窗口模式）", "返回对话框ID")]
     [LuaApiParamDescription("text", "内容")]
     [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("onConfirm", "OK 按钮点击回调")]
     [LuaApiParamDescription("okText", "OK 按钮文字")]
-    public int GlobalAlertWindow(string text, string title, string okText = "确定")
+    public int GlobalAlertWindow(string text, string title, VoidDelegate onConfirm, string okText = "确定")
     {
       GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIAlertWindow, WindowsRectTransform.transform, "");
       RectTransform rectTransform = windowGo.GetComponent<RectTransform>();
@@ -581,14 +611,14 @@ namespace Ballance2.Services
       window.Show();
       btnOk.onClick.AddListener(() =>
       {
+        onConfirm?.Invoke();
         window.Close();
       });
       window.onClose += (id) =>
       {
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*",
-                  id, false);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", id, false);
       };
       return window.GetWindowId();
     }
@@ -603,9 +633,11 @@ namespace Ballance2.Services
     [LuaApiDescription("显示全局 Confirm 对话框（窗口模式）", "返回对话框ID")]
     [LuaApiParamDescription("text", "内容")]
     [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("onConfirm", "OK 按钮点击回调")]
+    [LuaApiParamDescription("onCancel", "Cancel 按扭点击回调")]
     [LuaApiParamDescription("okText", "OK 按钮文字")]
     [LuaApiParamDescription("cancelText", "Cancel 按钮文字")]
-    public int GlobalConfirmWindow(string text, string title, string okText = "确定", string cancelText = "取消")
+    public int GlobalConfirmWindow(string text, string title, VoidDelegate onConfirm, VoidDelegate onCancel, string okText = "确定", string cancelText = "取消")
     {
       GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIConfirmWindow, WindowsRectTransform.transform, "");
       RectTransform rectTransform = windowGo.GetComponent<RectTransform>();
@@ -629,15 +661,15 @@ namespace Ballance2.Services
       };
       btnYes.onClick.AddListener(() =>
       {
+        onConfirm?.Invoke();
         window.Close();
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*",
-                  window.GetWindowId(), true);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", window.GetWindowId(), true);
       });
       btnNo.onClick.AddListener(() =>
       {
+        onCancel?.Invoke();
         window.Close();
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*",
-            window.GetWindowId(), false);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", window.GetWindowId(), false);
       });
       return window.GetWindowId();
     }
@@ -1165,7 +1197,7 @@ namespace Ballance2.Services
               string title;
               if (!DebugUtils.CheckDebugParam(1, args, out text)) return false;
               if (!DebugUtils.CheckDebugParam(2, args, out title)) return false;
-              GlobalAlertWindow(text, title);
+              GlobalAlertWindow(text, title, null);
               return true;
             }
         }

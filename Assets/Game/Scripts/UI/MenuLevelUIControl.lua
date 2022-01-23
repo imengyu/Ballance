@@ -114,10 +114,10 @@ function CreateMenuLevelUI(package)
     lastClickCount = lastClickCount + 1
     if(lastClickCount >= 4) then
       if GameManager.DebugMode then
-        GameUIManager:GlobalToast(I18N.Tr('str.tip.in.debug'))
+        GameUIManager:GlobalToast(I18N.Tr('core.ui.SettingsYouAreInDebugMode'))
         return 
       else
-        GameUIManager:GlobalToast(I18N.TrF('str.tip.click.debug', { (8-lastClickCount) }))
+        GameUIManager:GlobalToast(I18N.TrF('core.ui.SettingsClickNTimeToDebugMode', { (8-lastClickCount) }))
       end
       if(lastClickCount >= 8) then
         GameManager.GameMediator:CallAction(SystemPackage, 'System', 'EnableDebugMode')
@@ -127,5 +127,5 @@ function CreateMenuLevelUI(package)
 
   --加载版本完整信息
   local ButtonVersionText = PageAbout.Content.transform:Find('ButtonVersion/Text'):GetComponent(Text) ---@type Text
-  ButtonVersionText.text = I18N.TrF('ui.about.about.version', { Ballance2.Config.GameConst.GameVersion })
+  ButtonVersionText.text = I18N.TrF('core.ui.SettingsVersion', { Ballance2.Config.GameConst.GameVersion })
 end

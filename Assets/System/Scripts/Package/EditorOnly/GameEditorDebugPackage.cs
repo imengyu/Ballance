@@ -57,15 +57,18 @@ namespace Ballance2.Package
           return false;
         }
         UpdateTime = File.GetLastWriteTime(defPath);
-        return ReadInfo(PackageDef);
+        if(ReadInfo(PackageDef)) 
+        {
+          if (!string.IsNullOrEmpty(BaseInfo.Logo))
+            LoadLogo(PackageFilePath + "/" + BaseInfo.Logo);
+          return true;
+        }
+        return false;
       }
 #endif
     }
     public override async Task<bool> LoadPackage()
     {
-      if (!string.IsNullOrEmpty(BaseInfo.Logo))
-        LoadLogo(PackageFilePath + "/" + BaseInfo.Logo);
-
       LoadAllFileNames();
       return await base.LoadPackage();
     }

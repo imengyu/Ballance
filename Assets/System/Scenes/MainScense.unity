@@ -410,6 +410,10 @@ MonoBehaviour:
     Name: GameDebugStats
   - Object: {fileID: 8744669159501323526, guid: ecc1b3df2d68a2b4a9bd3a471047a97e, type: 3}
     Name: PrefabSideTabBar
+  - Object: {fileID: 1642299784351381579, guid: c83f54f00f67eba4e9ed668e620d188c, type: 3}
+    Name: PrefabPageFull
+  - Object: {fileID: 5251121522375728235, guid: 79d23f3163254fd4e97a558203d5a391, type: 3}
+    Name: PackageManageWindow
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
@@ -423,6 +427,16 @@ MonoBehaviour:
     Name: IconDebug
   - Object: {fileID: -396783105, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
     Name: IconInfo
+  - Object: {fileID: 2800000, guid: a840bb745c75d6049b8b192d3eb30cdf, type: 3}
+    Name: LogoInSystem
+  - Object: {fileID: 7880049525172564496, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Name: ModIconFailed
+  - Object: {fileID: -6506581538796598956, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Name: ModIconUnKnow
+  - Object: {fileID: -9100469446420412935, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Name: ModIconSuccess
+  - Object: {fileID: -8640479623088261172, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Name: ModIconNotSupport
 --- !u!114 &876097598
 MonoBehaviour:
   m_ObjectHideFlags: 0

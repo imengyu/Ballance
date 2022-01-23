@@ -135,7 +135,7 @@ function BindSettingsUI(MessageCenter)
     GameUIManager:GoPage('PageSettingsAudio') 
   end)
   MessageCenter:SubscribeEvent('BtnSettingsPackageClick', function () 
-    --TODO: GameManager.Instance.GameStore['DbgShowPackageManageWindow'] = true
+    GameUIManager:GoPage('PackageManageWindow') 
   end)
 
   --语言

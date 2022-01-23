@@ -75,9 +75,13 @@ namespace Ballance2.Package
             if (StringUtils.IsUrl(filePath)) UpdateTime = System.DateTime.Now;
             else UpdateTime = System.IO.File.GetLastWriteTime(PathUtils.FixFilePathScheme(filePath));
 
-            ReadInfo(PackageDef);
-
-            return true;
+            if(ReadInfo(PackageDef)) 
+            {
+              if (!string.IsNullOrEmpty(BaseInfo.Logo))
+                LoadLogo();
+              return true;
+            }
+            return false;
           }
         }
       }
@@ -92,6 +96,21 @@ namespace Ballance2.Package
 
         GameErrorChecker.SetLastErrorAndLog(GameError.NetworkError, TAG, "Load AssetBundle failed : " + LoadError + "(" + request.responseCode + ")");
         return false;
+      }
+    }    
+    private void LoadLogo()
+    {
+      try
+      {
+        Texture2D texture2D = AssetBundle.LoadAsset<Texture2D>(BaseInfo.Logo);
+        BaseInfo.LogoTexture = Sprite.Create(texture2D,
+            new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)),
+            new Vector2(0.5f, 0.5f));
+      }
+      catch (System.Exception e)
+      {
+        BaseInfo.LogoTexture = null;
+        Log.E(TAG, "在加载模块的 Logo {0} 失败\n错误信息：{1}", BaseInfo.Logo, e.ToString());
       }
     }
   }

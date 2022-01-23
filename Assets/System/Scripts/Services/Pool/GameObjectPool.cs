@@ -101,13 +101,52 @@ namespace Ballance2.Services.Pool
       return go;
     }
 
+    /// <summary>
+    /// 回退当前池所控根的指定名称子物体至池中
+    /// </summary>
+    /// <param name="objName">对象名称</param>
+    [LuaApiDescription("回退当前池所控根的指定名称子物体至池中")]
+    [LuaApiParamDescription("objName", "对象名称")]
+    public void ReturnObjectFromParent(string objName)
+    {
+      var obj = this.poolRoot.Find(objName);
+      if(obj != null)
+        AddObjectToPool(obj.gameObject);
+      else
+        Log.E(TAG, string.Format("Not found the pool child object {0}.", objName));
+    }
+    /// <summary>
+    /// 获取当前池所控根的是否存在指定名称子物体
+    /// </summary>
+    /// <param name="objName">对象名称</param>
+    [LuaApiDescription("获取当前池所控根的是否存在指定名称子物体")]
+    [LuaApiParamDescription("objName", "对象名称")]
+    public bool ContainsObjectInParent(string objName)
+    {
+      return this.poolRoot.Find(objName) != null;
+    }
+
+    /// <summary>
+    /// 回退物体至池中，注意，只能回退当前池所控根的子物体
+    /// </summary>
+    /// <param name="po">物体</param>
+    [LuaApiDescription("回退物体至池中，注意，只能回退当前池所控根的子物体")]
+    [LuaApiParamDescription("po", "物体")]
+    public void ReturnObjectToPool(GameObject po)
+    {
+      if(po.transform.parent == this.poolRoot)
+        AddObjectToPool(po);
+      else
+        Log.E(TAG, string.Format("Trying to add object to incorrect pool {0}, it parent {1} not this pool root.", poolName, po.transform.parent.name));
+    }
+    
     //o(1)
     /// <summary>
     /// 回退物体至池中
     /// </summary>
     /// <param name="pool">池的名称</param>
     /// <param name="po">物体</param>
-    [LuaApiDescription("游戏对象池")]
+    [LuaApiDescription("回退物体至池中")]
     [LuaApiParamDescription("pool", "池的名称")]
     [LuaApiParamDescription("po", "物体")]
     public void ReturnObjectToPool(string pool, GameObject po)

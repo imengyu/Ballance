@@ -1,7 +1,7 @@
 --- Lua 模组示例入口代码
 
 -- 这里来导入C#类定义（一个模块定义一次即可）
-local GameManager = Ballance2.Sys.GameManager
+local GameManager = Ballance2.Services.GameManager
 local Log = Ballance2.Log
 
 --[[

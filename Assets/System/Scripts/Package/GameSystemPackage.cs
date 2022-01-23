@@ -13,10 +13,12 @@
 
 using System.IO;
 using System.Collections.Generic;
+using System.Xml;
 using Ballance2.Config;
 using Ballance2.Services;
 using Ballance2.Utils;
 using UnityEngine;
+using Ballance2.Res;
 
 namespace Ballance2.Package
 {
@@ -27,6 +29,23 @@ namespace Ballance2.Package
       PackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
       _Status = GamePackageStatus.LoadSuccess;
       SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
+      LoadBaseInfo();
+    }
+
+    private void LoadBaseInfo() {
+      var text = Resources.Load<TextAsset>("SystemPackageDef");
+      var xml = new XmlDocument();
+      xml.LoadXml(text.text);
+      ReadInfo(xml);
+      LoadLogo();
+    }
+
+    private void LoadLogo()
+    {
+      Texture2D texture2D = GameStaticResourcesPool.FindStaticAssets<Texture2D>("LogoInSystem");
+      BaseInfo.LogoTexture = Sprite.Create(texture2D,
+        new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)),
+        new Vector2(0.5f, 0.5f));
     }
 
     private Dictionary<string, string> sEditorLuaPath = new Dictionary<string, string>();
@@ -52,7 +71,6 @@ namespace Ballance2.Package
 #endif
       }
     }
-
 
     public override T GetAsset<T>(string pathorname)
     {
