@@ -31,7 +31,7 @@ end
 --加载与卸载
 
 function BallSoundManager:Start() 
-  local sysPackage = GamePackage.GetSystemPackage()
+  local sysPackage = GamePackage.GetCorePackage()
   self._MyEventHandlers[0] = Game.Mediator:RegisterEventHandler(sysPackage, "EVENT_LEVEL_BUILDER_START", TAG, function ()
     self:_AddInternalSoundCollData()
     return false
@@ -42,7 +42,7 @@ function BallSoundManager:Start()
   end)
 end
 function BallSoundManager:OnDestroy() 
-  local sysPackage = GamePackage.GetSystemPackage()
+  local sysPackage = GamePackage.GetCorePackage()
   Game.Mediator:UnRegisterEventHandler(sysPackage, self._MyEventHandlers[0])
   Game.Mediator:UnRegisterEventHandler(sysPackage, self._MyEventHandlers[1])
 end

@@ -19,13 +19,13 @@ function LevelBriz:new()
 end
 function LevelBriz:Start()
   self._BrizLight.color = Color(0,0,0,1)
-  Game.Mediator:RegisterEventHandler(GamePackage.GetSystemPackage(), 'CoreBrizLevelEventHandler', 'LevelBrizHandler', function (type)
-    if type == 'beforeStart' then
-      Game.Mediator:RegisterEventHandler(GamePackage.GetSystemPackage(), 'GAME_START', 'LevelBrizHandler', function ()
+  Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'CoreBrizLevelEventHandler', 'LevelBrizHandler', function (evtName, params)
+    if params[0] == 'beforeStart' then
+      Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'GAME_START', 'LevelBrizHandler', function ()
         self._LightEnable = true
         return false
       end)
-      Game.Mediator:RegisterEventHandler(GamePackage.GetSystemPackage(), 'GAME_QUIT', 'LevelBrizHandler', function ()
+      Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'GAME_QUIT', 'LevelBrizHandler', function ()
         self._LightEnable = false
         return false
       end)

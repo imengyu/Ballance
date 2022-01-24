@@ -299,7 +299,7 @@ namespace Ballance2.Services
       if (IsSoundPlayerRegistered(audioSource, out audioGlobalControl))
       {
         audios.Remove(audioGlobalControl);
-        if (audioGlobalControl.Audio.gameObject != null)
+        if (audioGlobalControl.Audio != null && audioGlobalControl.Audio.gameObject != null)
           Object.Destroy(audioGlobalControl.Audio.gameObject);
         return true;
       }

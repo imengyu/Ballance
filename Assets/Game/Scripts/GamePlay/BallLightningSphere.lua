@@ -148,8 +148,9 @@ function CreateClass:BallLightningSphere()
   ---播放球 闪电动画
   ---@param position Vector3 位置
   ---@param smallToBig boolean 是否由小变大
+  ---@param callback function 完成回调
   ---@param lightAnim boolean 是否播放相对应的 Light 灯光
-  function BallLightningSphere:PlayLighting(position, smallToBig, lightAnim)
+  function BallLightningSphere:PlayLighting(position, smallToBig, lightAnim, callback)
     local Ball_LightningSphereInnernA = self.Ball_LightningSphereInnernA
     local Ball_LightningSphereInnernB = self.Ball_LightningSphereInnernB
 
@@ -194,11 +195,13 @@ function CreateClass:BallLightningSphere()
         self.Ball_Smoke:SetActive(true)
         self.lighing = false
 
-        if (lightAnim) then
-            Yield(WaitForSeconds(self.BallLightEndSec))
-            self.Ball_Light.gameObject:SetActive(false)
+        if (type(callback) == 'function') then
+          callback()
         end
-
+        if (lightAnim) then
+          Yield(WaitForSeconds(self.BallLightEndSec))
+          self.Ball_Light.gameObject:SetActive(false)
+        end
     end))
   end
 

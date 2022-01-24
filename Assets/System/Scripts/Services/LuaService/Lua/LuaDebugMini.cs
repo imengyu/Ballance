@@ -35,7 +35,7 @@ public class LuaDebugMini : MonoBehaviour {
         LuaState = LuaSvr.mainState;
         //检测lua绑定状态
         object o = LuaState.doString(@"require = function(name) return LuaDebugMini.LuaDebugMiniRequire(name) end
-        return Ballance2.Sys.GameManager.LuaBindingCallback()", "LuaDebugMiniInit");
+        return Ballance2.Services.GameManager.LuaBindingCallback()", "LuaDebugMiniInit");
         if (o != null &&  (
                 (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
                 || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)

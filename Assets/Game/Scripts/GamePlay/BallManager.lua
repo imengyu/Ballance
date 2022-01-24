@@ -3,7 +3,7 @@ local Log = Ballance2.Log
 local KeyListener = Ballance2.Services.InputManager.KeyListener
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 local Vector3 = UnityEngine.Vector3
-local GameSettingsManager = Ballance2.Config.GameSettingsManager
+local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameErrorChecker = Ballance2.Services.Debug.GameErrorChecker
 local GameManager = Ballance2.Services.GameManager
 local GameError = Ballance2.Services.Debug.GameError
@@ -448,12 +448,13 @@ end
 function BallManager:_DeactiveCurrentBall() 
   local current = self._private.currentActiveBall
   if current ~= nil then
-    --停止球的声音
-    GamePlay.BallSoundManager:RemoveSoundableBall(current)
     --取消推动
     self:RemoveAllBallPush()
     --取消激活
     if current.rigidbody.IsPhysicalized then
+      --停止球的声音
+      GamePlay.BallSoundManager:RemoveSoundableBall(current)
+      --取消激活
       current.ball:Deactive()
       current.rigidbody:UnPhysicalize(true)
     end
@@ -468,9 +469,6 @@ function BallManager:_ActiveCurrentBall()
   if current == nil and self._private.currentBall ~= nil then
     current = self._private.currentBall
     self._private.currentActiveBall = self._private.currentBall
-    
-    --启动球的声音
-    GamePlay.BallSoundManager:AddSoundableBall(current)
     ---设置位置
     current.ball.transform.position = self._private.nextRecoverPos
     --设置摄像机跟随对象
@@ -486,6 +484,9 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
     if physics and not physicsed then
       current.rigidbody:Physicalize() 
       current.rigidbody:WakeUp() 
+      
+      --启动球的声音
+      GamePlay.BallSoundManager:AddSoundableBall(current)
     end
     if not physics and physicsed then
       current.rigidbody:UnPhysicalize(true) 
@@ -510,9 +511,12 @@ end
 ---@param pos Vector3 放置位置
 ---@param smallToBig boolean 是否由小到大
 ---@param lightAnim boolean 是否同时播放灯光效果
-function BallManager:PlayLighting(pos, smallToBig, lightAnim) 
-  self._private.BallLightningSphere:PlayLighting(pos, smallToBig, lightAnim)
+---@param callback function 完成回调
+function BallManager:PlayLighting(pos, smallToBig, lightAnim, callback) 
+  self._private.BallLightningSphere:PlayLighting(pos, smallToBig, lightAnim, callback)
 end
+---获取当前是否正在运行球出生闪电效果
+---@return boolean
 function BallManager:IsLighting() 
   return self._private.BallLightningSphere:IsLighting()
 end

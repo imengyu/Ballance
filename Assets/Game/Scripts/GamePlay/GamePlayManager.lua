@@ -1,7 +1,7 @@
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local CloneUtils = Ballance2.Utils.CloneUtils
 local KeyListener = Ballance2.Services.InputManager.KeyListener
-local GameSettingsManager = Ballance2.Config.GameSettingsManager
+local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
 local KeyCode = UnityEngine.KeyCode
@@ -201,23 +201,20 @@ function GamePlayManager:_Start(isStartBySector)
   GamePlay.MusicManager:EnableBackgroundMusic()
 
   if isStartBySector then
-    coroutine.resume(coroutine.create(function()
-      local startPos = Vector3.zero
-      if self.CurrentSector > 0 then
-        --初始位置
-        local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
-        startPos = startRestPoint.transform.position
-      end
-
-      GamePlay.BallManager:PlayLighting(startPos, true, true)
-      Yield(WaitUntil(function () return not GamePlay.BallManager:IsLighting() end)) --等待闪电完成
-
+    local startPos = Vector3.zero
+    if self.CurrentSector > 0 then
+      --初始位置
+      local startRestPoint = GamePlay.SectorManager.CurrentLevelRestPoints[self.CurrentSector].point
+      startPos = startRestPoint.transform.position
+    end
+    --等待闪电完成
+    GamePlay.BallManager:PlayLighting(startPos, true, true, function ()
       --开始控制
       GamePlay.BallManager:SetNextRecoverPos(startPos)
       GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
 
       self._IsCountDownPoint = true
-    end))
+    end)
   else
     self._IsCountDownPoint = true
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)

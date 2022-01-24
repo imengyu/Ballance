@@ -1,5 +1,5 @@
 local GamePackage = Ballance2.Package.GamePackage
-local SystemPackage = GamePackage.GetSystemPackage()
+local SystemPackage = GamePackage.GetCorePackage()
 local CloneUtils = Ballance2.Utils.CloneUtils
 local GameManager = Ballance2.Services.GameManager
 local StringUtils = Ballance2.Utils.StringUtils

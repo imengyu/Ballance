@@ -22,7 +22,11 @@ local GameLuaObjectHostClass={ }
 Ballance2 = Ballance2GlobalNamespace
 UnityEngine = UnityEngineGlobalNamespace
 UnityEngine.UI = UnityEngineUIGlobalNamespace
+
+---等待协程
+---@param wait any
 UnityEngine.Yield = function (wait) end
+
 JetBrains = JetBrainsGlobalNamespace
 Unity = UnityGlobalNamespace
 ---创建类接口

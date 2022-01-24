@@ -484,7 +484,8 @@ namespace Ballance2.Services
       {
         if (page == currentPage && pageStack.Count > 1) BackPreviusPage();
         if (pageStack.Contains(page)) pageStack.Remove(page);
-        Object.Destroy(page.gameObject);
+        if(page != null) Object.Destroy(page.gameObject);
+
         pages.Remove(name);
         return true;
       }

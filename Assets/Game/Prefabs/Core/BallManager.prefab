@@ -1240,7 +1240,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+    componentClassVal: Ballance2.Services.LuaService.LuaWapper.GameLuaObjectHost
   - Type: 15
     Name: _BallWood
     vector2: {x: 0, y: 0}
@@ -1310,7 +1310,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+    componentClassVal: Ballance2.Services.LuaService.LuaWapper.GameLuaObjectHost
   - Type: 15
     Name: _BallStone
     vector2: {x: 0, y: 0}
@@ -1380,7 +1380,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+    componentClassVal: Ballance2.Services.LuaService.LuaWapper.GameLuaObjectHost
   - Type: 15
     Name: _BallPaper
     vector2: {x: 0, y: 0}
@@ -1450,7 +1450,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+    componentClassVal: Ballance2.Services.LuaService.LuaWapper.GameLuaObjectHost
   - Type: 15
     Name: _BallSmoke
     vector2: {x: 0, y: 0}
@@ -1520,7 +1520,7 @@ MonoBehaviour:
     doubleVal: 0
     boolVal: 0
     floatVal: 0
-    componentClassVal: Ballance2.Sys.Bridge.LuaWapper.GameLuaObjectHost
+    componentClassVal: Ballance2.Services.LuaService.LuaWapper.GameLuaObjectHost
   LuaPublicVars: []
   ExecuteOrder: 5
   CreateStore: 0

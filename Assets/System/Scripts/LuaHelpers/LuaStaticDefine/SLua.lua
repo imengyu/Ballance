@@ -73,7 +73,12 @@ UnityEngine.Yieldk = function (y, f) end
 
 ---@diagnostic disable-next-line: lowercase-global
 uCoroutine = {}
+
+---创建协程
+---@param x function
 uCoroutine.create = function(x) end
+---等待协程
+---@param x any
 uCoroutine.yield = function(x) end
 
 ---Slua 全局命名空间

@@ -244,6 +244,23 @@ namespace BallancePhysics.Api
       _motion_controller_set_target_pos(controller, pt_out_ws);
       destroy_point(pt_out_ws);
     }
+    private fn_motion_controller_set_max_translation_force _motion_controller_set_max_translation_force;
+    public void motion_controller_set_max_translation_force(IntPtr controller, Vector3 max_translation_force) {
+      var pmax_translation_force = create_point(max_translation_force);
+      _motion_controller_set_max_translation_force(controller, pmax_translation_force);
+      destroy_point(pmax_translation_force);
+    }
+    private fn_motion_controller_set_max_torque _motion_controller_set_max_torque;
+    public void motion_controller_set_max_torque(IntPtr controller, Vector3 max_torque) {
+      var pt_out_ws = create_point(max_torque);
+      _motion_controller_set_max_torque(controller, pt_out_ws);
+      destroy_point(pt_out_ws);
+    }
+
+    public fn_motion_controller_set_force_factor motion_controller_set_force_factor;
+    public fn_motion_controller_set_damp_factor motion_controller_set_damp_factor;
+    public fn_motion_controller_set_angular_damp_factor motion_controller_set_angular_damp_factor;
+    public fn_motion_controller_set_torque_factor motion_controller_set_torque_factor;
 
     private fn_raycasting _raycasting;
     public RayCastResult raycasting(IntPtr world, int flag, Vector3 start_point, Vector3 direction, float rayLength) {
@@ -495,6 +512,12 @@ namespace BallancePhysics.Api
       _raycasting_one = Marshal.GetDelegateForFunctionPointer<fn_raycasting_one>(apiArray[i++]);
       _physics_is_phantom = Marshal.GetDelegateForFunctionPointer<fn_physics_is_phantom>(apiArray[i++]);
       _motion_controller_set_target_pos = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_target_pos>(apiArray[i++]);
+      _motion_controller_set_max_translation_force = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_max_translation_force>(apiArray[i++]);
+      _motion_controller_set_max_torque = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_max_torque>(apiArray[i++]);
+      motion_controller_set_force_factor = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_force_factor>(apiArray[i++]);
+      motion_controller_set_damp_factor = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_damp_factor>(apiArray[i++]);
+      motion_controller_set_angular_damp_factor = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_angular_damp_factor>(apiArray[i++]);
+      motion_controller_set_torque_factor = Marshal.GetDelegateForFunctionPointer<fn_motion_controller_set_torque_factor>(apiArray[i++]);
       get_quat = Marshal.GetDelegateForFunctionPointer<fn_get_quat>(apiArray[i++]);
       physics_coll_detection = Marshal.GetDelegateForFunctionPointer<fn_physics_coll_detection>(apiArray[i++]);
       physics_contract_detection = Marshal.GetDelegateForFunctionPointer<fn_physics_contract_detection>(apiArray[i++]);

@@ -252,14 +252,14 @@ namespace Ballance2.Services
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
         else if (firstScense != "") {
-          if(RequestEnterLogicScense(firstScense))
+          if(!RequestEnterLogicScense(firstScense))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
       }
       else
       {
         Log.D(TAG, "Enter GameDebug.");
-        if(RequestEnterLogicScense("GameDebug"))
+        if(!RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
         GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
       }
@@ -487,7 +487,7 @@ namespace Ballance2.Services
           yield return new WaitForSeconds(0.2f);
 
           //进入Intro
-          if (!DebugMode || !GameEntry.Instance.DebugSkipIntro)
+          if (string.IsNullOrEmpty(sCustomDebugName) && (!DebugMode || !GameEntry.Instance.DebugSkipIntro))
           {
             RequestEnterLogicScense(firstScense);
             firstScense = "";

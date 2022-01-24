@@ -653,7 +653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.Sys.UI.GameUIControlMessageSender, Assembly-CSharp
+      value: Ballance2.UI.Core.GameUIControlMessageSender, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6020696006886771367, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
       propertyPath: m_OnSubmit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument

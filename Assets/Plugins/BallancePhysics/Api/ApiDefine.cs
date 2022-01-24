@@ -157,6 +157,18 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_motion_controller_set_target_pos(IntPtr controller, IntPtr pos_ws);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_max_translation_force(IntPtr controller, IntPtr max_translation_force);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_max_torque(IntPtr controller, IntPtr max_torque);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_force_factor(IntPtr controller, float force_factor);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_damp_factor(IntPtr controller, float damp_factor);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_angular_damp_factor(IntPtr controller, float angular_damp_factor);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_motion_controller_set_torque_factor(IntPtr controller, float torque_factor);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate float fn_get_quat(IntPtr qt, IntPtr buf);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate IntPtr fn_physics_coll_detection(IntPtr body, int col_id, float min_speed, float max_speed, float sleep_afterwards, float speed_threadhold);

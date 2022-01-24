@@ -550,8 +550,7 @@ namespace Ballance2.Services
     [LuaApiParamDescription("handler", "注册的处理器实例")]
     public void UnRegisterEventHandler(string evtName, GameHandler handler)
     {
-      if (string.IsNullOrEmpty(evtName)
-          || handler == null)
+      if (string.IsNullOrEmpty(evtName) || handler == null)
       {
         Log.W(TAG, "参数缺失", evtName);
         GameErrorChecker.LastError = GameError.ParamNotProvide;

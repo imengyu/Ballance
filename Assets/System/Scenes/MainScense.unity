@@ -454,9 +454,15 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 0
-  DebugInitPackages: []
-  DebugCustomEntryEvent: CoreDebugEmptyEntry
+  DebugType: 2
+  DebugInitPackages:
+  - Enable: 1
+    PackageName: core.sounds
+  - Enable: 1
+    PackageName: core.sounds.music
+  - Enable: 1
+    PackageName: core.assets.skys
+  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
   DebugCustomEntries:
   - CoreDebugEmptyEntry
   - CoreDebugLuaEntry
