@@ -38,6 +38,7 @@ namespace SLua
 			// below lines only used for demostrate how to add custom class to export, can be delete on your app
 
             add(typeof(System.Func<int>), null);
+            add(typeof(Func<bool>), null);
             add(typeof(System.Action<int, string>), null);
             add(typeof(System.Action<int, Dictionary<int, object>>), null);
             add(typeof(List<int>), "ListInt");
@@ -217,16 +218,16 @@ namespace SLua
                 "GraphicRebuildTracker",
                 "Advertisements",
                 "UnityEditor",
-			    "WSA",
-			    "EventProvider",
-			    "Apple",
-			    "ClusterInput",
-			    "LightingSettings",
-				"Motion",
+                "WSA",
+                "EventProvider",
+                "Apple",
+                "ClusterInput",
+                "LightingSettings",
+				        "Motion",
                 "UnityEngine.UI.ReflectionMethodsCache",
-				"NativeLeakDetection",
-				"NativeLeakDetectionMode",
-				"WWWAudioExtensions",
+                "NativeLeakDetection",
+                "NativeLeakDetectionMode",
+                "WWWAudioExtensions",
                 "UnityEngine.Experimental",
                 "Unity.Jobs",
                 "Unity.Collections",

@@ -246,7 +246,14 @@ namespace BallancePhysics.Wapper
     /// 指定当前自定义碰撞组ID, 用于声音组碰撞事件的判断
     /// </summary>
     /// <value></value>
-    public int CollisionID { get => m_CollisionID; set => m_CollisionID = value; }
+    public int CollisionID { 
+      get => m_CollisionID; 
+      set {
+        m_CollisionID = value;
+        if(IsPhysicalized)
+          PhysicsApi.API.physics_set_col_id(Handle, m_CollisionID);
+      }
+    }
 
     private PhysicsEnvironment currentEnvironment = null;
     
@@ -321,7 +328,7 @@ namespace BallancePhysics.Wapper
          m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
          m_RotSpeedDamping, m_BallRadius, m_UseBall, m_EnableConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
          m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, surfaceName,
-         pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius);
+         pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius, m_CollisionID);
         
         foreach (var ptr in pConvexs)
           PhysicsApi.API.delete_points_buffer(ptr);

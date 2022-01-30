@@ -214,6 +214,31 @@ namespace Ballance2.Utils
         fileName = fileName.Substring(1);
       return fileName.Replace("//", "/");
     }
+
+    [SLua.CustomLuaClass]
+    public delegate bool BoolDelegate();
+
+    /// <summary>
+    /// 创建 WaitUntil 
+    /// </summary>
+    /// <param name="f">创建 WaitUntil </param>
+    /// <returns></returns>
+    [LuaApiDescription("创建 WaitUntil ")]
+    [LuaApiParamDescription("f", "回调")]
+    public WaitUntil CreateWaitUntil(BoolDelegate f) {
+      return new WaitUntil(() => f());
+    }
+    
+    /// <summary>
+    /// 创建 WaitWhile 
+    /// </summary>
+    /// <param name="f">创建 WaitWhile </param>
+    /// <returns></returns>
+    [LuaApiDescription("创建 WaitWhile ")]
+    [LuaApiParamDescription("f", "回调")]
+    public WaitWhile CreateWaitWhile(BoolDelegate f) {
+      return new WaitWhile(() => f());
+    }
   }
 
 }

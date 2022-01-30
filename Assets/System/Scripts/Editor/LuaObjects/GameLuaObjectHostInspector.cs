@@ -308,41 +308,8 @@ class GameLuaObjectHostInspector : Editor
         EditorGUILayout.BeginVertical(styleCNBox);
         EditorGUILayout.PropertyField(pName);
 
-        pManualInputScript.boolValue = EditorGUILayout.Toggle("手动输入", pManualInputScript.boolValue);
-        if(pManualInputScript.boolValue) {
-            EditorGUILayout.PropertyField(pLuaPackageName);
-            EditorGUILayout.PropertyField(pLuaFileName);
-            EditorGUILayout.PropertyField(pLuaClassName);
-        } else {
-            int chooseIndex = EditorGUILayout.Popup(pLuaPackageName.name, packsPath.IndexOf(pLuaPackageName.stringValue), packsPathArr);
-            pLuaPackageName.stringValue = chooseIndex >= 0 ? packsPathArr[chooseIndex] : "";
-            EditorGUILayout.LabelField(pLuaFileName.name, pLuaFileName.stringValue);
-            EditorGUILayout.LabelField(pLuaClassName.name, pLuaClassName.stringValue);
-            
-            var valLuaPackageName = pLuaPackageName.stringValue;
-            EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(valLuaPackageName));
-            if(GUILayout.Button("选择Lua类")) {
-                var dirPath = valLuaPackageName == "core" ? ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH : 
-                    GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + valLuaPackageName;
-                var w = ChooseLuaFile.ShowWindow(dirPath);
-                w.Chooseed = (path) => {
-                    path = Path.ChangeExtension(path, "");
-                    serializedObject.Update();
-                    pLuaFileName.stringValue = path.Substring(0, path.Length - 1);
-                    pLuaClassName.stringValue = PathUtils.GetFileNameWithoutExt(path);
-                    w.Close();
-                    serializedObject.ApplyModifiedProperties();
-                };
-            }
-            EditorGUI.EndDisabledGroup();
-        }
-
-
         EditorGUILayout.PropertyField(pDebugLoadScript);
         EditorGUILayout.PropertyField(pExecuteOrder);
-        EditorGUILayout.PropertyField(pCreateStore);
-        EditorGUILayout.PropertyField(pCreateActionStore);
-
         EditorGUILayout.PropertyField(pUpdateDelta);
         EditorGUILayout.PropertyField(pFixUpdateDelta);
 
@@ -438,6 +405,37 @@ class GameLuaObjectHostInspector : Editor
         EditorGUILayout.BeginVertical(styleCNBox);
         EditorGUILayout.Space(5);
 
+        pManualInputScript.boolValue = EditorGUILayout.Toggle("手动输入", pManualInputScript.boolValue);
+        if(pManualInputScript.boolValue) {
+            EditorGUILayout.PropertyField(pLuaPackageName);
+            EditorGUILayout.PropertyField(pLuaFileName);
+            EditorGUILayout.PropertyField(pLuaClassName);
+        } else {
+            int chooseIndex = EditorGUILayout.Popup(pLuaPackageName.name, packsPath.IndexOf(pLuaPackageName.stringValue), packsPathArr);
+            pLuaPackageName.stringValue = chooseIndex >= 0 ? packsPathArr[chooseIndex] : "";
+            EditorGUILayout.LabelField(pLuaFileName.name, pLuaFileName.stringValue);
+            EditorGUILayout.LabelField(pLuaClassName.name, pLuaClassName.stringValue);
+            
+            var valLuaPackageName = pLuaPackageName.stringValue;
+            EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(valLuaPackageName));
+            if(GUILayout.Button("选择Lua类")) {
+                var dirPath = valLuaPackageName == "core" ? ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ASSET_PATH : 
+                    GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + valLuaPackageName;
+                var w = ChooseLuaFile.ShowWindow(dirPath);
+                w.Chooseed = (path) => {
+                    path = Path.ChangeExtension(path, "");
+                    serializedObject.Update();
+                    pLuaFileName.stringValue = path.Substring(0, path.Length - 1);
+                    pLuaClassName.stringValue = PathUtils.GetFileNameWithoutExt(path);
+                    w.Close();
+                    serializedObject.ApplyModifiedProperties();
+                };
+            }
+            EditorGUI.EndDisabledGroup();
+        }
+
+        EditorGUILayout.PropertyField(pCreateStore);
+        EditorGUILayout.PropertyField(pCreateActionStore);
 
 
         EditorGUILayout.Space(5);

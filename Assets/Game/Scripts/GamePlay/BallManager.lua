@@ -489,6 +489,9 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
       GamePlay.BallSoundManager:AddSoundableBall(current)
     end
     if not physics and physicsed then
+      --停止球的声音
+      GamePlay.BallSoundManager:RemoveSoundableBall(current)
+      --反物理化
       current.rigidbody:UnPhysicalize(true) 
     end
     current.ball:Active()

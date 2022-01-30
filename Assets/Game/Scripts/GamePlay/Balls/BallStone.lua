@@ -23,6 +23,7 @@ function BallStone:new()
     Stone = 'core.sounds:Roll_Stone_Stone.wav',
     Wood = 'core.sounds:Roll_Stone_Wood.wav',
   }
+  self._RollSound.MaxSpeed = 0.2
 end
 
 function CreateClass:BallStone()

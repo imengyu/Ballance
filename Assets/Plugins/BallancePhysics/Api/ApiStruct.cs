@@ -60,6 +60,7 @@ namespace BallancePhysics.Api
     public fn_physics_remove_contract_listener physics_remove_contract_listener;
     private fn_delete_raycast_result delete_raycast_result;
     private fn_surface_exist_by_name _surface_exist_by_name;
+    public fn_physics_set_col_id physics_set_col_id;
 
     public void physics_set_name(IntPtr body, string name) {
       var namePtr = Marshal.StringToHGlobalAnsi(name);
@@ -79,7 +80,11 @@ namespace BallancePhysics.Api
     }
 
     private fn_physicalize _physicalize;
-    public IntPtr physicalize(IntPtr world, string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith, float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, bool use_ball, bool enable_convex_hull, bool auto_mass_center, bool enable_collision, bool start_frozen, bool physical_unmoveable, Vector3 position, Vector3 shfit_mass_center, Quaternion rotation, bool use_exists_surface, string surface_name, int convex_count, List<IntPtr> convex_data, int concave_count, List<IntPtr> concave_data, float extra_radius) {
+    public IntPtr physicalize(IntPtr world, string name, int layer, int systemGroup, int subSystemId, int subSystemDontCollideWith,
+      float mass, float friction, float elasticity, float linear_speed_damp, float rot_speed_damp, float ball_radius, bool use_ball, 
+      bool enable_convex_hull, bool auto_mass_center, bool enable_collision, bool start_frozen, bool physical_unmoveable, Vector3 position, 
+      Vector3 shfit_mass_center, Quaternion rotation, bool use_exists_surface, string surface_name, int convex_count, List<IntPtr> convex_data, 
+      int concave_count, List<IntPtr> concave_data, float extra_radius, int col_id) {
       
       var pt_position = create_point(position);
       var pt_shfit_mass_center = create_point(shfit_mass_center);
@@ -96,7 +101,7 @@ namespace BallancePhysics.Api
       var rs = _physicalize(world, p_name, layer, systemGroup, subSystemId, subSystemDontCollideWith, mass, friction, 
         elasticity, linear_speed_damp, rot_speed_damp, ball_radius, PhysicsApi.boolToSbool(use_ball), PhysicsApi.boolToSbool(enable_convex_hull), PhysicsApi.boolToSbool(auto_mass_center), 
         PhysicsApi.boolToSbool(enable_collision), PhysicsApi.boolToSbool(start_frozen), PhysicsApi.boolToSbool(physical_unmoveable), pt_position, pt_shfit_mass_center,
-        pt_rotation, PhysicsApi.boolToSbool(use_exists_surface), p_surface_name, convex_count, p_convex_data, concave_count, p_concave_data, extra_radius);
+        pt_rotation, PhysicsApi.boolToSbool(use_exists_surface), p_surface_name, convex_count, p_convex_data, concave_count, p_concave_data, extra_radius, col_id);
       
       Marshal.FreeHGlobal(p_convex_data);
       Marshal.FreeHGlobal(p_surface_name);
@@ -454,7 +459,7 @@ namespace BallancePhysics.Api
       destroy_quat = Marshal.GetDelegateForFunctionPointer<fn_destroy_quat>(apiArray[i++]);
       get_point = Marshal.GetDelegateForFunctionPointer<fn_get_point>(apiArray[i++]);
       i++;
-      i++;
+      physics_set_col_id = Marshal.GetDelegateForFunctionPointer<fn_physics_set_col_id>(apiArray[i++]);
       get_pi = Marshal.GetDelegateForFunctionPointer<fn_get_pi>(apiArray[i++]);
       get_pi2 = Marshal.GetDelegateForFunctionPointer<fn_get_pi2>(apiArray[i++]);
       _physicalize = Marshal.GetDelegateForFunctionPointer<fn_physicalize>(apiArray[i++]);

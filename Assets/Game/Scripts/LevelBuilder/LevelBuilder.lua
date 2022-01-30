@@ -430,6 +430,7 @@ function LevelBuilder:_LoadLevelInternal()
               body.Friction = physicsData.Friction
               body.Elasticity = physicsData.Elasticity
               body.Layer = physicsData.Layer
+              body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
               body:Physicalize()
               if go:GetComponent(MeshCollider) == nil then
                 go:AddComponent(MeshCollider)

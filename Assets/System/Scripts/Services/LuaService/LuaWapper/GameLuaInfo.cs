@@ -172,11 +172,12 @@ namespace Ballance2.Services.LuaService.LuaWapper
             }
         }
 
-        if(components != null && componentClassValIndex < components.Length)
+        if(components != null)
           return components[componentClassValIndex];
-        
-        UnityEngine.Debug.LogWarning("Can't get component: " + componentClassVal + " May be should add reference in LuaVarObjectInfo?");
-        return null;
+        else {
+          UnityEngine.Debug.LogWarning("Can't get component: " + componentClassVal + " May be should add reference in LuaVarObjectInfo?");
+          return null;
+        }
       } else {
         switch (componentClassVal)
         {

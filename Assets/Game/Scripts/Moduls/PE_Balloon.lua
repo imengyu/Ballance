@@ -29,6 +29,7 @@ PE_Balloon = ModulBase:extend()
 
 function PE_Balloon:new()
   ModulBase.super.new(self)
+  self.BallTiggerActived = false
 end
 function PE_Balloon:Start()
   ModulBase.Start(self)
@@ -56,9 +57,10 @@ function PE_Balloon:Start()
 
   --PE_Balloon 过关触发器
   self.PE_Balloon_BallTigger.onTriggerEnter = function (body, other)
-    if other and other.gameObject.tag == "Ball" then
+    if other and other.gameObject.tag == "Ball" and not self.BallTiggerActived then
       self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
       self._MusicActived = false
+      self.BallTiggerActived = true
       GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
     end
   end
@@ -79,6 +81,7 @@ end
 function PE_Balloon:Active()
   ModulBase.Active(self)
 
+  self.BallTiggerActived = false
   self.PE_Balloon_Platform:Physicalize()
   self.PE_Balloon_BoxSlide:Physicalize()
   self.PE_Balloon_Ballon04:Physicalize()

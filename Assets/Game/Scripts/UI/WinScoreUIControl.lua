@@ -1,6 +1,6 @@
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
-local WaitUntil = UnityEngine.WaitUntil
+local LuaUtils = Ballance2.Utils.LuaUtils
 local Text = UnityEngine.UI.Text
 local GameSoundType = Ballance2.Services.GameSoundType
 local I18N = Ballance2.Services.I18N.I18N
@@ -18,6 +18,7 @@ WinScoreUIControl = ClassicObject:extend()
 ---@field HighlightBar3 GameObject
 ---@field HighlightBar4 GameObject
 function WinScoreUIControl:new() 
+  self._CountingPointEndCallback = nil ---@type function
 end
 function WinScoreUIControl:Start() 
   self._SwitchSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_dong.wav", false, true, 'WinScoreUISwitch')
@@ -46,6 +47,9 @@ function WinScoreUIControl:Update()
       self.ScoreTotal.text = tostring(self._ScoreNTotal)
     else
       self._IsCountingPoint = false
+      if type(self._CountingPointEndCallback) == "function" then
+        self._CountingPointEndCallback()
+      end
     end
   end
 end
@@ -88,45 +92,50 @@ function WinScoreUIControl:StartSeq()
     self.HighlightBar2:SetActive(true)
     self._IsCountingPoint = true
     
-    Yield(WaitUntil(function () return not self._IsCountingPoint end))
-    if self._Skip then return end
-
-    Yield(WaitForSeconds(1.5))
-
-    --额外生命点
     
-    self._SwitchSound:Play()
-    self.HighlightBar2:SetActive(false)
-    self.HighlightBar3:SetActive(true)
-
-    for i = self._GamePlayManager.CurrentLife, 1, -1 do
-
-      Yield(WaitForSeconds(0.6))
-
-      GameUI.GamePlayUI:RemoveLifeBall()
-      self._ScoreNExtraLives = self._ScoreNExtraLives + 200
-      self._ScoreNTotal = self._ScoreNTotal + 200
-      self.ScoreExtraLives.text = tostring(self._ScoreNExtraLives)
-      self.ScoreTotal.text = tostring(self._ScoreNTotal)
-
-      if self._Skip then return end
-    end
-
-    Yield(WaitForSeconds(1.5))
-
-    --完整分数
-    if self._Skip then return end
-
-    self._SwitchSound:Play()
-    self.HighlightBar3:SetActive(false)
-    self.HighlightBar4:SetActive(true)
-
-    Yield(WaitForSeconds(5))
-    if self._Skip then return end
-
-    self._IsInSeq = false
-    self:_ShowHighscore()
   end))
+
+  self._CountingPointEndCallback = function ()   
+    coroutine.resume(coroutine.create(function()
+      if self._Skip then return end
+
+      Yield(WaitForSeconds(1.5))
+
+      --额外生命点
+      
+      self._SwitchSound:Play()
+      self.HighlightBar2:SetActive(false)
+      self.HighlightBar3:SetActive(true)
+
+      for i = self._GamePlayManager.CurrentLife, 1, -1 do
+
+        Yield(WaitForSeconds(0.6))
+
+        GameUI.GamePlayUI:RemoveLifeBall()
+        self._ScoreNExtraLives = self._ScoreNExtraLives + 200
+        self._ScoreNTotal = self._ScoreNTotal + 200
+        self.ScoreExtraLives.text = tostring(self._ScoreNExtraLives)
+        self.ScoreTotal.text = tostring(self._ScoreNTotal)
+
+        if self._Skip then return end
+      end
+
+      Yield(WaitForSeconds(1.5))
+
+      --完整分数
+      if self._Skip then return end
+
+      self._SwitchSound:Play()
+      self.HighlightBar3:SetActive(false)
+      self.HighlightBar4:SetActive(true)
+
+      Yield(WaitForSeconds(5))
+      if self._Skip then return end
+
+      self._IsInSeq = false
+      self:_ShowHighscore()
+    end))
+  end
 end
 function WinScoreUIControl:IsInSeq() return self._IsInSeq end
 ---跳过分数统计序列

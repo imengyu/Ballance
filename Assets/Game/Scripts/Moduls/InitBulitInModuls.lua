@@ -45,9 +45,8 @@ function InitBulitInModulCustomSounds()
     SpeedThreadhold = 10,
     TimeDelayStart = 0.3,
     TimeDelayEnd = 0.3,
-    HasRollSound = true,
-    RollSoundName = 'Stone',
-    HitSoundName = 'Stone'
+    HasRollSound = false,
+    HitSoundName = 'Dome'
   })
   BallSoundManager:AddSoundCollData(BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), {
     MinSpeed = 5,

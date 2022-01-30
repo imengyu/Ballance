@@ -42,9 +42,8 @@ function BallSoundManager:Start()
   end)
 end
 function BallSoundManager:OnDestroy() 
-  local sysPackage = GamePackage.GetCorePackage()
-  Game.Mediator:UnRegisterEventHandler(sysPackage, self._MyEventHandlers[0])
-  Game.Mediator:UnRegisterEventHandler(sysPackage, self._MyEventHandlers[1])
+  Game.Mediator:UnRegisterEventHandler("EVENT_LEVEL_BUILDER_START", self._MyEventHandlers[0])
+  Game.Mediator:UnRegisterEventHandler("EVENT_LEVEL_BUILDER_UNLOAD_START", self._MyEventHandlers[1])
 end
 
 --内部函数
@@ -198,6 +197,10 @@ function BallSoundManager:RemoveSoundableBall(ball)
       if value.HasRollSound then
         ball.rigidbody:DeleteContractDetection(id)
       end
+      local sound = self._CurrentPlayingRollSounds[id]
+      if sound ~= nil then
+        sound.volume = 0
+      end
     end
   end
   --移除回调
@@ -215,9 +218,9 @@ function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   local speed = speedMeter.NowAbsoluteSpeed;
   local vol = 0
   if speed > ball._RollSound.MinSpeed then
-    vol = (speed - ball._RollSound.MinSpeed) / (ball._RollSound.MaxSpeed - ball._RollSound.MinSpeed);
+    vol = ball._RollSound.VolumeBase + (speed - ball._RollSound.MinSpeed) / (ball._RollSound.MaxSpeed - ball._RollSound.MinSpeed);
   end
-  local pit = 0.9 + (vol * 0.1);
+  local pit = ball._RollSound.PitchBase + (vol * 0.2);
 
   --将音量设置到正在播放的声音中
   for _, value in pairs(self._CurrentPlayingRollSounds) do

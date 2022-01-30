@@ -7,7 +7,6 @@ local DebugUtils = Ballance2.Utils.DebugUtils
 local KeyCode = UnityEngine.KeyCode
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
-local WaitUntil = UnityEngine.WaitUntil
 local Vector3 = UnityEngine.Vector3
 local AudioRolloffMode = UnityEngine.AudioRolloffMode
 local Log = Ballance2.Log
@@ -137,7 +136,7 @@ end
 function GamePlayManager:_InitSounds() 
   self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Fall')
   self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_extraball')
-  self._SoundLastSector = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_EndCheckpoint.wav'), false, true, 'Music_EndCheckpoint')
+  self._SoundLastSector = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Background, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_EndCheckpoint.wav'), false, true, 'Music_EndCheckpoint')
   self._SoundFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Final.wav'), false, true, 'Music_Final')
   self._SoundLastFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_LastFinal.wav'), false, true, 'Music_LastFinal')
   self._SoundLastSector.loop = true

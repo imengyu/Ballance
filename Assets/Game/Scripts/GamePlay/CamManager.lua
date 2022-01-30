@@ -19,7 +19,7 @@ CamRotateType = {
 ---@field _CamUpSpeedCurve AnimationCurve 
 ---@field _CameraRotateTime number
 ---@field _CameraRotateUpTime number
----@field _CameraNormalX number
+---@field _CameraNormalZ number
 ---@field _CameraNormalY number
 ---@field _CameraSpaceY number
 ---@field _PosFrame Transform 
@@ -37,10 +37,10 @@ CamManager = ClassicObject:extend()
 function CamManager:new()
   self._CameraRotateTime = 0.5
   self._CameraRotateUpTime = 0.8
-  self._CameraNormalX = 14
+  self._CameraNormalZ = 14
   self._CameraNormalY = 22
   self._CameraSpaceY = 60
-  self._CameraSpaceX = -10
+  self._CameraSpaceZ = 10
   self.CamRightVector = Vector3.right
   self.CamLeftVector = Vector3.left
   self.CamForwerdVector = Vector3.forward
@@ -56,12 +56,12 @@ function CamManager:new()
   self._CamIsRotateingUp = false
   self._CamRotateUpTick = 0
   self._CamRotateUpStart = { 
-    y = 0,
-    x = 0
+    z = 0,
+    y = 0
   }
   self._CamRotateUpTarget = { 
-    y = 0,
-    x = 0
+    z = 0,
+    y = 0
   }
   self._CamOutSpeed = Vector3.zero
   self._CamRotate = 0
@@ -73,7 +73,7 @@ end
 
 function CamManager:Start()
   self.CamFollow = self._CameraHost:GetComponent(CamFollow) ---@type CamFollow
-  self.transform.localPosition = Vector3(0, self._CameraNormalY, -self._CameraNormalX)
+  self.transform.localPosition = Vector3(0, self._CameraNormalY, -self._CameraNormalZ)
   self.transform:LookAt(Vector3.zero)
   self.CamDirectionRef = self._CameraHost.transform
 
@@ -134,7 +134,7 @@ function CamManager:FixedUpdate()
     else
       v = self._CamRotateSpeedCurve:Evaluate(self._CamRotateUpTick / self._CameraRotateUpTime)
     end
-    self.transform.localPosition = Vector3(self._CamRotateUpStart.x + v * self._CamRotateUpTarget.x, self._CamRotateUpStart.y + v * self._CamRotateUpTarget.y, 0)
+    self.transform.localPosition = Vector3(0, self._CamRotateUpStart.y + v * self._CamRotateUpTarget.y, self._CamRotateUpStart.z + v * self._CamRotateUpTarget.z)
     if v >= 1 then
       self._CamIsRotateingUp = false
     end
@@ -190,13 +190,13 @@ end
 function CamManager:RotateUp(enable)
   self.CamIsSpaced = enable
   self._CamRotateUpStart.y = self.transform.localPosition.y
-  self._CamRotateUpStart.x = self.transform.localPosition.x
+  self._CamRotateUpStart.z = self.transform.localPosition.z
   if enable then
     self._CamRotateUpTarget.y = self._CameraSpaceY - self._CamRotateUpStart.y
-    self._CamRotateUpTarget.X = self._CameraSpaceX - self._CamRotateUpStart.x
+    self._CamRotateUpTarget.z = -self._CameraSpaceZ - self._CamRotateUpStart.z
   else
     self._CamRotateUpTarget.y = self._CameraNormalY - self._CamRotateUpStart.y
-    self._CamRotateUpTarget.x = self._CameraNormalX - self._CamRotateUpStart.x
+    self._CamRotateUpTarget.z = -self._CameraNormalZ - self._CamRotateUpStart.z
   end
   self._CamRotateUpTick = 0
   self._CamIsRotateingUp = true
