@@ -1,11 +1,11 @@
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 
-P_Modul_25 = ModulBase:extend()
-
 ---P_Modul_25
 ---推板机关
 ---@class P_Modul_25 : ModulBase
 ---@field P_Modul_25_Bridge PhysicsObject
+P_Modul_25 = ModulBase:extend()
+
 function P_Modul_25:new()
   ModulBase.super.new(self)
   self.EnableBallRangeChecker = true

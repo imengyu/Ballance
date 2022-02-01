@@ -135,7 +135,7 @@ end
 
 function GamePlayManager:_InitSounds() 
   self._SoundBallFall = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_Fall.wav'), false, true, 'Misc_Fall')
-  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_extraball')
+  self._SoundAddLife = Game.SoundManager:RegisterSoundPlayer(GameSoundType.UI, Game.SoundManager:LoadAudioResource('core.sounds:Misc_extraball.wav'), false, true, 'Misc_extraball')
   self._SoundLastSector = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Background, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_EndCheckpoint.wav'), false, true, 'Music_EndCheckpoint')
   self._SoundFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_Final.wav'), false, true, 'Music_Final')
   self._SoundLastFinnal = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, Game.SoundManager:LoadAudioResource('core.sounds.music:Music_LastFinal.wav'), false, true, 'Music_LastFinal')
@@ -298,6 +298,9 @@ function GamePlayManager:_QuitOrLoadNextLevel(loadNext)
     end
   end
 
+  --停止模拟
+  self.GamePhysicsWorld.Simulate = false
+  
   Game.UIManager:CloseAllPage()
   Game.UIManager:MaskBlackFadeIn(0.7)
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
@@ -395,6 +398,8 @@ function GamePlayManager:Fall()
     coroutine.resume(coroutine.create(function()
       Yield(WaitForSeconds(1))
 
+      --禁用机关
+      GamePlay.SectorManager:DeactiveCurrentSector()
       --禁用控制
       self:_Stop(BallControlStatus.NoControl)
 
@@ -403,7 +408,7 @@ function GamePlayManager:Fall()
       Game.UIManager.UIFadeManager:AddAudioFadeOut(self._SoundBallFall, 1)
 
       --重置机关和摄像机
-      GamePlay.SectorManager:ResetCurrentSector(true)
+      GamePlay.SectorManager:ActiveCurrentSector(false)
       self:_SetCamPos()
       self:_Start(true)
       Game.UIManager:MaskWhiteFadeOut(1)
@@ -457,6 +462,7 @@ function GamePlayManager:Pass()
 
 end
 
+---UFO 动画完成回调
 function GamePlayManager:UfoAnimFinish() 
   self._SoundFinnal:Play()
   GamePlay.MusicManager:DisableBackgroundMusic()

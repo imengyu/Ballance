@@ -12,6 +12,8 @@
 * mengyu
 */
 
+using Ballance2.Utils;
+
 namespace Ballance2.Services.I18N
 {
   /// <summary>
@@ -64,7 +66,7 @@ namespace Ballance2.Services.I18N
     {
       var str = I18NProvider.GetLanguageString(key);
       if (str != null)
-        return string.Format(str, formatParams);
+        return string.Format(str, LuaUtils.AutoCheckParamIsLuaTableAndConver(formatParams));
       return string.Format("[Key {0} not found!]", key);
     }
     /// <summary>
@@ -81,7 +83,7 @@ namespace Ballance2.Services.I18N
     public static string TrF(string key, string defaultString, params object[] formatParams)
     {
       var str = I18NProvider.GetLanguageString(key);
-      return string.Format(str != null ? str : defaultString, formatParams);
+      return string.Format(str != null ? str : defaultString, LuaUtils.AutoCheckParamIsLuaTableAndConver(formatParams));
     }
   }
 }

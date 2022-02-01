@@ -5,8 +5,6 @@ local Text = UnityEngine.UI.Text
 local GameSoundType = Ballance2.Services.GameSoundType
 local I18N = Ballance2.Services.I18N.I18N
 
-WinScoreUIControl = ClassicObject:extend()
-
 ---过关之后的分数统计界面控制
 ---@class WinScoreUIControl : GameLuaObjectHostClass
 ---@field ScoreTotal Text
@@ -17,6 +15,8 @@ WinScoreUIControl = ClassicObject:extend()
 ---@field HighlightBar2 GameObject
 ---@field HighlightBar3 GameObject
 ---@field HighlightBar4 GameObject
+WinScoreUIControl = ClassicObject:extend()
+
 function WinScoreUIControl:new() 
   self._CountingPointEndCallback = nil ---@type function
 end
@@ -110,6 +110,7 @@ function WinScoreUIControl:StartSeq()
       for i = self._GamePlayManager.CurrentLife, 1, -1 do
 
         Yield(WaitForSeconds(0.6))
+        if self._Skip then return end
 
         GameUI.GamePlayUI:RemoveLifeBall()
         self._ScoreNExtraLives = self._ScoreNExtraLives + 200
@@ -117,7 +118,6 @@ function WinScoreUIControl:StartSeq()
         self.ScoreExtraLives.text = tostring(self._ScoreNExtraLives)
         self.ScoreTotal.text = tostring(self._ScoreNTotal)
 
-        if self._Skip then return end
       end
 
       Yield(WaitForSeconds(1.5))
@@ -142,11 +142,12 @@ function WinScoreUIControl:IsInSeq() return self._IsInSeq end
 function WinScoreUIControl:Skip() 
   self._IsInSeq = false
   self._Skip = true
+  self._IsCountingPoint = false
   self._SwitchSound:Play()
   self.HighlightBar1:SetActive(false)
   self.HighlightBar2:SetActive(false)
   self.HighlightBar3:SetActive(false)
-  self.HighlightBar4:SetActive(false)
+  self.HighlightBar4:SetActive(true)
 
   local GamePlayManager = self._GamePlayManager
 
@@ -163,7 +164,7 @@ function WinScoreUIControl:Skip()
   self.ScoreBouns.text = tostring(GamePlayManager.LevelScore)
   self.ScoreExtraLives.text = tostring(self._ScoreNExtraLives)
   
-  LuaTimer.Add(1000, function ()
+  LuaTimer.Add(2000, function ()
     self:_ShowHighscore()
   end)
 end

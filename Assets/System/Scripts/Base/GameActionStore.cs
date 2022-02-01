@@ -416,6 +416,7 @@ namespace Ballance2.Base
         GameErrorChecker.SetLastErrorAndLog(GameError.Empty, TAG, "CallAction action 为空");
         return result;
       }
+      param = LuaUtils.AutoCheckParamIsLuaTableAndConver(param);
       if (action.CallTypeCheck != null && action.CallTypeCheck.Length > 0)
       {
         //参数类型检查

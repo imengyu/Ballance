@@ -1,4 +1,5 @@
-local DistanceChecker = Ballance2.Game.DistanceChecker
+local TiggerTester = Ballance2.Game.TiggerTester
+local SphereCollider = UnityEngine.SphereCollider
 
 ---机关定义
 ---您可以通过继承此类来定义您的机关。
@@ -10,21 +11,33 @@ ModulBase = ClassicObject:extend()
 
 function ModulBase:new()
   self.BallRangeChecker = nil
+  self.BallRangeCollider = nil
+  self.BallInRange = false
 end
 
 ---初始化
 function ModulBase:Start()
   --机关内置的球区域检测功能初始化
   if self.EnableBallRangeChecker then
-    self.BallRangeChecker = self.gameObject:AddComponent(DistanceChecker) ---@type DistanceChecker
-    self.BallRangeChecker.Diatance = self.BallCheckeRange or 100
-    self.BallRangeChecker.Object1 = self.transform
-    self.BallRangeChecker.Object2 = GamePlay.BallManager.PosFrame
-    self.BallRangeChecker.OnEnterRange = function ()
-      self:BallEnterRange()
+    self.BallRangeCollider = self.gameObject:AddComponent(SphereCollider) ---@type SphereCollider
+    self.BallRangeCollider.radius = self.BallCheckeRange or 100
+    self.BallRangeCollider.isTrigger = true
+    self.BallRangeChecker = self.gameObject:AddComponent(TiggerTester) ---@type TiggerTester
+    ---@param obj GameObject
+    ---@param other GameObject
+    self.BallRangeChecker.onTriggerEnter = function (obj, other)
+      if not self.BallInRange and other.tag == 'Ball' then
+        self.BallInRange = true
+        self:BallEnterRange()
+      end
     end
-    self.BallRangeChecker.OnLeaveRange = function ()
-      self:BallLeaveRange()
+    ---@param obj GameObject
+    ---@param other GameObject
+    self.BallRangeChecker.onTriggerExit = function (obj, other)
+      if self.BallInRange and other.tag == 'Ball' then
+        self.BallInRange = false
+        self:BallLeaveRange()
+      end
     end
   end
 end
@@ -55,6 +68,11 @@ function ModulBase:BallEnterRange()
 end
 ---球离开当前机关指定范围时发出此事件
 function ModulBase:BallLeaveRange()
+end
+
+---调试环境的自定义调试操作回调
+---@param index number 参数
+function ModulBase:Custom(index)
 end
 
 function CreateClass:ModulBase()

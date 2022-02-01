@@ -54,14 +54,12 @@ namespace BallancePhysics.Wapper
       var obj = GetComponent<PhysicsObject>();
       if(!obj.IsPhysicalized)
         return;
-      if(Other == null)
-        return;
-      if(!Other.IsPhysicalized) {
+      if(Other != null && !Other.IsPhysicalized) {
         Other.AddPendCreateComponent(this);
         return;
       }
       Handle = PhysicsApi.API.create_physics_spring(
-        obj.Handle, Other.Handle, Position1Ref.transform.position, Position2Ref.transform.position, length, constant, spring_damping, 
+        obj.Handle, Other != null ? Other.Handle : IntPtr.Zero, Position1Ref.transform.position, Position2Ref.transform.position, length, constant, spring_damping, 
         global_damping, UseStiffSpring
       );
     }

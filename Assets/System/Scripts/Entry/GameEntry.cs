@@ -54,6 +54,9 @@ namespace Ballance2.Entry
     public List<GameDebugPackageInfo> DebugInitPackages = null;
     [Tooltip("自定义调试用例入口事件名称。进入调试之后会发送一个指定的全局事件，自定义调试用例可以根据这个事件作为调试入口。")]
     public string DebugCustomEntryEvent = "DebugEntry";
+    [Tooltip("自定义调试用例入口事件的参数")]
+    [Reorderable("DebugCustomEntryEventParamas")]
+    public List<GameDebugCustomEventParamas> DebugCustomEntryEventParamas = null;
     [SerializeField]
     [Tooltip("自定义调试用例入口事件名称预设")]
     [Reorderable("DebugCustomEntries", true, "", true, true)]
@@ -270,5 +273,11 @@ namespace Ballance2.Entry
     public bool Enable;
     public string PackageName;
     public override string ToString() { return PackageName; }
+  }
+  [Serializable]
+  public class GameDebugCustomEventParamas
+  {
+    public UnityEngine.Object Object;
+    public override string ToString() { return Object != null ? Object.name : "(null)"; }
   }
 }

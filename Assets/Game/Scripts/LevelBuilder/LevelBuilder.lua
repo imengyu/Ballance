@@ -325,6 +325,7 @@ function LevelBuilder:_LoadLevelInternal()
     Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
   else
     Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, nil)
+    Log.D(TAG, 'Not found user config defaultHighscoreData, using system defaultHighscoreData')
   end
 
   if level.startLife and level.startLife > 0 then
@@ -395,7 +396,7 @@ function LevelBuilder:_LoadLevelInternal()
       return
     end
 
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.02))
     self:UpdateLoadProgress(0.2)
 
     Log.D(TAG, 'Load level floors')
@@ -413,7 +414,7 @@ function LevelBuilder:_LoadLevelInternal()
         table.insert(self._CurrentLevelFloors, floorStatic)
         
         --Floor childs
-        for _, name in ipairs(floor.objects) do     
+        for _, name in ipairs(floor.objects) do
           local go = GameObject.Find(name)
           if go ~= nil then
             --Mesh
@@ -509,7 +510,7 @@ function LevelBuilder:_LoadLevelInternal()
         for _, name in ipairs(group.objects) do
 
           if tickCount > 16 then
-            Yield(WaitForSeconds(0.08))
+            Yield(WaitForSeconds(0.02))
             tickCount = 0
           end
 
@@ -535,7 +536,7 @@ function LevelBuilder:_LoadLevelInternal()
 
     --首次加载 modul
     -----------------------------
-    Yield(WaitForSeconds(0.5))
+    Yield(WaitForSeconds(0.02))
     SectorManager:DoInitAllModuls()
 
     self:UpdateLoadProgress(0.7)
@@ -566,7 +567,7 @@ function LevelBuilder:_LoadLevelInternal()
 
     self:UpdateLoadProgress(0.8)
 
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.02))
     Log.D(TAG, 'Load sky and light')
 
     --加载天空盒和灯光
@@ -703,7 +704,7 @@ function LevelBuilder:_LoadLevelInternal()
     -----------------------------
     Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.3, {})
 
-    Yield(WaitForSeconds(0.3))
+    Yield(WaitForSeconds(0.2))
 
     --隐藏加载UI
     Game.UIManager:MaskBlackSet(true)
@@ -802,6 +803,8 @@ function LevelBuilder:UnLoadLevel(endCallback)
       GamePlay.MusicManager.Musics[customMusicTheme.id] = nil
     end
     GamePlay.MusicManager:SetCurrentTheme(1)
+    --停止所有背景声音
+    GamePlay.BallSoundManager:StopAllSound()
 
     --删除所有modul
     local tickCount = 0
@@ -851,6 +854,9 @@ function LevelBuilder:UnLoadLevel(endCallback)
     self._CurrentLevelAsset = nil
 
     Yield(WaitForSeconds(0.1))
+
+    --删除关卡中所有的物理碰撞信息
+    GamePlay.GamePlayManager.GamePhysicsWorld:DeleteAllSurfaces()
 
     Log.D(TAG, 'Unload level finish')
 

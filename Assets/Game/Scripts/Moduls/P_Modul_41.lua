@@ -1,11 +1,11 @@
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 
-P_Modul_41 = ModulBase:extend()
-
 ---P_Modul_41
 ---浮块机关
 ---@class P_Modul_41 : ModulBase
 ---@field P_Modul_41_Box PhysicsObject
+P_Modul_41 = ModulBase:extend()
+
 function P_Modul_41:new()
   ModulBase.super.new(self)
 end

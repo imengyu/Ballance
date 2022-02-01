@@ -22,7 +22,6 @@ namespace BallancePhysics.Wapper
     /// <param name="handle"></param>
     protected override void DoDestroy(IntPtr handle) {
       PhysicsApi.API.destroy_physics_constraint(handle);
-      base.DoDestroy(handle);
     }
   }
 }

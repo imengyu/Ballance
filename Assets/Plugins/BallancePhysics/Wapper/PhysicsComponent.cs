@@ -34,7 +34,7 @@ namespace BallancePhysics.Wapper
     /// <summary>
     /// 销毁
     /// </summary>
-    public virtual void Destroy() {
+    public void Destroy() {
       if(Handle != IntPtr.Zero) {
         DoDestroy(Handle);
         Handle = IntPtr.Zero;

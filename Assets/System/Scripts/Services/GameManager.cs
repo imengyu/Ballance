@@ -261,7 +261,7 @@ namespace Ballance2.Services
         Log.D(TAG, "Enter GameDebug.");
         if(!RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
-        GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", null);
+        GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", GameEntry.Instance.DebugCustomEntryEventParamas);
       }
     }
     /// <summary>

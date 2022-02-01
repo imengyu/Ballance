@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2021418453383796402}
   - component: {fileID: 4216940109578973159}
   - component: {fileID: 5025925975578976061}
-  - component: {fileID: 7079002469912671074}
+  - component: {fileID: 4915636850554509679}
   m_Layer: 0
   m_Name: PE_Balloon_Platte04
   m_TagString: Untagged
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &7079002469912671074
+--- !u!114 &4915636850554509679
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,8 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183727102102797}
-  Other: {fileID: 5276747765924193981}
+  HingeRef: {fileID: 2244183728348224157}
+  Other: {fileID: 8952465038807292128}
 --- !u!1 &768580478379977959
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 6765405961012758259}
   - component: {fileID: 2820523844879298643}
   - component: {fileID: 5276747765924193981}
-  - component: {fileID: 7270586509920590684}
+  - component: {fileID: 6227199564510121579}
   m_Layer: 0
   m_Name: PE_Balloon_Platte05
   m_TagString: Untagged
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &7270586509920590684
+--- !u!114 &6227199564510121579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -284,8 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183727085868976}
-  Other: {fileID: 418927004136736404}
+  HingeRef: {fileID: 2244183727102102797}
+  Other: {fileID: 5025925975578976061}
 --- !u!1 &1292572827298755137
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +303,6 @@ GameObject:
   - component: {fileID: 2492121858053519384}
   - component: {fileID: 9116460403174883827}
   - component: {fileID: 8710460260175506318}
-  - component: {fileID: 4670297650368888585}
   m_Layer: 0
   m_Name: PE_Balloon_Platform
   m_TagString: Untagged
@@ -318,7 +317,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292572827298755137}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -374,7 +373,7 @@ MonoBehaviour:
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
-  m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_ShiftMassCenter: {x: -1, y: -2, z: 0}
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -414,13 +413,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 7523259433248234574}
-  Other: {fileID: 0}
+  Other: {fileID: 4119830675842878732}
   force_factor: 1
   damp_factor: 1
   translation_limit: -1
   translation_freedom_min: {x: 0, y: -2, z: 0}
   translation_freedom_max: {x: 0, y: 2, z: 0}
-  rotation_limit: -1
+  rotation_limit: 3
   rotation_freedom_min: {x: 0, y: 0, z: 0}
   rotation_freedom_max: {x: 0, y: 0, z: 0}
 --- !u!114 &2583239269984093677
@@ -499,20 +498,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 3420655804697142034}
   Other: {fileID: 7441504572859291289}
---- !u!114 &4670297650368888585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292572827298755137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183727417181114}
-  Other: {fileID: 5187647493509846287}
 --- !u!1 &2362326026555378565
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,7 +947,7 @@ GameObject:
   - component: {fileID: 8959104865536189117}
   - component: {fileID: 6232257982303577334}
   - component: {fileID: 418927004136736404}
-  - component: {fileID: 899251534143098255}
+  - component: {fileID: 7051618655094750267}
   m_Layer: 0
   m_Name: PE_Balloon_Platte06
   m_TagString: Untagged
@@ -1079,7 +1064,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &899251534143098255
+--- !u!114 &7051618655094750267
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1091,8 +1076,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183728157859183}
-  Other: {fileID: 2015180431162068129}
+  HingeRef: {fileID: 2244183727085868976}
+  Other: {fileID: 5276747765924193981}
 --- !u!1 &3665619465525756438
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,9 +1204,9 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: -1, y: 0, z: 0}
+  m_StaticConstantForceDirection: {x: 1, y: 0, z: 0}
   m_StaticConstantForce: 0.2
-  m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
+  m_ConstantForceDirectionRef: {fileID: 1292572827298755136}
 --- !u!114 &7702553553243962171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1239,7 +1224,7 @@ MonoBehaviour:
   force_factor: 1
   damp_factor: 1
   translation_limit: -1
-  translation_freedom_min: {x: -5, y: 0, z: 0}
+  translation_freedom_min: {x: -1000, y: 0, z: 0}
   translation_freedom_max: {x: 1000, y: 0, z: 0}
   rotation_limit: -1
   rotation_freedom_min: {x: 0, y: 0, z: 0}
@@ -1610,7 +1595,7 @@ GameObject:
   - component: {fileID: 1843363258633017850}
   - component: {fileID: 2080902685048147127}
   - component: {fileID: 8952465038807292128}
-  - component: {fileID: 5760784960114644850}
+  - component: {fileID: 6348532458098300745}
   m_Layer: 0
   m_Name: PE_Balloon_Platte03
   m_TagString: Untagged
@@ -1727,7 +1712,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &5760784960114644850
+--- !u!114 &6348532458098300745
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1739,8 +1724,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183728348224157}
-  Other: {fileID: 5025925975578976061}
+  HingeRef: {fileID: 2244183728392049528}
+  Other: {fileID: 2464638716736100931}
 --- !u!1 &5222043008859044849
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,7 +1738,7 @@ GameObject:
   - component: {fileID: 4900668645366928910}
   - component: {fileID: 5072650337934256213}
   - component: {fileID: 2015180431162068129}
-  - component: {fileID: 905122088549499125}
+  - component: {fileID: 4894287535774258943}
   m_Layer: 0
   m_Name: PE_Balloon_Platte07
   m_TagString: Untagged
@@ -1870,7 +1855,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &905122088549499125
+--- !u!114 &4894287535774258943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1882,8 +1867,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183726710892065}
-  Other: {fileID: 6553840825304645997}
+  HingeRef: {fileID: 2244183728157859183}
+  Other: {fileID: 418927004136736404}
 --- !u!1 &6374896977184566236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,7 +2167,7 @@ GameObject:
   - component: {fileID: 5839662496793767224}
   - component: {fileID: 2334185719936792920}
   - component: {fileID: 5187647493509846287}
-  - component: {fileID: 5968077175917405676}
+  - component: {fileID: 4504270193953503143}
   m_Layer: 0
   m_Name: PE_Balloon_Platte01
   m_TagString: Untagged
@@ -2299,7 +2284,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &5968077175917405676
+--- !u!114 &4504270193953503143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2311,8 +2296,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183728404959886}
-  Other: {fileID: 2464638716736100931}
+  HingeRef: {fileID: 2244183727417181114}
+  Other: {fileID: 688254854851051291}
 --- !u!1 &7035945379688416616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3798,76 +3783,6 @@ MonoBehaviour:
     floatVal: 0
     componentClassVal: BallancePhysics.Wapper.PhysicsObject
   - Type: 16
-    Name: PE_Balloon_Platform_HingeJoint
-    vector2: {x: 0, y: 0}
-    vector2Int: {x: 0, y: 0}
-    vector3: {x: 0, y: 0, z: 0}
-    vector3Int: {x: 0, y: 0, z: 0}
-    vector4: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    rectInt:
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0}
-      key1: {r: 0, g: 0, b: 0, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    layer: 0
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-    boundsInt:
-      m_Position: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0, z: 0}
-    bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    objectVal: {fileID: 0}
-    gameObjectVal: {fileID: 1292572827298755137}
-    longVal: 0
-    stringVal: 
-    intVal: 0
-    doubleVal: 0
-    boolVal: 0
-    floatVal: 0
-    componentClassVal: BallancePhysics.Wapper.PhysicsHinge:4
-  - Type: 16
     Name: PE_Balloon_BallTigger
     vector2: {x: 0, y: 0}
     vector2Int: {x: 0, y: 0}
@@ -3937,6 +3852,76 @@ MonoBehaviour:
     boolVal: 0
     floatVal: 0
     componentClassVal: Ballance2.Game.TiggerTester
+  - Type: 16
+    Name: PE_Balloon_Platform_HingeJoint
+    vector2: {x: 0, y: 0}
+    vector2Int: {x: 0, y: 0}
+    vector3: {x: 0, y: 0, z: 0}
+    vector3Int: {x: 0, y: 0, z: 0}
+    vector4: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rectInt:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    gradient:
+      serializedVersion: 2
+      key0: {r: 0, g: 0, b: 0, a: 0}
+      key1: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    layer: 0
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    boundsInt:
+      m_Position: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0, z: 0}
+    bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    objectVal: {fileID: 0}
+    gameObjectVal: {fileID: 6931793308048622637}
+    longVal: 0
+    stringVal: 
+    intVal: 0
+    doubleVal: 0
+    boolVal: 0
+    floatVal: 0
+    componentClassVal: BallancePhysics.Wapper.PhysicsHinge
   LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0
@@ -4347,7 +4332,8 @@ GameObject:
   - component: {fileID: 3179960587875470822}
   - component: {fileID: 811182344731627449}
   - component: {fileID: 6553840825304645997}
-  - component: {fileID: 8434459302414980998}
+  - component: {fileID: 1709170196389739088}
+  - component: {fileID: 3870455427149810157}
   m_Layer: 0
   m_Name: PE_Balloon_Platte08
   m_TagString: Untagged
@@ -4464,7 +4450,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &8434459302414980998
+--- !u!114 &1709170196389739088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4478,6 +4464,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 2244183727092857573}
   Other: {fileID: 0}
+--- !u!114 &3870455427149810157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8157607035814951441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HingeRef: {fileID: 2244183726710892065}
+  Other: {fileID: 2015180431162068129}
 --- !u!1 &8394247453393352214
 GameObject:
   m_ObjectHideFlags: 0
@@ -4490,7 +4490,7 @@ GameObject:
   - component: {fileID: 7610433956006852870}
   - component: {fileID: 8383352872050981767}
   - component: {fileID: 2464638716736100931}
-  - component: {fileID: 2335120178236823523}
+  - component: {fileID: 8523458028618020500}
   m_Layer: 0
   m_Name: PE_Balloon_Platte02
   m_TagString: Untagged
@@ -4607,7 +4607,7 @@ MonoBehaviour:
   m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
   m_StaticConstantForce: 0
   m_ConstantForceDirectionRef: {fileID: 0}
---- !u!114 &2335120178236823523
+--- !u!114 &8523458028618020500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4619,8 +4619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cc7725d0a74d848864661940657974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 2244183728392049528}
-  Other: {fileID: 8952465038807292128}
+  HingeRef: {fileID: 2244183728404959886}
+  Other: {fileID: 5187647493509846287}
 --- !u!1 &8560517709751689187
 GameObject:
   m_ObjectHideFlags: 0

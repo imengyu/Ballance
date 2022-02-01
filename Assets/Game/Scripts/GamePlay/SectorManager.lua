@@ -105,8 +105,12 @@ function SectorManager:SetCurrentSector(sector)
       
       --设置火焰状态
       local flame = self.CurrentLevelRestPoints[oldSector].flame
-      flame.CheckPointActived = true
-      flame:Deactive()
+      if flame then
+        flame.CheckPointActived = true
+        flame:Deactive()
+      else
+        Log.D(TAG, "No flame found for sector "..oldSector)
+      end
     end
 
     if sector > 0 then 
@@ -133,11 +137,19 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
     end
   end 
 
+  local nowSector = self.CurrentLevelRestPoints[sector]
+
   --设置火焰状态
-  self.CurrentLevelRestPoints[sector].flame:Active()
+
+  if nowSector.flame ~= nil then
+    nowSector.flame:Active()
+  else
+    Log.D(TAG, "No flame found for sector "..sector)
+  end
   if sector < self.CurrentLevelSectorCount then
+    nowSector = self.CurrentLevelRestPoints[sector + 1]
     --下一关的火焰
-    local flameNext = self.CurrentLevelRestPoints[sector + 1].flame
+    local flameNext = nowSector.flame
     if flameNext ~= nil then
       flameNext:InternalActive()
     end
@@ -149,16 +161,19 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
   end
 
   --如果是最后一个小节，则激活飞船
-  if sector == self.CurrentLevelSectorCount then
-    self.CurrentLevelEndBalloon:Active()
+  if self.CurrentLevelEndBalloon ~= nil then
+    if sector == self.CurrentLevelSectorCount then
+      self.CurrentLevelEndBalloon:Active()
+    else
+      self.CurrentLevelEndBalloon:Deactive()
+    end
   else
-    self.CurrentLevelEndBalloon:Deactive()
+    Log.W(TAG, "No found CurrentLevelEndBalloon !")
   end
 end
 
----重置当前节的机关
----@param active boolean 重置机关后是否激活
-function SectorManager:ResetCurrentSector(active)  
+---禁用当前节的机关
+function SectorManager:DeactiveCurrentSector()  
   local sector = GamePlay.GamePlayManager.CurrentSector
   if sector > 0 then
     local s = self.CurrentLevelSectors[sector]
@@ -169,6 +184,11 @@ function SectorManager:ResetCurrentSector(active)
       end
     end 
   end
+end
+---重置当前节的机关
+---@param active boolean 重置机关后是否激活
+function SectorManager:ResetCurrentSector(active)  
+  self:DeactiveCurrentSector()
   if active then
     self:ActiveCurrentSector(false)
   end

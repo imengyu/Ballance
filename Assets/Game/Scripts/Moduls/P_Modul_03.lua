@@ -44,10 +44,10 @@ function P_Modul_03:Deactive()
   ModulBase.Deactive(self)
 end
 function P_Modul_03:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
 function P_Modul_03:Backup()
-  ObjectStateBackupUtils.BackUpObject(self.gameObject)
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_03:BallEnterRange()
   if self.IsActive then

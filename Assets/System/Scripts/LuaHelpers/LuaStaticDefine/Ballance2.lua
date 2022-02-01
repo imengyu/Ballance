@@ -35,6 +35,7 @@ BallancePhysics = {}
 BallancePhysics.Wapper = {}
 Ballance2.Base = {}
 Ballance2.Log = {}
+Ballance2.Entry = {}
 Ballance2.Services = {}
 Ballance2.Services.Debug = {}
 Ballance2.Services.I18N = {}
@@ -62,3 +63,28 @@ winapi={}
 ---@field public PackageBeforeUnLoad function 模块卸载事件回调
 ---@field public PackageEntry function 模块初始化事件回调
 local PackageEntryStruct={ }
+
+---调用 Ballance 加载全局加载资源
+---@param pathFile string 资源路径。可以是 `__包名__/path/to/res` 表示加载指定模块的资源。不加包名则认为是加载当前脚本所在包的内置资源。
+---@diagnostic disable-next-line: lowercase-global
+function loadAsset(pathFile) end 
+
+---宏定义
+
+UNITY_EDITOR = false
+UNITY_EDITOR_64 = false
+UNITY_EDITOR_WIN = false
+UNITY_EDITOR_OSX = false
+UNITY_STANDALONE_OSX = false
+UNITY_STANDALONE_WIN = false
+UNITY_STANDALONE_LINUX = false
+UNITY_EDITOR_OSX2 = false
+UNITY_ANDROID = false
+UNITY_IOS = false
+UNITY_PS4 = false
+UNITY_XBOXONE = false
+UNITY_WSA = false
+UNITY_WEBGL = false
+
+---指定当前是不是机关迷你调试环境中
+BALLANCE_MODUL_DEBUG = false

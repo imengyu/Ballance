@@ -281,7 +281,7 @@ namespace Ballance2.Services
         GameErrorChecker.LastError = GameError.ParamNotProvide;
         return false;
       }
-      DelayCaller.AddDelayCallSingle(evtName, delayeSecond, pararms);
+      DelayCaller.AddDelayCallSingle(evtName, delayeSecond, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
       return true;
     }
     /// <summary>
@@ -304,7 +304,7 @@ namespace Ballance2.Services
       if (singleEvents.TryGetValue(evtName, out GameHandler handler))
       {
         if (handler != null)
-          handler.CallEventHandler(evtName, pararms);
+          handler.CallEventHandler(evtName, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
         return true;
       }
       else
@@ -341,7 +341,7 @@ namespace Ballance2.Services
         Log.W(TAG, "事件 {0} 未注册", evtName);
         GameErrorChecker.LastError = GameError.NotRegister;
       }
-      DelayCaller.AddDelayCallNormal(evtName, handlerFilter, delayeSecond, pararms);
+      DelayCaller.AddDelayCallNormal(evtName, handlerFilter, delayeSecond, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
       return true;
     }
 
@@ -377,7 +377,7 @@ namespace Ballance2.Services
         if (handlerFilter == "*" || Regex.IsMatch(gameHandler.Name, handlerFilter))
         {
           handledCount++;
-          if (gameHandler.CallEventHandler(gameEvent.EventName, pararms))
+          if (gameHandler.CallEventHandler(gameEvent.EventName, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms)))
           {
             Log.D(TAG, "Event {0} was interrupted by : {1}", gameEvent.EventName, gameHandler.Name);
             break;
@@ -409,7 +409,7 @@ namespace Ballance2.Services
         return 0;
       }
       if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
-        return DispatchGlobalEvent(gameEvent, handlerFilter, pararms);
+        return DispatchGlobalEvent(gameEvent, handlerFilter, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
       else
         GameErrorChecker.LastError = GameError.NotRegister;
       return handledCount;

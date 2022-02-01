@@ -167,7 +167,7 @@ function GamePlayUIControl:SetLifeBallCount(count)
     else
       if self._LifeBalls.childCount > count then
         --显示数量大于目标，删除多余的
-        for i = self._LifeBalls.childCount - 1, count + 1, -1 do
+        for i = self._LifeBalls.childCount - 1, count, -1 do
           UnityEngine.Object.Destroy(self._LifeBalls:GetChild(i).gameObject)
         end
         self:_MoveLifeLeftBaffle()

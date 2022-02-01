@@ -26,6 +26,7 @@ public class GameEntryEditor : Editor
     private SerializedProperty DebugType;
     private SerializedProperty DebugInitPackages;
     private SerializedProperty DebugCustomEntryEvent;
+    private SerializedProperty DebugCustomEntryEventParamas;
     private SerializedProperty DebugCustomEntries;
     private SerializedProperty DebugLoadCustomPackages;
     private SerializedProperty DebugSkipIntro;
@@ -56,6 +57,7 @@ public class GameEntryEditor : Editor
         DebugType = serializedObject.FindProperty("DebugType");
         DebugInitPackages = serializedObject.FindProperty("DebugInitPackages");
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
+        DebugCustomEntryEventParamas = serializedObject.FindProperty("DebugCustomEntryEventParamas");
         DebugCustomEntries = serializedObject.FindProperty("DebugCustomEntries");
         DebugLoadCustomPackages = serializedObject.FindProperty("DebugLoadCustomPackages");
         DebugSkipIntro = serializedObject.FindProperty("DebugSkipIntro");
@@ -118,6 +120,7 @@ public class GameEntryEditor : Editor
         if(newIndex >= 0 && newIndex < arr.Count)
             DebugCustomEntryEvent.stringValue = arr[newIndex];
 
+        EditorGUILayout.PropertyField(DebugCustomEntryEventParamas);
         EditorGUILayout.PropertyField(DebugCustomEntries);
 
         EditorGUI.indentLevel--;

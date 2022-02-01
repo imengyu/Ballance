@@ -76,28 +76,28 @@ function CoreInit()
 
   --调试入口
   if GameManager.DebugMode then
-    require('GamePlayDebug')
     require('CoreLuaDebug')
     require('LevelBuilderDebug')
+    require('ModulDebug')
 
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugGamePlayEntry", TAG, function ()
-      CoreDebugGamePlay()
-      return false
-    end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelBuliderEntry", TAG, function ()
+    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelBuliderEntry", TAG, function (evtName, params)
       CoreDebugLevelBuliderEntry()
       return false
     end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelEnvironmentEntry", TAG, function ()
+    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelEnvironmentEntry", TAG, function (evtName, params)
       CoreDebugLevelEnvironmentEntry()
       return false
     end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLuaEntry", TAG, function ()
+    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLuaEntry", TAG, function (evtName, params)
       CoreDebugLuaEntry()
       return false
     end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugEmptyEntry", TAG, function ()
+    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugEmptyEntry", TAG, function (evtName, params)
       CoreDebugEmptyEntry()
+      return false
+    end)
+    GameMediator:RegisterEventHandler(CorePackage, "ModulCustomDebug", TAG, function (evtName, params)
+      ModulCustomDebug()
       return false
     end)
   end

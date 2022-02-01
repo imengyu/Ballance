@@ -41,6 +41,7 @@ function Ball:new()
       Metal = '',
       Stone = '',
       Wood = '',
+      Paper = '',
     },
     Sounds = {}, --请勿设置此字段
     MaxSpeed = 20,
@@ -54,10 +55,10 @@ function Ball:new()
       Wood = '',
     },
     Sounds = {}, --请勿设置此字段
-    MaxSpeed = 0.1,
-    MinSpeed = 0.01,
-    PitchBase = 0.9,
+    PitchBase = 0.5,
+    PitchFactor = 0.01,
     VolumeBase = 0.01,
+    VolumeFactor = 0.05,
   }
 end
 

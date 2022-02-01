@@ -190,6 +190,11 @@ end
 ---移除球的声音处理函数
 ---@param ball BallRegStorage
 function BallSoundManager:RemoveSoundableBall(ball) 
+  --移除回调
+  ball.rigidbody:DisableCollisionDetection()
+  ball.rigidbody.OnPhysicsCollDetection = nil
+  ball.rigidbody.OnPhysicsContactOn = nil
+  ball.rigidbody.OnPhysicsContactOff = nil
   --移除声音层工具侦听
   for id, value in pairs(self._SoundCollData) do
     if value ~= nil then
@@ -197,36 +202,38 @@ function BallSoundManager:RemoveSoundableBall(ball)
       if value.HasRollSound then
         ball.rigidbody:DeleteContractDetection(id)
       end
-      local sound = self._CurrentPlayingRollSounds[id]
-      if sound ~= nil then
-        sound.volume = 0
-      end
+    end
+    local sound = self._CurrentPlayingRollSounds[id]
+    if sound ~= nil then
+      sound.volume = 0
+      sound.pitch = 0
     end
   end
-  --移除回调
-  ball.rigidbody:DisableCollisionDetection()
-  ball.rigidbody.OnPhysicsCollDetection = nil
-  ball.rigidbody.OnPhysicsContactOn = nil
-  ball.rigidbody.OnPhysicsContactOff = nil
 end
 
 ---滚动声音音量与速度处理
 ---@param ball Ball
 ---@param speedMeter SpeedMeter
 function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
-  
-  local speed = speedMeter.NowAbsoluteSpeed;
-  local vol = 0
-  if speed > ball._RollSound.MinSpeed then
-    vol = ball._RollSound.VolumeBase + (speed - ball._RollSound.MinSpeed) / (ball._RollSound.MaxSpeed - ball._RollSound.MinSpeed);
-  end
-  local pit = ball._RollSound.PitchBase + (vol * 0.2);
+  local _RollSound = ball._RollSound
+  local speed = speedMeter.NowAbsoluteSpeed * 100;
+  local vol = _RollSound.VolumeBase + (speed * _RollSound.VolumeFactor)
+  local pit = _RollSound.PitchBase + (speed * _RollSound.PitchFactor);
 
   --将音量设置到正在播放的声音中
   for _, value in pairs(self._CurrentPlayingRollSounds) do
     if value then
       value.volume = vol
       value.pitch = pit
+    end
+  end
+end
+
+function BallSoundManager:StopAllSound()
+  for _, value in pairs(self._CurrentPlayingRollSounds) do
+    if value then
+      value.volume = 0
+      value.pitch = 1
     end
   end
 end

@@ -46,6 +46,8 @@ namespace Ballance2.Editor.Modding
                         {
                             if (files[i].Name.EndsWith(".meta")) continue;
                             if (files[i].Name.EndsWith(".cs")) continue;
+                            if (files[i].Name.Contains("NoPackage")) continue;
+
                             //将lua代码取出来，打包到zip中
                             if (files[i].Name.EndsWith(".lua"))
                             {

@@ -1,11 +1,11 @@
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 
-P_Modul_30 = ModulBase:extend()
-
 ---P_Modul_30
 ---跷跷板机关
 ---@class P_Modul_30 : ModulBase
 ---@field P_Modul_30_Wippe PhysicsObject
+P_Modul_30 = ModulBase:extend()
+
 function P_Modul_30:new()
   ModulBase.super.new(self)
   self.EnableBallRangeChecker = true

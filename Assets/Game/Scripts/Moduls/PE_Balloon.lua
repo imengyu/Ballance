@@ -2,6 +2,7 @@ local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 local DistanceChecker = Ballance2.Game.DistanceChecker
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
+local Log = Ballance2.Log
 
 ---@class PE_Balloon : ModulBase 
 ---@field PE_Balloon_BoxSlide PhysicsObject
@@ -58,10 +59,23 @@ function PE_Balloon:Start()
   --PE_Balloon 过关触发器
   self.PE_Balloon_BallTigger.onTriggerEnter = function (body, other)
     if other and other.gameObject.tag == "Ball" and not self.BallTiggerActived then
-      self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
+      if BALLANCE_MODUL_DEBUG then
+        Log.D('PE_Balloon', 'Break bridge!')
+      end
       self._MusicActived = false
+      self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
+      self.PE_Balloon_Platform:WakeUp()
+      self.PE_Balloon_BoxSlide.StaticConstantForce = 0.4
       self.BallTiggerActived = true
-      GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
+
+      --速度放慢一些
+      LuaTimer.Add(1000, function ()
+        self.PE_Balloon_BoxSlide.StaticConstantForce = 0.2
+      end)
+
+      if not BALLANCE_MODUL_DEBUG then
+        GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
+      end
     end
   end
   self._MusicActived = false
@@ -83,6 +97,7 @@ function PE_Balloon:Active()
 
   self.BallTiggerActived = false
   self.PE_Balloon_Platform:Physicalize()
+  self.PE_Balloon_BoxSlide.StaticConstantForce = 1
   self.PE_Balloon_BoxSlide:Physicalize()
   self.PE_Balloon_Ballon04:Physicalize()
   self.PE_Balloon_Ballon03:Physicalize()
@@ -100,9 +115,8 @@ function PE_Balloon:Active()
   self.PE_Balloon_Platte06:Physicalize()
   self.PE_Balloon_Platte07:Physicalize()
   self.PE_Balloon_Platte08:Physicalize()
-  self.PE_Balloon_BoxSlide.EnableConstantForce = false
 
-  if not self._MusicActived then
+  if not self._MusicActived and not GamePlay.GamePlayManager.CurrentSector == 1 then
     self._MusicActived = true;
     --播放最后一小节的音乐
     coroutine.resume(coroutine.create(function()
@@ -161,6 +175,16 @@ function PE_Balloon:Reset(type)
 end
 function PE_Balloon:Backup()
   ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
+end
+function PE_Balloon:Custom(index)
+  if index == 1 then
+    self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
+    self.PE_Balloon_Platform:WakeUp()
+    Log.D('PE_Balloon', 'Break bridge!')
+  elseif index == 2 then
+    Log.D('PE_Balloon', 'Test Pass!')
+    GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
+  end
 end
 
 function CreateClass:PE_Balloon()
