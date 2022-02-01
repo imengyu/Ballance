@@ -798,21 +798,22 @@ namespace Ballance2.Services
     //视频设置更新器，更新视频设置至引擎
     private bool OnVideoSettingsUpdated(string groupName, int action)
     {
-      int resolutionsSet = GameSettings.GetInt("video.resolution", defaultResolution);
+      int resolutionsSet = GameSettings.GetInt("video.resolution", -1);
       bool fullScreen = GameSettings.GetBool("video.fullScreen", Screen.fullScreen);
-      int quality = GameSettings.GetInt("video.quality", QualitySettings.GetQualityLevel());
-      int vSync = GameSettings.GetInt("video.vsync", QualitySettings.vSyncCount);
+      int quality = GameSettings.GetInt("video.quality", -1);
+      int vSync = GameSettings.GetInt("video.vsync", -1);
 
-      Log.V(TAG, "OnVideoSettingsUpdated:\nresolutionsSet: {0}\nfullScreen: {1}" +
-          "\nquality: {2}\nvSync : {3}", resolutionsSet, fullScreen, quality, vSync);
+      Log.V(TAG, "OnVideoSettingsUpdated:\nresolutionsSet: {0}\nfullScreen: {1}\nquality: {2}\nvSync : {3}", resolutionsSet, fullScreen, quality, vSync);
 
-      Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, fullScreen);
-      QualitySettings.SetQualityLevel(quality, true);
-      QualitySettings.vSyncCount = vSync;
-
-      //发出屏幕大小更改事件
-      GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, "*",
-          resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
+      if(resolutionsSet >= 0) {
+        Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, fullScreen);
+        //发出屏幕大小更改事件
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, "*", resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
+      }
+      if(quality >= 0) 
+        QualitySettings.SetQualityLevel(quality, true);
+      if(vSync >= 0) 
+        QualitySettings.vSyncCount = vSync;
       return true;
     }
 

@@ -5,12 +5,14 @@ using Ballance2.Services;
 using Ballance2.UI.Core;
 using Ballance2.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ballance2.DebugTools {
 
   class DebugInit {
     private static Window GlobalDebugWindow = null;
     private static RectTransform GameDebugStatsArea = null;
+    private static RectTransform GameDebugFloatButton = null;
     private static int F12KeyListen = 0;
 
     public static void InitSystemDebug() {
@@ -29,10 +31,21 @@ namespace Ballance2.DebugTools {
       GlobalDebugWindow.WindowType = WindowType.TopWindow;
       GlobalDebugWindow.gameObject.tag = "DebugWindow";
       GlobalDebugWindow.MinSize = new Vector2(300, 200);
+      GlobalDebugWindow.Size = new Vector2(470, 350);
 
       //创建输出窗口
       GameDebugStatsArea = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugStats"), "GameDebugStats", true);
       
+#if UNITY_ANDROID || UNITY_IOS
+      //创建一个按扭方便手机上打开调试窗口
+      GameDebugFloatButton = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugFloatButton"), "GameDebugFloatButton", true);
+      GameDebugFloatButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
+        if (GlobalDebugWindow.GetVisible()) GlobalDebugWindow.Hide();
+        else GlobalDebugWindow.Show();
+      });
+#endif
+
+
       //F12 打开调试窗口
       F12KeyListen = GameUIManager.ListenKey(KeyCode.F12, (key, down) => {
         if(down) {       
@@ -48,6 +61,10 @@ namespace Ballance2.DebugTools {
       if (GlobalDebugWindow != null) {
         UnityEngine.Object.Destroy(GlobalDebugWindow);
         GlobalDebugWindow = null;
+      }
+      if (GameDebugFloatButton != null) {
+        UnityEngine.Object.Destroy(GameDebugFloatButton);
+        GameDebugFloatButton = null;
       }
       if (GameDebugStatsArea != null) {
         UnityEngine.Object.Destroy(GameDebugStatsArea.gameObject);

@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 876097598}
   - component: {fileID: 876097597}
   - component: {fileID: 876097600}
+  - component: {fileID: 876097601}
   m_Layer: 0
   m_Name: GameEntry
   m_TagString: GameController
@@ -415,6 +416,8 @@ MonoBehaviour:
     Name: PrefabPageFull
   - Object: {fileID: 5251121522375728235, guid: 79d23f3163254fd4e97a558203d5a391, type: 3}
     Name: PackageManageWindow
+  - Object: {fileID: 5196423555617978852, guid: 0b9d31b052434d747b63835bf32caaa9, type: 3}
+    Name: GameDebugFloatButton
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
@@ -455,7 +458,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 2
+  DebugType: 0
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -514,6 +517,18 @@ MonoBehaviour:
   ModulInstance: {fileID: 2117202136982073962, guid: 66d25cf37f8e8c642851ad80a495f640, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
+--- !u!114 &876097601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876097596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1b470e04b67e74cb2b430fd15cf387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

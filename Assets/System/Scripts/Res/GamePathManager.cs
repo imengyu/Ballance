@@ -7,6 +7,7 @@ using UnityEngine;
 #endif
 using Ballance2.Utils;
 using Ballance2.Services.Debug;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -56,6 +57,13 @@ namespace Ballance2.Res
           DebugSettings debugSettings = DebugSettings.Instance;
           if (debugSettings != null) {
             var realtivePath = debugSettings.DebugFolder.Replace("\\", "/");
+#if UNITY_EDITOR_WIN
+            realtivePath += "StandaloneWindows64/";
+#elif UNITY_EDITOR_LINUX
+            realtivePath += "StandaloneLinux64/";
+#elif UNITY_EDITOR_OSX
+            realtivePath += "StandaloneOSX/";
+#endif
             if(PathUtils.IsAbsolutePath(realtivePath))
               _DEBUG_PATH = realtivePath;
             else
@@ -101,22 +109,22 @@ namespace Ballance2.Res
     /// 安卓系统数据目录
     /// </summary>
     [LuaApiDescription("安卓系统数据目录")]
-    public const string ANDROID_FOLDER_PATH = "/sdcard/games/com.imengyu.ballance2/";
+    public static string ANDROID_FOLDER_PATH = Application.persistentDataPath;
     /// <summary>
     /// 安卓系统模组目录
     /// </summary>
     [LuaApiDescription("安卓系统模组目录")]
-    public const string ANDROID_PACKAGES_PATH = ANDROID_FOLDER_PATH + "Packages/";
+    public static string ANDROID_PACKAGES_PATH = ANDROID_FOLDER_PATH + "/Packages/";
     /// <summary>
     /// 安卓系统关卡目录
     /// </summary>
     [LuaApiDescription("安卓系统关卡目录")]
-    public const string ANDROID_LEVELS_PATH = ANDROID_FOLDER_PATH + "Levels/";
+    public static string ANDROID_LEVELS_PATH = ANDROID_FOLDER_PATH + "/Levels/";
 
     /// <summary>
     /// 将资源的相对路径转为资源真实路径
     /// </summary>
-    /// <param name="type">资源种类（gameinit、core: 核心文件、level：关卡、package：模块）</param>
+    /// <param name="type">资源种类（core: 核心文件、level：关卡、package：模块）</param>
     /// <param name="pathorname">相对路径或名称</param>
     /// <param name="replacePlatform">是否替换文件路径中的[Platform]</param>
     /// <returns></returns>
@@ -138,24 +146,14 @@ namespace Ballance2.Res
       if (type == "" && pathorname.Contains(":"))
         type = spbuf[0].ToLower();
 
-      if (type == "gameinit")
-      {
-#if UNITY_EDITOR
-        result = DEBUG_PATH + "/Core/game.init.xml";
-#elif UNITY_STANDALONE || UNITY_ANDROID
-        result = Application.dataPath + "/Core/game.init.xml";
-#elif UNITY_IOS
-        result = Application.streamingAssetsPath + "/Core/game.init.xml";
-#endif
-      }
-      else if (type == "logfile")
+      if (type == "logfile")
       {
 #if UNITY_EDITOR
         result = DEBUG_PATH + "/output.log";
 #elif UNITY_STANDALONE || UNITY_ANDROID
-        result = Application.dataPath + "/output.log";
+        result = Application.temporaryCachePath + "/output.log";
 #elif UNITY_IOS
-        result = Application.persistentDataPath + "/output.log";
+        result = Application.temporaryCachePath + "/output.log";
 #endif
       }
       else if (type == "level") return GetLevelRealPath(pathbuf, withFileSheme);
@@ -167,8 +165,10 @@ namespace Ballance2.Res
             return pathbuf;
 #if UNITY_EDITOR
           pathbuf = DEBUG_PACKAGES_PATH + pathbuf;
-#elif UNITY_STANDALONE
+#elif UNITY_STANDALONE_WIN
           pathbuf= Application.dataPath + "/Packages/" + pathbuf;
+#elif UNITY_STANDALONE
+          pathbuf= Application.persistentDataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID
           pathbuf = ANDROID_PACKAGES_PATH + pathbuf;
 #elif UNITY_IOS
@@ -180,8 +180,10 @@ namespace Ballance2.Res
         {
 #if UNITY_EDITOR
           result = DEBUG_PACKAGES_PATH + pathbuf;
+#elif UNITY_STANDALONE_WIN
+          pathbuf= Application.dataPath + "/Packages/" + pathbuf;
 #elif UNITY_STANDALONE
-          result = Application.dataPath + "/Packages/" + pathbuf;
+          pathbuf= Application.persistentDataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID
           result = ANDROID_PACKAGES_PATH + pathbuf;
 #elif UNITY_IOS
@@ -197,8 +199,10 @@ namespace Ballance2.Res
             return pathbuf;
 #if UNITY_EDITOR
           pathbuf = DEBUG_PATH + "/Core/" + pathbuf;
-#elif UNITY_STANDALONE || UNITY_ANDROID
+#elif UNITY_STANDALONE_WIN
           pathbuf = Application.dataPath + "/Core/" + pathbuf;
+#elif UNITY_STANDALONE || UNITY_ANDROID
+          pathbuf = Application.persistentDataPath + "/Core/" + pathbuf;
 #elif UNITY_IOS
           pathbuf = Application.streamingAssetsPath + "/Core/" + pathbuf;
 #endif
@@ -208,8 +212,10 @@ namespace Ballance2.Res
         {
 #if UNITY_EDITOR
           result = DEBUG_PATH + "/Core/" + pathbuf;
+#elif UNITY_STANDALONE_WIN
+          pathbuf = Application.dataPath + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE || UNITY_ANDROID
-          result = Application.dataPath + "/Core/" + pathbuf;
+          result = Application.persistentDataPath + "/Core/" + pathbuf;
 #elif UNITY_IOS
           result = Application.streamingAssetsPath + "/Core/" + pathbuf;
 #endif
@@ -244,8 +250,10 @@ namespace Ballance2.Res
           return pathbuf;
 #if UNITY_EDITOR
         pathbuf = DEBUG_LEVELS_PATH + pathbuf;
+#elif UNITY_STANDALONE_WIN
+        pathbuf = Application.dataPath + "/Levels/" + pathbuf;
 #elif UNITY_STANDALONE
-        pathbuf=  Application.dataPath + "/Levels/" + pathbuf;
+        pathbuf=  Application.persistentDataPath + "/Levels/" + pathbuf;
 #elif UNITY_ANDROID
         pathbuf = ANDROID_LEVELS_PATH + pathbuf;
 #elif UNITY_IOS
@@ -257,8 +265,10 @@ namespace Ballance2.Res
       {
 #if UNITY_EDITOR
         result = DEBUG_LEVELS_PATH + pathorname;
+#elif UNITY_STANDALONE_WIN
+        pathbuf = Application.dataPath + "/Levels/" + pathorname;
 #elif UNITY_STANDALONE
-        result = Application.dataPath + "/Levels/" + pathorname;
+        result = Application.persistentDataPath + "/Levels/" + pathorname;
 #elif UNITY_ANDROID
         result = ANDROID_LEVELS_PATH + pathorname;
 #elif UNITY_IOS

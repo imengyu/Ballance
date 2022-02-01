@@ -61,7 +61,7 @@ crashlytics-build.properties
 Gen/
 /Debug/
 /Output/
-/Output1/
+/OutputAndroid/
 PhysicsApiSideInit.cs
 CMakeCache.txt
 CMakeFiles/
@@ -71,5 +71,6 @@ Assets/Slua/LuaObject/*
 LuaDefineApi/
 Assets/System/Resources/SystemScrips/*
 !Assets/System/Resources/SystemScrips/.gitkeep
+Output.apk
 
 *.hkt

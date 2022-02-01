@@ -27,6 +27,7 @@ namespace Ballance2.UI.CoreUI
     public GameObject ScrollViewErrorContent = null;
     public Button ButtonCloseGame = null;
     public Button ButtonRestartGame = null;
+    public Button ButtonDebugger = null;
 
     private void Start()
     {
@@ -48,9 +49,10 @@ namespace Ballance2.UI.CoreUI
       {
         GameSystem.QuitPlayer();
       });
-      ButtonRestartGame.onClick.AddListener(() =>
+      ButtonDebugger.onClick.AddListener(() =>
       {
-        GameManager.Instance.RestartGame();
+        PlayerPrefs.SetInt("core.DebugMode", 1);
+        GameSystem.QuitPlayer();
       });
     }
 

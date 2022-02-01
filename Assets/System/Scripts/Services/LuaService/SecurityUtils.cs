@@ -101,14 +101,14 @@ namespace Ballance2.Services.LuaService
           || path.StartsWith(DebugSettings.Instance.OutputFolder)))
         throw new FileAccessException(path);
 
+#else
+#endif
       if (!(path.StartsWith(currentDir)
           || path.StartsWith(Application.dataPath)
           || path.StartsWith(Application.persistentDataPath)
           || path.StartsWith(Application.temporaryCachePath)
           || path.StartsWith(Application.streamingAssetsPath)))
         throw new FileAccessException(path);
-#else
-#endif
     }
   }
 
