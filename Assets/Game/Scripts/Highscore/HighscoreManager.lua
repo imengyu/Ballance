@@ -1,7 +1,7 @@
 local json = require("json")
 local defaultHighscoreData = require("DefaultHighscoreData")
 local Application = UnityEngine.Application
-local HighscoreDataPath = Application.streamingAssetsPath..'/'..'HighscoreData.json'
+local HighscoreDataPath = Application.persistentDataPath..'/'..'HighscoreData.json'
 
 ---关卡高分数据
 HighscoreData = {
