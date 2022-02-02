@@ -172,6 +172,7 @@ namespace Ballance2.Services
     /// <param name="gameEntryInstance">入口配置实例</param>
     private void InitDebugConfig(GameEntry gameEntryInstance)
     {
+#if UNITY_EDITOR
       //根据GameEntry中调试信息赋值到当前类变量，供加载使用
       sLoadUserPackages = !DebugMode || gameEntryInstance.DebugLoadCustomPackages;
       sCustomDebugName = DebugMode && gameEntryInstance.DebugType == GameDebugType.CustomDebug ? gameEntryInstance.DebugCustomEntryEvent : "";
@@ -183,6 +184,7 @@ namespace Ballance2.Services
           if (package.Enable) sLoadCustomPackages.Add(package.PackageName);
         }
       }
+#endif
     }
     
     /// <summary>

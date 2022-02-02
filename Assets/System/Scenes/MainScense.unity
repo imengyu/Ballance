@@ -466,7 +466,7 @@ MonoBehaviour:
     PackageName: core.sounds.music
   - Enable: 1
     PackageName: core.assets.skys
-  DebugCustomEntryEvent: CoreDebugLevelBuliderEntry
+  DebugCustomEntryEvent: ModulCustomDebug
   DebugCustomEntryEventParamas: []
   DebugCustomEntries:
   - CoreDebugEmptyEntry
@@ -513,8 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68c455edab10e54b8f5146aa173534f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModulName: P_Modul_03
-  ModulInstance: {fileID: 2117202136982073962, guid: 66d25cf37f8e8c642851ad80a495f640, type: 3}
+  ModulName: P_Modul_08
+  ModulInstance: {fileID: 9086229929543805006, guid: 5246ee59fd4252e41af3bb152b3da6ba, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
 --- !u!114 &876097601

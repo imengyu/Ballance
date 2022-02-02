@@ -1,13 +1,10 @@
 ﻿using Ballance2.Config;
 using Ballance2.Config.Settings;
 using System;
-#if UNITY_EDITOR
-#else
-using UnityEngine;
-#endif
 using Ballance2.Utils;
 using Ballance2.Services.Debug;
 using UnityEngine;
+using System.IO;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -44,6 +41,23 @@ namespace Ballance2.Res
 
     private static string _DEBUG_PATH = "";
     private static string _DEBUG_OUTPUT_PATH = "";
+ 
+    private static string FixMaker(string src) {
+#if UNITY_EDITOR_WIN
+      if(Directory.Exists(src + "/StandaloneWindows64/"))
+        src += "/StandaloneWindows64/";
+      else
+        src += "/StandaloneWindows/";
+#elif UNITY_EDITOR_LINUX
+      if(Directory.Exists(src + "/StandaloneLinux64/"))
+        src += "/StandaloneLinux64/";
+      else
+        src += "/StandaloneLinux/";
+#elif UNITY_EDITOR_OSX
+      src += "/StandaloneOSX/";
+#endif
+      return src;
+    }
 
     /// <summary>
     /// 调试路径（输出目录）<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
@@ -57,17 +71,13 @@ namespace Ballance2.Res
           DebugSettings debugSettings = DebugSettings.Instance;
           if (debugSettings != null) {
             var realtivePath = debugSettings.DebugFolder.Replace("\\", "/");
-#if UNITY_EDITOR_WIN
-            realtivePath += "StandaloneWindows64/";
-#elif UNITY_EDITOR_LINUX
-            realtivePath += "StandaloneLinux64/";
-#elif UNITY_EDITOR_OSX
-            realtivePath += "StandaloneOSX/";
-#endif
+
             if(PathUtils.IsAbsolutePath(realtivePath))
               _DEBUG_PATH = realtivePath;
             else
-              _DEBUG_PATH = PathUtils.JoinTwoPath(System.IO.Directory.GetCurrentDirectory(), realtivePath);
+              _DEBUG_PATH = PathUtils.JoinTwoPath(Directory.GetCurrentDirectory(), realtivePath);
+
+            _DEBUG_PATH = FixMaker(_DEBUG_PATH);
           }
         }
         return _DEBUG_PATH;
@@ -88,7 +98,9 @@ namespace Ballance2.Res
             if(PathUtils.IsAbsolutePath(realtivePath))
               _DEBUG_OUTPUT_PATH = realtivePath;
             else
-              _DEBUG_OUTPUT_PATH = PathUtils.JoinTwoPath(System.IO.Directory.GetCurrentDirectory(), realtivePath);
+              _DEBUG_OUTPUT_PATH = PathUtils.JoinTwoPath(Directory.GetCurrentDirectory(), realtivePath);
+
+            _DEBUG_OUTPUT_PATH = FixMaker(_DEBUG_OUTPUT_PATH);
           }
         }
         return _DEBUG_OUTPUT_PATH;
@@ -150,9 +162,7 @@ namespace Ballance2.Res
       {
 #if UNITY_EDITOR
         result = DEBUG_PATH + "/output.log";
-#elif UNITY_STANDALONE || UNITY_ANDROID
-        result = Application.temporaryCachePath + "/output.log";
-#elif UNITY_IOS
+#elif UNITY_STANDALONE || UNITY_ANDROID || UNITY_IOS
         result = Application.temporaryCachePath + "/output.log";
 #endif
       }
@@ -167,11 +177,11 @@ namespace Ballance2.Res
           pathbuf = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE_WIN
           pathbuf= Application.dataPath + "/Packages/" + pathbuf;
-#elif UNITY_STANDALONE
+#elif UNITY_STANDALONE || UNITY_IOS
           pathbuf= Application.persistentDataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID
           pathbuf = ANDROID_PACKAGES_PATH + pathbuf;
-#elif UNITY_IOS
+#else
           pathbuf = pathbuf;
 #endif
           result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
@@ -181,12 +191,12 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
           result = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE_WIN
-          pathbuf= Application.dataPath + "/Packages/" + pathbuf;
-#elif UNITY_STANDALONE
-          pathbuf= Application.persistentDataPath + "/Packages/" + pathbuf;
+          result = Application.dataPath + "/Packages/" + pathbuf;
+#elif UNITY_STANDALONE || UNITY_IOS
+          result = Application.persistentDataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID
           result = ANDROID_PACKAGES_PATH + pathbuf;
-#elif UNITY_IOS
+#else
           result = pathorname;
 #endif
         }
@@ -201,10 +211,8 @@ namespace Ballance2.Res
           pathbuf = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE_WIN
           pathbuf = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_STANDALONE || UNITY_ANDROID
+#elif UNITY_STANDALONE || UNITY_ANDROID || UNITY_IOS
           pathbuf = Application.persistentDataPath + "/Core/" + pathbuf;
-#elif UNITY_IOS
-          pathbuf = Application.streamingAssetsPath + "/Core/" + pathbuf;
 #endif
           result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
         }
@@ -213,11 +221,9 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
           result = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE_WIN
-          pathbuf = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_STANDALONE || UNITY_ANDROID
+          result = Application.dataPath + "/Core/" + pathbuf;
+#elif UNITY_STANDALONE || UNITY_ANDROID || UNITY_IOS
           result = Application.persistentDataPath + "/Core/" + pathbuf;
-#elif UNITY_IOS
-          result = Application.streamingAssetsPath + "/Core/" + pathbuf;
 #endif
         }
       }
@@ -252,11 +258,11 @@ namespace Ballance2.Res
         pathbuf = DEBUG_LEVELS_PATH + pathbuf;
 #elif UNITY_STANDALONE_WIN
         pathbuf = Application.dataPath + "/Levels/" + pathbuf;
-#elif UNITY_STANDALONE
+#elif UNITY_STANDALONE || UNITY_IOS
         pathbuf=  Application.persistentDataPath + "/Levels/" + pathbuf;
 #elif UNITY_ANDROID
         pathbuf = ANDROID_LEVELS_PATH + pathbuf;
-#elif UNITY_IOS
+#else
         pathbuf = pathbuf;
 #endif
         result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
@@ -267,11 +273,11 @@ namespace Ballance2.Res
         result = DEBUG_LEVELS_PATH + pathorname;
 #elif UNITY_STANDALONE_WIN
         pathbuf = Application.dataPath + "/Levels/" + pathorname;
-#elif UNITY_STANDALONE
+#elif UNITY_STANDALONE || UNITY_IOS
         result = Application.persistentDataPath + "/Levels/" + pathorname;
 #elif UNITY_ANDROID
         result = ANDROID_LEVELS_PATH + pathorname;
-#elif UNITY_IOS
+#else
         result = pathorname;
 #endif
       }

@@ -856,7 +856,9 @@ function LevelBuilder:UnLoadLevel(endCallback)
     Yield(WaitForSeconds(0.1))
 
     --删除关卡中所有的物理碰撞信息
-    GamePlay.GamePlayManager.GamePhysicsWorld:DeleteAllSurfaces()
+    if GamePlay.GamePlayManager and GamePlay.GamePlayManager.GamePhysicsWorld then
+      GamePlay.GamePlayManager.GamePhysicsWorld:DeleteAllSurfaces() 
+    end
 
     Log.D(TAG, 'Unload level finish')
 
