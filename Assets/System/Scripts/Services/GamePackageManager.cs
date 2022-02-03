@@ -796,7 +796,26 @@ namespace Ballance2.Services
               if (!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
 
               GamePackage p = FindPackage(packageName);
+              if(p == null) {
+                Log.E(TAG, "找不到模块：" + packageName);
+                break;
+              }
+
               Log.V(TAG, p.ToString());
+              return true;
+            }
+          case "list-res":
+            {
+              string packageName = "";
+              if (!DebugUtils.CheckDebugParam(1, args, out packageName)) break;
+
+              GamePackage p = FindPackage(packageName);
+              if(p == null) {
+                Log.E(TAG, "找不到模块：" + packageName);
+                break;
+              }
+
+              Log.V(TAG, p.ListResource());
               return true;
             }
           case "enable":
@@ -849,6 +868,7 @@ namespace Ballance2.Services
               "  reg <packageName:string>                                ▶ 注册一个模块包\n" +
               "  load <packageName:string>                               ▶ 加载一个模块包\n" +
               "  info <packageName:string>                               ▶ 显示一个模块包的信息\n" +
+              "  list-res <packageName:string>                           ▶ 显示一个模块包的所有资源列表\n" +
               "  unload <packageName:string> [unLoadImmediately:boolean] ▶ 卸载一个模块包, unLoadImmediately指定是否立即卸载，默认false\n" +
               "  enable <packageName:string>                             ▶ 启用模块包启动加载\n" +
               "  disable <packageName:string>                            ▶ 禁用模块包启动加载\n" +

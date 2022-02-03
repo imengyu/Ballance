@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding.LevelMaker
 {
-    public class LevelPackerWindow : EditorWindow
+    public class WindowLevelPacker : EditorWindow
     {
-        public LevelPackerWindow()
+        public WindowLevelPacker()
         {
             titleContent = new GUIContent("打包 Ballance 关卡");
         }
@@ -115,6 +115,7 @@ namespace Ballance2.Editor.Modding.LevelMaker
             DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_LEVEL_FOLDER);
             DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
             for (int i = 0; i < dirs.Length; i++)
+              if(dirs[i].Name != "MakerAssets")
                 packsPath.Add(dirs[i].Name);
 
             packsPathArr = packsPath.ToArray();
@@ -171,7 +172,7 @@ namespace Ballance2.Editor.Modding.LevelMaker
                 dir = EditorUtility.OpenFolderPanel("保存关卡", EditorPrefs.GetString("LevelMakerDefSaveDir", GamePathManager.DEBUG_PATH), "");
             else
             {
-                dir = DebugSettings.Instance.DebugFolder + "/Levels/";
+                dir = DebugSettings.Instance.DebugFolder + "/" + packTarget + "/Levels/";
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
             }

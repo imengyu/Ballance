@@ -24,9 +24,9 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding
 {
-    public class PackagePackerWindow : EditorWindow
+    public class WindowPackagePacker : EditorWindow
     {
-        public PackagePackerWindow()
+        public WindowPackagePacker()
         {
             titleContent = new GUIContent("打包 Ballance 模块包");
         }

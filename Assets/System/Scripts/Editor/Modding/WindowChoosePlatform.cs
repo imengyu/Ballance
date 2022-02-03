@@ -17,9 +17,9 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding
 {
-  public class ChoosePlatformWindow : EditorWindow
+  public class WindowChoosePlatform : EditorWindow
   {
-    public ChoosePlatformWindow()
+    public WindowChoosePlatform()
     {
       titleContent = new GUIContent("选择平台");
     }

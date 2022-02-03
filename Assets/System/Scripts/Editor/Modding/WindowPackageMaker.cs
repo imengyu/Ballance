@@ -9,9 +9,9 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding
 {
-    public class PackageMakerWindow : EditorWindow
+    public class WindowPackageMaker : EditorWindow
     {
-        public PackageMakerWindow()
+        public WindowPackageMaker()
         {
             titleContent = new GUIContent("创建 Ballance 模组包");
         }
@@ -89,7 +89,7 @@ namespace Ballance2.Editor.Modding
                     EntryCode = EditorGUILayout.TextField("入口代码名称", EntryCode);
                     if (StringUtils.isNullOrEmpty(EntryCode))
                     {
-                        EditorGUILayout.HelpBox("必须填写入口代码名称， xxx.lula.txt ", MessageType.Error);
+                        EditorGUILayout.HelpBox("必须填写入口代码名称， xxx(.lua)", MessageType.Error);
                         error = true;
                     }
                 }

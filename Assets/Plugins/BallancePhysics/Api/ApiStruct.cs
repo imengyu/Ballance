@@ -440,7 +440,11 @@ namespace BallancePhysics.Api
       IntPtr[] apiArray = new IntPtr[len];
       Marshal.Copy(apiArrayPtr, apiArray, 0, len);
 
-      get_version = Marshal.GetDelegateForFunctionPointer<fn_get_version>(apiArray[i++]);
+      try {
+        get_version = Marshal.GetDelegateForFunctionPointer<fn_get_version>(apiArray[i++]);
+      } catch(Exception e) {
+        throw new Exception("[BallancePhysics] Failed to get native function, Maybe you choose the wrong way to use it. \nException: " + e.ToString());
+      }
       
       var v = get_version();
       if(v != Version)
@@ -541,12 +545,14 @@ namespace BallancePhysics.Api
       public IntPtr hit_objects; // sPhysicsBody** hit_objects;
       public IntPtr hit_distances; // float* hit_distances; 
     }
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct sInitStruct
     {
       public IntPtr eventCallback; //EventCallback eventCallback;
       public int showConsole; //sBool showConsole;
-      public int smallPoolSize;
+      public int smallPoolSize; //Small pool size for memory allocation of common data structures
+      [MarshalAs(UnmanagedType.ByValTStr, SizeConst=33)]
+      public string key;//Secret key
     }
   }
 

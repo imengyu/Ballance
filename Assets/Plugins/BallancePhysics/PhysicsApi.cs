@@ -46,6 +46,11 @@ namespace BallancePhysics
     /// </summary>
     /// <returns></returns>
     public static ApiStruct API { get; } = new ApiStruct();
+    /// <summary>
+    /// 密钥
+    /// </summary>
+    /// <value></value>
+    public static string SecretKey { get; set; }
 
     public static void PhysicsApiInit()
     {
@@ -96,8 +101,13 @@ namespace BallancePhysics
         //拷贝初始配置结构
         sInitStruct initStruct = new sInitStruct();
         initStruct.smallPoolSize = PhysicsOptions.Instance.SmallPoolSize;
+#if UNITY_EDITOR
         initStruct.showConsole = boolToSbool(PhysicsOptions.Instance.ShowConsole);
+#else
+        initStruct.showConsole = boolToSbool(false);
+#endif
         initStruct.eventCallback = Marshal.GetFunctionPointerForDelegate(callback);
+        initStruct.key = SecretKey;
 
         IntPtr initStructPtr = Marshal.AllocHGlobal(Marshal.SizeOf<sInitStruct>());
         Marshal.StructureToPtr(initStruct, initStructPtr, false);

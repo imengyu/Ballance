@@ -19,6 +19,7 @@ using Ballance2.Services;
 using Ballance2.Utils;
 using UnityEngine;
 using Ballance2.Res;
+using System.Text;
 
 namespace Ballance2.Package
 {
@@ -135,6 +136,19 @@ namespace Ballance2.Package
       var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
       return new CodeAsset(asset.bytes, pathorname, realtivePath, ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH + pathorname);
 #endif
+    }
+  
+    public override string ListResource() {
+      StringBuilder sb = new StringBuilder();
+#if UNITY_EDITOR
+      sb.Append("[System internal package Editor]");
+#else
+      sb.Append("[System internal package]");
+#endif
+      sb.Append("[Lua Code assets count: " + sEditorLuaPath.Count + " ]");
+      foreach(var item in sEditorLuaPath) 
+        sb.AppendLine(item.Key + ": " + item.Value);
+      return sb.ToString();
     }
   }
 }

@@ -5,58 +5,45 @@ using System.Collections.Generic;
 
 namespace Ballance2.Editor.Modding.LevelMaker
 {
-    class LevelPacker
-    {            
-        private static List<string> allAssetsPath = new List<string>();
+  class LevelPacker
+  {
+    private static string projLevelDirPath = "";
 
-        private static string projModDirPath = "";
-        private static string projModDefFile = "";
-        private static string projPath = "";
+    public static string DoPackPackage(BuildTarget packTarget, TextAsset packDefFile, string sourceName, string targetDir)
+    {
+      string targetPath = targetDir + "/" + sourceName + ".ballance";
+      if (!string.IsNullOrEmpty(targetPath))
+      {
+        projLevelDirPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(packDefFile)).Replace("\\", "/");
 
-        public static string DoPackPackage(BuildTarget packTarget, TextAsset packDefFile, string sourceName, string targetDir) {
-            string targetPath = targetDir + "/" + sourceName + ".ballance";
-            if (!string.IsNullOrEmpty(targetPath))
-            {
-                allAssetsPath.Clear();
+        string dirTargetPath = Path.GetDirectoryName(targetPath);
+        if (!string.IsNullOrEmpty(projLevelDirPath))
+        {
+          List<string> allAssetsPath = new List<string>();
+          allAssetsPath.Add(AssetDatabase.GetAssetPath(packDefFile));
+          allAssetsPath.Add(projLevelDirPath + "/LevelLogo.png");
+          allAssetsPath.Add(projLevelDirPath + "/Level.prefab");
 
-                projPath = Directory.GetCurrentDirectory().Replace("\\", "/") + "/";
-                projModDefFile = projPath + AssetDatabase.GetAssetPath(packDefFile);
-                projModDirPath = projPath + Path.GetDirectoryName(AssetDatabase.GetAssetPath(packDefFile));
+          //打包
+          AssetBundleBuild assetBundleBuild = new AssetBundleBuild();
+          assetBundleBuild.assetBundleName = sourceName;
+          assetBundleBuild.assetBundleVariant = "ballance";
+          assetBundleBuild.assetNames = allAssetsPath.ToArray();
 
-                string dirTargetPath = Path.GetDirectoryName(targetPath);
-                if (!string.IsNullOrEmpty(projModDirPath))
-                {
-                    //遍历文件夹的内容
-                    if (Directory.Exists(projModDirPath))
-                    {
-                        DirectoryInfo direction = new DirectoryInfo(projModDirPath);
-                        FileInfo[] files = direction.GetFiles("*", SearchOption.AllDirectories);
-                        for (int i = 0; i < files.Length; i++)
-                        {
-                            if (files[i].Name.EndsWith(".meta")) continue;
-                            allAssetsPath.Add(files[i].FullName.Replace("\\", "/").Replace(projPath, ""));
-                        }
-                    }
+          //打包
+          var ass = BuildPipeline.BuildAssetBundles(dirTargetPath, new AssetBundleBuild[]{
+            assetBundleBuild
+          }, BuildAssetBundleOptions.None, packTarget);
 
-                    allAssetsPath.Add(projModDirPath + "/LevelLogo.png");
-
-                    string name = Path.GetFileNameWithoutExtension(targetPath);
-
-                    //打包
-                    AssetBundleBuild assetBundleBuild = new AssetBundleBuild();
-                    assetBundleBuild.assetBundleName = sourceName;
-                    assetBundleBuild.assetBundleVariant = "ballance";
-                    assetBundleBuild.assetNames = allAssetsPath.ToArray();
-
-                    //打包
-                    BuildPipeline.BuildAssetBundles(dirTargetPath, new AssetBundleBuild[]{
-                        assetBundleBuild
-                    }, BuildAssetBundleOptions.None, packTarget);
-
-                    EditorUtility.ClearProgressBar();
-                }
-            }
-            return "";
+          EditorUtility.ClearProgressBar();
+          
+          if(ass == null)
+            return " BuildAssetBundles failed";
+          return "";
         }
+        return "projLevelDirPath not set";
+      }
+      return "targetPath not set";
     }
+  }
 }

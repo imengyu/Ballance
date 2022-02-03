@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
@@ -260,6 +261,17 @@ namespace Ballance2.Package
       Log.E(TAG, "模组包 {0} 加载代码错误：当前使用 IL2CPP 模式，因此 C# DLL 不能加载", PackageName);
 #endif
       return null;
+    }
+  
+    public override string ListResource() {
+      StringBuilder sb = new StringBuilder();
+      sb.Append("[Zip package]");
+      var list = AssetBundle.GetAllAssetNames();
+      sb.Append("[Lua Code assets count: " + packageCodeAsset.Count + " ]");
+      foreach(var item in packageCodeAsset) 
+        sb.AppendLine(item.Key + ": " + item.Value.fullPath);
+      sb.AppendLine(base.ListResource());
+      return sb.ToString();
     }
   }
 }

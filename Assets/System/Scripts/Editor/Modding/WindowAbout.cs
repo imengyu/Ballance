@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding
 {
-    public class AboutWindow : EditorWindow
+    public class WindowAbout : EditorWindow
     {
-        public AboutWindow()
+        public WindowAbout()
         {
             titleContent = new GUIContent("关于 Ballance 项目");
         }
@@ -18,7 +18,7 @@ namespace Ballance2.Editor.Modding
         [@MenuItem("Ballance/关于", false, 109)]
         static void ShowAbout()
         {
-            EditorWindow.GetWindowWithRect(typeof(AboutWindow), new Rect(200, 150, 390, 500));
+            EditorWindow.GetWindowWithRect(typeof(WindowAbout), new Rect(200, 150, 390, 500));
         }
 
         private Texture2D logo;

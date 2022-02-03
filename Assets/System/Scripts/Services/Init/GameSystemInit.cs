@@ -4,6 +4,7 @@ using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.I18N;
 using Ballance2.Utils;
+using BallancePhysics;
 using UnityEngine;
 
 /*
@@ -71,6 +72,12 @@ namespace Ballance2.Services.Init
         GameSystem.RegSystemService<GameTimeMachine>();
         GameSystem.RegSystemService<GamePoolManager>();
         GameSystem.RegSystemService<GameSoundManager>();
+
+  #if !UNITY_EDITOR
+        //初始化物理引擎
+        PhysicsApi.SecretKey = "666dccad4ae697b45aac145f18f49c5b";
+        PhysicsSystemInit.DoInit();
+  #endif
       }
       else if (act == GameSystem.ACTION_DESTROY)
       {
@@ -86,6 +93,11 @@ namespace Ballance2.Services.Init
         I18NProvider.ClearAllLanguageResources();
         GameSettingsManager.Destroy();
         GameStaticResourcesPool.ReleaseAll();
+
+#if !UNITY_EDITOR
+        //释放物理引擎
+        PhysicsSystemInit.DoDestroy();
+#endif
       }
       else if (act == GameSystem.ACTION_FORCE_INT)
       {

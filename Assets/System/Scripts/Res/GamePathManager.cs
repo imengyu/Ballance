@@ -272,7 +272,7 @@ namespace Ballance2.Res
 #if UNITY_EDITOR
         result = DEBUG_LEVELS_PATH + pathorname;
 #elif UNITY_STANDALONE_WIN
-        pathbuf = Application.dataPath + "/Levels/" + pathorname;
+        result = Application.dataPath + "/Levels/" + pathorname;
 #elif UNITY_STANDALONE || UNITY_IOS
         result = Application.persistentDataPath + "/Levels/" + pathorname;
 #elif UNITY_ANDROID
@@ -281,6 +281,9 @@ namespace Ballance2.Res
         result = pathorname;
 #endif
       }
+      
+      if(!result.EndsWith(".ballance"))
+        result += ".ballance";
 
       return (withFileSheme ? "file:///" : "") + result;
     }

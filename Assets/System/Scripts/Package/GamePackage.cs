@@ -858,6 +858,23 @@ namespace Ballance2.Package
     {
       return "Package: " + PackageName + "(" + PackageVersion + ") => " + _Status;
     }
+    /// <summary>
+    /// 展示所有资源
+    /// </summary>
+    /// <returns></returns>
+    public virtual string ListResource()
+    {
+      StringBuilder sb = new StringBuilder();
+      if(AssetBundle != null) {
+        var list = AssetBundle.GetAllAssetNames();
+        sb.Append("[AssetBundle " + AssetBundle.name + " assets count: " + list.Length + " ]");
+        for (int i = 0; i < list.Length; i++)
+          sb.AppendLine(list[i]);
+      } else {
+        sb.Append("[AssetBundle is null]");
+      }
+      return sb.ToString();
+    }
 
     #endregion
 

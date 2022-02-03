@@ -9,12 +9,12 @@ using System.Collections.Generic;
 
 namespace Ballance2.Editor.Modding
 {
-  class MakerTools
+  class MenuMakerTools
   {
     [@MenuItem("Ballance/工具/复制Debug文件夹到预设输出目录", false, 103)]
     static void CopyDebugFolderToOutput()
     {
-      ChoosePlatformWindow choosePlatformWindow = EditorWindow.GetWindowWithRect<ChoosePlatformWindow>(new Rect(200, 150, 450, 250));
+      WindowChoosePlatform choosePlatformWindow = EditorWindow.GetWindowWithRect<WindowChoosePlatform>(new Rect(200, 150, 450, 250));
       choosePlatformWindow.OnChoose = (target) =>
       {
         Debug.Log("OnChoose: " + target);
@@ -62,7 +62,7 @@ namespace Ballance2.Editor.Modding
     [@MenuItem("Ballance/工具/复制Debug文件夹到自定义目录", false, 103)]
     static void CopyDebugFolder()
     {
-      ChoosePlatformWindow choosePlatformWindow = EditorWindow.GetWindowWithRect<ChoosePlatformWindow>(new Rect(200, 150, 450, 250));
+      WindowChoosePlatform choosePlatformWindow = EditorWindow.GetWindowWithRect<WindowChoosePlatform>(new Rect(200, 150, 450, 250));
       choosePlatformWindow.OnChoose = (target) =>
       {
         string debugFolder = DebugSettings.Instance.DebugFolder + "/";

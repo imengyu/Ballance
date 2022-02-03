@@ -131,8 +131,8 @@ namespace Ballance2.Entry
     private bool TestAndroidPermission()
     {
 #if UNITY_ANDROID
-      if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
-        return true;
+      //if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
+      //  return true;
 #endif
       return false;
     }
@@ -151,7 +151,7 @@ namespace Ballance2.Entry
     public void RequestAndroidPermission()
     {
 #if UNITY_ANDROID
-      Permission.RequestUserPermission(Permission.ExternalStorageWrite);
+      //Permission.RequestUserPermission(Permission.ExternalStorageWrite);
 #endif
       GlobalGamePermissionTipDialogClosed = true;
     }

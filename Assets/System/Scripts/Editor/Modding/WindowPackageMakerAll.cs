@@ -24,9 +24,9 @@ using UnityEngine;
 
 namespace Ballance2.Editor.Modding
 {
-  public class PackageMakerAllWindow : EditorWindow
+  public class WindowPackageMakerAll : EditorWindow
     {
-        public PackageMakerAllWindow()
+        public WindowPackageMakerAll()
         {
             titleContent = new GUIContent("打包Packages下所有模块包至Debug目录");
         }

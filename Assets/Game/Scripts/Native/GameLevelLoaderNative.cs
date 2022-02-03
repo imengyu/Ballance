@@ -35,9 +35,9 @@ namespace Ballance2.Game
     public bool LoadInEditor = false;
     public string Path;
 
-    public LevelAssets(string path, bool poadInEditor = false)
+    public LevelAssets(string path, bool loadInEditor = false)
     {
-      LoadInEditor = poadInEditor;
+      LoadInEditor = loadInEditor;
       Path = path;
 #if UNITY_EDITOR
       LoadAllFileNames();
@@ -137,10 +137,11 @@ namespace Ballance2.Game
 #endif
       {
         //路径
-        string path = GamePathManager.GetLevelRealPath(name);
+        string path = GamePathManager.GetLevelRealPath(name.ToLower(), false);
         if (!File.Exists(path))
         {
-          errCallback("FILE_NOT_EXISTS", "文件 " + name + " 不存在");
+          Log.E(TAG, "File not exists : {0}", path);
+          errCallback("FILE_NOT_EXISTS", "文件 \"" + path + "\" 不存在");
           return;
         }
         Log.D(TAG, "Load package : {0}", path);
@@ -183,7 +184,11 @@ namespace Ballance2.Game
           errCallback("FAILED_LOAD_ASSETBUNDLE", "Wrong level, failed to load AssetBundle");
           yield break;
         }
+
+        level.AssetBundle = assetBundle;
       }
+      
+      Log.D(TAG, "Level package {0} loaded", level.Path);
 
       TextAsset LevelJsonTextAsset = level.GetLevelAsset<TextAsset>("Level.json");
       if (LevelJsonTextAsset == null || string.IsNullOrEmpty(LevelJsonTextAsset.text))
