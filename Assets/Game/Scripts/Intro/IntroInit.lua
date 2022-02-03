@@ -50,9 +50,8 @@ local function OnEnterIntro(thisGamePackage)
     GameUIManager:MaskBlackFadeIn(1)
     Yield(WaitForSeconds(1))
 
-    if not baseFinished then introFinished = true else
-      GameManager.Instance:RequestEnterLogicScense('MenuLevel')
-    end
+    --进入菜单
+    GameManager.Instance:RequestEnterLogicScense('MenuLevel')
   end))
 end
 local function OnQuitIntro()
@@ -65,12 +64,6 @@ end
 return {
   Init = function ()
     local thisGamePackage = GamePackage.GetCorePackage()
-    GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "Intro", function ()
-      if not introFinished then baseFinished = true else
-        GameManager.Instance:RequestEnterLogicScense('MenuLevel')
-      end
-      return false
-    end)
     GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, "Intro", function (evtName, params)
       local scense = params[1]
       if(scense == 'Intro') then OnEnterIntro(thisGamePackage) end

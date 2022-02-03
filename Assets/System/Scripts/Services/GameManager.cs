@@ -254,8 +254,23 @@ namespace Ballance2.Services
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
         else if (firstScense != "") {
-          if(!RequestEnterLogicScense(firstScense))
-            GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          //所有包加载完毕但是动画还没有完成，再等等
+          if(!GameSplashController.Instance.IsPlaying()) {
+            GameSplashController.Instance.OnSplashFinish = null;
+            //进入场景
+            if(!RequestEnterLogicScense(firstScense))
+              GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          } else {
+            Log.D(TAG, "Waiting Splash");
+            
+            if(GameSplashController.Instance.OnSplashFinish == null)
+              GameSplashController.Instance.OnSplashFinish = () => {
+                Log.D(TAG, "Waiting Splash done");
+                //进入场景
+                if(!RequestEnterLogicScense(firstScense))
+                  GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+              };
+          }
         }
       }
       else
@@ -488,11 +503,22 @@ namespace Ballance2.Services
 
           yield return new WaitForSeconds(0.2f);
 
-          //进入Intro
+
+          //在基础包加载完成时就进入Intro
           if (string.IsNullOrEmpty(sCustomDebugName) && (!DebugMode || !GameEntry.Instance.DebugSkipIntro))
           {
-            RequestEnterLogicScense(firstScense);
-            firstScense = "";
+            //如果logo动画还没有完成，则等一等
+            if(GameSplashController.Instance.IsPlaying()) {
+              Log.D(TAG, "Waiting Splash for intro");
+              GameSplashController.Instance.OnSplashFinish = () => {
+                Log.D(TAG, "Waiting Splash for intro done");
+                RequestEnterLogicScense(firstScense);
+                firstScense = "";
+              };
+            } else {
+              RequestEnterLogicScense(firstScense);
+              firstScense = "";
+            }
           }
         }
       }

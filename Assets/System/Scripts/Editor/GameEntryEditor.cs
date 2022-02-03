@@ -122,6 +122,7 @@ public class GameEntryEditor : Editor
 
         EditorGUILayout.PropertyField(DebugCustomEntryEventParamas);
         EditorGUILayout.PropertyField(DebugCustomEntries);
+        EditorGUILayout.PropertyField(DebugSkipSplash);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();
@@ -142,7 +143,6 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GlobalGameScriptErrDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialogText);
-        EditorGUILayout.PropertyField(DebugSkipSplash);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();
