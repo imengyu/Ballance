@@ -426,7 +426,7 @@ function LevelBuilder:_LoadLevelInternal()
               local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
               body.DoNotAutoCreateAtAwake = true
               body.Fixed = true
-              body.EnableConvexHull = false
+              body.BuildRootConvexHull = false
               body.Concave:Add(meshFilter.mesh)
               body.Friction = physicsData.Friction
               body.Elasticity = physicsData.Elasticity

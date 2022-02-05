@@ -251,7 +251,9 @@ function GamePlayManager:_InitAndStart()
     Game.UIManager:MaskBlackFadeOut(1)
     --播放开始音乐
     Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal)
-    --
+    --可控制摄像机了
+    GamePlay.BallManager.CanControllCamera = true
+    --发出事件
     Game.LevelBuilder:CallLevelCustomModEvent('beforeStart')
     Game.Mediator:DispatchGlobalEvent('GAME_START', '*', {})
 

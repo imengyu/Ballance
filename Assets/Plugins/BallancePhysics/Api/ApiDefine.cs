@@ -149,7 +149,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_physics_force(IntPtr force);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_create_physics_spring(IntPtr body1, IntPtr body2, IntPtr pos1_os, IntPtr pos2_os, float length, float constant, float spring_damping, float global_damping, int use_stiff_spring);
+  public delegate IntPtr fn_create_physics_spring(IntPtr body1, IntPtr body2, IntPtr pos1_os, IntPtr pos2_os, float length, float constant, float spring_damping, float global_damping, int use_stiff_spring, int values_are_relative, int force_only_on_stretch);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_physics_spring(IntPtr spring);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

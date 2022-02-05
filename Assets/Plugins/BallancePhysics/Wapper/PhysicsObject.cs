@@ -42,7 +42,7 @@ namespace BallancePhysics.Wapper
     private bool m_UseBall = false;
     [Tooltip("如果为true，该算法将在对象周围生成一个额外的凸包。对于可移动对象，此外壳可以将性能提高到与凸面对象相同的水平。对于巨大的静态物体，这种优化毫无意义，因为所有可移动的对象都一直在穿透凸面外壳。")]
     [SerializeField]
-    private bool m_EnableConvexHull = true;
+    private bool m_BuildRootConvexHull = true;
     [Tooltip("设置当前物体是否启用碰撞。")]
     [SerializeField]
     private bool m_EnableCollision = true;
@@ -107,15 +107,6 @@ namespace BallancePhysics.Wapper
     [Tooltip("设置当前物体碰撞事件调用的休息时间（秒）")]
     [SerializeField]
     private float m_CollisionEventCallSleep = 0.5f;
-    [Tooltip("设置静态恒力恒力方向")]
-    [SerializeField]
-    private Vector3 m_StaticConstantForceDirection = Vector3.forward;
-    [Tooltip("设置静态恒力恒力")]
-    [SerializeField]
-    private float m_StaticConstantForce = 0;
-    [Tooltip("设置静态恒力恒力方向参考")]
-    [SerializeField]
-    private Transform m_ConstantForceDirectionRef = null;
 
     #endregion
 
@@ -163,7 +154,7 @@ namespace BallancePhysics.Wapper
     /// 如果为true，该算法将在对象周围生成一个额外的凸包。对于可移动对象，此外壳可以将性能提高到与凸面对象相同的水平。对于巨大的景观来说，这种优化毫无意义，因为所有有趣的对象都一直在穿透凸面外壳。
     /// </summary>
     /// <value></value>
-    public bool EnableConvexHull { get => m_EnableConvexHull; set => m_EnableConvexHull = value; }
+    public bool BuildRootConvexHull { get => m_BuildRootConvexHull; set => m_BuildRootConvexHull = value; }
     /// <summary>
     /// 设置当前物体是否启用碰撞。
     /// </summary>
@@ -326,7 +317,7 @@ namespace BallancePhysics.Wapper
 
         Handle = PhysicsApi.API.physicalize(currentEnvironment.Handle, name, m_Layer, currentEnvironment.GetSystemGroup(m_SystemGroupName),
          m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
-         m_RotSpeedDamping, m_BallRadius, m_UseBall, m_EnableConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
+         m_RotSpeedDamping, m_BallRadius, m_UseBall, m_BuildRootConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
          m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, surfaceName,
          pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius, m_CollisionID);
         
@@ -558,35 +549,65 @@ namespace BallancePhysics.Wapper
     /// </summary>
     /// <value></value>
     public bool EnableConstantForce { get => m_EnableConstantForce; set => m_EnableConstantForce = value; }
-    /// <summary>
-    /// 设置静态恒力恒力数值
-    /// </summary>
-    /// <value></value>
-    public float StaticConstantForce { get => m_StaticConstantForce; set => m_StaticConstantForce = value; }
-    /// <summary>
-    /// 设置静态恒力恒力方向
-    /// </summary>
-    /// <value></value>
-    public Vector3 StaticConstantForceDirection { get => m_StaticConstantForceDirection; set => m_StaticConstantForceDirection = value; }
-    /// <summary>
-    /// 施加在这个物体上的恒力方向参考
-    /// </summary>
-    /// <value></value>
-    public Transform ConstantForceDirectionRef { get => m_ConstantForceDirectionRef; set => m_ConstantForceDirectionRef = value; }
 
     private int m_ConstantForce_ID = 0;
-    private Dictionary<int, Vector3> m_ConstantForces = new Dictionary<int, Vector3>();
+    private struct ConstantForceData {
+      public Vector3 Pos;
+      public Vector3 Force;
+      public Transform DirectionRef;
+      public Transform PositionRef;
+    };
+    private Dictionary<int, ConstantForceData> m_ConstantForces = new Dictionary<int, ConstantForceData>();
 
     /// <summary>
     /// 添加施加在这个物体上的恒力
     /// </summary>
-    /// <param name="force">推动施加力的向量（世界坐标系）</param>
+    /// <param name="value">力大小</param>
+    /// <param name="dircetion">力方向</param>
     /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
-    public int AddConstantForce(Vector3 force) {
+    public int AddConstantForce(float value, Vector3 dircetion) {
+      return AddConstantForceWithPositionAndRef(value, dircetion, Vector3.zero, null, null);
+    }
+    /// <summary>
+    /// 添加施加在这个物体上的恒力(自动以当前物体为位置参照)
+    /// </summary>
+    /// <param name="value">力大小</param>
+    /// <param name="dircetion">力方向</param>
+    /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
+    public int AddConstantForceLocalCenter(float value, Vector3 dircetion) {
+      return AddConstantForceWithPositionAndRef(value, dircetion, Vector3.zero, null, transform);
+    }
+    /// <summary>
+    /// 添加施加在这个物体上的恒力
+    /// </summary>
+    /// <param name="value">力大小</param>
+    /// <param name="dircetion">力方向</param>
+    /// <param name="postion">施加力的位置</param>
+    /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
+    public int AddConstantForceWithPosition(float value, Vector3 dircetion, Vector3 postion) {
+      return AddConstantForceWithPositionAndRef(value, dircetion, postion, null, null);
+    }
+    /// <summary>
+    /// 添加施加在这个物体上的恒力
+    /// </summary>
+    /// <param name="value">力大小</param>
+    /// <param name="dircetion">力方向</param>
+    /// <param name="postion">施加力的位置</param>
+    /// <param name="directionRef">力方向参考物体</param>
+    /// <param name="positionRef">力的位置考物体</param>
+    /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
+    public int AddConstantForceWithPositionAndRef(float value, Vector3 dircetion, Vector3 postion, Transform directionRef, Transform positionRef) {
       if(m_ConstantForce_ID < int.MaxValue - 1) m_ConstantForce_ID++;
       else m_ConstantForce_ID = 0;
 
-      m_ConstantForces.Add(m_ConstantForce_ID, force);
+      ConstantForceData data = new ConstantForceData();
+      data.Force = dircetion * value;
+      data.Pos = postion;
+      data.PositionRef = positionRef;
+      data.DirectionRef = directionRef;
+
+
+      m_ConstantForces.Add(m_ConstantForce_ID, data);
       return m_ConstantForce_ID;
     }
     /// <summary>
@@ -604,12 +625,30 @@ namespace BallancePhysics.Wapper
       m_ConstantForce_ID = 0;
     }
 
-    private void doApplyConstantForce() {
-      Transform dref = ConstantForceDirectionRef;
-      foreach(var f in m_ConstantForces)
-        Impluse(((ConstantForceDirectionRef == null ? f.Value : dref.TransformVector(f.Value))));
-      if(m_StaticConstantForce > 0)
-        Impluse((ConstantForceDirectionRef == null ? m_StaticConstantForceDirection : dref.TransformVector(m_StaticConstantForceDirection)) * m_StaticConstantForce);
+    /// <summary>
+    /// 应用恒力
+    /// </summary>
+    private void DoApplyConstantForce() {
+      Vector3 finalPos, finalForce;
+      foreach(var f in m_ConstantForces) 
+      {
+        ConstantForceData data = f.Value;
+        if(data.Force.sqrMagnitude == 0)
+          continue;
+
+        //设置参考物体
+        if(data.DirectionRef != null)
+          finalForce = data.DirectionRef.TransformDirection(data.Force);
+        else
+          finalForce = data.Force;
+
+        if(data.PositionRef != null)
+          finalPos = data.PositionRef.TransformPoint(data.Pos);
+        else
+          finalPos = data.Pos;
+
+        Impluse(finalPos, finalForce);
+      }
     }
 
     /// <summary>
@@ -955,7 +994,7 @@ namespace BallancePhysics.Wapper
             Physicalize();
         }
       }
-      if(EnableConstantForce && Handle != IntPtr.Zero) doApplyConstantForce();
+      if(EnableConstantForce && Handle != IntPtr.Zero) DoApplyConstantForce();
     }
   }
 }

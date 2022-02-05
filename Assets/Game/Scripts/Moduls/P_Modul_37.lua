@@ -7,7 +7,7 @@ local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 P_Modul_37 = ModulBase:extend()
 
 function P_Modul_37:new()
-  ModulBase.super.new(self)
+  P_Modul_37.super.new(self)
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 60
 end
@@ -22,10 +22,10 @@ function P_Modul_37:Deactive()
   ModulBase.Deactive(self)
 end
 function P_Modul_37:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
 function P_Modul_37:Backup()
-  ObjectStateBackupUtils.BackUpObject(self.gameObject)
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_37:BallEnterRange()
   if self.IsActive then

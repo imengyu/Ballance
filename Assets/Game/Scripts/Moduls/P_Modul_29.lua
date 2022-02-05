@@ -16,7 +16,7 @@ local GameSoundType = Ballance2.Services.GameSoundType
 P_Modul_29 = ModulBase:extend()
 
 function P_Modul_29:new()
-  ModulBase.super.new(self)
+  P_Modul_29.super.new(self)
   self._BrigeBreaked = false
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 60
@@ -27,7 +27,7 @@ function P_Modul_29:Start()
   ---@param other GameObject
   self._P_Modul_29_Platte05_Tigger.onTriggerEnter = function (_, other)
     --石球断开木桥
-    if not self._BrigeBreaked and other.tag == 'Ball' and other.name ~= 'BallStone' then
+    if not self._BrigeBreaked and other.tag == 'Ball' and other.name == 'BallStone' then
       self._BrigeBreaked = true
       self._P_Modul_29_Platte05_HingeConstraint:Destroy()
       Game.SoundManager:PlayFastVoice('core.sounds:Misc_RopeTears.wav', GameSoundType.Normal)

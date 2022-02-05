@@ -12,6 +12,7 @@ local Vector3 = UnityEngine.Vector3
 P_Extra_Life = ModulBase:extend()
 
 function P_Extra_Life:new()
+  P_Extra_Life.super.new(self)
 end
 
 function P_Extra_Life:Start()

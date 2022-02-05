@@ -32,10 +32,15 @@ namespace Ballance2.Entry {
 
     private void Start() {
       Instance = this;
+      StartCoroutine(DelayStart());
+    }
+
+    private IEnumerator DelayStart() {
+      yield return new WaitForSeconds(0.5f); 
 
       //如果设置跳过了，则不播放
       if(GameEntry.Instance != null && GameEntry.Instance.DebugMode && GameEntry.Instance.DebugSkipSplash) {
-        return;
+        yield break;
       }
 
       //跳过按键
@@ -44,22 +49,18 @@ namespace Ballance2.Entry {
 
       //开始播放视频
       if(Clips != null && Clips.Count > 0) {
-        StartCoroutine(DelayStart());
+        currentPlaying = true;
+
+        yield return new WaitForSeconds(0.5f); 
+        
+        GameSplashVideoPlayerImage.gameObject.SetActive(true);
+        //开始播放视频
+        VideoPlayer.loopPointReached += (player) => PlayNext();
+        VideoPlayer.clip = Clips[currentPlayIndex];
+        VideoPlayer.Play();
       } else {
         gameObject.SetActive(false);
       }
-    }
-
-    private IEnumerator DelayStart() {
-      currentPlaying = true;
-
-      yield return new WaitForSeconds(0.5f); 
-      
-      GameSplashVideoPlayerImage.gameObject.SetActive(true);
-      //开始播放视频
-      VideoPlayer.loopPointReached += (player) => PlayNext();
-      VideoPlayer.clip = Clips[currentPlayIndex];
-      VideoPlayer.Play();
     }
 
     private void PlayNext() {
@@ -71,11 +72,16 @@ namespace Ballance2.Entry {
       } else {
         currentPlaying = false;
         if(GameManager.Instance != null) {
-          GameManager.Instance.GetSystemService<GameUIManager>().MaskBlackFadeIn(0.2f);
-          GameManager.Instance.Delay(0.3f, () => {
+          try {
+            GameManager.Instance.GetSystemService<GameUIManager>().MaskBlackFadeIn(0.2f);
+            GameManager.Instance.Delay(0.3f, () => {
+              gameObject.SetActive(false);
+              OnSplashFinish?.Invoke();
+            });
+          } catch(System.Exception e) {
+            Log.E("GameSplashController", "OnSplashFinish invoke failed " + e.ToString());
             gameObject.SetActive(false);
-            OnSplashFinish?.Invoke();
-          });
+          }
         }
         else {
           gameObject.SetActive(false);

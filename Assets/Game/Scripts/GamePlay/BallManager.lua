@@ -259,9 +259,9 @@ function BallManager:RegisterBall(name, gameObject)
   body.EnableCollision = true
   body.AutoControlActive = false
   body.AutoMassCenter = false
+  body.UseExistsSurface = true
 
   --设置恒力
-  body.ConstantForceDirectionRef = GamePlay.CamManager.CamDirectionRef
   body.EnableConstantForce = true
 
   --添加速度计
@@ -296,7 +296,7 @@ function BallManager:RegisterBall(name, gameObject)
 
   --还需要设置一个Unity的碰撞器，用于死亡区的检测
   local collder = gameObject:AddComponent(UnityEngine.SphereCollider) ---@type SphereCollider
-  collder.radius = physicsData.BallRadius or 2
+  collder.radius = physicsData.TiggerBallRadius or 2
   local rigidbody = gameObject:AddComponent(UnityEngine.Rigidbody) ---@type Rigidbody
   rigidbody.isKinematic = true
   rigidbody.useGravity = false
@@ -665,7 +665,7 @@ function BallManager:_RightArrow_Key(key, down)
   else
     self:RemoveBallPush(BallPushType.Right)
     --旋转摄像机
-    if (self.CanControll and self.ShiftPressed) then
+    if (self.CanControllCamera and self.ShiftPressed) then
       GamePlay.CamManager:RotateRight()
     end
   end
@@ -681,7 +681,7 @@ function BallManager:_LeftArrow_Key(key, down)
   else
     self:RemoveBallPush(BallPushType.Left)
     --旋转摄像机
-    if (self.CanControll and self.ShiftPressed) then
+    if (self.CanControllCamera and self.ShiftPressed) then
       GamePlay.CamManager:RotateLeft()
     end
   end
@@ -701,7 +701,7 @@ function BallManager:_Up_Key(key, down)
   end
 end
 function BallManager:_Space_Key(key, down) 
-  if (self.CanControll) then
+  if (self.CanControllCamera) then
     GamePlay.CamManager:RotateUp(down) 
   end
 end
@@ -721,17 +721,17 @@ function BallManager:AddBallPush(t)
   end
   local force = self.CurrentBall._Force
   if(t == BallPushType.Back) then
-    self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.back * force)
+    self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.back, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
   elseif(t == BallPushType.Forward) then
-    self._private.currentBallPushIds.forward = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.forward * force)
+    self._private.currentBallPushIds.forward = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.forward, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
   elseif(t == BallPushType.Left) then
-    self._private.currentBallPushIds.left = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.left * force)
+    self._private.currentBallPushIds.left = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.left, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
   elseif(t == BallPushType.Right) then
-    self._private.currentBallPushIds.right = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.right * force)
+    self._private.currentBallPushIds.right = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.right, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
   elseif(t == BallPushType.Up) then
-    self._private.currentBallPushIds.up = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.up * self.CurrentBall._UpForce)
+    self._private.currentBallPushIds.up = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(self.CurrentBall._UpForce, Vector3.up, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
   elseif(t == BallPushType.Down) then
-    self._private.currentBallPushIds.down = self._private.currentActiveBall.rigidbody:AddConstantForce(Vector3.down * self.CurrentBall._DownForce)
+    self._private.currentBallPushIds.down = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(self.CurrentBall._DownForce, Vector3.down, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
   end
 end
 ---去除球推动方向

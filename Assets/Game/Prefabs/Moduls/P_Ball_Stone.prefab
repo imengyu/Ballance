@@ -199,7 +199,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 2
   m_UseBall: 1
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 0
   m_Fixed: 0

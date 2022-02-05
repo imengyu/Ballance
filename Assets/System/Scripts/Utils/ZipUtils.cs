@@ -101,6 +101,25 @@ namespace Ballance2.Utils
       }
       return zipStream;
     }
+    // <summary>
+    /// 打开流为 Zip 文件句柄
+    /// </summary>
+    /// <param name="stream">文件流</param>
+    /// <returns>Zip 文件流句柄</returns>
+    public static ZipInputStream OpenZipStream(Stream stream)
+    {
+      ZipInputStream zipStream = null;
+      try
+      {
+        zipStream = new ZipInputStream(stream);
+      }
+      catch (Exception e)
+      {
+        Log.E("ZipUtils", "Load Zip stream failed! {1}", e.ToString());
+        GameErrorChecker.LastError = GameError.FileReadFailed;
+      }
+      return zipStream;
+    }
     /// <summary>
     /// 从 Zip 文件读取至内存
     /// </summary>

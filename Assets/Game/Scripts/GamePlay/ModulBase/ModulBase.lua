@@ -10,9 +10,11 @@ local SphereCollider = UnityEngine.SphereCollider
 ModulBase = ClassicObject:extend()
 
 function ModulBase:new()
+  ModulBase.super.new(self)
   self.BallRangeChecker = nil
   self.BallRangeCollider = nil
   self.BallInRange = false
+  self.AutoActiveBaseGameObject = true
 end
 
 ---初始化
@@ -44,13 +46,17 @@ end
 ---机关激活时发出此事件（进入当前小节）
 ---此事件在Backup事后发出
 function ModulBase:Active()
-  self.gameObject:SetActive(true)
+  if self.AutoActiveBaseGameObject then
+    self.gameObject:SetActive(true)
+  end
   self.IsActive = true
 end
 ---机关隐藏时发出此事件（当前小节结束）
 function ModulBase:Deactive()
   self.IsActive = false
-  self.gameObject:SetActive(false)
+  if self.AutoActiveBaseGameObject then
+    self.gameObject:SetActive(false)
+  end
 end
 ---关卡卸载时发出此事件
 function ModulBase:UnLoad()

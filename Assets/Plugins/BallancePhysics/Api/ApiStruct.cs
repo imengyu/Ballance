@@ -396,10 +396,10 @@ namespace BallancePhysics.Api
     }
 
     private fn_create_physics_spring _create_physics_spring;
-    public IntPtr create_physics_spring(IntPtr body1, IntPtr body2, Vector3 pos1_ws, Vector3 pos2_ws, float length, float constant, float spring_damping, float global_damping, bool use_stiff_spring) {
+    public IntPtr create_physics_spring(IntPtr body1, IntPtr body2, Vector3 pos1_ws, Vector3 pos2_ws, float length, float constant, float spring_damping, float global_damping, bool use_stiff_spring, bool values_are_relative, bool force_only_on_stretch) {
       var pt_pos1_os = create_point(pos1_ws);
       var pt_pos2_os = create_point(pos2_ws);
-      var rs = _create_physics_spring(body1, body2, pt_pos1_os, pt_pos2_os, length, constant, spring_damping, global_damping, PhysicsApi.boolToSbool(use_stiff_spring));
+      var rs = _create_physics_spring(body1, body2, pt_pos1_os, pt_pos2_os, length, constant, spring_damping, global_damping, PhysicsApi.boolToSbool(use_stiff_spring), PhysicsApi.boolToSbool(values_are_relative), PhysicsApi.boolToSbool(force_only_on_stretch));
       destroy_point(pt_pos1_os);
       destroy_point(pt_pos2_os);
       return rs;

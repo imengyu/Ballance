@@ -64,6 +64,7 @@ namespace Ballance2.Services.Debug
     PrefabNotFound,
     PackageNotFound,
     NotAvailable,
+    RequestFailed,
   }
 
   /// <summary>
@@ -95,6 +96,7 @@ namespace Ballance2.Services.Debug
         case GameError.AccessDenined: return "不能执行这个操作。";
         case GameError.ExecutionFailed: return "执行代码失败。";
         case GameError.NetworkError: return "网络错误。";
+        case GameError.RequestFailed: return "请求失败。";
         case GameError.ParamNotFound: return "未找到参数。";
         case GameError.ParamReadOnly: return "参数只读。";
         case GameError.NotSupportFileType: return "不支持的文件格式。";

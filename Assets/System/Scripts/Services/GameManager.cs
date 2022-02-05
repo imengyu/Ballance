@@ -781,6 +781,41 @@ namespace Ballance2.Services
               "  vsync <fullScreenMode:number(0-2)>                                   ▶ 设置垂直同步,0: 关闭，1：同步1次，2：同步2次\n" +
               "  full <fullScreenMode::number(0-3)>                                   ▶ 设置游戏的全屏，0：ExclusiveFullScreen，1：FullScreenWindow，2：MaximizedWindow，3：Windowed\n" +
               "  device > 获取当前设备信息");
+      srv.RegisterCommand("lc", (keyword, fullCmd, argsCount, args) =>
+      {
+        var type = (string)args[0];
+        switch (type)
+        {
+          case "show":
+            {
+              Log.V(TAG, "CurrentScense is {0} ({1})", logicScenses[currentScense], currentScense);
+              return true;
+            }
+          case "show-all":
+            {
+              for (int i = 0; i < logicScenses.Count; i++)
+                Log.V(TAG, "LogicScense[{0}] = {1}", i, logicScenses[i]);
+              return true;
+            }
+          case "go":
+            {
+              if (args.Length >= 1)
+              {
+                if (!DebugUtils.CheckStringDebugParam(1, args)) break;
+
+                string name = args[0];
+                if(RequestEnterLogicScense(name))
+                  Log.V(TAG, "EnterLogicScense " + name);
+                else
+                  Log.E(TAG, "EnterLogicScense " + name + " failed. LastError: " + GameErrorChecker.LastError.ToString());
+              }
+              return true;
+            }
+        }
+        return false;
+      }, 0, "lc <show/go>\n" +
+              "  show             ▶ 获取当前所在虚拟场景\n" +
+              "  go <name:string> ▶ 进入指定虚拟场景");
       srv.RegisterCommand("eval", (keyword, fullCmd, argsCount, args) =>
       {
         var cmd = fullCmd.Substring(2);

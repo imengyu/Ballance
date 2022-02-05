@@ -26,6 +26,7 @@ local AudioSource = UnityEngine.AudioSource
 P_Extra_Point = ModulBase:extend()
 
 function P_Extra_Point:new()
+  P_Extra_Point.super.new(self)
   self._RotDegree = 6
   self._Rotate = true
   self._FlyUpTime = 2.5

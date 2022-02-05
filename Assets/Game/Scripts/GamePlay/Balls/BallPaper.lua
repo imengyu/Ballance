@@ -1,6 +1,7 @@
 local GameSoundType = Ballance2.Services.GameSoundType
 local CommonUtils = Ballance2.Utils.CommonUtils
 local Vector3 = UnityEngine.Vector3
+local paperPeicesForceDir = Vector3(-0.03, 0, 0.03)
 
 ---纸球定义
 ---@class BallPaper : Ball
@@ -37,9 +38,11 @@ function BallPaper:ThrowPieces(pos)
   self._PaperPiecesSound:Play()
   Ball.ThrowPieces(self, pos)
 
+
   --纸球碎片将施加一个恒力，以达到被风吹走的效果
   for _, body in ipairs(self._PiecesData.bodys) do
-    body:AddConstantForce(Vector3(-0.03, 0, 0.03)) --施加力
+    body:ClearConstantForce()
+    body:AddConstantForceWithPositionAndRef(1, paperPeicesForceDir, Vector3.zero, nil, body.transform) --施加力
   end
   
 end

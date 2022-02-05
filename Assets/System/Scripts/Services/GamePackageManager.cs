@@ -233,7 +233,7 @@ namespace Ballance2.Services
       if (registeredPackages.TryGetValue(packageName, out var outPackage))
         outPackage.enableLoad = val;
     }
-
+    
     #endregion
 
     #region 模块包管理API
@@ -317,8 +317,13 @@ namespace Ballance2.Services
         //路径转换
         realPackagePath = GamePathManager.GetResRealPath("package", packageName + ".ballance");
         string realPackagePathInCore = GamePathManager.GetResRealPath("core", packageName + ".ballance");
+
+        //如果路径在Core中存在，则使用Core加载
         if (PathUtils.Exists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
-        else if (!PathUtils.Exists(realPackagePath))
+        else if (realPackagePathInCore.StartsWith("jar:")) realPackagePath = realPackagePathInCore;
+        //如果路径在Packages中存在，则使用Packages加载
+        //不存在则抛出异常
+        else if (!realPackagePath.StartsWith("jar:") && !PathUtils.Exists(realPackagePath))
         {
           Log.E(TAG, "Package {0} register failed because file {1} not found", packageName, realPackagePath);
           return false;

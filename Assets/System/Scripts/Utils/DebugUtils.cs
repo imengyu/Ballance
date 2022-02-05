@@ -362,7 +362,7 @@ namespace Ballance2.Utils
                 return false;
             }
             if(string.IsNullOrEmpty(arr[index])) {
-                Log.E("Debug", "参数 [{0}] 不是有效的字符串为空", index);
+                Log.E("Debug", "参数 [{0}] 不是有效的字符串(为空)", index);
                 return false;
             } 
             return true;

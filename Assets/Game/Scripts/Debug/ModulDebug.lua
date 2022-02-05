@@ -36,28 +36,47 @@ function ModulCustomDebug()
 
     --克隆路面
     local physicsData = GamePhysFloor['Phys_Floors'] 
+    local physicsDataStopper = GamePhysFloor['Phys_FloorStopper'] 
     local group = GameManager:InstancePrefab(GameDebugModulEntry.ModulTestFloor, "ModulTestFloor")
     local childCount = group.transform.childCount
     for i = 0, childCount - 1, 1 do
       local go = group.transform:GetChild(i).gameObject
-      if go.name == 'Floor' then
-        local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
-        if meshFilter ~= nil and meshFilter.mesh  ~= nil then
-          local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
-          body.DoNotAutoCreateAtAwake = true
-          body.Fixed = true
-          body.EnableConvexHull = false
-          body.Concave:Add(meshFilter.mesh)
-          body.Friction = physicsData.Friction
-          body.Elasticity = physicsData.Elasticity
-          body.Layer = physicsData.Layer
-          body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
-          body:Physicalize()
+      if go.activeSelf then
+        if go.name == 'Floor' then
+          local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
+          if meshFilter ~= nil and meshFilter.mesh  ~= nil then
+            local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+            body.DoNotAutoCreateAtAwake = true
+            body.Fixed = true
+            body.BuildRootConvexHull = false
+            body.Concave:Add(meshFilter.mesh)
+            body.Friction = physicsData.Friction
+            body.Elasticity = physicsData.Elasticity
+            body.Layer = physicsData.Layer
+            body.UseExistsSurface = true
+            body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
+            body:Physicalize()
+          end
+        elseif go.name == 'FloorStopper' then
+          local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
+          if meshFilter ~= nil and meshFilter.mesh  ~= nil then
+            local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+            body.DoNotAutoCreateAtAwake = true
+            body.Fixed = true
+            body.BuildRootConvexHull = false
+            body.Concave:Add(meshFilter.mesh)
+            body.Friction = physicsDataStopper.Friction
+            body.Elasticity = physicsDataStopper.Elasticity
+            body.Layer = physicsDataStopper.Layer
+            body.UseExistsSurface = true
+            body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsDataStopper.CollisionLayerName)
+            body:Physicalize()
+          end
+        elseif go.name == 'PR_Resetpoint' then
+          PR_Resetpoint = go
+        elseif go.name == GameDebugModulEntry.ModulName then
+          Modul_Placeholder = go
         end
-      elseif go.name == 'PR_Resetpoint' then
-        PR_Resetpoint = go
-      elseif go.name == GameDebugModulEntry.ModulName then
-        Modul_Placeholder = go
       end
     end
 

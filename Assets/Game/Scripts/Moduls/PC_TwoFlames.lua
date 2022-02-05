@@ -2,6 +2,7 @@
 PC_TwoFlames = ModulBase:extend()
 
 function PC_TwoFlames:new()
+  PC_TwoFlames.super.new(self)
   self.FlameSmallLeft = nil ---@type GameObject
   self.FlameSmallRight = nil ---@type GameObject
   self.Flame = nil ---@type GameObject

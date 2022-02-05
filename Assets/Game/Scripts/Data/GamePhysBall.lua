@@ -11,6 +11,7 @@
 ---@field PiecesPhysicsData table 碎片的物理化参数
 ---@field UpForce number
 ---@field BallRadius number 球半径。如果为0则使用convex mesh
+---@field TiggerBallRadius number 用于Tigger检测球半径。默认是2
 ---@field DownForce number
 GamePhysBallData = {}
 
@@ -37,6 +38,7 @@ GamePhysBall = {
     UpForce = 0.6,
     DownForce = 0.3,
     BallRadius = 2,
+    TiggerBallRadius = 2,
     Layer = GameLayers.LAYER_PHY_BALL,
   },
   BallStone = {
@@ -58,6 +60,7 @@ GamePhysBall = {
     UpForce = 3,
     DownForce = 0.05,
     BallRadius = 2,
+    TiggerBallRadius = 2,
     Layer = GameLayers.LAYER_PHY_BALL,
   },
   BallPaper = {
@@ -77,6 +80,7 @@ GamePhysBall = {
     UpForce = 0.08,
     DownForce = 0.01,
     BallRadius = 0,
+    TiggerBallRadius = 2,
     Layer = GameLayers.LAYER_PHY_BALL,
   },
 }

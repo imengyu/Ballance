@@ -134,7 +134,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 0
   m_Fixed: 1
@@ -304,7 +304,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -634,7 +634,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 0
   m_Fixed: 1

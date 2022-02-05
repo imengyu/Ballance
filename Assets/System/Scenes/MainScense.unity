@@ -458,7 +458,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -476,7 +476,7 @@ MonoBehaviour:
   - ModulCustomDebug
   DebugLoadCustomPackages: 1
   DebugSkipIntro: 0
-  DebugSkipSplash: 0
+  DebugSkipSplash: 1
   GameBaseCamera: {fileID: 963194227}
   GameCanvas: {fileID: 2024946136}
   GameGlobalErrorUI: {fileID: 5894142117804493612}
@@ -513,8 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68c455edab10e54b8f5146aa173534f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModulName: P_Modul_08
-  ModulInstance: {fileID: 9086229929543805006, guid: 5246ee59fd4252e41af3bb152b3da6ba, type: 3}
+  ModulName: P_Modul_37_01
+  ModulInstance: {fileID: 1492302497173472440, guid: 62690b24c992ba4418883525fae1d224, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
 --- !u!114 &876097601

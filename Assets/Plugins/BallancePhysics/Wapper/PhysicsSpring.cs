@@ -48,6 +48,16 @@ namespace BallancePhysics.Wapper
     /// 如果为true，则创建的弹簧将是刚性弹簧。然而，刚性弹簧的工作原理与普通弹簧类似-弹簧常数应在[0.001f..1]范围内-不会出现积分器问题->非常稳定。-可以使其比真正的弹簧更硬。-阻尼应在[0..1]范围内
     /// </summary>
     public bool UseStiffSpring = false;
+    [Tooltip("Set this to TRUE, if spring values should be multiplied with the average virtual mass of both objects")]
+    /// <summary>
+    /// Set this to TRUE, if spring values should be multiplied with the average virtual mass of both objects
+    /// </summary>
+    public bool ValuesAreRelative = false;
+    [Tooltip("Set this to TRUE, if spring values should only be applied when the length exceeds spring_len")]
+    /// <summary>
+    /// Set this to TRUE, if spring values should only be applied when the length exceeds spring_len
+    /// </summary>
+    public bool ForceOnlyOnStretch = false;
 
     protected override void DoCreate()
     {
@@ -60,7 +70,7 @@ namespace BallancePhysics.Wapper
       }
       Handle = PhysicsApi.API.create_physics_spring(
         obj.Handle, Other != null ? Other.Handle : IntPtr.Zero, Position1Ref.transform.position, Position2Ref.transform.position, length, constant, spring_damping, 
-        global_damping, UseStiffSpring
+        global_damping, UseStiffSpring, ValuesAreRelative, ForceOnlyOnStretch
       );
     }
     protected override void DoDestroy(IntPtr ptr)

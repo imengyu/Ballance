@@ -8,7 +8,7 @@ local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 P_Modul_26 = ModulBase:extend()
 
 function P_Modul_26:new()
-  ModulBase.super.new(self)
+  P_Modul_26.super.new(self)
   self._EnableForce = false
   self._ForceIsLeft = false
   self._ForceTick = 0

@@ -2,6 +2,7 @@
 PS_FourFlames = ModulBase:extend()
 
 function PS_FourFlames:new()
+  PS_FourFlames.super.new(self)
   self.Flame_A = nil ---@type GameObject
   self.Flame_B = nil ---@type GameObject
   self.Flame_C = nil ---@type GameObject

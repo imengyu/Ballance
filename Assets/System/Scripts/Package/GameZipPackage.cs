@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -38,38 +39,70 @@ namespace Ballance2.Package
 
       bool defFileLoadSuccess = false;
       bool defFileFounded = false;
+      ZipInputStream zip = null;
+      MemoryStream ms = null;
 
-      //在zip中加载Def
-      ZipInputStream zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
-      if (zip == null)
-        return false;
+      try {
+        //如果路径以jar:开头，则使用www方式读取
+        if(filePath.StartsWith("jar:")) {
 
-      UpdateTime = File.GetLastWriteTime(PathUtils.FixFilePathScheme(PackageFilePath));
+          UnityWebRequest request = UnityWebRequest.Get(filePath);
+          await request.SendWebRequest();
 
-      ZipEntry theEntry;
-      while ((theEntry = zip.GetNextEntry()) != null)
-      {
-        if (theEntry.Name == "/PackageDef.xml" || theEntry.Name == "PackageDef.xml")
-        {
-          defFileFounded = true;
-          defFileLoadSuccess = await LoadPackageDefInZip(zip, theEntry);
+          if (request.result == UnityWebRequest.Result.Success)
+          {
+            ms = new MemoryStream(request.downloadHandler.data);
+            zip = ZipUtils.OpenZipStream(ms);
+          }
+          else {
+            GameErrorChecker.SetLastErrorAndLog(GameError.RequestFailed, TAG, "Request " + filePath + " failed. Error: " + request.error);
+            return false;
+          }
         }
-        else if (BaseInfo != null &&
-            (theEntry.Name == "/" + BaseInfo.Logo || theEntry.Name == BaseInfo.Logo))
-          LoadLogoInZip(zip, theEntry);
+        else {
+          //在zip中加载Def
+          zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
+        }
+        if (zip == null)
+          return false;
+
+        UpdateTime = File.GetLastWriteTime(PathUtils.FixFilePathScheme(PackageFilePath));
+
+        ZipEntry theEntry;
+        while ((theEntry = zip.GetNextEntry()) != null)
+        {
+          if (theEntry.Name == "/PackageDef.xml" || theEntry.Name == "PackageDef.xml")
+          {
+            defFileFounded = true;
+            defFileLoadSuccess = await LoadPackageDefInZip(zip, theEntry);
+          }
+          else if (BaseInfo != null &&
+              (theEntry.Name == "/" + BaseInfo.Logo || theEntry.Name == BaseInfo.Logo))
+            LoadLogoInZip(zip, theEntry);
+        }
+
+        zip.Close();
+        zip.Dispose();
+
+        if (!defFileFounded)
+        {
+          GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
+          LoadError = "模块并不包含 PackageDef.xml";
+          return false;
+        }
+
+        return defFileLoadSuccess;
       }
-
-      zip.Close();
-      zip.Dispose();
-
-      if (!defFileFounded)
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
-        LoadError = "模块并不包含 PackageDef.xml";
-        return false;
+      catch(Exception e) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "加载异常 " + e.ToString());
       }
-
-      return defFileLoadSuccess;
+      finally { 
+        if(ms != null)
+          ms.Dispose();
+        if(zip != null)
+          zip.Dispose();
+      }
+      return false;
     }
 
     private struct CodeAssetStorage
@@ -88,34 +121,67 @@ namespace Ballance2.Package
 
     public override async Task<bool> LoadPackage()
     {
-      //从zip读取AssetBundle
-      ZipInputStream zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
-      if (zip == null)
-        return false;
+      ZipInputStream zip = null;
+      MemoryStream ms = null;
 
-      bool result = false;
-      bool assetbundleFound = false;
+      try{
+        //如果路径以jar:开头，则使用www方式读取
+        if(PackageFilePath.StartsWith("jar:")) {
 
-      ZipEntry theEntry;
-      while ((theEntry = zip.GetNextEntry()) != null)
-      {
-        if (theEntry.Name == "assets/" + PackageName + ".assetbundle")
-        {
-          if (await LoadAssetBundleToMemoryInZipAsync(zip, theEntry))
-            assetbundleFound = true;
+          UnityWebRequest request = UnityWebRequest.Get(PackageFilePath);
+          await request.SendWebRequest();
+
+          if (request.result == UnityWebRequest.Result.Success)
+          {
+            ms = new MemoryStream(request.downloadHandler.data);
+            zip = ZipUtils.OpenZipStream(ms);
+          }
+          else {
+            GameErrorChecker.SetLastErrorAndLog(GameError.RequestFailed, TAG, "Request " + PackageFilePath + " failed. Error: " + request.error);
+            return false;
+          }
         }
-        else if (theEntry.Name.StartsWith("class/"))
-        {
-          await LoadCodeAsset(zip, theEntry);
+        else {
+          //在zip中加载Def
+          zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
         }
+
+        if (zip == null)
+          return false;
+
+        bool result = false;
+        bool assetbundleFound = false;
+
+        ZipEntry theEntry;
+        while ((theEntry = zip.GetNextEntry()) != null)
+        {
+          if (theEntry.Name == "assets/" + PackageName + ".assetbundle")
+          {
+            if (await LoadAssetBundleToMemoryInZipAsync(zip, theEntry))
+              assetbundleFound = true;
+          }
+          else if (theEntry.Name.StartsWith("class/"))
+          {
+            await LoadCodeAsset(zip, theEntry);
+          }
+        }
+
+        if(assetbundleFound) 
+          result = await base.LoadPackage();
+        else
+          GameErrorChecker.SetLastErrorAndLog(GameError.FileNotFound, TAG, "未找到 " + PackageName + ".assetbundle");
+        return result;
       }
-
-      if(assetbundleFound) 
-        result = await base.LoadPackage();
-      else
-        GameErrorChecker.SetLastErrorAndLog(GameError.FileNotFound, TAG, "未找到 " + PackageName + ".assetbundle");
-
-      return result;
+      catch(Exception e) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "加载异常 " + e.ToString());
+      }
+      finally { 
+        if(ms != null)
+          ms.Dispose();
+        if(zip != null)
+          zip.Dispose();
+      }
+      return false;
     }
 
     private async Task<bool> LoadPackageDefInZip(ZipInputStream zip, ZipEntry theEntry)

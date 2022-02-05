@@ -5,6 +5,7 @@
 P_Trafo_Base = ModulBase:extend()
 
 function P_Trafo_Base:new()
+  P_Trafo_Base.super.new(self)
   self._Tigger = nil ---@type TiggerTester
   self._TargetBallType = ''
   self._Color = nil

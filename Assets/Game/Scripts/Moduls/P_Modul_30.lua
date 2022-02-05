@@ -7,7 +7,7 @@ local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 P_Modul_30 = ModulBase:extend()
 
 function P_Modul_30:new()
-  ModulBase.super.new(self)
+  P_Modul_30.super.new(self)
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 60
 end

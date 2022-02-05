@@ -11,8 +11,10 @@ local Time = UnityEngine.Time
 P_Modul_18 = ModulBase:extend()
 
 function P_Modul_18:new()
-  ModulBase.super.new(self)
+  P_Modul_18.super.new(self)
   self._CurrentInRangeBall = nil ---@type PhysicsObject
+  self.AutoActiveBaseGameObject = false
+  self.CurrentBallForceID = nil
 end
 
 function P_Modul_18:Start()
@@ -21,19 +23,19 @@ function P_Modul_18:Start()
   self.P_Modul_18_Kollisionsquader.onTriggerEnter = function (_, other)
     if self._CurrentInRangeBall == nil and other.tag == 'Ball' and other.name == 'BallPaper' then
       self._CurrentInRangeBall = GamePlay.BallManager.CurrentBall._Rigidbody
+      self.CurrentBallForceID = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, Vector3.up)
     end
   end
   ---@param other GameObject
   self.P_Modul_18_Kollisionsquader.onTriggerExit = function (_, other)
     if self._CurrentInRangeBall ~= nil and other.tag == 'Ball' and other.name == 'BallPaper' then
+      if self.CurrentBallForceID then
+        self._CurrentInRangeBall:DeleteConstantForce(self.CurrentBallForceID)
+        self.CurrentBallForceID = nil
+      end
       self._CurrentInRangeBall = nil
     end
   end
-end
-function P_Modul_18:FixedUpdate()
- if self._CurrentInRangeBall ~= nil then
-  self._CurrentInRangeBall:Impluse(Vector3(0, self.P_Modul_18_Force * Time.fixedDeltaTime, 0)) -- 为球添加向上的力
- end
 end
 function P_Modul_18:Active()
   ModulBase.Active(self)

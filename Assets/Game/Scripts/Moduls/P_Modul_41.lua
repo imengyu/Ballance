@@ -7,7 +7,7 @@ local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 P_Modul_41 = ModulBase:extend()
 
 function P_Modul_41:new()
-  ModulBase.super.new(self)
+  P_Modul_41.super.new(self)
 end
 
 function P_Modul_41:Active()

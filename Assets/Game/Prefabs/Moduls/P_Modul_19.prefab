@@ -235,16 +235,16 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.05
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
-  m_ShiftMassCenter: {x: -2, y: 2, z: 0}
+  m_ShiftMassCenter: {x: -1, y: 1, z: 0}
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
-  m_Layer: 3
+  m_Layer: 5
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
@@ -261,9 +261,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &33178032297181733
 MonoBehaviour:
   m_ObjectHideFlags: 0

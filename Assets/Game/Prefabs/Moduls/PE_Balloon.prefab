@@ -104,7 +104,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -126,9 +126,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &4915636850554509679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,7 +244,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -269,9 +266,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &6227199564510121579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,7 +363,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -397,9 +391,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &8428815068132297870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,7 +592,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -623,9 +614,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 2244183726677087568}
 --- !u!1 &2610614390081181923
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,7 +718,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -752,9 +740,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: -0.2}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &3013646957924526791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1039,7 +1024,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1061,9 +1046,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &7051618655094750267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,6 +1073,7 @@ GameObject:
   - component: {fileID: 5705013668656200807}
   - component: {fileID: 4119830675842878732}
   - component: {fileID: 7702553553243962171}
+  - component: {fileID: 1791112804106764843}
   m_Layer: 0
   m_Name: PE_Balloon_BoxSlide
   m_TagString: Untagged
@@ -1182,7 +1165,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1204,9 +1187,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 1, y: 0, z: 0}
-  m_StaticConstantForce: 0.2
-  m_ConstantForceDirectionRef: {fileID: 1292572827298755136}
 --- !u!114 &7702553553243962171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1229,6 +1209,23 @@ MonoBehaviour:
   rotation_limit: -1
   rotation_freedom_min: {x: 0, y: 0, z: 0}
   rotation_freedom_max: {x: 0, y: 0, z: 0}
+--- !u!114 &1791112804106764843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3665619465525756438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: -1, y: 0, z: 0}
+  m_ForcePositionRef: {fileID: 3665619465525756439}
+  m_ForceDirectionRef: {fileID: 3665619465525756439}
+  m_Force: 0
 --- !u!1 &4132478282347952386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,7 +1330,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1355,9 +1352,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0.2}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &3328450893882065067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,7 +1469,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1497,9 +1491,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 2244183726677087568}
 --- !u!1 &4851329935767574105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,7 +1678,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1709,9 +1700,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &6348532458098300745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1830,7 +1818,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1852,9 +1840,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &4894287535774258943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1973,7 +1958,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1995,9 +1980,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0.2}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &2234583765719065808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2116,7 +2098,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -2138,9 +2120,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: -0.2}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 8033781843446112824}
 --- !u!114 &4431918086376863840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2259,7 +2238,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -2281,9 +2260,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &4504270193953503143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3922,6 +3898,76 @@ MonoBehaviour:
     boolVal: 0
     floatVal: 0
     componentClassVal: BallancePhysics.Wapper.PhysicsHinge
+  - Type: 16
+    Name: PE_Balloon_BoxSlideForce
+    vector2: {x: 0, y: 0}
+    vector2Int: {x: 0, y: 0}
+    vector3: {x: 0, y: 0, z: 0}
+    vector3Int: {x: 0, y: 0, z: 0}
+    vector4: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rectInt:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    gradient:
+      serializedVersion: 2
+      key0: {r: 0, g: 0, b: 0, a: 0}
+      key1: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    layer: 0
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    boundsInt:
+      m_Position: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0, z: 0}
+    bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    objectVal: {fileID: 0}
+    gameObjectVal: {fileID: 3665619465525756438}
+    longVal: 0
+    stringVal: 
+    intVal: 0
+    doubleVal: 0
+    boolVal: 0
+    floatVal: 0
+    componentClassVal: BallancePhysics.Wapper.PhysicsConstraintForce
   LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0
@@ -4116,7 +4162,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 0
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -4138,9 +4184,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 2244183726677087568}
 --- !u!1 &8037180738140357764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4295,7 +4338,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -4317,9 +4360,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 1, z: 0}
-  m_StaticConstantForce: 0.3
-  m_ConstantForceDirectionRef: {fileID: 2244183726677087568}
 --- !u!1 &8157607035814951441
 GameObject:
   m_ObjectHideFlags: 0
@@ -4425,7 +4465,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -4447,9 +4487,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &1709170196389739088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4582,7 +4619,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_EnableConvexHull: 1
+  m_BuildRootConvexHull: 1
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -4604,9 +4641,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &8523458028618020500
 MonoBehaviour:
   m_ObjectHideFlags: 0
