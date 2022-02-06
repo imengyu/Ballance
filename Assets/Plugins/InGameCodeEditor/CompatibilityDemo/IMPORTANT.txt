@@ -1,0 +1,7 @@
+The RoslynCSharp_CompatibilityDemo package can only be imported if our other asset 'Roslyn C#' has been added to the project. 
+This package contains demo scenes/assets which show how the 2 assets can be integrated.
+
+If your project contains both IGCE and Roslyn C# then you can double click on the package to import it into the Unity Editor where a new folder will be added containing a demo scene. 
+Open that scene and you will see that the default Roslyn C# demo scene 'Escape The Maze' now uses the In Game Code Editor during the game for all code editing aspects.
+
+Roslyn C# is a Runtime Compiler asset for Unity and is available separatley on the asset store: https://assetstore.unity.com/packages/tools/integration/roslyn-c-runtime-compiler-142753
