@@ -15,7 +15,7 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_get_version();
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate IntPtr fn_create_environment(IntPtr gravity, float suimRate, int layerMask, IntPtr layerToMask);
+  public delegate IntPtr fn_create_environment(IntPtr gravity, float suimRate, int layerMask, IntPtr layerToMask, IntPtr errReportFun);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_destroy_environment(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

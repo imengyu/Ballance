@@ -40,6 +40,7 @@ function GamePlayManager:new()
   self._IsGamePlaying = false
   self._IsCountDownPoint = false
   self._CommandIds = {}
+  self._HideBalloonEndTimerID = nil
 
   GamePlay.GamePlayManager = self
 end
@@ -150,25 +151,12 @@ function GamePlayManager:_InitKeyEvents()
   --ESC键
   self.keyListener:AddKeyListen(KeyCode.Escape, function (key, down)
     if down then
-      if GameUI.WinScoreUIControl and GameUI.WinScoreUIControl:IsInSeq() then
-        GameUI.WinScoreUIControl:Skip()
-      elseif self._IsGamePlaying then
-        self:PauseLevel(true)
-      else
-        if self.CurrentLevelPass then
-          --跳过最后的分数UI
-          --#TODO: 分数UI
+      if not self.CurrentLevelPass then
+        if self._IsGamePlaying then
+          self:PauseLevel(true)
         else
           self:ResumeLevel()
         end
-      end
-    end
-  end)
-  --ENTER键
-  self.keyListener:AddKeyListen(KeyCode.KeypadEnter, function (key, down)
-    if down then
-      if GameUI.WinScoreUIControl and GameUI.WinScoreUIControl:IsInSeq() then
-        GameUI.WinScoreUIControl:Skip()
       end
     end
   end)
@@ -298,6 +286,12 @@ function GamePlayManager:_QuitOrLoadNextLevel(loadNext)
     callBack = function ()
       Game.LevelBuilder:LoadLevel(self.NextLevelName)
     end
+  end
+
+  --停止隐藏飞船定时
+  if self._HideBalloonEndTimerID then
+    LuaTimer.Delete(self._HideBalloonEndTimerID)
+    self._HideBalloonEndTimerID = nil
   end
 
   --停止模拟
@@ -457,10 +451,7 @@ function GamePlayManager:Pass()
     GamePlay.UFOAnimController:StartSeq()
   else
     self._SoundFinnal:Play() --播放音乐
-    --30秒后隐藏飞船
-    LuaTimer.Add(30000, function ()
-      GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
-    end)
+    self:_HideBalloonEnd() --开始隐藏飞船
     LuaTimer.Add(5000, function ()
       GameUI.WinScoreUIControl:StartSeq()
     end)
@@ -468,16 +459,27 @@ function GamePlayManager:Pass()
 
 end
 
+---过关后隐藏飞船
+function GamePlayManager:_HideBalloonEnd() 
+  if self._HideBalloonEndTimerID then
+    LuaTimer.Delete(self._HideBalloonEndTimerID)
+    self._HideBalloonEndTimerID = nil
+  end
+  --60秒后隐藏飞船
+  self._HideBalloonEndTimerID = LuaTimer.Add(60000, function ()
+    self._HideBalloonEndTimerID = nil
+    GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
+    GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
+  end)
+end
+
 ---UFO 动画完成回调
 function GamePlayManager:UfoAnimFinish() 
   self._SoundFinnal:Play()
+  self:_HideBalloonEnd() --开始隐藏飞船
   GamePlay.MusicManager:DisableBackgroundMusic()
   GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
   GameUI.WinScoreUIControl:StartSeq()
-  --38秒后隐藏飞船
-  LuaTimer.Add(30000, function ()
-    GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
-  end)
 end
 
 ---激活变球序列

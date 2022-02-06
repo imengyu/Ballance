@@ -69,11 +69,11 @@ namespace BallancePhysics.Api
     }
 
     private fn_create_environment _create_environment;
-    public IntPtr create_environment(Vector3 gravity, float suimRate, int layerMask, int[] layerToMask) {  
+    public IntPtr create_environment(Vector3 gravity, float suimRate, int layerMask, int[] layerToMask, IntPtr errReportFun) {  
       var layerToMaskPtr = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * 32);
       Marshal.Copy(layerToMask, 0, layerToMaskPtr, layerToMask.Length);
       var pt = create_point(gravity);
-      var rs = _create_environment(pt, suimRate, layerMask, layerToMaskPtr);
+      var rs = _create_environment(pt, suimRate, layerMask, layerToMaskPtr, errReportFun);
       destroy_point(pt);
       Marshal.FreeHGlobal(layerToMaskPtr);
       return rs;
@@ -548,7 +548,6 @@ namespace BallancePhysics.Api
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct sInitStruct
     {
-      public IntPtr eventCallback; //EventCallback eventCallback;
       public int showConsole; //sBool showConsole;
       public int smallPoolSize; //Small pool size for memory allocation of common data structures
       [MarshalAs(UnmanagedType.ByValTStr, SizeConst=33)]

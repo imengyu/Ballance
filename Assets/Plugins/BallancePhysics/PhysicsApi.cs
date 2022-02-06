@@ -23,7 +23,7 @@ namespace BallancePhysics
     public const int sInfo = 2;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate int ErrorReportCallback(int level, int len, IntPtr msg);
+    public delegate int ErrorReportCallback(int level, int len, IntPtr msg);
 
     public delegate void InitFinishCallback();
 
@@ -60,43 +60,14 @@ namespace BallancePhysics
 
       //检查是否已经初始化
       if(ballance_physics_entry(4, IntPtr.Zero).ToInt64() == 1) {
-
-        //BUG. 不这样放，mono 生成的指针似乎不正确，c++那边回调会出现问题
-        ErrorReportCallback callback = (int level, int len, IntPtr _msg) =>
-        {
-          string msg = Marshal.PtrToStringAnsi(_msg, len);
-          if (level == sInfo)
-            Debug.Log(msg);
-          else if (level == sWarning)
-            Debug.LogWarning(msg);
-          else if (level == sError)
-            Debug.LogError(msg);
-          else 
-            Debug.Log(msg);
-          return 1;
-        };
-
-        //已经初始化过，则只需要更新回调函数
-        apiStructPtr = ballance_physics_entry(5, Marshal.GetFunctionPointerForDelegate(callback));
+        
+        //如果已经调用初始化，则需要重新生成函数指针，否则unity editor中运行会被释放
+        apiStructPtr = ballance_physics_entry(5, IntPtr.Zero);
 
         //获取所有函数指针
         API.initAll(apiStructPtr, 256);
-      } else {
 
-        //BUG. 不这样放，mono 生成的指针似乎不正确，c++那边回调会出现问题
-        ErrorReportCallback callback = (int level, int len, IntPtr _msg) =>
-        {
-          string msg = Marshal.PtrToStringAnsi(_msg, len);
-          if (level == sInfo)
-            Debug.Log(msg);
-          else if (level == sWarning)
-            Debug.LogWarning(msg);
-          else if (level == sError)
-            Debug.LogError(msg);
-          else 
-            Debug.Log(msg);
-          return 1;
-        };
+      } else {
 
         //拷贝初始配置结构
         sInitStruct initStruct = new sInitStruct();
@@ -106,7 +77,6 @@ namespace BallancePhysics
 #else
         initStruct.showConsole = boolToSbool(false);
 #endif
-        initStruct.eventCallback = Marshal.GetFunctionPointerForDelegate(callback);
         initStruct.key = SecretKey;
 
         IntPtr initStructPtr = Marshal.AllocHGlobal(Marshal.SizeOf<sInitStruct>());

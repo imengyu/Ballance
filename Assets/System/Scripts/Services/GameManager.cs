@@ -146,7 +146,6 @@ namespace Ballance2.Services
         GameMainLuaState = LuaSvr.mainState;
         GameMainLuaState.errorDelegate += (err) => GameErrorChecker.LuaStateErrReport(GameMainLuaState, err);
 
-        Profiler.EndSample();
         GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
         GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
           finish.Invoke();
@@ -159,6 +158,8 @@ namespace Ballance2.Services
           return false;
         });
       });
+      
+      Profiler.EndSample();
     }
 
     private bool sLoadUserPackages = true;

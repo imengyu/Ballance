@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static BallancePhysics.PhysicsApi;
 
 namespace BallancePhysics.Wapper
 {
@@ -68,6 +69,20 @@ namespace BallancePhysics.Wapper
 
     public IntPtr Handle { get; private set; } = IntPtr.Zero;
 
+    private ErrorReportCallback callback = (int level, int len, IntPtr _msg) =>
+    {
+      string msg = Marshal.PtrToStringAnsi(_msg, len);
+      if (level == sInfo)
+        Debug.Log(msg);
+      else if (level == sWarning)
+        Debug.LogWarning(msg);
+      else if (level == sError)
+        Debug.LogError(msg);
+      else 
+        Debug.Log(msg);
+      return 1;
+    };
+
     private int createTick = 0;
 
     /// <summary>
@@ -85,7 +100,7 @@ namespace BallancePhysics.Wapper
           throw new Exception("BallancePhysicsLayerNames not found. Click menu in Assets to create it.");
 
         PhysicsWorlds.Add(currentScenseIndex, this);
-        Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks());
+        Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks(), Marshal.GetFunctionPointerForDelegate(callback));
       }
     }
     /// <summary>

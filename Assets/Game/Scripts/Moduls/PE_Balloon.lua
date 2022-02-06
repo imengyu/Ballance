@@ -72,9 +72,15 @@ function PE_Balloon:Start()
       self.BallTiggerActived = true
 
       --速度放慢一些
-      LuaTimer.Add(1500, function ()
-        self.PE_Balloon_BoxSlideForce.Force = 0.2
+      LuaTimer.Add(1000, function ()
+        self.PE_Balloon_BoxSlideForce.Force = 0.5
+
+        --速度放慢一些
+        LuaTimer.Add(1500, function ()
+          self.PE_Balloon_BoxSlideForce.Force = 0.2
+        end)
       end)
+
 
       if not BALLANCE_MODUL_DEBUG then
         GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束

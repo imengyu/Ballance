@@ -16,5 +16,16 @@ namespace Ballance2.Editor.Modding.LevelMaker
     {
       EditorWindow.GetWindowWithRect(typeof(WindowLevelPacker), new Rect(200, 150, 350, 400));
     }
+
+    [@MenuItem("Ballance/关卡制作/打包Levels下所有关卡至输出目录", false, 102)]
+    static void PackBuiltInLevelFile()
+    {
+      WindowChoosePlatform choosePlatformWindow = EditorWindow.GetWindowWithRect<WindowChoosePlatform>(new Rect(200, 150, 450, 250));
+      choosePlatformWindow.OnChoose = (target) =>
+      {
+        
+      };
+      choosePlatformWindow.Show();
+    }
   }
 }

@@ -193,9 +193,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Mass: 10
-  m_Friction: 0.7
+  m_Friction: 0.85
   m_Elasticity: 0.1
-  m_LinearSpeedDamping: 0.2
+  m_LinearSpeedDamping: 0.22
   m_RotSpeedDamping: 0.1
   m_BallRadius: 2
   m_UseBall: 1
@@ -212,16 +212,12 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  m_CollisionID: 0
   m_Convex: []
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 0
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_ContractEventSleep: 0
-  m_CollisionID: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}

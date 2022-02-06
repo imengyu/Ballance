@@ -42,7 +42,7 @@ GamePhysBall = {
     Layer = GameLayers.LAYER_PHY_BALL,
   },
   BallStone = {
-    Force = 0.95,
+    Force = 1.0,
     Friction = 0.5,
     Elasticity = 0.1,
     Mass = 10,
