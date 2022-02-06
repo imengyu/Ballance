@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package name="com.imengyu.test" version="1">
+  <!--
+    模块基础信息
+    [必填] name: 模块的包名，这个名字用来区分模块，在代码中也只能使用包名来访问你的模块，必
+      须是 com.xxx.xxx 这种格式，不能与别人的模块重复，因此推荐使用 com.你的英文名字.模块名字 作为包名。
+    [必填] version：模块版本，必须是整数，该版本用于模块索引以及真实的版本判断。
+      
+    [必填] BaseInfo 模块的信息
+    Name：模块名称
+    Author：作者的名字
+    Introduction：模块介绍
+    Logo：模块的logo图片，这个图片必须放在 PackageDef.xml 相同目录下
+    VersionName：模块版本（显示给用户看的，真实版本是Package里面的version）
+    
+  -->
+  <BaseInfo>
+    <Name>Test Mod</Name>
+    <Author>mengyu</Author>
+    <Introduction>一个测试模块</Introduction>
+    <!--模块说明文字，这里可以用 Unity 的RichText-->
+    <Description>
+      <![CDATA[这是<color=#f00>一个模块</color>]]>
+    </Description>
+    <Logo>PackageLogo.png</Logo>
+    <Link>https://yourwebsite.com</Link> <!--模块主页URL-->
+    <AuthorLink>https://yourwebsite.com</AuthorLink><!--模块作者主页URL-->
+    <DocLink>https://yourwebsite.com</DocLink><!--模块文档URL-->
+
+    <VersionName>1.0.DEV</VersionName>
+    <!--模块依赖-->
+    <Dependencies>
+      <Package name="core" minVer="1" mustLoad="true"></Package>
+      <!--
+        如果你的模块分成多个模块，你可以在这里写明每个模块的依赖信息，加载器会自动处理并按次序依次加载依赖。
+        name ：依赖的包名
+        minVer ：依赖的模块最低版本，如果模块低于你设置的版本，将会抛出错误。不写则不限制版本
+        mustLoad：表示这个包是否是必须要加载的，如果为true，依赖加载失败将会抛出错误
+      -->
+      <!--
+      <Package name="core.scenes.menulevel.ui" minVer="1" mustLoad="true" ></Package>
+      -->
+    </Dependencies>
+  </BaseInfo>
+  <!--
+    模块兼容性信息
+    MinVersion：表示模块可以正常使用的最低游戏内核版本
+    TargetVersion：表示模块目标游戏内核版本（可不填，此值用于游戏内核做API优化）
+  -->
+  <Compatibility>
+    <MinVersion>1</MinVersion>
+    <TargetVersion>1</TargetVersion>
+  </Compatibility>
+  <!--
+    模块入口代码
+    ★ Lua ：入口Lua代码文件名（例如 Entry），参考示例template_PackageEntry.lua
+    ☆ CSharp：你的模块DLL文件名（例如 xx.dll.bytes）
+  -->
+  <EntryCode></EntryCode>
+  <!--
+    模块类型 Module 或 Asset
+    仅有 Module 才能运行代码
+  -->
+  <Type>Module</Type>
+  <!--
+    模块代码类型 Lua 或 CSharp 或 None
+    提示：CSharp 代码必须在非AOT平台才能加载。
+    因此推荐使用 Lua（游戏API基本支持）
+  -->
+  <CodeType>None</CodeType>
+  <!--
+    是否使用luac编译lua代码为字节码，可保护代码
+  -->
+  <CompileLuaCode>True</CompileLuaCode>
+</Package>

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ba2a8d87fef664987bd401c378f014, type: 3}
+  m_Name: LightTheme
+  m_EditorClassIdentifier: 
+  caretColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  textColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  backgroundColor: {r: 1, g: 1, b: 0.99607843, a: 1}
+  lineHighlightColor: {r: 0.8867924, g: 0.8826094, b: 0.8826094, a: 1}
+  lineNumberBackgroundColor: {r: 1, g: 1, b: 0.99607843, a: 1}
+  lineNumberTextColor: {r: 0.16862746, g: 0.5686275, b: 0.6862745, a: 1}
+  scrollbarColor: {r: 0.75686276, g: 0.75686276, b: 0.7529412, a: 1}

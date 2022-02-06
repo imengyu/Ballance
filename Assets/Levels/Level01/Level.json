@@ -1,0 +1,263 @@
+{
+  "name": "Level01",
+  "author": "Ballance",
+  "version": "1.0",
+  "introduction": "原版关卡第一关",
+  "requiredPackages": [],
+  "level": {
+    "firstBall": "BallWood",
+    "levelScore": 100,
+    "startPoint": 1000,
+    "startLife": 3,
+    "musicTheme": 1,
+    "skyBox": "L",
+    "skyLayer": "SkyLayer",
+    "lightColor": "#B09D89",
+    "customModEventName": "CoreTutorialLevelEventHandler",
+    "sectorCount": 4,
+    "endWithUFO": false,
+    "nextLevel": "Level02",
+    "internalObjects": {
+      "PS_LevelStart": "PS_FourFlames_01",
+      "PE_LevelEnd": "PE_Balloon_01",
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01",
+        "3": "PC_TwoFlames_02",
+        "4": "PC_TwoFlames_03"
+      },
+      "PR_ResetPoints": {
+        "1": "PR_Resetpoint_01",
+        "2": "PR_Resetpoint_02",
+        "3": "PR_Resetpoint_03",
+        "4": "PR_Resetpoint_04"
+      }
+    },
+    "sectors": {
+      "1": [
+        "P_Ball_Paper_02",
+        "P_Box_03",
+        "P_Box_01",
+        "P_Ball_Paper_03",
+        "P_Ball_Paper_04",
+        "P_Box_02",
+        "P_Extra_Point_01",
+        "P_Ball_Paper_01",
+        "P_Extra_Life_04",
+        "P_Extra_Point_06",
+        "P_Extra_Point_07",
+        "P_Extra_Point_08",
+        "P_Trafo_Stone_02",
+        "P_Trafo_Wood_05",
+        "P_Ball_Wood_03"
+      ],
+      "2": [
+        "P_Extra_Point_11",
+        "P_Extra_Point_09",
+        "P_Ball_Wood_04",
+        "P_Trafo_Stone_01",
+        "P_Extra_Point_02",
+        "P_Box_06",
+        "P_Extra_Life_01",
+        "P_Box_05",
+        "P_Box_04",
+        "P_Modul_34_01",
+        "P_Dome_01"
+      ],
+      "3": [
+        "P_Extra_Point_10",
+        "P_Ball_Stone_09",
+        "P_Ball_Stone_08",
+        "P_Ball_Stone_07",
+        "P_Ball_Stone_06",
+        "P_Ball_Paper_08",
+        "P_Trafo_Wood_01",
+        "P_Modul_01_02",
+        "P_Modul_01_01",
+        "P_Extra_Life_02",
+        "P_Extra_Point_03",
+        "P_Ball_Stone_01"
+      ],
+      "4": [
+        "P_Ball_Stone_03",
+        "P_Ball_Wood_01",
+        "P_Ball_Paper_05",
+        "P_Ball_Stone_02",
+        "P_Ball_Paper_06",
+        "P_Ball_Wood_02",
+        "P_Ball_Paper_07",
+        "P_Trafo_Wood_02",
+        "P_Extra_Life_03",
+        "P_Extra_Point_05",
+        "P_Extra_Point_04"
+      ]
+    },
+    "floors": [
+      {
+        "name": "Phys_Floors",
+        "objects": [
+          "A01_Floor_02",
+          "A01_Floor_03",
+          "A01_Floor_04",
+          "A02_Floor_01",
+          "A02_Floor_02",
+          "A02_Floor_03",
+          "A03_Floor_01",
+          "A03_Floor_02",
+          "A04_Floor_01",
+          "A04_Floor_03",
+          "A01_Floor_05",
+          "A01_Tower",
+          "A01_Floor_01_02",
+          "A01_Floor_01",
+          "A04_Floor_02"
+        ]
+      },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": [
+          "A02_Modul42",
+          "A01_Modul42",
+          "A04_Floor_Wood_01",
+          "A04_Floor_Wood_02"
+        ]
+      },
+      {
+        "name": "Phys_FloorRails",
+        "objects": [
+          "A01_Rail_02",
+          "A01_Rail_02_01",
+          "A01_Rail_03",
+          "A01_Rail_05",
+          "A01_Rail_07",
+          "A02_Rail_01",
+          "A02_Rail_02",
+          "A03_Rail_01",
+          "A03_Rail_02",
+          "A01_Rail_06",
+          "A01_Rail_08",
+          "A01_Rail_09",
+          "A01_Rail_00",
+          "A03_Rail_03",
+          "A04_Rail_01",
+          "A04_Rail_02",
+          "A01_Rail_04"
+        ]
+      },
+      {
+        "name": "Phys_FloorStopper",
+        "objects": []
+      }
+    ],
+    "depthTestCubes": [
+      "Quader01",
+      "Quader02",
+      "Quader03"
+    ],
+    "groups": [
+      {
+        "name": "P_Box",
+        "objects": [
+          "P_Box_01",
+          "P_Box_02",
+          "P_Box_03",
+          "P_Box_04",
+          "P_Box_05",
+          "P_Box_06"
+        ]
+      },
+      {
+        "name": "P_Dome",
+        "objects": [
+          "P_Dome_01"
+        ]
+      },
+      {
+        "name": "P_Ball_Stone",
+        "objects": [
+          "P_Ball_Stone_01",
+          "P_Ball_Stone_02",
+          "P_Ball_Stone_03",
+          "P_Ball_Stone_06",
+          "P_Ball_Stone_07",
+          "P_Ball_Stone_08",
+          "P_Ball_Stone_09"
+        ]
+      },
+      {
+        "name": "P_Ball_Paper",
+        "objects": [
+          "P_Ball_Paper_01",
+          "P_Ball_Paper_02",
+          "P_Ball_Paper_03",
+          "P_Ball_Paper_04",
+          "P_Ball_Paper_05",
+          "P_Ball_Paper_06",
+          "P_Ball_Paper_07",
+          "P_Ball_Paper_08"
+        ]
+      },
+      {
+        "name": "P_Ball_Wood",
+        "objects": [
+          "P_Ball_Wood_01",
+          "P_Ball_Wood_02",
+          "P_Ball_Wood_03",
+          "P_Ball_Wood_04"
+        ]
+      },
+      {
+        "name": "P_Extra_Life",
+        "objects": [
+          "P_Extra_Life_01",
+          "P_Extra_Life_02",
+          "P_Extra_Life_03",
+          "P_Extra_Life_04"
+        ]
+      },
+      {
+        "name": "P_Extra_Point",
+        "objects": [
+          "P_Extra_Point_01",
+          "P_Extra_Point_02",
+          "P_Extra_Point_03",
+          "P_Extra_Point_04",
+          "P_Extra_Point_05",
+          "P_Extra_Point_06",
+          "P_Extra_Point_07",
+          "P_Extra_Point_08",
+          "P_Extra_Point_09",
+          "P_Extra_Point_10",
+          "P_Extra_Point_11"
+        ]
+      },
+      {
+        "name": "P_Trafo_Stone",
+        "objects": [
+          "P_Trafo_Stone_01",
+          "P_Trafo_Stone_02"
+        ]
+      },
+      {
+        "name": "P_Trafo_Wood",
+        "objects": [
+          "P_Trafo_Wood_05",
+          "P_Trafo_Wood_01",
+          "P_Trafo_Wood_02"
+        ]
+      },
+      {
+        "name": "P_Modul_01",
+        "objects": [
+          "P_Modul_01_01",
+          "P_Modul_01_02"
+        ]
+      },
+      {
+        "name": "P_Modul_34",
+        "objects": [
+          "P_Modul_34_01"
+        ]
+      }
+    ]
+  }
+}
