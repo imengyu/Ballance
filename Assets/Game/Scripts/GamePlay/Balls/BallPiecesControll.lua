@@ -18,7 +18,10 @@ BallPiecesControll = {
 ---@class BallPiecesData
 ---@field bodys PhysicsObject[]
 ---@field parent GameObject
+---@field fadeOutTimerID number|nil
+---@field delayHideTimerID number|nil
 ---@field throwed boolean
+---@field fadeObjects FadeObject[]
 BallPiecesData = {}
 
 function CreateClass:BallPiecesControll()
@@ -52,6 +55,17 @@ function CreateClass:BallPiecesControll()
       data.parent.transform.position = pos
       data.throwed = true
 
+      --渐变未完成，需要强制清除正在运行的渐变
+      if data.fadeObjects then
+        for _, value in pairs(data.fadeObjects) do
+          if value then
+            value:ResetTo(1)
+            value:Delete()
+          end
+        end
+        data.fadeObjects = nil
+      end
+
       for _, body in ipairs(data.bodys) do
         local forceDir = body.transform.localPosition
         body.gameObject:SetActive(true)
@@ -61,10 +75,17 @@ function CreateClass:BallPiecesControll()
         body:Impluse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
       end
 
+      ---清除上一次的延时
+      if data.delayHideTimerID then
+        LuaTimer.Delete(data.delayHideTimerID)
+      end
+      if data.fadeOutTimerID then
+        LuaTimer.Delete(data.fadeOutTimerID)
+      end
+
       ---延时消失
-      local iid = parent:GetInstanceID()
-      self._TimerIds[iid] = LuaTimer.Add((timeLive or 20) * 2000, function ()
-        self._TimerIds[iid] = nil
+      data.delayHideTimerID = LuaTimer.Add((timeLive or 20) * 2000, function ()
+        data.delayHideTimerID = nil
         self:ResetPieces(data)
       end)
 
@@ -77,23 +98,34 @@ function CreateClass:BallPiecesControll()
     local parent = data.parent
     if parent.activeSelf then
       
-      local iid = parent:GetInstanceID()
-      local id = self._TimerIds[iid]
-      if id ~= nil then
-        self._TimerIds[iid] = nil
-        LuaTimer.Delete(id)
+      ---清除上一次的延时
+      if data.delayHideTimerID then
+        LuaTimer.Delete(data.delayHideTimerID)
+      end
+
+      if not data.fadeObjects then
+        data.fadeObjects = {}
       end
 
       --渐变淡出隐藏其材质
       for i = 0, parent.transform.childCount - 1 do
-        FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 3, true, nil)
+        local obj = FadeManager:AddFadeOut(parent.transform:GetChild(i).gameObject, 3, true, nil)
+        table.insert(data.fadeObjects, obj)
       end
 
       data.throwed = false
 
+      if data.fadeOutTimerID then
+        LuaTimer.Delete(data.fadeOutTimerID)
+      end
+
       --延时
-      LuaTimer.Add(2990, function ()
+      data.fadeOutTimerID = LuaTimer.Add(2990, function ()
         
+        if data.fadeObjects then
+          data.fadeObjects = nil
+        end
+  
         --去除物理
         for _, body in ipairs(data.bodys) do
           body:UnPhysicalize(true) 

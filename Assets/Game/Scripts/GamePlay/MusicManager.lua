@@ -66,7 +66,7 @@ function MusicManager:Start()
       return false
     end
     return true
-  end, 1, "bgm <left/right/up/down/-all> 背景音乐管理器命令"..
+  end, 1, "bgm <enable/disable> 背景音乐管理器命令"..
           "  enable  ▶ 开启背景音乐"..
           "  disable ▶ 关闭背景音乐"
   )

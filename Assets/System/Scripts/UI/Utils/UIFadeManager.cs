@@ -27,7 +27,8 @@ namespace Ballance2.UI.Utils
   [LuaApiDescription("渐变自管理类")]
   public class UIFadeManager : MonoBehaviour
   {
-    private List<FadeObject> fadeObjects = new List<FadeObject>();
+    [LuaApiDescription("当前的渐变对象")]
+    public List<FadeObject> fadeObjects = new List<FadeObject>();
 
     private void Update()
     {
@@ -102,36 +103,6 @@ namespace Ballance2.UI.Utils
       }
     }
 
-    /// <summary>
-    /// 渐变类型
-    /// </summary>
-    [LuaApiDescription("渐变类型")]
-    public enum FadeType
-    {
-      None,
-      FadeIn,
-      FadeOut,
-    }
-    /// <summary>
-    /// 渐变管理对象信息
-    /// </summary>
-    [LuaApiDescription("渐变管理对象信息")]
-    public class FadeObject
-    {
-      public GameObject gameObject;
-      public Material material;
-      public Material[] materials;
-      public Image image;
-      public Text text;
-      public AudioSource audio;
-      public float alpha;
-      public float timeInSecond;
-      public bool endReactive;
-      public bool runEnd = false;
-      public MaterialUtils.RenderingMode oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
-      public FadeType fadeType;
-    }
-
     private FadeObject FindFadeObjectByGameObject(GameObject gameObject, FadeType fadeType)
     {
       foreach (FadeObject o in fadeObjects)
@@ -187,7 +158,7 @@ namespace Ballance2.UI.Utils
       if (fadeObject != null)
         fadeObjects.Remove(fadeObject);
 
-      fadeObject = new FadeObject();
+      fadeObject = new FadeObject(this);
       fadeObject.gameObject = gameObject;
       fadeObject.timeInSecond = timeInSecond;
       fadeObject.alpha = 1;
@@ -231,7 +202,7 @@ namespace Ballance2.UI.Utils
       if (fadeObject != null)
         fadeObjects.Remove(fadeObject);
 
-      fadeObject = new FadeObject();
+      fadeObject = new FadeObject(this);
       fadeObject.gameObject = gameObject;
       fadeObject.timeInSecond = timeInSecond;
       fadeObject.alpha = 0;
@@ -279,7 +250,7 @@ namespace Ballance2.UI.Utils
       if (fadeObject != null)
         fadeObjects.Remove(fadeObject);
 
-      fadeObject = new FadeObject();
+      fadeObject = new FadeObject(this);
       fadeObject.gameObject = gameObject;
       fadeObject.timeInSecond = timeInSecond;
       fadeObject.alpha = 1;
@@ -313,7 +284,7 @@ namespace Ballance2.UI.Utils
       if (fadeObject != null)
         fadeObjects.Remove(fadeObject);
 
-      fadeObject = new FadeObject();
+      fadeObject = new FadeObject(this);
       fadeObject.gameObject = gameObject;
       fadeObject.timeInSecond = timeInSecond;
       fadeObject.alpha = 0;
@@ -351,7 +322,7 @@ namespace Ballance2.UI.Utils
         if (fadeObject != null)
           fadeObjects.Remove(fadeObject);
 
-        fadeObject = new FadeObject();
+        fadeObject = new FadeObject(this);
         fadeObject.gameObject = image.gameObject;
         fadeObject.timeInSecond = timeInSecond;
         fadeObject.alpha = 1;
@@ -382,7 +353,7 @@ namespace Ballance2.UI.Utils
         if (fadeObject != null)
           fadeObjects.Remove(fadeObject);
 
-        fadeObject = new FadeObject();
+        fadeObject = new FadeObject(this);
         fadeObject.gameObject = image.gameObject;
         fadeObject.timeInSecond = timeInSecond;
         fadeObject.alpha = 0;
@@ -417,7 +388,7 @@ namespace Ballance2.UI.Utils
         if (fadeObject != null)
           fadeObjects.Remove(fadeObject);
 
-        fadeObject = new FadeObject();
+        fadeObject = new FadeObject(this);
         fadeObject.gameObject = text.gameObject;
         fadeObject.timeInSecond = timeInSecond;
         fadeObject.alpha = 1;
@@ -448,7 +419,7 @@ namespace Ballance2.UI.Utils
         if (fadeObject != null)
           fadeObjects.Remove(fadeObject);
 
-        fadeObject = new FadeObject();
+        fadeObject = new FadeObject(this);
         fadeObject.gameObject = text.gameObject;
         fadeObject.timeInSecond = timeInSecond;
         fadeObject.alpha = 0;
@@ -481,7 +452,7 @@ namespace Ballance2.UI.Utils
         if (fadeObject != null)
           fadeObjects.Remove(fadeObject);
 
-        fadeObject = new FadeObject();
+        fadeObject = new FadeObject(this);
         fadeObject.gameObject = audio.gameObject;
         fadeObject.timeInSecond = timeInSecond;
         fadeObject.alpha = 1;
@@ -512,7 +483,7 @@ namespace Ballance2.UI.Utils
         if (fadeObject != null)
           fadeObjects.Remove(fadeObject);
 
-        fadeObject = new FadeObject();
+        fadeObject = new FadeObject(this);
         fadeObject.gameObject = audio.gameObject;
         fadeObject.timeInSecond = timeInSecond;
         fadeObject.alpha = 0;
@@ -530,5 +501,86 @@ namespace Ballance2.UI.Utils
     }
 
 
+  }
+
+  /// <summary>
+  /// 渐变类型
+  /// </summary>
+  [LuaApiDescription("渐变类型")]
+  [SLua.CustomLuaClass]
+  public enum FadeType
+  {
+    None,
+    FadeIn,
+    FadeOut,
+  }
+  /// <summary>
+  /// 渐变管理对象信息
+  /// </summary>
+  [LuaApiDescription("渐变管理对象信息")]
+  [SLua.CustomLuaClass]
+  public class FadeObject
+  {
+    internal FadeObject(UIFadeManager fadeManager) {
+      this.fadeManager = fadeManager;
+    }
+
+    [LuaApiDescription("渐变所属管理器")]
+    public UIFadeManager fadeManager { get; }
+    [LuaApiDescription("渐变所属对象")]
+    public GameObject gameObject;
+    [LuaApiDescription("渐变控制材质")]
+    public Material material;
+    [LuaApiDescription("渐变控制材质数组")]
+    public Material[] materials;
+    [LuaApiDescription("渐变控制UI图像")]
+    public Image image;
+    [LuaApiDescription("渐变控制UI文字")]
+    public Text text;
+    [LuaApiDescription("渐变控制音量")]
+    public AudioSource audio;
+    [LuaApiDescription("当前透明度值")]
+    public float alpha;
+    [LuaApiDescription("渐变时长(秒)")]
+    public float timeInSecond;
+    [LuaApiDescription("结束后是否重新激活对象")]
+    public bool endReactive;
+    [LuaApiDescription("渐变是否已经结束")]
+    public bool runEnd = false;
+    [LuaApiDescription("渐变开始之前的材质渲染类型")]
+    public MaterialUtils.RenderingMode oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
+    [LuaApiDescription("渐变类型")]
+    public FadeType fadeType;
+
+    /// <summary>
+    /// 强制重置当前渐变透明度至指定的值
+    /// </summary>
+    /// <param name="alpha">透明度值</param>
+    [LuaApiDescription("强制重置当前渐变透明度至指定的值")]
+    [LuaApiParamDescription("alpha", "透明度值")]
+    public void ResetTo(float alpha) {
+      this.alpha = alpha;
+
+      if (material != null)
+        material.color = new Color(material.color.r, material.color.g, material.color.b, alpha);
+      else if (materials != null && materials.Length > 0)
+      {
+        foreach (Material m in materials)
+          m.color = new Color(m.color.r, m.color.g, m.color.b, alpha);
+      }
+      else if (image != null)
+        image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+      else if (text != null)
+        text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
+      else if (audio != null)
+        audio.volume = alpha;
+    }
+    /// <summary>
+    /// 移除当前渐变
+    /// </summary>
+    [LuaApiDescription("移除当前渐变")]
+    public void Delete() {
+      fadeManager.fadeObjects.Remove(this);
+    }
   }
 }

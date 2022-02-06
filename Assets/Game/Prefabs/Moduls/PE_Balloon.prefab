@@ -297,6 +297,7 @@ GameObject:
   - component: {fileID: 2492121858053519384}
   - component: {fileID: 9116460403174883827}
   - component: {fileID: 8710460260175506318}
+  - component: {fileID: 7759811316341317299}
   m_Layer: 0
   m_Name: PE_Balloon_Platform
   m_TagString: Untagged
@@ -371,7 +372,7 @@ MonoBehaviour:
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
-  m_EnableConstantForce: 0
+  m_EnableConstantForce: 1
   m_Layer: 3
   m_SystemGroupName: 
   m_SubSystemId: 0
@@ -433,6 +434,8 @@ MonoBehaviour:
   spring_damping: 0.6
   global_damping: 1
   UseStiffSpring: 0
+  ValuesAreRelative: 0
+  ForceOnlyOnStretch: 0
 --- !u!114 &953777078753243109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,6 +492,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 3420655804697142034}
   Other: {fileID: 7441504572859291289}
+--- !u!114 &7759811316341317299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292572827298755137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 1, y: 0, z: 0}
+  m_ForcePositionRef: {fileID: 1292572827298755136}
+  m_ForceDirectionRef: {fileID: 1292572827298755136}
+  m_Force: 1
 --- !u!1 &2362326026555378565
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,6 +521,7 @@ GameObject:
   - component: {fileID: 6967267885951810930}
   - component: {fileID: 661979493783722668}
   - component: {fileID: 2379127249858198256}
+  - component: {fileID: 8609946044135675644}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon02
   m_TagString: Untagged
@@ -614,6 +635,23 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+--- !u!114 &8609946044135675644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2362326026555378565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 1, z: 0}
+  m_ForcePositionRef: {fileID: 3818736291196667783}
+  m_ForceDirectionRef: {fileID: 0}
+  m_Force: 0.3
 --- !u!1 &2610614390081181923
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +665,7 @@ GameObject:
   - component: {fileID: 3669717861349290488}
   - component: {fileID: 6003420625713407597}
   - component: {fileID: 3013646957924526791}
+  - component: {fileID: 3861639145750544177}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon_Seil02
   m_TagString: Untagged
@@ -754,6 +793,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 8004747030137234203}
   Other: {fileID: 2379127249858198256}
+--- !u!114 &3861639145750544177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2610614390081181923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 0, z: 0.4}
+  m_ForcePositionRef: {fileID: 5582578418317674704}
+  m_ForceDirectionRef: {fileID: 1292572827298755136}
+  m_Force: 0.3
 --- !u!1 &3444340451058903273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,7 +1221,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 1
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1174,7 +1230,7 @@ MonoBehaviour:
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
-  m_Layer: 3
+  m_Layer: 4
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
@@ -1204,8 +1260,8 @@ MonoBehaviour:
   force_factor: 1
   damp_factor: 1
   translation_limit: -1
-  translation_freedom_min: {x: -1000, y: 0, z: 0}
-  translation_freedom_max: {x: 1000, y: 0, z: 0}
+  translation_freedom_min: {x: -30000, y: 0, z: 0}
+  translation_freedom_max: {x: 30000, y: 0, z: 0}
   rotation_limit: -1
   rotation_freedom_min: {x: 0, y: 0, z: 0}
   rotation_freedom_max: {x: 0, y: 0, z: 0}
@@ -1239,6 +1295,7 @@ GameObject:
   - component: {fileID: 4388943220980778093}
   - component: {fileID: 301208326762999528}
   - component: {fileID: 3328450893882065067}
+  - component: {fileID: 3770844123691324701}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon_Seil03
   m_TagString: Untagged
@@ -1366,6 +1423,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 4662550618435944660}
   Other: {fileID: 8144258902779012090}
+--- !u!114 &3770844123691324701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4132478282347952386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 0, z: -0.4}
+  m_ForcePositionRef: {fileID: 7588713304412146221}
+  m_ForceDirectionRef: {fileID: 1292572827298755136}
+  m_Force: 0.3
 --- !u!1 &4788550101576267535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,6 +1452,7 @@ GameObject:
   - component: {fileID: 926747439750223273}
   - component: {fileID: 2629817749999928522}
   - component: {fileID: 8144258902779012090}
+  - component: {fileID: 6566648846643512850}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon03
   m_TagString: Untagged
@@ -1491,6 +1566,23 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+--- !u!114 &6566648846643512850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788550101576267535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 1, z: 0}
+  m_ForcePositionRef: {fileID: 5654286406522957958}
+  m_ForceDirectionRef: {fileID: 0}
+  m_Force: 0.3
 --- !u!1 &4851329935767574105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1867,6 +1959,7 @@ GameObject:
   - component: {fileID: 2080932819774318524}
   - component: {fileID: 7441504572859291289}
   - component: {fileID: 2234583765719065808}
+  - component: {fileID: 7914773780415151738}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon_Seil04
   m_TagString: Untagged
@@ -1994,6 +2087,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 3215374694459476767}
   Other: {fileID: 236753759820084260}
+--- !u!114 &7914773780415151738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6374896977184566236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 0, z: -0.4}
+  m_ForcePositionRef: {fileID: 7203325162286132864}
+  m_ForceDirectionRef: {fileID: 1292572827298755136}
+  m_Force: 0.3
 --- !u!1 &6429393848950522154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,6 +2117,7 @@ GameObject:
   - component: {fileID: 2432254117434903253}
   - component: {fileID: 2046680466212800000}
   - component: {fileID: 4431918086376863840}
+  - component: {fileID: 5523415273558846745}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon_Seil01
   m_TagString: Untagged
@@ -2134,6 +2245,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 7886347810581047547}
   Other: {fileID: 3151265666231633555}
+--- !u!114 &5523415273558846745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6429393848950522154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 0, z: 0.4}
+  m_ForcePositionRef: {fileID: 520408013467828481}
+  m_ForceDirectionRef: {fileID: 1292572827298755136}
+  m_Force: 0.3
 --- !u!1 &6931793308048622637
 GameObject:
   m_ObjectHideFlags: 0
@@ -3968,6 +4096,76 @@ MonoBehaviour:
     boolVal: 0
     floatVal: 0
     componentClassVal: BallancePhysics.Wapper.PhysicsConstraintForce
+  - Type: 16
+    Name: PE_Balloon_PlatformForce
+    vector2: {x: 0, y: 0}
+    vector2Int: {x: 0, y: 0}
+    vector3: {x: 0, y: 0, z: 0}
+    vector3Int: {x: 0, y: 0, z: 0}
+    vector4: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rectInt:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    gradient:
+      serializedVersion: 2
+      key0: {r: 0, g: 0, b: 0, a: 0}
+      key1: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    layer: 0
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    boundsInt:
+      m_Position: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0, z: 0}
+    bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    objectVal: {fileID: 0}
+    gameObjectVal: {fileID: 1292572827298755137}
+    longVal: 0
+    stringVal: 
+    intVal: 0
+    doubleVal: 0
+    boolVal: 0
+    floatVal: 0
+    componentClassVal: BallancePhysics.Wapper.PhysicsConstraintForce
   LuaPublicVars: []
   ExecuteOrder: 0
   CreateStore: 0
@@ -4071,6 +4269,7 @@ GameObject:
   - component: {fileID: 630411585311093173}
   - component: {fileID: 8056150433844408081}
   - component: {fileID: 3151265666231633555}
+  - component: {fileID: 1724625300819220395}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon01
   m_TagString: Untagged
@@ -4184,6 +4383,23 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+--- !u!114 &1724625300819220395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7871962679667589744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 1, z: 0}
+  m_ForcePositionRef: {fileID: 8583055642140723263}
+  m_ForceDirectionRef: {fileID: 0}
+  m_Force: 0.3
 --- !u!1 &8037180738140357764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4247,6 +4463,7 @@ GameObject:
   - component: {fileID: 6744408764174537919}
   - component: {fileID: 3399645514643884714}
   - component: {fileID: 236753759820084260}
+  - component: {fileID: 1612187805777544408}
   m_Layer: 0
   m_Name: PE_Balloon_Ballon04
   m_TagString: Untagged
@@ -4360,6 +4577,23 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
+--- !u!114 &1612187805777544408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8110506288192367252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc1c3076859d84eabdfe66e03f9c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ForcePosition: {x: 0, y: 0, z: 0}
+  m_ForceDirection: {x: 0, y: 1, z: 0}
+  m_ForcePositionRef: {fileID: 2127139185565467768}
+  m_ForceDirectionRef: {fileID: 0}
+  m_Force: 0.3
 --- !u!1 &8157607035814951441
 GameObject:
   m_ObjectHideFlags: 0

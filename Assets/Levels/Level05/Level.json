@@ -1,0 +1,253 @@
+{
+  "name": "Level05",
+  "author": "Ballance",
+  "version": "1.0",
+  "introduction": "原版关卡第5关",
+  "requiredPackages": [],
+  "level": {
+    "firstBall": "BallWood",
+    "levelScore": 500,
+    "startPoint": 1000,
+    "startLife": 3,
+    "musicTheme": 1,
+    "skyBox": "C",
+    "skyLayer": "SkyLayer",
+    "nextLevel": "level06",
+    "lightColor": "#ffffff",
+    "sectorCount": 5,
+    "endWithUFO": false,
+    "autoGroup": false,
+    "groups": [
+      {
+        "name": "P_Ball_Stone",
+        "objects": ["P_Ball_Stone_01", "P_Ball_Stone_02", "P_Ball_Stone_03"]
+      },
+      { "name": "P_Box", "objects": ["P_Box_01", "P_Box_02"] },
+      { "name": "P_Dome", "objects": ["P_Dome_01"] },
+      {
+        "name": "P_Extra_Life",
+        "objects": ["P_Extra_Life_01", "P_Extra_Life_02", "P_Extra_Life_03"]
+      },
+      {
+        "name": "P_Extra_Point",
+        "objects": [
+          "P_Extra_Point_01",
+          "P_Extra_Point_02",
+          "P_Extra_Point_03",
+          "P_Extra_Point_04",
+          "P_Extra_Point_05",
+          "P_Extra_Point_06",
+          "P_Extra_Point_07",
+          "P_Extra_Point_08",
+          "P_Extra_Point_09",
+          "P_Extra_Point_10",
+          "P_Extra_Point_11",
+          "P_Extra_Point_12"
+        ]
+      },
+      {
+        "name": "P_Modul_01",
+        "objects": [
+          "P_Modul_01_01",
+          "P_Modul_01_03",
+          "P_Modul_01_05",
+          "P_Modul_01_06",
+          "P_Modul_01_02"
+        ]
+      },
+      {
+        "name": "P_Modul_18",
+        "objects": ["P_Modul_18_01", "P_Modul_18_02", "P_Modul_18_03"]
+      },
+      { "name": "P_Modul_25", "objects": ["P_Modul_25_01"] },
+      { "name": "P_Modul_30", "objects": ["P_Modul_30_03"] },
+      {
+        "name": "P_Modul_34",
+        "objects": [
+          "P_Modul_34_04",
+          "P_Modul_34_01",
+          "P_Modul_34_02",
+          "P_Modul_34_03"
+        ]
+      },
+      {
+        "name": "P_Modul_37",
+        "objects": ["P_Modul_37_01", "P_Modul_37_02", "P_Modul_37_03"]
+      },
+      {
+        "name": "P_Trafo_Paper",
+        "objects": [
+          "P_Trafo_Paper_01",
+          "P_Trafo_Paper_02",
+          "P_Trafo_Paper_03",
+          "P_Trafo_Paper_04"
+        ]
+      },
+      {
+        "name": "P_Trafo_Stone",
+        "objects": [
+          "P_Trafo_Stone_01",
+          "P_Trafo_Stone_02",
+          "P_Trafo_Stone_03",
+          "P_Trafo_Stone_05",
+          "P_Trafo_Stone_04"
+        ]
+      },
+      {
+        "name": "P_Trafo_Wood",
+        "objects": [
+          "P_Trafo_Wood_01",
+          "P_Trafo_Wood_02",
+          "P_Trafo_Wood_03",
+          "P_Trafo_Wood_04",
+          "P_Trafo_Wood_06",
+          "P_Trafo_Wood_05"
+        ]
+      }
+    ],
+    "depthTestCubes": [
+      "DepthTestCube_05",
+      "DepthTestCube_04",
+      "DepthTestCube_03",
+      "DepthTestCube_02",
+      "DepthTestCube_01"
+    ],
+    "floors": [
+      {
+        "name": "Phys_Floors",
+        "objects": [
+          "A01_Floor_02",
+          "A01_Floor_01",
+          "A01_Floor_03",
+          "A01_Floor_04",
+          "A02_Floor_01",
+          "A02_Modul27",
+          "A02_Floor_03",
+          "A02_Floor_02",
+          "A03_Floor_03",
+          "A03_Modul16",
+          "A03_Floor_Modul18",
+          "A03_Modul27",
+          "A04_Floor_02",
+          "A04_Modul27",
+          "A05_Floor_01",
+          "A05_Floor_02",
+          "A04_Floor_01",
+          "A05_Floor_03",
+          "A03_Floor_02",
+          "A03_Floor_01",
+          "A05_Modul_42"
+        ]
+      },
+      { "name": "Phys_FloorStopper", "objects": ["A01_Floor_Stopper"] },
+      {
+        "name": "Phys_FloorRails",
+        "objects": [
+          "A01_Rail_04",
+          "A01_Rail_03",
+          "A01_Rail_02",
+          "A01_Rail_01",
+          "A02_Rail_01",
+          "A02_Rail_03",
+          "A03_Rail_02",
+          "A03_Rail_03",
+          "A02_Rail_02",
+          "A04_Rail_01",
+          "A05_Rail_01",
+          "A05_Rail_02",
+          "A05_Rail_03",
+          "A05_Rail_01_02",
+          "A04_Rail_02",
+          "A02_Rail_04",
+          "A05_Rail_04",
+          "A05_Rail_05",
+          "A03_Rail_04",
+          "A03_Rail_01",
+          "A03_Rail_05"
+        ]
+      }
+    ],
+    "sectors": {
+      "1": [
+        "P_Trafo_Paper_01",
+        "P_Trafo_Stone_01",
+        "P_Trafo_Wood_01",
+        "P_Extra_Point_01",
+        "P_Extra_Point_02",
+        "P_Trafo_Paper_02",
+        "P_Trafo_Stone_02",
+        "P_Trafo_Wood_02",
+        "P_Modul_01_01",
+        "P_Modul_37_01",
+        "P_Extra_Life_01",
+        "P_Extra_Point_07"
+      ],
+      "2": [
+        "P_Trafo_Stone_03",
+        "P_Dome_01",
+        "P_Ball_Stone_01",
+        "P_Ball_Stone_02",
+        "P_Modul_37_02",
+        "P_Modul_01_03",
+        "P_Modul_01_06",
+        "P_Extra_Point_03",
+        "P_Ball_Stone_03",
+        "P_Extra_Point_10"
+      ],
+      "3": [
+        "P_Trafo_Paper_03",
+        "P_Trafo_Stone_05",
+        "P_Trafo_Wood_03",
+        "P_Trafo_Wood_04",
+        "P_Modul_01_05",
+        "P_Modul_34_04",
+        "P_Modul_18_01",
+        "P_Extra_Point_04",
+        "P_Extra_Life_02",
+        "P_Extra_Point_11"
+      ],
+      "4": [
+        "P_Modul_25_01",
+        "P_Modul_34_02",
+        "P_Modul_34_03",
+        "P_Modul_34_01",
+        "P_Modul_01_02",
+        "P_Trafo_Stone_04",
+        "P_Extra_Point_05",
+        "P_Extra_Point_08",
+        "P_Extra_Life_03"
+      ],
+      "5": [
+        "P_Modul_18_02",
+        "P_Modul_18_03",
+        "P_Modul_37_03",
+        "P_Modul_30_03",
+        "P_Trafo_Paper_04",
+        "P_Extra_Point_06",
+        "P_Trafo_Wood_06",
+        "P_Box_01",
+        "P_Trafo_Wood_05",
+        "P_Extra_Point_09",
+        "P_Box_02",
+        "P_Extra_Point_12"
+      ]
+    },
+    "internalObjects": {
+      "PE_LevelEnd": "PE_Balloon_01",
+      "PS_LevelStart": "PS_FourFlames_01",
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01",
+        "3": "PC_TwoFlames_02",
+        "4": "PC_TwoFlames_03",
+        "5": "PC_TwoFlames_04"
+      },
+      "PR_ResetPoints": {
+        "1": "PR_Resetpoint_01",
+        "2": "PR_Resetpoint_02",
+        "3": "PR_Resetpoint_03",
+        "4": "PR_Resetpoint_04",
+        "5": "PR_Resetpoint_05"
+      }
+    }
+  }
+}

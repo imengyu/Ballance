@@ -7,6 +7,7 @@ local Log = Ballance2.Log
 ---@class PE_Balloon : ModulBase 
 ---@field PE_Balloon_BoxSlide PhysicsObject
 ---@field PE_Balloon_BoxSlideForce PhysicsConstraintForce
+---@field PE_Balloon_PlatformForce PhysicsConstraintForce
 ---@field PE_Balloon_Platform PhysicsObject
 ---@field PE_Balloon_Ballon04 PhysicsObject
 ---@field PE_Balloon_Ballon03 PhysicsObject
@@ -66,11 +67,12 @@ function PE_Balloon:Start()
       self._MusicActived = false
       self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
       self.PE_Balloon_Platform:WakeUp()
-      self.PE_Balloon_BoxSlideForce.Force = 0.4
+      self.PE_Balloon_BoxSlideForce.Force = 0.1
+      self.PE_Balloon_PlatformForce.enabled = false
       self.BallTiggerActived = true
 
       --速度放慢一些
-      LuaTimer.Add(1000, function ()
+      LuaTimer.Add(1500, function ()
         self.PE_Balloon_BoxSlideForce.Force = 0.2
       end)
 
@@ -98,7 +100,8 @@ function PE_Balloon:Active()
 
   self.BallTiggerActived = false
   self.PE_Balloon_Platform:Physicalize()
-  self.PE_Balloon_BoxSlideForce.Force = 1
+  self.PE_Balloon_PlatformForce.enabled = true
+  self.PE_Balloon_BoxSlideForce.Force = 0.5
   self.PE_Balloon_BoxSlide:Physicalize()
   self.PE_Balloon_Ballon04:Physicalize()
   self.PE_Balloon_Ballon03:Physicalize()

@@ -358,8 +358,8 @@ GameObject:
   - component: {fileID: 876097599}
   - component: {fileID: 876097598}
   - component: {fileID: 876097597}
-  - component: {fileID: 876097600}
   - component: {fileID: 876097601}
+  - component: {fileID: 876097602}
   m_Layer: 0
   m_Name: GameEntry
   m_TagString: GameController
@@ -466,7 +466,7 @@ MonoBehaviour:
     PackageName: core.sounds.music
   - Enable: 1
     PackageName: core.assets.skys
-  DebugCustomEntryEvent: ModulCustomDebug
+  DebugCustomEntryEvent: LevelCustomDebug
   DebugCustomEntryEventParamas: []
   DebugCustomEntries:
   - CoreDebugEmptyEntry
@@ -474,6 +474,7 @@ MonoBehaviour:
   - CoreDebugLevelBuliderEntry
   - CoreDebugLevelEnvironmentEntry
   - ModulCustomDebug
+  - LevelCustomDebug
   DebugLoadCustomPackages: 1
   DebugSkipIntro: 0
   DebugSkipSplash: 1
@@ -501,22 +502,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &876097600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876097596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d68c455edab10e54b8f5146aa173534f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ModulName: P_Modul_37_01
-  ModulInstance: {fileID: 1492302497173472440, guid: 62690b24c992ba4418883525fae1d224, type: 3}
-  ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
-  ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
 --- !u!114 &876097601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,6 +514,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1b470e04b67e74cb2b430fd15cf387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &876097602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876097596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e372b1646b4e6e44e8e119d94718db53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ModulName: P_Modul_26_01
+  ModulInstance: {fileID: 585958241353488274, guid: f03ecfc32be2e4247b12fc9c26c4e392, type: 3}
+  ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
+  ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
+  LevelName: level02
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

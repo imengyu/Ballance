@@ -1,0 +1,255 @@
+{
+  "name": "level03",
+  "author": "Ballance",
+  "version": "1.0",
+  "introduction": "原版关卡第三关",
+  "requiredPackages": [],
+  "level": {
+    "firstBall": "BallWood",
+    "levelScore": 300,
+    "startPoint": 1000,
+    "startLife": 3,
+    "musicTheme": 2,
+    "skyBox": "A",
+    "skyLayer": "SkyLayer",
+    "nextLevel": "level04",
+    "lightColor": "#7B899A",
+    "sectorCount": 5,
+    "endWithUFO": false,
+    "autoGroup": false,
+    "internalObjects": {
+      "PE_LevelEnd": "PE_Balloon_01",
+      "PS_LevelStart": "PS_FourFlames_01",
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01",
+        "3": "PC_TwoFlames_02",
+        "4": "PC_TwoFlames_03",
+        "5": "PC_TwoFlames_04"
+      },
+      "PR_ResetPoints": {
+        "1": "PR_Resetpoint_01",
+        "2": "PR_Resetpoint_02",
+        "3": "PR_Resetpoint_03",
+        "4": "PR_Resetpoint_04",
+        "5": "PR_Resetpoint_05"
+      }
+    },
+    "sectors": {
+      "1": [
+        "P_Trafo_Stone_01",
+        "P_Ball_Stone_01",
+        "P_Extra_Point_01",
+        "P_Modul_29_01",
+        "P_Modul_30_01",
+        "P_Trafo_Wood_01",
+        "P_Trafo_Stone_02",
+        "P_Trafo_Wood_02",
+        "P_Trafo_Paper_01",
+        "P_Dome_01",
+        "P_Extra_Life_01",
+        "P_Extra_Point_11"
+      ],
+      "2": [
+        "P_Dome_02",
+        "P_Trafo_Stone_03",
+        "P_Extra_Point_02",
+        "P_Extra_Point_06",
+        "P_Extra_Point_07",
+        "P_Extra_Point_08",
+        "P_Extra_Point_09",
+        "P_Extra_Life_03",
+        "P_Extra_Point_12"
+      ],
+      "3": [
+        "P_Box_01",
+        "P_Box_02",
+        "P_Box_03",
+        "P_Box_04",
+        "P_Box_05",
+        "P_Box_06",
+        "P_Box_07",
+        "P_Box_08",
+        "P_Extra_Point_03",
+        "P_Trafo_Paper_03",
+        "P_Trafo_Wood_03",
+        "P_Ball_Wood_01",
+        "P_Extra_Point_10",
+        "P_Trafo_Stone_04"
+      ],
+      "4": [
+        "P_Trafo_Wood_04",
+        "P_Modul_17_01",
+        "P_Modul_17_02",
+        "P_Modul_25_04",
+        "P_Modul_25_05",
+        "P_Modul_37_01",
+        "P_Trafo_Stone_05",
+        "P_Extra_Point_04"
+      ],
+      "5": [
+        "P_Trafo_Paper_04",
+        "P_Modul_18_02",
+        "P_Modul_18_03",
+        "P_Modul_18_04",
+        "P_Modul_25_03",
+        "P_Trafo_Wood_05",
+        "P_Extra_Point_05",
+        "P_Extra_Life_04"
+      ]
+    },
+    "depthTestCubes": [
+      "Depth_TestCube01",
+      "Depth_TestCube02",
+      "Depth_TestCube04",
+      "Depth_TestCube03"
+    ],
+    "floors": [
+      {
+        "name": "Phys_Floors",
+        "objects": [
+          "A01_Floor_01",
+          "A01_Floor_03",
+          "A01_Floor_04",
+          "A02_Floor_01",
+          "A01_Modul_27",
+          "A03_Floor_02",
+          "A03_Floor_01",
+          "A01_Floor_02",
+          "A04_Floor_01",
+          "A03_Floor_03",
+          "A04_Modul_27",
+          "A05_Floor_01",
+          "A05_Modul13",
+          "A05_Floor_02",
+          "P_Modul_18_04",
+          "A04_Floor_02",
+          "A03_Floor_Wood",
+          "A02_Floor_02",
+          "A02_Floor_Collision"
+        ]
+      },
+      {
+        "name": "Phys_FloorStopper",
+        "objects": ["A01_Floor_Stopper_01"]
+      },
+      {
+        "name": "Phys_FloorRails",
+        "objects": [
+          "A01_Rail_03",
+          "A01_Rail_02",
+          "A01_Rail_01",
+          "A03_Rail_01",
+          "A04_Rail_01",
+          "A04_Rail_02",
+          "A05_Rail_02",
+          "A05_Rail_01",
+          "A02_Rail_04",
+          "A02_Rail_05",
+          "A02_Rail_02",
+          "A02_Rail_07",
+          "A02_Rail_03",
+          "A02_Rail_06",
+          "A02_Rail_08",
+          "A02_Rail_01",
+          "A03_Rail_02"
+        ]
+      }
+    ],
+    "groups": [
+      {
+        "name": "P_Ball_Stone",
+        "objects": ["P_Ball_Stone_01"]
+      },
+      {
+        "name": "P_Ball_Wood",
+        "objects": ["P_Ball_Wood_01"]
+      },
+      {
+        "name": "P_Box",
+        "objects": [
+          "P_Box_01",
+          "P_Box_02",
+          "P_Box_03",
+          "P_Box_04",
+          "P_Box_05",
+          "P_Box_06",
+          "P_Box_07",
+          "P_Box_08"
+        ]
+      },
+      {
+        "name": "P_Dome",
+        "objects": ["P_Dome_01", "P_Dome_02"]
+      },
+      {
+        "name": "P_Extra_Life",
+        "objects": ["P_Extra_Life_01", "P_Extra_Life_03", "P_Extra_Life_04"]
+      },
+      {
+        "name": "P_Extra_Point",
+        "objects": [
+          "P_Extra_Point_01",
+          "P_Extra_Point_05",
+          "P_Extra_Point_04",
+          "P_Extra_Point_03",
+          "P_Extra_Point_02",
+          "P_Extra_Point_06",
+          "P_Extra_Point_07",
+          "P_Extra_Point_08",
+          "P_Extra_Point_09",
+          "P_Extra_Point_10",
+          "P_Extra_Point_11",
+          "P_Extra_Point_12"
+        ]
+      },
+      {
+        "name": "P_Modul_17",
+        "objects": ["P_Modul_17_01", "P_Modul_17_02"]
+      },
+      {
+        "name": "P_Modul_18",
+        "objects": ["P_Modul_18_02", "P_Modul_18_03", "P_Modul_18_04"]
+      },
+      {
+        "name": "P_Modul_25",
+        "objects": ["P_Modul_25_03", "P_Modul_25_04", "P_Modul_25_05"]
+      },
+      {
+        "name": "P_Modul_29",
+        "objects": ["P_Modul_29_01"]
+      },
+      {
+        "name": "P_Modul_30",
+        "objects": ["P_Modul_30_01"]
+      },
+      {
+        "name": "P_Modul_37",
+        "objects": ["P_Modul_37_01"]
+      },
+      {
+        "name": "P_Trafo_Paper",
+        "objects": ["P_Trafo_Paper_01", "P_Trafo_Paper_03", "P_Trafo_Paper_04"]
+      },
+      {
+        "name": "P_Trafo_Stone",
+        "objects": [
+          "P_Trafo_Stone_01",
+          "P_Trafo_Stone_02",
+          "P_Trafo_Stone_05",
+          "P_Trafo_Stone_03",
+          "P_Trafo_Stone_04"
+        ]
+      },
+      {
+        "name": "P_Trafo_Wood",
+        "objects": [
+          "P_Trafo_Wood_01",
+          "P_Trafo_Wood_02",
+          "P_Trafo_Wood_03",
+          "P_Trafo_Wood_04",
+          "P_Trafo_Wood_05"
+        ]
+      }
+    ]
+  }
+}

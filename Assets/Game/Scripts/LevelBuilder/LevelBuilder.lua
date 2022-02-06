@@ -103,7 +103,7 @@ function LevelBuilder:Start()
     self._LevelBuilderUIButtonSubmitBug.onClick:AddListener(function () Application.OpenURL(ConstLinks.BugReportURL) end)  
     self._LevelBuilderUIButtonCopyErrInfo.onClick:AddListener(function () 
       GUIUtility.systemCopyBuffer = self._LevelBuilderCurrentError
-      Game.UIManager:GlobalToast(I18N.Tr('str.tip.errInfoCopied'))
+      Game.UIManager:GlobalToast(I18N.Tr('core.ui.ErrorUIErrInfoCopied'))
     end)
 
     self._LevelLoaderNative = self.gameObject:GetComponent(Ballance2.Game.GameLevelLoaderNative) ---@type GameLevelLoaderNative
@@ -169,6 +169,9 @@ function LevelBuilder:LoadLevel(name)
   --加载内置模块
   InitBulitInModuls()
   InitBulitInModulCustomSounds()
+
+  --加载物理环境
+  GamePlay.GamePlayManager.GamePhysicsWorld:Create()
 
   --发送开始事件
   Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_BEFORE_START', '*', nil)
@@ -266,8 +269,8 @@ function LevelBuilder:_LoadLevelInternal()
     self:UpdateErrStatus(true, 'BAD_CONFIG', 'There must be at least 1 sector in this level')
     return
   end
-  if level.sectorCount > 16 then
-    self:UpdateErrStatus(true, 'BAD_CONFIG', 'There are too many sectors (more than 16)')
+  if level.sectorCount > 32 then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', 'There are too many sectors (more than 32)')
     return
   end  
   if level.autoGroup == true then
@@ -319,13 +322,13 @@ function LevelBuilder:_LoadLevelInternal()
   GamePlayManager.CurrentLevelName = self._CurrentLevelJson.name
   GamePlayManager.CurrentEndWithUFO = level.endWithUFO or false
 
-  Log.D(TAG, 'Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
+  Log.D(TAG, 'Level Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
 
   if type(level.defaultHighscoreData) == 'table' then
     Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
   else
     Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, nil)
-    Log.D(TAG, 'Not found user config defaultHighscoreData, using system defaultHighscoreData')
+    Log.D(TAG, 'Not found user config defaultHighscoreData for this level, using system defaultHighscoreData')
   end
 
   if level.startLife and level.startLife > 0 then
@@ -655,7 +658,7 @@ function LevelBuilder:_LoadLevelInternal()
                 if audio ~= nil then
                   table.insert(arr, audio)
                 else
-                  Log.W(TAG, 'Not found custom audio resource in customMusicTheme.'..name..'.'..index..' , name : '..value..' , now ignore this sound')
+                  Log.W(TAG, 'Not found custom audio resource in customMusicTheme.'..name..'.'..index..' , name : '..value..' , ignore this sound')
                 end
               end
             end
@@ -857,7 +860,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
 
     --删除关卡中所有的物理碰撞信息
     if GamePlay.GamePlayManager and GamePlay.GamePlayManager.GamePhysicsWorld then
-      GamePlay.GamePlayManager.GamePhysicsWorld:DeleteAllSurfaces() 
+      GamePlay.GamePlayManager.GamePhysicsWorld:Destroy()
     end
 
     Log.D(TAG, 'Unload level finish')

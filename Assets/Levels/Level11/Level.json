@@ -1,0 +1,153 @@
+{
+  "name": "Level11",
+  "author": "Ballance",
+  "version": "1.0",
+  "introduction": "原版关卡第11关",
+  "requiredPackages": [],
+  "level": {
+    "firstBall": "BallWood",
+    "levelScore": 1100,
+    "startPoint": 1000,
+    "startLife": 3,
+    "musicTheme": 3,
+    "skyBox": "J",
+    "skyLayer": "SkyLayer",
+    "nextLevel": "level12",
+    "lightColor": "#ffffff",
+    "sectorCount": 2,
+    "endWithUFO": false,
+    "autoGroup": false,
+    "internalObjects": {
+      "PS_LevelStart": "PS_FourFlames_01",
+      "PE_LevelEnd": "PE_Balloon_01",
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01"
+      },
+      "PR_ResetPoints": { 
+        "1": "PR_Resetpoint_01", 
+        "2": "PR_Resetpoint_02"
+      }
+    },
+    "sectors": {
+      "1": [ "objectName", "objectName" ],
+      "2": [ "objectName" ]
+    },
+    "floors": [
+      {
+        "name": "Phys_Floors",
+        "objects": []
+      },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": []
+      },
+      {
+        "name": "Phys_FloorRails",
+        "objects": []
+      },
+      {
+        "name": "Phys_FloorStopper",
+        "objects": []
+      }
+    ],
+    "depthTestCubes": [
+      "Quader01",
+      "Quader02",
+      "Quader03"
+    ],
+    "groups": [
+      {
+        "name": "P_Box",
+        "objects": []
+      },
+      {
+        "name": "P_Dome",
+        "objects": []
+      },
+      {
+        "name": "P_Ball_Stone",
+        "objects": []
+      },
+      {
+        "name": "P_Ball_Paper",
+        "objects": []
+      },
+      {
+        "name": "P_Ball_Wood",
+        "objects": []
+      },
+      {
+        "name": "P_Extra_Life",
+        "objects": []
+      },
+      {
+        "name": "P_Extra_Point",
+        "objects": []
+      },
+      {
+        "name": "P_Trafo_Stone",
+        "objects": []
+      },
+      {
+        "name": "P_Trafo_Paper",
+        "objects": []
+      },
+      {
+        "name": "P_Trafo_Wood",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_01",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_03",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_08",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_17",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_18",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_19",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_25",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_26",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_29",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_30",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_34",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_37",
+        "objects": []
+      },
+      {
+        "name": "P_Modul_41",
+        "objects": []
+      }
+    ]
+  }
+}

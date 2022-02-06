@@ -12,18 +12,18 @@ local Log = Ballance2.Log
 ---@field _Pieces GameObject
 ---@field _PiecesData BallPiecesData
 ---@field _PiecesSoundName string
----@field _PiecesMinForce number
----@field _PiecesMaxForce number
----@field _PiecesPhysicsData table
+---@field _PiecesMinForce number 碎片抛出最小推力
+---@field _PiecesMaxForce number 碎片抛出最大推力
+---@field _PiecesPhysicsData table 碎片物理数据
 ---@field _PiecesPhysCallback function 物理化碎片自定义处理回调 (gameObject, physicsData) => PhysicsObject，如果为nil，则碎片将使用默认参数来物理化
----@field _Force number
----@field _UpForce number
----@field _DownForce number
+---@field _UpForce number 球的向上推力（调试时Q按键）
+---@field _DownForce number 球的向下推力（调试时E按键）
 Ball = ClassicObject:extend()
 
 function Ball:new()
   self._Rigidbody = nil
   self._Pieces = nil
+  self._PiecesData = nil
   self._PiecesMinForce = 0
   self._PiecesMaxForce = 5
   self._PiecesMass = 1
@@ -31,7 +31,6 @@ function Ball:new()
   self._PiecesPhysCallback = nil
   self._PiecesColSoundMaxSpeed = 25
   self._PiecesColSoundMinSpeed = 2
-  self._Force = 0
   self._UpForce = 0
   self._DownForce = 0
   self._HitSound = {
@@ -55,10 +54,10 @@ function Ball:new()
       Wood = '',
     },
     Sounds = {}, --请勿设置此字段
-    PitchBase = 0.5,
-    PitchFactor = 0.01,
-    VolumeBase = 0.01,
-    VolumeFactor = 0.05,
+    PitchBase = 0.6,
+    PitchFactor = 0.9,
+    VolumeBase = 0,
+    VolumeFactor = 1.9,
   }
 end
 

@@ -1,5 +1,5 @@
 local GameManager = Ballance2.Services.GameManager.Instance
-local GameDebugModulEntry = Ballance2.Entry.GameDebugModulEntry.Instance
+local GameDebugEntry = Ballance2.Entry.GameDebugEntry.Instance
 local GameErrorChecker = Ballance2.Services.Debug.GameErrorChecker
 local GameError = Ballance2.Services.Debug.GameError
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
@@ -10,19 +10,19 @@ local StringUtils = Ballance2.Utils.StringUtils
 ---迷你机关调试环境
 function ModulCustomDebug()
   --检查参数
-  if Slua.IsNull(GameDebugModulEntry.ModulTestFloor) then
+  if Slua.IsNull(GameDebugEntry.ModulTestFloor) then
     GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "ModulTestFloor 未设置！")
     return
   end
-  if Slua.IsNull(GameDebugModulEntry.ModulTestUI) then
+  if Slua.IsNull(GameDebugEntry.ModulTestUI) then
     GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "ModulTestUI 未设置！")
     return
   end
-  if Slua.IsNull(GameDebugModulEntry.ModulInstance) then
+  if Slua.IsNull(GameDebugEntry.ModulInstance) then
     GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "ModulInstance 未设置！")
     return
   end
-  if GameDebugModulEntry.ModulName == '' then
+  if GameDebugEntry.ModulName == '' then
     GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "ModulName 未设置！")
     return
   end
@@ -37,7 +37,7 @@ function ModulCustomDebug()
     --克隆路面
     local physicsData = GamePhysFloor['Phys_Floors'] 
     local physicsDataStopper = GamePhysFloor['Phys_FloorStopper'] 
-    local group = GameManager:InstancePrefab(GameDebugModulEntry.ModulTestFloor, "ModulTestFloor")
+    local group = GameManager:InstancePrefab(GameDebugEntry.ModulTestFloor, "ModulTestFloor")
     local childCount = group.transform.childCount
     for i = 0, childCount - 1, 1 do
       local go = group.transform:GetChild(i).gameObject
@@ -74,7 +74,7 @@ function ModulCustomDebug()
           end
         elseif go.name == 'PR_Resetpoint' then
           PR_Resetpoint = go
-        elseif go.name == GameDebugModulEntry.ModulName then
+        elseif go.name == GameDebugEntry.ModulName then
           Modul_Placeholder = go
         end
       end
@@ -85,12 +85,12 @@ function ModulCustomDebug()
       return
     end
     if not Modul_Placeholder then
-      GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "没有找到"..GameDebugModulEntry.ModulName..", 请在测试路面预制体中添加一个")
+      GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "没有找到"..GameDebugEntry.ModulName..", 请在测试路面预制体中添加一个")
       return
     end
 
     --克隆机关
-    local Modul_Instace = GameManager:InstancePrefab(GameDebugModulEntry.ModulInstance, "ModulInstance")
+    local Modul_Instace = GameManager:InstancePrefab(GameDebugEntry.ModulInstance, "ModulInstance")
     Modul_Instace.transform.position = Modul_Placeholder.transform.position
     Modul_Instace.transform.rotation = Modul_Placeholder.transform.rotation
     Modul_Placeholder:SetActive(false)
@@ -104,7 +104,7 @@ function ModulCustomDebug()
 
 
     --克隆UI
-    local ui = GameManager:InstancePrefab(GameDebugModulEntry.ModulTestUI, GameManager.GameCanvas, "ModulTestUI")
+    local ui = GameManager:InstancePrefab(GameDebugEntry.ModulTestUI, GameManager.GameCanvas, "ModulTestUI")
     local stateText = ui.transform:Find('Text'):GetComponent(UnityEngine.UI.Text) ---@type Text
     local button = ui.transform:Find('Text'):GetComponent(UnityEngine.UI.Button) ---@type Button
     

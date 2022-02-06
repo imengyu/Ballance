@@ -79,6 +79,7 @@ function CoreInit()
     require('CoreLuaDebug')
     require('LevelBuilderDebug')
     require('ModulDebug')
+    require('LevelDebug')
 
     GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelBuliderEntry", TAG, function (evtName, params)
       CoreDebugLevelBuliderEntry()
@@ -98,6 +99,10 @@ function CoreInit()
     end)
     GameMediator:RegisterEventHandler(CorePackage, "ModulCustomDebug", TAG, function (evtName, params)
       ModulCustomDebug()
+      return false
+    end)
+    GameMediator:RegisterEventHandler(CorePackage, "LevelCustomDebug", TAG, function (evtName, params)
+      LevelCustomDebug()
       return false
     end)
   end

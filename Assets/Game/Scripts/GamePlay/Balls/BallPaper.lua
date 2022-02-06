@@ -24,6 +24,8 @@ function BallPaper:new()
     body.Friction = CommonUtils.RandomFloat(1, 5)
     body.LinearSpeedDamping = data.LinearDamp
     body.RotSpeedDamping = data.RotDamp
+    body.Layer = GameLayers.LAYER_PHY_BALL_PEICES
+    body.UseExistsSurface = true
     return body
   end
 end
@@ -38,11 +40,12 @@ function BallPaper:ThrowPieces(pos)
   self._PaperPiecesSound:Play()
   Ball.ThrowPieces(self, pos)
 
-
-  --纸球碎片将施加一个恒力，以达到被风吹走的效果
-  for _, body in ipairs(self._PiecesData.bodys) do
-    body:ClearConstantForce()
-    body:AddConstantForceWithPositionAndRef(1, paperPeicesForceDir, Vector3.zero, nil, body.transform) --施加力
+  if self._PiecesData then
+    --纸球碎片将施加一个恒力，以达到被风吹走的效果
+    for _, body in ipairs(self._PiecesData.bodys) do
+      body:ClearConstantForce()
+      body:AddConstantForceWithPositionAndRef(1, paperPeicesForceDir, Vector3.zero, nil, body.transform) --施加力
+    end
   end
   
 end
@@ -50,9 +53,11 @@ end
 function BallPaper:ResetPieces()
   Ball.ResetPieces(self)
 
-  --去掉纸球碎片恒力
-  for _, body in ipairs(self._PiecesData.bodys) do
-    body:ClearConstantForce()
+  if self._PiecesData then
+    --去掉纸球碎片恒力
+    for _, body in ipairs(self._PiecesData.bodys) do
+      body:ClearConstantForce()
+    end
   end
 end
 

@@ -3,47 +3,38 @@ local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 ---@class P_Modul_26 : ModulBase 
 ---@field P_Modul_26_Rope PhysicsObject
 ---@field P_Modul_26_Sack PhysicsObject
----@field P_Modul_26_ForcePovit_2 Transform
----@field P_Modul_26_ForcePovit_1 Transform
+---@field P_Modul_26_Sack_Force PhysicsConstraintForce
 P_Modul_26 = ModulBase:extend()
 
 function P_Modul_26:new()
   P_Modul_26.super.new(self)
-  self._EnableForce = false
-  self._ForceIsLeft = false
-  self._ForceTick = 0
-  self._ForceAppilyTick = 8 --(6/0.1s)
-end
-
-function P_Modul_26:FixedUpdate()
-  if self._EnableForce then
-    if self._ForceTick > 0 then
-      self._ForceTick = self._ForceTick - 1
-    else
-      --切换方向
-      self._ForceIsLeft = not self._ForceIsLeft
-      self._ForceTick = self._ForceAppilyTick
-      if self._ForceIsLeft then
-        self.P_Modul_26_Sack.ConstantForceDirectionRef = self.P_Modul_26_ForcePovit_1
-      else
-        self.P_Modul_26_Sack.ConstantForceDirectionRef = self.P_Modul_26_ForcePovit_2
-      end
-    end
-  end
+  self._ForceTimer = nil
+  self._ForceState = false
 end
 function P_Modul_26:Active()
   ModulBase.Active(self)
   self.P_Modul_26_Rope:Physicalize()
   self.P_Modul_26_Sack:Physicalize()
   self.P_Modul_26_Sack.EnableConstantForce = true
-  self._EnableForce = true
+  self._ForceTimer = LuaTimer.Add(500, 1500, function ()
+    self._ForceState = not self._ForceState
+
+    --切换方向
+    if self._ForceState then
+      self.P_Modul_26_Sack_Force.Force = 0.25
+    else
+      self.P_Modul_26_Sack_Force.Force = -0.25
+    end
+  end)
 end
 function P_Modul_26:Deactive()
   self.P_Modul_26_Sack.EnableConstantForce = false
-  self._EnableForce = false
-  self._ForceTick = 0
   self.P_Modul_26_Rope:UnPhysicalize(true)
   self.P_Modul_26_Sack:UnPhysicalize(true)
+  if self._ForceTimer then
+    LuaTimer.Delete(self._ForceTimer)
+    self._ForceTimer = nil
+  end
   ModulBase.Deactive(self)
 end
 function P_Modul_26:Reset()

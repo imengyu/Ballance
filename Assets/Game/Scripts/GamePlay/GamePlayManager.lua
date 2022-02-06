@@ -158,7 +158,7 @@ function GamePlayManager:_InitKeyEvents()
         if self.CurrentLevelPass then
           --跳过最后的分数UI
           --#TODO: 分数UI
-        elseif Game.UIManager:GetCurrentPage().PageName == 'PageGamePause' then
+        else
           self:ResumeLevel()
         end
       end
@@ -457,7 +457,11 @@ function GamePlayManager:Pass()
     GamePlay.UFOAnimController:StartSeq()
   else
     self._SoundFinnal:Play() --播放音乐
-    LuaTimer.Add(6000, function ()
+    --30秒后隐藏飞船
+    LuaTimer.Add(30000, function ()
+      GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
+    end)
+    LuaTimer.Add(5000, function ()
       GameUI.WinScoreUIControl:StartSeq()
     end)
   end
@@ -470,6 +474,10 @@ function GamePlayManager:UfoAnimFinish()
   GamePlay.MusicManager:DisableBackgroundMusic()
   GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
   GameUI.WinScoreUIControl:StartSeq()
+  --38秒后隐藏飞船
+  LuaTimer.Add(30000, function ()
+    GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
+  end)
 end
 
 ---激活变球序列

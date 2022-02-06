@@ -1,6 +1,9 @@
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 
+---带物理的机关基类，你可用于只有一个物体的简单物理机关
 ---@class ModulPhysics : ModulBase 
+---@field _PhysicsObject PhysicsObject 物理物体，请在编辑器中设置此字段
+---@field _PhysicsObjectCollIDName string 设置物理物体球碰撞声音组，可以在编辑器中设置此字段
 ModulPhysics = ModulBase:extend()
 
 function ModulPhysics:new()

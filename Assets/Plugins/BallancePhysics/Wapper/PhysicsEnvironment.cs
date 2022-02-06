@@ -41,6 +41,11 @@ namespace BallancePhysics.Wapper
     /// 是否启用模拟
     /// </summary>
     public bool Simulate = true;
+    [Tooltip("是否自动创建")]
+    /// <summary>
+    /// 是否自动创建
+    /// </summary>
+    public bool AutoCreate = true;
 
     /// <summary>
     /// 所有物理环境
@@ -63,7 +68,12 @@ namespace BallancePhysics.Wapper
 
     public IntPtr Handle { get; private set; } = IntPtr.Zero;
 
-    private void Awake()
+    private int createTick = 0;
+
+    /// <summary>
+    /// 创建物理环境
+    /// </summary>
+    public void Create()
     {
       int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
       if (PhysicsWorlds.ContainsKey(currentScenseIndex))
@@ -78,7 +88,10 @@ namespace BallancePhysics.Wapper
         Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks());
       }
     }
-    private void OnDestroy()
+    /// <summary>
+    /// 销毁物理环境
+    /// </summary>
+    public void Destroy()
     {
       if (Handle != IntPtr.Zero)
       {
@@ -86,7 +99,8 @@ namespace BallancePhysics.Wapper
         foreach(var o in list)
           o.UnPhysicalize(true);
 
-        PhysicsApi.API.delete_all_surfaces(Handle);
+        if(DeleteAllSurfacesWhenDestroy)
+          PhysicsApi.API.delete_all_surfaces(Handle);
         PhysicsApi.API.destroy_environment(Handle);
         Handle = IntPtr.Zero;
 
@@ -94,7 +108,21 @@ namespace BallancePhysics.Wapper
         PhysicsWorlds.Remove(currentScenseIndex);
       }
     }
+
+    private void Awake()
+    {
+      createTick = 2;
+    }
+    private void OnDestroy()
+    {
+      if (Handle != IntPtr.Zero)
+        Destroy();
+    }
     private void FixedUpdate() {
+      if(createTick > 0) {
+        createTick--;
+        if(createTick == 0 && AutoCreate) Create();
+      }
       if(Simulate && Handle != IntPtr.Zero) {
         PhysicsApi.API.environment_simulate_dtime(Handle, Time.fixedDeltaTime * TimeFactor);
         PhysicsApi.API.do_update_all(Handle);

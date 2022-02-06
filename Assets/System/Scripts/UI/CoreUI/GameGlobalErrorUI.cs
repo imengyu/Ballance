@@ -28,6 +28,7 @@ namespace Ballance2.UI.CoreUI
     public Button ButtonCloseGame = null;
     public Button ButtonRestartGame = null;
     public Button ButtonDebugger = null;
+    public Button ButtonContinue = null;
 
     private void Start()
     {
@@ -53,6 +54,10 @@ namespace Ballance2.UI.CoreUI
       {
         PlayerPrefs.SetInt("core.DebugMode", 1);
         GameSystem.QuitPlayer();
+      });
+      ButtonContinue.onClick.AddListener(() =>
+      {
+        gameObject.SetActive(false);
       });
     }
 

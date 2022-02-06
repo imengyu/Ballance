@@ -19,8 +19,6 @@ local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 
 local IntroUI = nil
-local introFinished = false
-local baseFinished = false
 local TAG = 'Intro:Entry'
 
 ---进入Intro场景
@@ -35,9 +33,6 @@ local function OnEnterIntro(thisGamePackage)
   end
 
   GameUIManager:MaskBlackFadeIn(0.3)
-
-  introFinished = false
-  baseFinished = false
 
   --进入音乐
   GameSoundManager:PlayFastVoice("core.sounds.music:Music_Theme_4_1.wav", GameSoundType.Background)
