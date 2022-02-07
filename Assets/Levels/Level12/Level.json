@@ -12,143 +12,409 @@
     "musicTheme": 4,
     "skyBox": "I",
     "skyLayer": "SkyVoterx",
-    "nextLevel": "level12",
+    "nextLevel": "level13",
     "lightColor": "#ffffff",
     "customModEventName": "",
-    "sectorCount": 2,
+    "sectorCount": 8,
     "endWithUFO": false,
     "autoGroup": false,
-    "internalObjects": {
-      "PS_LevelStart": "PS_FourFlames_01",
-      "PE_LevelEnd": "PE_Balloon_01",
-      "PC_CheckPoints": {
-        "2": "PC_TwoFlames_01"
-      },
-      "PR_ResetPoints": { 
-        "1": "PR_Resetpoint_01", 
-        "2": "PR_Resetpoint_02"
-      }
-    },
-    "sectors": {
-      "1": [ "objectName", "objectName" ],
-      "2": [ "objectName" ]
-    },
-    "floors": [
+    "groups": [
       {
-        "name": "Phys_Floors",
-        "objects": []
+        "name": "P_Ball_Stone",
+        "objects": [
+          "P_Ball_Stone_01",
+          "P_Ball_Stone_02",
+          "P_Ball_Stone_03",
+          "P_Ball_Stone_04"
+        ]
+      },
+      { "name": "P_Ball_Wood", "objects": ["P_Ball_Wood_01"] },
+      {
+        "name": "P_Box",
+        "objects": ["P_Box_02", "P_Box_04", "P_Box_03", "P_Box_01"]
       },
       {
-        "name": "Phys_FloorWoods",
-        "objects": []
+        "name": "P_Extra_Life",
+        "objects": [
+          "P_Extra_Life_01",
+          "P_Extra_Life_02",
+          "P_Extra_Life_03",
+          "P_Extra_Life_04"
+        ]
       },
       {
-        "name": "Phys_FloorRails",
-        "objects": []
+        "name": "P_Extra_Point",
+        "objects": [
+          "P_Extra_Point_04",
+          "P_Extra_Point_01",
+          "P_Extra_Point_02",
+          "P_Extra_Point_03",
+          "P_Extra_Point_05",
+          "P_Extra_Point_06",
+          "P_Extra_Point_07",
+          "P_Extra_Point_08",
+          "P_Extra_Point_09",
+          "P_Extra_Point_10",
+          "P_Extra_Point_11",
+          "P_Extra_Point_12",
+          "P_Extra_Point_13",
+          "P_Extra_Point_14",
+          "P_Extra_Point_15",
+          "P_Extra_Point_16",
+          "P_Extra_Point_17",
+          "P_Extra_Point_18",
+          "P_Extra_Point_19",
+          "P_Extra_Point_20",
+          "P_Extra_Point_21",
+          "P_Extra_Point_22",
+          "P_Extra_Point_23",
+          "P_Extra_Point_24",
+          "P_Extra_Point_25",
+          "P_Extra_Point_26",
+          "P_Extra_Point_27",
+          "P_Extra_Point_16a",
+          "P_Extra_Point_17a",
+          "P_Extra_Point_18a"
+        ]
       },
       {
-        "name": "Phys_FloorStopper",
-        "objects": []
+        "name": "P_Modul_03",
+        "objects": [
+          "P_Modul_03_01",
+          "P_Modul_03_02",
+          "P_Modul_03_03",
+          "P_Modul_03_04"
+        ]
+      },
+      {
+        "name": "P_Modul_18",
+        "objects": [
+          "P_Modul_18_01",
+          "P_Modul_18_02",
+          "P_Modul_18_03",
+          "P_Modul_18_04",
+          "P_Modul_18_05",
+          "P_Modul_18_06",
+          "P_Modul_18_07",
+          "P_Modul_18_08",
+          "P_Modul_18_09",
+          "P_Modul_18_10a",
+          "P_Modul_18_11",
+          "P_Modul_18_12",
+          "P_Modul_18_13",
+          "P_Modul_18_14",
+          "P_Modul_18_15",
+          "P_Modul_18_16",
+          "P_Modul_18_17",
+          "P_Modul_18_18",
+          "P_Modul_18_19",
+          "P_Modul_18_20",
+          "P_Modul_18_21",
+          "P_Modul_18_22",
+          "P_Modul_18_23",
+          "P_Modul_18_24",
+          "P_Modul_18_10",
+          "P_Modul_18_11a"
+        ]
+      },
+      {
+        "name": "P_Modul_25",
+        "objects": ["P_Modul_25_01", "P_Modul_25_02", "P_Modul_25_03"]
+      },
+      {
+        "name": "P_Modul_26",
+        "objects": [
+          "P_Modul_26_01",
+          "P_Modul_26_02",
+          "P_Modul_26_03",
+          "P_Modul_26_04"
+        ]
+      },
+      {
+        "name": "P_Modul_37",
+        "objects": [
+          "P_Modul_37_01",
+          "P_Modul_37_02",
+          "P_Modul_37_03",
+          "P_Modul_37_04"
+        ]
+      },
+      {
+        "name": "P_Trafo_Paper",
+        "objects": [
+          "P_Trafo_Paper_01",
+          "P_Trafo_Paper_02",
+          "P_Trafo_Paper_03",
+          "P_Trafo_Paper_04a",
+          "P_Trafo_Paper_05",
+          "P_Trafo_Paper_06",
+          "P_Trafo_Paper_04"
+        ]
+      },
+      {
+        "name": "P_Trafo_Stone",
+        "objects": [
+          "P_Trafo_Stone_03",
+          "P_Trafo_Stone_01",
+          "P_Trafo_Stone_02",
+          "P_Trafo_Stone_04",
+          "P_Trafo_Stone_05a",
+          "P_Trafo_Stone_06",
+          "P_Trafo_Stone_07",
+          "P_Trafo_Stone_08",
+          "P_Trafo_Stone_09",
+          "P_Trafo_Stone_10",
+          "P_Trafo_Stone_11",
+          "P_Trafo_Stone_14",
+          "P_Trafo_Stone_05"
+        ]
+      },
+      {
+        "name": "P_Trafo_Wood",
+        "objects": [
+          "P_Trafo_Wood_01",
+          "P_Trafo_Wood_02",
+          "P_Trafo_Wood_03",
+          "P_Trafo_Wood_04",
+          "P_Trafo_Wood_05",
+          "P_Trafo_Wood_06",
+          "P_Trafo_Wood_07a",
+          "P_Trafo_Wood_08",
+          "P_Trafo_Wood_07"
+        ]
       }
     ],
     "depthTestCubes": [
       "Quader01",
       "Quader02",
-      "Quader03"
+      "Quader03",
+      "Quader04",
+      "Quader05"
     ],
-    "groups": [
+    "floors": [
       {
-        "name": "P_Box",
-        "objects": []
+        "name": "Phys_Floors",
+        "objects": [
+          "A01_Floor_01",
+          "A02_Floor_01",
+          "A02_Floor_02",
+          "A02_Halfpipe_01",
+          "A01_Floor_Columns_Top02",
+          "A04_Floor_01",
+          "A04_Floor_02",
+          "A04_Floor_03",
+          "A04_Floor_04",
+          "A04_WoodBridges",
+          "A05_Floor_01",
+          "A05_Floor_02",
+          "A05_Floor_03",
+          "A06_Floor_01",
+          "A06_Floor_02",
+          "A08_Floor_01",
+          "A03_Floor_02",
+          "A03_Floor_01",
+          "A08_Halfpipe_04",
+          "A08_Halfpipe_01",
+          "A08_Halfpipe_02",
+          "A08_Halfpipe_03",
+          "A08_Halfpipe_01a",
+          "A07_Floor_02",
+          "A07_Floor_01",
+          "A7_invisibleCollCube"
+        ]
       },
+      { "name": "Phys_FloorStopper", "objects": ["Stopper"] },
       {
-        "name": "P_Dome",
-        "objects": []
-      },
-      {
-        "name": "P_Ball_Stone",
-        "objects": []
-      },
-      {
-        "name": "P_Ball_Paper",
-        "objects": []
-      },
-      {
-        "name": "P_Ball_Wood",
-        "objects": []
-      },
-      {
-        "name": "P_Extra_Life",
-        "objects": []
-      },
-      {
-        "name": "P_Extra_Point",
-        "objects": []
-      },
-      {
-        "name": "P_Trafo_Stone",
-        "objects": []
-      },
-      {
-        "name": "P_Trafo_Paper",
-        "objects": []
-      },
-      {
-        "name": "P_Trafo_Wood",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_01",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_03",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_08",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_17",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_18",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_19",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_25",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_26",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_29",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_30",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_34",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_37",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_41",
-        "objects": []
+        "name": "Phys_FloorRails",
+        "objects": [
+          "A01_Rail_02",
+          "A01_Rail_01",
+          "A01_Rail_05",
+          "A02_Rail_02",
+          "A02_Rail_03",
+          "A02_Rail_01",
+          "A02_Rail_04",
+          "A04_Rail_01",
+          "A04_Rail_02",
+          "A04_Rail_03",
+          "A01_Rail_06",
+          "A01_Rail_03",
+          "A01_Rail_04",
+          "A01_Rail_07",
+          "A05_Rail_01",
+          "A05_Rail_03",
+          "A06_Rail_01",
+          "A06_Rail_02",
+          "A06_Rail_03",
+          "A06_Rail_04",
+          "A03_Rail_01",
+          "A03_Rail_02",
+          "A03_Rail_03",
+          "A05_Rail_02",
+          "A07_Rail_01",
+          "A07_Rail_02",
+          "A07_Rail_03",
+          "A07_Rail_04",
+          "A07_Rail_05",
+          "A07_Rail_06",
+          "A07_Rail_08",
+          "A07_Rail_07"
+        ]
       }
-    ]
+    ],
+    "sectors": {
+      "1": [
+        "P_Extra_Point_04",
+        "P_Modul_26_01",
+        "P_Modul_26_02",
+        "P_Modul_26_03",
+        "P_Modul_26_04",
+        "P_Extra_Life_01",
+        "P_Extra_Point_25",
+        "P_Extra_Point_26",
+        "P_Extra_Point_27"
+      ],
+      "2": [
+        "P_Extra_Point_17",
+        "P_Extra_Point_18",
+        "P_Extra_Point_19",
+        "P_Extra_Point_16"
+      ],
+      "3": [
+        "P_Trafo_Stone_05a",
+        "P_Extra_Point_01",
+        "P_Trafo_Stone_06",
+        "P_Trafo_Paper_01",
+        "P_Trafo_Stone_01",
+        "P_Trafo_Stone_02",
+        "P_Trafo_Stone_04",
+        "P_Trafo_Stone_03",
+        "P_Extra_Point_02",
+        "P_Extra_Point_03",
+        "P_Extra_Point_05",
+        "P_Extra_Point_06",
+        "P_Trafo_Wood_01",
+        "P_Ball_Stone_01",
+        "P_Modul_37_01"
+      ],
+      "4": [
+        "P_Modul_18_02",
+        "P_Trafo_Paper_02",
+        "P_Trafo_Wood_03",
+        "P_Trafo_Stone_07",
+        "P_Modul_18_01",
+        "P_Modul_25_01",
+        "P_Extra_Point_07",
+        "P_Trafo_Paper_03",
+        "P_Trafo_Stone_08",
+        "P_Trafo_Wood_04",
+        "P_Modul_25_03",
+        "P_Extra_Point_08",
+        "P_Extra_Life_02",
+        "P_Extra_Point_09",
+        "P_Modul_25_02",
+        "P_Extra_Point_10",
+        "P_Ball_Wood_01",
+        "P_Extra_Point_11",
+        "P_Extra_Point_12",
+        "P_Trafo_Wood_02"
+      ],
+      "5": [
+        "P_Modul_18_05",
+        "P_Modul_03_01",
+        "P_Modul_03_02",
+        "P_Modul_03_03",
+        "P_Modul_03_04",
+        "P_Trafo_Stone_09",
+        "P_Trafo_Paper_04a",
+        "P_Modul_18_03",
+        "P_Modul_18_04",
+        "P_Trafo_Wood_05",
+        "P_Modul_18_06",
+        "P_Modul_18_07",
+        "P_Modul_18_08",
+        "P_Modul_18_09",
+        "P_Modul_18_10a",
+        "P_Modul_18_11",
+        "P_Modul_18_12",
+        "P_Modul_18_13"
+      ],
+      "6": [
+        "P_Extra_Point_13",
+        "P_Modul_18_15",
+        "P_Modul_18_16",
+        "P_Modul_18_17",
+        "P_Modul_18_18",
+        "P_Modul_18_19",
+        "P_Modul_18_20",
+        "P_Modul_18_21",
+        "P_Trafo_Paper_05",
+        "P_Modul_18_14",
+        "P_Extra_Point_14",
+        "P_Trafo_Wood_06",
+        "P_Modul_37_02",
+        "P_Modul_37_03",
+        "P_Modul_37_04",
+        "P_Ball_Stone_02",
+        "P_Ball_Stone_03",
+        "P_Ball_Stone_04",
+        "P_Extra_Point_15",
+        "P_Modul_18_22",
+        "P_Modul_18_23",
+        "P_Modul_18_24"
+      ],
+      "7": [
+        "P_Extra_Point_17a",
+        "P_Box_01",
+        "P_Box_02",
+        "P_Trafo_Paper_04",
+        "P_Extra_Point_18a",
+        "P_Trafo_Stone_05",
+        "P_Trafo_Wood_07",
+        "P_Box_04",
+        "P_Extra_Life_04",
+        "P_Modul_18_10",
+        "P_Modul_18_11a",
+        "P_Extra_Point_16a",
+        "P_Box_03",
+        "P_Trafo_Wood_08"
+      ],
+      "8": [
+        "P_Trafo_Stone_10",
+        "P_Extra_Point_20",
+        "P_Extra_Point_21",
+        "P_Trafo_Paper_06",
+        "P_Trafo_Wood_07a",
+        "P_Extra_Life_03",
+        "P_Extra_Point_22",
+        "P_Extra_Point_23",
+        "P_Trafo_Stone_11",
+        "P_Trafo_Stone_14",
+        "P_Extra_Point_24"
+      ]
+    },
+    "internalObjects": {
+      "PE_LevelEnd": "PE_Balloon_01",
+      "PS_LevelStart": "PS_FourFlames_01",
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01",
+        "3": "PC_TwoFlames_02",
+        "4": "PC_TwoFlames_03",
+        "5": "PC_TwoFlames_04",
+        "6": "PC_TwoFlames_05",
+        "7": "PC_TwoFlames_06",
+        "8": "PC_TwoFlames_07"
+      },
+      "PR_ResetPoints": {
+        "1": "PR_Resetpoint_01",
+        "2": "PR_Resetpoint_02",
+        "3": "PR_Resetpoint_03",
+        "4": "PR_Resetpoint_04",
+        "5": "PR_Resetpoint_05",
+        "6": "PR_Resetpoint_06",
+        "7": "PR_Resetpoint_07",
+        "8": "PR_Resetpoint_08"
+      }
+    }
   }
 }

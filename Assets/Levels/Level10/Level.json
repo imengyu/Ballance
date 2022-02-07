@@ -14,140 +14,352 @@
     "skyLayer": "SkyLayer",
     "nextLevel": "level11",
     "lightColor": "#ffffff",
-    "sectorCount": 2,
+    "sectorCount": 5,
     "endWithUFO": false,
     "autoGroup": false,
-    "internalObjects": {
-      "PS_LevelStart": "PS_FourFlames_01",
-      "PE_LevelEnd": "PE_Balloon_01",
-      "PC_CheckPoints": {
-        "2": "PC_TwoFlames_01"
-      },
-      "PR_ResetPoints": { 
-        "1": "PR_Resetpoint_01", 
-        "2": "PR_Resetpoint_02"
-      }
-    },
-    "sectors": {
-      "1": [ "objectName", "objectName" ],
-      "2": [ "objectName" ]
-    },
-    "floors": [
-      {
-        "name": "Phys_Floors",
-        "objects": []
-      },
-      {
-        "name": "Phys_FloorWoods",
-        "objects": []
-      },
-      {
-        "name": "Phys_FloorRails",
-        "objects": []
-      },
-      {
-        "name": "Phys_FloorStopper",
-        "objects": []
-      }
-    ],
-    "depthTestCubes": [
-      "Quader01",
-      "Quader02",
-      "Quader03"
-    ],
     "groups": [
       {
-        "name": "P_Box",
-        "objects": []
-      },
-      {
-        "name": "P_Dome",
-        "objects": []
+        "name": "P_Ball_Paper",
+        "objects": [
+          "P_Ball_Paper_01",
+          "P_Ball_Paper_02",
+          "P_Ball_Paper_03",
+          "P_Ball_Paper_04",
+          "P_Ball_Paper_05",
+          "P_Ball_Paper_06"
+        ]
       },
       {
         "name": "P_Ball_Stone",
-        "objects": []
+        "objects": ["P_Ball_Stone_01", "P_Ball_Stone_02"]
       },
       {
-        "name": "P_Ball_Paper",
-        "objects": []
+        "name": "P_Box",
+        "objects": [
+          "P_Box_02",
+          "P_Box_03",
+          "P_Box_04",
+          "P_Box_05",
+          "P_Box_06",
+          "P_Box_07",
+          "P_Box_08",
+          "P_Box_09"
+        ]
       },
-      {
-        "name": "P_Ball_Wood",
-        "objects": []
-      },
+      { "name": "P_Dome", "objects": ["P_Dome_02", "P_Dome_01", "P_Dome_03"] },
       {
         "name": "P_Extra_Life",
-        "objects": []
+        "objects": ["P_Extra_Life_01", "P_Extra_Life_02"]
       },
       {
         "name": "P_Extra_Point",
-        "objects": []
-      },
-      {
-        "name": "P_Trafo_Stone",
-        "objects": []
-      },
-      {
-        "name": "P_Trafo_Paper",
-        "objects": []
-      },
-      {
-        "name": "P_Trafo_Wood",
-        "objects": []
+        "objects": [
+          "P_Extra_Point_05",
+          "P_Extra_Point_04",
+          "P_Extra_Point_01",
+          "P_Extra_Point_02",
+          "P_Extra_Point_03",
+          "P_Extra_Point_06",
+          "P_Extra_Point_08",
+          "P_Extra_Point_07",
+          "P_Extra_Point_09",
+          "P_Extra_Point_10",
+          "P_Extra_Point_11",
+          "P_Extra_Point_12",
+          "P_Extra_Point_13"
+        ]
       },
       {
         "name": "P_Modul_01",
-        "objects": []
+        "objects": [
+          "P_Modul_01_01",
+          "P_Modul_01_02",
+          "P_Modul_01_03",
+          "P_Modul_01_04"
+        ]
       },
-      {
-        "name": "P_Modul_03",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_08",
-        "objects": []
-      },
-      {
-        "name": "P_Modul_17",
-        "objects": []
-      },
+      { "name": "P_Modul_03", "objects": ["P_Modul_03_01"] },
+      { "name": "P_Modul_08", "objects": ["P_Modul_08_01", "P_Modul_08_02"] },
       {
         "name": "P_Modul_18",
-        "objects": []
+        "objects": [
+          "P_Modul_18_02",
+          "P_Modul_18_04",
+          "P_Modul_18_03",
+          "P_Modul_18_01",
+          "P_Modul_18_05",
+          "P_Modul_18_06",
+          "P_Modul_18_10",
+          "P_Modul_18_11",
+          "P_Modul_18_12",
+          "P_Modul_18_14",
+          "P_Modul_18_13",
+          "P_Modul_18_07",
+          "P_Modul_18_08",
+          "P_Modul_18_09",
+          "P_Modul_18_15"
+        ]
       },
-      {
-        "name": "P_Modul_19",
-        "objects": []
-      },
+      { "name": "P_Modul_19", "objects": ["P_Modul_19_01"] },
       {
         "name": "P_Modul_25",
-        "objects": []
+        "objects": [
+          "P_Modul_25_01",
+          "P_Modul_25_02",
+          "P_Modul_25_03",
+          "P_Modul_25_04"
+        ]
       },
-      {
-        "name": "P_Modul_26",
-        "objects": []
-      },
+      { "name": "P_Modul_26", "objects": ["P_Modul_26_01", "P_Modul_26_02"] },
       {
         "name": "P_Modul_29",
-        "objects": []
+        "objects": ["P_Modul_29_01", "P_Modul_29_02", "P_Modul_29_03"]
       },
       {
         "name": "P_Modul_30",
-        "objects": []
+        "objects": ["P_Modul_30_01", "P_Modul_30_02", "P_Modul_30_03"]
       },
       {
         "name": "P_Modul_34",
-        "objects": []
+        "objects": ["P_Modul_34_01", "P_Modul_34_02", "P_Modul_34_03"]
       },
       {
         "name": "P_Modul_37",
-        "objects": []
+        "objects": [
+          "P_Modul_37_01",
+          "P_Modul_37_02",
+          "P_Modul_37_03",
+          "P_Modul_37_04"
+        ]
       },
       {
         "name": "P_Modul_41",
-        "objects": []
+        "objects": [
+          "P_Modul_41_01",
+          "P_Modul_41_02",
+          "P_Modul_41_03",
+          "P_Modul_41_04",
+          "P_Modul_41_05",
+          "P_Modul_41_06",
+          "P_Modul_41_07",
+          "P_Modul_41_08",
+          "P_Modul_41_21",
+          "P_Modul_41_22"
+        ]
+      },
+      {
+        "name": "P_Trafo_Paper",
+        "objects": [
+          "P_Trafo_Paper_01",
+          "P_Trafo_Paper_02",
+          "P_Trafo_Paper_03",
+          "P_Trafo_Paper_05",
+          "P_Trafo_Paper_07",
+          "P_Trafo_Paper_04",
+          "P_Trafo_Paper_06",
+          "P_Trafo_Paper_08",
+          "P_Trafo_Paper_09"
+        ]
+      },
+      {
+        "name": "P_Trafo_Stone",
+        "objects": ["P_Trafo_Stone_02", "P_Trafo_Stone_01", "P_Trafo_Stone_03"]
+      },
+      {
+        "name": "P_Trafo_Wood",
+        "objects": [
+          "P_Trafo_Wood_01",
+          "P_Trafo_Wood_02",
+          "P_Trafo_Wood_03",
+          "P_Trafo_Wood_04",
+          "P_Trafo_Wood_05",
+          "P_Trafo_Wood_06",
+          "P_Trafo_Wood_07",
+          "P_Trafo_Wood_08",
+          "P_Trafo_Wood_09"
+        ]
       }
-    ]
+    ],
+    "depthTestCubes": ["Quader01", "Quader02", "Quader03"],
+    "floors": [
+      {
+        "name": "Phys_Floors",
+        "objects": [
+          "A01_Floor_02",
+          "A01_Floor_03",
+          "A01_Modul_02",
+          "A01_Floor_04",
+          "A01_Floor_05",
+          "A01_Modul27",
+          "A02_Floor_01",
+          "A02_Modul13_01",
+          "A03_Floor_01",
+          "A04_Floor_01",
+          "A04_Floor_02",
+          "A04_Floor_03",
+          "A04_Modul13",
+          "A05_Floor_01",
+          "A01_Floor_01",
+          "A05_Modul27",
+          "A03_Floor_02",
+          "A05_Floor_02",
+          "A05_Modul27_01",
+          "A05_Modul27_02",
+          "A05_Col_Mesh_Modul25"
+        ]
+      },
+      { "name": "Phys_FloorStopper", "objects": ["A01_Floor_Stopper"] },
+      {
+        "name": "Phys_FloorRails",
+        "objects": [
+          "A01_Rail_02",
+          "A01_Rail_03",
+          "A01_Rail_04",
+          "A01_Rail_05",
+          "A02_Rail_02",
+          "A02_Rail_01",
+          "A03_Rail_01",
+          "A03_Rail_02",
+          "A04_Rail_01",
+          "A01_Rail_01"
+        ]
+      }
+    ],
+    "sectors": {
+      "1": [
+        "P_Modul_34_01",
+        "P_Modul_34_02",
+        "P_Extra_Point_04",
+        "P_Trafo_Stone_01",
+        "P_Modul_01_01",
+        "P_Modul_37_01",
+        "P_Modul_18_02",
+        "P_Trafo_Paper_01",
+        "P_Modul_18_01",
+        "P_Extra_Point_01",
+        "P_Modul_18_03",
+        "P_Modul_18_04",
+        "P_Trafo_Wood_01",
+        "P_Trafo_Paper_02",
+        "P_Trafo_Wood_02",
+        "P_Modul_41_08",
+        "P_Modul_41_07",
+        "P_Modul_41_06",
+        "P_Modul_41_05",
+        "P_Modul_41_04",
+        "P_Modul_41_03",
+        "P_Modul_41_02",
+        "P_Modul_41_01",
+        "P_Modul_34_03",
+        "P_Dome_01",
+        "P_Extra_Point_05",
+        "P_Trafo_Stone_02",
+        "P_Modul_01_04",
+        "P_Ball_Stone_01",
+        "P_Dome_02",
+        "P_Extra_Point_12"
+      ],
+      "2": [
+        "P_Modul_26_01",
+        "P_Modul_01_02",
+        "P_Trafo_Wood_03",
+        "P_Ball_Paper_01",
+        "P_Ball_Paper_02",
+        "P_Extra_Point_03",
+        "P_Extra_Point_02",
+        "P_Modul_37_02",
+        "P_Modul_18_05",
+        "P_Trafo_Paper_03",
+        "P_Modul_18_06",
+        "P_Modul_26_02",
+        "P_Modul_08_01",
+        "P_Modul_30_01",
+        "P_Extra_Life_02"
+      ],
+      "3": [
+        "P_Extra_Point_06",
+        "P_Extra_Point_07",
+        "P_Extra_Point_08",
+        "P_Modul_18_10",
+        "P_Modul_18_11",
+        "P_Modul_18_12",
+        "P_Modul_29_01",
+        "P_Trafo_Wood_04",
+        "P_Trafo_Paper_05",
+        "P_Trafo_Wood_06",
+        "P_Modul_03_01",
+        "P_Modul_08_02",
+        "P_Modul_18_13",
+        "P_Modul_18_14",
+        "P_Modul_30_03",
+        "P_Trafo_Paper_07"
+      ],
+      "4": [
+        "P_Extra_Point_09",
+        "P_Modul_25_01",
+        "P_Modul_37_03",
+        "P_Modul_29_03",
+        "P_Modul_37_04",
+        "P_Modul_41_21",
+        "P_Modul_41_22",
+        "P_Modul_30_02",
+        "P_Modul_01_03",
+        "P_Modul_29_02",
+        "P_Trafo_Wood_05",
+        "P_Modul_19_01",
+        "P_Extra_Point_13"
+      ],
+      "5": [
+        "P_Modul_18_07",
+        "P_Trafo_Paper_04",
+        "P_Trafo_Wood_07",
+        "P_Trafo_Stone_03",
+        "P_Box_04",
+        "P_Box_05",
+        "P_Box_06",
+        "P_Box_07",
+        "P_Box_08",
+        "P_Ball_Stone_02",
+        "P_Extra_Life_01",
+        "P_Box_09",
+        "P_Ball_Paper_04",
+        "P_Ball_Paper_05",
+        "P_Ball_Paper_06",
+        "P_Extra_Point_11",
+        "P_Box_02",
+        "P_Box_03",
+        "P_Ball_Paper_03",
+        "P_Dome_03",
+        "P_Extra_Point_10",
+        "P_Trafo_Paper_06",
+        "P_Modul_25_02",
+        "P_Modul_18_08",
+        "P_Modul_18_09",
+        "P_Modul_18_15",
+        "P_Modul_25_03",
+        "P_Trafo_Paper_08",
+        "P_Trafo_Paper_09",
+        "P_Trafo_Wood_08",
+        "P_Trafo_Wood_09",
+        "P_Modul_25_04"
+      ]
+    },
+    "internalObjects": {
+      "PE_LevelEnd": "PE_Balloon_01",
+      "PS_LevelStart": "PS_FourFlames_01",
+      "PC_CheckPoints": {
+        "2": "PC_TwoFlames_01",
+        "3": "PC_TwoFlames_02",
+        "4": "PC_TwoFlames_03",
+        "5": "PC_TwoFlames_04"
+      },
+      "PR_ResetPoints": {
+        "1": "PR_Resetpoint_01",
+        "2": "PR_Resetpoint_02",
+        "3": "PR_Resetpoint_03",
+        "4": "PR_Resetpoint_04",
+        "5": "PR_Resetpoint_05"
+      }
+    }
   }
 }
