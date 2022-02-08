@@ -8,6 +8,19 @@ using Ballance2.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2022 mengyu
+*
+* 模块名：     
+* PackageManagerContentWindow.cs
+* 
+* 用途：
+* 模块管理器内容窗口的对话框逻辑。
+*
+* 作者：
+* mengyu
+*/
+
 public class PackageManagerContentWindow : MonoBehaviour
 {
   public Text TextPackageName;

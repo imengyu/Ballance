@@ -11,6 +11,19 @@ using Ballance2.UI.Core.Controls;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2022 mengyu
+*
+* 模块名：     
+* PackageManagerWindow.cs
+* 
+* 用途：
+* 模块管理器窗口的对话框逻辑。
+*
+* 作者：
+* mengyu
+*/
+
 public class PackageManagerWindow : MonoBehaviour
 {
   private const string TAG = "PackageManagerWindow";

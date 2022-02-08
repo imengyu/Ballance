@@ -4,6 +4,19 @@ using Ballance2.Services.InputManager;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2022 mengyu
+*
+* 模块名：     
+* GlobalGameUserAgreementTipDialog.cs
+* 
+* 用途：
+* 全局开始时的用户协议的对话框逻辑。
+*
+* 作者：
+* mengyu
+*/
+
 public class GlobalGameUserAgreementTipDialog : MonoBehaviour {
   public Button ButtonUserAgreementAllow = null;
   public Button ButtonUserAgreementDisallow = null;

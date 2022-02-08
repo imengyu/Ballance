@@ -14,7 +14,7 @@ using UnityEngine;
 * 
 * Lua 中不允许直接访问文件系统，因此此处提供了一些方法来允许Lua读写本地配置文件,操作或删除本地目录等。
 * 但注意，这些API不允许访问用户文件，只允许访问以下目录：
-* 游戏主目录（exe同级与子目录）
+* 游戏主目录（Windows/linux exe同级与子目录）
 * Application.dataPath
 * Application.persistentDataPath
 * Application.temporaryCachePath

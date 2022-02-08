@@ -30,7 +30,7 @@ namespace Ballance2.Utils
         /// </summary>
         /// <param name="skipFrame">要跳过的帧，为0不跳过</param>
         /// <returns></returns>
-        [LuaApiDescription("获取当前调用堆栈", "")]
+        [LuaApiDescription("获取当前调用堆栈 (不能获取Lua调用堆栈，lua请使用 debug.traceback() ", "")]
         [LuaApiParamDescription("skipFrame", "要跳过的帧，为0不跳过")]
         public static string GetStackTrace(int skipFrame)
         {
@@ -170,13 +170,14 @@ namespace Ballance2.Utils
         }
 
         /// <summary>
-        /// 打印LUA变量
+        /// 打印LUA变量。会按层级自动展开变量
         /// </summary>
-        /// <param name="any">LUA变量</param>
+        /// <param name="any">LUA变量。会按层级自动展开变量</param>
+        /// <param name="max_level">打印最大层级</param>
         /// <returns></returns>
         [LuaApiDescription("打印LUA变量", "")]
         [LuaApiParamDescription("any", "LUA变量")]
-        [LuaApiParamDescription("max_level", "打印最大级")]
+        [LuaApiParamDescription("max_level", "打印最大层级")]
         public static string PrintLuaVarAuto(object any, int max_level) {
 
             StringBuilder sb = new StringBuilder();

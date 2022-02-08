@@ -16,7 +16,9 @@ using System.Collections.Generic;
 * 
 * 用途：
 * UI页实例
-*
+* 页与窗口不太一样，窗口可以同时打开多个，页只能同时显示一个，相当于独占的全屏窗口。
+* 要创建页，可以调用 GameUIManager.RegisterPage 函数。
+* 
 * 作者：
 * mengyu
 */
@@ -81,9 +83,9 @@ namespace Ballance2.UI.Core
     private int escBackId = 0;
 
     /// <summary>
-    /// 显示页
+    /// 显示页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。
     /// </summary>
-    [LuaApiDescription("显示页")]
+    [LuaApiDescription("显示页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。")]
     public void Show()
     {
       uIManager = GameManager.Instance.GetSystemService<GameUIManager>();
@@ -99,9 +101,9 @@ namespace Ballance2.UI.Core
     }
 
     /// <summary>
-    /// 隐藏页
+    /// 隐藏页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。
     /// </summary>
-    [LuaApiDescription("隐藏页")]
+    [LuaApiDescription("隐藏页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。")]
     public void Hide()
     {
       gameObject.SetActive(false);

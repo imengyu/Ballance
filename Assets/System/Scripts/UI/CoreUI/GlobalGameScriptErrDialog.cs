@@ -2,6 +2,19 @@ using Ballance2;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2022 mengyu
+*
+* 模块名：     
+* GlobalGameScriptErrDialog.cs
+* 
+* 用途：
+* 全局游戏脚本错误的对话框逻辑。
+*
+* 作者：
+* mengyu
+*/
+
 public class GlobalGameScriptErrDialog : MonoBehaviour
 {
   public Text GlobalGameScriptErrContent;

@@ -21,7 +21,7 @@ namespace Ballance2.Utils
   /// Lua 工具类
   /// </summary>
   [CustomLuaClass]
-  [LuaApiDescription("Lua 工具类")]
+  [LuaApiDescription("Lua 工具类. 部分函数为 C# 设计，在Lua端调用可能会有性能问题。")]
   public class LuaUtils
   {
     /// <summary>

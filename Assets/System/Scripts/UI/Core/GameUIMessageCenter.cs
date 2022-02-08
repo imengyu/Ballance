@@ -13,6 +13,8 @@ using static Ballance2.Services.GameManager;
 * 用途：
 * UI 消息中心，方便Lua层处理UI事件。
 *
+* 此类提供了简单事件的绑定、数值同步绑定两个功能。
+*
 * 作者：
 * mengyu
 */

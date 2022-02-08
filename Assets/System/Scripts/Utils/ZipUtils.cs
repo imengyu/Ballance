@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 * ZipUtils.cs
 * 
 * 用途：
-* Zip 帮助类
+* Zip 帮助类。用于读取操作Zip文件
 *
 * 作者：
 * mengyu
@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace Ballance2.Utils
 {
   /// <summary>
-  /// Zip 帮助类
+  /// Zip 帮助类。用于读取操作Zip文件
   /// </summary>
   [SLua.CustomLuaClass]
   public class ZipUtils
@@ -101,7 +101,7 @@ namespace Ballance2.Utils
       }
       return zipStream;
     }
-    // <summary>
+    /// <summary>
     /// 打开流为 Zip 文件句柄
     /// </summary>
     /// <param name="stream">文件流</param>

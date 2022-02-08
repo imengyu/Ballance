@@ -2,12 +2,9 @@ using Ballance2.Utils;
 using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
-using Ballance2.Services.I18N;
 using Ballance2.Entry;
 using System.Collections.Generic;
 using UnityEngine;
-using Ballance2.Package;
-using Ballance2.Base;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -23,6 +20,17 @@ using Ballance2.Base;
 * 作者：
 * mengyu
 *
+*/
+
+/*
+
+此类用于为整个框架的初始化提供一个包装，具体的初始化代码抽离出来放在 
+Assets\System\Scripts\Services\Init\GameSystemInit.cs 中。
+
+此类还负责提供注册必要的系统服务功能，获取系统服务功能（同GameManager.GetSystemService）。
+
+索引器通过调用 GameSystem.Init / GameSystem.PreInit 来启动框架。
+
 */
 
 namespace Ballance2
@@ -41,6 +49,7 @@ namespace Ballance2
     /// </summary>
     /// <param name="act">当前操作</param>
     public delegate void SysHandler(int act);
+
     private static SysHandler sysHandler = null;
 
     public const int ACTION_INIT = 1;
@@ -78,6 +87,7 @@ namespace Ballance2
 
     #region 系统服务
 
+    //系统服务容器
     private static Dictionary<string, GameService> systemService = new Dictionary<string, GameService>();
 
     /// <summary>

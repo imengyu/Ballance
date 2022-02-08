@@ -12,7 +12,8 @@ using UnityEngine.EventSystems;
 * UIDragControl.cs
 * 
 * 用途：
-* UI 控件拖动脚本
+* UI 窗口的控件拖动脚本
+* 为 Window 提供了拖动功能。
 *
 * 作者：
 * mengyu
@@ -21,7 +22,7 @@ using UnityEngine.EventSystems;
 namespace Ballance2.UI.Utils
 {
   /// <summary>
-  /// UI 控件拖动脚本
+  /// UI 窗口的控件拖动脚本
   /// </summary>
   public class UIDragControl : UIBehaviour
   {

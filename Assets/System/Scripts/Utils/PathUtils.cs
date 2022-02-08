@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
-using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -39,12 +35,12 @@ namespace Ballance2.Utils
     public static bool IsAbsolutePath(string path)
     {
 #if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN
-            if (path.Length > 2)
-                return path[1] == ':' && ((path.Length > 3 && path[2] == '\\' && path[3] == '\\') || path[2] == '/');
+      if (path.Length > 2)
+        return path[1] == ':' && ((path.Length > 3 && path[2] == '\\' && path[3] == '\\') || path[2] == '/');
 #elif (UNITY_EDITOR && UNITY_EDITOR_OSX) || UNITY_ANDROID || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX
-            return path.StartsWith("/");
+      return path.StartsWith("/");
 #elif UNITY_IOS
-            return path.StartsWith("/");
+      return path.StartsWith("/");
 #endif
       return false;
     }

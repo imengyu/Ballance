@@ -9,6 +9,8 @@ using UnityEngine;
 * 
 * 用途：
 * UI控件数据绑定器。该绑定器用在需要绑定的UI控件上。
+* 
+* 
 *
 * 作者：
 * mengyu

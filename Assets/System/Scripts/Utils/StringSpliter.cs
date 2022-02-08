@@ -10,6 +10,8 @@ using System.Collections.Generic;
 * 用途：
 * 字符串分割器
 *
+* 可快速按要求分割字符串。
+*
 * 作者：
 * mengyu
 *
