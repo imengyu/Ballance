@@ -13,10 +13,10 @@
     "skyBox": "I",
     "skyLayer": "SkyVoterx",
     "nextLevel": "level13",
-    "lightColor": "#ffffff",
-    "customModEventName": "",
+    "lightColor": "#404649",
+    "customModEventName": "CoreBrizLevelEventHandler",
     "sectorCount": 8,
-    "endWithUFO": false,
+    "endWithUFO": true,
     "autoGroup": false,
     "groups": [
       {
@@ -198,13 +198,11 @@
           "A01_Floor_01",
           "A02_Floor_01",
           "A02_Floor_02",
-          "A02_Halfpipe_01",
           "A01_Floor_Columns_Top02",
           "A04_Floor_01",
           "A04_Floor_02",
           "A04_Floor_03",
           "A04_Floor_04",
-          "A04_WoodBridges",
           "A05_Floor_01",
           "A05_Floor_02",
           "A05_Floor_03",
@@ -213,14 +211,21 @@
           "A08_Floor_01",
           "A03_Floor_02",
           "A03_Floor_01",
+          "A07_Floor_02",
+          "A07_Floor_01",
+          "A7_invisibleCollCube"
+        ]
+      },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": [
+          "A02_Halfpipe_01",
+          "A04_WoodBridges",
           "A08_Halfpipe_04",
           "A08_Halfpipe_01",
           "A08_Halfpipe_02",
           "A08_Halfpipe_03",
-          "A08_Halfpipe_01a",
-          "A07_Floor_02",
-          "A07_Floor_01",
-          "A7_invisibleCollCube"
+          "A08_Halfpipe_01a"
         ]
       },
       { "name": "Phys_FloorStopper", "objects": ["Stopper"] },

@@ -28,6 +28,7 @@ function CreateGamePlayUI(package)
   PageGameQuitAsk:CreateContent(package)
   PageGameRestartAsk:CreateContent(package)
   PageGamePause:CreateContent(package)
+  PageGamePause.CanEscBack = false
   PageGameWin:CreateContent(package)
   PageGameWinRestartAsk:CreateContent(package)
   PageGameWin.CanEscBack = false

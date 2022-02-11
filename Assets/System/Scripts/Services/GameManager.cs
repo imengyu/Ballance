@@ -420,8 +420,6 @@ namespace Ballance2.Services
 
       #region 加载SystemPackages中定义的包
 
-      Profiler.BeginSample("GameManagerLoadSystemPackages");
-
       XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
 
       int loadedPackageCount = 0, failedPackageCount = 0;
@@ -523,8 +521,6 @@ namespace Ballance2.Services
           }
         }
       }
-
-      Profiler.EndSample();
 
       yield return new WaitForSeconds(0.2f);
 
@@ -962,8 +958,10 @@ namespace Ballance2.Services
 
     private bool Application_wantsToQuit()
     {
-      if (!gameIsQuitEmitByGameManager)
+      if (!gameIsQuitEmitByGameManager) {
         DoQuit();
+        return false;
+      }
       return true;
     }
     private void DoQuit()

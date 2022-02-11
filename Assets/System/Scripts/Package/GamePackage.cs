@@ -1046,18 +1046,16 @@ namespace Ballance2.Package
     /// </summary>
     private void FixBundleShader()
     {
-#if UNITY_EDITOR //editor 模式下修复一下透明shader
       if (AssetBundle == null)
         return;
+#if UNITY_EDITOR //editor 模式下修复一下透明shader
+      int _SrcBlend = 0;
+      int _DstBlend = 0;
 
       var materials = AssetBundle.LoadAllAssets<Material>();
       var standardShader = Shader.Find("Standard");
       if (standardShader == null)
         return;
-
-      int _SrcBlend = 0;
-      int _DstBlend = 0;
-
       foreach (Material material in materials)
       {
         var shaderName = material.shader.name;
@@ -1079,6 +1077,22 @@ namespace Ballance2.Package
             material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
             material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
           }
+        }
+      } 
+#elif UNITY_STANDALONE
+      var materials = AssetBundle.LoadAllAssets<Material>();
+      var transparentShader = Shader.Find("Custom/TransparentShader");
+      if (transparentShader == null) {
+        Log.D(TAG, "Not found Custom/TransparentShader");
+        return;
+      }
+      foreach (Material material in materials)
+      {
+        var shaderName = material.shader.name;
+        if (shaderName == "Custom/TransparentShader")
+        {
+          material.shader = transparentShader;
+          Log.D(TAG, "Fix Shader for {0}", material.name);
         }
       }
 #endif

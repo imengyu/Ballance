@@ -33,6 +33,9 @@ function ModulCustomDebug()
   GamePlayInit(function ()
     local PR_Resetpoint = nil---@type GameObject
     local Modul_Placeholder = nil---@type GameObject
+    
+    --加载物理环境
+    GamePlay.GamePlayManager.GamePhysicsWorld:Create()
 
     --克隆路面
     local physicsData = GamePhysFloor['Phys_Floors'] 

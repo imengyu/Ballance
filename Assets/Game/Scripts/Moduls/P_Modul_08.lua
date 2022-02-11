@@ -26,10 +26,10 @@ function P_Modul_08:Active()
     if self._ForceState == 0 or self._ForceState == 2  then
       self.P_Modul_08_Schaukel_Force.Force = 0
     elseif self._ForceState == 1 then
-      self.P_Modul_08_Schaukel_Force.Force = 1.1
+      self.P_Modul_08_Schaukel_Force.Force = 1.1 * 2
       self.P_Modul_08_Schaukel:WakeUp()
     elseif self._ForceState == 3 then
-      self.P_Modul_08_Schaukel_Force.Force = -1.1
+      self.P_Modul_08_Schaukel_Force.Force = -1.1 * 2
     end
   end)
 end

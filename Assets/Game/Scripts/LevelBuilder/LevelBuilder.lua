@@ -439,6 +439,22 @@ function LevelBuilder:_LoadLevelInternal()
               if go:GetComponent(MeshCollider) == nil then
                 go:AddComponent(MeshCollider)
               end
+
+              if physicsData.HitSound then
+                local hitSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, 'Floor_'..name..'_HitSound')
+                
+                body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.3, 10, 0.5, 0.1)
+                body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.3, 10, 0.5, 0.1)
+                body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.3, 10, 0.5, 0.1)
+                --撞击处理回调
+                ---@param col_id number
+                ---@param speed_precent number
+                body.OnPhysicsCollDetection = function (_, col_id, speed_precent)
+                  hitSound.volume = speed_precent
+                  hitSound:Play()
+                end
+                body:EnableCollisionDetection()
+              end
             else
               Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
             end
@@ -610,25 +626,29 @@ function LevelBuilder:_LoadLevelInternal()
     if level.skyLayer == 'SkyLayer' then
       local oldSkyLayer = GameObject.Find('SkyLayer')
       if oldSkyLayer ~= nil then
-        self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.CorePackage:GetPrefabAsset('SkyLayer.prefab'), 'SkyLayer')
+        self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.CorePackage:GetPrefabAsset('FinalSkyLayer.prefab'), 'SkyLayer')
         self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
         self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
         self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
         oldSkyLayer:SetActive(false)
+        Log.D(TAG, 'Load SkyLayer object')
       else
         Log.W(TAG, 'Not found \'level.skyLayer\': SkyLayer object.')
       end
     elseif level.skyLayer == 'SkyVoterx' then
       local oldSkyLayer = GameObject.Find('SkyVoterx')
       if oldSkyLayer ~= nil then
-        self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.CorePackage:GetPrefabAsset('SkyVoterx.prefab'), 'SkyVoterx')
+        self._CurrentLevelSkyLayer = Game.Manager:InstancePrefab(Game.CorePackage:GetPrefabAsset('FinalSkyVoterx.prefab'), 'SkyVoterx')
         self._CurrentLevelSkyLayer.transform.position = oldSkyLayer.transform.position
         self._CurrentLevelSkyLayer.transform.rotation = oldSkyLayer.transform.rotation
         self._CurrentLevelSkyLayer.transform.localScale = oldSkyLayer.transform.localScale
         oldSkyLayer:SetActive(false)
+        Log.D(TAG, 'Load SkyVoterx object')
       else
         Log.W(TAG, 'Not found \'level.skyLayer\': SkyVoterx object.')
       end
+    else
+      Log.D(TAG, 'No SkyLayer')
     end
     local GameSettings = GameSettingsManager.GetSettings("core")
     --如果设置禁用了云层，则隐藏

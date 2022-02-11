@@ -55,6 +55,16 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 ![Demo1](https://imengyu.top/assets/images/demo1.png)
 
+## 项目编辑器内运行步骤
+
+提示：*(目前暂无Mac/Linux版本的物理引擎文件，请使用Win版本的Unity进行调试)*
+
+1. 请下载 Unity 2021.2.7+ 版本打开项目。
+2. 点击菜单“SLua”>“All”>“Make”以生成Lua相关文件。
+3. 打开 System/Scenes/MainScene.unity 场景。
+4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
+5. 点击运行，即可查看效果啦
+
 ## TODO: 项目待完成内容
 
 * ✅ 已完成
@@ -159,13 +169,3 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 微信: brave_imengyu
 **非常欢迎想与我一起开发的小伙伴加入我们一起做呀**
-
-## 项目运行步骤
-
-提示：*(目前暂无Mac/Linux版本的物理引擎文件，请使用Win版本的Unity进行调试)*
-
-1. 请下载 Unity 2021.2.7+ 版本打开项目。
-2. 点击菜单“SLua”>“All”>“Make”以生成Lua相关文件。
-3. 打开 Assets/Scenes/Game.unity 场景。
-4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
-5. 点击运行，即可查看效果啦

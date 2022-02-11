@@ -13,14 +13,14 @@ LevelBriz = ClassicObject:extend()
 
 function LevelBriz:new()
   self._LightEnable = false
-  self._LightTick = false
+  self._LightTick = math.random(10, 90)
   self._LightFlash = false
-  self._LightFlashTick = false
+  self._LightFlashTick = 0
 end
 function LevelBriz:Start()
   self._BrizLight.color = Color(0,0,0,1)
   Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'CoreBrizLevelEventHandler', 'LevelBrizHandler', function (evtName, params)
-    if params[0] == 'beforeStart' then
+    if params[1] == 'beforeStart' then
       Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'GAME_START', 'LevelBrizHandler', function ()
         self._LightEnable = true
         return false

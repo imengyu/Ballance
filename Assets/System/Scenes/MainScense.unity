@@ -418,6 +418,10 @@ MonoBehaviour:
     Name: PackageManageWindow
   - Object: {fileID: 5196423555617978852, guid: 0b9d31b052434d747b63835bf32caaa9, type: 3}
     Name: GameDebugFloatButton
+  - Object: {fileID: 1292172246486946, guid: 4d8c6c9fba0e46f489b21fd7d92d739d, type: 3}
+    Name: RuntimeHierarchy
+  - Object: {fileID: 1530605722893704, guid: d39ad26c554f1a04d870956f7fac6fd8, type: 3}
+    Name: RuntimeInspector
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
@@ -458,7 +462,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -530,7 +534,7 @@ MonoBehaviour:
   ModulInstance: {fileID: 585958241353488274, guid: f03ecfc32be2e4247b12fc9c26c4e392, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
-  LevelName: level03
+  LevelName: level12
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

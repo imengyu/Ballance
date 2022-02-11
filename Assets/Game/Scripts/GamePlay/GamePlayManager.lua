@@ -106,6 +106,8 @@ function GamePlayManager:OnDestroy()
   local Mediator = Game.Mediator;
   local GameDebugCommandServer = Game.Manager.GameDebugCommandServer;
 
+  Game.UIManager:DeleteKeyListen(self.escKeyId)
+
   --取消注册全局事件
 
   Mediator:UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart")
@@ -147,9 +149,8 @@ function GamePlayManager:_InitSounds()
   self._SoundLastSector.maxDistance = 130
 end
 function GamePlayManager:_InitKeyEvents() 
-  self.keyListener = KeyListener.Get(self.gameObject)
   --ESC键
-  self.keyListener:AddKeyListen(KeyCode.Escape, function (key, down)
+  self.escKeyId = Game.UIManager:ListenKey(KeyCode.Escape, function (key, down)
     if down then
       if not self.CurrentLevelPass then
         if self._IsGamePlaying then
@@ -359,14 +360,14 @@ end
 ---继续关卡
 function GamePlayManager:ResumeLevel() 
 
-  --停止继续
-  self.GamePhysicsWorld.Simulate = true
-
   Game.Mediator:DispatchGlobalEvent('GAME_RESUME', '*', {})
 
   --UI
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
   Game.UIManager:CloseAllPage()
+
+  --停止继续
+  self.GamePhysicsWorld.Simulate = true
   self:_Start(false)
 end
 

@@ -23,5 +23,6 @@ GamePhysFloor = {
     Elasticity = 0.3,
     Layer = GameLayers.LAYER_PHY_FLOOR_STOPPER,
     CollisionLayerName = 'Wood',
+    HitSound = 'core.sounds:Hit_WoodenFlap.wav',
   },
 }

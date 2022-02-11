@@ -21,9 +21,9 @@ function P_Modul_26:Active()
 
     --切换方向
     if self._ForceState then
-      self.P_Modul_26_Sack_Force.Force = 0.25
+      self.P_Modul_26_Sack_Force.Force = 0.5
     else
-      self.P_Modul_26_Sack_Force.Force = -0.25
+      self.P_Modul_26_Sack_Force.Force = -0.5
     end
   end)
 end
