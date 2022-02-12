@@ -16,8 +16,10 @@ local SystemLanguage = UnityEngine.SystemLanguage
 ---@param package GamePackage
 function CreateSettingsUI(package)
   local PageSettings = GameUIManager:RegisterPage('PageSettings', 'PageCommon')
+  local PageSettingsInGame = GameUIManager:RegisterPage('PageSettingsInGame', 'PageCommon')
   local PageSettingsAudio = GameUIManager:RegisterPage('PageSettingsAudio', 'PageCommon')
   local PageSettingsControls = GameUIManager:RegisterPage('PageSettingsControls', 'PageCommon')
+  local PageSettingsControlsMobile = GameUIManager:RegisterPage('PageSettingsControlsMobile', 'PageCommon')
   local PageSettingsGraphics = GameUIManager:RegisterPage('PageSettingsGraphics', 'PageCommon')
   local PageLanguage = GameUIManager:RegisterPage('PageLanguage', 'PageCommon')
   local PageApplyLangDialog = GameUIManager:RegisterPage('PageApplyLangDialog', 'PageCommon')
@@ -25,7 +27,9 @@ function CreateSettingsUI(package)
   PageSettings:CreateContent(package)
   PageSettingsAudio:CreateContent(package)
   PageSettingsControls:CreateContent(package)
+  PageSettingsControlsMobile:CreateContent(package)
   PageSettingsGraphics:CreateContent(package)
+  PageSettingsInGame:CreateContent(package)
   PageLanguage:CreateContent(package)
   PageApplyLangDialog:CreateContent(package)
 
@@ -126,7 +130,12 @@ function BindSettingsUI(MessageCenter)
     updateControlKeyOverlookCam:Invoke(GameSettings:GetInt("control.overlookcam", KeyCode.Space))
     updateControlKeyRoateCam:Invoke(GameSettings:GetInt("control.roatecam", KeyCode.LeftShift))
     updateControlReverse:Invoke(GameSettings:GetBool("control.reverse", false))
-    GameUIManager:GoPage('PageSettingsControls') 
+    
+    if UNITY_IOS or UNITY_ANDROID then
+      GameUIManager:GoPage('PageSettingsControlsMobile') 
+    else
+      GameUIManager:GoPage('PageSettingsControls') 
+    end
   end)
   MessageCenter:SubscribeEvent('BtnSettingsAudioClick', function () 
     updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 100))

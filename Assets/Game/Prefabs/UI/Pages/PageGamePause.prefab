@@ -507,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: BtnSettingsClick
+      value: BtnPauseSettingsClick
       objectReference: {fileID: 0}
     - target: {fileID: 2301651035551441949, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

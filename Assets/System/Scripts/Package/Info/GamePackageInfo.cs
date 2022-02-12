@@ -211,6 +211,7 @@ namespace Ballance2.Package
   /// 模块依赖信息
   /// </summary>
   [CustomLuaClass]
+  [System.Serializable]
   [LuaApiDescription("模块依赖信息")]
   public class GamePackageDependencies
   {

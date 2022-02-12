@@ -45,6 +45,7 @@ function CreateGamePlayUI(package)
   MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
   MessageCenter:SubscribeEvent('BtnGameWinRestartClick', function () GameUIManager:GoPage('PageGameWinRestartAsk') end)
   MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
+  MessageCenter:SubscribeEvent('BtnPauseSettingsClick', function () GameUIManager:GoPage('PageSettingsInGame') end)
   MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
     GameUIManager:HideCurrentPage()
     Game.GamePlay.GamePlayManager:RestartLevel()
@@ -60,6 +61,8 @@ function CreateGamePlayUI(package)
   MessageCenter:SubscribeEvent('BtnResumeClick', function () 
     Game.GamePlay.GamePlayManager:ResumeLevel()
   end)
+
+
 
   --高分默认数据
   local HighscoreEntryName = PageHighscoreEntry.Content:Find('InputField'):GetComponent(InputField) ---@type InputField

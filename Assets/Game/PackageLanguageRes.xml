@@ -63,6 +63,15 @@ https://imengyu.top/ballanceProject/bugs/ 向我们反馈错误
     <Text name="core.ui.SettingsYouAreInDebugMode">你已经在开发者模式了哦</Text>
     <Text name="core.ui.SettingsClickNTimeToDebugMode">再点击 {0} 次进入开发者模式了</Text>
     <Text name="core.ui.SettingsVersion">版本：{0}</Text>
+    <Text name="core.ui.StartThisLevel">游玩此关卡</Text>
+    <Text name="core.ui.PreviewThisLevel">预览此关卡</Text>
+    <Text name="core.ui.Refresh">刷新</Text>
+    <Text name="core.ui.FileNotExist">文件不存在</Text>
+    <Text name="core.ui.Loading">正在加载，请稍后</Text>
+    <Text name="core.ui.ChooseLevelInLeft">在左侧选择一个你要加载的关卡</Text>
+    <Text name="core.ui.LevelNoDepends">此关卡没有依赖额外的模组</Text>
+    <Text name="core.ui.LevelHasDepends">此关卡依赖 {0} 个额外的模组，已成功加载</Text>
+    <Text name="core.ui.LevelHasBadDepends">此关卡依赖 {0} 个额外的模组，{1} 个未能成功加载</Text>
     <Text name=""></Text>
   </Language>
   <Language name="English">

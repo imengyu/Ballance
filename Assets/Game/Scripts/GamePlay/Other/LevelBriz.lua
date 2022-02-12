@@ -56,6 +56,7 @@ function LevelBriz:FixedUpdate()
 end
 function LevelBriz:LightFlash()
   self._LightFlash = true
+  self._LightFlashTick = 0
   Game.SoundManager:PlayFastVoice('core.sounds.music:Music_thunder.wav', GameSoundType.Normal)
 end
 

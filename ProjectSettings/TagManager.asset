@@ -24,6 +24,7 @@ TagManager:
   - Ball
   - Speical
   - Others
+  - Phys_Dome
   layers:
   - Default
   - TransparentFX
@@ -31,32 +32,32 @@ TagManager:
   - Background
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - CustomRenderer
+  - EmptyLayer
+  - Speical
+  - Ball
+  - CustomLayer10
+  - CustomLayer11
+  - CustomLayer12
+  - CustomLayer13
+  - CustomLayer14
+  - CustomLayer15
+  - CustomLayer16
+  - CustomLayer17
+  - CustomLayer18
+  - CustomLayer19
+  - CustomLayer20
+  - CustomLayer21
+  - CustomLayer22
+  - CustomLayer23
+  - CustomLayer24
+  - CustomLayer25
+  - CustomLayer26
+  - PreservedLayer1
+  - PreservedLayer2
+  - PreservedLayer3
+  - PreservedLayer4
+  - PreservedLayer5
   m_SortingLayers:
   - name: Default
     uniqueID: 0

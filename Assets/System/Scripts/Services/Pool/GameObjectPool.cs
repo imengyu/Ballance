@@ -125,6 +125,15 @@ namespace Ballance2.Services.Pool
     {
       return this.poolRoot.Find(objName) != null;
     }
+    /// <summary>
+    /// 清除当前池所控根的子物体
+    /// </summary>
+    [LuaApiDescription("清除当前池所控根的子物体")]
+    public void Clear()
+    {
+      for(int i = this.poolRoot.childCount - 1; i >= 0; i--)
+        ReturnObjectToPool(this.poolRoot.GetChild(i).gameObject);
+    }
 
     /// <summary>
     /// 回退物体至池中，注意，只能回退当前池所控根的子物体

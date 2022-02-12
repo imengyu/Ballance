@@ -4,6 +4,7 @@
   "version": "关卡版本，例如1.0",
   "introduction": "关卡介绍文字，在256字以内",
   "url": "https://yourwebsite.com",
+  "allowPreview": false,
   "requiredPackages": [
     {
       "name": "com.your.mod.name",
