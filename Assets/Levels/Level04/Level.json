@@ -130,18 +130,7 @@
         "name": "Phys_Floors",
         "objects": [
           "A01_Floor",
-          "A01_Halfpipe_01",
-          "A01_Halfpipe_02",
-          "A01_Halfpipe_03",
-          "A01_Halfpipe_04",
-          "A01_Halfpipe_05",
-          "A03_Halfpipe_01",
-          "A03_Halfpipe_02",
           "A03_Floor",
-          "A03_Halfpipe_03",
-          "A05_Halfpipe_03",
-          "A05_Halfpipe_02",
-          "A05_Halfpipe_01",
           "A05_Floor_03",
           "A05_Floor_01",
           "A05_Floor_Columns_Top01",
@@ -160,6 +149,22 @@
         ]
       },
       { "name": "Phys_FloorStopper", "objects": ["A04_Floor_Stopper"] },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": [
+          "A01_Halfpipe_01",
+          "A01_Halfpipe_02",
+          "A01_Halfpipe_03",
+          "A01_Halfpipe_04",
+          "A01_Halfpipe_05",
+          "A03_Halfpipe_01",
+          "A03_Halfpipe_02",
+          "A03_Halfpipe_03",
+          "A05_Halfpipe_03",
+          "A05_Halfpipe_02",
+          "A05_Halfpipe_01"
+        ]
+      },
       {
         "name": "Phys_FloorRails",
         "objects": [

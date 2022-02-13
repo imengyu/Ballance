@@ -57,12 +57,12 @@ function MusicManager:Start()
     local type = args[1]
     if type == 'enable' then
       self:EnableBackgroundMusic()
-      Log.D(TAG, 'EnableBackgroundMusic');
+      Log.D(TAG, 'EnableBackgroundMusic')
     elseif type == 'disable' then
       self:DisableBackgroundMusic()
-      Log.D(TAG, 'DisableBackgroundMusic');
+      Log.D(TAG, 'DisableBackgroundMusic')
     else
-      Log.W(TAG, 'Unknow option '..type);
+      Log.W(TAG, 'Unknow option '..type)
       return false
     end
     return true

@@ -49,8 +49,8 @@ function GamePlayManager:Awake()
   self:_InitKeyEvents()
   self:_InitSettings()
 
-  local Mediator = Game.Mediator;
-  local GameDebugCommandServer = Game.Manager.GameDebugCommandServer;
+  local Mediator = Game.Mediator
+  local GameDebugCommandServer = Game.Manager.GameDebugCommandServer
 
   --注册全局事件
 
@@ -103,8 +103,8 @@ function GamePlayManager:OnDestroy()
 
   Log.D('GamePlayManager', 'GamePlayManager:OnDestroy')
   
-  local Mediator = Game.Mediator;
-  local GameDebugCommandServer = Game.Manager.GameDebugCommandServer;
+  local Mediator = Game.Mediator
+  local GameDebugCommandServer = Game.Manager.GameDebugCommandServer
 
   Game.UIManager:DeleteKeyListen(self.escKeyId)
 

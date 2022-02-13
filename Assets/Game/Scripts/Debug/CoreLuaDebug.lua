@@ -5,5 +5,5 @@ function CoreDebugLuaEntry()
 end
 
 function CoreDebugEmptyEntry()
-  Log.D('Debug', 'Enter CoreDebugEmptyEntry! ');
+  Log.D('Debug', 'Enter CoreDebugEmptyEntry! ')
 end

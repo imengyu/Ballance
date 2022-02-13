@@ -15,6 +15,10 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+/**
+  自定义关卡管理菜单的控制脚本
+*/
+
 public class StartCustomLevel : MonoBehaviour
 {
   public RectTransform PanelListContentView;
@@ -22,6 +26,7 @@ public class StartCustomLevel : MonoBehaviour
   public RectTransform PanelContent;
   public RectTransform PanelNoContent;
   public RectTransform PanelError;
+  public RectTransform PanelDepends;
   public Button ButtonBack;
   public Button ButtonStart;
   public Text TextRefresh;
@@ -38,12 +43,22 @@ public class StartCustomLevel : MonoBehaviour
   public Sprite IconSuccess;
   public Sprite IconError;
 
+  public Text TextPanelDependsTitle;
+  public GameObject PanelDependsListPrefab;
+  public RectTransform PanelDependsListContentView;
+  public Button ButtonDependsBack;
+  public Button ButtonEnableAllDepends;
+
   private GameUIManager gameUIManager;
   private GameSoundManager gameSoundManager;
+  private GamePackageManager gamePackageManager;
+
   private GameObjectPool itemPrefabPool;
+  private GameObjectPool itemDependsPrefabPool;
 
   private List<GameLevelInfo> loadedLevels = new List<GameLevelInfo>();
   private GameLevelInfo selectedItem = null;
+  private bool dependesChanged = true;
 
   private class GameLevelInfo {
     public string name;
@@ -59,8 +74,11 @@ public class StartCustomLevel : MonoBehaviour
     public string dependsStatus;
     public Sprite logo;
 
-    public GameLevelInfo(string name) {
+    private GamePackageManager pm = null;
+
+    public GameLevelInfo(string name, GamePackageManager pm) {
       this.name = name;
+      this.pm = pm;
     }
 
     public void Set(GameLevelInfoJSON o) {
@@ -71,6 +89,37 @@ public class StartCustomLevel : MonoBehaviour
       url = o.url;
       allowPreview = o.allowPreview;
       requiredPackages = new List<GameLevelDependencies>(o.requiredPackages);
+
+      if(requiredPackages.Count == 0) {
+        //没有依赖
+        dependsSuccess = true;
+        dependsStatus = I18N.Tr("core.ui.LevelNoDepends");
+      } else {
+        //加载当前关卡的依赖状态
+        int successCount = 0;
+        for(var i = 0; i < requiredPackages.Count; i++) {
+          var p = requiredPackages[i];
+          var package = pm.FindRegisteredPackage(p.name);
+          if(package == null)
+            p.loaded = "not";
+          else {
+            if(package.PackageVersion < p.minVersion)
+              p.loaded = "vermis";
+            else {
+              successCount ++;
+              p.loaded = "true";
+            }
+          }
+        }
+        //设置状态文字
+        if(successCount == requiredPackages.Count) {
+          dependsSuccess = true;
+          dependsStatus = I18N.TrF("core.ui.LevelHasDepends", "", successCount);
+        } else {
+          dependsSuccess = false;
+          dependsStatus = I18N.TrF("core.ui.LevelHasBadDepends", "", requiredPackages.Count , requiredPackages.Count - successCount);
+        }
+      }
     }
   }
   [Serializable]
@@ -88,14 +137,22 @@ public class StartCustomLevel : MonoBehaviour
   {
     public string name;
     public int minVersion;
+
+    public string loaded { get;set; }
   }
 
   private void Start() {
     gameUIManager = GameSystem.GetSystemService("GameUIManager") as GameUIManager;
     gameSoundManager = GameSystem.GetSystemService("GameSoundManager") as GameSoundManager;
+    gamePackageManager = GameSystem.GetSystemService("GamePackageManager") as GamePackageManager;
+
     itemPrefabPool = new GameObjectPool("itemPrefabPool", PanelListPrefab, 32, 256, PanelListContentView);
+    itemDependsPrefabPool = new GameObjectPool("itemDependsPrefabPool", PanelDependsListPrefab, 32, 128, PanelDependsListContentView);
+
     ButtonStart.onClick.AddListener(StartLevel);
     ButtonBack.onClick.AddListener(Back);
+    ButtonDependsBack.onClick.AddListener(HideDependsInfo);
+    ButtonEnableAllDepends.onClick.AddListener(EnableAllDepends);
     EventTriggerListener.Get(TextRefresh.gameObject).onClick = (go) => LoadLevelList(true);
     EventTriggerListener.Get(TextPreview.gameObject).onClick = (go) => PreviewLevel();
     EventTriggerListener.Get(TextDepends.gameObject).onClick = (go) => ShowDependsInfo();
@@ -120,8 +177,40 @@ public class StartCustomLevel : MonoBehaviour
     }
   }
   private void ShowDependsInfo() {
-    gameUIManager.GlobalToast("TODO!");
-  }  
+    //显示关卡依赖信息
+    PanelDepends.gameObject.SetActive(true);
+    if(dependesChanged) {
+      dependesChanged = false;
+      itemDependsPrefabPool.Clear();
+
+      TextPanelDependsTitle.text = I18N.TrF("core.ui.LevelAllDependsTile", "", selectedItem.name, selectedItem.requiredPackages.Count);
+      selectedItem.requiredPackages.ForEach((p) => {
+        var go = itemDependsPrefabPool.NextAvailableObject();
+        var text = go.transform.Find("Text").GetComponent<Text>();
+        var button = go.transform.Find("Button").GetComponent<Button>();
+        if(p.loaded == "true")
+          text.text = "";
+        else if(p.loaded == "vermis")
+          text.text = "<color=#f00>" + p.name + " >= " + p.minVersion + "</color> (" + I18N.Tr("core.ui.VersionMismatch") + ")";
+        else
+          text.text = "<color=#f00>" + p.name + " >= " + p.minVersion + "</color>";
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => {
+          Dictionary<string, string> options = new Dictionary<string, string>();
+          options.Add("LocatePackage", p.name);
+          gameUIManager.GoPageWithOptions("PackageManageWindow", options);
+        });
+      });
+    }
+  }   
+  private void EnableAllDepends() {
+    //启用所有依赖
+    gameUIManager.GlobalToast(I18N.Tr("core.ui.LevelEnableAllDependsTodo"));
+  }
+  private void HideDependsInfo() {
+    PanelDepends.gameObject.SetActive(false);
+  } 
   private void PreviewLevel() {
     gameUIManager.GlobalToast("TODO!");
   }
@@ -141,92 +230,97 @@ public class StartCustomLevel : MonoBehaviour
     go.name = info.name;
   }
   private IEnumerator SelectLevel(GameLevelInfo info) {
-    selectedItem = info;
+    if(selectedItem != info) {
+      selectedItem = info;
+      dependesChanged = true;
 
-    //加载信息
-    if(!selectedItem.infoLoaded) {
-      selectedItem.infoLoaded = true;
+      //加载信息
+      if(!selectedItem.infoLoaded) {
+        selectedItem.infoLoaded = true;
 
-      TextErrorContent.text = I18N.Tr("core.ui.Loading");
-      PanelError.gameObject.SetActive(true);
-      PanelContent.gameObject.SetActive(false);
-      PanelNoContent.gameObject.SetActive(false);
+        TextErrorContent.text = I18N.Tr("core.ui.Loading");
+        PanelError.gameObject.SetActive(true);
+        PanelContent.gameObject.SetActive(false);
+        PanelNoContent.gameObject.SetActive(false);
 
-      string jsonString = "";
-#if UNITY_EDITOR
-      string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + name;
-      //在编辑器中加载
-      if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
-        jsonString = File.ReadAllText(realPackagePath);
-      else
-#else
-      if(true) 
-#endif
-      {
-        string path = GamePathManager.GetLevelRealPath(info.name.ToLower(), false);
-        UnityWebRequest request = UnityWebRequest.Get(path);
-        yield return request.SendWebRequest();
-
-        if (request.result != UnityWebRequest.Result.Success)
+        string jsonString = "";
+  #if UNITY_EDITOR
+        string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + name;
+        //在编辑器中加载
+        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
+          jsonString = File.ReadAllText(realPackagePath);
+        else
+  #else
+        if(true) 
+  #endif
         {
-          if (request.responseCode == 404)
-            info.error = I18N.Tr("core.ui.FileNotExist");
-          else if (request.responseCode == 403)
-            info.error = "No permission to read file";
-          else
-            info.error = "Http error: " + request.responseCode;
-        } else {
-          AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(request.downloadHandler.data);
-          yield return assetBundleCreateRequest;
-          var assetBundle = assetBundleCreateRequest.assetBundle;
+          string path = GamePathManager.GetLevelRealPath(info.name.ToLower(), false);
+          UnityWebRequest request = UnityWebRequest.Get(path);
+          yield return request.SendWebRequest();
 
-          if (assetBundle == null)
-            info.error = "Wrong level, failed to load AssetBundle";
-          else {
+          if (request.result != UnityWebRequest.Result.Success)
+          {
+            if (request.responseCode == 404)
+              info.error = I18N.Tr("core.ui.FileNotExist");
+            else if (request.responseCode == 403)
+              info.error = "No permission to read file";
+            else
+              info.error = "Http error: " + request.responseCode;
+          } else {
+            AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(request.downloadHandler.data);
+            yield return assetBundleCreateRequest;
+            var assetBundle = assetBundleCreateRequest.assetBundle;
+
+            if (assetBundle == null)
+              info.error = "Wrong level, failed to load AssetBundle";
+            else {
 
 
-            var json = assetBundle.LoadAsset<TextAsset>("Level.json");
-            if (json != null) {
-              jsonString = json.text;
-              info.Set(JsonUtility.FromJson<GameLevelInfoJSON>(jsonString));
-            }
-            else 
-              info.error = "Wrong level, no Level.json";
+              var json = assetBundle.LoadAsset<TextAsset>("Level.json");
+              if (json != null) {
+                jsonString = json.text;
+                info.Set(JsonUtility.FromJson<GameLevelInfoJSON>(jsonString));
+              }
+              else 
+                info.error = "Wrong level, no Level.json";
 
               
-            var logo = assetBundle.LoadAsset<Texture2D>("Level.png");
-            if(logo != null) {
-              info.logo = Sprite.Create(logo,
-                new Rect(Vector2.zero, new Vector2(logo.width, logo.height)),
-                new Vector2(0.5f, 0.5f));
+
+              var logo = assetBundle.LoadAsset<Texture2D>("LevelLogo.png");
+              if(logo != null) {
+                info.logo = Sprite.Create(logo,
+                  new Rect(Vector2.zero, new Vector2(logo.width, logo.height)),
+                  new Vector2(0.5f, 0.5f));
+              }
             }
           }
         }
       }
-    }
 
-    //设置到UI上
-    if(string.IsNullOrEmpty(info.error)) {
-      PanelError.gameObject.SetActive(false);
-      PanelNoContent.gameObject.SetActive(false);
+      //设置到UI上
+      if(string.IsNullOrEmpty(info.error)) {
+        PanelError.gameObject.SetActive(false);
+        PanelNoContent.gameObject.SetActive(false);
 
-      TextName.text = info.name;
-      TextAuthor.text = info.author;
-      TextName.text = info.name;
-      TextVersion.text = info.version;
-      TextUrl.text = info.url;
-      TextUrl.gameObject.SetActive(string.IsNullOrEmpty(info.url));
-      TextIntroduction.text = info.introduction;
-      TextPreview.gameObject.SetActive(info.allowPreview);
-      ImageDepends.sprite = info.dependsSuccess ? IconSuccess : IconError;
-      TextDepends.text = info.dependsStatus;
+        TextName.text = info.name;
+        TextAuthor.text = info.author;
+        TextName.text = info.name;
+        TextVersion.text = info.version;
+        TextUrl.text = info.url;
+        TextUrl.gameObject.SetActive(string.IsNullOrEmpty(info.url));
+        TextIntroduction.text = info.introduction;
+        TextPreview.gameObject.SetActive(info.allowPreview);
+        ImageDepends.sprite = info.dependsSuccess ? IconSuccess : IconError;
+        ImageLogo.sprite = info.logo;
+        TextDepends.text = info.dependsStatus;
 
-      PanelContent.gameObject.SetActive(true);
-    } else {
-      TextErrorContent.text = info.error;
-      PanelError.gameObject.SetActive(true);
-      PanelContent.gameObject.SetActive(false);
-      PanelNoContent.gameObject.SetActive(false);
+        PanelContent.gameObject.SetActive(true);
+      } else {
+        TextErrorContent.text = info.error;
+        PanelError.gameObject.SetActive(true);
+        PanelContent.gameObject.SetActive(false);
+        PanelNoContent.gameObject.SetActive(false);
+      }
     }
   }
 
@@ -241,7 +335,7 @@ public class StartCustomLevel : MonoBehaviour
       DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
       for (int i = 0; i < dirs.Length; i++)
         if(dirs[i].Name != "MakerAssets") {
-          var info = new GameLevelInfo(dirs[i].Name);
+          var info = new GameLevelInfo(dirs[i].Name, gamePackageManager);
           loadedLevels.Add(info);
           AddLevelToList(info);
         }
@@ -250,7 +344,7 @@ public class StartCustomLevel : MonoBehaviour
       DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
       for (int i = 0; i < dirs.Length; i++)
         if(!Regex.IsMatch(dirs[i].Name, "^level([0]{1}[0-9]{1})|([1]{1}[0-3]{1})$", RegexOptions.IgnoreCase)) { //排除自带关卡
-          var info = new GameLevelInfo(dirs[i].Name);
+          var info = new GameLevelInfo(dirs[i].Name, gamePackageManager);
           loadedLevels.Add(info);
           AddLevelToList(info);
         }

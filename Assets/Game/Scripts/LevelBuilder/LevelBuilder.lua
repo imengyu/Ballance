@@ -86,7 +86,7 @@ function LevelBuilder:Start()
           Game.Mediator:NotifySingleEvent('CoreStartLoadLevel', { args[2] })
         end
       else
-        Log.W(TAG, 'Unknow option '..type);
+        Log.W(TAG, 'Unknow option '..type)
         return false
       end
       return true
@@ -443,6 +443,7 @@ function LevelBuilder:_LoadLevelInternal()
               if physicsData.HitSound then
                 local hitSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, 'Floor_'..name..'_HitSound')
                 
+                body.EnableContractEventCallback()
                 body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.3, 10, 0.5, 0.1)
                 body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.3, 10, 0.5, 0.1)
                 body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.3, 10, 0.5, 0.1)
@@ -453,7 +454,6 @@ function LevelBuilder:_LoadLevelInternal()
                   hitSound.volume = speed_precent
                   hitSound:Play()
                 end
-                body:EnableCollisionDetection()
               end
             else
               Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')

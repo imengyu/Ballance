@@ -113,7 +113,7 @@ function Ball:_InitPeices()
         end
       end
       body.DoNotAutoCreateAtAwake = true
-      table.insert(data.bodys, body);
+      table.insert(data.bodys, body)
 
       --碎片声音
       if piecesSound ~= nil and Table.IndexOf(self._PiecesHaveColSound, body.name) ~= -1 then

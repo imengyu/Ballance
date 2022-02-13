@@ -161,20 +161,20 @@ function BallManager:Awake()
 
       local pos = Vector3(nx, ny, nz)
       self:SetNextRecoverPos(pos)
-      Log.D(TAG, 'NextRecoverPos now is : {0}', pos);
+      Log.D(TAG, 'NextRecoverPos now is : {0}', pos)
     elseif type == 'set-ball' then
       local o, n = DebugUtils.CheckDebugParam(1, args, Slua.out, true, 1)
       if not o then return false end
 
       self:SetCurrentBall(n)
-      Log.D(TAG, 'Set ball type to : {0}', n);
+      Log.D(TAG, 'Set ball type to : {0}', n)
 
     elseif type == 'set-control-status' then
       local o, n = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 1)
       if not o then return false end
 
       self:SetControllingStatus(n)
-      Log.D(TAG, 'Set control status to : {0}', n);
+      Log.D(TAG, 'Set control status to : {0}', n)
     end
     return true
   end, 1, "balls <next/set/reset/reset-all> 球管理器命令"..
@@ -185,7 +185,7 @@ function BallManager:Awake()
   )
 end
 function BallManager:OnDestroy()
-  Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._private.CommandId);
+  Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._private.CommandId)
 
   self._private.registerBalls = {}
   self._private.GameSettings:UnRegisterSettingsUpdateCallback(self._private.settingsCallbackId)
@@ -324,7 +324,7 @@ function BallManager:UnRegisterBall(name)
       if ball == self._private.currentActiveBall then
         self:_DeactiveCurrentBall()
       end
-      self:_UnInitBallSounds(ball.rigidbody, ball.speedMeter);
+      self:_UnInitBallSounds(ball.rigidbody, ball.speedMeter)
       table.remove(registerBalls, i)
       return true
     end 

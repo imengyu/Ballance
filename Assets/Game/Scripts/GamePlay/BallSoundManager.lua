@@ -216,9 +216,9 @@ end
 ---@param speedMeter SpeedMeter
 function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   local _RollSound = ball._RollSound
-  local speed = speedMeter.NowAbsoluteSpeed;
+  local speed = speedMeter.NowAbsoluteSpeed
   local vol = _RollSound.VolumeBase + (speed * _RollSound.VolumeFactor)
-  local pit = _RollSound.PitchBase + (speed * _RollSound.PitchFactor);
+  local pit = _RollSound.PitchBase + (speed * _RollSound.PitchFactor)
 
   if vol > 1 then vol = 1 end
   if pit > 1 then pit = 1 end

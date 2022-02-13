@@ -121,28 +121,33 @@
         "name": "Phys_Floors",
         "objects": [
           "A01_Floor_02",
-          "A01_Modul11",
           "A01_Modul15",
           "A01_Modul16",
           "A02_Floor_01",
           "A02_Floor_02",
-          "A02_Modul42",
           "A03_Floor_01",
           "A03_Floor_02",
           "A03_Floor_03",
           "A04_Floor_01",
           "A04_Floor_02",
-          "A04_Modul42_01",
-          "A04_Modul42_02",
-          "A04_Modul_11",
           "A05_Floor_01",
           "A05_Floor_03",
           "A05_Floor_02",
-          "A04_Modul27",
           "A01_Floor_01"
         ]
       },
       { "name": "Phys_FloorStopper", "objects": ["A01_Floor_Stopper"] },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": [
+          "A04_Modul42_01",
+          "A04_Modul42_02",
+          "A04_Modul_11",
+          "A04_Modul27",
+          "A02_Modul42",
+          "A01_Modul11"
+        ]
+      },
       {
         "name": "Phys_FloorRails",
         "objects": [

@@ -99,9 +99,15 @@ function BindSettingsUI(MessageCenter)
 
   --设置数据加载
   MessageCenter:SubscribeEvent('BtnSettingsGraphicsClick', function () 
-    updateGrFullScreen:Invoke(GameSettings:GetBool("video.fullScreen", Screen.fullScreen))
-    updateGrCloud:Invoke(GameSettings:GetBool("video.cloud", true))
-    updateGrVSync:Invoke(GameSettings:GetInt("video.vsync", QualitySettings.vSyncCount) >= 1 and true or false)
+    if updateGrFullScreen then
+      updateGrFullScreen:Invoke(GameSettings:GetBool("video.fullScreen", Screen.fullScreen))
+    end
+    if updateGrCloud then
+      updateGrCloud:Invoke(GameSettings:GetBool("video.cloud", true))
+    end
+    if updateGrVSync then
+      updateGrVSync:Invoke(GameSettings:GetInt("video.vsync", QualitySettings.vSyncCount) >= 1 and true or false)
+    end
     GameUIManager:GoPage('PageSettingsGraphics') 
 
     if(resolutions == nil) then
@@ -123,13 +129,27 @@ function BindSettingsUI(MessageCenter)
     end
   end)
   MessageCenter:SubscribeEvent('BtnSettingsControlsClick', function () 
-    updateControlKeyUp:Invoke(GameSettings:GetInt("control.keyup", KeyCode.UpArrow))
-    updateControlKeyDown:Invoke(GameSettings:GetInt("control.keydown", KeyCode.DownArrow))
-    updateControlKeyLeft:Invoke(GameSettings:GetInt("control.keyleft", KeyCode.LeftArrow))
-    updateControlKeyRight:Invoke(GameSettings:GetInt("control.keyright", KeyCode.RightArrow))
-    updateControlKeyOverlookCam:Invoke(GameSettings:GetInt("control.overlookcam", KeyCode.Space))
-    updateControlKeyRoateCam:Invoke(GameSettings:GetInt("control.roatecam", KeyCode.LeftShift))
-    updateControlReverse:Invoke(GameSettings:GetBool("control.reverse", false))
+    if updateControlKeyUp then
+      updateControlKeyUp:Invoke(GameSettings:GetInt("control.keyup", KeyCode.UpArrow))
+    end
+    if updateControlKeyDown then
+      updateControlKeyDown:Invoke(GameSettings:GetInt("control.keydown", KeyCode.DownArrow))
+    end
+    if updateControlKeyLeft then
+      updateControlKeyLeft:Invoke(GameSettings:GetInt("control.keyleft", KeyCode.LeftArrow))
+    end
+    if updateControlKeyRight then
+      updateControlKeyRight:Invoke(GameSettings:GetInt("control.keyright", KeyCode.RightArrow))
+    end
+    if updateControlKeyOverlookCam then
+      updateControlKeyOverlookCam:Invoke(GameSettings:GetInt("control.overlookcam", KeyCode.Space))
+    end
+    if updateControlKeyRoateCam then
+      updateControlKeyRoateCam:Invoke(GameSettings:GetInt("control.roatecam", KeyCode.LeftShift))
+    end
+    if updateControlReverse then
+      updateControlReverse:Invoke(GameSettings:GetBool("control.reverse", false))
+    end
     
     if UNITY_IOS or UNITY_ANDROID then
       GameUIManager:GoPage('PageSettingsControlsMobile') 
@@ -138,9 +158,15 @@ function BindSettingsUI(MessageCenter)
     end
   end)
   MessageCenter:SubscribeEvent('BtnSettingsAudioClick', function () 
-    updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 100))
-    updateVoiceMain:Invoke(GameSettings:GetFloat("voice.main", 100))
-    updateVoiceUI:Invoke(GameSettings:GetFloat("voice.ui", 100))
+    if updateVioceBackground then
+      updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 100))
+    end
+    if updateVoiceMain then
+      updateVoiceMain:Invoke(GameSettings:GetFloat("voice.main", 100))
+    end
+    if updateVoiceUI then
+      updateVoiceUI:Invoke(GameSettings:GetFloat("voice.ui", 100))
+    end
     GameUIManager:GoPage('PageSettingsAudio') 
   end)
   MessageCenter:SubscribeEvent('BtnSettingsPackageClick', function () 

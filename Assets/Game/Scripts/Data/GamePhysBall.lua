@@ -33,8 +33,8 @@ GamePhysBall = {
       LinearDamp = 0.3,
       RotDamp = 0.2,
     },
-    PiecesMinForce = 1.5,
-    PiecesMaxForce = 3.0,
+    PiecesMinForce = 1.6,
+    PiecesMaxForce = 5.0,
     UpForce = 0.6,
     DownForce = 0.3,
     BallRadius = 2,
@@ -55,8 +55,8 @@ GamePhysBall = {
       LinearDamp = 0.3,
       RotDamp = 0.2,
     },
-    PiecesMinForce = 4,
-    PiecesMaxForce = 9,
+    PiecesMinForce = 7,
+    PiecesMaxForce = 13,
     UpForce = 3,
     DownForce = 0.05,
     BallRadius = 2,
@@ -75,8 +75,8 @@ GamePhysBall = {
       LinearDamp = 6,
       RotDamp = 0.5,
     },
-    PiecesMinForce = 0.5,
-    PiecesMaxForce = 1.3,
+    PiecesMinForce = 0.9,
+    PiecesMaxForce = 1.8,
     UpForce = 0.08,
     DownForce = 0.01,
     BallRadius = 0,
@@ -100,6 +100,6 @@ GamePhysBall['BallName'] = {
   PiecesMaxForce = 0.1,
   UpForce = 0.1,
   DownForce = 0.01,
-};
+}
 
 ]]--

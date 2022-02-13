@@ -23,7 +23,7 @@ function P_Modul_18:Start()
   self.P_Modul_18_Kollisionsquader.onTriggerEnter = function (_, other)
     if self._CurrentInRangeBall == nil and other.tag == 'Ball' and other.name == 'BallPaper' then
       self._CurrentInRangeBall = GamePlay.BallManager.CurrentBall._Rigidbody
-      self.CurrentBallForceID = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, Vector3.up)
+      self.CurrentBallForceID = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, self.transform:TransformVector(Vector3.up))
     end
   end
   ---@param other GameObject
@@ -41,7 +41,7 @@ function P_Modul_18:Active()
   ModulBase.Active(self)
   self.P_Modul_18_Particle:SetActive(true)
   self.P_Modul_18_Particle_Small:SetActive(true)
-  self.P_Modul_18_Sound:Play();
+  self.P_Modul_18_Sound:Play()
   self.P_Modul_18_Kollisionsquader.gameObject:SetActive(true)
   self.P_Modul_18_Rotor:Play('P_Modul_18_Rotor_Start_Animation')
 end

@@ -9,8 +9,9 @@
     <Text name="core.ui.RestartLevel">重新开始关卡</Text>
     <Text name="core.ui.Quit">退出</Text>
     <Text name="core.ui.QuitToMenu">返回主菜单</Text>
-    <Text name="core.ui.AboutProject">关于项目</Text>
+    <Text name="core.ui.AboutProject">关于此项目</Text>
     <Text name="core.ui.AboutCreators">关于作者</Text>
+    <Text name="core.ui.AboutOldCreators">原作者关于</Text>
     <Text name="core.ui.AbouOpenSourceLicense">开源许可</Text>
     <Text name="core.ui.GoGithub">前往项目 GitHub </Text>
     <Text name="core.ui.WinUILevelBouns">关卡分数</Text>
@@ -55,7 +56,7 @@
     <Text name="core.ui.LevelLoaderErrorUIMessage">关卡开发者：您可以按 F12 进入控制台查看更多错误信息。
 玩家：如果这是第三方玩家制作的关卡，您可以向制作者反馈错误信息。
 如果这是游戏自带关卡，您可以点击 “提交BUG” 或访问 
-https://imengyu.top/ballanceProject/bugs/ 向我们反馈错误
+https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     </Text>
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">提交BUG</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">复制错误信息</Text>
@@ -72,6 +73,10 @@ https://imengyu.top/ballanceProject/bugs/ 向我们反馈错误
     <Text name="core.ui.LevelNoDepends">此关卡没有依赖额外的模组</Text>
     <Text name="core.ui.LevelHasDepends">此关卡依赖 {0} 个额外的模组，已成功加载</Text>
     <Text name="core.ui.LevelHasBadDepends">此关卡依赖 {0} 个额外的模组，{1} 个未能成功加载</Text>
+    <Text name="core.ui.LevelEnableAllDepends">尝试启用此关卡的所有依赖</Text>
+    <Text name="core.ui.LevelAllDependsTile">关卡 {0} 的所有依赖 ({1})</Text>
+    <Text name="core.ui.VersionMismatch">依赖版本过低</Text>
+    <Text name="core.ui.LevelEnableAllDependsTodo">暂时不支持自动下载或启用赖版，请手动开启或安装</Text>
     <Text name=""></Text>
   </Language>
   <Language name="English">

@@ -14,7 +14,7 @@
     "skyBox": "K",
     "skyLayer": "SkyLayer",
     "nextLevel": "level10",
-    "lightColor": "#8E8E8E",
+    "lightColor": "#4B4B4B",
     "customModEventName": "",
     "sectorCount": 5,
     "endWithUFO": false,
@@ -158,26 +158,31 @@
         "objects": [
           "A01_Floor_01",
           "A02_Floor_01",
-          "A01_Modul27",
           "A02_Floor_03",
           "A02_Floor_04",
           "A03_Floor_01",
           "A03_Floor_02",
-          "A03_Modul11",
-          "A01_Obstacle_01",
           "A03_Floor_03",
           "A05_Floor_01",
           "A05_Floor_02",
-          "A05_Modul13",
-          "A05_Modul27",
           "A05_Floor_03",
-          "A05_Modul02",
           "A02_Floor_02",
           "A01_Floor_02",
-          "A04_Modul27_01",
-          "A04_Modul27_02",
           "A04_Floor_02",
           "A04_Floor_01"
+        ]
+      },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": [
+          "A01_Obstacle_01",
+          "A01_Modul27",
+          "A03_Modul11",
+          "A05_Modul13",
+          "A05_Modul27",
+          "A05_Modul02",
+          "A04_Modul27_01",
+          "A04_Modul27_02"
         ]
       },
       { "name": "Phys_FloorStopper", "objects": ["A01_Floor_Stopper"] },

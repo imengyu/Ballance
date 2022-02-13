@@ -127,7 +127,7 @@ function PE_Balloon:Active()
   self.PE_Balloon_Platte08:Physicalize()
 
   if not self._MusicActived and not GamePlay.GamePlayManager.CurrentSector == 1 then
-    self._MusicActived = true;
+    self._MusicActived = true
     --播放最后一小节的音乐
     coroutine.resume(coroutine.create(function()
       local _SoundLastSector = GamePlay.GamePlayManager._SoundLastSector

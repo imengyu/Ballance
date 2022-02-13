@@ -1,8 +1,9 @@
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
-local LuaUtils = Ballance2.Utils.LuaUtils
+local KeyCode = UnityEngine.KeyCode
 local Text = UnityEngine.UI.Text
 local GameSoundType = Ballance2.Services.GameSoundType
+local GameUIManager = Ballance2.Services.GameManager.Instance.GetSystemService('GameUIManager') ---@type GameUIManager
 local I18N = Ballance2.Services.I18N.I18N
 
 ---过关之后的分数统计界面控制
@@ -66,6 +67,11 @@ function WinScoreUIControl:StartSeq()
   self.HighlightBar2:SetActive(false)
   self.HighlightBar3:SetActive(false)
   self.HighlightBar4:SetActive(false)
+
+  self.EscKeyID = GameUIManager:ListenKey(KeyCode.Escape, function ()
+    self:Skip()
+  end)
+
   coroutine.resume(coroutine.create(function()
 
     Yield(WaitForSeconds(5))
@@ -149,6 +155,11 @@ function WinScoreUIControl:Skip()
   self.HighlightBar3:SetActive(false)
   self.HighlightBar4:SetActive(true)
 
+  if self.EscKeyID then
+    GameUIManager:DeleteKeyListen(self.EscKeyID)
+    self.EscKeyID = nil
+  end
+
   local GamePlayManager = self._GamePlayManager
 
   self._ScoreNTimePoints = self._ScoreNTimePoints + GamePlayManager.CurrentPoint
@@ -172,13 +183,18 @@ function WinScoreUIControl:SaveHighscore(entryName)
   Game.HighScoreManager.AddItem(GamePlay.GamePlayManager.CurrentLevelName, entryName, self._ScoreNTotal)
 end
 function WinScoreUIControl:_ShowHighscore() 
+  if self.EscKeyID then
+    GameUIManager:DeleteKeyListen(self.EscKeyID)
+    self.EscKeyID = nil
+  end
+  
   Game.UIManager:GoPage('PageHighscoreEntry')
 
   --检查是不是新的高分
   local PageHighscoreEntry = Game.UIManager:GetCurrentPage()
   local HighscoreEntryNameTextScore = PageHighscoreEntry.Content:Find('TextScore'):GetComponent(Text) ---@type Text
   
-  HighscoreEntryNameTextScore.text = tostring(self._ScoreNTotal)..' <size=20>'..I18N.Tr('ui.gameWin.points')..'</size>';
+  HighscoreEntryNameTextScore.text = tostring(self._ScoreNTotal)..' <size=20>'..I18N.Tr('ui.gameWin.points')..'</size>'
   
   self._HighscoreSound:Play()
   if Game.HighScoreManager.CheckLevelHighScore(GamePlay.GamePlayManager.CurrentLevelName, self._ScoreNTotal) then

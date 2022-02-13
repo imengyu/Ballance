@@ -7,6 +7,7 @@ using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Services.Pool;
+using Ballance2.UI.Core;
 using Ballance2.UI.Core.Controls;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,6 +38,7 @@ public class PackageManagerWindow : MonoBehaviour
   private GamePackageManager gamePackageManager;
   private GameUIManager gameUIManager;
   private GameObjectPool itemPrefabPool;
+  private GameUIPage page;
 
   void Start()
   {
@@ -46,6 +48,13 @@ public class PackageManagerWindow : MonoBehaviour
     ButtonSave.onClick.AddListener(Save);
     ButtonBack.onClick.AddListener(Back);
     PackageManagerContentWindow.OnGoPackage = SelectPackage;
+    page = gameUIManager.FindPage("PackageManageWindow");
+    page.OnShow = (options) => {
+      if(options.ContainsKey("LocatePackage")) 
+        SelectPackage(options["LocatePackage"]);
+      else
+        SelectPackage(GamePackageManager.CORE_PACKAGE_NAME);
+    };
     LoadList();
   }
   private void OnDestroy() {

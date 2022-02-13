@@ -112,21 +112,25 @@
           "A01_Floor_03",
           "A01_Floor_04",
           "A02_Floor_01",
-          "A01_Modul_27",
           "A03_Floor_02",
           "A03_Floor_01",
           "A01_Floor_02",
           "A04_Floor_01",
           "A03_Floor_03",
-          "A04_Modul_27",
           "A05_Floor_01",
-          "A05_Modul13",
           "A05_Floor_02",
-          "P_Modul_18_04",
           "A04_Floor_02",
-          "A03_Floor_Wood",
           "A02_Floor_02",
           "A02_Floor_Collision"
+        ]
+      },
+      {
+        "name": "Phys_FloorWoods",
+        "objects": [
+          "A03_Floor_Wood",
+          "A04_Modul_27",
+          "A05_Modul13",
+          "A01_Modul_27"
         ]
       },
       {

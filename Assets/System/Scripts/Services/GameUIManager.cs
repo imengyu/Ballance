@@ -326,6 +326,18 @@ namespace Ballance2.Services
     private GameUIPage currentPage = null;
 
     /// <summary>
+    /// 查找页
+    /// </summary>
+    /// <param name="name">页名称</param>
+    /// <returns>返回找到的页实例，如果找不到则返回null</returns>
+    [LuaApiDescription("查找页", "返回找到的页实例，如果找不到则返回null")]
+    [LuaApiParamDescription("name", "页名称")]
+    public GameUIPage FindPage(string name)
+    {
+      pages.TryGetValue(name, out GameUIPage w);
+      return w;
+    }
+    /// <summary>
     /// 注册页
     /// </summary>
     /// <param name="name">页名称</param>

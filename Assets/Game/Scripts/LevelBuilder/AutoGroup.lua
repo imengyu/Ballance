@@ -71,8 +71,8 @@ function DoLevelAutoGroup(level, transform)
             gdata = {}
             groupsTemp[nname] = gdata
           end
-          table.insert(gdata, name);
-          table.insert(sdata, name);
+          table.insert(gdata, name)
+          table.insert(sdata, name)
         --elseif string.startWith(name, 'K_') then
           --Internal TODO
         end
