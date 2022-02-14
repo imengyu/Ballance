@@ -12,6 +12,7 @@ namespace Ballance2.UI.Core.Controls
   [RequireComponent(typeof(RectTransform))]
   [DisallowMultipleComponent]
   [SLua.CustomLuaClass]
+  [LuaApiDescription("滚动列表")]
   public class ScrollView : ScrollRect
   {
 
@@ -31,21 +32,26 @@ namespace Ballance2.UI.Core.Controls
     List<ScrollItemWithRect> managedItems = new List<ScrollItemWithRect>();
 
     // for hide and show
+    [SLua.CustomLuaClass]
+    [LuaApiDescription("列表滚动方向")]
     public enum ItemLayoutType
     {
       // 最后一位表示滚动方向
+      [LuaApiDescription("垂直")] 
       Vertical = 1,                   // 0001
+      [LuaApiDescription("水平")] 
       Horizontal = 2,                 // 0010
+      [LuaApiDescription("先垂直再水平")] 
       VerticalThenHorizontal = 4,     // 0100
+      [LuaApiDescription("先水平再垂直")] 
       HorizontalThenVertical = 5,     // 0101
     }
+    
     public const int flagScrollDirection = 1;  // 0001
-
 
     [SerializeField]
     ItemLayoutType m_layoutType = ItemLayoutType.Vertical;
     protected ItemLayoutType layoutType { get { return m_layoutType; } }
-
 
     // const int 代替 enum 减少 (int)和(CriticalItemType)转换
     protected static class CriticalItemType
@@ -63,41 +69,62 @@ namespace Ballance2.UI.Core.Controls
     SimpleObjPool<RectTransform> itemPool = null;
 
     [Tooltip("初始化时池内item数量")]
+    [LuaApiDescription("初始化时池内item数量")]
     public int poolSize;
 
     [Tooltip("默认item尺寸")]
+    [LuaApiDescription("默认item尺寸")]
     public Vector2 defaultItemSize;
 
     [Tooltip("item的模板")]
+    [LuaApiDescription("item的模板")]
     public RectTransform itemTemplate;
 
+    
+    [SLua.CustomLuaClass]
+    public delegate void UpdateFunc(int index, RectTransform item);
+    [SLua.CustomLuaClass]
+    public delegate Vector2 ItemSizeFunc(int index);
+    [SLua.CustomLuaClass]
+    public delegate int ItemCountFunc();
+    [SLua.CustomLuaClass]
+    public delegate RectTransform ItemGetFunc(int index);
+    [SLua.CustomLuaClass]
+    public delegate void ItemRecycleFunc(RectTransform item);
+
     // callbacks for items
-    public Action<int, RectTransform> updateFunc;
-    public Func<int, Vector2> itemSizeFunc;
-    public Func<int> itemCountFunc;
-    public Func<int, RectTransform> itemGetFunc;
-    public Action<RectTransform> itemRecycleFunc;
+    [LuaApiDescription("条目更新回调")]
+    public UpdateFunc updateFunc;
+    [LuaApiDescription("获取条目大小回调")]
+    public ItemSizeFunc itemSizeFunc;
+    [LuaApiDescription("获取条目总数回调")]
+    public ItemCountFunc itemCountFunc;
+    [LuaApiDescription("条目自定义创建回调")]
+    public ItemGetFunc itemGetFunc;
+    [LuaApiDescription("条目回收时的回调")]
+    public ItemRecycleFunc itemRecycleFunc;
 
     // status
     private bool initialized = false;
     private int willUpdateData = 0;
 
-    public virtual void SetUpdateFunc(Action<int, RectTransform> func)
+    [LuaApiDescription("设置条目更新回调")]
+    public virtual void SetUpdateFunc(UpdateFunc func)
     {
       updateFunc = func;
     }
-
-    public virtual void SetItemSizeFunc(Func<int, Vector2> func)
+    [LuaApiDescription("设置获取条目大小回调")]
+    public virtual void SetItemSizeFunc(ItemSizeFunc func)
     {
       itemSizeFunc = func;
     }
-
-    public virtual void SetItemCountFunc(Func<int> func)
+    [LuaApiDescription("设置获取条目总数回调")]
+    public virtual void SetItemCountFunc(ItemCountFunc func)
     {
       itemCountFunc = func;
     }
-
-    public void SetItemGetAndRecycleFunc(Func<int, RectTransform> getFunc, Action<RectTransform> recycleFunc)
+    [LuaApiDescription("条目自定义创建和回收时的回调")]
+    public void SetItemGetAndRecycleFunc(ItemGetFunc getFunc, ItemRecycleFunc recycleFunc)
     {
       if (getFunc != null && recycleFunc != null)
       {
@@ -106,6 +133,8 @@ namespace Ballance2.UI.Core.Controls
       }
     }
 
+    [LuaApiDescription("更新列表数据")]
+    [LuaApiParamDescription("immediately", "是否立即更新")]
     public void UpdateData(bool immediately = true)
     {
       if (!initialized)
@@ -127,6 +156,8 @@ namespace Ballance2.UI.Core.Controls
       }
     }
 
+    [LuaApiDescription("增加式更新列表数据")]
+    [LuaApiParamDescription("immediately", "是否立即更新")]
     public void UpdateDataIncrementally(bool immediately = true)
     {
       if (!initialized)
@@ -148,6 +179,8 @@ namespace Ballance2.UI.Core.Controls
       }
     }
 
+    [LuaApiDescription("滚动至指定位置")]
+    [LuaApiParamDescription("index", "索引位置")]
     public void ScrollTo(int index)
     {
       InternalScrollTo(index);
@@ -180,7 +213,6 @@ namespace Ballance2.UI.Core.Controls
       yield return null;
       InternalUpdateData();
     }
-
 
     private void InternalUpdateData()
     {
@@ -368,7 +400,6 @@ namespace Ballance2.UI.Core.Controls
       }
     }
 
-
     private bool CheckAndHideItem(int criticalItemType)
     {
       RectTransform item = GetCriticalItem(criticalItemType);
@@ -397,7 +428,6 @@ namespace Ballance2.UI.Core.Controls
 
       return false;
     }
-
 
     private bool CheckAndShowItem(int criticalItemType)
     {
@@ -430,7 +460,6 @@ namespace Ballance2.UI.Core.Controls
       }
       return false;
     }
-
 
     bool ShouldItemSeenAtIndex(int index)
     {
@@ -477,7 +506,6 @@ namespace Ballance2.UI.Core.Controls
       }
     }
 
-
     void InitPool()
     {
       GameObject poolNode = new GameObject("POOL");
@@ -511,7 +539,6 @@ namespace Ballance2.UI.Core.Controls
       item.transform.SetParent(content, false);
     }
 
-
     void SetDataForItemAtIndex(RectTransform item, int index)
     {
       if (updateFunc != null)
@@ -520,7 +547,6 @@ namespace Ballance2.UI.Core.Controls
       SetPosForItemAtIndex(item, index);
     }
 
-
     void SetPosForItemAtIndex(RectTransform item, int index)
     {
       EnsureItemRect(index);
@@ -528,7 +554,6 @@ namespace Ballance2.UI.Core.Controls
       item.localPosition = r.position;
       item.sizeDelta = r.size;
     }
-
 
     Vector2 GetItemSize(int index)
     {

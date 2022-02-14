@@ -8,6 +8,7 @@
     <Text name="core.ui.Restart">重启游戏</Text>
     <Text name="core.ui.RestartLevel">重新开始关卡</Text>
     <Text name="core.ui.Quit">退出</Text>
+    <Text name="core.ui.Tip">提示</Text>
     <Text name="core.ui.QuitToMenu">返回主菜单</Text>
     <Text name="core.ui.AboutProject">关于此项目</Text>
     <Text name="core.ui.AboutCreators">关于作者</Text>
@@ -50,7 +51,7 @@
     <Text name="core.ui.SettingsAudioMain">主音量</Text>
     <Text name="core.ui.SettingsAudioUI">界面音效音量</Text>
     <Text name="core.ui.SettingsLanguageTilte">语言</Text>
-    <Text name="core.ui.SettingsPackageTilte">模组</Text>
+    <Text name="core.ui.SettingsPackageTilte">模组管理器</Text>
     <Text name="core.ui.SettingsGraphicsTilte">视频</Text>
     <Text name="core.ui.LevelLoaderErrorUITitle">加载关卡失败</Text>
     <Text name="core.ui.LevelLoaderErrorUIMessage">关卡开发者：您可以按 F12 进入控制台查看更多错误信息。
@@ -77,6 +78,17 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.LevelAllDependsTile">关卡 {0} 的所有依赖 ({1})</Text>
     <Text name="core.ui.VersionMismatch">依赖版本过低</Text>
     <Text name="core.ui.LevelEnableAllDependsTodo">暂时不支持自动下载或启用赖版，请手动开启或安装</Text>
+    <Text name="core.ui.PackageManagerEnableAll">启用所有模组</Text>
+    <Text name="core.ui.PackageManagerDisableAll">禁用所有模组</Text>
+    <Text name="core.ui.PackageManagerSave">保存修改</Text>
+    <Text name="core.ui.PackageManagerUnLoad">卸载</Text>
+    <Text name="core.ui.PackageManagerTip">模组修改提示</Text>
+    <Text name="core.ui.PackageManagerChangeTip"> 改动了 {0} 个模块</Text>
+    <Text name="core.ui.PackageManagerStatus"> 共有 {0} 个模块，已启用 {1} 个</Text>
+    <Text name="core.ui.PackageManagerGiveUpSave">放弃修改</Text>
+    <Text name="core.ui.PackageManagerPackNotFound">没有找到模组 {0}，它似乎没有在这里安装。</Text>
+    <Text name="core.ui.PackageManagerOptional">可选</Text>
+    <Text name="core.ui.PackageManagerNoDepends">此模组没有依赖额外的模组</Text>
     <Text name=""></Text>
   </Language>
   <Language name="English">

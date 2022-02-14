@@ -10,8 +10,6 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 local Yield = UnityEngine.Yield
 local SystemLanguage = UnityEngine.SystemLanguage
 
-
-
 ---创建主设置菜单UI
 ---@param package GamePackage
 function CreateSettingsUI(package)
@@ -23,6 +21,8 @@ function CreateSettingsUI(package)
   local PageSettingsGraphics = GameUIManager:RegisterPage('PageSettingsGraphics', 'PageCommon')
   local PageLanguage = GameUIManager:RegisterPage('PageLanguage', 'PageCommon')
   local PageApplyLangDialog = GameUIManager:RegisterPage('PageApplyLangDialog', 'PageCommon')
+  local PagePackageManager = GameUIManager:RegisterPage('PagePackageManager', 'PageFull')
+  local PagePackageManagerInfo = GameUIManager:RegisterPage('PagePackageManagerInfo', 'PageFull')
 
   PageSettings:CreateContent(package)
   PageSettingsAudio:CreateContent(package)
@@ -32,6 +32,8 @@ function CreateSettingsUI(package)
   PageSettingsInGame:CreateContent(package)
   PageLanguage:CreateContent(package)
   PageApplyLangDialog:CreateContent(package)
+  PagePackageManager:CreateContent(package)
+  PagePackageManagerInfo:CreateContent(package)
 
   coroutine.resume(coroutine.create(function ()
     Yield(WaitForSeconds(0.5))
@@ -170,7 +172,7 @@ function BindSettingsUI(MessageCenter)
     GameUIManager:GoPage('PageSettingsAudio') 
   end)
   MessageCenter:SubscribeEvent('BtnSettingsPackageClick', function () 
-    GameUIManager:GoPage('PackageManageWindow') 
+    GameUIManager:GoPage('PagePackageManager') 
   end)
 
   --语言

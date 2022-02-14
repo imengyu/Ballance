@@ -11,6 +11,7 @@ namespace Ballance2.UI.Core.Controls
   [RequireComponent(typeof(RectTransform))]
   [DisallowMultipleComponent]
   [SLua.CustomLuaClass]
+  [LuaApiDescription("滚动列表Ex, 适用于多条数据")]
   public class ScrollViewEx : ScrollView
   {
     protected override void Awake()
@@ -20,15 +21,17 @@ namespace Ballance2.UI.Core.Controls
     }
 
     [SerializeField]
+    [Tooltip("分页大小")]
     private int m_pageSize = 50;
 
+    [LuaApiDescription("分页大小")]
     public int pageSize => m_pageSize;
 
     private int startOffset = 0;
 
-    private Func<int> realItemCountFunc;
+    private ItemCountFunc realItemCountFunc;
 
-    public override void SetUpdateFunc(Action<int, RectTransform> func)
+    public override void SetUpdateFunc(UpdateFunc func)
     {
       if (func != null)
       {
@@ -41,7 +44,7 @@ namespace Ballance2.UI.Core.Controls
       base.SetUpdateFunc(func);
     }
 
-    public override void SetItemSizeFunc(Func<int, Vector2> func)
+    public override void SetItemSizeFunc(ItemSizeFunc func)
     {
       if (func != null)
       {
@@ -54,7 +57,7 @@ namespace Ballance2.UI.Core.Controls
       base.SetItemSizeFunc(func);
     }
 
-    public override void SetItemCountFunc(Func<int> func)
+    public override void SetItemCountFunc(ItemCountFunc func)
     {
       realItemCountFunc = func;
       if (func != null)

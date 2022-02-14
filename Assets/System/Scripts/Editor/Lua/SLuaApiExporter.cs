@@ -192,7 +192,7 @@ namespace Slua
       if (!CheckType(t, custom))
         return;
       var sb = new StringBuilder(
-        //"---@diagnostic disable: duplicate-set-field, undefined-doc-class, undefined-doc-name, duplicate-doc-field" +
+        "---@diagnostic disable: duplicate-set-field, undefined-doc-class, undefined-doc-name, duplicate-doc-field" +
         "\n"
       );
 
@@ -221,7 +221,7 @@ namespace Slua
       if (t == typeof(System.Object))
         return false;
       if (t.IsGenericTypeDefinition)
-        return false;
+        return false; 
       if (t.IsDefined(typeof(ObsoleteAttribute), false))
         return false;
       if (t == typeof(YieldInstruction))
@@ -229,7 +229,7 @@ namespace Slua
       if (t == typeof(Coroutine))
         return false;
       if (t.IsNested) {
-        if(!t.IsPublic)
+        if(!t.IsPublic && !t.IsDefined(typeof(CustomLuaClassAttribute), false))
           return false;
       }
       return true;
