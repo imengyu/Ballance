@@ -11,8 +11,8 @@
     <Text name="core.ui.Tip">提示</Text>
     <Text name="core.ui.QuitToMenu">返回主菜单</Text>
     <Text name="core.ui.AboutProject">关于此项目</Text>
-    <Text name="core.ui.AboutCreators">关于作者</Text>
-    <Text name="core.ui.AboutOldCreators">原作者关于</Text>
+    <Text name="core.ui.AboutCreator">作者 imengyu</Text>
+    <Text name="core.ui.AboutOldCreators">原作关于页</Text>
     <Text name="core.ui.AbouOpenSourceLicense">开源许可</Text>
     <Text name="core.ui.GoGithub">前往项目 GitHub </Text>
     <Text name="core.ui.WinUILevelBouns">关卡分数</Text>
@@ -89,6 +89,9 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.PackageManagerPackNotFound">没有找到模组 {0}，它似乎没有在这里安装。</Text>
     <Text name="core.ui.PackageManagerOptional">可选</Text>
     <Text name="core.ui.PackageManagerNoDepends">此模组没有依赖额外的模组</Text>
+    <Text name="core.ui.PackageSystemPackage">核心模组无法卸载或禁用</Text>
+    <Text name="core.ui.PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
+    <Text name="core.ui.PackageUnaloadTip">卸载模组提示</Text>
     <Text name=""></Text>
   </Language>
   <Language name="English">

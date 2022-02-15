@@ -2542,6 +2542,10 @@ PrefabInstance:
       propertyPath: m_Size
       value: 0.99999994
       objectReference: {fileID: 0}
+    - target: {fileID: 289826049598229672, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1869097675590950976, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -2559,13 +2563,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -204.01224
+      value: -0.000041986816
       objectReference: {fileID: 0}
+    - target: {fileID: 3510995815674773279, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3316810ac98b90c44878ba1ae1ad3157, type: 3}
     - target: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_VerticalScrollbarVisibility
       value: 0
@@ -2612,6 +2624,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999008429203420403, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320795561144372216, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9a555a75f52edb74da349de8fd29d4fa, type: 3}
+    - target: {fileID: 8892508997887136001, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8903952888160084671, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
@@ -2700,11 +2720,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9998122
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}

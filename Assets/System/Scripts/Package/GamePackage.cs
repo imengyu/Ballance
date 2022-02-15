@@ -120,12 +120,8 @@ namespace Ballance2.Package
     /// 设置核心的模块包
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("设置核心的模块包")]
-    public static void SetCorePackage(GamePackage pack) { 
-      if(_CorePackage == null)
-        _CorePackage = pack; 
-      else 
-        GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, "GamePackage", "Not allow to chage GamePackage");
+    internal static void SetCorePackage(GamePackage pack) { 
+      _CorePackage = pack; 
     }
     /// <summary>
     /// 获取核心的模块包
@@ -171,7 +167,7 @@ namespace Ballance2.Package
     [LuaApiDescription("程序入口")]
     public GamePackageEntry PackageEntry = new GamePackageEntry();
     
-    protected int flag = 0;
+    internal int flag = 0;
 
     /// <summary>
     /// 获取是否可以卸载
@@ -208,6 +204,10 @@ namespace Ballance2.Package
 
       if((this.flag & FLAG_PACK_NOT_UNLOADABLE) == FLAG_PACK_NOT_UNLOADABLE && (flag & FLAG_PACK_NOT_UNLOADABLE) != FLAG_PACK_NOT_UNLOADABLE) {
         Log.E(TAG, "Not allow set FLAG_PACK_NOT_UNLOADABLE flag for not unloadable packages.");
+        flag |= FLAG_PACK_NOT_UNLOADABLE;
+      }
+      if((this.flag & FLAG_PACK_SYSTEM_PACKAGE) == FLAG_PACK_SYSTEM_PACKAGE && (flag & FLAG_PACK_NOT_UNLOADABLE) != FLAG_PACK_NOT_UNLOADABLE) {
+        Log.E(TAG, "Not allow set FLAG_PACK_NOT_UNLOADABLE flag for not system packages.");
         flag |= FLAG_PACK_NOT_UNLOADABLE;
       }
 

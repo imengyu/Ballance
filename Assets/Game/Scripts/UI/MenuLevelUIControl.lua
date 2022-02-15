@@ -2,7 +2,6 @@ local GameManager = Ballance2.Services.GameManager
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local GamePackage = Ballance2.Package.GamePackage
 local GameSoundType = Ballance2.Services.GameSoundType
-local CloneUtils = Ballance2.Utils.CloneUtils
 local I18N = Ballance2.Services.I18N.I18N
 local SystemPackage = GamePackage.GetCorePackage()
 local Application = UnityEngine.Application
@@ -21,6 +20,7 @@ function CreateMenuLevelUI(package)
   local PageLightZone = GameUIManager:RegisterPage('PageLightZone', 'PageTransparent')
   local PageAboutCreators = GameUIManager:RegisterPage('PageAboutCreators', 'PageCommon')
   local PageAboutProject = GameUIManager:RegisterPage('PageAboutProject', 'PageCommon')
+  local PageAboutLicense = GameUIManager:RegisterPage('PageAboutLicense', 'PageCommon')
   local PageStartCustomLevel = GameUIManager:RegisterPage('PageStartCustomLevel', 'PageFull')
 
   PageMain:CreateContent(package)
@@ -32,7 +32,19 @@ function CreateMenuLevelUI(package)
   PageLightZone:CreateContent(package)
   PageAboutCreators:CreateContent(package)
   PageAboutProject:CreateContent(package)
+  PageAboutLicense:CreateContent(package)
   PageStartCustomLevel:CreateContent(package)
+
+  --创建这个特殊logo特效
+  local BallanceLogo3DObjects = GameManager.Instance:InstancePrefab(package:GetPrefabAsset('BallanceLogo3DObjects.prefab'), 'BallanceLogo3DObjects')
+  BallanceLogo3DObjects:SetActive(false)
+
+  PageAbout.OnShow = function ()
+    BallanceLogo3DObjects:SetActive(true)
+  end
+  PageAbout.OnHide = function ()
+    BallanceLogo3DObjects:SetActive(false)
+  end
 
   MessageCenter:SubscribeEvent('BtnStartClick', function () GameUIManager:GoPage('PageStart') end)
   MessageCenter:SubscribeEvent('BtnCustomLevelClick', function () 
@@ -57,12 +69,7 @@ function CreateMenuLevelUI(package)
     GameManager.GameMediator:NotifySingleEvent(EVENT_SWITCH_LIGHTZONE, { true })
     GameUIManager:GoPage('PageLightZone') 
   end)
-  MessageCenter:SubscribeEvent('ButtonOpenSourceLicenseClick', function () 
-    local OpenSourceLicenseWindow = GameUIManager:CreateWindow('OpenSource licenses', 
-      CloneUtils.CloneNewObjectWithParent(GameUIPackage:GetPrefabAsset('LicensesView.prefab'), GameManager.Instance.GameCanvas).transform, 
-      true, 20, -205, 400, 500)
-    OpenSourceLicenseWindow:MoveToCenter()
-  end)
+  MessageCenter:SubscribeEvent('ButtonOpenSourceLicenseClick', function () GameUIManager:GoPage('PageAboutLicense')  end)
   MessageCenter:SubscribeEvent('BtnGoBallanceBaClick', function () Application.OpenURL(ConstLinks.BallanceBa) end)
   MessageCenter:SubscribeEvent('BtnGoGithubClick', function () Application.OpenURL(ConstLinks.ProjectGithub) end)
 
@@ -76,8 +83,11 @@ function CreateMenuLevelUI(package)
   end) 
   MessageCenter:SubscribeEvent('BtnHighscorePageRightClick', function () 
     GameUI.HighscoreUIControl:Next()
+  end)  
+  MessageCenter:SubscribeEvent('BtnAboutImengyuClick', function () 
+    Application.OpenURL(ConstLinks.ImengyuHome)
   end)
-
+  
   local loadInternalLevel = function (id)
     --播放加载声音
     Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)

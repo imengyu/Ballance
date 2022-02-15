@@ -74,14 +74,17 @@ namespace Ballance2.Services
     }
     internal static void Init()
     {
-      settingsActuators = new Dictionary<string, GameSettingsActuator>();
+      if(settingsActuators == null)
+        settingsActuators = new Dictionary<string, GameSettingsActuator>();
     }
     internal static void Destroy()
     {
-      foreach (var key in settingsActuators.Keys)
-        settingsActuators[key].Destroy();
-      settingsActuators.Clear();
-      settingsActuators = null;
+      if(settingsActuators != null) {
+        foreach (var key in settingsActuators.Keys)
+          settingsActuators[key].Destroy();
+        settingsActuators.Clear();
+        settingsActuators = null;
+      }
     }
   }
 

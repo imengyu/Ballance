@@ -54,7 +54,7 @@ public class PackageManagerContentUIControl : MonoBehaviour
     gamePackageManager = GameSystem.GetSystemService("GamePackageManager") as GamePackageManager;
     itemDependsPrefabPool = new GameObjectPool("ItemDependsPrefabPool", ItemDependsPrefab, 8, 128, PanelDepends);
     gameUIManager = GameSystem.GetSystemService("GameUIManager") as GameUIManager;
-    page = gameUIManager.FindPage("PagePackageManager");
+    page = gameUIManager.FindPage("PagePackageManagerInfo");
     page.OnShow = (options) => {
       if(options.ContainsKey("PackageName")) 
         SetPackageInfo(options["PackageName"]);

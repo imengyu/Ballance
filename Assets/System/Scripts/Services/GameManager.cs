@@ -335,9 +335,6 @@ namespace Ballance2.Services
 
       #region 系统配置
 
-      XmlNode CorePackageName = systemInit.SelectSingleNode("System/SystemOptions/CorePackageName");
-      if (CorePackageName != null && !string.IsNullOrWhiteSpace(CorePackageName.InnerText))
-        corePackageName = CorePackageName.InnerText;
       XmlNode LogToFileEnabled = systemInit.SelectSingleNode("System/SystemOptions/LogToFileEnabled");
       if (LogToFileEnabled != null && LogToFileEnabled.InnerText.ToLower() == "true")
         Log.StartLogFile();
@@ -373,7 +370,6 @@ namespace Ballance2.Services
         Profiler.BeginSample("ExecuteSystemCore");
 
         systemPackage.SetFlag(0xF0);
-        systemPackage.SystemPackage = true;
         systemPackage.RunPackageExecutionCode();
         systemPackage.RequireLuaFile("SystemInternal.lua");
         systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
@@ -474,7 +470,7 @@ namespace Ballance2.Services
                     packageName, package.PackageVersion, minVer));
                 yield break;
               }
-              package.SystemPackage = true;
+              package.flag |= GamePackage.FLAG_PACK_SYSTEM_PACKAGE | GamePackage.FLAG_PACK_NOT_UNLOADABLE;
               loadedPackageCount++;
             }
             else

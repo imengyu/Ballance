@@ -606,34 +606,26 @@ namespace Ballance2.Services
     [LuaApiParamDescription("title", "标题")]
     [LuaApiParamDescription("onConfirm", "OK 按钮点击回调")]
     [LuaApiParamDescription("okText", "OK 按钮文字")]
-    public int GlobalAlertWindow(string text, string title, VoidDelegate onConfirm, string okText = "确定")
+    public int GlobalAlertWindow(string text, string title, VoidDelegate onConfirm, string okText = null)
     {
-      GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIAlertWindow, WindowsRectTransform.transform, "");
-      RectTransform rectTransform = windowGo.GetComponent<RectTransform>();
+      if(okText == null) okText = I18N.I18N.Tr("core.ui.Ok");
+
+      RectTransform rectTransform = InitViewToCanvas(PrefabUIAlertWindow, "AlertWindow", true);
       Button btnOk = rectTransform.Find("Button").GetComponent<Button>();
       rectTransform.Find("DialogText").GetComponent<Text>().text = text;
       rectTransform.Find("Button/Text").GetComponent<Text>().text = okText;
-      Window window = CreateWindow(title, rectTransform);
-      window.WindowType = WindowType.GlobalAlert;
-      window.CanClose = true;
-      window.CanDrag = true;
-      window.CanResize = true;
-      window.CanMax = false;
-      window.CanMin = false;
-      window.MinSize = new Vector2(300, 250);
-      window.Show();
+
       btnOk.onClick.AddListener(() =>
       {
         onConfirm?.Invoke();
-        window.Close();
-      });
-      window.onClose += (id) =>
-      {
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", id, false);
-      };
-      return window.GetWindowId();
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", 0, false);
+      });
+      
+      PagesRectTransform.gameObject.SetActive(false);
+      WindowsRectTransform.gameObject.SetActive(false);
+      return 0;
     }
     /// <summary>
     /// 显示全局 Confirm 对话框（窗口模式）
@@ -650,41 +642,36 @@ namespace Ballance2.Services
     [LuaApiParamDescription("onCancel", "Cancel 按扭点击回调")]
     [LuaApiParamDescription("okText", "OK 按钮文字")]
     [LuaApiParamDescription("cancelText", "Cancel 按钮文字")]
-    public int GlobalConfirmWindow(string text, string title, VoidDelegate onConfirm, VoidDelegate onCancel, string okText = "确定", string cancelText = "取消")
+    public int GlobalConfirmWindow(string text, string title, VoidDelegate onConfirm, VoidDelegate onCancel, string okText = null, string cancelText = null)
     {
-      GameObject windowGo = CloneUtils.CloneNewObjectWithParent(PrefabUIConfirmWindow, WindowsRectTransform.transform, "");
-      RectTransform rectTransform = windowGo.GetComponent<RectTransform>();
+      if(okText == null) okText = I18N.I18N.Tr("core.ui.Ok");
+      if(cancelText == null) cancelText = I18N.I18N.Tr("core.ui.Cancel");
+
+      RectTransform rectTransform = InitViewToCanvas(PrefabUIConfirmWindow, "ConfirmWindow", true);
       Button btnYes = rectTransform.Find("ButtonConfirm").GetComponent<Button>();
       Button btnNo = rectTransform.Find("ButtonCancel").GetComponent<Button>();
       rectTransform.Find("ButtonConfirm/Text").GetComponent<Text>().text = okText;
       rectTransform.Find("ButtonCancel/Text").GetComponent<Text>().text = cancelText;
       rectTransform.Find("DialogText").GetComponent<Text>().text = text;
-      Window window = CreateWindow(title, rectTransform);
-      window.WindowType = WindowType.GlobalAlert;
-      window.CanClose = false;
-      window.CanDrag = true;
-      window.CanResize = false;
-      window.CanMax = false;
-      window.CanMin = false;
-      window.Show();
-      window.onClose += (id) =>
-      {
-        PagesRectTransform.gameObject.SetActive(true);
-        WindowsRectTransform.gameObject.SetActive(true);
-      };
+
       btnYes.onClick.AddListener(() =>
       {
         onConfirm?.Invoke();
-        window.Close();
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", window.GetWindowId(), true);
+        PagesRectTransform.gameObject.SetActive(true);
+        WindowsRectTransform.gameObject.SetActive(true);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", 1, true);
       });
       btnNo.onClick.AddListener(() =>
       {
         onCancel?.Invoke();
-        window.Close();
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", window.GetWindowId(), false);
+        PagesRectTransform.gameObject.SetActive(true);
+        WindowsRectTransform.gameObject.SetActive(true);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", 1, false);
       });
-      return window.GetWindowId();
+
+      PagesRectTransform.gameObject.SetActive(false);
+      WindowsRectTransform.gameObject.SetActive(false);
+      return 1;
     }
 
     #endregion

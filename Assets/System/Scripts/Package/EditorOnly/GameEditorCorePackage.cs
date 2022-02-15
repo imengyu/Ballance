@@ -26,7 +26,7 @@ namespace Ballance2.Package
   class GameEditorCorePackage : GameEditorDebugPackage
   {
     public GameEditorCorePackage(string packageRealPath) {
-      SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
+      SetFlag(GetFlag() | (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
       PackageName = GamePackageManager.CORE_PACKAGE_NAME;
       PackageFilePath = packageRealPath;
     }

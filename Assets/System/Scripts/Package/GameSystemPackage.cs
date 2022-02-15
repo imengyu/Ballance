@@ -29,7 +29,7 @@ namespace Ballance2.Package
       CodeType = GamePackageCodeType.Lua;
       PackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
       _Status = GamePackageStatus.LoadSuccess;
-      SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
+      SetFlag(GetFlag() | (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
       LoadBaseInfo();
     }
 

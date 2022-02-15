@@ -50,6 +50,9 @@ namespace Ballance2.Services.Init
     {
       if (act == GameSystem.ACTION_INIT)
       {
+        //初始化设置
+        GameSettingsManager.Init();
+        
         GameObject newGameManager = CloneUtils.CreateEmptyObjectWithParent(gameEntryInstance.transform);
         newGameManager.name = "GameSystemInit";
         newGameManager.AddComponent<GameSystemInit>();
@@ -89,6 +92,7 @@ namespace Ballance2.Services.Init
         
         GameManager.GameMediator = null;
 
+        GamePackageManager.ReleaseInternalPackage();
         //释放其他组件
         I18NProvider.ClearAllLanguageResources();
         GameSettingsManager.Destroy();

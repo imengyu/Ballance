@@ -3,7 +3,7 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 local KeyCode = UnityEngine.KeyCode
 local Text = UnityEngine.UI.Text
 local GameSoundType = Ballance2.Services.GameSoundType
-local GameUIManager = Ballance2.Services.GameManager.Instance.GetSystemService('GameUIManager') ---@type GameUIManager
+local GameUIManager = Ballance2.Services.GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local I18N = Ballance2.Services.I18N.I18N
 
 ---过关之后的分数统计界面控制

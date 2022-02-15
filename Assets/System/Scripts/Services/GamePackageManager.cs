@@ -62,7 +62,6 @@ namespace Ballance2.Services
     [SLua.DoNotToLua]
     public override void Destroy()
     {
-      DestroyPackageManageWindow();
       UnLoadAllPackages();
 
       registeredPackages.Clear();
@@ -92,8 +91,6 @@ namespace Ballance2.Services
       GameManager.GameMediator.RegisterEventHandler(systemPackage,
         GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "GamePackageManagerHandler", (evtName, param) =>
         {
-          //初始化调试窗口
-          InitPackageManageWindow();
           InitPackageCommands();
           return false;
         });
@@ -102,7 +99,6 @@ namespace Ballance2.Services
       systemPackage._Status = GamePackageStatus.LoadSuccess;
       registeredPackages.Add(SYSTEM_PACKAGE_NAME, new GamePackageRegisterInfo(systemPackage));
       loadedPackages.Add(SYSTEM_PACKAGE_NAME, systemPackage);
-
       return true;
     }
 
@@ -251,6 +247,9 @@ namespace Ballance2.Services
       {
         GamePackage.SetCorePackage(new GameCorePackage());
       }
+    }
+    internal static void ReleaseInternalPackage() {
+      GamePackage.SetCorePackage(null);
     }
 
     /// <summary>
@@ -424,12 +423,20 @@ namespace Ballance2.Services
     public bool UnRegisterPackage(string packageName, bool unLoadImmediately)
     {
       bool success = false;
-      if (packageName == SYSTEM_PACKAGE_NAME)
+
+      GamePackage package = FindPackage(packageName);
+      if (package != null)
       {
-        GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG,
-            "Package {0} can not UnRegister", packageName);
-        return success;
+        if ((package.GetFlag() & GamePackage.FLAG_PACK_SYSTEM_PACKAGE) == GamePackage.FLAG_PACK_SYSTEM_PACKAGE) {
+          GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG, "Can not unload system package " + packageName + " ! ");
+          return false;
+        }
+        if ((package.GetFlag() & GamePackage.FLAG_PACK_NOT_UNLOADABLE) == GamePackage.FLAG_PACK_NOT_UNLOADABLE) {
+          GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG, "Can not unload package " + packageName + " with flag FLAG_PACK_NOT_UNLOADABLE ! ");
+          return false;
+        }
       }
+
       if (registeredPackages.ContainsKey(packageName))
       {
         registeredPackages.Remove(packageName);
@@ -664,10 +671,17 @@ namespace Ballance2.Services
         GameErrorChecker.SetLastErrorAndLog(GameError.AccessDenined, TAG, "Can not unload package " + packageName + " with flag FLAG_PACK_NOT_UNLOADABLE ! ");
         return false;
       }
-      if (package.UnLoadWhenDependencyRefNone)
-        return true;
+      return UnLoadPackageInternal(package, unLoadImmediately);
+    }
+
+    private bool UnLoadPackageInternal(GamePackage package, bool unLoadImmediately)
+    {
+      var packageName = package.PackageName;
 
       Log.D(TAG, "Unload package {0}", packageName);
+
+      if (package.UnLoadWhenDependencyRefNone)
+        return true;
 
       //如果不是立即卸载并且依赖引用计数大于0
       if (!unLoadImmediately && package.DependencyRefCount > 0)
@@ -707,6 +721,7 @@ namespace Ballance2.Services
       Log.D(TAG, "Package {0} unloaded", packageName);
       return true;
     }
+
     /// <summary>
     /// 查找已加载的模块
     /// </summary>
@@ -743,27 +758,17 @@ namespace Ballance2.Services
     {
       List<string> packageNames = new List<string>(loadedPackages.Keys);
       foreach (string key in packageNames)
-        if (key != SYSTEM_PACKAGE_NAME && key != CORE_PACKAGE_NAME)
-          UnLoadPackage(key, true);
+        if (key != SYSTEM_PACKAGE_NAME && key != CORE_PACKAGE_NAME) {
+          GamePackage package = FindPackage(key);
+          if (package != null)
+            UnLoadPackageInternal(package, true);
+        }
       packageNames.Clear();
     }
 
     #endregion
 
     #region 模块管理窗口
-
-    private GameUIManager GameUIManager;
-
-    private void InitPackageManageWindow()
-    {
-      GameUIManager = GameSystem.GetSystemService("GameUIManager") as GameUIManager;
-      var PackageManageWindowPage = GameUIManager.RegisterPage("PackageManageWindow", "PageFull");
-      PackageManageWindowPage.CreateContent(GameStaticResourcesPool.FindStaticPrefabs("PackageManageWindow"));
-    }
-    private void DestroyPackageManageWindow()
-    {
-      GameUIManager.UnRegisterPage("PackageManageWindow");
-    }
 
     private void InitPackageCommands()
     {

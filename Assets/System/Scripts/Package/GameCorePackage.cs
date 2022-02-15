@@ -18,7 +18,7 @@ namespace Ballance2.Package
   class GameCorePackage : GameZipPackage
   {    
     public GameCorePackage() {
-      SetFlag(GetFlag() & (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
+      SetFlag(GetFlag() | (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
       PackageName = GamePackageManager.CORE_PACKAGE_NAME;
     }
   }

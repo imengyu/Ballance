@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Ballance2;
 using Ballance2.Base;
 using Ballance2.Package;
@@ -37,6 +38,7 @@ public class PackageManagerUIControl : MonoBehaviour {
   private GamePackageManager gamePackageManager;
   private GameUIManager gameUIManager;
   private GameUIPage page;
+  private bool firstShow = true;
 
   private void Start() {
     gamePackageManager = GameSystem.GetSystemService("GamePackageManager") as GamePackageManager;
@@ -44,30 +46,42 @@ public class PackageManagerUIControl : MonoBehaviour {
 
     ScrollView.SetItemCountFunc(() => packageItems.Count);
     ScrollView.SetUpdateFunc(ItemUpdateFn);
+    ScrollView.defaultItemSize = new Vector2((transform as RectTransform).rect.width - 250, 80);
+
+    ButtonEnableAll.onClick.AddListener(() => EnableAll());
+    ButtonDisableAll.onClick.AddListener(() => DisableAll());
+    ButtonCancel.onClick.AddListener(() => Back());
+    ButtonSave.onClick.AddListener(() => Save());
 
     page = gameUIManager.FindPage("PagePackageManager");
     page.OnShow = (options) => {
+      if(firstShow) {
+        LoadList();
+        firstShow = false;
+      }
       if(options.ContainsKey("LocatePackage")) 
         SelectPackage(options["LocatePackage"]);
-      else
-        SelectPackage(GamePackageManager.CORE_PACKAGE_NAME);
     };
-    LoadList();
   }
 
   private class PackageStateChange {
     public string name;
     public bool newState;
+    public PackageStateChange(string name, bool newState) {
+      this.name = name;
+      this.newState = newState;
+    }
   }
   private class PackageInfoItem {
     public string packageName;
     public bool enableLoad;
     public bool notUnLoadable;
+    public bool systemPackage;
     public string name;
     public string introduction;
     public Sprite logo;
   }
-  private List<PackageStateChange> packageStateChanges = new List<PackageStateChange>();
+  private Dictionary<string, PackageStateChange> packageStateChanges = new Dictionary<string, PackageStateChange>();
   private List<PackageInfoItem> packageItems = new List<PackageInfoItem>();
 
   //条目更新函数
@@ -79,7 +93,9 @@ public class PackageManagerUIControl : MonoBehaviour {
     var ImageLogo = item.Find("ImageLogo").GetComponent<Image>();
     var TextTitle = item.Find("TextTitle").GetComponent<Text>();
     var TextIntrod = item.Find("TextIntrod").GetComponent<Text>();
+    var TextNotUnloadableText = item.Find("TextNotUnloadableText").GetComponent<Text>();
     var ToggleEnable = item.Find("ToggleEnable").GetComponent<ToggleEx>();
+    var ButtonUnload = item.Find("ButtonUnload").GetComponent<Button>();
 
     Button.onClick.RemoveAllListeners();
     Button.onClick.AddListener(() => {
@@ -88,15 +104,40 @@ public class PackageManagerUIControl : MonoBehaviour {
       gameUIManager.GoPageWithOptions("PagePackageManagerInfo", options);
     });
 
-    if(data.notUnLoadable) {
-      ToggleEnable.isOn = data.enableLoad;
-      ToggleEnable.gameObject.SetActive(true);
+    TextTitle.text = data.name;
+    TextIntrod.text = data.introduction;
+    ImageLogo.sprite = data.logo;
+
+    if(!data.systemPackage) {
+      TextNotUnloadableText.gameObject.SetActive(false);
+
+      //卸载按扭
+      if(data.notUnLoadable)
+        ButtonUnload.gameObject.SetActive(false);
+      else {
+        ButtonUnload.gameObject.SetActive(true);
+        ButtonUnload.onClick.RemoveAllListeners();
+        ButtonUnload.onClick.AddListener(() => {
+          UnloadPackage(data.packageName);
+        });
+      }
+
       ToggleEnable.onValueChanged.RemoveAllListeners();
+
+      if(packageStateChanges.TryGetValue(name, out var pack))
+        ToggleEnable.isOn = pack.newState;//缓存中的状态
+      else
+        ToggleEnable.isOn = data.enableLoad;
+
+      ToggleEnable.gameObject.SetActive(true);
       ToggleEnable.onValueChanged.AddListener((on) => {
         AddPackageStateChange(data.packageName, on, data.enableLoad);
       });
     }
     else {
+      ButtonUnload.gameObject.SetActive(false);
+      TextNotUnloadableText.gameObject.SetActive(true);
+      TextNotUnloadableText.text = I18N.Tr("core.ui.PackageSystemPackage");
       ToggleEnable.onValueChanged.RemoveAllListeners();
       ToggleEnable.gameObject.SetActive(false);
     }
@@ -120,17 +161,14 @@ public class PackageManagerUIControl : MonoBehaviour {
   }
 
   private void AddPackageStateChange(string name, bool state, bool intitalState) {
-    var pack = packageStateChanges.Find((v) => v.name == name);
-    if(pack == null) {
+    if(packageStateChanges.TryGetValue(name, out var pack)) {
       if(state != intitalState) {
-        pack = new PackageStateChange();
-        pack.name = name;
-        pack.newState = state;
-        packageStateChanges.Add(pack); 
+        pack = new PackageStateChange(name, state);
+        packageStateChanges.Add(name, pack); 
       }
     } else {
       if(state == intitalState)
-        packageStateChanges.Remove(pack);
+        packageStateChanges.Remove(name);
       else {
         pack.name = name;
         pack.newState = state;
@@ -149,7 +187,8 @@ public class PackageManagerUIControl : MonoBehaviour {
       newItem.logo = package.BaseInfo.LogoTexture != null ? package.BaseInfo.LogoTexture : GameStaticResourcesPool.FindStaticAssets<Sprite>("ModIconSuccess");
       newItem.name = package.BaseInfo.Name;
       newItem.introduction = package.BaseInfo.Introduction;
-      newItem.notUnLoadable = package.IsNotUnLoadable();
+      newItem.notUnLoadable = package.IsNotUnLoadable() || package.IsSystemPackage();
+      newItem.systemPackage = package.IsSystemPackage();
 
       packageItems.Add(newItem);
     }
@@ -158,6 +197,46 @@ public class PackageManagerUIControl : MonoBehaviour {
     var item = packageItems.Find((i) => i.packageName == name);
     if(item != null)
       packageItems.Remove(item);
+  }
+
+  private void UnloadPackage(string name) {
+    gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageUnaloadTip"), I18N.TrF("core.ui.PackageWantUnaload", packageStateChanges.Count), () => {
+      packageStateChanges.Clear();
+      gameUIManager.BackPreviusPage();
+    }, () => {
+      if(gamePackageManager.registeredPackages.TryGetValue(name, out var pack)) {
+        if(gamePackageManager.UnLoadPackage(name, true)) {
+          if(File.Exists(pack.package.PackageFilePath))
+            File.Delete(pack.package.PackageFilePath);
+        }
+      }
+    });
+  }
+  private void EnableAll() {
+    for (var i = 0; i < packageItems.Count; i++)
+    {
+      var item = packageItems[i];
+      if(!item.systemPackage) {
+        if(packageStateChanges.ContainsKey(item.name))
+          packageStateChanges[item.name].newState = true;
+        else
+          packageStateChanges.Add(item.name, new PackageStateChange(item.name, true));
+      }
+    }
+    ScrollView.UpdateData(false);
+  }
+  private void DisableAll() {
+    for (var i = 0; i < packageItems.Count; i++)
+    {
+      var item = packageItems[i];
+      if(!item.systemPackage) {
+        if(packageStateChanges.ContainsKey(item.name))
+          packageStateChanges[item.name].newState = false;
+        else
+          packageStateChanges.Add(item.name, new PackageStateChange(item.name, false));
+      }
+    }
+    ScrollView.UpdateData(false);
   }
 
   //加载列表
@@ -187,17 +266,31 @@ public class PackageManagerUIControl : MonoBehaviour {
   }
 
   //保存和返回
-  private void Save() {
-    //保存状态至模块管理器中
-    foreach(PackageStateChange change in packageStateChanges) {
-      if(gamePackageManager.registeredPackages.ContainsKey(change.name)) 
-        gamePackageManager.registeredPackages[change.name].enableLoad = change.newState;
+  private void Save() { 
+    //移除状态一致的条目
+    List<string> sameNames = new List<string>();
+    foreach(var pack in packageItems) {
+      if(packageStateChanges.ContainsKey(pack.name) && packageStateChanges[pack.name].newState == pack.enableLoad) 
+        sameNames.Add(pack.name);
     }
-    packageStateChanges.Clear();
-    //保存状态
-    gamePackageManager.SavePackageRegisterInfo();
-    //重启游戏
-    GameManager.Instance.RestartGame();
+    foreach(var name in sameNames)
+      packageStateChanges.Remove(name);
+    sameNames.Clear();
+
+    if(packageStateChanges.Count > 0) {
+      //保存状态至模块管理器中
+      foreach(var change in packageStateChanges) {
+        if(gamePackageManager.registeredPackages.ContainsKey(change.Value.name)) 
+          gamePackageManager.registeredPackages[change.Value.name].enableLoad = change.Value.newState;
+      }
+      packageStateChanges.Clear();
+      //保存状态
+      gamePackageManager.SavePackageRegisterInfo();
+      //重启游戏
+      GameManager.Instance.RestartGame();
+    } else {
+      gameUIManager.BackPreviusPage();
+    }
   }
   private void Back() {
     if(packageStateChanges.Count > 0) {
