@@ -19,6 +19,7 @@ require('LevelBuilder')
 require('InitGamePlay')
 require('InitLevelBuilder')
 require('InitBulitInModuls')
+require('KeypadUIManager')
 
 local Intro = require('IntroInit')
 local MenuLevel = require('MenuLevelInit')
@@ -73,6 +74,10 @@ function CoreInit()
   LevelBuilderInit()
   --加载分数数据
   Game.HighScoreManager.Load()
+  --注册内置键盘
+  KeypadUIManager.AddKeypad('BaseLeftRight', CorePackage:GetPrefabAsset('KeypadLR.prerfab'), CorePackage:GetSpriteAsset('keypad_lr'))
+  KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadSimpleLeft.prerfab'), CorePackage:GetSpriteAsset('keypad_l'))
+  KeypadUIManager.AddKeypad('BaseRight', CorePackage:GetPrefabAsset('KeypadSimpleRight.prerfab'), CorePackage:GetSpriteAsset('keypad_r'))
 
   --调试入口
   if GameManager.DebugMode then

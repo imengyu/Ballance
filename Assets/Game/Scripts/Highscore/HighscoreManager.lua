@@ -1,21 +1,24 @@
 local json = require("json")
 local defaultHighscoreData = require("DefaultHighscoreData")
 local Application = UnityEngine.Application
-local HighscoreDataPath = Application.persistentDataPath..'/'..'HighscoreData.json'
+local HighscoreDataPath = Application.persistentDataPath..'/HighscoreData.json'
+local LevelPassStateDataPath = Application.persistentDataPath..'/LevelPassStateData.json'
 
 ---关卡高分数据
 HighscoreData = {
   Data = {},
+  LevelPassStateData = {},
   LevelNames = {}
 }
 
 ---高分管理器
----否则管理每个关卡的分数
+---负则管理每个关卡的分数
 ---@class HighscoreManager
 HighscoreManager = {}
 
 ---加载。此函数由系统自动调用，勿手动调用
 function HighscoreManager.Load()
+  --加载关卡高分数据
   if Game.Manager:FileExists(HighscoreDataPath) then 
     local str = Game.Manager:ReadFile(HighscoreDataPath)
     local data = json.decode(str)
@@ -30,13 +33,29 @@ function HighscoreManager.Load()
     HighscoreData.Data = defaultHighscoreData.DefaultHighscoreData
     HighscoreData.LevelNames = defaultHighscoreData.DefaultHighscoreLevelNamesData
   end
+  --加载关卡过关状态数据
+  if Game.Manager:FileExists(LevelPassStateDataPath) then 
+    local str = Game.Manager:ReadFile(LevelPassStateDataPath)
+    local data = json.decode(str)
+    if data.data ~= nil then
+      HighscoreData.LevelPassStateData = data.data
+    end
+  end
 end
 ---保存。此函数由系统自动调用，勿手动调用
 function HighscoreManager.Save()
+
+  --保存关卡高分数据
   Game.Manager:WriteFile(HighscoreDataPath, false, json.encode({
     data = HighscoreData.Data,
     names = HighscoreData.LevelNames
   }))
+
+  --保存关卡过关状态数据
+  Game.Manager:WriteFile(LevelPassStateDataPath, false, json.encode({
+    data = HighscoreData.LevelPassStateData
+  }))
+
 end
 
 ---获取指定关卡的分数列表
@@ -58,6 +77,9 @@ function HighscoreManager.AddItem(levelName, userName, score)
     HighscoreData.Data[levelName] = {}
     table.insert(HighscoreData.LevelNames, levelName)
   end
+  --设置已经过关
+  HighscoreData.LevelPassStateData[levelName] = true
+
   local levelData = HighscoreData.Data[levelName]
   for index, value in ipairs(levelData) do
     if score > value.score then
@@ -88,6 +110,13 @@ function HighscoreManager.CheckLevelHighScore(levelName, score)
     end
   end
   return true
+end
+
+---检查指定关卡是否有过关记录
+---@param levelName string 关卡名称
+function HighscoreManager.CheckLevelPassState(levelName)
+  local levelData = HighscoreData.LevelPassStateData[levelName]
+  return levelData == true
 end
 
 ---添加默认分数至指定关卡中

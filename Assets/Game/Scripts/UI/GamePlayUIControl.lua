@@ -1,5 +1,7 @@
 local GameManager = Ballance2.Services.GameManager
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
+local GameSettingsManager = Ballance2.Services.GameSettingsManager
+local Log = Ballance2.Log
 local CloneUtils = Ballance2.Utils.CloneUtils
 local Image = UnityEngine.UI.Image
 local Color = UnityEngine.Color
@@ -97,9 +99,16 @@ function GamePlayUIControl:new()
   self._MoveBaffleSec = 0.3
   self._CurrentMoveBaffleStart = 0
   self._CurrentMoveBaffleTarget = 0
+  self._CurrentMobileKeyPad = nil ---@type GameObject
 end
 function GamePlayUIControl:Start() 
   self._ScoreBoardActive.gameObject:SetActive(false)
+
+  --手机端还需要创建键盘
+  if UNITY_ANDROID or UNITY_IOS then
+    self:ReBuildMobileKeyPad()
+  end
+
   GameUI.GamePlayUI = self
 end
 function GamePlayUIControl:Update()
@@ -110,6 +119,36 @@ function GamePlayUIControl:Update()
       0
     )
   end
+end
+function GamePlayUIControl:OnDestroy()
+  --销毁键盘
+  if self._CurrentMobileKeyPad and not Slua.IsNull(self._CurrentMobileKeyPad) then
+    UnityEngine.Object.Destroy(self._CurrentMobileKeyPad)
+    self._CurrentMobileKeyPad = nil
+  end
+end
+
+---创建手机端键盘
+function GamePlayUIControl:ReBuildMobileKeyPad() 
+  --销毁键盘
+  if self._CurrentMobileKeyPad and not Slua.IsNull(self._CurrentMobileKeyPad) then
+    UnityEngine.Object.Destroy(self._CurrentMobileKeyPad)
+    self._CurrentMobileKeyPad = nil
+  end
+
+  --读取键盘设置
+  local settings = GameSettingsManager.GetSettings('core')
+  local controlKeypadSettting = settings:GetString('control.keypad', 'BaseLeft')
+
+  local keyPad = KeypadUIManager.GetKeypad(controlKeypadSettting)
+  if keyPad == nil then
+    Log.E('GamePlayUIControl', 'Keypad in setting \''..controlKeypadSettting..'\' not found, use default keypad insted.')
+    keyPad = KeypadUIManager.GetKeypad('BaseLeft')
+  end
+
+  --创建键盘
+  self._CurrentMobileKeyPad = GameUIManager:InitViewToCanvas(keyPad.prefrab, 'GameMobileKeypad', false)
+
 end
 
 ---闪烁分数面板

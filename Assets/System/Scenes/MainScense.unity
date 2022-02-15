@@ -223,7 +223,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 100}
+  m_AnchoredPosition: {x: 0, y: 117.00017}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &108773122
@@ -923,6 +923,12 @@ MonoBehaviour:
     Name: RuntimeHierarchy
   - Object: {fileID: 1530605722893704, guid: d39ad26c554f1a04d870956f7fac6fd8, type: 3}
     Name: RuntimeInspector
+  - Object: {fileID: 8090445432444336513, guid: 56511fb57bb6c0f48b05a1ec8da91731, type: 3}
+    Name: KeypadLR
+  - Object: {fileID: 8090445432444336513, guid: b0e17ed822a6954418737fac36580a19, type: 3}
+    Name: KeypadL
+  - Object: {fileID: 8090445432444336513, guid: daba201957e009c4fb9d95c1c457e142, type: 3}
+    Name: KeypadR
   GameAssets:
   - Object: {fileID: 24100000, guid: 20498c8cca58ec440a6d5cc8d9afab20, type: 2}
     Name: GameMainAudioMixer
@@ -1098,7 +1104,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 345359703}
   m_HandleRect: {fileID: 345359701}
   m_Direction: 2
-  m_Value: 0.14529915
+  m_Value: -0.000001434587
   m_Size: 0.61
   m_NumberOfSteps: 0
   m_OnValueChanged:
