@@ -443,7 +443,8 @@ function LevelBuilder:_LoadLevelInternal()
               if physicsData.HitSound then
                 local hitSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, 'Floor_'..name..'_HitSound')
                 
-                body.EnableContractEventCallback()
+                body:EnableContractEventCallback()
+                body.EnableCollisionEvent = true
                 body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.3, 10, 0.5, 0.1)
                 body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.3, 10, 0.5, 0.1)
                 body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.3, 10, 0.5, 0.1)
