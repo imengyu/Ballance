@@ -53,9 +53,9 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 目前可能BUG比较多，会有很多问题，不要抱太大的期待哦。。等我慢慢修复了。
 
-![Demo13](https://imengyu.top/assets/images/demo1.png)
+![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.png)
 
-![Demo13](https://imengyu.top/assets/images/demo1.gif)
+![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.gif)
 
 ## 项目编辑器内运行步骤
 
