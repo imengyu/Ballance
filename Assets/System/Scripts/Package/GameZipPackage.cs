@@ -35,7 +35,7 @@ namespace Ballance2.Package
     }
     public override async Task<bool> LoadInfo(string filePath)
     {
-      PackageFilePath = filePath;
+      PackageFilePath = PathUtils.FixFilePathScheme(filePath);
 
       bool defFileLoadSuccess = false;
       bool defFileFounded = false;
@@ -44,9 +44,9 @@ namespace Ballance2.Package
 
       try {
         //如果路径以jar:开头，则使用www方式读取
-        if(filePath.StartsWith("jar:")) {
+        if(PackageFilePath.Contains("jar:file://")) {
 
-          UnityWebRequest request = UnityWebRequest.Get(filePath);
+          UnityWebRequest request = UnityWebRequest.Get(PackageFilePath);
           await request.SendWebRequest();
 
           if (request.result == UnityWebRequest.Result.Success)
@@ -55,18 +55,18 @@ namespace Ballance2.Package
             zip = ZipUtils.OpenZipStream(ms);
           }
           else {
-            GameErrorChecker.SetLastErrorAndLog(GameError.RequestFailed, TAG, "Request " + filePath + " failed. Error: " + request.error);
+            GameErrorChecker.SetLastErrorAndLog(GameError.RequestFailed, TAG, "Request " + PackageFilePath + " failed. Error: " + request.error);
             return false;
           }
         }
         else {
           //在zip中加载Def
-          zip = ZipUtils.OpenZipFile(PathUtils.FixFilePathScheme(PackageFilePath));
+          zip = ZipUtils.OpenZipFile(PackageFilePath);
         }
         if (zip == null)
           return false;
 
-        UpdateTime = File.GetLastWriteTime(PathUtils.FixFilePathScheme(PackageFilePath));
+        UpdateTime = File.GetLastWriteTime(PackageFilePath);
 
         ZipEntry theEntry;
         while ((theEntry = zip.GetNextEntry()) != null)

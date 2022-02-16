@@ -319,11 +319,12 @@ namespace Ballance2.Services
 
         //如果路径在Core中存在，则使用Core加载
         if (PathUtils.Exists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
-        else if (realPackagePathInCore.StartsWith("jar:")) realPackagePath = realPackagePathInCore;
-        //如果路径在Packages中存在，则使用Packages加载
-        //不存在则抛出异常
-        else if (!realPackagePath.StartsWith("jar:") && !PathUtils.Exists(realPackagePath))
-        {
+        else if (realPackagePath.Contains("jar:file://") || PathUtils.Exists(realPackagePath))
+          realPackagePathInCore = "";
+        else if (realPackagePathInCore.Contains("jar:file://") || PathUtils.Exists(realPackagePathInCore)) //如果路径在Packages中存在，则使用Packages加载
+          realPackagePath = realPackagePathInCore;
+        else {
+          //不存在则抛出异常
           Log.E(TAG, "Package {0} register failed because file {1} not found", packageName, realPackagePath);
           return false;
         }
@@ -337,7 +338,7 @@ namespace Ballance2.Services
       if (gamePackage == null)
       {
         //判断文件类型
-        if (FileUtils.TestFileIsZip(realPackagePath))
+        if (realPackagePath.Contains("jar:file://") || FileUtils.TestFileIsZip(realPackagePath))
           gamePackage = new GameZipPackage();
         else if (FileUtils.TestFileIsAssetBundle(realPackagePath))
           gamePackage = new GameAssetBundlePackage();

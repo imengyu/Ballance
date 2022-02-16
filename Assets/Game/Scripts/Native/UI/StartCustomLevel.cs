@@ -340,14 +340,17 @@ public class StartCustomLevel : MonoBehaviour
           AddLevelToList(info);
         }
 #else
-      DirectoryInfo direction = new DirectoryInfo(GamePathManager.GetLevelRealPath(""));
-      DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
-      for (int i = 0; i < dirs.Length; i++)
-        if(!Regex.IsMatch(dirs[i].Name, "^level([0]{1}[0-9]{1})|([1]{1}[0-3]{1})$", RegexOptions.IgnoreCase)) { //排除自带关卡
-          var info = new GameLevelInfo(dirs[i].Name, gamePackageManager);
-          loadedLevels.Add(info);
-          AddLevelToList(info);
-        }
+      string dir = GamePathManager.GetLevelRealPath("");
+      if(Directory.Exists(dir)) {
+        DirectoryInfo direction = new DirectoryInfo(dir);
+        DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
+        for (int i = 0; i < dirs.Length; i++)
+          if(!Regex.IsMatch(dirs[i].Name, "^level([0]{1}[0-9]{1})|([1]{1}[0-3]{1})$", RegexOptions.IgnoreCase)) { //排除自带关卡
+            var info = new GameLevelInfo(dirs[i].Name, gamePackageManager);
+            loadedLevels.Add(info);
+            AddLevelToList(info);
+          }
+      }
 #endif
     }
   }
