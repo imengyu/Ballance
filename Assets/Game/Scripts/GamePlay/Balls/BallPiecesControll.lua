@@ -47,6 +47,13 @@ function CreateClass:BallPiecesControll()
 
     local parent = data.parent
     if not parent.activeSelf then
+      --去除物理
+      for _, body in ipairs(data.bodys) do
+        if body.IsPhysicalized then
+          body:UnPhysicalize(true) 
+        end
+      end
+
       parent:SetActive(true)
 
       --还原初始状态

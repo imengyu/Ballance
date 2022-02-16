@@ -206,7 +206,7 @@ namespace Ballance2.Res
 #elif UNITY_STANDALONE
           pathbuf= Application.dataPath + "/Packages/" + pathbuf;
 #elif UNITY_ANDROID || UNITY_IOS
-          if(CheckPackageInBuiltInPackage(pathbuf)
+          if(CheckPackageInBuiltInPackage(pathbuf))
             pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Packages/" + pathbuf;
           else 
             pathbuf = Application.persistentDataPath + "/Packages/" + pathbuf;

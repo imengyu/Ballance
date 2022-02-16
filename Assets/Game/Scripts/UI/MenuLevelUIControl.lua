@@ -28,12 +28,20 @@ function CreateMenuLevelUI(package)
   PageAbout:CreateContent(package)
   PageHighscore:CreateContent(package)
   PageQuit:CreateContent(package)
-  PageStart:CreateContent(package)
   PageLightZone:CreateContent(package)
   PageAboutCreators:CreateContent(package)
   PageAboutProject:CreateContent(package)
   PageAboutLicense:CreateContent(package)
+  PageStart:CreateContent(package)
   PageStartCustomLevel:CreateContent(package)
+  PageStart.OnShow = function ()
+    for i = 2, 12, 1 do
+      local button = PageStart.Content:Find('ButtonLevel'..i):GetComponent(UnityEngine.UI.Button) ---@type Button
+      local name = 'level'
+      if i < 10 then name = name..'0'..i else name = name..i; end
+      button.interactable = HighscoreManager.CheckLevelPassState(name)
+    end
+  end
 
   --创建这个特殊logo特效
   local BallanceLogo3DObjects = GameManager.Instance:InstancePrefab(package:GetPrefabAsset('BallanceLogo3DObjects.prefab'), 'BallanceLogo3DObjects')

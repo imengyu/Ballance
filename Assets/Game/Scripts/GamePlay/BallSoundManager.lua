@@ -201,10 +201,12 @@ function BallSoundManager:RemoveSoundableBall(ball)
       ball.rigidbody:DeleteCollDetection(id)
       if value.HasRollSound then
         ball.rigidbody:DeleteContractDetection(id)
+
       end
     end
     local sound = self._CurrentPlayingRollSounds[id]
     if sound ~= nil then
+      self._CurrentPlayingRollSounds[id] = nil
       sound.volume = 0
       sound.pitch = 0
     end

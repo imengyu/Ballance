@@ -30,6 +30,9 @@ namespace Ballance2.Editor.Modding.LevelMaker
           assetBundleBuild.assetBundleVariant = "ballance";
           assetBundleBuild.assetNames = allAssetsPath.ToArray();
 
+          if(!Directory.Exists(dirTargetPath))
+            Directory.CreateDirectory(dirTargetPath);
+
           //打包
           var ass = BuildPipeline.BuildAssetBundles(dirTargetPath, new AssetBundleBuild[]{
             assetBundleBuild
