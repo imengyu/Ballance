@@ -135,17 +135,19 @@ namespace Ballance2.Services
     /// </summary>
     internal void ScanUserPackages(Dictionary<string, GamePackageRegisterInfo> list) {
       var dirPath = GamePathManager.GetResRealPath("package", "", false, false);
-      //扫描文件夹中没有的包，添加到列表中
-      DirectoryInfo direction = new DirectoryInfo(dirPath);
-      FileInfo[] files = direction.GetFiles("*.ballance", SearchOption.TopDirectoryOnly);
-      for (int i = 0; i < files.Length; i++)
-      {
-        var rel = files[i].FullName.Replace('\\', '/');
-        var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
-        if(StringUtils.IsPackageName(fileNameNoExt) && !list.ContainsKey(fileNameNoExt) && !IsPackageRegistered(fileNameNoExt)) {
-          list.Add(fileNameNoExt, new GamePackageRegisterInfo(fileNameNoExt, false));
-        }
-      } 
+      if(Directory.Exists(dirPath)) {
+        //扫描文件夹中没有的包，添加到列表中
+        DirectoryInfo direction = new DirectoryInfo(dirPath);
+        FileInfo[] files = direction.GetFiles("*.ballance", SearchOption.TopDirectoryOnly);
+        for (int i = 0; i < files.Length; i++)
+        {
+          var rel = files[i].FullName.Replace('\\', '/');
+          var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
+          if(StringUtils.IsPackageName(fileNameNoExt) && !list.ContainsKey(fileNameNoExt) && !IsPackageRegistered(fileNameNoExt)) {
+            list.Add(fileNameNoExt, new GamePackageRegisterInfo(fileNameNoExt, false));
+          }
+        } 
+      }
     }
     /// <summary>
     /// 读取模块包状态
