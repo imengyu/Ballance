@@ -65,6 +65,9 @@ function BindSettingsUI(MessageCenter)
   local updateGrResolution = MessageCenter:SubscribeValueBinder('GrResolution', function(val)
     GameSettings:SetInt("video.resolution", val)
   end)
+  local updateGrQuality = MessageCenter:SubscribeValueBinder('GrQuality', function(val)
+    GameSettings:SetInt("video.quality", val)
+  end)
   local updateGrFullScreen = MessageCenter:SubscribeValueBinder('GrFullScreen', function(val)
     GameSettings:SetBool("video.fullScreen", val)
   end)
@@ -98,6 +101,7 @@ function BindSettingsUI(MessageCenter)
   end)
 
   local resolutions = nil
+  local qualities = nil
 
   --设置数据加载
   MessageCenter:SubscribeEvent('BtnSettingsGraphicsClick', function () 
@@ -128,6 +132,25 @@ function BindSettingsUI(MessageCenter)
           ) then updateGrResolution:Invoke(i - 1) end
         end
       end )) 
+    end
+    if(qualities == nil) then
+      qualities = {
+        { level = 0, text = '最低' },
+        { level = 1, text = '低' },
+        { level = 2, text = '中等' },
+        { level = 3, text = '高' },
+        { level = 4, text = '极高' },
+        { level = 5, text = '最高' },
+      }
+      local GrQuality = MessageCenter:GetComponentInstance('GrQuality'):GetComponent(Ballance2.UI.Core.Controls.Updown) ---@type Updown
+      local qualitiyCurrent = QualitySettings.GetQualityLevel()
+      for i = 1, #qualities, 1 do
+        local qualitiy = qualities[i]
+        GrQuality:AddOption(qualitiy.text)
+        if qualitiyCurrent == qualitiy.level then 
+          updateGrQuality:Invoke(i - 1) 
+        end
+      end
     end
   end)
   MessageCenter:SubscribeEvent('BtnSettingsControlsClick', function () 

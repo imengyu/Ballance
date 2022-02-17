@@ -13,6 +13,7 @@ public class GameEntryEditor : Editor
     private SerializedProperty GameBaseCamera;
     private SerializedProperty GameCanvas;
     private SerializedProperty GameGlobalErrorUI;
+    private SerializedProperty GameGlobalIngameLoading;
     private SerializedProperty GlobalGamePermissionTipDialog;
     private SerializedProperty GlobalGameUserAgreementTipDialog;
     private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialog;
@@ -30,7 +31,6 @@ public class GameEntryEditor : Editor
     private SerializedProperty DebugCustomEntries;
     private SerializedProperty DebugLoadCustomPackages;
     private SerializedProperty DebugSkipIntro;
-    private SerializedProperty DebugSkipSplash;
 
 
     private void OnEnable()
@@ -42,12 +42,12 @@ public class GameEntryEditor : Editor
         GameBaseCamera = serializedObject.FindProperty("GameBaseCamera");
         GameCanvas = serializedObject.FindProperty("GameCanvas");
         GameGlobalErrorUI = serializedObject.FindProperty("GameGlobalErrorUI");
-        DebugSkipSplash = serializedObject.FindProperty("DebugSkipSplash");
         GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
         GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
         GlobalGameScriptErrDialog = serializedObject.FindProperty("GlobalGameScriptErrDialog");
         GlobalGameSysErrMessageDebuggerTipDialog = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialog");
         GlobalGameSysErrMessageDebuggerTipDialogText = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialogText");
+        GameGlobalIngameLoading = serializedObject.FindProperty("GameGlobalIngameLoading");
 
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
@@ -122,7 +122,6 @@ public class GameEntryEditor : Editor
 
         EditorGUILayout.PropertyField(DebugCustomEntryEventParamas);
         EditorGUILayout.PropertyField(DebugCustomEntries);
-        EditorGUILayout.PropertyField(DebugSkipSplash);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();
@@ -143,6 +142,7 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GlobalGameScriptErrDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialog);
         EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialogText);
+        EditorGUILayout.PropertyField(GameGlobalIngameLoading);
 
         EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();

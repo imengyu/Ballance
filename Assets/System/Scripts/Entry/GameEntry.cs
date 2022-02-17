@@ -65,8 +65,6 @@ namespace Ballance2.Entry
     public bool DebugLoadCustomPackages = true;
     [Tooltip("是否在系统或自定义调试模式中跳过Intro")]
     public bool DebugSkipIntro = false;
-    [Tooltip("是否在系统或自定义调试模式中跳过开场动画")]
-    public bool DebugSkipSplash = false;
 
     #endregion
 
@@ -82,6 +80,7 @@ namespace Ballance2.Entry
     public GameObject GlobalGameUserAgreementTipDialog = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
     public GameObject GlobalGameSysErrMessageDebuggerTipDialog = null;
+    public GameObject GameGlobalIngameLoading = null;
     public Text GlobalGameSysErrMessageDebuggerTipDialogText = null;
 
     private bool GlobalGamePermissionTipDialogClosed = false;
@@ -96,7 +95,9 @@ namespace Ballance2.Entry
       InitCommandLine();
       InitBaseSettings();
 
+#if UNITY_EDITOR
       if (DebugMode && DebugSetFrameRate) Application.targetFrameRate = DebugTargetFrameRate;
+#endif
 
       StartCoroutine(InitMain());
     }
@@ -121,8 +122,10 @@ namespace Ballance2.Entry
       {
         GlobalGameUserAgreementTipDialog.SetActive(true);
         return true;
+      } else {
+        GlobalGameUserAgreementTipDialogClosed = true;
+        return false;
       }
-      return false;
     }
     /// <summary>
     /// 检查android权限是否申请
@@ -195,19 +198,23 @@ namespace Ballance2.Entry
 #if UNITY_EDITOR
       DebugMode = true;
 #else
-      if(PlayerPrefs.GetInt("core.DebugMode", 0) > 0) DebugMode = true;
-      else DebugMode = false;
+      if(!DebugMode) {
+        if(PlayerPrefs.GetInt("core.DebugMode", 0) > 0) DebugMode = true;
+        else DebugMode = false;
+      }
 #endif
     }
     private void InitUi() {
+      GameGlobalIngameLoading.SetActive(true);
     }
 
     private IEnumerator InitMain()
     {
+      InitUi();
+
       GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
       GameSystem.PreInit();
 
-      InitUi();
 
       if (TestAndroidPermission())
       {

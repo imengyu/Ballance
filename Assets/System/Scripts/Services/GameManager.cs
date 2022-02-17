@@ -249,33 +249,31 @@ namespace Ballance2.Services
       //如果调试配置中设置了CustomDebugName，则进入自定义调试场景，否则进入默认场景
       if (string.IsNullOrEmpty(sCustomDebugName))
       {
+#if UNITY_EDITOR
         //进入场景
         if (DebugMode && GameEntry.Instance.DebugSkipIntro) {
+          //隐藏初始加载中动画
+          GameEntry.Instance.GameGlobalIngameLoading.SetActive(false);
+          //进入场景
           if(!RequestEnterLogicScense("MenuLevel"))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
-        else if (firstScense != "") {
-          //所有包加载完毕但是动画还没有完成，再等等
-          if(!GameSplashController.Instance.IsPlaying()) {
-            GameSplashController.Instance.OnSplashFinish = null;
-            //进入场景
-            if(!RequestEnterLogicScense(firstScense))
-              GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
-          } else {
-            Log.D(TAG, "Waiting Splash");
-            
-            if(GameSplashController.Instance.OnSplashFinish == null)
-              GameSplashController.Instance.OnSplashFinish = () => {
-                Log.D(TAG, "Waiting Splash done");
-                //进入场景
-                if(!RequestEnterLogicScense(firstScense))
-                  GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
-              };
-          }
+        else 
+#endif
+        if (firstScense != "") {
+          //隐藏初始加载中动画
+          GameEntry.Instance.GameGlobalIngameLoading.SetActive(false);
+          //进入场景
+          if(!RequestEnterLogicScense(firstScense))
+            GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
         }
+
       }
       else
       {
+        //隐藏初始加载中动画
+        GameEntry.Instance.GameGlobalIngameLoading.SetActive(false);
+        //进入场景
         Log.D(TAG, "Enter GameDebug.");
         if(!RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
@@ -367,14 +365,20 @@ namespace Ballance2.Services
       #region 加载系统内核包
 
       {
-        Profiler.BeginSample("ExecuteSystemCore");
 
-        systemPackage.SetFlag(0xF0);
-        systemPackage.RunPackageExecutionCode();
-        systemPackage.RequireLuaFile("SystemInternal.lua");
-        systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
-
-        Profiler.EndSample();
+        try {
+          Profiler.BeginSample("ExecuteSystemCore");
+          systemPackage.SetFlag(0xF0);
+          systemPackage.RunPackageExecutionCode();
+          systemPackage.RequireLuaFile("SystemInternal.lua");
+          systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
+        } catch(Exception e) {
+          GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "未能成功初始化内部脚本，可能是当前版本配置不正确，请尝试重新下载。\n" + e.ToString());
+          StopAllCoroutines();
+          yield break;
+        } finally {
+          Profiler.EndSample();
+        }
 
         yield return new WaitForSeconds(1f);
 
@@ -497,23 +501,23 @@ namespace Ballance2.Services
           pm.NotifyAllPackageRun("*");
 
           yield return new WaitForSeconds(0.2f);
-
-
-          //在基础包加载完成时就进入Intro
-          if (string.IsNullOrEmpty(sCustomDebugName) && (!DebugMode || !GameEntry.Instance.DebugSkipIntro))
+          
+          if (string.IsNullOrEmpty(sCustomDebugName)
+#if UNITY_EDITOR
+          && (!DebugMode || !GameEntry.Instance.DebugSkipIntro)) 
+          //EDITOR 下才判断是否跳过intro DebugSkipIntro
+#else
+          )
+#endif
           {
-            //如果logo动画还没有完成，则等一等
-            if(GameSplashController.Instance.IsPlaying()) {
-              Log.D(TAG, "Waiting Splash for intro");
-              GameSplashController.Instance.OnSplashFinish = () => {
-                Log.D(TAG, "Waiting Splash for intro done");
-                RequestEnterLogicScense(firstScense);
-                firstScense = "";
-              };
-            } else {
-              RequestEnterLogicScense(firstScense);
-              firstScense = "";
-            }
+            //在基础包加载完成时就进入Intro
+            RequestEnterLogicScense(firstScense);
+
+            //隐藏初始加载中动画
+            if(firstScense == "Intro")
+              Delay(2.0f, () => GameEntry.Instance.GameGlobalIngameLoading.SetActive(false));
+
+            firstScense = "";
           }
         }
       }

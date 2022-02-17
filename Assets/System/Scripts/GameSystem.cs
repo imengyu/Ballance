@@ -231,21 +231,25 @@ namespace Ballance2
       {
         sysInit = true;
 
-        //Init system
-        Ballance2.Utils.UnityLogCatcher.Init();
-        GameStaticResourcesPool.InitStaticPrefab(gameStaticResEntryInstance.GamePrefab, gameStaticResEntryInstance.GameAssets);
+        try {
+          //Init system
+          Ballance2.Utils.UnityLogCatcher.Init();
+          GameStaticResourcesPool.InitStaticPrefab(gameStaticResEntryInstance.GamePrefab, gameStaticResEntryInstance.GameAssets);
 
-        //Call game init
-        if (sysHandler == null)
-        {
-          Log.D(TAG, "Not found SysHandler, did you call RegSysHandler first?");
-          GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, null);
-          return;
-        }        
-        //Call init
-        sysHandler(ACTION_INIT);
+          //Call game init
+          if (sysHandler == null)
+          {
+            Log.D(TAG, "Not found SysHandler, did you call RegSysHandler first?");
+            GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, null);
+            return;
+          }        
+          //Call init
+          sysHandler(ACTION_INIT);
 
-        Log.D(TAG, "System init ok");
+          Log.D(TAG, "System init ok");
+        } catch(System.Exception e)  {
+          GameErrorChecker.ThrowGameError(GameError.ExecutionFailed, "System init failed: \n" + e.ToString());
+        }
       }
       else
       {

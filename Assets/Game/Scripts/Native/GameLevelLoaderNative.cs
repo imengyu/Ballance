@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using Ballance2.Res;
+using Ballance2.Utils;
 
 /*
  * Copyright (c) 2020  mengyu
@@ -137,8 +138,8 @@ namespace Ballance2.Game
 #endif
       {
         //路径
-        string path = GamePathManager.GetLevelRealPath(name.ToLower(), false);
-        if (!File.Exists(path))
+        string path = PathUtils.FixFilePathScheme(GamePathManager.GetLevelRealPath(name.ToLower(), false));
+        if(!path.Contains("jar:file://") && !File.Exists(path))
         {
           Log.E(TAG, "File not exists : {0}", path);
           errCallback("FILE_NOT_EXISTS", "文件 \"" + path + "\" 不存在");
