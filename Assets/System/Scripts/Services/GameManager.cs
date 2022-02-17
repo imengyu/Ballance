@@ -131,7 +131,7 @@ namespace Ballance2.Services
 
       Application.wantsToQuit += Application_wantsToQuit;
 
-      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.CORE_PACKAGE_NAME);
 
       InitDebugConfig(gameEntryInstance);
       InitCommands();
@@ -252,32 +252,32 @@ namespace Ballance2.Services
 #if UNITY_EDITOR
         //进入场景
         if (DebugMode && GameEntry.Instance.DebugSkipIntro) {
-          //隐藏初始加载中动画
-          GameEntry.Instance.GameGlobalIngameLoading.SetActive(false);
           //进入场景
           if(!RequestEnterLogicScense("MenuLevel"))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          //隐藏初始加载中动画
+          HideGlobalStartLoading();
         }
         else 
 #endif
         if (firstScense != "") {
-          //隐藏初始加载中动画
-          GameEntry.Instance.GameGlobalIngameLoading.SetActive(false);
           //进入场景
           if(!RequestEnterLogicScense(firstScense))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          //隐藏初始加载中动画
+          HideGlobalStartLoading();
         }
 
       }
       else
       {
-        //隐藏初始加载中动画
-        GameEntry.Instance.GameGlobalIngameLoading.SetActive(false);
         //进入场景
         Log.D(TAG, "Enter GameDebug.");
         if(!RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
         GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", GameEntry.Instance.DebugCustomEntryEventParamas);
+        //隐藏初始加载中动画
+        HideGlobalStartLoading();
       }
     }
     /// <summary>
@@ -512,12 +512,8 @@ namespace Ballance2.Services
           {
             //在基础包加载完成时就进入Intro
             RequestEnterLogicScense(firstScense);
-
-            //隐藏初始加载中动画
-            if(firstScense == "Intro")
-              Delay(2.0f, () => GameEntry.Instance.GameGlobalIngameLoading.SetActive(false));
-
             firstScense = "";
+            HideGlobalStartLoading();
           }
         }
       }
@@ -1105,6 +1101,19 @@ namespace Ballance2.Services
     {
       return GameConst.GameBulidVersion;
     }
+    /// <summary>
+    /// 隐藏全局初始Loading动画
+    /// </summary>
+    [LuaApiDescription("隐藏全局初始Loading动画")]
+    public void HideGlobalStartLoading() { 
+      GameEntry.Instance.GameGlobalIngameLoading.SetActive(false); 
+      Log.D(TAG, "HideGlobalStartLoading"); 
+    }
+    /// <summary>
+    /// 显示全局初始Loading动画
+    /// </summary>
+    [LuaApiDescription("显示全局初始Loading动画")]
+    public void ShowGlobalStartLoading() { GameEntry.Instance.GameGlobalIngameLoading.SetActive(true); }
 
     // Prefab 预制体实例化相关方法。
     // 这里提供一些快速方法方便直接使用。这些方法与 CloneUtils 提供的方法功能一致。

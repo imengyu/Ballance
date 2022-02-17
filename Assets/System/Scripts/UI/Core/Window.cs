@@ -237,7 +237,7 @@ namespace Ballance2.UI.Core
     private bool _CanResize = true;
     private bool _CanMin = true;
     private bool _CanDrag = true;
-    private bool _CanMax = true;
+    private bool _CanMax = false;
     private bool _CanClose = true;
     private string _Title = "";
     private Sprite _Icon = null;
