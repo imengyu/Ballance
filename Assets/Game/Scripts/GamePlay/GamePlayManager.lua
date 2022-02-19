@@ -41,6 +41,8 @@ function GamePlayManager:new()
   self._IsCountDownPoint = false
   self._CommandIds = {}
   self._HideBalloonEndTimerID = nil
+  --Used by Tutorial
+  self._ShouldStartByCustom = false
 
   GamePlay.GamePlayManager = self
 end
@@ -246,12 +248,14 @@ function GamePlayManager:_InitAndStart()
     Game.LevelBuilder:CallLevelCustomModEvent('beforeStart')
     Game.Mediator:DispatchGlobalEvent('GAME_START', '*', {})
 
-    Yield(WaitForSeconds(1))
+    if not self._ShouldStartByCustom then
+      Yield(WaitForSeconds(1))
 
-    --模拟
-    self.GamePhysicsWorld.Simulate = true
-    --开始
-    self:_Start(true)
+      --模拟
+      self.GamePhysicsWorld.Simulate = true
+      --开始
+      self:_Start(true)
+    end
   end))
   
 end
