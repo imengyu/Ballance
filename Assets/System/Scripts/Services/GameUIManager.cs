@@ -94,6 +94,8 @@ namespace Ballance2.Services
             TopWindowsRectTransform.SetAsLastSibling();
             GlobalWindowRectTransform.SetAsLastSibling();
             UIToast.SetAsLastSibling();
+            if(Entry.GameEntry.Instance != null && Entry.GameEntry.Instance.GameGlobalIngameLoading != null)
+              Entry.GameEntry.Instance.GameGlobalIngameLoading.transform.SetAsLastSibling();
 
             //发送就绪事件
             GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "*");

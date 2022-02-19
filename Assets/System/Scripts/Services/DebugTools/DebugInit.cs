@@ -63,7 +63,7 @@ namespace Ballance2.DebugTools {
         GlobalDebugWindow = null;
       }
       if (GameDebugFloatButton != null) {
-        UnityEngine.Object.Destroy(GameDebugFloatButton);
+        UnityEngine.Object.Destroy(GameDebugFloatButton.gameObject);
         GameDebugFloatButton = null;
       }
       if (GameDebugStatsArea != null) {

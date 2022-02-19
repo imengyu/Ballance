@@ -131,7 +131,7 @@ namespace Ballance2.Services
 
       Application.wantsToQuit += Application_wantsToQuit;
 
-      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.CORE_PACKAGE_NAME);
 
       InitDebugConfig(gameEntryInstance);
       InitCommands();
@@ -249,37 +249,35 @@ namespace Ballance2.Services
       //如果调试配置中设置了CustomDebugName，则进入自定义调试场景，否则进入默认场景
       if (string.IsNullOrEmpty(sCustomDebugName))
       {
+#if UNITY_EDITOR
         //进入场景
         if (DebugMode && GameEntry.Instance.DebugSkipIntro) {
+          //进入场景
           if(!RequestEnterLogicScense("MenuLevel"))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          //隐藏初始加载中动画
+          HideGlobalStartLoading();
         }
-        else if (firstScense != "") {
-          //所有包加载完毕但是动画还没有完成，再等等
-          if(!GameSplashController.Instance.IsPlaying()) {
-            GameSplashController.Instance.OnSplashFinish = null;
-            //进入场景
-            if(!RequestEnterLogicScense(firstScense))
-              GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
-          } else {
-            Log.D(TAG, "Waiting Splash");
-            
-            if(GameSplashController.Instance.OnSplashFinish == null)
-              GameSplashController.Instance.OnSplashFinish = () => {
-                Log.D(TAG, "Waiting Splash done");
-                //进入场景
-                if(!RequestEnterLogicScense(firstScense))
-                  GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
-              };
-          }
+        else 
+#endif
+        if (firstScense != "") {
+          //进入场景
+          if(!RequestEnterLogicScense(firstScense))
+            GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          //隐藏初始加载中动画
+          HideGlobalStartLoading();
         }
+
       }
       else
       {
+        //进入场景
         Log.D(TAG, "Enter GameDebug.");
         if(!RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
         GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", GameEntry.Instance.DebugCustomEntryEventParamas);
+        //隐藏初始加载中动画
+        HideGlobalStartLoading();
       }
     }
     /// <summary>
@@ -367,14 +365,20 @@ namespace Ballance2.Services
       #region 加载系统内核包
 
       {
-        Profiler.BeginSample("ExecuteSystemCore");
 
-        systemPackage.SetFlag(0xF0);
-        systemPackage.RunPackageExecutionCode();
-        systemPackage.RequireLuaFile("SystemInternal.lua");
-        systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
-
-        Profiler.EndSample();
+        try {
+          Profiler.BeginSample("ExecuteSystemCore");
+          systemPackage.SetFlag(0xF0);
+          systemPackage.RunPackageExecutionCode();
+          systemPackage.RequireLuaFile("SystemInternal.lua");
+          systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
+        } catch(Exception e) {
+          GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "未能成功初始化内部脚本，可能是当前版本配置不正确，请尝试重新下载。\n" + e.ToString());
+          StopAllCoroutines();
+          yield break;
+        } finally {
+          Profiler.EndSample();
+        }
 
         yield return new WaitForSeconds(1f);
 
@@ -497,23 +501,19 @@ namespace Ballance2.Services
           pm.NotifyAllPackageRun("*");
 
           yield return new WaitForSeconds(0.2f);
-
-
-          //在基础包加载完成时就进入Intro
-          if (string.IsNullOrEmpty(sCustomDebugName) && (!DebugMode || !GameEntry.Instance.DebugSkipIntro))
+          
+          if (string.IsNullOrEmpty(sCustomDebugName)
+#if UNITY_EDITOR
+          && (!DebugMode || !GameEntry.Instance.DebugSkipIntro)) 
+          //EDITOR 下才判断是否跳过intro DebugSkipIntro
+#else
+          )
+#endif
           {
-            //如果logo动画还没有完成，则等一等
-            if(GameSplashController.Instance.IsPlaying()) {
-              Log.D(TAG, "Waiting Splash for intro");
-              GameSplashController.Instance.OnSplashFinish = () => {
-                Log.D(TAG, "Waiting Splash for intro done");
-                RequestEnterLogicScense(firstScense);
-                firstScense = "";
-              };
-            } else {
-              RequestEnterLogicScense(firstScense);
-              firstScense = "";
-            }
+            //在基础包加载完成时就进入Intro
+            RequestEnterLogicScense(firstScense);
+            firstScense = "";
+            HideGlobalStartLoading();
           }
         }
       }
@@ -1101,6 +1101,19 @@ namespace Ballance2.Services
     {
       return GameConst.GameBulidVersion;
     }
+    /// <summary>
+    /// 隐藏全局初始Loading动画
+    /// </summary>
+    [LuaApiDescription("隐藏全局初始Loading动画")]
+    public void HideGlobalStartLoading() { 
+      GameEntry.Instance.GameGlobalIngameLoading.SetActive(false); 
+      Log.D(TAG, "HideGlobalStartLoading"); 
+    }
+    /// <summary>
+    /// 显示全局初始Loading动画
+    /// </summary>
+    [LuaApiDescription("显示全局初始Loading动画")]
+    public void ShowGlobalStartLoading() { GameEntry.Instance.GameGlobalIngameLoading.SetActive(true); }
 
     // Prefab 预制体实例化相关方法。
     // 这里提供一些快速方法方便直接使用。这些方法与 CloneUtils 提供的方法功能一致。
