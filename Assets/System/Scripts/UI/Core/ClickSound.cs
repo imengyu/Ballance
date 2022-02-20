@@ -23,21 +23,23 @@ namespace Ballance2.UI.Core
   [Tooltip("点击触发声音组件")]
   [AddComponentMenu("Ballance/UI/Controls/ClickSound")]
   [SLua.CustomLuaClass]
-  public class ClickSound : UIBehaviour, IPointerDownHandler
+  public class ClickSound : UIBehaviour, ISelectHandler
   {
     [Tooltip("声音资源名称。与 GameSoundManager 约定的声音资源路径格式一致。")]
     public string SoundName = "";
 
     private GameSoundManager GameSoundManager;
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-      if (!string.IsNullOrEmpty(SoundName))
-        GameSoundManager.PlayFastVoice(SoundName, GameSoundType.UI);
-    }
     protected override void Start()
     {
       GameSoundManager = (GameSoundManager)GameSystem.GetSystemService("GameSoundManager");
+    }
+
+    [SLua.DoNotToLua]
+    public void OnSelect(BaseEventData eventData)
+    {
+      if (!string.IsNullOrEmpty(SoundName))
+        GameSoundManager.PlayFastVoice(SoundName, GameSoundType.UI);
     }
   }
 }

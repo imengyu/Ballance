@@ -23,6 +23,12 @@ namespace Ballance2.DebugTools {
       var GameGraphy = GameObject.Instantiate(GameStaticResourcesPool.FindStaticPrefabs("PrefabGraphy"));
       GameGraphy.name = "GameGraphy";
 
+      GameManager.Instance.GameDebugCommandServer.RegisterCommand("quit-dev", (keyword, fullCmd, argsCount, args) => {
+        UnInitSystemDebug();
+        GameManager.Instance.GameSettings.SetBool("DebugMode", false);
+        return true;
+      }, 0, "quit-dev > 退出开发者模式");
+
       //创建窗口
       var DebugWindow = GameStaticResourcesPool.FindStaticPrefabs("DebugWindow");
       GlobalDebugWindow = GameUIManager.CreateWindow("Console", CloneUtils.CloneNewObjectWithParent(DebugWindow, GameManager.Instance.GameCanvas, "DebugWindow").transform as RectTransform, false, 9, -140, 800, 600);

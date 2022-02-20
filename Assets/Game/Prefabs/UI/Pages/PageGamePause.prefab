@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4117869518572682721}
   - component: {fileID: 6056698718029702226}
   - component: {fileID: 2865493002141060833}
+  - component: {fileID: 3176918267601187846}
+  - component: {fileID: -2013955618908100157}
   m_Layer: 5
   m_Name: PageGamePause
   m_TagString: Untagged
@@ -93,6 +95,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
+--- !u!114 &3176918267601187846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2786051407191212585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  select: {fileID: 8277310372628648214}
+--- !u!114 &-2013955618908100157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2786051407191212585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18784209b574e7c4db413b11d4e6c814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4900551927998151373
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,5 +977,10 @@ PrefabInstance:
 --- !u!224 &3928097914947983053 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+  m_PrefabInstance: {fileID: 8280651646868403369}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8277310372628648214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 14673124817102271, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
   m_PrefabInstance: {fileID: 8280651646868403369}
   m_PrefabAsset: {fileID: 0}

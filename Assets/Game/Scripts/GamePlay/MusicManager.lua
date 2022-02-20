@@ -23,6 +23,7 @@ function MusicManager:new()
   self.CurrentAudioSource.maxDistance = 2000
   self.CurrentAudioTheme = nil ---@type MusicThemeDataStorage
   self.CurrentAudioEnabled = false
+  self.Events = EventEmitter() ---@type EventEmitter
 
   self._CurrentIsAtmo = false
   self._CurrentAudioTick = 0
@@ -129,12 +130,14 @@ end
 function MusicManager:SetCurrentTheme(theme) 
   if self.Musics[theme] ~= nil then 
     self.CurrentAudioTheme = self.Musics[theme] 
+    self.Events:emit('MusicThemeChanged', theme)
     return true
   else
     if theme ~= 0 then
       Log.E(TAG, 'Not found music theme '..theme..' , music disabled')
     end
     self.CurrentAudioEnabled = false
+    self.Events:emit('MusicDisable')
     return false
   end
 end
@@ -150,6 +153,7 @@ function MusicManager:EnableBackgroundMusic()
     else
       self.CurrentAudioSource.volume = 1
     end
+    self.Events:emit('MusicEnable')
   end
 end
 function MusicManager:DisableBackgroundMusic() 
@@ -160,6 +164,7 @@ function MusicManager:DisableBackgroundMusic()
   else
     self.CurrentAudioSource.volume = 1
   end
+  self.Events:emit('MusicDisable')
 end
 ---从当前时间开始暂停音乐指定秒
 ---@param sec number
@@ -175,9 +180,11 @@ function MusicManager:DisableInSec(sec)
   self.CurrentAudioEnabled = false 
   LuaTimer.Add(1000, function ()
     self.CurrentAudioSource:Stop()
+    self.Events:emit('MusicDisable')
   end)
   LuaTimer.Add(sec*1000, function ()
     self.CurrentAudioEnabled = true 
+    self.Events:emit('MusicEnable')
   end)
 end
 

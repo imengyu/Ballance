@@ -100,6 +100,7 @@ function GamePlayUIControl:new()
   self._CurrentMoveBaffleStart = 0
   self._CurrentMoveBaffleTarget = 0
   self._CurrentMobileKeyPad = nil ---@type GameObject
+  self._CurrentMobileKeyPadShow = false
 end
 function GamePlayUIControl:Start() 
   self._ScoreBoardActive.gameObject:SetActive(false)
@@ -107,6 +108,18 @@ function GamePlayUIControl:Start()
   --手机端还需要创建键盘
   if UNITY_ANDROID or UNITY_IOS then
     self:ReBuildMobileKeyPad()
+    self._CurrentMobileKeyPadShow = false
+    GamePlay.GamePlayManager.Events:addListener('Start', function ()
+      self._CurrentMobileKeyPadShow = true
+      if self._CurrentMobileKeyPad then
+        self._CurrentMobileKeyPad.gameObject:SetActive(true)
+      end
+    end):addListener('Quit', function ()
+      self._CurrentMobileKeyPadShow = false
+      if self._CurrentMobileKeyPad then
+        self._CurrentMobileKeyPad.gameObject:SetActive(false)
+      end
+    end)
   end
 
   GameUI.GamePlayUI = self
@@ -123,7 +136,7 @@ end
 function GamePlayUIControl:OnDestroy()
   --销毁键盘
   if self._CurrentMobileKeyPad and not Slua.IsNull(self._CurrentMobileKeyPad) then
-    UnityEngine.Object.Destroy(self._CurrentMobileKeyPad)
+    UnityEngine.Object.Destroy(self._CurrentMobileKeyPad.gameObject)
     self._CurrentMobileKeyPad = nil
   end
 end
@@ -149,6 +162,9 @@ function GamePlayUIControl:ReBuildMobileKeyPad()
   --创建键盘
   self._CurrentMobileKeyPad = GameUIManager:InitViewToCanvas(keyPad.prefrab, 'GameMobileKeypad', false)
 
+  if not self._CurrentMobileKeyPadShow then
+    self._CurrentMobileKeyPad.gameObject:SetActive(false)
+  end
 end
 
 ---闪烁分数面板

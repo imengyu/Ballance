@@ -22,6 +22,7 @@ local GameLuaObjectHostClass={ }
 Ballance2 = Ballance2GlobalNamespace
 UnityEngine = UnityEngineGlobalNamespace
 UnityEngine.UI = UnityEngineUIGlobalNamespace
+UnityEngine.Animations = {}
 
 ---等待协程
 ---@param wait any

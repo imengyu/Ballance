@@ -22,7 +22,7 @@ local CameraControl = {
   skyBoxNight = nil, ---@type Material
   skyBoxDay = nil, ---@type Material
   menuSound = nil,
-  speed = -6,
+  speed = -10,
   state = {
     isInLightZone = false,
     isRoatateCam = true,
@@ -52,8 +52,21 @@ function CreateClass:CameraControl()
     self.skyBoxNight = SkyBoxUtils.MakeSkyBox('D')
     self.skyBoxDay = SkyBoxUtils.MakeSkyBox('C')
     self.menuSound = GameSoundManager:RegisterSoundPlayer(GameSoundType.Background, GameSoundManager:LoadAudioResource('core.sounds.music:Menu_atmo.wav'), false, true, 'MenuSound')
-    self.menuSound.loop = true
     self.menuSound:Play()
+    self.menuSoundRandomTimer = nil
+
+    --随机时间播放Menu_atmo
+    local startRandomMenuSound = nil
+    startRandomMenuSound = function ()
+      self.menuSoundRandomTimer = LuaTimer.Add(self.menuSound.clip.length * 1000, function ()
+        self.menuSoundRandomTimer = LuaTimer.Add(math.random(1, 10) * 1000, function ()
+          self.menuSound:Play()
+          startRandomMenuSound()
+        end)
+      end)
+    end
+    startRandomMenuSound()
+
     self:SwitchLightZone(false, false)
     self._Stared = true
 
@@ -83,6 +96,11 @@ function CreateClass:CameraControl()
   end
   function CameraControl:OnDisable()
     self.menuSound:Stop()
+
+    if self.menuSoundRandomTimer then
+      LuaTimer.Delete(self.menuSoundRandomTimer)
+      self.menuSoundRandomTimer = nil
+    end
   end
   function CameraControl:OnEnable()
     if self._Stared then 

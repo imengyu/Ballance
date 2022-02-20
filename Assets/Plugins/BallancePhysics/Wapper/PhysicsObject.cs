@@ -628,7 +628,7 @@ namespace BallancePhysics.Wapper
     /// <summary>
     /// 应用恒力
     /// </summary>
-    private void DoApplyConstantForce() {
+    internal void DoApplyConstantForce() {
       Vector3 finalPos, finalForce;
       foreach(var f in m_ConstantForces) 
       {
@@ -994,7 +994,6 @@ namespace BallancePhysics.Wapper
             Physicalize();
         }
       }
-      if(EnableConstantForce && Handle != IntPtr.Zero) DoApplyConstantForce();
     }
   }
 }

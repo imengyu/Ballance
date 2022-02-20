@@ -50,6 +50,7 @@ namespace Ballance2.Game
         public float SmoothToTargetTime = 0.1f;
 
         [Tooltip("指定当前跟踪的目标")]
+        [SerializeField]
         private Transform _Target = null;
         private float smoothyVelocity = 0;
         private Vector3 smoothTargetVelocity = Vector3.zero;

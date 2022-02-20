@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 7301158064052936253}
   - component: {fileID: 7301158064052936252}
   - component: {fileID: 8146855534847394198}
+  - component: {fileID: 4198140540998302676}
+  - component: {fileID: 190934451222161493}
   m_Layer: 5
   m_Name: PageSettingsAudio
   m_TagString: Untagged
@@ -175,6 +177,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
+--- !u!114 &4198140540998302676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7301158064052936254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  select: {fileID: 7306753611062939378}
+--- !u!114 &190934451222161493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7301158064052936254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18784209b574e7c4db413b11d4e6c814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &955712893991857565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -665,6 +692,11 @@ PrefabInstance:
 --- !u!224 &2394591612278081833 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
+  m_PrefabInstance: {fileID: 7301158063380261709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7306753611062939378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 14673124817102271, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
   m_PrefabInstance: {fileID: 7301158063380261709}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8327036610620994153

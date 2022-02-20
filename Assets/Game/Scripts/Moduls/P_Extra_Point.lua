@@ -133,7 +133,7 @@ function P_Extra_Point:StartFly()
 
   local fTime =  self._FlyFollowTime
 
-  LuaTimer.Add(1400, function ()
+  LuaTimer.Add(1250, function ()
     self.P_Extra_Point_Fizz:SetActive(false)
     self._FlyUp = false
 

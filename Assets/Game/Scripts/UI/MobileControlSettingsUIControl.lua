@@ -1,6 +1,7 @@
 local GameManager = Ballance2.Services.GameManager
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
+local Log = Ballance2.Log
 local Image = UnityEngine.UI.Image
 local EventTriggerListener = Ballance2.Services.InputManager.EventTriggerListener
 
@@ -29,13 +30,14 @@ function MobileControlSettingsUIControl:Start()
 
       if controlKeypadSettting == data.name then
         ImageBg.gameObject:SetActive(false)
-        ImageBgActive.gameObject:SetActive(false)
+        ImageBgActive.gameObject:SetActive(true)
       else
-        ImageBg.gameObject:SetActive(false)
+        ImageBg.gameObject:SetActive(true)
         ImageBgActive.gameObject:SetActive(false)
       end
 
-      image.sprite = data.image
+      image.sprite = data.img
+
       EventTriggerListener.onClick = function ()
         controlKeypadSettting = data.name
         settings:SetString('control.keypad', data.name)
@@ -66,7 +68,7 @@ function MobileControlSettingsUIControl:LoadList()
     if value then
       table.insert(self.items, {
         name = key,
-        image = value.image,
+        img = value.image,
       })
     end
   end

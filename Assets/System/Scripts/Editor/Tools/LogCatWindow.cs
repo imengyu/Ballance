@@ -208,14 +208,14 @@ public class LogCatWindow : EditorWindow
     void OnEnable()
     {
 #if UNITY_2017_3_OR_NEWER
-        CompilationPipeline.assemblyCompilationStarted += OnAssemblyCompilationStarted;
+        CompilationPipeline.compilationStarted += OnAssemblyCompilationStarted;
 #endif
     }
 
     void OnDisable()
     {
 #if UNITY_2017_3_OR_NEWER
-        CompilationPipeline.assemblyCompilationStarted -= OnAssemblyCompilationStarted;
+        CompilationPipeline.compilationFinished -= OnAssemblyCompilationStarted;
 #endif
     }
 
@@ -248,7 +248,7 @@ public class LogCatWindow : EditorWindow
         }
     }
 
-    private void OnAssemblyCompilationStarted(string _)
+    private void OnAssemblyCompilationStarted(object _)
     {
         StopLogCatProcess();
     }

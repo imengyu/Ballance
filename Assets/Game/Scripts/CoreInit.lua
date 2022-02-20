@@ -75,9 +75,9 @@ function CoreInit()
   --加载分数数据
   Game.HighScoreManager.Load()
   --注册内置键盘
-  KeypadUIManager.AddKeypad('BaseLeftRight', CorePackage:GetPrefabAsset('KeypadLR.prerfab'), CorePackage:GetSpriteAsset('keypad_lr'))
-  KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadSimpleLeft.prerfab'), CorePackage:GetSpriteAsset('keypad_l'))
-  KeypadUIManager.AddKeypad('BaseRight', CorePackage:GetPrefabAsset('KeypadSimpleRight.prerfab'), CorePackage:GetSpriteAsset('keypad_r'))
+  KeypadUIManager.AddKeypad('BaseLeftRight', CorePackage:GetPrefabAsset('KeypadLR.prefab'), CorePackage:GetSpriteAsset('keypad_lr.png'))
+  KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadSimpleLeft.prefab'), CorePackage:GetSpriteAsset('keypad_l.png'))
+  KeypadUIManager.AddKeypad('BaseRight', CorePackage:GetPrefabAsset('KeypadSimpleRight.prefab'), CorePackage:GetSpriteAsset('keypad_r.png'))
 
   --调试入口
   if GameManager.DebugMode then

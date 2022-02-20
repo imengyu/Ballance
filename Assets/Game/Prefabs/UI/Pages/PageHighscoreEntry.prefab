@@ -178,6 +178,8 @@ GameObject:
   - component: {fileID: 3787917779200483608}
   - component: {fileID: 6465278730376198315}
   - component: {fileID: 353282507882884640}
+  - component: {fileID: -1670679362122078688}
+  - component: {fileID: 5559114786357306279}
   m_Layer: 5
   m_Name: PageHighscoreEntry
   m_TagString: Untagged
@@ -262,6 +264,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
+--- !u!114 &-1670679362122078688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3107190563012828880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  select: {fileID: 3056361201023441031}
+--- !u!114 &5559114786357306279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3107190563012828880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18784209b574e7c4db413b11d4e6c814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3870813667607116214
 GameObject:
   m_ObjectHideFlags: 0

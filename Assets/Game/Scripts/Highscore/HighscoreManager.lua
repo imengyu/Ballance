@@ -3,6 +3,8 @@ local defaultHighscoreData = require("DefaultHighscoreData")
 local Application = UnityEngine.Application
 local HighscoreDataPath = Application.persistentDataPath..'/HighscoreData.json'
 local LevelPassStateDataPath = Application.persistentDataPath..'/LevelPassStateData.json'
+local GameManager = Ballance2.Services.GameManager
+local Log = Ballance2.Log
 
 ---关卡高分数据
 HighscoreData = {
@@ -18,6 +20,7 @@ HighscoreManager = {}
 
 ---加载。此函数由系统自动调用，勿手动调用
 function HighscoreManager.Load()
+  HighscoreManager.InitCommand()
   --加载关卡高分数据
   if Game.Manager:FileExists(HighscoreDataPath) then 
     local str = Game.Manager:ReadFile(HighscoreDataPath)
@@ -56,6 +59,48 @@ function HighscoreManager.Save()
     data = HighscoreData.LevelPassStateData
   }))
 
+end
+
+local HighscoreManagerCommand = nil
+
+function HighscoreManager.InitCommand()
+  if HighscoreManagerCommand == nil then
+    GameManager.Instance.GameDebugCommandServer:RegisterCommand('highscore', function (keyword, fullCmd, argsCount, args)
+      local type = args[0]
+      if type == 'clear' then
+        HighscoreData.Data = defaultHighscoreData.DefaultHighscoreData
+        HighscoreData.LevelNames = defaultHighscoreData.DefaultHighscoreLevelNamesData
+        Log.D('highscore', 'Reset to default')
+        return true
+      elseif type == 'open-all' then
+        HighscoreData.LevelPassStateData['level01'] = true
+        HighscoreData.LevelPassStateData['level02'] = true
+        HighscoreData.LevelPassStateData['level03'] = true
+        HighscoreData.LevelPassStateData['level04'] = true
+        HighscoreData.LevelPassStateData['level05'] = true
+        HighscoreData.LevelPassStateData['level06'] = true
+        HighscoreData.LevelPassStateData['level07'] = true
+        HighscoreData.LevelPassStateData['level08'] = true
+        HighscoreData.LevelPassStateData['level09'] = true
+        HighscoreData.LevelPassStateData['level10'] = true
+        HighscoreData.LevelPassStateData['level11'] = true
+        HighscoreData.LevelPassStateData['level12'] = true
+        Log.D('highscore', 'Open level01-level12')
+        return true
+      elseif type == 'load' then 
+        HighscoreManager.Load()
+        Log.D('highscore', ' Load manually')
+        return true
+      elseif type == 'save' then 
+        HighscoreManager.Save()
+        Log.D('highscore', 'Save manually')
+        return true
+      else
+        Log.E('highscore', 'Unknow type '..type)
+        return false
+      end
+    end, 1, '')
+  end
 end
 
 ---获取指定关卡的分数列表

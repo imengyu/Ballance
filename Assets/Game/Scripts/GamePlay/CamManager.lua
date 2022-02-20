@@ -50,6 +50,7 @@ function CamManager:new()
   self.CamIsSpaced = false
   self.Target = nil
   self.CamRotateValue = CamRotateType.North
+  self.Events = EventEmitter() ---@type EventEmitter
 
   self._CamIsRotateing = false
   self._CamRotateTick = 0
@@ -200,6 +201,7 @@ function CamManager:RotateUp(enable)
   end
   self._CamRotateUpTick = 0
   self._CamIsRotateingUp = true
+  self.Events:emit('RotateUp', enable)
   return self
 end
 ---摄像机旋转指定角度
@@ -216,6 +218,7 @@ function CamManager:RotateTo(val)
   self._CamRotateTargetDegree = target - self._CamRotateStartDegree
   self._CamRotateTick = 0
   self._CamIsRotateing = true
+  self.Events:emit('RotateChanged', self._CamRotateTargetDegree)
   return self
 end
 ---摄像机向左旋转
@@ -232,6 +235,7 @@ function CamManager:RotateRight()
   self._CamRotateTargetDegree = target - self._CamRotateStartDegree
   self._CamRotateTick = 0
   self._CamIsRotateing = true
+  self.Events:emit('RotateChanged', self._CamRotateTargetDegree)
   return self
 end
 ---摄像机向右旋转
@@ -248,6 +252,7 @@ function CamManager:RotateLeft()
   self._CamRotateTargetDegree = target - self._CamRotateStartDegree
   self._CamRotateTick = 0
   self._CamIsRotateing = true
+  self.Events:emit('RotateChanged', self._CamRotateTargetDegree)
   return self
 end
 ---设置主摄像机天空盒材质
@@ -260,12 +265,14 @@ end
 ---@param enable boolean
 function CamManager:SetCamFollow(enable)
   self.CamFollow.Follow = enable
+  self.Events:emit('CamFollowChanged', enable)
   return self
 end
 ---指定摄像机看着球是否开启
 ---@param enable boolean
 function CamManager:SetCamLook(enable)
   self.CamFollow.Look = enable
+  self.Events:emit('CamLookChanged', enable)
   return self
 end
 ---指定当前跟踪的目标
@@ -273,12 +280,16 @@ end
 function CamManager:SetTarget(target)
   self.Target = target
   self.CamFollow.Target = target
+  self.Events:emit('CamFollowTargetChanged', target)
   return self
 end
 function CamManager:DisbleAll()
   self.CamFollow.Follow = false
   self.CamFollow.Look = false
   self.CamFollow.Target = nil
+  self.Events:emit('CamFollowChanged', false)
+  self.Events:emit('CamLookChanged', false)
+  self.Events:emit('CamFollowTargetChanged', nil)
   return self
 end
 

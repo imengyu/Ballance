@@ -714,6 +714,12 @@ function LevelBuilder:_LoadLevelInternal()
 
     Log.D(TAG, 'Load others')
 
+    --加载第一关教程
+    -----------------------------
+    if levelName == 'level01' then
+      Game.Manager:InstancePrefab(Game.CorePackage:GetPrefabAsset('TutorialCore.prefab'), 'GameTutorialCore')
+    end
+
     --调用自定义加载步骤 last
     -----------------------------
     self:_CallLoadStep("last")
@@ -723,6 +729,8 @@ function LevelBuilder:_LoadLevelInternal()
 
     self:UpdateLoadProgress(1)
     Yield(WaitForSeconds(0.1))
+
+
 
     --最后加载步骤
     -----------------------------

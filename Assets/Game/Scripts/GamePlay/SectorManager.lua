@@ -22,6 +22,7 @@ function SectorManager:new()
   self.CurrentLevelSectors = {} ---@type SectorDataStorage[]
   self.CurrentLevelRestPoints = {} ---@type RestPointsDataStorage[]
   self.CurrentLevelEndBalloon = nil ---@type PE_Balloon
+  self.Events = EventEmitter() ---@type EventEmitter
 end
 function SectorManager:Start() 
   GamePlay.SectorManager = self
@@ -111,12 +112,16 @@ function SectorManager:SetCurrentSector(sector)
       else
         Log.D(TAG, "No flame found for sector "..oldSector)
       end
+
+      self.Events:emit('SectorDeactive', oldSector)
     end
 
     if sector > 0 then 
       GamePlay.GamePlayManager.CurrentSector = sector 
       self:ActiveCurrentSector(true)
     end
+
+    self.Events:emit('SectorChanged', sector, oldSector)
   end
 end
 
@@ -170,6 +175,8 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
   else
     Log.W(TAG, "No found CurrentLevelEndBalloon !")
   end
+
+  self.Events:emit('SectorActive', sector, playCheckPointSound)
 end
 
 ---禁用当前节的机关
@@ -184,6 +191,7 @@ function SectorManager:DeactiveCurrentSector()
       end
     end 
   end
+  self.Events:emit('SectorDeactive', sector)
 end
 ---重置当前节的机关
 ---@param active boolean 重置机关后是否激活
@@ -205,6 +213,7 @@ function SectorManager:ResetAllSector(active)
     end
   end
   self.CurrentLevelEndBalloon:Reset()
+  self.Events:emit('ResetAllSector', active)
 end
 
 function CreateClass:SectorManager() 

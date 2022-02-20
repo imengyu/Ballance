@@ -30,12 +30,10 @@ GamePlay = {
 ---@param callback function
 function GamePlayInit(callback)
   Log.D('GamePlay', 'GamePlayInit')
+
+  Game.GamePlay = GamePlay
   
   coroutine.resume(coroutine.create(function()
-    --GamePlayUI
-    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
-    Yield(WaitForSeconds(0.05))
-    GamePlayUIGameObject:SetActive(false)
 
     --初始化基础对象
     GamePlayManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('GamePlayManager.prefab'), 'GamePlayManager')
@@ -52,8 +50,10 @@ function GamePlayInit(callback)
     GameLevelBrizGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('LevelBriz.prefab'), 'GameLevelBriz')
     Yield(WaitForSeconds(0.05))
     GameUFOAnimControllerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('PE_UFO.prefab'), 'GameUFOAnimController')
-
-    Game.GamePlay = GamePlay
+    --GamePlayUI
+    GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
+    Yield(WaitForSeconds(0.05))
+    GamePlayUIGameObject:SetActive(false)
 
     --回调
     callback()

@@ -80,6 +80,7 @@ function BallManager:new()
   self.CanControll = false
   self.CanControllCamera = false
   self.ShiftPressed = false
+  self.Events = EventEmitter() ---@type EventEmitter
   self._DebugMode = false
   self._private = {
     BallLightningSphere = nil, ---@type BallLightningSphere
@@ -186,6 +187,21 @@ function BallManager:Awake()
 end
 function BallManager:OnDestroy()
   Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._private.CommandId)
+
+  --清除碎片的定时器
+  for _, value in pairs(self._private.registerBalls) do
+    if value and value.ball._PiecesData then
+      local data = value.ball._PiecesData
+      if data.delayHideTimerID then
+        LuaTimer.Delete(data.delayHideTimerID)
+        data.delayHideTimerID = nil
+      end
+      if data.fadeOutTimerID then
+        LuaTimer.Delete(data.fadeOutTimerID)
+        data.fadeOutTimerID = nil
+      end
+    end
+  end
 
   self._private.registerBalls = {}
   self._private.GameSettings:UnRegisterSettingsUpdateCallback(self._private.settingsCallbackId)
@@ -304,6 +320,8 @@ function BallManager:RegisterBall(name, gameObject)
   --设置名称
   if(gameObject.name ~= name) then gameObject.name = name end
 
+  self.Events:emit('BallRegistered', ball, body, speedMeter)
+
   table.insert(self._private.registerBalls, {
     name = name,
     ball = ball,
@@ -326,6 +344,8 @@ function BallManager:UnRegisterBall(name)
       end
       self:_UnInitBallSounds(ball.rigidbody, ball.speedMeter)
       table.remove(registerBalls, i)
+
+      self.Events:emit('UnRegisterBall', name)
       return true
     end 
   end 
@@ -360,11 +380,13 @@ function BallManager:SetCurrentBall(name, status)
     self._private.currentBall = ball
     self.CurrentBall = ball.ball
     self.CurrentBallName = ball.name
+    self.Events:emit('CurrentBallChanged', name)
     self:SetControllingStatus(status)
   end
 end
 ---设置禁用当前正在控制的球
 function BallManager:SetNoCurrentBall()
+  self.Events:emit('CurrentBallChanged', '')
   self:_DeactiveCurrentBall()
 end
 ---设置当前球的控制的状态
@@ -380,6 +402,7 @@ end
 ---设置下一次球出生位置
 ---@param pos Vector3
 function BallManager:SetNextRecoverPos(pos)
+  self.Events:emit('NextRecoverPosChanged', pos)
   self._private.nextRecoverPos = pos
 end
 ---重置指定球的碎片
@@ -443,6 +466,8 @@ function BallManager:_FlushCurrentBallAllStatus()
     self:_PhysicsOrDePhysicsCurrentBall(false)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
   end
+  
+  self.Events:emit('ControllingStatusChanged', status)
 end
 ---取消激活当前的球
 function BallManager:_DeactiveCurrentBall() 
@@ -512,6 +537,7 @@ end
 function BallManager:PlaySmoke(pos)
   self._BallSmoke.transform.position = pos
   self._BallSmoke:SetActive(true)
+  self.Events:emit('PlaySmoke')
 end
 ---播放球出生时的闪电效果
 ---@param pos Vector3 放置位置
@@ -519,6 +545,7 @@ end
 ---@param lightAnim boolean 是否同时播放灯光效果
 ---@param callback function 完成回调
 function BallManager:PlayLighting(pos, smallToBig, lightAnim, callback) 
+  self.Events:emit('PlayLighting')
   self._private.BallLightningSphere:PlayLighting(pos, smallToBig, lightAnim, callback)
 end
 ---获取当前是否正在运行球出生闪电效果
@@ -748,10 +775,12 @@ function BallManager:AddBallPush(t)
       self._private.currentBallPushIds.down = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(self.CurrentBall._DownForce, Vector3.down, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
     end
   end
+  self.Events:emit('AddBallPush', t)
 end
 ---去除球推动方向
 ---@param t BallPushType 推动方向
 function BallManager:RemoveBallPush(t)
+  self.Events:emit('RemoveBallPush', t)
   if(t == BallPushType.Back) then
     if self._private.currentBallPushIds.back ~= 0 then
       self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
@@ -786,6 +815,7 @@ function BallManager:RemoveBallPush(t)
 end
 ---去除当前球所有推动方向
 function BallManager:RemoveAllBallPush()
+  self.Events:emit('RemoveAllBallPush')
   if self._private.currentBallPushIds.back ~= 0 then
     self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
     self._private.currentBallPushIds.back = 0

@@ -7,6 +7,7 @@ using Ballance2.Utils;
 using Ballance2.Services.Debug;
 using Ballance2.UI.Utils;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -65,6 +66,8 @@ namespace Ballance2.UI.Core
     [LuaApiDescription("隐藏页事件")]
     public VoidDelegate OnHide;
 
+    private DefaultSelection defaultSelection = null;
+
     /// <summary>
     /// 页面上一次打开时所设置的参数
     /// </summary>
@@ -91,6 +94,17 @@ namespace Ballance2.UI.Core
       uIManager = GameManager.Instance.GetSystemService<GameUIManager>();
       gameObject.SetActive(true);
       OnShow?.Invoke(LastOptions);
+
+      //选择默认按扭
+      if(defaultSelection != null) {
+        //默认选择的时候不要播放声音
+        var sound = defaultSelection.select.GetComponent<ClickSound>();
+        if(sound != null)
+          sound.enabled = false;
+        EventSystem.current.SetSelectedGameObject(defaultSelection.select);
+        if(sound != null)
+          sound.enabled = true;
+      }
       if (CanEscBack)
       {
         escBackId = uIManager.WaitKey(KeyCode.Escape, false, () =>
@@ -137,6 +151,8 @@ namespace Ballance2.UI.Core
         Content = content;
         UIAnchorPosUtils.SetUIAnchor(content, UIAnchor.Stretch, UIAnchor.Stretch);
         UIAnchorPosUtils.SetUIPos(content, 0, 0, 0, 0);
+
+        defaultSelection = content.GetComponent<DefaultSelection>();
       }
     }
 

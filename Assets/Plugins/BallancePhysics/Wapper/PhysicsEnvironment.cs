@@ -163,6 +163,9 @@ namespace BallancePhysics.Wapper
           Marshal.Copy(ptr, dat, 0, 4);      //float[4]
 
           t.rotation = new Quaternion(dat[0], dat[1], dat[2], dat[3]);
+
+          if(bodyCurrent.EnableConstantForce)
+            bodyCurrent.DoApplyConstantForce();
         }
       }
     }

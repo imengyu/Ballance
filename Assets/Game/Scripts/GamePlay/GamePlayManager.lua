@@ -33,9 +33,11 @@ function GamePlayManager:new()
   self.CurrentLife = 0 ---当前生命数
   self.CurrentSector = 0 ---当前小节
   self.CurrentLevelPass = false ---获取是否过关
+  self.Events = EventEmitter() ---@type EventEmitter
   
   self.CurrentDisableStart = false
   self.CurrentEndWithUFO = false
+  self.CanEscPause = true
 
   self._IsGamePlaying = false
   self._IsCountDownPoint = false
@@ -55,15 +57,6 @@ function GamePlayManager:Awake()
   local GameDebugCommandServer = Game.Manager.GameDebugCommandServer
 
   --注册全局事件
-
-  Mediator:RegisterGlobalEvent('GAME_START')
-  Mediator:RegisterGlobalEvent('GAME_RESTART')
-  Mediator:RegisterGlobalEvent('GAME_QUIT')
-  Mediator:RegisterGlobalEvent('GAME_RESUME')
-  Mediator:RegisterGlobalEvent('GAME_PAUSE')
-  Mediator:RegisterGlobalEvent('GAME_FALL')
-  Mediator:RegisterGlobalEvent('GAME_FAIL')
-  Mediator:RegisterGlobalEvent('GAME_PASS')
   Mediator:SubscribeSingleEvent(Game.CorePackage, "CoreGamePlayManagerInitAndStart", 'GamePlayManager', function (evtName, params)
     self:_InitAndStart()
     return false
@@ -113,14 +106,7 @@ function GamePlayManager:OnDestroy()
   --取消注册全局事件
 
   Mediator:UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart")
-  Mediator:UnRegisterGlobalEvent('GAME_START')
-  Mediator:UnRegisterGlobalEvent('GAME_RESTART')
-  Mediator:UnRegisterGlobalEvent('GAME_QUIT')
-  Mediator:UnRegisterGlobalEvent('GAME_RESUME')
-  Mediator:UnRegisterGlobalEvent('GAME_PAUSE')
-  Mediator:UnRegisterGlobalEvent('GAME_FALL')
-  Mediator:UnRegisterGlobalEvent('GAME_FAIL')
-  Mediator:UnRegisterGlobalEvent('GAME_PASS')
+  self.Events:removeAllListeners()
 
   --取消注册控制台指令
   for _, value in pairs(self._CommandIds) do
@@ -153,7 +139,7 @@ end
 function GamePlayManager:_InitKeyEvents() 
   --ESC键
   self.escKeyId = Game.UIManager:ListenKey(KeyCode.Escape, function (key, down)
-    if down then
+    if down and self.CanEscPause  then
       if not self.CurrentLevelPass then
         if self._IsGamePlaying then
           self:PauseLevel(true)
@@ -182,7 +168,9 @@ function GamePlayManager:_Stop(controlStatus)
   --禁用音乐
   GamePlay.MusicManager:DisableBackgroundMusic()
 end
-function GamePlayManager:_Start(isStartBySector) 
+---@param isStartBySector boolean
+---@param customerFn function|nil
+function GamePlayManager:_Start(isStartBySector, customerFn) 
   self._IsGamePlaying = true
 
   if self.CurrentDisableStart then return end
@@ -201,9 +189,13 @@ function GamePlayManager:_Start(isStartBySector)
     GamePlay.BallManager:PlayLighting(startPos, true, true, function ()
       --开始控制
       GamePlay.BallManager:SetNextRecoverPos(startPos)
-      GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
 
-      self._IsCountDownPoint = true
+      if type(customerFn) == 'function' then
+        customerFn()
+      else
+        GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
+        self._IsCountDownPoint = true
+      end
     end)
   else
     self._IsCountDownPoint = true
@@ -246,7 +238,8 @@ function GamePlayManager:_InitAndStart()
     GamePlay.BallManager.CanControllCamera = true
     --发出事件
     Game.LevelBuilder:CallLevelCustomModEvent('beforeStart')
-    Game.Mediator:DispatchGlobalEvent('GAME_START', '*', {})
+
+    self.Events:emit('Start')
 
     if not self._ShouldStartByCustom then
       Yield(WaitForSeconds(1))
@@ -308,7 +301,7 @@ function GamePlayManager:_QuitOrLoadNextLevel(loadNext)
 
   LuaTimer.Add(800, function () 
     GameUI.GamePlayUI.gameObject:SetActive(false)
-    Game.Mediator:DispatchGlobalEvent('GAME_QUIT', '*', {})
+    self.Events:emit('Quit')
     Game.LevelBuilder:UnLoadLevel(callBack)
   end)
 end
@@ -325,7 +318,7 @@ function GamePlayManager:RestartLevel()
 
   self:_Stop(BallControlStatus.NoControl)
 
-  Game.Mediator:DispatchGlobalEvent('GAME_RESTART', '*', {})
+  self.Events:emit('Restart')
 
   coroutine.resume(coroutine.create(function()
 
@@ -342,7 +335,7 @@ function GamePlayManager:RestartLevel()
 
 end
 ---退出关卡
-function GamePlayManager:QuitLevel() 
+function GamePlayManager:QuitLevel()
   self:_QuitOrLoadNextLevel(false)
 end
 ---暂停关卡
@@ -353,7 +346,7 @@ function GamePlayManager:PauseLevel(showPauseUI)
   --停止模拟
   self.GamePhysicsWorld.Simulate = false
 
-  Game.Mediator:DispatchGlobalEvent('GAME_PAUSE', '*', {})
+  self.Events:emit('Pause')
 
   --UI
   if showPauseUI then
@@ -362,9 +355,10 @@ function GamePlayManager:PauseLevel(showPauseUI)
   end
 end
 ---继续关卡
-function GamePlayManager:ResumeLevel() 
+---@param forceRestart boolean 是否强制重置
+function GamePlayManager:ResumeLevel(forceRestart) 
 
-  Game.Mediator:DispatchGlobalEvent('GAME_RESUME', '*', {})
+  self.Events:emit('Resume')
 
   --UI
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
@@ -372,7 +366,7 @@ function GamePlayManager:ResumeLevel()
 
   --停止继续
   self.GamePhysicsWorld.Simulate = true
-  self:_Start(false)
+  self:_Start(forceRestart or false)
 end
 
 ---球坠落
@@ -389,7 +383,8 @@ function GamePlayManager:Fall()
 
   if self.CurrentLife > 0 then
     
-    Game.Mediator:DispatchGlobalEvent('GAME_FALL', '*', {})
+    self.Events:emit('Fall', false)
+
     --禁用控制
     self:_Stop(BallControlStatus.FreeMode)
 
@@ -423,7 +418,8 @@ function GamePlayManager:Fall()
     end))
   else
     
-    Game.Mediator:DispatchGlobalEvent('GAME_FAIL', '*', {})
+    self.Events:emit('Fall', true)
+
     --禁用控制
     self:_Stop(BallControlStatus.FreeMode)
     
@@ -449,7 +445,8 @@ function GamePlayManager:Pass()
   self:_Stop(BallControlStatus.UnleashingMode)
 
   GamePlay.BallManager.CanControllCamera = false
-  Game.Mediator:DispatchGlobalEvent('GAME_PASS', '*', {})
+
+  self.Events:emit('Pass')
 
   if self.CurrentEndWithUFO then --播放结尾的UFO动画
     self._SoundLastFinnal:Play() --播放音乐
@@ -475,11 +472,13 @@ function GamePlayManager:_HideBalloonEnd()
     self._HideBalloonEndTimerID = nil
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
     GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
+    self.Events:emit('HideBalloonEnd')
   end)
 end
 
 ---UFO 动画完成回调
 function GamePlayManager:UfoAnimFinish() 
+  self.Events:emit('UfoAnimFinish')
   self._SoundFinnal:Play()
   self:_HideBalloonEnd() --开始隐藏飞船
   GamePlay.MusicManager:DisableBackgroundMusic()
@@ -526,6 +525,7 @@ end
 ---添加生命
 function GamePlayManager:AddLife() 
   self.CurrentLife = self.CurrentLife + 1
+  self.Events:emit('AddLife')
   LuaTimer.Add(317, function ()
     self._SoundAddLife:Play()
     GameUI.GamePlayUI:AddLifeBall()
@@ -535,6 +535,7 @@ end
 ---@param count number|nil 时间点数，默认为10
 function GamePlayManager:AddPoint(count) 
   self.CurrentPoint = self.CurrentPoint + (count or 10)
+  self.Events:emit('AddPoint', count)
   GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
   GameUI.GamePlayUI:TwinklePoint()
 end

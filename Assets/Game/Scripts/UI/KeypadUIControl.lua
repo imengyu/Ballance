@@ -13,7 +13,7 @@ end
 function KeypadUIControl:Start() 
   --自动扫描开头为Button的对象作为按钮，最多扫描2级
   for i = 0, self.transform.childCount - 1, 1 do
-    local child = self.transform.GetChild(i);
+    local child = self.transform:GetChild(i);
     if(string.startWith(child.gameObject.name, "Button")) then
       self:AddButton(child.gameObject);
     else 
@@ -79,7 +79,7 @@ function KeypadUIControl:AddButton(go)
   elseif name == "ButtonUp" then
 
     --只有调试模式才显示
-    if not GameManager.Instance.DebugMode then
+    if not GameManager.DebugMode then
       go:SetActive(false)
     else
       --上升键
@@ -91,7 +91,7 @@ function KeypadUIControl:AddButton(go)
   elseif name == "ButtonDown" then
 
     --只有调试模式才显示
-    if not GameManager.Instance.DebugMode then
+    if not GameManager.DebugMode then
       go:SetActive(false)
     else
       --下降键

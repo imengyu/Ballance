@@ -157,6 +157,12 @@ namespace Ballance2.Services.LuaService.LuaWapper
           case "UnityEngine.ArticulationBody": components = gameObjectVal.GetComponents<UnityEngine.ArticulationBody>(); break;
           case "UnityEngine.CanvasGroup": components = gameObjectVal.GetComponents<UnityEngine.CanvasGroup>(); break;
           case "UnityEngine.Canvas": components = gameObjectVal.GetComponents<UnityEngine.Canvas>(); break;
+          case "UnityEngine.Animations.AimConstraint": components = gameObjectVal.GetComponents<UnityEngine.Animations.AimConstraint>(); break;
+          case "UnityEngine.Animations.ParentConstraint": components = gameObjectVal.GetComponents<UnityEngine.Animations.ParentConstraint>(); break;
+          case "UnityEngine.Animations.ScaleConstraint": components = gameObjectVal.GetComponents<UnityEngine.Animations.ScaleConstraint>(); break;
+          case "UnityEngine.Animations.LookAtConstraint": components = gameObjectVal.GetComponents<UnityEngine.Animations.LookAtConstraint>(); break;
+          case "UnityEngine.Animations.PositionConstraint": components = gameObjectVal.GetComponents<UnityEngine.Animations.PositionConstraint>(); break;
+          case "UnityEngine.Animations.RotationConstraint": components = gameObjectVal.GetComponents<UnityEngine.Animations.RotationConstraint>(); break;
           default:
             {
               var c = gameObjectVal.GetComponents<Component>();
@@ -236,6 +242,12 @@ namespace Ballance2.Services.LuaService.LuaWapper
           case "UnityEngine.ArticulationBody": return gameObjectVal.GetComponent<UnityEngine.ArticulationBody>();
           case "UnityEngine.CanvasGroup": return gameObjectVal.GetComponent<UnityEngine.CanvasGroup>();
           case "UnityEngine.Canvas": return gameObjectVal.GetComponent<UnityEngine.Canvas>();
+          case "UnityEngine.Animations.AimConstraint": return gameObjectVal.GetComponent<UnityEngine.Animations.AimConstraint>();
+          case "UnityEngine.Animations.ParentConstraint": return gameObjectVal.GetComponent<UnityEngine.Animations.ParentConstraint>();
+          case "UnityEngine.Animations.ScaleConstraint": return gameObjectVal.GetComponent<UnityEngine.Animations.ScaleConstraint>();
+          case "UnityEngine.Animations.LookAtConstraint": return gameObjectVal.GetComponent<UnityEngine.Animations.LookAtConstraint>();
+          case "UnityEngine.Animations.PositionConstraint": return gameObjectVal.GetComponent<UnityEngine.Animations.PositionConstraint>();
+          case "UnityEngine.Animations.RotationConstraint": return gameObjectVal.GetComponent<UnityEngine.Animations.RotationConstraint>();
           default:
             {
               var c = gameObjectVal.GetComponent(componentClassVal);

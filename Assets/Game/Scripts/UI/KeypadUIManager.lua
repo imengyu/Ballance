@@ -20,6 +20,8 @@ function KeypadUIManager.AddKeypad(name, prefrab, image)
     GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, 'Keypad '..name..' already registered!')
     return false
   end
+  Log.D('LogTAS', 'image: '..tostring(image))
+
   keypadData[name] = {
     prefrab = prefrab,
     image = image
