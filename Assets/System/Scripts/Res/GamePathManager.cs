@@ -129,19 +129,19 @@ namespace Ballance2.Res
     /// 内置关卡的文件名
     /// </summary>
     private static string[] builtInLevelsFiles = new string[] {
-      "level01.ballance",
-      "level02.ballance",
-      "level03.ballance",
-      "level04.ballance",
-      "level05.ballance",
-      "level06.ballance",
-      "level07.ballance",
-      "level08.ballance",
-      "level09.ballance",
-      "level10.ballance",
-      "level11.ballance",
-      "level12.ballance",
-      "level13.ballance",
+      "level01",
+      "level02",
+      "level03",
+      "level04",
+      "level05",
+      "level06",
+      "level07",
+      "level08",
+      "level09",
+      "level10",
+      "level11",
+      "level12",
+      "level13",
     };
 
     internal static bool CheckPackageInBuiltInPackage(string packageName) {
@@ -153,9 +153,10 @@ namespace Ballance2.Res
       return false;
     }
     internal static bool CheckPackageInBuiltInLevel(string packageName) {
+      var n = Path.GetFileNameWithoutExtension(packageName.ToLower());
       for (int i = 0; i < builtInLevelsFiles.Length; i++)
       { 
-        if(builtInLevelsFiles[i] == packageName)
+        if(builtInLevelsFiles[i] == n)
           return true;
       }
       return false;

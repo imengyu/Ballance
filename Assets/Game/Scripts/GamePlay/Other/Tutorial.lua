@@ -1,6 +1,7 @@
 local KeyCode = UnityEngine.KeyCode
 local Text = UnityEngine.UI.Text
 local Image = UnityEngine.UI.Image
+local Button = UnityEngine.UI.Button
 local Vector3 = UnityEngine.Vector3
 local Axis = UnityEngine.Animations.Axis
 local GameObject = UnityEngine.GameObject
@@ -44,9 +45,13 @@ function Tutorial:new()
   self._TutorialStep = 1
   self._TutorialShouldDisablePointDown = false
   self._TutorialBallFinded = false
+  self._TutorialCamFinded = false
+  self._TutorialCurrWaitkey = nil
   self._TutorialUI = nil ---@type RectTransform
   self._TutorialUIText = nil ---@type Text
   self._TutorialUIBg = nil ---@type Image
+  self._TutorialUIButtonContinue = nil ---@type Button
+  self._TutorialUIButtonQuit = nil ---@type Button
 end
 function Tutorial:Start()
   Game.Mediator:RegisterEventHandler(CorePackage, 'CoreTutorialLevelEventHandler', 'TutorialHandler', function (evtName, params)
@@ -70,6 +75,8 @@ function Tutorial:Start()
         self._TutorialUI = Game.UIManager:InitViewToCanvas(CorePackage:GetPrefabAsset('GameTutorialUI.prefab'), "GameTutorialUI", false)
         self._TutorialUIBg = self._TutorialUI.transform:GetChild(0):GetComponent(Image)
         self._TutorialUIText = self._TutorialUI.transform:GetChild(0):GetChild(0):GetComponent(Text)
+        self._TutorialUIButtonContinue = self._TutorialUI.transform:GetChild(0):GetChild(1):GetComponent(Button)
+        self._TutorialUIButtonQuit = self._TutorialUI.transform:GetChild(0):GetChild(2):GetComponent(Button)
         self._TutorialUI.gameObject:SetActive(false)
         self:StartSeq()
 
@@ -80,10 +87,20 @@ function Tutorial:Start()
         constraintSource.sourceTransform = GamePlay.CamManager._CameraHostTransform
         constraintSource.weight = 1
 
-        self.Pfeil_Runter:AddSource(constraintSource)
+
+        if self._TutorialCamFinded then
+          self.Pfeil_Runter:SetSource(0, constraintSource)
+        else
+          self.Pfeil_Runter:AddSource(constraintSource)
+        end
         self.Pfeil_Runter.rotationOffset = Vector3(-90, 0, 0)
-        self.Pfeil_HochHost:AddSource(constraintSource)
-        self.Pfeil_HochHost:SetRotationOffset(0, Vector3(0, -90, 0))
+        if self._TutorialCamFinded then
+          self.Pfeil_HochHost:SetSource(0, constraintSource)
+        else
+          self.Pfeil_HochHost:AddSource(constraintSource)
+        end
+        self.Pfeil_HochHost:SetRotationOffset(0, Vector3(0, -90, 0)) 
+        self._TutorialCamFinded = true
 
         self._Tutorial = true
       end):addListener('Fall', function ()
@@ -96,6 +113,9 @@ function Tutorial:Start()
 
       end):addListener('Quit', function ()
         self._Tutorial = false
+        if self._TutorialCurrWaitkey then
+          Game.UIManager:DeleteKeyListen(self._TutorialCurrWaitkey)
+        end
         --删除UI
         if not Slua.IsNull(self._TutorialUI) then
           UnityEngine.Object.Destroy(self._TutorialUI.gameObject)
@@ -116,8 +136,7 @@ function Tutorial:StartSeq()
     self:ShowTutorialText()
   end)
 
-  --步骤1，按 q 退出，按回车继续
-  step1KeyQ = UIManager:WaitKey(KeyCode.Q, true, function ()
+  local funQuit = function ()
     Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
     --按 q 退出
     UIManager:DeleteKeyListen(step1KeyReturn)
@@ -125,10 +144,130 @@ function Tutorial:StartSeq()
     --继续游戏运行
     GamePlay.GamePlayManager.CanEscPause = true
     GamePlay.GamePlayManager:ResumeLevel(true)
-  end)
-  step1KeyReturn = UIManager:WaitKey(KeyCode.Return, true, function ()
+
+    self.Tut_ExtraLife.onTriggerEnter = nil
+    self.Tut_StoneTranfo.onTriggerEnter = nil
+    self.Tut_Rampe.onTriggerEnter = nil
+    self.Tut_ExtraPoint.onTriggerEnter = nil
+    self.Tut_Checkpoint.onTriggerEnter = nil
+    self.Tut_End.onTriggerEnter = nil
+  end
+  local funStep2 = function ()
     Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
+
+    --这个时候才开始控制
+    GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
+    GamePlay.GamePlayManager._IsCountDownPoint = true
+    GamePlay.GamePlayManager.CanEscPause = true
+    self._TutorialShouldDisablePointDown = false
+
+    --绑定当前球
+    local ballWoodConstraintSource = ConstraintSource()
+    ballWoodConstraintSource.sourceTransform = GamePlay.BallManager.CurrentBall.transform
+    ballWoodConstraintSource.weight = 1
+    if self._TutorialBallFinded then
+      self.Tut_Richt_Pfeil:SetSource(0, ballWoodConstraintSource)
+    else
+      self.Tut_Richt_Pfeil:AddSource(ballWoodConstraintSource)
+    end
+    self.Tut_Richt_Pfeil.constraintActive = true
+    self.Tut_Richt_Pfeil.rotationAxis = Axis.None
+    self._TutorialBallFinded = true;
+
+    --进行下一步，方向键导航
+    UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Hoch, 1, true, nil)
+    UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil01, 1, nil)
+    UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil02, 1, nil)
+    UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil03, 1, nil)
+    UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil04, 1, nil)
+
+    --按下按键以后几个箭头有拉长的特效
+    local AddBallPushListener = function (type)
+      if(type == BallPushType.Back) then
+        self.Tut_Richt_Pfeil03.transform.localPosition = Vector3(-4, 0.5, 0) 
+      elseif(type == BallPushType.Forward) then
+        self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(6, 1, 0) 
+      elseif(type == BallPushType.Left) then
+        self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 5) 
+      elseif(type == BallPushType.Right) then
+        self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -5) 
+      end
+    end          
+    local RemoveBallPushListener = function (type)
+      if(type == BallPushType.Back) then
+        self.Tut_Richt_Pfeil03.transform.localPosition = Vector3(-2, 0.5, 0) 
+      elseif(type == BallPushType.Forward) then
+        self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(4, 1, 0) 
+      elseif(type == BallPushType.Left) then
+        self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 3) 
+      elseif(type == BallPushType.Right) then
+        self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -3) 
+      end
+    end
+    GamePlay.BallManager.Events
+      :addListener('AddBallPush', AddBallPushListener)
+      :addListener('RemoveBallPush', RemoveBallPushListener)
+
+    ---隐藏四个方向箭头
+    local hideRichtPfeil = function ()
+      UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil01, 1, true, nil)
+      UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil02, 1, true, nil)
+      UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil03, 1, true, nil)
+      UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil04, 1, true, nil)
+      LuaTimer.Add(1000, function ()
+
+        self.Tut_Richt_Pfeil.constraintActive = false
+
+        GamePlay.BallManager.Events
+          :removeListener('AddBallPush', AddBallPushListener)
+          :removeListener('RemoveBallPush', RemoveBallPushListener)  
+
+      end)
+    end
+
+    LuaTimer.Add(1000, function ()
+      self._TutorialStep = 4
+      self:ShowTutorialText()
+    end)
+
+    --这个按键箭头最多15秒后隐藏
+    LuaTimer.Add(15000, function ()
+      if self._TutorialStep == 4 then
+        self._TutorialStep = 0
+        self:HideTutorial()
+        hideRichtPfeil()
+      end
+    end)
+    --或者到达木桥那里隐藏隐藏
+    self.Tut_KeyEnd.onTriggerEnter = function ()
+      if self._TutorialStep == 4 then
+        self._TutorialStep = 0
+        self:HideTutorial()
+        hideRichtPfeil()
+      end
+    end
+  end
+  local funStep1 = function ()
+    Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
+
+    --进行下一步，空格俯瞰
+    UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Rund01, 1, true, nil)
+    UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Rund02, 1, true, nil)
+
+    LuaTimer.Add(1000, function ()
+      UIManager.UIFadeManager:AddFadeIn(self.Pfeil_Hoch, 1, nil)
+      self._TutorialStep = 3
+      self:ShowTutorialText()
+    end)
+    
+    self._TutorialCurrWaitkey = UIManager:WaitKey(KeyCode.Return, true, funStep2)
+  end
+  local commonTurHide = nil
+  local funSeq = function ()
+    Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
+    self._TutorialUIButtonQuit.gameObject:SetActive(false)
     UIManager:DeleteKeyListen(step1KeyQ)
+
     --进行下一步
     self:HideTutorial()
 
@@ -145,114 +284,7 @@ function Tutorial:StartSeq()
       self._TutorialStep = 2
       self:ShowTutorialText()
 
-      UIManager:WaitKey(KeyCode.Return, true, function ()
-        Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
-
-        --进行下一步，空格俯瞰
-        UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Rund01, 1, true, nil)
-        UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Rund02, 1, true, nil)
-
-        LuaTimer.Add(1000, function ()
-          UIManager.UIFadeManager:AddFadeIn(self.Pfeil_Hoch, 1, nil)
-          self._TutorialStep = 3
-          self:ShowTutorialText()
-        end)
-        
-        UIManager:WaitKey(KeyCode.Return, true, function ()
-          Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
-
-          --这个时候才开始控制
-          GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
-          GamePlay.GamePlayManager._IsCountDownPoint = true
-          GamePlay.GamePlayManager.CanEscPause = true
-          self._TutorialShouldDisablePointDown = false
-
-          --绑定当前球
-          local ballWoodConstraintSource = ConstraintSource()
-          ballWoodConstraintSource.sourceTransform = GamePlay.BallManager.CurrentBall.transform
-          ballWoodConstraintSource.weight = 1
-          if self._TutorialBallFinded then
-            self.Tut_Richt_Pfeil:RemoveSource(0)
-          end
-          self.Tut_Richt_Pfeil.constraintActive = true
-          self.Tut_Richt_Pfeil.rotationAxis = Axis.None
-          self.Tut_Richt_Pfeil:AddSource(ballWoodConstraintSource)
-          self._TutorialBallFinded = true;
-
-          --进行下一步，方向键导航
-          UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Hoch, 1, true, nil)
-          UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil01, 1, nil)
-          UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil02, 1, nil)
-          UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil03, 1, nil)
-          UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil04, 1, nil)
-
-          --按下按键以后几个箭头有拉长的特效
-          local AddBallPushListener = function (type)
-            if(type == BallPushType.Back) then
-              self.Tut_Richt_Pfeil03.transform.localPosition = Vector3(-4, 0.5, 0) 
-            elseif(type == BallPushType.Forward) then
-              self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(6, 1, 0) 
-            elseif(type == BallPushType.Left) then
-              self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 5) 
-            elseif(type == BallPushType.Right) then
-              self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -5) 
-            end
-          end          
-          local RemoveBallPushListener = function (type)
-            if(type == BallPushType.Back) then
-              self.Tut_Richt_Pfeil03.transform.localPosition = Vector3(-2, 0.5, 0) 
-            elseif(type == BallPushType.Forward) then
-              self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(4, 1, 0) 
-            elseif(type == BallPushType.Left) then
-              self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 3) 
-            elseif(type == BallPushType.Right) then
-              self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -3) 
-            end
-          end
-          GamePlay.BallManager.Events
-            :addListener('AddBallPush', AddBallPushListener)
-            :addListener('RemoveBallPush', RemoveBallPushListener)
-
-          ---隐藏四个方向箭头
-          local hideRichtPfeil = function ()
-            UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil01, 1, true, nil)
-            UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil02, 1, true, nil)
-            UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil03, 1, true, nil)
-            UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil04, 1, true, nil)
-            LuaTimer.Add(1000, function ()
-
-              self.Tut_Richt_Pfeil.constraintActive = false
-
-              GamePlay.BallManager.Events
-                :removeListener('AddBallPush', AddBallPushListener)
-                :removeListener('RemoveBallPush', RemoveBallPushListener)  
-
-            end)
-          end
-    
-          LuaTimer.Add(1000, function ()
-            self._TutorialStep = 4
-            self:ShowTutorialText()
-          end)
-
-          --这个按键箭头最多15秒后隐藏
-          LuaTimer.Add(15000, function ()
-            if self._TutorialStep == 4 then
-              self._TutorialStep = 0
-              self:HideTutorial()
-              hideRichtPfeil()
-            end
-          end)
-          --或者到达木桥那里隐藏隐藏
-          self.Tut_KeyEnd.onTriggerEnter = function ()
-            if self._TutorialStep == 4 then
-              self._TutorialStep = 0
-              self:HideTutorial()
-              hideRichtPfeil()
-            end
-          end
-        end)
-      end)
+      self._TutorialCurrWaitkey = UIManager:WaitKey(KeyCode.Return, true, funStep1)
     end)
 
     ---移动箭头至指定位置
@@ -267,13 +299,14 @@ function Tutorial:StartSeq()
         UIManager.UIFadeManager:AddFadeOut(self.Pfeil_Runter.gameObject, 0.5, true, nil)
       end
     end
+    commonTurHide = function ()
+      Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
+      GamePlay.GamePlayManager:ResumeLevel(false)
+      self:HideTutorial()
+    end
     local commonTurReturn = function ()
       GamePlay.GamePlayManager:PauseLevel(false)
-      UIManager:WaitKey(KeyCode.Return, true, function ()
-        Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
-        GamePlay.GamePlayManager:ResumeLevel(false)
-        self:HideTutorial()
-      end)  
+      self._TutorialCurrWaitkey = UIManager:WaitKey(KeyCode.Return, true, commonTurHide)  
     end
     local commonTurTipSound = function ()
       Game.SoundManager:PlayFastVoice('core.sounds:Hit_Stone_Kuppel.wav', GameSoundType.Normal)
@@ -336,7 +369,26 @@ function Tutorial:StartSeq()
         commonTurReturn()
       end
     end
+  end
+
+  self._TutorialUIButtonContinue.onClick:RemoveAllListeners()
+  self._TutorialUIButtonQuit.onClick:RemoveAllListeners()
+  self._TutorialUIButtonContinue.onClick:AddListener(function ()
+    if self._TutorialStep == 1  then
+      funSeq()
+    elseif self._TutorialStep == 2  then
+      funStep1()
+    elseif self._TutorialStep == 3  then
+      funStep2()
+    elseif self._TutorialStep >= 5 then
+      commonTurHide()
+    end
   end)
+  self._TutorialUIButtonQuit.onClick:AddListener(funQuit)
+
+  --步骤1，按 q 退出，按回车继续
+  step1KeyQ = UIManager:WaitKey(KeyCode.Q, true, funQuit)
+  step1KeyReturn = UIManager:WaitKey(KeyCode.Return, true, funSeq)
 end
 function Tutorial:ShowTutorialText()
   if self._TutorialUI.gameObject.activeSelf then

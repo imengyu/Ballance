@@ -46,7 +46,7 @@ function KeypadUIControl:AddButton(go)
       end
     end
     listener.onUp = function () 
-      BallManager:RemoveBallPush(BallPushType.Right)
+      BallManager:RemoveBallPush(BallPushType.Left)
     end
 
   elseif name == "ButtonRight" then

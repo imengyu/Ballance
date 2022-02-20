@@ -220,11 +220,15 @@ namespace Ballance2.Entry
       {
         GlobalGamePermissionTipDialog.SetActive(true);
 
+        GameGlobalIngameLoading.SetActive(false);
         yield return new WaitUntil(() => GlobalGamePermissionTipDialogClosed);
+        GameGlobalIngameLoading.SetActive(true);
       }
       if (ShowUserArgeement())
       {
+        GameGlobalIngameLoading.SetActive(false);
         yield return new WaitUntil(() => GlobalGameUserAgreementTipDialogClosed);
+        GameGlobalIngameLoading.SetActive(true);
       }
 
       GameErrorChecker.SetGameErrorUI(GameGlobalErrorUI);
