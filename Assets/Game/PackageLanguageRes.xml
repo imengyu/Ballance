@@ -93,6 +93,74 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.PackageSystemPackage">核心模组无法卸载或禁用</Text>
     <Text name="core.ui.PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸载模组提示</Text>
+    <Text name="core.ui.TutorialText1">欢迎来到 Ballance！
+Ballance 平衡球 是一款滚球游戏。
+你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。
+
+游戏教程：
+您可以随时使用“ESC”键停止或退出游戏。
+你可以按“回车”键继续游戏教程，或按“Q”键退出教程。
+    </Text>
+    <Text name="core.ui.TutorialText2">视图旋转：
+按住左“SHIFT”键并使用“LEFT”或“RIGHT”箭头键将视图旋转90°。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText3">俯瞰视图：
+按住“空格键”以升高摄像机，你可以看的更高。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText4">移动球：
+请将视线转向前方，直到看到前面有两座塔楼的轨道。
+使用“箭头”键（不带“SHIFT”）向前、向后、向左和向右移动球。
+
+请沿着这条路走！
+    </Text>
+    <Text name="core.ui.TutorialText5">额外生命球：
+如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText6">变球器：
+通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。
+
+这是一个石质变球器。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText7">这个斜坡太陡了，不能用石球！
+
+找一个木制变球器，再试一次。
+
+提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText8">额外分数球：
+
+左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText9">检查点：
+
+这是你必须通过的第一个检查点。
+
+如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText10">最后有一些提示：
+
+如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。
+
+额外提示：上面是原版提示。如果你遇到了游戏的BUG或是有新的建议，请前往项目 https://github.com/imengyu/ballance/issues/ 向我们提交 Issues 反馈错误。
+
+欢迎前往 Ballance 吧讨论游戏！
+
+按“回车”键退出教程...
+    </Text>
   </Language>
   <Language name="English">
     <Text name="core.ui.Back">Back</Text>
@@ -188,6 +256,58 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us
     <Text name="core.ui.PackageSystemPackage">Core module cannot be uninstalled or disabled</Text>
     <Text name="core.ui.PackageWantUnaload">Do you want to uninstall the module? It will be uninstalled from the game immediately. The module file will be deleted and cannot be recovered!</Text>
     <Text name="core.ui.PackageUnaloadTip">Uninstall module tip</Text>
+    <Text name="core.ui.TutorialText1">Game Tutorial:
+You may halt or quit the game any time using the "ESC" key.
+You may continue the game tutorial with the "RETURN" key or quit the tutorial by pressing "Q".
+    </Text>
+    <Text name="core.ui.TutorialText2">View Rotation: 
+Keep the left "SHIFT" key pressed and use the "LEFT" or "RIGHT" ARROW key to rotate the view in 90?steps.
+
+Continue with "RETURN" ...
+    </Text>
+    <Text name="core.ui.TutorialText3">Overview:
+Hold down the "SPACEBAR" to raise the viewpoint.
+
+Continue with "RETURN" ...
+    </Text>
+    <Text name="core.ui.TutorialText4">Navigation:
+Turn the view until the track with the two towers is in front of you.
+Use the "ARROW" keys (without "SHIFT") to move the ball forward, backward, left and right.
+Follow the path!
+    </Text>
+    <Text name="core.ui.TutorialText5">Life Extra:
+If you fall off the track, you lose one life. Your remaining lifes are displayed at the right bottom of the screen. You receive an additional life by picking up a "Life Extra".
+
+Continue with "RETURN"  ...
+    </Text>
+    <Text name="core.ui.TutorialText6">Transformer:
+With the use of "transformers" you can change the material of the ball. The material of the transformer field indicates the type of transformer. 
+This is a stone transformer.
+
+Continue with "RETURN" ... 
+    </Text>
+    <Text name="core.ui.TutorialText7">This slope is too steep for a stoneball!
+Look for a wood transformer and try again. 
+Hint: Turn the view (SHIFT + RIGHT/LEFT), to get a better orientation. Rolling backwards can be dangerous!
+
+Continue with "RETURN" ...
+    </Text>
+    <Text name="core.ui.TutorialText8">Point Extra:
+The display on the left shows your actual time-points, which are constantly decreasing during the game. You increase your score by picking up a Point Extra.
+
+Continue with "RETURN"  ...
+    </Text>
+    <Text name="core.ui.TutorialText9">Checkpoints:
+This is the first checkpoint you have to pass.
+In case you loose a life during the game, you can continue the game from the last checkpoint.
+
+Continue with "RETURN"  ...
+    </Text>
+    <Text name="core.ui.TutorialText10">Some hints at the end:
+In case you get stuck at some point or need some technical help, please take a look at the "Ballance HTML Help", which is accessible via the Windows Start Menu (not during the game!).
+
+Quit the tutorial with "RETURN" ...
+    </Text>
   </Language>
   <Language name="ChineseTraditional">
     <Text name="core.ui.Back">返回</Text>
@@ -283,5 +403,70 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.PackageSystemPackage">覈心模組無法卸載或禁用</Text>
     <Text name="core.ui.PackageWantUnaload">你希望卸載模組嗎？ 它將立即從遊戲中卸載。 模組檔案將被删除，無法恢復！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸載模組提示</Text>
+    <Text name="core.ui.TutorialText1">欢迎来到 Ballance！
+游戏教程：
+您可以随时使用“ESC”键停止或退出游戏。
+你可以按“回车”键继续游戏教程，或按“Q”键退出教程。
+    </Text>
+    <Text name="core.ui.TutorialText2">视图旋转：
+按住左“SHIFT”键并使用“LEFT”或“RIGHT”箭头键将视图旋转90°。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText3">俯瞰视图：
+按住“空格键”以升高摄像机，你可以看的更高。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText4">移动球：
+请将视线转向前方，直到看到前面有两座塔楼的轨道。
+使用“箭头”键（不带“SHIFT”）向前、向后、向左和向右移动球。
+
+请沿着这条路走！
+    </Text>
+    <Text name="core.ui.TutorialText5">额外生命球：
+如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText6">变球器：
+通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。
+
+这是一个石质变球器。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText7">这个斜坡太陡了，不能用石球！
+
+找一个木制变球器，再试一次。
+
+提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText8">额外分数球：
+
+左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText9">检查点：
+
+这是你必须通过的第一个检查点。
+
+如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。
+
+按“回车”键继续...
+    </Text>
+    <Text name="core.ui.TutorialText10">最后有一些提示：
+
+如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。
+
+额外提示：上面是原版提示。如果你遇到了游戏的BUG或是有新的建议，请前往项目 https://github.com/imengyu/ballance/issues/ 向我们提交 Issues 反馈错误。
+
+欢迎前往 Ballance 吧讨论游戏！
+
+按“回车”键退出教程...
+    </Text>
   </Language>
 </I18n>
