@@ -66,7 +66,7 @@ local HighscoreManagerCommand = nil
 function HighscoreManager.InitCommand()
   if HighscoreManagerCommand == nil then
     GameManager.Instance.GameDebugCommandServer:RegisterCommand('highscore', function (keyword, fullCmd, argsCount, args)
-      local type = args[0]
+      local type = args[1]
       if type == 'clear' then
         HighscoreData.Data = defaultHighscoreData.DefaultHighscoreData
         HighscoreData.LevelNames = defaultHighscoreData.DefaultHighscoreLevelNamesData
@@ -99,7 +99,11 @@ function HighscoreManager.InitCommand()
         Log.E('highscore', 'Unknow type '..type)
         return false
       end
-    end, 1, '')
+    end, 1, 'highscore <clear/open-all/load/save>\n'
+      ..'  clear    ▶ 清除当前本地存储的所有高分数据（慎用！不可恢复！）\n'
+      ..'  open-all ▶ 解锁全部内置关卡\n'
+      ..'  load     ▶ 手动加载高分数据\n'
+      ..'  save     ▶ 手动保存高分数据')
   end
 end
 

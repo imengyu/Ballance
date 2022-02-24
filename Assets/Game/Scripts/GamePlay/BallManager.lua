@@ -780,6 +780,9 @@ end
 ---去除球推动方向
 ---@param t BallPushType 推动方向
 function BallManager:RemoveBallPush(t)
+  if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
+    return
+  end
   self.Events:emit('RemoveBallPush', t)
   if(t == BallPushType.Back) then
     if self._private.currentBallPushIds.back ~= 0 then
@@ -815,7 +818,10 @@ function BallManager:RemoveBallPush(t)
 end
 ---去除当前球所有推动方向
 function BallManager:RemoveAllBallPush()
-  self.Events:emit('RemoveAllBallPush')
+  if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
+    return
+  end
+  self.Events:emit('RemoveAllBallPush') 
   if self._private.currentBallPushIds.back ~= 0 then
     self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
     self._private.currentBallPushIds.back = 0

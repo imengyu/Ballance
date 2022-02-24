@@ -5,6 +5,7 @@ namespace Ballance2.UI.Utils {
 
   public class PreventDeselectionGroup : MonoBehaviour
   {
+#if UNITY_EDITOR || UNITY_STANDALONE
     EventSystem evt;
 
     private void Start()
@@ -21,5 +22,6 @@ namespace Ballance2.UI.Utils {
       else if (sel != null && evt.currentSelectedGameObject == null)
         evt.SetSelectedGameObject(sel);
     }
+#endif
   }
 }

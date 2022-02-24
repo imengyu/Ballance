@@ -750,10 +750,12 @@ function LevelBuilder:_LoadLevelInternal()
   else
     ---检查 coroutine 是否已经停止但是状态还是未设置
     local checkTime = 0
-    local id = 0
-    id = LuaTimer.Add(1000, 1000, function ()
-      checkTime = checkTime + 1
-      if checkTime > 30 then LuaTimer.Delete(id) end
+    self.checkTimeId = LuaTimer.Add(1000, 1000, function ()
+      self.checkTime = checkTime + 1
+      if checkTime > 10 then 
+        LuaTimer.Delete(self.checkTimeId ) 
+        self.checkTimeId = nil
+      end
       if self._IsLoading and coroutine.status(loadCo) == "dead" then
         self:UpdateErrStatus(true, 'LOADER_STOPPED', debug.traceback(loadCo))
       end
@@ -798,6 +800,11 @@ function LevelBuilder:UnLoadLevel(endCallback)
   if self._IsLoading then
     Log.E(TAG, 'Level is loading! ')
     return
+  end
+
+  if self.checkTimeId then 
+    LuaTimer.Delete(self.checkTimeId) 
+    self.checkTimeId = nil
   end
 
   self._IsLoading = true

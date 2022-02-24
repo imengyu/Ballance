@@ -811,13 +811,17 @@ namespace Ballance2.Services
               "  go <name:string> ▶ 进入指定虚拟场景");
       srv.RegisterCommand("eval", (keyword, fullCmd, argsCount, args) =>
       {
-        var cmd = fullCmd.Substring(2);
-        if(!cmd.Contains("\n") && !cmd.StartsWith("return "))
-            cmd = "return " + cmd;
-        var ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
+        var cmd = fullCmd.Substring(4);
+        object ret = null;
+        try {
+          ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
+        } catch(Exception e) {
+          Log.W(TAG, "doString failed \n\n" + e.ToString() + "\n\nCheck Code:\n" + DebugUtils.PrintCodeWithLine(cmd));
+          return true;
+        }
         Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
         return true;
-      }, 1, "c <code:string> ▶ 运行 Lua 命令");
+      }, 1, "eval <code:string> ▶ 运行 Lua 命令");
       srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
       {
         Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());

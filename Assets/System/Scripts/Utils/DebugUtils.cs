@@ -179,7 +179,6 @@ namespace Ballance2.Utils
         [LuaApiParamDescription("any", "LUA变量")]
         [LuaApiParamDescription("max_level", "打印最大层级")]
         public static string PrintLuaVarAuto(object any, int max_level) {
-
             StringBuilder sb = new StringBuilder();
             PrintLuaVarAutoLoop(sb, any, 0, max_level);
             return sb.ToString();
@@ -189,6 +188,10 @@ namespace Ballance2.Utils
             //递归打印出LUA变量
             if(max_level > 0 && level > max_level)
                 return;
+            if(any == null) {
+                stringBuilder.AppendLine("nil");
+                return;
+            }
             var type = any.GetType() ;
             if(type == typeof(LuaTable)) {
                 var t = (LuaTable)any;

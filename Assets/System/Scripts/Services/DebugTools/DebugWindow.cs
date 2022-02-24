@@ -106,6 +106,7 @@ namespace Ballance2
         //重新布局
         this.RelayoutLogContent();
 
+        text.gameObject.SetActive(true);
         //滚动到末尾
         if (this.logAutoScroll)
           this.LogScrollView.normalizedPosition = Vector2.zero;
@@ -156,8 +157,8 @@ namespace Ballance2
           break;
         var log = logItems[i];
         if (
-          ((logShowErrAndWarn && (log.level == LogLevel.Warning || log.level == LogLevel.Error)) ||
-          (logShowMessage && (log.level == LogLevel.Info || log.level == LogLevel.Debug))) &&
+          (logShowErrAndWarn && (log.level == LogLevel.Warning || log.level == LogLevel.Error)) ||
+          (logShowMessage && !(log.level == LogLevel.Warning || log.level == LogLevel.Error)) &&
           (logFilterEmpty || log.message.Contains(logFilter))
         )
         {

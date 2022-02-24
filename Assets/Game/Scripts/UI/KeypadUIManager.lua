@@ -1,4 +1,3 @@
-local Log = Ballance2.Log
 local GameErrorChecker = Ballance2.Services.Debug.GameErrorChecker
 local GameError = Ballance2.Services.Debug.GameError
 
@@ -20,7 +19,6 @@ function KeypadUIManager.AddKeypad(name, prefrab, image)
     GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, 'Keypad '..name..' already registered!')
     return false
   end
-  Log.D('LogTAS', 'image: '..tostring(image))
 
   keypadData[name] = {
     prefrab = prefrab,

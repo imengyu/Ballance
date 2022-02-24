@@ -97,6 +97,8 @@ namespace Ballance2.Entry
 
 #if UNITY_EDITOR
       if (DebugMode && DebugSetFrameRate) Application.targetFrameRate = DebugTargetFrameRate;
+#elif UNITY_ANDROID || UNITY_IOS
+      Application.targetFrameRate = 60;
 #endif
 
       StartCoroutine(InitMain());
