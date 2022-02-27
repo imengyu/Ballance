@@ -56,7 +56,7 @@ end
 function Tutorial:Start()
   Game.Mediator:RegisterEventHandler(CorePackage, 'CoreTutorialLevelEventHandler', 'TutorialHandler', function (evtName, params)
     if params[1] == 'beforeStart' then
-      GamePlay.GamePlayManager.Events:addListener('Start', function ()
+      self.startFun = function ()
         GamePlay.GamePlayManager._ShouldStartByCustom = true
         GamePlay.GamePlayManager.CanEscPause = false
         
@@ -103,7 +103,8 @@ function Tutorial:Start()
         self._TutorialCamFinded = true
 
         self._Tutorial = true
-      end):addListener('Fall', function ()
+      end
+      self.fallFun = function ()
         self._Tutorial = true
 
         self.Tut_Richt_Pfeil01:SetActive(false)
@@ -111,7 +112,8 @@ function Tutorial:Start()
         self.Tut_Richt_Pfeil03:SetActive(false)
         self.Tut_Richt_Pfeil04:SetActive(false)
 
-      end):addListener('Quit', function ()
+      end
+      self.quitFun = function ()
         self._Tutorial = false
         if self._TutorialCurrWaitkey then
           Game.UIManager:DeleteKeyListen(self._TutorialCurrWaitkey)
@@ -122,7 +124,12 @@ function Tutorial:Start()
           self._TutorialUI = nil
         end
         UnityEngine.Object.Destroy(self.gameObject)
-      end)
+
+      end
+      GamePlay.GamePlayManager.Events:addListener('Start', self.startFun):addListener('Fall', self.fallFun):addListener('Quit', self.quitFun)
+    end
+    if params[1] == 'beforeQuit' then
+      GamePlay.GamePlayManager.Events:removeListener('Start', self.startFun):removeListener('Fall', self.fallFun):removeListener('Quit', self.quitFun)
     end
     return false
   end)

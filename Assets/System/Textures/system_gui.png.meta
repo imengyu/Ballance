@@ -2893,7 +2893,7 @@ TextureImporter:
         width: 34
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2914,7 +2914,7 @@ TextureImporter:
         width: 34
         height: 35
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2935,7 +2935,7 @@ TextureImporter:
         width: 36
         height: 35
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2956,7 +2956,7 @@ TextureImporter:
         width: 37
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2977,7 +2977,7 @@ TextureImporter:
         width: 39
         height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2998,7 +2998,7 @@ TextureImporter:
         width: 55
         height: 55
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3006,6 +3006,90 @@ TextureImporter:
       bones: []
       spriteID: d375dbd4997558243be91d655bc863cb
       internalID: 1155186978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconLeftRight
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 196
+        width: 57
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6156adb046a566e4db53ccfc68cc167d
+      internalID: 1946805317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconMov
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 126
+        width: 143
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69908a8319d1377479d18ea5ea7f1987
+      internalID: 971341162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconCursorRight
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 34
+        width: 71
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0036c13c6732aa042a78e877ba0aeaf5
+      internalID: -2122737913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconCursorLeft
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 34
+        width: 73
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bada052efa93dc46ad4ae7642c33478
+      internalID: 1840506921
       vertices: []
       indices: 
       edges: []
@@ -3021,7 +3105,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      IconErr: -1127535243709945411
+      BoxRoundTop: -1387942528601720239
       GUIBoxRadiusSelect: 1883031710
       IconRestoreMinDark: -9209596457331486333
       BoxRound: 8902620681648697655
@@ -3041,6 +3125,7 @@ TextureImporter:
       BoxRoundBottom: -7359264501309230124
       GUITabSelect: 383261151
       GUIDropDownNormal: 867570512
+      IconLeftRight: 1946805317
       IconCloseDark: -8010207806092045782
       Box: -4115149617545907244
       GUIRadioCheckedPress: -55175660
@@ -3057,6 +3142,7 @@ TextureImporter:
       IconGlobal: 1219836524575074602
       GUIBoxActive: 747441423
       ColorDragger: -629796646736663849
+      IconCursorLeft: 1840506921
       IconRestoreLight: -6685105678880452824
       IconHand: -4825753653546556987
       ArrowThin: -5390961871813075550
@@ -3071,6 +3157,7 @@ TextureImporter:
       GUITabHover: -1754634823
       GUIBoxDarkLight: -786502107
       IconDebug: 1813996064
+      IconCursorRight: -2122737913
       IconLocal: -775183344312285971
       IconRestoreMinLight: 4339225749220643467
       MadeWithVirtools: -7630727215154562521
@@ -3111,6 +3198,7 @@ TextureImporter:
       IconArrowDown: -9117897411005600601
       GUIBoxMoreDark: -731778229
       GUICheckBoxPress: 1764489331
+      IconMov: 971341162
       GUIRadioDisable: -1563078941
       GUISliderBarHorz: 633514227
       IconArrowUp: 6700335028210261622
@@ -3157,7 +3245,7 @@ TextureImporter:
       IconBug2: 1155186978
       BoxRoundLeft: 7105688129526397165
       PoweredByHavok: -8983623551252004834
-      BoxRoundTop: -1387942528601720239
+      IconErr: -1127535243709945411
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

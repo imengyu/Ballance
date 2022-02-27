@@ -77,7 +77,8 @@ namespace Ballance2.Package
     {
       Log.D(TAG, "Destroy package {0}", PackageName);
 
-      RunPackageBeforeUnLoadCode();
+      if(!IsUnloadCodeExecuted())
+        RunPackageBeforeUnLoadCode();
 
       //GameManager.DestroyManagersInMod(PackageName);
       if(GameManager.GameMediator)
@@ -324,6 +325,7 @@ namespace Ballance2.Package
       }
 
       flag |= FLAG_CODE_ENTRY_CODE_RUN;
+      flag ^= FLAG_CODE_UNLOD_CODE_RUN;
 
       if(PackageEntry.OnLoad != null)
         return PackageEntry.OnLoad.Invoke(this);
@@ -347,6 +349,7 @@ namespace Ballance2.Package
       }
 
       flag |= FLAG_CODE_UNLOD_CODE_RUN;
+      flag ^= FLAG_CODE_ENTRY_CODE_RUN;
       if(PackageEntry.OnBeforeUnLoad != null)
         return PackageEntry.OnBeforeUnLoad.Invoke(this);
       return true;

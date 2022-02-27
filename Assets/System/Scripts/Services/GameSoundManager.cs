@@ -360,9 +360,9 @@ namespace Ballance2.Services
     //加载声音设置
     private bool OnVoiceSettingsUpdated(string groupName, int action)
     {
-      float volBackground = GameSettings.GetFloat("voice.background", 100);
+      float volBackground = GameSettings.GetFloat("voice.background", 20);
+      float volUI = GameSettings.GetFloat("voice.ui", 80);
       float volMain = GameSettings.GetFloat("voice.main", 100);
-      float volUI = GameSettings.GetFloat("voice.ui", 100);
 
       GameUIAudioMixer.SetFloat("UIMasterVolume", volUI <= 1 ? -60 : (20.0f * Mathf.Log10(volUI / 100.0f)));
       GameMainAudioMixer.SetFloat("MasterVolume", volMain <= 1 ? -60 : (20.0f * Mathf.Log10(volMain / 100.0f)));

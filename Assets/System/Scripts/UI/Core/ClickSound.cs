@@ -23,12 +23,17 @@ namespace Ballance2.UI.Core
   [Tooltip("点击触发声音组件")]
   [AddComponentMenu("Ballance/UI/Controls/ClickSound")]
   [SLua.CustomLuaClass]
-  public class ClickSound : UIBehaviour, ISelectHandler
+  public class ClickSound : UIBehaviour, ISelectHandler, IPointerClickHandler
   {
     [Tooltip("声音资源名称。与 GameSoundManager 约定的声音资源路径格式一致。")]
     public string SoundName = "";
+    [Tooltip("是否在选择时播放声音。")]
+    public bool HasSelectSound = true;
+    [Tooltip("是否在点击时播放声音。")]
+    public bool HasClickSound = true;
 
     private GameSoundManager GameSoundManager;
+    private bool LastSelect = false;
 
     protected override void Start()
     {
@@ -38,7 +43,19 @@ namespace Ballance2.UI.Core
     [SLua.DoNotToLua]
     public void OnSelect(BaseEventData eventData)
     {
-      if (!string.IsNullOrEmpty(SoundName))
+      if (HasSelectSound && !string.IsNullOrEmpty(SoundName)) {
+        GameSoundManager.PlayFastVoice(SoundName, GameSoundType.UI);
+        LastSelect = true;
+      }
+    }
+    [SLua.DoNotToLua]
+    public void OnPointerClick(PointerEventData eventData)
+    {
+      if(LastSelect) {
+        LastSelect = false;
+        return;
+      }
+      if (HasClickSound && !string.IsNullOrEmpty(SoundName))
         GameSoundManager.PlayFastVoice(SoundName, GameSoundType.UI);
     }
   }

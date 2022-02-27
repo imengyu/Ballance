@@ -192,20 +192,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e6108379294ece4d9a6b90635da294b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Mass: 1
+  m_Mass: 0.2
   m_Friction: 0.5
   m_Elasticity: 0.4
   m_LinearSpeedDamping: 1.5
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 0
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
-  m_AutoMassCenter: 1
+  m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
   m_Layer: 3
@@ -217,10 +217,7 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}

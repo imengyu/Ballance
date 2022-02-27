@@ -107,14 +107,16 @@ namespace Ballance2.UI.Utils
                   if (fadeObject.gameObject != null)
                     fadeObject.gameObject.SetActive(false);
                 }
+                fadeObject.runEnd = true;
 
                 //恢复材质渲染模式为原来的
-                if (fadeObject.material != null && fadeObject.oldMatRenderMode != MaterialUtils.RenderingMode.Fade)
-                {
-                  MaterialUtils.SetMaterialRenderingMode(fadeObject.material, fadeObject.oldMatRenderMode);
-                  fadeObject.oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
+                if(fadeObject.material != null && (fadeObject.material.shader == null || fadeObject.material.shader.name == "Standard")) {
+                  if (fadeObject.material != null && fadeObject.oldMatRenderMode != MaterialUtils.RenderingMode.Fade)
+                  {
+                    MaterialUtils.SetMaterialRenderingMode(fadeObject.material, fadeObject.oldMatRenderMode);
+                    fadeObject.oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
+                  }
                 }
-                fadeObject.runEnd = true;
               }
             }
           }
@@ -192,13 +194,14 @@ namespace Ballance2.UI.Utils
       {
 
         fadeObject.material.color = new Color(fadeObject.material.color.r, fadeObject.material.color.g, fadeObject.material.color.b, 1);
-
-        //设置材质渲染模式为Fade
-        var oldRenderMode = MaterialUtils.GetMaterialRenderingMode(fadeObject.material);
-        if (oldRenderMode != MaterialUtils.RenderingMode.Fade)
-        {
-          fadeObject.oldMatRenderMode = oldRenderMode;
-          MaterialUtils.SetMaterialRenderingMode(fadeObject.material, MaterialUtils.RenderingMode.Fade);
+        if(fadeObject.material.shader == null || fadeObject.material.shader.name == "Standard") {
+          //如果标准材质模式不是Fade，设置材质渲染模式为Fade
+          var oldRenderMode = MaterialUtils.GetMaterialRenderingMode(fadeObject.material);
+          if (oldRenderMode != MaterialUtils.RenderingMode.Fade)
+          {
+            fadeObject.oldMatRenderMode = oldRenderMode;
+            MaterialUtils.SetMaterialRenderingMode(fadeObject.material, MaterialUtils.RenderingMode.Fade);
+          }
         }
       }
       fadeObject.endReactive = hidden;
@@ -235,13 +238,14 @@ namespace Ballance2.UI.Utils
       if (fadeObject.material != null)
       {
         fadeObject.material.color = new Color(fadeObject.material.color.r, fadeObject.material.color.g, fadeObject.material.color.b, 0);
-
-        //设置材质渲染模式为Fade
-        var oldRenderMode = MaterialUtils.GetMaterialRenderingMode(fadeObject.material);
-        if (oldRenderMode != MaterialUtils.RenderingMode.Fade)
-        {
-          fadeObject.oldMatRenderMode = oldRenderMode;
-          MaterialUtils.SetMaterialRenderingMode(fadeObject.material, MaterialUtils.RenderingMode.Fade);
+        if(fadeObject.material.shader == null || fadeObject.material.shader.name == "Standard") {
+          //设置材质渲染模式为Fade
+          var oldRenderMode = MaterialUtils.GetMaterialRenderingMode(fadeObject.material);
+          if (oldRenderMode != MaterialUtils.RenderingMode.Fade)
+          {
+            fadeObject.oldMatRenderMode = oldRenderMode;
+            MaterialUtils.SetMaterialRenderingMode(fadeObject.material, MaterialUtils.RenderingMode.Fade);
+          }
         }
       }
 

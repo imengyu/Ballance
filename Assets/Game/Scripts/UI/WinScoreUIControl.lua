@@ -19,6 +19,7 @@ local I18N = Ballance2.Services.I18N.I18N
 WinScoreUIControl = ClassicObject:extend()
 
 function WinScoreUIControl:new() 
+  self._ThisTimeHasNewHighscore = false
   self._CountingPointEndCallback = nil ---@type function
 end
 function WinScoreUIControl:Start() 
@@ -31,7 +32,19 @@ end
 function WinScoreUIControl:Update() 
   if self._IsCountingPoint then
     if self._GamePlayManager.CurrentPoint > 0 then
-      if self._GamePlayManager.CurrentPoint > 4 then
+      if self._GamePlayManager.CurrentPoint > 4000 then
+        self._GamePlayManager.CurrentPoint = self._GamePlayManager.CurrentPoint - 20
+        self._ScoreNTimePoints = self._ScoreNTimePoints + 20
+        self._ScoreNTotal = self._ScoreNTotal + 20
+      elseif self._GamePlayManager.CurrentPoint > 2000 then
+        self._GamePlayManager.CurrentPoint = self._GamePlayManager.CurrentPoint - 10
+        self._ScoreNTimePoints = self._ScoreNTimePoints + 10
+        self._ScoreNTotal = self._ScoreNTotal + 10
+      elseif self._GamePlayManager.CurrentPoint > 2000 then
+        self._GamePlayManager.CurrentPoint = self._GamePlayManager.CurrentPoint - 10
+        self._ScoreNTimePoints = self._ScoreNTimePoints + 10
+        self._ScoreNTotal = self._ScoreNTotal + 10
+      elseif self._GamePlayManager.CurrentPoint > 4 then
         self._GamePlayManager.CurrentPoint = self._GamePlayManager.CurrentPoint - 4
         self._ScoreNTimePoints = self._ScoreNTimePoints + 4
         self._ScoreNTotal = self._ScoreNTotal + 4
@@ -200,9 +213,11 @@ function WinScoreUIControl:_ShowHighscore()
   if Game.HighScoreManager.CheckLevelHighScore(GamePlay.GamePlayManager.CurrentLevelName, self._ScoreNTotal) then
     PageHighscoreEntry.Content:Find('TextNewHighScore').gameObject:SetActive(true)
     PageHighscoreEntry.Content:Find('TextWin').gameObject:SetActive(false)
+    self._ThisTimeHasNewHighscore = true
   else
     PageHighscoreEntry.Content:Find('TextNewHighScore').gameObject:SetActive(false)
     PageHighscoreEntry.Content:Find('TextWin').gameObject:SetActive(true)
+    self._ThisTimeHasNewHighscore = false
   end
 end
 

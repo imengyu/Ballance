@@ -64,8 +64,6 @@ function CreateGamePlayUI(package)
     Game.GamePlay.GamePlayManager:ResumeLevel()
   end)
 
-
-
   --高分默认数据
   local HighscoreEntryName = PageHighscoreEntry.Content:Find('InputField'):GetComponent(InputField) ---@type InputField
   HighscoreEntryName.text = PlayerPrefs.GetString('LastEnterHighscoreEntry', 'NAME')
@@ -79,7 +77,16 @@ function CreateGamePlayUI(package)
   MessageCenter:SubscribeEvent('BtnHighscrollEnterClick', function () 
     PlayerPrefs.SetString('LastEnterHighscoreEntry', HighscoreEntryName.text)
     GameUI.WinScoreUIControl:SaveHighscore(HighscoreEntryName.text)
+
+    --当前有新的高分，跳转到高分页，否则直接进入下一关菜单
     GameUIManager:GoPage('PageGameWin') 
+    if GameUI.WinScoreUIControl._ThisTimeHasNewHighscore then
+      LuaTimer.Add(200, function ()
+        GameUIManager:GoPage('PageHighscore')
+        --高分页加载当前关卡数据
+        GameUI.HighscoreUIControl:LoadLevelData(GamePlay.GamePlayManager.CurrentLevelName)
+      end)
+    end
   end)
 end
 

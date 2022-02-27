@@ -973,6 +973,8 @@ namespace Ballance2.Services
 
       Application.wantsToQuit -= Application_wantsToQuit;
 
+      delayItems.Clear();
+
       var pm = GetSystemService<GamePackageManager>();
       pm.SavePackageRegisterInfo();
 
@@ -980,7 +982,7 @@ namespace Ballance2.Services
 
       if (DebugMode)
         DebugInit.UnInitSystemDebug();
-
+      
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
       ReqGameQuit();
     }
@@ -1014,8 +1016,11 @@ namespace Ballance2.Services
         nextGameQuitTick--;
         if (nextGameQuitTick == 30)
           ClearScense();
-        if (nextGameQuitTick == 0)
+        if (nextGameQuitTick == 0) {
+          nextGameQuitTick = -1;
+          gameIsQuitEmitByGameManager = false;
           GameSystem.Destroy();
+        }
       }
       if (delayItems.Count > 0)
       {

@@ -12,19 +12,22 @@ namespace Ballance2.Game
     Forward = 4,
     Back = 8,
     LeftForward = Left | Forward,
-    LeftBack = Left | Forward,
+    LeftBack = Left | Back,
     RightForward = Right | Forward,
     RightBack = Right | Back,
   }
 
   [SLua.CustomLuaClass]
   public delegate void KeyPadJoystickDirectionChanged(bool stat, KeyPadJoystickDirection dir);
-
+  
+  /// <summary>
+  /// 模拟摇杆UI控制
+  /// </summary>
   [SLua.CustomLuaClass]
   [RequireComponent(typeof(SimpleTouchController))]
   public class KeyPadJoystickController : MonoBehaviour
   {
-    public float DirectionFBMinValue = 0.7f;
+    public float DirectionFBMinValue = 0.8f;
     public float DirectionLRMinValue = 0.5f;
 
     public KeyPadJoystickDirectionChanged DirectionChanged;

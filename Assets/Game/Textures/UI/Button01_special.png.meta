@@ -347,7 +347,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScoreLightBar
+      name: UIScoreLightBar
       rect:
         serializedVersion: 2
         x: 136
@@ -355,14 +355,266 @@ TextureImporter:
         width: 96
         height: 22
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 5, y: 5, z: 4, w: 4}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: d9b99b122c1e31cc0800000000000000
       internalID: -3741398641509033059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIWhiteBackground
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 143
+        width: 65
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 6, z: 7, w: 7}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33fdbc0454d14de4098cdde9c1661311
+      internalID: -1434209170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHighlightTitle
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 137
+        width: 104
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 11, z: 20, w: 9}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ef0592f13c8eec42be8ab6da129172c
+      internalID: -1948106191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daadb25f497efbb4b8535a5d581a714a
+      internalID: -104209905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7957f16b5e42c234fb17b19720a31b54
+      internalID: 495199415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 205bd7e97e6e8514590cf1e169f90add
+      internalID: -1441490486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8ab9170f1d4a9948b09545b9ae096e1
+      internalID: -1785461574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2af5f2fa0519aa94cbd843c7766aec29
+      internalID: 1842261025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText6
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5eb152aea3591ad458b7aff39e4c5de7
+      internalID: 1069214331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText7
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 230e2f99b14f52b4aa7c49f8f5fa0284
+      internalID: 2132532692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText8
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23f58571b423a5e4d82d2c4a1bb94f9f
+      internalID: -1824661647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText9
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30564107eca1fa94da48c6beda3eac2f
+      internalID: -963398475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIHightScoreText10
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 241
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2375454b61eda0449a21c7f4aea84918
+      internalID: 348495595
       vertices: []
       indices: 
       edges: []
@@ -378,16 +630,28 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      UIHightScoreText4: -1785461574
+      UIHightScoreText7: 2132532692
+      UIHightScoreText2: 495199415
       UILifeDrawerRight: -4622576392854552090
-      ScoreLightBar: -3741398641509033059
+      UIHightScoreText5: 1842261025
+      UIHightScoreText9: -963398475
+      UIHighlightTitle: -1948106191
+      UIScoreLightBar: -3741398641509033059
       UILifeBall9: -8126972389678458915
       ButtonHighScrollItem: -6920016319646800259
       UILifeDrawerLeft: 7638072281483234975
+      UIHightScoreText3: -1441490486
+      UIHightScoreText8: -1824661647
+      UIHightScoreText1: -104209905
+      UIWhiteBackground: -1434209170
+      UIHightScoreText10: 348495595
       UIScoreBaseboard: 5881721449272224839
       ButtonSmallNormal: -2113445561872806287
       UIScoreBaseboardHighlight: -7737099801466784621
       UILifeBall: -7978793109757516488
       ButtonLevelDisable: 1854267412275217757
+      UIHightScoreText6: 1069214331
       UILifeBallInf: 5817284486412995110
   spritePackingTag: 
   pSDRemoveMatte: 0

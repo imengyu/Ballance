@@ -18,6 +18,7 @@ local Log = Ballance2.Log
 ---@field PE_Balloon_Ballon_Seil02 PhysicsObject
 ---@field PE_Balloon_Ballon_Seil01 PhysicsObject
 ---@field PE_Balloon_Platform_HingeJoint PhysicsHinge
+---@field PE_Balloon_Platte00 PhysicsObject
 ---@field PE_Balloon_Platte01 PhysicsObject
 ---@field PE_Balloon_Platte02 PhysicsObject
 ---@field PE_Balloon_Platte03 PhysicsObject
@@ -61,26 +62,30 @@ function PE_Balloon:Start()
   --PE_Balloon 过关触发器
   self.PE_Balloon_BallTigger.onTriggerEnter = function (body, other)
     if other and other.gameObject.tag == "Ball" and not self.BallTiggerActived then
-      if BALLANCE_MODUL_DEBUG then
-        Log.D('PE_Balloon', 'Break bridge!')
-      end
+
+      Log.D('PE_Balloon', 'Break bridge!') 
+
+      self.BallTiggerActived = true
       self._MusicActived = false
+
       self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
       self.PE_Balloon_Platform:WakeUp()
-      self.PE_Balloon_BoxSlideForce.Force = 0.1
-      self.PE_Balloon_PlatformForce.enabled = false
-      self.BallTiggerActived = true
+      self.PE_Balloon_PlatformForce.enabled = true
+      self.PE_Balloon_BoxSlideForce.enabled = true
+      self.PE_Balloon_BoxSlideForce.Force = 0.4
+      self.PE_Balloon_PlatformForce.Force = 0.4
 
       --速度放慢一些
-      LuaTimer.Add(1000, function ()
-        self.PE_Balloon_BoxSlideForce.Force = 0.5
+      LuaTimer.Add(300, function ()
+        self.PE_Balloon_BoxSlideForce.Force = 0.1
+        self.PE_Balloon_PlatformForce.Force = 0.1
 
-        --速度放慢一些
-        LuaTimer.Add(1500, function ()
+        --速度再放慢一些
+        LuaTimer.Add(700, function ()
           self.PE_Balloon_BoxSlideForce.Force = 0.2
+          self.PE_Balloon_PlatformForce.Force = 0.2
         end)
       end)
-
 
       if not BALLANCE_MODUL_DEBUG then
         GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
@@ -90,6 +95,7 @@ function PE_Balloon:Start()
   self._MusicActived = false
 
   local iWoodOnlyHit = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+  self.PE_Balloon_Platte00.CollisionID = iWoodOnlyHit
   self.PE_Balloon_Platte01.CollisionID = iWoodOnlyHit
   self.PE_Balloon_Platte02.CollisionID = iWoodOnlyHit
   self.PE_Balloon_Platte03.CollisionID = iWoodOnlyHit
@@ -107,7 +113,8 @@ function PE_Balloon:Active()
   self.BallTiggerActived = false
   self.PE_Balloon_Platform:Physicalize()
   self.PE_Balloon_PlatformForce.enabled = true
-  self.PE_Balloon_BoxSlideForce.Force = 0.5
+  self.PE_Balloon_BoxSlideForce.enabled = true
+  self.PE_Balloon_BoxSlideForce.Force = 0.7
   self.PE_Balloon_BoxSlide:Physicalize()
   self.PE_Balloon_Ballon04:Physicalize()
   self.PE_Balloon_Ballon03:Physicalize()
@@ -117,6 +124,7 @@ function PE_Balloon:Active()
   self.PE_Balloon_Ballon_Seil03:Physicalize()
   self.PE_Balloon_Ballon_Seil02:Physicalize()
   self.PE_Balloon_Ballon_Seil01:Physicalize()
+  self.PE_Balloon_Platte00:Physicalize()
   self.PE_Balloon_Platte01:Physicalize()
   self.PE_Balloon_Platte02:Physicalize()
   self.PE_Balloon_Platte03:Physicalize()
@@ -126,13 +134,16 @@ function PE_Balloon:Active()
   self.PE_Balloon_Platte07:Physicalize()
   self.PE_Balloon_Platte08:Physicalize()
 
-  Log.D('PE_Balloon', 'Active!')
+  if BALLANCE_MODUL_DEBUG then
+    Log.D('PE_Balloon', 'Active!')
+    Log.D('PE_Balloon', 'State: '..tostring(self._MusicActived)..' CurrentSector: '..tostring(GamePlay.GamePlayManager.CurrentSector) )
+  end
 
-  
-  Log.D('PE_Balloon', 'State: '..tostring(self._MusicActived)..' CurrentSector: '..tostring(GamePlay.GamePlayManager.CurrentSector) )
   if not self._MusicActived and GamePlay.GamePlayManager.CurrentSector ~= 1 then
     
-    Log.D('PE_Balloon', '_MusicActived !')
+    if BALLANCE_MODUL_DEBUG then
+      Log.D('PE_Balloon', '_MusicActived !')
+    end
 
     self._MusicActived = true
     --播放最后一小节的音乐
@@ -169,6 +180,7 @@ function PE_Balloon:Deactive()
   self.PE_Balloon_Ballon_Seil03:UnPhysicalize(true)
   self.PE_Balloon_Ballon_Seil02:UnPhysicalize(true)
   self.PE_Balloon_Ballon_Seil01:UnPhysicalize(true)
+  self.PE_Balloon_Platte00:UnPhysicalize(true)
   self.PE_Balloon_Platte01:UnPhysicalize(true)
   self.PE_Balloon_Platte02:UnPhysicalize(true)
   self.PE_Balloon_Platte03:UnPhysicalize(true)

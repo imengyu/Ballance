@@ -52,9 +52,16 @@ namespace Ballance2.Services
       Object.Destroy(uiManagerGameObject);
 
       if(UIRoot != null) {
-        Log.D(TAG, "Destroy {0} ui objects", UIRoot.transform.childCount);
-        for (int i = 0, c = UIRoot.transform.childCount; i < c; i++)
-          Object.Destroy(UIRoot.transform.GetChild(i).gameObject);
+        GameObject go = null;
+        int count = 0;
+        for (int i = 0, c = UIRoot.transform.childCount; i < c; i++) {
+          go = UIRoot.transform.GetChild(i).gameObject;
+          if(go.tag != "Speical" && go.tag != "GameController") {
+            Object.Destroy(go);
+            count ++;
+          }
+        }
+        Log.D(TAG, "Destroy {0} ui objects", count);
       }
     } 
     [SLua.DoNotToLua]

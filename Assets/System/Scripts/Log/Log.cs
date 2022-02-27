@@ -276,7 +276,7 @@ namespace Ballance2
       LogObserverInternal logObserverInternal = observers.Find((o) => o.Observer == observer);
       if (logObserverInternal != null)
       {
-        E(TAG, "Can not un register LogObserver {0} because it already registered! ", observer.GetHashCode());
+        E(TAG, "Can not register LogObserver {0} because it already registered! ", observer.GetHashCode());
         return -1;
       }
 

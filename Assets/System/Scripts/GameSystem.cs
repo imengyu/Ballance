@@ -210,7 +210,8 @@ namespace Ballance2
     /// </summary>
     public static void PreInit()
     {
-      GameErrorChecker.Init();
+      if(!IsRestart)
+        GameErrorChecker.Init();
 
       //Call game init
       if (sysHandler == null)
@@ -291,6 +292,8 @@ namespace Ballance2
         if (IsRestart)
         {
           System.GC.Collect();
+          PreInit();
+          IsRestart = false;
           Init();
         }
         else QuitPlayer();

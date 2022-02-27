@@ -97,6 +97,7 @@ namespace Ballance2.Services.Init
         I18NProvider.ClearAllLanguageResources();
         GameSettingsManager.Destroy();
         GameStaticResourcesPool.ReleaseAll();
+        LuaService.Lua.LuaGlobalApi.Destroy();
 
 #if !UNITY_EDITOR
         //释放物理引擎

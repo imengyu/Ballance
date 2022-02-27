@@ -115,7 +115,7 @@ function P_Extra_Point:StartFly()
   self.P_Extra_Point_Fizz:SetActive(true)
   self.P_Extra_Point_Sound:Play()
 
-  local upY = 20
+  local upY = 16
 
   for i = 1, 6, 1 do
     local ball = self['P_Extra_Point_Ball'..i] ---@type GameObject
@@ -128,7 +128,7 @@ function P_Extra_Point:StartFly()
     fly.TargetPos = self.transform:TransformPoint(localPos.x, upY, localPos.z)
     fly.Time = self._FlyUpTime
     fly.Fly = true
-    upY = upY + 2
+    upY = upY + 0.2
   end
 
   local fTime =  self._FlyFollowTime

@@ -15,7 +15,7 @@ P_Modul_03 = ModulBase:extend()
 function P_Modul_03:new()
   P_Modul_03.super.new(self)
   self.EnableBallRangeChecker = true
-  self.BallCheckeRange = 60
+  self.BallCheckeRange = 30
 end
 
 function P_Modul_03:Active()

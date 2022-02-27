@@ -1,7 +1,8 @@
 local GameManager = Ballance2.Services.GameManager
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
-local I18NProvider = Ballance2.Services.I18NProvider
+local I18NProvider = Ballance2.Services.I18N.I18NProvider
+local I18N = Ballance2.Services.I18N.I18N
 
 local Screen = UnityEngine.Screen
 local QualitySettings = UnityEngine.QualitySettings
@@ -135,12 +136,12 @@ function BindSettingsUI(MessageCenter)
     end
     if(qualities == nil) then
       qualities = {
-        { level = 0, text = '最低' },
-        { level = 1, text = '低' },
-        { level = 2, text = '中等' },
-        { level = 3, text = '高' },
-        { level = 4, text = '极高' },
-        { level = 5, text = '最高' },
+        { level = 0, text = I18N.Tr('core.ui.SettingsQualityVeryLow') },
+        { level = 1, text = I18N.Tr('core.ui.SettingsQualityLow') },
+        { level = 2, text = I18N.Tr('core.ui.SettingsQualityMedium') },
+        { level = 3, text = I18N.Tr('core.ui.SettingsQualityHigh') },
+        { level = 4, text = I18N.Tr('core.ui.SettingsQualityVeryHigh') },
+        { level = 5, text = I18N.Tr('core.ui.SettingsQualityUltra') },
       }
       local GrQuality = MessageCenter:GetComponentInstance('GrQuality'):GetComponent(Ballance2.UI.Core.Controls.Updown) ---@type Updown
       local qualitiyCurrent = QualitySettings.GetQualityLevel()
@@ -184,13 +185,13 @@ function BindSettingsUI(MessageCenter)
   end)
   MessageCenter:SubscribeEvent('BtnSettingsAudioClick', function () 
     if updateVioceBackground then
-      updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 100))
+      updateVioceBackground:Invoke(GameSettings:GetFloat("voice.background", 20))
+    end
+    if updateVoiceUI then
+      updateVoiceUI:Invoke(GameSettings:GetFloat("voice.ui", 80))
     end
     if updateVoiceMain then
       updateVoiceMain:Invoke(GameSettings:GetFloat("voice.main", 100))
-    end
-    if updateVoiceUI then
-      updateVoiceUI:Invoke(GameSettings:GetFloat("voice.ui", 100))
     end
     GameUIManager:GoPage('PageSettingsAudio') 
   end)

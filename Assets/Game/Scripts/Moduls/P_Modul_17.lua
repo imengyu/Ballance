@@ -11,6 +11,7 @@ end
 function P_Modul_17:Active()
   ModulBase.Active(self)
   self.Modul17_Dreharme:Physicalize()
+  self.Modul17_Dreharme.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
   self._EnableForce = true
 end
 function P_Modul_17:Deactive()

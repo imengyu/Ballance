@@ -64,12 +64,13 @@ namespace Ballance2.Services
     {
       UnLoadAllPackages();
 
+      var systemPackage = GamePackage.GetSystemPackage();
+      systemPackage.flag = (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE);
+      systemPackage._Status = GamePackageStatus.NotLoad;
+      registeredPackages.Remove(SYSTEM_PACKAGE_NAME);
       registeredPackages.Clear();
       packagesLoadStatus.Clear();
       loadedPackages.Clear();
-      registeredPackages = null;
-      packagesLoadStatus = null;
-      loadedPackages = null;
 
       if(GameManager.GameMediator) {
         GameManager.GameMediator.UnRegisterGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED);
@@ -760,12 +761,13 @@ namespace Ballance2.Services
     private void UnLoadAllPackages()
     {
       List<string> packageNames = new List<string>(loadedPackages.Keys);
-      foreach (string key in packageNames)
-        if (key != SYSTEM_PACKAGE_NAME && key != CORE_PACKAGE_NAME) {
+      foreach (string key in packageNames) {
+        if (key != SYSTEM_PACKAGE_NAME) {
           GamePackage package = FindPackage(key);
           if (package != null)
             UnLoadPackageInternal(package, true);
         }
+      }
       packageNames.Clear();
     }
 

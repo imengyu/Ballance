@@ -134,7 +134,7 @@ function GamePlayManager:_InitSounds()
   self._SoundLastSector.dopplerLevel = 0
   self._SoundLastSector.rolloffMode = AudioRolloffMode.Linear
   self._SoundLastSector.minDistance = 95
-  self._SoundLastSector.maxDistance = 130
+  self._SoundLastSector.maxDistance = 160
 end
 function GamePlayManager:_InitKeyEvents() 
   --ESC键
@@ -238,6 +238,12 @@ function GamePlayManager:_InitAndStart()
     GamePlay.BallManager.CanControllCamera = true
     --发出事件
     Game.LevelBuilder:CallLevelCustomModEvent('beforeStart')
+    --显示云层 (用于过关之后重新开始，因为之前过关的时候隐藏了云层)
+    if Game.Manager.GameSettings:GetBool('video.cloud', true) then
+      if Game.LevelBuilder._CurrentLevelSkyLayer and not Game.LevelBuilder._CurrentLevelSkyLayer.activeSelf then
+        Game.UIManager.UIFadeManager:AddFadeIn(Game.LevelBuilder._CurrentLevelSkyLayer, 1, nil)
+      end
+    end
 
     self.Events:emit('Start')
 
@@ -279,6 +285,9 @@ function GamePlayManager:HideSkyAndLight()
 end
 
 function GamePlayManager:_QuitOrLoadNextLevel(loadNext) 
+  --发出事件
+  Game.LevelBuilder:CallLevelCustomModEvent('beforeQuit')
+
   local callBack = nil
   if loadNext then
     callBack = function ()
@@ -426,6 +435,7 @@ function GamePlayManager:Fall()
     coroutine.resume(coroutine.create(function()
       Yield(WaitForSeconds(1))
       self:_Stop(BallControlStatus.UnleashingMode)
+      GamePlay.MusicManager:DisableBackgroundMusicWithoutAtmo()
 
       --延时显示失败菜单
       Yield(WaitForSeconds(1))
@@ -445,6 +455,14 @@ function GamePlayManager:Pass()
   self:_Stop(BallControlStatus.UnleashingMode)
 
   GamePlay.BallManager.CanControllCamera = false
+
+  --过关后马上渐变淡出云层，因为摄像机要看到边界的地方了
+  if Game.LevelBuilder._CurrentLevelSkyLayer and Game.LevelBuilder._CurrentLevelSkyLayer.activeSelf then
+    Game.UIManager.UIFadeManager:AddFadeOut(Game.LevelBuilder._CurrentLevelSkyLayer, 5, true, nil)
+  end
+
+  --停止背景音乐
+  GamePlay.MusicManager:DisableBackgroundMusicWithoutAtmo()
 
   self.Events:emit('Pass')
 
@@ -481,7 +499,6 @@ function GamePlayManager:UfoAnimFinish()
   self.Events:emit('UfoAnimFinish')
   self._SoundFinnal:Play()
   self:_HideBalloonEnd() --开始隐藏飞船
-  GamePlay.MusicManager:DisableBackgroundMusic()
   GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
   GameUI.WinScoreUIControl:StartSeq()
 end
@@ -507,6 +524,10 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
     --播放变球动画
     GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform, color, tranfo.gameObject, function ()
       
+      --播放烟雾
+      GamePlay.BallManager:PlaySmoke(targetPos)
+
+      --先设置无球
       GamePlay.BallManager:SetNoCurrentBall()
 
       --切换球并且抛出碎片

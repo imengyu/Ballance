@@ -2,6 +2,7 @@ local EventTriggerListener = Ballance2.Services.InputManager.EventTriggerListene
 local GameManager = Ballance2.Services.GameManager
 local KeyPadJoystickController = Ballance2.Game.KeyPadJoystickController
 local KeyPadJoystickDirection = Ballance2.Game.KeyPadJoystickDirection
+local SimpleTouchDirectionKeyController = Ballance2.Game.SimpleTouchDirectionKeyController
 
 ---手机上的游戏控制键盘控制类
 ---@class KeypadUIControl : GameLuaObjectHostClass
@@ -16,9 +17,9 @@ function KeypadUIControl:Start()
   --自动扫描开头为Button的对象作为按钮，最多扫描2级
   for i = 0, self.transform.childCount - 1, 1 do
     local child = self.transform:GetChild(i);
-    if(string.startWith(child.gameObject.name, "Button") or child.gameObject.name == "Joystick") then
+    if(string.startWith(child.gameObject.name, "Button") or child.gameObject.name == "Joystick" or child.gameObject.name == "DirectionKey") then
       self:AddButton(child.gameObject);
-    else 
+    elseif child.childCount > 0 then
       for j = 0, child.childCount - 1, 1 do
         local child2 = child:GetChild(j).gameObject;
         if(string.startWith(child2.name, "Button")) then
@@ -43,6 +44,38 @@ function KeypadUIControl:AddButton(go)
   if name == "Joystick" then
     local Joystick = go:GetComponent(KeyPadJoystickController) ---@type KeyPadJoystickController
     Joystick.DirectionChanged = function (state, dir)
+      if dir == enumBack then
+        if state then
+          BallManager:AddBallPush(BallPushType.Back)
+        else
+          BallManager:RemoveBallPush(BallPushType.Back)
+        end
+      elseif dir == enumForward then
+        if state then
+          BallManager:AddBallPush(BallPushType.Forward)
+        else
+          BallManager:RemoveBallPush(BallPushType.Forward)
+        end
+      elseif dir == enumLeft then
+        if state then
+          BallManager:AddBallPush(BallPushType.Left)
+        else
+          BallManager:RemoveBallPush(BallPushType.Left)
+        end
+      elseif dir == enumRight then
+        if state then
+          BallManager:AddBallPush(BallPushType.Right)
+        else
+          BallManager:RemoveBallPush(BallPushType.Right)
+        end
+      end
+    end
+    
+
+  elseif name == "DirectionKey" then
+
+    local DirectionKey = go:GetComponent(SimpleTouchDirectionKeyController) ---@type SimpleTouchDirectionKeyController
+    DirectionKey.DirectionChanged = function (state, dir)
       if dir == enumBack then
         if state then
           BallManager:AddBallPush(BallPushType.Back)

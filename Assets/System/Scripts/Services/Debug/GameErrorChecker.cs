@@ -135,9 +135,14 @@ namespace Ballance2.Services.Debug
       gameErrorLogObserver = Log.RegisterLogObserver(LogObserver, LogLevel.Error | LogLevel.Warning);
     }
     internal static void Destroy() {
-      gameErrorLogPools.Clear();
-      gameErrorLogPools = null;
-      Log.UnRegisterLogObserver(gameErrorLogObserver);
+      if(gameErrorLogPools != null) {
+        gameErrorLogPools.Clear();
+        gameErrorLogPools = null;
+      }
+      if(gameErrorLogObserver > 0) {
+        Log.UnRegisterLogObserver(gameErrorLogObserver);
+        gameErrorLogObserver = 0;
+      }
     }
 
     private static void LogObserver(LogLevel level, string tag, string message, string stackTrace) {

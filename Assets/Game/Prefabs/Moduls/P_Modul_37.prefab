@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Friction: 0.7
   m_Elasticity: 1
   m_LinearSpeedDamping: 1
-  m_RotSpeedDamping: 0.05
+  m_RotSpeedDamping: 0.1
   m_BallRadius: 1
   m_UseBall: 0
   m_BuildRootConvexHull: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0

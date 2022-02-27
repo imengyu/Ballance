@@ -26,6 +26,7 @@ function MusicManager:new()
   self.Events = EventEmitter() ---@type EventEmitter
 
   self._CurrentIsAtmo = false
+  self._CurrentForceAtmo = false
   self._CurrentAudioTick = 0
   self._LastMusicIndex = 0
 end
@@ -83,7 +84,7 @@ function MusicManager:FixedUpdate()
     if self._CurrentAudioTick > 0 then
       self._CurrentAudioTick = self._CurrentAudioTick - 1
     else
-      if self._CurrentIsAtmo then
+      if self._CurrentIsAtmo or self._CurrentForceAtmo then
         self._CurrentIsAtmo = false
         if not self.CurrentAudioSource.isPlaying then
           self.CurrentAudioSource.clip = self.CurrentAudioTheme.atmos[math.random(#self.CurrentAudioTheme.atmos)]
@@ -141,7 +142,9 @@ function MusicManager:SetCurrentTheme(theme)
     return false
   end
 end
+---开启音乐
 function MusicManager:EnableBackgroundMusic() 
+  self._CurrentForceAtmo = false
   if self.CurrentAudioTheme then
     self.CurrentAudioEnabled = true 
     self._CurrentAudioTick = math.random(2, self.CurrentAudioTheme.maxInterval / 2)
@@ -156,6 +159,7 @@ function MusicManager:EnableBackgroundMusic()
     self.Events:emit('MusicEnable')
   end
 end
+---暂停音乐
 function MusicManager:DisableBackgroundMusic() 
   self.CurrentAudioEnabled = false 
   --淡出当前正在播放的音乐
@@ -166,6 +170,14 @@ function MusicManager:DisableBackgroundMusic()
   end
   self.Events:emit('MusicDisable')
 end
+---暂停音乐（Atmo除外）
+function MusicManager:DisableBackgroundMusicWithoutAtmo() 
+  self._CurrentForceAtmo = true
+  if not self._CurrentIsAtmo and self.CurrentAudioSource.isPlaying then
+    Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 1)
+  end
+end
+
 ---从当前时间开始暂停音乐指定秒
 ---@param sec number
 function MusicManager:DisableInSec(sec) 

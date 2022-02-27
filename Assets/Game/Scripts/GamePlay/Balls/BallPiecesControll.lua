@@ -62,6 +62,14 @@ function CreateClass:BallPiecesControll()
       data.parent.transform.position = pos
       data.throwed = true
 
+      ---清除上一次的延时
+      if data.delayHideTimerID then
+        LuaTimer.Delete(data.delayHideTimerID)
+      end
+      if data.fadeOutTimerID then
+        LuaTimer.Delete(data.fadeOutTimerID)
+      end
+
       --渐变未完成，需要强制清除正在运行的渐变
       if data.fadeObjects then
         for _, value in pairs(data.fadeObjects) do
@@ -71,6 +79,11 @@ function CreateClass:BallPiecesControll()
           end
         end
         data.fadeObjects = nil
+      else
+        --快速显示
+        for i = 0, parent.transform.childCount - 1 do
+          FadeManager:AddFadeIn(parent.transform:GetChild(i).gameObject, 0.1, nil)
+        end
       end
 
       for _, body in ipairs(data.bodys) do
@@ -80,14 +93,6 @@ function CreateClass:BallPiecesControll()
         forceDir:Normalize() --力的方向是从原点向碎片位置
         body:Physicalize() --物理
         body:Impluse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
-      end
-
-      ---清除上一次的延时
-      if data.delayHideTimerID then
-        LuaTimer.Delete(data.delayHideTimerID)
-      end
-      if data.fadeOutTimerID then
-        LuaTimer.Delete(data.fadeOutTimerID)
       end
 
       ---延时消失

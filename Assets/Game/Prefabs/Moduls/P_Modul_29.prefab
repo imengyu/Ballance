@@ -950,7 +950,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -968,13 +968,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &5812873663588909182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1093,7 +1090,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1111,13 +1108,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &8659139698616826889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1237,7 +1231,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1255,13 +1249,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &2149460211439712856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1396,7 +1387,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1414,13 +1405,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &6328000014295885528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1564,7 +1552,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1582,13 +1570,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &7296719509269902859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1707,7 +1692,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1725,13 +1710,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &4366482094980822261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1850,7 +1832,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -1868,13 +1850,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &6491900820383711757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1993,7 +1972,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -2011,13 +1990,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &7289402197740133293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2136,7 +2112,7 @@ MonoBehaviour:
   m_RotSpeedDamping: 0.3
   m_BallRadius: 1
   m_UseBall: 0
-  m_BuildRootConvexHull: 1
+  m_BuildRootConvexHull: 0
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
@@ -2154,13 +2130,10 @@ MonoBehaviour:
   m_Concave: []
   m_SurfaceName: 
   m_UseExistsSurface: 1
-  m_ExtraRadius: 0.1
+  m_ExtraRadius: 0
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 0}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!114 &2449901260692587957
 MonoBehaviour:
   m_ObjectHideFlags: 0

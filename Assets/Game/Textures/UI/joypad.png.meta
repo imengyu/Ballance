@@ -86,7 +86,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: zone
+      name: UIJoypadZone
       rect:
         serializedVersion: 2
         x: 0
@@ -107,11 +107,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: joystick
+      name: UIJoystickDrag
       rect:
         serializedVersion: 2
-        x: 542
-        y: 155
+        x: 543
+        y: 281
         width: 200
         height: 200
       alignment: 0
@@ -127,10 +127,31 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UIJoypadButton
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 45
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68febfa3bac6d4a4dbbe14f6aad64ed6
+      internalID: -19231290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: abb600e71b7ac724ebc91991e8a78d31
     internalID: 0
     vertices: []
     indices: 
@@ -138,8 +159,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      joystick: 21300002
-      zone: 21300000
+      UIJoypadZone: 21300000
+      UIJoypadButton: -19231290
+      UIJoystickDrag: 21300002
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

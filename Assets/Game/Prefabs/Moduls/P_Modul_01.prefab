@@ -143,10 +143,11 @@ MonoBehaviour:
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
-  m_Layer: 3
+  m_Layer: 4
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  m_CollisionID: 0
   m_Convex:
   - {fileID: 1272418157679549381, guid: 40024545627d731498833686a83c8a30, type: 3}
   - {fileID: -1096761022812701064, guid: 78dad0ab41e303840ac92940793ba4ad, type: 3}
@@ -158,11 +159,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_ContractEventSleep: 0
-  m_CollisionID: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!1 &1866175489965466434
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +313,7 @@ MonoBehaviour:
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  m_CollisionID: 0
   m_Convex:
   - {fileID: 4916011592379981366, guid: 7f432e5c7b7d8c44fafdd34a4551f697, type: 3}
   - {fileID: -2525289050585519006, guid: 587643162bc1eff44a76a07084b9555a, type: 3}
@@ -328,11 +325,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_ContractEventSleep: 0
-  m_CollisionID: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!1 &5253768105185388426
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,10 +635,11 @@ MonoBehaviour:
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
   m_EnableConstantForce: 1
-  m_Layer: 3
+  m_Layer: 4
   m_SystemGroupName: 
   m_SubSystemId: 0
   m_SubSystemDontCollideWith: 0
+  m_CollisionID: 0
   m_Convex:
   - {fileID: -7402325741564597146, guid: ab9c1533a97446f4c9e0ffeaaf0c6a49, type: 3}
   m_Concave: []
@@ -656,11 +649,6 @@ MonoBehaviour:
   m_EnableGravity: 1
   m_EnableCollisionEvent: 0
   m_CollisionEventCallSleep: 0
-  m_ContractEventSleep: 0
-  m_CollisionID: 0
-  m_StaticConstantForceDirection: {x: 0, y: 0, z: 1}
-  m_StaticConstantForce: 0
-  m_ConstantForceDirectionRef: {fileID: 0}
 --- !u!1 &9052374040560591088
 GameObject:
   m_ObjectHideFlags: 0

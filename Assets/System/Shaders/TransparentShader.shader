@@ -53,7 +53,8 @@ Shader "Custom/TransparentShader"
                 // sample the texture
                 float2 uv = i.uv.xy;
                 float4 col = tex2D(_MainTex,  uv);
-                col *= _Color;
+                col *= _Color * _Color.a;
+                col *= _Color.a;
                 return col;
             }
             ENDCG
