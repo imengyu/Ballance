@@ -77,6 +77,8 @@ function CoreInit()
   --注册内置键盘
   KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadLeft.prefab'), CorePackage:GetSpriteAsset('keypad_l.png'))
   KeypadUIManager.AddKeypad('BaseRight', CorePackage:GetPrefabAsset('KeypadRight.prefab'), CorePackage:GetSpriteAsset('keypad_r.png'))
+  KeypadUIManager.AddKeypad('BaseJoyLeft', CorePackage:GetPrefabAsset('KeypadJoyLeft.prefab'), CorePackage:GetSpriteAsset('keypad_joy_l.png'))
+  KeypadUIManager.AddKeypad('BaseJoyRight', CorePackage:GetPrefabAsset('KeypadJoyRight.prefab'), CorePackage:GetSpriteAsset('keypad_joy_r.png'))
 
   --调试入口
   if GameManager.DebugMode then

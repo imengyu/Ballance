@@ -26,6 +26,8 @@ function BallPaper:new()
     body.RotSpeedDamping = data.RotDamp
     body.Layer = GameLayers.LAYER_PHY_BALL_PEICES
     body.UseExistsSurface = true
+    body.ExtraRadius = 0
+    body.BuildRootConvexHull = false
     return body
   end
 end
@@ -51,14 +53,14 @@ function BallPaper:ThrowPieces(pos)
 end
 
 function BallPaper:ResetPieces()
-  Ball.ResetPieces(self)
-
   if self._PiecesData then
     --去掉纸球碎片恒力
     for _, body in ipairs(self._PiecesData.bodys) do
       body:ClearConstantForce()
     end
   end
+
+  Ball.ResetPieces(self)
 end
 
 function CreateClass:BallPaper()

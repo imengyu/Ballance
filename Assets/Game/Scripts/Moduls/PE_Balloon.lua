@@ -70,20 +70,20 @@ function PE_Balloon:Start()
 
       self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
       self.PE_Balloon_Platform:WakeUp()
-      self.PE_Balloon_PlatformForce.enabled = true
-      self.PE_Balloon_BoxSlideForce.enabled = true
-      self.PE_Balloon_BoxSlideForce.Force = 0.4
-      self.PE_Balloon_PlatformForce.Force = 0.4
+      self.PE_Balloon_PlatformForce.enabled = false
+      self.PE_Balloon_BoxSlideForce.enabled = false
 
       --速度放慢一些
       LuaTimer.Add(300, function ()
-        self.PE_Balloon_BoxSlideForce.Force = 0.1
-        self.PE_Balloon_PlatformForce.Force = 0.1
+        self.PE_Balloon_BoxSlideForce.Force = 0.8
 
         --速度再放慢一些
-        LuaTimer.Add(700, function ()
-          self.PE_Balloon_BoxSlideForce.Force = 0.2
-          self.PE_Balloon_PlatformForce.Force = 0.2
+        LuaTimer.Add(1200, function ()
+          self.PE_Balloon_BoxSlideForce.Force = 0.4
+
+          LuaTimer.Add(1000, function ()
+            self.PE_Balloon_BoxSlideForce.Force = 0.33
+          end)
         end)
       end)
 
@@ -113,7 +113,7 @@ function PE_Balloon:Active()
   self.BallTiggerActived = false
   self.PE_Balloon_Platform:Physicalize()
   self.PE_Balloon_PlatformForce.enabled = true
-  self.PE_Balloon_BoxSlideForce.enabled = true
+  self.PE_Balloon_BoxSlideForce.enabled = false
   self.PE_Balloon_BoxSlideForce.Force = 0.7
   self.PE_Balloon_BoxSlide:Physicalize()
   self.PE_Balloon_Ballon04:Physicalize()

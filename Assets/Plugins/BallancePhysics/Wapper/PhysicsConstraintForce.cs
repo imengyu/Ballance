@@ -64,7 +64,7 @@ namespace BallancePhysics.Wapper
       AddForceData();
     }
     private void DeleteForceData() {
-      if(_ForceId > 0) {
+      if(_ForceId != 0) {
         PhysicsObject.DeleteConstantForce(_ForceId);
         _ForceId = 0;
       }

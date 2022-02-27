@@ -301,6 +301,9 @@ function GamePlayManager:_QuitOrLoadNextLevel(loadNext)
     self._HideBalloonEndTimerID = nil
   end
 
+  --停止背景音乐
+  GamePlay.MusicManager:DisableBackgroundMusic()
+
   --停止模拟
   self.GamePhysicsWorld.Simulate = false
   

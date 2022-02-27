@@ -112,7 +112,9 @@ function KeypadUIControl:AddButton(go)
     listener.onDown = function () 
       if self.shiftPressCount == 1 or self.shiftPressOne then
         --按下shift时为旋转摄像机
-        CamManager:RotateLeft()
+        if GamePlay.BallManager.CanControllCamera then
+          CamManager:RotateLeft()
+        end
       else
         BallManager:AddBallPush(BallPushType.Left)
       end
@@ -176,14 +178,14 @@ function KeypadUIControl:AddButton(go)
       --shift和space二合一键
       listener.onDown = function () 
         self.shiftPressCount = self.shiftPressCount + 1
-        if self.shiftPressCount >= 2 then
+        if self.shiftPressCount >= 2 and GamePlay.BallManager.CanControllCamera then
           self.lastCameraSpaceByShift = true
           CamManager:RotateUp(true)
         end
       end
       listener.onUp = function () 
         self.shiftPressCount = self.shiftPressCount - 1
-        if self.lastCameraSpaceByShift then
+        if self.lastCameraSpaceByShift and GamePlay.BallManager.CanControllCamera then
           self.lastCameraSpaceByShift = false
           CamManager:RotateUp(false)
         end
@@ -191,8 +193,14 @@ function KeypadUIControl:AddButton(go)
     elseif name == "ButtonSpace" then
 
       --空格键
-      listener.onDown = function () CamManager:RotateUp(true) end
-      listener.onUp = function () CamManager:RotateUp(false) end
+      listener.onDown = function () 
+        if GamePlay.BallManager.CanControllCamera then
+          CamManager:RotateUp(true)  
+        end
+      end
+      listener.onUp = function () 
+        CamManager:RotateUp(false) 
+      end
 
     elseif name == "ButtonShift" then
 
@@ -203,12 +211,20 @@ function KeypadUIControl:AddButton(go)
     elseif name == "ButtonCamLeft" then
 
       --摄像机左转键
-      listener.onClick = function () CamManager:RotateLeft() end
+      listener.onClick = function () 
+        if GamePlay.BallManager.CanControllCamera then
+          CamManager:RotateLeft() 
+        end
+      end
 
     elseif name == "ButtonCamRight" then
 
       --摄像机右转键
-      listener.onClick = function () CamManager:RotateRight() end
+      listener.onClick = function ()
+        if GamePlay.BallManager.CanControllCamera then
+          CamManager:RotateRight() 
+        end
+      end
 
     end
   end
