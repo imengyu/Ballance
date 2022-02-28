@@ -475,6 +475,8 @@ function BallManager:_DeactiveCurrentBall()
   if current ~= nil then
     --取消激活
     if current.rigidbody.IsPhysicalized then
+      --取消推动
+      self:RemoveAllBallPush()
       --停止球的声音
       GamePlay.BallSoundManager:RemoveSoundableBall(current)
       --取消激活
@@ -512,7 +514,7 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
       current.ball:Active()
       --启动球的声音
       GamePlay.BallSoundManager:AddSoundableBall(current)
-      --拷贝上一个球的按键，因为可能在变球时用户还是按住按键，而此时球已经切换了，球的恒力需要重新设置
+      --需要重新发送按键状态，因为可能在变球时用户还是按住按键，而此时球已经切换了，球的恒力需要重新设置
       self._private.keyListener:ReSendPressingKey()
     end
     if not physics and physicsed then
@@ -823,8 +825,8 @@ function BallManager:RemoveAllBallPush()
   end
   self.Events:emit('RemoveAllBallPush') 
   if self._private.currentBallPushIds.back ~= 0 then
-    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
     self._private.currentBallPushIds.back = 0
+    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
   end
   if self._private.currentBallPushIds.forward ~= 0 then
     self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.forward)

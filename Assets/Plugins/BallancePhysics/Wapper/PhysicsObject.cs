@@ -551,9 +551,10 @@ namespace BallancePhysics.Wapper
     public bool EnableConstantForce { get => m_EnableConstantForce; set => m_EnableConstantForce = value; }
 
     private int m_ConstantForce_ID = 0;
-    private struct ConstantForceData {
+    private class ConstantForceData {
       public Vector3 Pos;
-      public Vector3 Force;
+      public float Force;
+      public Vector3 Direction;
       public Transform DirectionRef;
       public Transform PositionRef;
     };
@@ -601,15 +602,23 @@ namespace BallancePhysics.Wapper
       else m_ConstantForce_ID = 0;
 
       ConstantForceData data = new ConstantForceData();
-      data.Force = dircetion * value;
+      data.Force = value;
+      data.Direction = dircetion;
       data.Pos = postion;
       data.PositionRef = positionRef;
       data.DirectionRef = directionRef;
 
-
       m_ConstantForces.Add(m_ConstantForce_ID, data);
       return m_ConstantForce_ID;
     }
+    /// <summary>
+    /// 更新施加在这个物体上的恒力数值
+    /// </summary>
+    /// <param name="forceId">AddConstantForce 返回的ID</param>
+    /// <param name="value">力大小</param>
+    public void UpdateConstantForceValue(int forceId, float value) {
+      m_ConstantForces[forceId].Force = value;
+    }   
     /// <summary>
     /// 删除施加在这个物体上的恒力
     /// </summary>
@@ -633,14 +642,14 @@ namespace BallancePhysics.Wapper
       foreach(var f in m_ConstantForces) 
       {
         ConstantForceData data = f.Value;
-        if(data.Force.sqrMagnitude == 0)
+        if(data.Force == 0)
           continue;
 
         //设置参考物体
         if(data.DirectionRef != null)
-          finalForce = data.DirectionRef.TransformDirection(data.Force);
+          finalForce = data.DirectionRef.TransformDirection(data.Direction) * data.Force;
         else
-          finalForce = data.Force;
+          finalForce = data.Force * data.Direction;
 
         if(data.PositionRef != null)
           finalPos = data.PositionRef.TransformPoint(data.Pos);
@@ -667,7 +676,8 @@ namespace BallancePhysics.Wapper
     /// <param name="impluse">力的方向和大小（世界坐标系）</param>
     public void Impluse(Vector3 pos, Vector3 impluse) {
       checkPhysicalized();
-      PhysicsApi.API.physics_impluse(Handle, pos, impluse);
+      if(impluse.sqrMagnitude > 0)
+        PhysicsApi.API.physics_impluse(Handle, pos, impluse);
     }
     /// <summary>
     /// 给物体施加一个旋转推动
@@ -675,7 +685,8 @@ namespace BallancePhysics.Wapper
     /// <param name="rotVec">该矢量的每个分量表示施加在该对象相关核心轴上的旋转力。</param>
     public void Torque(Vector3 rotVec) {
       checkPhysicalized();
-      PhysicsApi.API.physics_torque(Handle, rotVec);
+      if(rotVec.sqrMagnitude > 0)
+        PhysicsApi.API.physics_torque(Handle, rotVec);
     }
     /// <summary>
     /// 为物体添加速度

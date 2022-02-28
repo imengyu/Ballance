@@ -152,7 +152,7 @@ end
 function GamePlayUIControl:ReBuildMobileKeyPad() 
   --销毁键盘
   if self._CurrentMobileKeyPad and not Slua.IsNull(self._CurrentMobileKeyPad) then
-    UnityEngine.Object.Destroy(self._CurrentMobileKeyPad)
+    UnityEngine.Object.Destroy(self._CurrentMobileKeyPad.gameObject)
     self._CurrentMobileKeyPad = nil
   end
 

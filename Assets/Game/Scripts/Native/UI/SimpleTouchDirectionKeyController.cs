@@ -108,16 +108,20 @@ namespace Ballance2.Game
     private KeyPadJoystickDirection currentState;
     private bool state = false;
     private Rect rect = new Rect();
+    private Canvas Canvas;
 
     private void InitRect() {
       rect = (transform as RectTransform).rect;
-      rect.x = UIAnchorPosUtils.GetUILeft(transform as RectTransform);
-      rect.y = UIAnchorPosUtils.GetUIBottom(transform as RectTransform);
+      rect.x = UIAnchorPosUtils.GetUILeft(transform as RectTransform) * Canvas.scaleFactor;
+      rect.y = UIAnchorPosUtils.GetUIBottom(transform as RectTransform) * Canvas.scaleFactor;
+      rect.width = rect.width * Canvas.scaleFactor;
+      rect.height = rect.height * Canvas.scaleFactor;
     }
 
     protected override void Start()
     {
       currentState = KeyPadJoystickDirection.None;
+      Canvas = GetComponentInParent<Canvas>().rootCanvas;
       InitRect();
     }
     protected override void OnRectTransformDimensionsChange() {

@@ -125,11 +125,9 @@ function Tutorial:Start()
         end
         UnityEngine.Object.Destroy(self.gameObject)
 
+        GamePlay.GamePlayManager.Events:removeListener('Start', self.startFun):removeListener('Fall', self.fallFun):removeListener('Quit', self.quitFun)
       end
       GamePlay.GamePlayManager.Events:addListener('Start', self.startFun):addListener('Fall', self.fallFun):addListener('Quit', self.quitFun)
-    end
-    if params[1] == 'beforeQuit' then
-      GamePlay.GamePlayManager.Events:removeListener('Start', self.startFun):removeListener('Fall', self.fallFun):removeListener('Quit', self.quitFun)
     end
     return false
   end)
