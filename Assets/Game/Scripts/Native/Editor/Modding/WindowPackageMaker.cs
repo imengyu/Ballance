@@ -24,7 +24,7 @@ namespace Ballance2.Editor.Modding
         private int modVersion = 1;
         private bool GenEntryCodeTemplate = true;
         private GamePackageType PackageType = GamePackageType.Module;
-        private GamePackageCodeType CodeType = GamePackageCodeType.Lua;
+        private bool ContainCSharp = false;
         private string EntryCode = "Entry.lua";
 
         private SerializedObject serializedObject;
@@ -94,7 +94,7 @@ namespace Ballance2.Editor.Modding
                     }
                 }
             }
-            CodeType = (GamePackageCodeType)EditorGUILayout.EnumPopup("代码类型", CodeType);
+            ContainCSharp = EditorGUILayout.Toggle("指示模组是否要加载CSharp代码", ContainCSharp);
 
             EditorGUILayout.Space(20);
 
@@ -155,7 +155,7 @@ namespace Ballance2.Editor.Modding
             XmlNode PackageType = xml.SelectSingleNode("Package/Type");
 
             EntryCode.InnerText = this.EntryCode;
-            CodeType.InnerText = this.PackageType == GamePackageType.Module ? this.CodeType.ToString() : "None";
+            CodeType.InnerText = this.PackageType == GamePackageType.Module ? this.ContainCSharp.ToString() : "None";
             PackageType.InnerText = this.PackageType.ToString();
 
             xml.Save(folderPath + "/PackageDef.xml");

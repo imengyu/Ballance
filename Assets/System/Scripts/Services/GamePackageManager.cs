@@ -113,16 +113,18 @@ namespace Ballance2.Services
         this.packageName = package.PackageName;
         this.enableLoad = true;
       }
-      public GamePackageRegisterInfo(string packageName, bool enableLoad)
+      public GamePackageRegisterInfo(string packageName, bool enableLoad, bool trustPackage)
       {
         this.packageName = packageName;
         this.enableLoad = enableLoad;
+        this.trustPackage = trustPackage;
       }
 
       public GamePackage package;
 
       public string packageName;
       public bool enableLoad;
+      public bool trustPackage;
     }
 
     internal Dictionary<string, int> packagesLoadStatus = new Dictionary<string, int>();
@@ -145,7 +147,7 @@ namespace Ballance2.Services
           var rel = files[i].FullName.Replace('\\', '/');
           var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
           if(StringUtils.IsPackageName(fileNameNoExt) && !list.ContainsKey(fileNameNoExt) && !IsPackageRegistered(fileNameNoExt)) {
-            list.Add(fileNameNoExt, new GamePackageRegisterInfo(fileNameNoExt, false));
+            list.Add(fileNameNoExt, new GamePackageRegisterInfo(fileNameNoExt, false, true));
           }
         } 
       }
@@ -183,7 +185,11 @@ namespace Ballance2.Services
       {
         foreach (XmlNode n in nodePackageList) {
           if(!lastRegisteredPackages.ContainsKey(n.InnerText))
-            lastRegisteredPackages.Add(n.InnerText, new GamePackageRegisterInfo(n.InnerText, n.Attributes["enabled"].Value == "True"));
+            lastRegisteredPackages.Add(n.InnerText, new GamePackageRegisterInfo(
+              n.InnerText, 
+              n.Attributes["enabled"].Value == "True",
+              n.Attributes["trusted"].Value == "True")
+            );
         }
       }
 
@@ -212,6 +218,8 @@ namespace Ballance2.Services
         XmlNode node = xml.CreateElement("Package");
         XmlAttribute attr = xml.CreateAttribute("enabled");
         attr.Value = s.enableLoad.ToString();
+        attr = xml.CreateAttribute("trusted");
+        attr.Value = s.trustPackage.ToString();
         node.InnerText = s.package.PackageName;
         nodePackageList.AppendChild(node);
       }
@@ -221,6 +229,15 @@ namespace Ballance2.Services
       sw.Close();
       sw.Dispose();
 
+    }
+    /// <summary>
+    /// 设置模块包已信任状态
+    /// </summary>
+    /// <param name="packageName">包名</param>
+    internal void SetPackageTrusted(string packageName)
+    {
+      if (registeredPackages.TryGetValue(packageName, out var outPackage))
+        outPackage.trustPackage = true;
     }
     /// <summary>
     /// 设置模块包启用状态
@@ -253,6 +270,26 @@ namespace Ballance2.Services
     }
     internal static void ReleaseInternalPackage() {
       GamePackage.SetCorePackage(null);
+    }
+
+    //模块包信任对话框
+
+    private bool _isTrustPackageDialogFinished = false;
+    private bool _trustPackageDialogResult = false;
+    
+    internal bool GetTrustPackageDialogResult() { return _isTrustPackageDialogFinished; }
+    internal bool IsTrustPackageDialogFinished() { return _trustPackageDialogResult; }
+    //检测模块是否信任加载
+    internal bool IsTrustPackage(string packageName) {
+      if (registeredPackages.TryGetValue(packageName, out var outPackage))
+        return outPackage.trustPackage;
+      return false;
+    }
+    internal void ShowTrustPackageDialog(GamePackage p) { 
+      _isTrustPackageDialogFinished = false;
+      _trustPackageDialogResult = false;
+
+
     }
 
     /// <summary>

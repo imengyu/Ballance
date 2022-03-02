@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BallancePhysics.Api;
 using System.Runtime.InteropServices;
+using System.Collections;
 
 namespace BallancePhysics.Wapper
 {
@@ -551,14 +552,7 @@ namespace BallancePhysics.Wapper
     public bool EnableConstantForce { get => m_EnableConstantForce; set => m_EnableConstantForce = value; }
 
     private int m_ConstantForce_ID = 0;
-    private class ConstantForceData {
-      public Vector3 Pos;
-      public float Force;
-      public Vector3 Direction;
-      public Transform DirectionRef;
-      public Transform PositionRef;
-    };
-    private Dictionary<int, ConstantForceData> m_ConstantForces = new Dictionary<int, ConstantForceData>();
+    private Dictionary<int, PhysicsConstantForceData> m_ConstantForces = new Dictionary<int, PhysicsConstantForceData>();
 
     /// <summary>
     /// 添加施加在这个物体上的恒力
@@ -566,7 +560,7 @@ namespace BallancePhysics.Wapper
     /// <param name="value">力大小</param>
     /// <param name="dircetion">力方向</param>
     /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
-    public int AddConstantForce(float value, Vector3 dircetion) {
+    public PhysicsConstantForceData AddConstantForce(float value, Vector3 dircetion) {
       return AddConstantForceWithPositionAndRef(value, dircetion, Vector3.zero, null, null);
     }
     /// <summary>
@@ -575,7 +569,7 @@ namespace BallancePhysics.Wapper
     /// <param name="value">力大小</param>
     /// <param name="dircetion">力方向</param>
     /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
-    public int AddConstantForceLocalCenter(float value, Vector3 dircetion) {
+    public PhysicsConstantForceData AddConstantForceLocalCenter(float value, Vector3 dircetion) {
       return AddConstantForceWithPositionAndRef(value, dircetion, Vector3.zero, null, transform);
     }
     /// <summary>
@@ -585,7 +579,7 @@ namespace BallancePhysics.Wapper
     /// <param name="dircetion">力方向</param>
     /// <param name="postion">施加力的位置</param>
     /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
-    public int AddConstantForceWithPosition(float value, Vector3 dircetion, Vector3 postion) {
+    public PhysicsConstantForceData AddConstantForceWithPosition(float value, Vector3 dircetion, Vector3 postion) {
       return AddConstantForceWithPositionAndRef(value, dircetion, postion, null, null);
     }
     /// <summary>
@@ -597,11 +591,11 @@ namespace BallancePhysics.Wapper
     /// <param name="directionRef">力方向参考物体</param>
     /// <param name="positionRef">力的位置考物体</param>
     /// <returns>返回恒力ID，可使用DeleteConstantForce删除恒力</returns>
-    public int AddConstantForceWithPositionAndRef(float value, Vector3 dircetion, Vector3 postion, Transform directionRef, Transform positionRef) {
+    public PhysicsConstantForceData AddConstantForceWithPositionAndRef(float value, Vector3 dircetion, Vector3 postion, Transform directionRef, Transform positionRef) {
       if(m_ConstantForce_ID < int.MaxValue - 1) m_ConstantForce_ID++;
       else m_ConstantForce_ID = 0;
 
-      ConstantForceData data = new ConstantForceData();
+      PhysicsConstantForceData data = new PhysicsConstantForceData(this, m_ConstantForce_ID);
       data.Force = value;
       data.Direction = dircetion;
       data.Pos = postion;
@@ -609,16 +603,18 @@ namespace BallancePhysics.Wapper
       data.DirectionRef = directionRef;
 
       m_ConstantForces.Add(m_ConstantForce_ID, data);
-      return m_ConstantForce_ID;
+      return data;
     }
     /// <summary>
-    /// 更新施加在这个物体上的恒力数值
+    /// 通过恒力ID获取恒力对象
     /// </summary>
-    /// <param name="forceId">AddConstantForce 返回的ID</param>
-    /// <param name="value">力大小</param>
-    public void UpdateConstantForceValue(int forceId, float value) {
-      m_ConstantForces[forceId].Force = value;
-    }   
+    /// <param name="forceId">恒力ID</param>
+    /// <returns>如果找到则返回恒力对象，否则返回null</returns>
+    public PhysicsConstantForceData GetConstantForceByID(int forceId) {
+      if(m_ConstantForces.TryGetValue(forceId, out var c)) 
+        return c;
+      return null;
+    }
     /// <summary>
     /// 删除施加在这个物体上的恒力
     /// </summary>
@@ -641,7 +637,7 @@ namespace BallancePhysics.Wapper
       Vector3 finalPos, finalForce;
       foreach(var f in m_ConstantForces) 
       {
-        ConstantForceData data = f.Value;
+        PhysicsConstantForceData data = f.Value;
         if(data.Force == 0)
           continue;
 
@@ -995,16 +991,57 @@ namespace BallancePhysics.Wapper
         UnPhysicalize(true);
     }
     private void Awake() {
-      createTick = 2;
+      if(!m_DoNotAutoCreateAtAwake) 
+        StartCoroutine(DelayCreate());
     }
-    private void FixedUpdate() {
-      if(createTick > 0) {
-        createTick--;
-        if(createTick == 0) {
-          if(!m_DoNotAutoCreateAtAwake) 
-            Physicalize();
-        }
-      }
+    private IEnumerator DelayCreate() {
+      yield return new WaitForSeconds(0.1f);
+      Physicalize();
     }
   }
+
+  /// <summary>
+  /// 恒力数据
+  /// </summary>
+  [SLua.CustomLuaClass]
+  public class PhysicsConstantForceData {
+    /// <summary>
+    /// 恒力的位置
+    /// </summary>
+    public Vector3 Pos;
+    /// <summary>
+    /// 恒力的ID
+    /// </summary>
+    public int ID;
+    /// <summary>
+    /// 恒力的力大小
+    /// </summary>
+    public float Force;
+    /// <summary>
+    /// 恒力的方向
+    /// </summary>
+    public Vector3 Direction;
+    /// <summary>
+    /// 恒力的方向参考对象
+    /// </summary>
+    public Transform DirectionRef;
+    /// <summary>
+    /// 恒力的位置参考对象
+    /// </summary>
+    public Transform PositionRef;
+
+    private PhysicsObject obj;
+
+    internal PhysicsConstantForceData(PhysicsObject obj, int id) {
+      this.obj = obj;
+      this.ID = id;
+    }
+
+    /// <summary>
+    /// 删除当前恒力
+    /// </summary>
+    public void Delete() {
+      obj.DeleteConstantForce(ID);
+    }
+  };
 }

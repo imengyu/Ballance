@@ -63,11 +63,11 @@
   -->
   <Type>Module</Type>
   <!--
-    模块代码类型 Lua 或 CSharp 或 None
+    指示本模组是否要加载 CSharp 代码，只有开启了此选项才能加载 CSharp 代码。
     提示：CSharp 代码必须在非AOT平台才能加载。
     因此推荐使用 Lua（游戏API基本支持）
   -->
-  <CodeType>None</CodeType>
+  <ContainCSharp>False</ContainCSharp>
   <!--
     是否使用luac编译lua代码为字节码，可保护代码
   -->

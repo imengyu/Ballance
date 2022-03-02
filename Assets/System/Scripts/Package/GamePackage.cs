@@ -67,10 +67,9 @@ namespace Ballance2.Package
 
       //模块代码环境初始化
       if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
-        return LoadPackageCodeBase();
-      var t = new Task<bool>(() => { return true; });
-      t.Start();
-      return await t;
+        return await LoadPackageCodeBase();
+
+      return true;
     }
     [DoNotToLua]
     public virtual void Destroy()
@@ -214,7 +213,8 @@ namespace Ballance2.Package
 
       //internal
       if(flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME) {
-        LoadPackageCodeBase();
+        Task<bool> task = LoadPackageCodeBase();
+        task.Start();
         return;
       }
 
@@ -236,34 +236,32 @@ namespace Ballance2.Package
     /// 加载运行环境代码
     /// </summary>
     /// <returns></returns>
-    protected bool LoadPackageCodeBase() {
+    protected async Task<bool> LoadPackageCodeBase() {
       //判断是否初始化
       if((FLAG_CODE_BASE_LOADED & flag) == FLAG_CODE_BASE_LOADED) {
         Log.E(TAG, "不能重复初始化");
         return false;
       }
 
-      if (CodeType == GamePackageCodeType.Lua)
+      if (ContainCSharp)
       {
-        requiredLuaFiles = new Dictionary<string, object>();
-        requiredLuaClasses = new Dictionary<string, LuaFunction>();
+        var pm = GameSystem.GetSystemService("GamePackageManager") as GamePackageManager;
 
-        if(PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME) {
-          object b = PackageLuaState.doString(@"IntneralLoadLuaPackage('" + PackageName + "','" + EntryCode + "')", "LoadPackageCodeBase(" + TAG + ")");
-          if (b is bool && !((bool)b))
-          {
-            Log.E(TAG, "模块初始化返回了错误");
-            GameErrorChecker.LastError = GameError.ExecutionFailed;
-            return (bool)b;
+        //加载C#程序集是危险的操作，需要询问
+        if(!pm.IsTrustPackage(PackageName)) {
+          //显示对话框
+          pm.ShowTrustPackageDialog(this);
+          //等待
+          await new WaitUntil(pm.IsTrustPackageDialogFinished);
+          //获取结果
+          if(!pm.GetTrustPackageDialogResult()) {
+            //用户拒绝了加载
+            GameErrorChecker.LastError = GameError.AccessDenined;
+            Log.E(TAG, "用户拒绝了加载模块 " + PackageName);
+            return false;
           }
         }
 
-        flag |= FLAG_CODE_LUA_PACK;
-        flag |= FLAG_CODE_BASE_LOADED;
-        return true;
-      }
-      else if (CodeType == GamePackageCodeType.CSharp)
-      {
         //加载C#程序集
         CSharpAssembly = LoadCodeCSharp(EntryCode);
         if (CSharpAssembly == null) {
@@ -271,40 +269,53 @@ namespace Ballance2.Package
           return false;
         }
         
-        Type type = CSharpAssembly.GetType("Package");
+        Type type = CSharpAssembly.GetType("PackageEntry");
         if (type == null)
         {
-          Log.E(TAG, "未找到 Package ");
+          Log.W(TAG, "未找到 PackageEntry ");
           GameErrorChecker.LastError = GameError.ClassNotFound;
           return false;
         }
-
-        object CSharpPackageEntry = Activator.CreateInstance(type);
-        MethodInfo methodInfo = type.GetMethod("PackageEntry");  //根据方法名获取MethodInfo对象
-        if (type == null)
+        else
         {
-          Log.E(TAG, "未找到 PackageEntry()");
-          GameErrorChecker.LastError = GameError.FunctionNotFound;
-          return false;
-        }
-
-        object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this });
-        if (b is bool && !((bool)b))
-        {
-          Log.E(TAG, "模块 PackageEntry 返回了错误");
-          GameErrorChecker.LastError = GameError.ExecutionFailed;
-          return (bool)b;
+          object CSharpPackageEntry = Activator.CreateInstance(type);
+          MethodInfo methodInfo = type.GetMethod("Main");  //根据方法名获取MethodInfo对象
+          if (type == null)
+          {
+            Log.W(TAG, "未找到 PackageEntry.Main()");
+            GameErrorChecker.LastError = GameError.FunctionNotFound;
+          } 
+          else  
+          {
+            object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this });
+            if (b is bool && !((bool)b))
+            {
+              Log.W(TAG, "模块 PackageEntry.Main 返回了错误");
+              GameErrorChecker.LastError = GameError.ExecutionFailed;
+            }
+          }
         }
         
         flag |= FLAG_CODE_CS_PACK;
-        flag |= FLAG_CODE_BASE_LOADED;
-        return true;
       }
-      else
-      {
-        Log.E(TAG, "当前模块是普通模块，但是 CodeType 却未配置成为任何一种可运行代码环境，这种情况下此模块将无法运行任何代码，请检查配置是否正确");
+      
+      requiredLuaFiles = new Dictionary<string, object>();
+      requiredLuaClasses = new Dictionary<string, LuaFunction>();
+
+      if(PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME) {
+        object b = PackageLuaState.doString(@"IntneralLoadLuaPackage('" + PackageName + "','" + EntryCode + "')", "LoadPackageCodeBase(" + TAG + ")");
+        if (b is bool && !((bool)b))
+        {
+          Log.E(TAG, "模块初始化返回了错误");
+          GameErrorChecker.LastError = GameError.ExecutionFailed;
+          return (bool)b;
+        }
       }
-      return false;
+
+      flag |= FLAG_CODE_LUA_PACK;
+      flag |= FLAG_CODE_BASE_LOADED;
+      
+      return true;
     }    
 
     /// <summary>
@@ -774,7 +785,7 @@ namespace Ballance2.Package
         EntryCode = nodeEntryCode.InnerText;
       XmlNode nodeCodeType = nodePackage.SelectSingleNode("CodeType");
       if (nodeCodeType != null)
-        CodeType = ConverUtils.StringToEnum(nodeCodeType.InnerText, GamePackageCodeType.None, "CodeType");
+        ContainCSharp = ConverUtils.StringToBoolean(nodeCodeType.InnerText, false, "CodeType");
       XmlNode nodeType = nodePackage.SelectSingleNode("Type");
       if (nodeType != null)
         Type = ConverUtils.StringToEnum(nodeType.InnerText, GamePackageType.Asset, "Type");
@@ -843,9 +854,9 @@ namespace Ballance2.Package
     /// </summary>
     public GamePackageType Type { get; protected set; } = GamePackageType.Asset;
     /// <summary>
-    /// 获取模块代码类型
+    /// 指示本模组是否要加载 CSharp 代码
     /// </summary>
-    public GamePackageCodeType CodeType { get; protected set; } = GamePackageCodeType.None;
+    public bool ContainCSharp { get; protected set; } = false;
 
     internal GamePackageStatus _Status = GamePackageStatus.NotLoad;
 

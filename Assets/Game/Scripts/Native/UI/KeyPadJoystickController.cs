@@ -31,8 +31,6 @@ namespace Ballance2.Game
   public class KeyPadJoystickController : MonoBehaviour
   {
     public KeyPadJoystickValueChanged ValueChanged;
-    public VoidDelegate AddForce;
-    public VoidDelegate DeleteForce;
 
     public float SpaceSize = 0.2f;
 
@@ -49,8 +47,7 @@ namespace Ballance2.Game
       };      
       controller.TouchStateEvent += (state) => {
         this.state = state;
-        if(state) AddForce?.Invoke();
-        else DeleteForce?.Invoke();
+        ValueChanged?.Invoke(0, 0);
       };
     }
   }

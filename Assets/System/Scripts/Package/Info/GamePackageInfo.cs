@@ -21,29 +21,6 @@ using UnityEngine;
 namespace Ballance2.Package
 {
   /// <summary>
-  /// 模块代码类型
-  /// </summary>
-  [CustomLuaClass]
-  [LuaApiDescription("模块代码类型")]
-  public enum GamePackageCodeType
-  {
-    /// <summary>
-    /// 无代码
-    /// </summary>
-    [LuaApiDescription("无代码")]
-    None,
-    /// <summary>
-    /// 代码类型是 Lua
-    /// </summary>
-    [LuaApiDescription("代码类型是 Lua")]
-    Lua,
-    /// <summary>
-    /// 代码类型是 C# DLL
-    /// </summary>
-    [LuaApiDescription("代码类型是 C# DLL")]
-    CSharp
-  }
-  /// <summary>
   /// 模块类型
   /// </summary>
   [CustomLuaClass]

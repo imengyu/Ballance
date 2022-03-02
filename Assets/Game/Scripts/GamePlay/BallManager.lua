@@ -52,6 +52,9 @@ local BallRegStorage = {
   name = '',
   ball = nil, ---@type Ball
   rigidbody = nil, ---@type PhysicsObject
+  pushForceX = nil, ---@type PhysicsConstantForceData
+  pushForceY = nil, ---@type PhysicsConstantForceData
+  pushForceZ = nil, ---@type PhysicsConstantForceData
   speedMeter = nil, ---@type SpeedMeter
 }
 
@@ -95,14 +98,6 @@ function BallManager:new()
     ---当前激活的球
     currentBall = nil, ---@type BallRegStorage 
     currentActiveBall = nil, ---@type BallRegStorage 
-    currentBallPushIds = {
-      left = 0,
-      right = 0,
-      forward = 0,
-      back = 0,
-      up = 0,
-      down = 0,
-    },
     keyListener = nil, ---@type KeyListener
     ---控制按键设置
     keySets = {
@@ -475,13 +470,7 @@ function BallManager:_DeactiveCurrentBall()
   if current ~= nil then
     --取消激活
     if current.rigidbody.IsPhysicalized then
-      --取消推动
-      self:RemoveAllBallPush()
-      --停止球的声音
-      GamePlay.BallSoundManager:RemoveSoundableBall(current)
-      --取消激活
-      current.ball:Deactive()
-      current.rigidbody:UnPhysicalize(true)
+      self:_PhysicsOrDePhysicsCurrentBall(false)
     end
     current.ball.gameObject:SetActive(false)
     --清空摄像机跟随对象
@@ -500,6 +489,7 @@ function BallManager:_ActiveCurrentBall()
     GamePlay.CamManager:SetTarget(current.ball.transform)
   end
 end
+---@param physics boolean
 function BallManager:_PhysicsOrDePhysicsCurrentBall(physics) 
   local current = self._private.currentActiveBall
   if current ~= nil then
@@ -509,7 +499,11 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
     if physics and not physicsed then
       current.rigidbody:Physicalize() 
       current.rigidbody:ClearConstantForce()
-      current.rigidbody:WakeUp() 
+      current.rigidbody:WakeUp()
+      --添加球的xyz推动恒力
+      current.pushForceX = current.rigidbody:AddConstantForceWithPositionAndRef(0, Vector3.right, Vector3.zero, GamePlay.CamManager.CamDirectionRef, current.ball.transform)
+      current.pushForceZ = current.rigidbody:AddConstantForceWithPositionAndRef(0, Vector3.forward, Vector3.zero, GamePlay.CamManager.CamDirectionRef, current.ball.transform)
+      current.pushForceY = current.rigidbody:AddConstantForceWithPositionAndRef(0, Vector3.up, Vector3.zero, GamePlay.CamManager.CamDirectionRef, current.ball.transform)
       --激活
       current.ball:Active()
       --启动球的声音
@@ -522,8 +516,22 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
       self:RemoveAllBallPush()
       --停止球的声音
       GamePlay.BallSoundManager:RemoveSoundableBall(current)
-      --反物理化
-      current.rigidbody:UnPhysicalize(true) 
+      --移除球的推动恒力
+      if current.pushForceX then
+        current.pushForceX:Delete()
+        current.pushForceX = nil
+      end
+      if current.pushForceZ then
+        current.pushForceZ:Delete()
+        current.pushFpushForceZorceY = nil
+      end
+      if current.pushForceY then
+        current.pushForceY:Delete()
+        current.pushForceY = nil
+      end
+      --取消激活
+      current.ball:Deactive()
+      current.rigidbody:UnPhysicalize(true)
     end
   end
 end
@@ -751,33 +759,29 @@ function BallManager:AddBallPush(t)
   if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
     return
   end
+  local currentBall = self._private.currentActiveBall
   local force = self.CurrentBall._Force
-  if(t == BallPushType.Back) then
-    if self._private.currentBallPushIds.back == 0 then
-      self._private.currentBallPushIds.back = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.back, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
-    end
-  elseif(t == BallPushType.Forward) then
-    if self._private.currentBallPushIds.forward == 0 then
-      self._private.currentBallPushIds.forward = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.forward, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
-    end
-  elseif(t == BallPushType.Left) then
-    if self._private.currentBallPushIds.left == 0 then
-      self._private.currentBallPushIds.left = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.left, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
-    end
-  elseif(t == BallPushType.Right) then
-    if self._private.currentBallPushIds.right == 0 then
-      self._private.currentBallPushIds.right = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(force, Vector3.right, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
-    end
-  elseif(t == BallPushType.Up) then
-    if self._private.currentBallPushIds.up == 0 then
-      self._private.currentBallPushIds.up = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(self.CurrentBall._UpForce, Vector3.up, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
-    end
-  elseif(t == BallPushType.Down) then
-    if self._private.currentBallPushIds.down == 0 then
-      self._private.currentBallPushIds.down = self._private.currentActiveBall.rigidbody:AddConstantForceWithPositionAndRef(self.CurrentBall._DownForce, Vector3.down, Vector3.zero, GamePlay.CamManager.CamDirectionRef, self._private.currentActiveBall.ball.transform)
-    end
+  if(t == BallPushType.Back) then currentBall.pushForceZ.Force = -force
+  elseif(t == BallPushType.Forward) then currentBall.pushForceZ.Force = force
+  elseif(t == BallPushType.Left) then currentBall.pushForceX.Force = -force
+  elseif(t == BallPushType.Right) then currentBall.pushForceX.Force = force
+  elseif(t == BallPushType.Up) then currentBall.pushForceY.Force = currentBall.ball._UpForce
+  elseif(t == BallPushType.Down) then currentBall.pushForceY.Force = -currentBall.ball._DownForce
   end
   self.Events:emit('AddBallPush', t)
+end
+---设置球推动方向数值
+---@param x number
+---@param y number
+function BallManager:SetBallPushValue(x, y)
+  if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
+    return
+  end
+  local currentBall = self._private.currentActiveBall
+  local force = self.CurrentBall._Force
+  self.Events:emit('SetBallPushValue', x, y)
+  currentBall.pushForceX.Force = x * force
+  currentBall.pushForceZ.Force = y * force
 end
 ---去除球推动方向
 ---@param t BallPushType 推动方向
@@ -785,37 +789,11 @@ function BallManager:RemoveBallPush(t)
   if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
     return
   end
+  local currentBall = self._private.currentActiveBall
   self.Events:emit('RemoveBallPush', t)
-  if(t == BallPushType.Back) then
-    if self._private.currentBallPushIds.back ~= 0 then
-      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
-      self._private.currentBallPushIds.back = 0
-    end
-  elseif(t == BallPushType.Forward) then
-    if self._private.currentBallPushIds.forward ~= 0 then
-      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.forward)
-      self._private.currentBallPushIds.forward = 0
-    end
-  elseif(t == BallPushType.Left) then
-    if self._private.currentBallPushIds.left ~= 0 then
-      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.left)
-      self._private.currentBallPushIds.left = 0
-    end
-  elseif(t == BallPushType.Right) then
-    if self._private.currentBallPushIds.right ~= 0 then
-      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.right)
-      self._private.currentBallPushIds.right = 0
-    end
-  elseif(t == BallPushType.Up) then
-    if self._private.currentBallPushIds.up ~= 0 then
-      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.up)
-      self._private.currentBallPushIds.up = 0
-    end
-  elseif(t == BallPushType.Down) then
-    if self._private.currentBallPushIds.down ~= 0 then
-      self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.down)
-      self._private.currentBallPushIds.down = 0
-    end
+  if(t == BallPushType.Back or t == BallPushType.Forward) then currentBall.pushForceZ.Force = 0
+  elseif(t == BallPushType.Left or t == BallPushType.Right) then currentBall.pushForceX.Force = 0
+  elseif(t == BallPushType.Up or t == BallPushType.Down) then currentBall.pushForceY.Force = 0
   end
 end
 ---去除当前球所有推动方向
@@ -823,23 +801,11 @@ function BallManager:RemoveAllBallPush()
   if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
     return
   end
+  local currentBall = self._private.currentActiveBall
   self.Events:emit('RemoveAllBallPush') 
-  if self._private.currentBallPushIds.back ~= 0 then
-    self._private.currentBallPushIds.back = 0
-    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.back)
-  end
-  if self._private.currentBallPushIds.forward ~= 0 then
-    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.forward)
-    self._private.currentBallPushIds.forward = 0
-  end
-  if self._private.currentBallPushIds.left ~= 0 then
-    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.left)
-    self._private.currentBallPushIds.left = 0
-  end
-  if self._private.currentBallPushIds.right ~= 0 then
-    self._private.currentActiveBall.rigidbody:DeleteConstantForce(self._private.currentBallPushIds.right)
-    self._private.currentBallPushIds.right = 0
-  end
+  currentBall.pushForceX.Force = 0
+  currentBall.pushForceY.Force = 0
+  currentBall.pushForceZ.Force = 0
 end
 
 --#endregion

@@ -42,35 +42,11 @@ function KeypadUIControl:AddButton(go)
   local enumRight = KeyPadJoystickDirection.Right;
 
   if name == "Joystick" then
+
     local Joystick = go:GetComponent(KeyPadJoystickController) ---@type KeyPadJoystickController
-    Joystick.DirectionChanged = function (state, dir)
-      if dir == enumBack then
-        if state then
-          BallManager:AddBallPush(BallPushType.Back)
-        else
-          BallManager:RemoveBallPush(BallPushType.Back)
-        end
-      elseif dir == enumForward then
-        if state then
-          BallManager:AddBallPush(BallPushType.Forward)
-        else
-          BallManager:RemoveBallPush(BallPushType.Forward)
-        end
-      elseif dir == enumLeft then
-        if state then
-          BallManager:AddBallPush(BallPushType.Left)
-        else
-          BallManager:RemoveBallPush(BallPushType.Left)
-        end
-      elseif dir == enumRight then
-        if state then
-          BallManager:AddBallPush(BallPushType.Right)
-        else
-          BallManager:RemoveBallPush(BallPushType.Right)
-        end
-      end
+    Joystick.ValueChanged = function (x, y)
+      BallManager:SetBallPushValue(x, y)
     end
-    
 
   elseif name == "DirectionKey" then
 
@@ -103,7 +79,6 @@ function KeypadUIControl:AddButton(go)
       end
     end
     
-
   else
     local listener = EventTriggerListener.Get(go);
     if name == "ButtonLeft" then
