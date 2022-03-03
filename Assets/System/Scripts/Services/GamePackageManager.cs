@@ -276,9 +276,20 @@ namespace Ballance2.Services
 
     private bool _isTrustPackageDialogFinished = false;
     private bool _trustPackageDialogResult = false;
+    private GamePackage _trustPackageCurrent = null;
     
     internal bool GetTrustPackageDialogResult() { return _isTrustPackageDialogFinished; }
     internal bool IsTrustPackageDialogFinished() { return _trustPackageDialogResult; }
+    internal void TrustPackageDialogFinish(bool result, bool delete) { 
+      _trustPackageDialogResult = result;
+      _isTrustPackageDialogFinished = true;
+      if(!result && delete) {
+        UnLoadPackage(_trustPackageCurrent.PackageName, true);
+        //删除
+        if(File.Exists(_trustPackageCurrent.PackageFilePath))
+          File.Delete(_trustPackageCurrent.PackageFilePath);
+      }
+    }
     //检测模块是否信任加载
     internal bool IsTrustPackage(string packageName) {
       if (registeredPackages.TryGetValue(packageName, out var outPackage))
@@ -288,8 +299,13 @@ namespace Ballance2.Services
     internal void ShowTrustPackageDialog(GamePackage p) { 
       _isTrustPackageDialogFinished = false;
       _trustPackageDialogResult = false;
+      _trustPackageCurrent = p;
 
-
+      GameUIManager uIManager = GameSystem.GetSystemService("GameUIManager") as GameUIManager;
+      Dictionary<string, string> options = new Dictionary<string, string>();
+      options.Add("PackageName", p.PackageName);
+      options.Add("PackageTitle", p.BaseInfo.Name);
+      uIManager.GoPageWithOptions("PagePackageManagerTrust", options);
     }
 
     /// <summary>
