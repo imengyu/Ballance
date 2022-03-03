@@ -66,7 +66,7 @@ namespace Ballance2.Package
       LoadI18NResource();
 
       //模块代码环境初始化
-      if (PackageName != GamePackageManager.SYSTEM_PACKAGE_NAME && Type == GamePackageType.Module)
+      if (Type == GamePackageType.Module)
         return await LoadPackageCodeBase();
 
       return true;
@@ -210,14 +210,6 @@ namespace Ballance2.Package
         Log.E(TAG, "Not allow set FLAG_PACK_NOT_UNLOADABLE flag for not system packages.");
         flag |= FLAG_PACK_NOT_UNLOADABLE;
       }
-
-      //internal
-      if(flag == 0xF0 && PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME) {
-        Task<bool> task = LoadPackageCodeBase();
-        task.Start();
-        return;
-      }
-
       this.flag = flag;
     }
     /// <summary>
@@ -783,9 +775,9 @@ namespace Ballance2.Package
       XmlNode nodeEntryCode = nodePackage.SelectSingleNode("EntryCode");
       if (nodeEntryCode != null)
         EntryCode = nodeEntryCode.InnerText;
-      XmlNode nodeCodeType = nodePackage.SelectSingleNode("CodeType");
-      if (nodeCodeType != null)
-        ContainCSharp = ConverUtils.StringToBoolean(nodeCodeType.InnerText, false, "CodeType");
+      XmlNode nodeContainCSharp = nodePackage.SelectSingleNode("ContainCSharp");
+      if (nodeContainCSharp != null)
+        ContainCSharp = ConverUtils.StringToBoolean(nodeContainCSharp.InnerText, false, "ContainCSharp");
       XmlNode nodeType = nodePackage.SelectSingleNode("Type");
       if (nodeType != null)
         Type = ConverUtils.StringToEnum(nodeType.InnerText, GamePackageType.Asset, "Type");

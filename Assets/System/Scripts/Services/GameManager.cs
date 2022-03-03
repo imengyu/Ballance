@@ -365,10 +365,13 @@ namespace Ballance2.Services
       #region 加载系统内核包
 
       {
+        Profiler.BeginSample("ExecuteSystemCore");
+
+        Task<bool> task = systemPackage.LoadPackage();
+
+        yield return new WaitUntil(() => task.IsCompleted);
 
         try {
-          Profiler.BeginSample("ExecuteSystemCore");
-          systemPackage.SetFlag(0xF0);
           systemPackage.RunPackageExecutionCode();
           systemPackage.RequireLuaFile("SystemInternal.lua");
           systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
@@ -376,9 +379,9 @@ namespace Ballance2.Services
           GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "未能成功初始化内部脚本，可能是当前版本配置不正确，请尝试重新下载。\n" + e.ToString());
           StopAllCoroutines();
           yield break;
-        } finally {
-          Profiler.EndSample();
         }
+        
+        Profiler.EndSample();
 
         yield return new WaitForSeconds(1f);
 

@@ -14,7 +14,7 @@ function P_Modul_18:new()
   P_Modul_18.super.new(self)
   self._CurrentInRangeBall = nil ---@type PhysicsObject
   self.AutoActiveBaseGameObject = false
-  self.CurrentBallForceID = nil
+  self.CurrentBallForce = nil
 end
 
 function P_Modul_18:Start()
@@ -23,14 +23,14 @@ function P_Modul_18:Start()
   self.P_Modul_18_Kollisionsquader.onTriggerEnter = function (_, other)
     if self._CurrentInRangeBall == nil and other.tag == 'Ball' and other.name == 'BallPaper' then
       self._CurrentInRangeBall = GamePlay.BallManager.CurrentBall._Rigidbody
-      self.CurrentBallForceID = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, self.transform:TransformVector(Vector3.up))
+      self.CurrentBallForce = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, self.transform:TransformVector(Vector3.up))
     end
   end
   ---@param other GameObject
   self.P_Modul_18_Kollisionsquader.onTriggerExit = function (_, other)
     if self._CurrentInRangeBall ~= nil and other.tag == 'Ball' and other.name == 'BallPaper' then
-      if self.CurrentBallForceID then
-        self._CurrentInRangeBall:DeleteConstantForce(self.CurrentBallForceID)
+      if self.CurrentBallForce then
+        self.CurrentBallForce:Delete()
         self.CurrentBallForceID = nil
       end
       self._CurrentInRangeBall = nil

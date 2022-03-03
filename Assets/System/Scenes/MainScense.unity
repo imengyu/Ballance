@@ -578,7 +578,7 @@ MonoBehaviour:
     PackageName: core.sounds.music
   - Enable: 1
     PackageName: core.assets.skys
-  DebugCustomEntryEvent: CoreDebugLevelEnvironmentEntry
+  DebugCustomEntryEvent: LevelCustomDebug
   DebugCustomEntryEventParamas: []
   DebugCustomEntries:
   - CoreDebugEmptyEntry
@@ -642,7 +642,7 @@ MonoBehaviour:
   ModulInstance: {fileID: 4918501139308884153, guid: 2bb89f9b46df476439c984861e655001, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
-  LevelName: level10
+  LevelName: level13
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

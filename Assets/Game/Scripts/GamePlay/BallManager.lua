@@ -72,6 +72,12 @@ local BallRegStorage = {
 ---@field CanControllCamera boolean 获取当前用户是否可以控制摄像机 [R]
 ---@field ShiftPressed boolean 获取当前用户是否按下Shift键 [R]
 ---@field PosFrame Transform 获取当前球的位置 [R]
+---@field KeyStateUp boolean 获取上按键状态 [RW]
+---@field KeyStateDown boolean 获取下按键状态 [RW]
+---@field KeyStateForward boolean 获取前进按键状态 [RW]
+---@field KeyStateBack boolean 获取后退按键状态 [RW]
+---@field KeyStateLeft boolean 获取左按键状态 [RW]
+---@field KeyStateRight boolean 获取右按键状态 [RW]
 BallManager = ClassicObject:extend()
 
 local TAG = 'BallManager'
@@ -681,29 +687,25 @@ end
 --#region 键盘事件处理
 
 function BallManager:_UpArrow_Key(key, down)
-  if (down) then
-    self:AddBallPush(BallPushType.Forward)
-  else
-    self:RemoveBallPush(BallPushType.Forward)
-  end
+  self.KeyStateForward = down
+  self:FlushBallPush()
 end
 function BallManager:_DownArrow_Key(key, down)
-  if (down) then
-    self:AddBallPush(BallPushType.Back)
-  else
-    self:RemoveBallPush(BallPushType.Back)
-  end
+  self.KeyStateBack = down
+  self:FlushBallPush()
 end
 function BallManager:_RightArrow_Key(key, down)
   self._RightPressed = down
   if (down) then
-      if (self.ShiftPressed) then
-        self:RemoveBallPush(BallPushType.Right)
-      else
-        self:AddBallPush(BallPushType.Right)
-      end
+    if (self.ShiftPressed) then
+      self.KeyStateRight = false
+    else
+      self.KeyStateRight = true
+    end
+    self:FlushBallPush()
   else
-    self:RemoveBallPush(BallPushType.Right)
+    self.KeyStateRight = false
+    self:FlushBallPush()
     --旋转摄像机
     if (self.CanControllCamera and self.ShiftPressed) then
       GamePlay.CamManager:RotateRight()
@@ -714,12 +716,14 @@ function BallManager:_LeftArrow_Key(key, down)
   self._LeftPressed = down
   if (down) then
     if (self.ShiftPressed) then
-      self:RemoveBallPush(BallPushType.Left)
+      self.KeyStateLeft = false
     else
-      self:AddBallPush(BallPushType.Left)
+      self.KeyStateLeft = true
     end
+    self:FlushBallPush()
   else
-    self:RemoveBallPush(BallPushType.Left)
+    self.KeyStateLeft = false
+    self:FlushBallPush()
     --旋转摄像机
     if (self.CanControllCamera and self.ShiftPressed) then
       GamePlay.CamManager:RotateLeft()
@@ -727,17 +731,15 @@ function BallManager:_LeftArrow_Key(key, down)
   end
 end
 function BallManager:_Down_Key(key, down)
-  if (self._DebugMode and down) then
-    self:AddBallPush(BallPushType.Down)
-  else
-    self:RemoveBallPush(BallPushType.Down)
+  if (self._DebugMode) then
+    self.KeyStateDown = down
+    self:FlushBallPush()
   end
 end
 function BallManager:_Up_Key(key, down)
-  if (self._DebugMode and down) then
-    self:AddBallPush(BallPushType.Up)
-  else
-    self:RemoveBallPush(BallPushType.Up)
+  if (self._DebugMode) then
+    self.KeyStateUp = down
+    self:FlushBallPush()
   end
 end
 function BallManager:_Space_Key(key, down) 
@@ -753,22 +755,46 @@ end
 
 --#region 推动方法
 
----添加球推动方向
----@param t BallPushType 推动方向
-function BallManager:AddBallPush(t)
+---刷新球推动方向按键
+function BallManager:FlushBallPush()
   if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
     return
   end
   local currentBall = self._private.currentActiveBall
   local force = self.CurrentBall._Force
-  if(t == BallPushType.Back) then currentBall.pushForceZ.Force = -force
-  elseif(t == BallPushType.Forward) then currentBall.pushForceZ.Force = force
-  elseif(t == BallPushType.Left) then currentBall.pushForceX.Force = -force
-  elseif(t == BallPushType.Right) then currentBall.pushForceX.Force = force
-  elseif(t == BallPushType.Up) then currentBall.pushForceY.Force = currentBall.ball._UpForce
-  elseif(t == BallPushType.Down) then currentBall.pushForceY.Force = -currentBall.ball._DownForce
+
+  --前进后退
+  if self.KeyStateForward and self.KeyStateBack then
+    currentBall.pushForceZ.Force = 0
+  elseif self.KeyStateForward then
+    currentBall.pushForceZ.Force = force
+  elseif self.KeyStateBack then
+    currentBall.pushForceZ.Force = -force
+  else
+    currentBall.pushForceZ.Force = 0
   end
-  self.Events:emit('AddBallPush', t)
+  --左右
+  if self.KeyStateLeft and self.KeyStateRight then
+    currentBall.pushForceX.Force = 0
+  elseif self.KeyStateLeft then
+    currentBall.pushForceX.Force = -force
+  elseif self.KeyStateRight then
+    currentBall.pushForceX.Force = force
+  else
+    currentBall.pushForceX.Force = 0
+  end
+  --上下
+  if self.KeyStateUp and self.KeyStateDown then
+    currentBall.pushForceY.Force = 0
+  elseif self.KeyStateUp then
+    currentBall.pushForceY.Force = currentBall.ball._UpForce
+  elseif self.KeyStateDown then
+    currentBall.pushForceY.Force = -currentBall.ball._DownForce
+  else
+    currentBall.pushForceY.Force = 0
+  end
+
+  self.Events:emit('FlushBallPush')
 end
 ---设置球推动方向数值
 ---@param x number
@@ -782,19 +808,6 @@ function BallManager:SetBallPushValue(x, y)
   self.Events:emit('SetBallPushValue', x, y)
   currentBall.pushForceX.Force = x * force
   currentBall.pushForceZ.Force = y * force
-end
----去除球推动方向
----@param t BallPushType 推动方向
-function BallManager:RemoveBallPush(t)
-  if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
-    return
-  end
-  local currentBall = self._private.currentActiveBall
-  self.Events:emit('RemoveBallPush', t)
-  if(t == BallPushType.Back or t == BallPushType.Forward) then currentBall.pushForceZ.Force = 0
-  elseif(t == BallPushType.Left or t == BallPushType.Right) then currentBall.pushForceX.Force = 0
-  elseif(t == BallPushType.Up or t == BallPushType.Down) then currentBall.pushForceY.Force = 0
-  end
 end
 ---去除当前球所有推动方向
 function BallManager:RemoveAllBallPush()

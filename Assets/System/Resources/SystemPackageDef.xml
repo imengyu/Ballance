@@ -16,6 +16,6 @@
   </BaseInfo>
   <EntryCode>PackageEntry</EntryCode>
   <Type>Module</Type>
-  <CodeType>Lua</CodeType>
+  <ContainCSharp>False</ContainCSharp>
   <CompileLuaCode>True</CompileLuaCode>
 </Package>

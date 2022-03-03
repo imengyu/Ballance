@@ -53,7 +53,7 @@ namespace Ballance2.Editor.Modding
             FileInfo[] files = direction.GetFiles("*", SearchOption.AllDirectories);
             for (int i = 0; i < files.Length; i++)
             {
-              string filesPath = files[i].Name.Replace("\\", "/");
+              string filesPath = files[i].FullName.Replace("\\", "/");
 
               if (filesPath.EndsWith(".meta")) continue;
               if (filesPath.Contains("NoPackage")) continue;
@@ -148,7 +148,7 @@ namespace Ballance2.Editor.Modding
     {
       Crc32 crc = new Crc32();
       ZipOutputStream zipStream = ZipUtils.CreateZipFile(targetPath);
-      string basePath = projModDirPath.Replace(projPath, "").Replace("\\", "/");
+      string basePath = projModDirPath.Replace("\\", "/").Replace(projPath, "");
 
       //添加到包里
       ZipUtils.AddFileToZip(zipStream, bundlePath + ".assetbundle", "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle", ref crc);

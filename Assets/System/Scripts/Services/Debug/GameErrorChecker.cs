@@ -68,6 +68,7 @@ namespace Ballance2.Services.Debug
       }
 
       GameSystem.ForceInterruptGame();
+      HideInternalObjects();
       gameGlobalErrorUI.ShowErrorUI(stringBuilder.ToString());
       UnityEngine.Debug.LogError(stringBuilder.ToString());
     }
@@ -191,6 +192,15 @@ namespace Ballance2.Services.Debug
       Log.E(tag, message);
     }
 
+    private static void HideInternalObjects() {
+      var GameGlobalMask = GameObject.Find("GameGlobalMask");
+      if(GameGlobalMask != null)
+        GameGlobalMask.SetActive(false);
+      var GameGlobalIngameLoading = GameObject.Find("GameGlobalIngameLoading");
+      if(GameGlobalIngameLoading != null)
+        GameGlobalIngameLoading.SetActive(false);
+    }
+
     /// <summary>
     /// 显示系统错误信息提示提示对话框
     /// </summary>
@@ -202,9 +212,7 @@ namespace Ballance2.Services.Debug
       GameEntry entry = GameEntry.Instance;
       if(entry) {
         GameSystem.ForceInterruptGame();
-        var GameGlobalMask = GameObject.Find("GameGlobalMask");
-        if(GameGlobalMask != null)
-          GameGlobalMask.SetActive(false);
+        HideInternalObjects();
         entry.GlobalGameSysErrMessageDebuggerTipDialogText.text = message;
         entry.GlobalGameSysErrMessageDebuggerTipDialog.SetActive(true);
       }
@@ -220,10 +228,7 @@ namespace Ballance2.Services.Debug
       GameEntry entry = GameEntry.Instance;
       if(entry) {
         GameSystem.ForceInterruptGame();
-
-        var GameGlobalMask = GameObject.Find("GameGlobalMask");
-        if(GameGlobalMask != null)
-          GameGlobalMask.SetActive(false);
+        HideInternalObjects();
 
         string err = string.Format("Lua代码异常：\n发生错误的文件：{0} 模块：{1}\n",fileName, packName) + message;
         entry.GlobalGameScriptErrDialog.Show(err);

@@ -53,87 +53,37 @@ function KeypadUIControl:AddButton(go)
     local DirectionKey = go:GetComponent(SimpleTouchDirectionKeyController) ---@type SimpleTouchDirectionKeyController
     DirectionKey.DirectionChanged = function (state, dir)
       if dir == enumBack then
-        if state then
-          BallManager:AddBallPush(BallPushType.Back)
-        else
-          BallManager:RemoveBallPush(BallPushType.Back)
-        end
+        BallManager.KeyStateBack = state
+        BallManager:FlushBallPush()
       elseif dir == enumForward then
-        if state then
-          BallManager:AddBallPush(BallPushType.Forward)
-        else
-          BallManager:RemoveBallPush(BallPushType.Forward)
-        end
+        BallManager.KeyStateForward = state
+        BallManager:FlushBallPush()
       elseif dir == enumLeft then
-        if state then
-          BallManager:AddBallPush(BallPushType.Left)
-        else
-          BallManager:RemoveBallPush(BallPushType.Left)
-        end
+        BallManager.KeyStateLeft = state
+        BallManager:FlushBallPush()
       elseif dir == enumRight then
-        if state then
-          BallManager:AddBallPush(BallPushType.Right)
-        else
-          BallManager:RemoveBallPush(BallPushType.Right)
-        end
+        BallManager.KeyStateRight = state
+        BallManager:FlushBallPush()
       end
     end
     
   else
     local listener = EventTriggerListener.Get(go);
-    if name == "ButtonLeft" then
-
-    --左键
-    listener.onDown = function () 
-      if self.shiftPressCount == 1 or self.shiftPressOne then
-        --按下shift时为旋转摄像机
-        if GamePlay.BallManager.CanControllCamera then
-          CamManager:RotateLeft()
-        end
-      else
-        BallManager:AddBallPush(BallPushType.Left)
-      end
-    end
-    listener.onUp = function () 
-      BallManager:RemoveBallPush(BallPushType.Left)
-    end
-  
-    elseif name == "ButtonRight" then
-
-      --右键
-      listener.onDown = function () 
-        if self.shiftPressCount == 1 or self.shiftPressOne then
-          --按下shift时为旋转摄像机
-          CamManager:RotateRight()
-        else
-          BallManager:AddBallPush(BallPushType.Right)
-        end
-      end
-      listener.onUp = function () 
-        BallManager:RemoveBallPush(BallPushType.Right)
-      end
-
-    elseif name == "ButtonForward" then
-
-      --前进键
-      listener.onDown = function () BallManager:AddBallPush(BallPushType.Forward) end
-      listener.onUp = function () BallManager:RemoveBallPush(BallPushType.Forward) end
-
-    elseif name == "ButtonBack" then
-
-      --后退键
-      listener.onDown = function () BallManager:AddBallPush(BallPushType.Back) end
-      listener.onUp = function () BallManager:RemoveBallPush(BallPushType.Back) end
-
-    elseif name == "ButtonUp" then
+    if name == "ButtonUp" then
 
       --只有调试模式才显示
       if not GameManager.DebugMode then
         go:SetActive(false)
       else
         --上升键
-        listener.onDown = function () BallManager:AddBallPush(BallPushType.Up) end
-        listener.onUp = function () BallManager:RemoveBallPush(BallPushType.Up) end
+        listener.onDown = function () 
+          BallManager.KeyStateDown = true
+          BallManager:FlushBallPush()
+        end
+        listener.onUp = function () 
+          BallManager.KeyStateDown = false
+          BallManager:FlushBallPush()
+        end
       end
 
 
@@ -144,8 +94,14 @@ function KeypadUIControl:AddButton(go)
         go:SetActive(false)
       else
         --下降键
-        listener.onDown = function () BallManager:AddBallPush(BallPushType.Down) end
-        listener.onUp = function () BallManager:RemoveBallPush(BallPushType.Down) end
+        listener.onDown = function () 
+          BallManager.KeyStateUp = true
+          BallManager:FlushBallPush()
+        end
+        listener.onUp = function () 
+          BallManager.KeyStateUp = false
+          BallManager:FlushBallPush()
+        end
       end
 
     elseif name == "ButtonSpaceShift" then

@@ -20,7 +20,7 @@ GamePhysFloor = {
   },
   Phys_FloorStopper = {
     Friction = 0.7,
-    Elasticity = 0.3,
+    Elasticity = 0.5,
     Layer = GameLayers.LAYER_PHY_FLOOR_STOPPER,
     CollisionLayerName = 'Wood',
     HitSound = 'core.sounds:Hit_WoodenFlap.wav',

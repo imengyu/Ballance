@@ -474,7 +474,7 @@ function GamePlayManager:Pass()
     GamePlay.UFOAnimController:StartSeq()
   else
     self._SoundFinnal:Play() --播放音乐
-    self:_HideBalloonEnd() --开始隐藏飞船
+    self:_HideBalloonEnd(false) --开始隐藏飞船
     LuaTimer.Add(5000, function ()
       GameUI.WinScoreUIControl:StartSeq()
     end)
@@ -483,13 +483,13 @@ function GamePlayManager:Pass()
 end
 
 ---过关后隐藏飞船
-function GamePlayManager:_HideBalloonEnd() 
+function GamePlayManager:_HideBalloonEnd(fromUfo) 
   if self._HideBalloonEndTimerID then
     LuaTimer.Delete(self._HideBalloonEndTimerID)
     self._HideBalloonEndTimerID = nil
   end
   --60秒后隐藏飞船
-  self._HideBalloonEndTimerID = LuaTimer.Add(60000, function ()
+  self._HideBalloonEndTimerID = LuaTimer.Add(fromUfo and 60000 or 20000, function ()
     self._HideBalloonEndTimerID = nil
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
     GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()
@@ -501,7 +501,7 @@ end
 function GamePlayManager:UfoAnimFinish() 
   self.Events:emit('UfoAnimFinish')
   self._SoundFinnal:Play()
-  self:_HideBalloonEnd() --开始隐藏飞船
+  self:_HideBalloonEnd(true) --开始隐藏飞船
   GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
   GameUI.WinScoreUIControl:StartSeq()
 end

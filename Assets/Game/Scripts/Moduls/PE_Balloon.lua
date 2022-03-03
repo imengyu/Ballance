@@ -74,15 +74,20 @@ function PE_Balloon:Start()
       self.PE_Balloon_BoxSlideForce.enabled = false
 
       --速度放慢一些
-      LuaTimer.Add(300, function ()
+      LuaTimer.Add(200, function ()
+        self.PE_Balloon_BoxSlideForce.enabled = true
         self.PE_Balloon_BoxSlideForce.Force = 0.8
 
         --速度再放慢一些
-        LuaTimer.Add(500, function ()
+        LuaTimer.Add(300, function ()
           self.PE_Balloon_BoxSlideForce.Force = 0.4
 
-          LuaTimer.Add(1000, function ()
-            self.PE_Balloon_BoxSlideForce.Force = 0.33
+          LuaTimer.Add(600, function ()
+            self.PE_Balloon_BoxSlideForce.Force = 0.3
+          end)
+          --速度再放慢一些
+          LuaTimer.Add(40000, function ()
+            self.PE_Balloon_BoxSlideForce.Force = 0.2
           end)
         end)
       end)
@@ -113,9 +118,10 @@ function PE_Balloon:Active()
   self.BallTiggerActived = false
   self.PE_Balloon_Platform:Physicalize()
   self.PE_Balloon_PlatformForce.enabled = true
-  self.PE_Balloon_BoxSlideForce.enabled = false
-  self.PE_Balloon_BoxSlideForce.Force = 0.7
+  self.PE_Balloon_PlatformForce.Force = 0.75
   self.PE_Balloon_BoxSlide:Physicalize()
+  self.PE_Balloon_BoxSlideForce.enabled = true
+  self.PE_Balloon_BoxSlideForce.Force = 0.65
   self.PE_Balloon_Ballon04:Physicalize()
   self.PE_Balloon_Ballon03:Physicalize()
   self.PE_Balloon_Ballon02:Physicalize()

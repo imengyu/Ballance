@@ -152,6 +152,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Modul_15_Wood
+    second: {fileID: -5330317248450902060, guid: 9c74ba99d97c91e4dae4c6db272ed662, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Rail
     second: {fileID: 2100000, guid: f85ef732b14c163458238163b3238780, type: 2}
   - first:

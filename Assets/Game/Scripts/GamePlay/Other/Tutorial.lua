@@ -186,32 +186,32 @@ function Tutorial:StartSeq()
     UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil03, 1, nil)
     UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil04, 1, nil)
 
-    --按下按键以后几个箭头有拉长的特效
-    local AddBallPushListener = function (type)
-      if(type == BallPushType.Back) then
+    local BallManager = GamePlay.BallManager;
+
+    --按下按键以后几个箭头有拉长的特效        
+    local FlushBallPushListener = function ()
+      if(BallManager.KeyStateBack) then
         self.Tut_Richt_Pfeil03.transform.localPosition = Vector3(-4, 0.5, 0) 
-      elseif(type == BallPushType.Forward) then
-        self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(6, 1, 0) 
-      elseif(type == BallPushType.Left) then
-        self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 5) 
-      elseif(type == BallPushType.Right) then
-        self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -5) 
-      end
-    end          
-    local RemoveBallPushListener = function (type)
-      if(type == BallPushType.Back) then
+      else
         self.Tut_Richt_Pfeil03.transform.localPosition = Vector3(-2, 0.5, 0) 
-      elseif(type == BallPushType.Forward) then
+      end
+      if(BallManager.KeyStateForward) then
+        self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(6, 1, 0) 
+      else
         self.Tut_Richt_Pfeil04.transform.localPosition = Vector3(4, 1, 0) 
-      elseif(type == BallPushType.Left) then
+      end
+      if(BallManager.KeyStateLeft) then
+        self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 5) 
+      else
         self.Tut_Richt_Pfeil01.transform.localPosition = Vector3(1, 0, 3) 
-      elseif(type == BallPushType.Right) then
+      end
+      if(BallManager.KeyStateRight) then
+        self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -5) 
+      else
         self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -3) 
       end
     end
-    GamePlay.BallManager.Events
-      :addListener('AddBallPush', AddBallPushListener)
-      :addListener('RemoveBallPush', RemoveBallPushListener)
+    BallManager.Events:addListener('FlushBallPush', FlushBallPushListener)
 
     ---隐藏四个方向箭头
     local hideRichtPfeil = function ()
@@ -220,13 +220,8 @@ function Tutorial:StartSeq()
       UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil03, 1, true, nil)
       UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil04, 1, true, nil)
       LuaTimer.Add(1000, function ()
-
         self.Tut_Richt_Pfeil.constraintActive = false
-
-        GamePlay.BallManager.Events
-          :removeListener('AddBallPush', AddBallPushListener)
-          :removeListener('RemoveBallPush', RemoveBallPushListener)  
-
+        BallManager.Events:removeListener('FlushBallPush', FlushBallPushListener)  
       end)
     end
 
