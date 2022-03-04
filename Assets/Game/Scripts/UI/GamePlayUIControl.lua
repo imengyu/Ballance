@@ -26,68 +26,80 @@ function CreateGamePlayUI(package)
   local PageEndScore = GameUIManager:RegisterPage('PageEndScore', 'PageTransparent')
   local PageHighscoreEntry = GameUIManager:RegisterPage('PageHighscoreEntry', 'PageCommon')
 
-  PageGamePause:CreateContent(package)
-  PageGameQuitAsk:CreateContent(package)
-  PageGameRestartAsk:CreateContent(package)
-  PageGamePause:CreateContent(package)
-  PageGamePause.CanEscBack = false
-  PageGameWin:CreateContent(package)
-  PageGameWinRestartAsk:CreateContent(package)
-  PageGameWin.CanEscBack = false
-  PageEndScore:CreateContent(package)
-  PageEndScore.CanEscBack = false
-  PageHighscoreEntry:CreateContent(package)
-  PageHighscoreEntry.CanEscBack = false
-  PageGameFail:CreateContent(package)
-  PageGameFail.CanEscBack = false
+  coroutine.resume(coroutine.create(function ()
+    
+    PageGamePause:CreateContent(package)
+    Yield(WaitForSeconds(0.06))
+    PageGameQuitAsk:CreateContent(package)
+    Yield(WaitForSeconds(0.06))
+    PageGameRestartAsk:CreateContent(package)
+    Yield(WaitForSeconds(0.06))
+    PageGamePause:CreateContent(package)
+    Yield(WaitForSeconds(0.06))
+    PageGamePause.CanEscBack = false
+    PageGameWin:CreateContent(package)
+    Yield(WaitForSeconds(0.06))
+    PageGameWinRestartAsk:CreateContent(package)
+    PageGameWin.CanEscBack = false
+    Yield(WaitForSeconds(0.06))
+    PageEndScore:CreateContent(package)
+    PageEndScore.CanEscBack = false
+    Yield(WaitForSeconds(0.06))
+    PageHighscoreEntry:CreateContent(package)
+    PageHighscoreEntry.CanEscBack = false
+    Yield(WaitForSeconds(0.06))
+    PageGameFail:CreateContent(package)
+    PageGameFail.CanEscBack = false
+    Yield(WaitForSeconds(0.06))
 
 
-  MessageCenter:SubscribeEvent('BtnGameHomeClick', function () GamePlay.GamePlayManager:QuitLevel() end)
-  MessageCenter:SubscribeEvent('BtnNextLevellick', function () GamePlay.GamePlayManager:NextLevel() end)
-  MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
-  MessageCenter:SubscribeEvent('BtnGameWinRestartClick', function () GameUIManager:GoPage('PageGameWinRestartAsk') end)
-  MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
-  MessageCenter:SubscribeEvent('BtnPauseSettingsClick', function () GameUIManager:GoPage('PageSettingsInGame') end)
-  MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
-    GameUIManager:HideCurrentPage()
-    Game.GamePlay.GamePlayManager:RestartLevel()
-  end)
-  MessageCenter:SubscribeEvent('BtnGameQuitSureClick', function ()
-    GameUIManager:HideCurrentPage()
-    Game.GamePlay.GamePlayManager:QuitLevel()
-  end)
-  MessageCenter:SubscribeEvent('BtnGameFailQuitClick', function ()
-    GameUIManager:HideCurrentPage()
-    Game.GamePlay.GamePlayManager:QuitLevel()
-  end)
-  MessageCenter:SubscribeEvent('BtnResumeClick', function () 
-    Game.GamePlay.GamePlayManager:ResumeLevel()
-  end)
+    MessageCenter:SubscribeEvent('BtnGameHomeClick', function () GamePlay.GamePlayManager:QuitLevel() end)
+    MessageCenter:SubscribeEvent('BtnNextLevellick', function () GamePlay.GamePlayManager:NextLevel() end)
+    MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
+    MessageCenter:SubscribeEvent('BtnGameWinRestartClick', function () GameUIManager:GoPage('PageGameWinRestartAsk') end)
+    MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
+    MessageCenter:SubscribeEvent('BtnPauseSettingsClick', function () GameUIManager:GoPage('PageSettingsInGame') end)
+    MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
+      GameUIManager:HideCurrentPage()
+      Game.GamePlay.GamePlayManager:RestartLevel()
+    end)
+    MessageCenter:SubscribeEvent('BtnGameQuitSureClick', function ()
+      GameUIManager:HideCurrentPage()
+      Game.GamePlay.GamePlayManager:QuitLevel()
+    end)
+    MessageCenter:SubscribeEvent('BtnGameFailQuitClick', function ()
+      GameUIManager:HideCurrentPage()
+      Game.GamePlay.GamePlayManager:QuitLevel()
+    end)
+    MessageCenter:SubscribeEvent('BtnResumeClick', function () 
+      Game.GamePlay.GamePlayManager:ResumeLevel()
+    end)
 
-  --高分默认数据
-  local HighscoreEntryName = PageHighscoreEntry.Content:Find('InputField'):GetComponent(InputField) ---@type InputField
-  HighscoreEntryName.text = PlayerPrefs.GetString('LastEnterHighscoreEntry', 'NAME')
+    --高分默认数据
+    local HighscoreEntryName = PageHighscoreEntry.Content:Find('InputField'):GetComponent(InputField) ---@type InputField
+    HighscoreEntryName.text = PlayerPrefs.GetString('LastEnterHighscoreEntry', 'NAME')
 
-  --过关之后的下一关按扭
-  local ButtonNext = PageGameWin.Content:Find('ButtonNext').gameObject
-  PageGameWin.OnShow = function ()
-    ButtonNext:SetActive(GamePlay.GamePlayManager.NextLevelName ~= '')
-  end
-
-  MessageCenter:SubscribeEvent('BtnHighscrollEnterClick', function () 
-    PlayerPrefs.SetString('LastEnterHighscoreEntry', HighscoreEntryName.text)
-    GameUI.WinScoreUIControl:SaveHighscore(HighscoreEntryName.text)
-
-    --当前有新的高分，跳转到高分页，否则直接进入下一关菜单
-    GameUIManager:GoPage('PageGameWin') 
-    if GameUI.WinScoreUIControl._ThisTimeHasNewHighscore then
-      LuaTimer.Add(200, function ()
-        GameUIManager:GoPage('PageHighscore')
-        --高分页加载当前关卡数据
-        GameUI.HighscoreUIControl:LoadLevelData(GamePlay.GamePlayManager.CurrentLevelName)
-      end)
+    --过关之后的下一关按扭
+    local ButtonNext = PageGameWin.Content:Find('ButtonNext').gameObject
+    PageGameWin.OnShow = function ()
+      ButtonNext:SetActive(GamePlay.GamePlayManager.NextLevelName ~= '')
     end
-  end)
+
+    MessageCenter:SubscribeEvent('BtnHighscrollEnterClick', function () 
+      PlayerPrefs.SetString('LastEnterHighscoreEntry', HighscoreEntryName.text)
+      GameUI.WinScoreUIControl:SaveHighscore(HighscoreEntryName.text)
+
+      --当前有新的高分，跳转到高分页，否则直接进入下一关菜单
+      GameUIManager:GoPage('PageGameWin') 
+      if GameUI.WinScoreUIControl._ThisTimeHasNewHighscore then
+        LuaTimer.Add(200, function ()
+          GameUIManager:GoPage('PageHighscore')
+          --高分页加载当前关卡数据
+          GameUI.HighscoreUIControl:LoadLevelData(GamePlay.GamePlayManager.CurrentLevelName)
+        end)
+      end
+    end)
+  end))
 end
 
 ---主游戏菜单控制器类

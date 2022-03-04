@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -330,8 +331,16 @@ namespace Ballance2.Package
       flag |= FLAG_CODE_ENTRY_CODE_RUN;
       flag ^= FLAG_CODE_UNLOD_CODE_RUN;
 
-      if(PackageEntry.OnLoad != null)
-        return PackageEntry.OnLoad.Invoke(this);
+      if(PackageEntry.OnLoad != null) {
+        
+        Profiler.BeginSample(TAG + "PackageEntry.OnLoad");
+
+        bool result = PackageEntry.OnLoad.Invoke(this);
+
+        Profiler.EndSample();
+
+        return result;
+      }
       return true;
     }
     /// <summary>
@@ -353,8 +362,17 @@ namespace Ballance2.Package
 
       flag |= FLAG_CODE_UNLOD_CODE_RUN;
       flag ^= FLAG_CODE_ENTRY_CODE_RUN;
-      if(PackageEntry.OnBeforeUnLoad != null)
-        return PackageEntry.OnBeforeUnLoad.Invoke(this);
+
+      if(PackageEntry.OnBeforeUnLoad != null) {
+        
+        Profiler.BeginSample(TAG + "PackageEntry.OnBeforeUnLoad");
+        
+        bool result = PackageEntry.OnBeforeUnLoad.Invoke(this);
+
+        Profiler.EndSample();
+
+        return result;
+      }
       return true;
     }
 
@@ -377,6 +395,7 @@ namespace Ballance2.Package
     [LuaApiParamDescription("className", "类名")]
     public LuaFunction RequireLuaClass(string className)
     {
+
         LuaFunction classInit;
         if (requiredLuaClasses.TryGetValue(className, out classInit))
             return classInit;
@@ -397,7 +416,9 @@ namespace Ballance2.Package
             throw new MissingReferenceException(PackageName + " 无法导入 Lua class \"" + className + "\" : 该文件为空");
         try
         {
-            PackageLuaState.doBuffer(lua, realPath/*PackageName + ":" + className*/, out var v);
+          Profiler.BeginSample(TAG + "RequireLuaClass(" + className + ") doBuffer");
+          PackageLuaState.doBuffer(lua, realPath/*PackageName + ":" + className*/, out var v);
+          Profiler.EndSample();
         }
         catch (Exception e)
         {
@@ -414,6 +435,7 @@ namespace Ballance2.Package
         }
 
         requiredLuaClasses.Add(className, classInit);
+
         return classInit;
     }
     /// <summary>
@@ -478,6 +500,7 @@ namespace Ballance2.Package
 
     private byte[] TryLoadLuaCodeAsset(string className, out string realPath) {
 
+        Profiler.BeginSample(TAG + "TryLoadLuaCodeAsset." + className);
         var lua = GetCodeAsset(className);
         if (lua == null) 
             lua = GetCodeAsset(className + ".lua");
@@ -492,6 +515,7 @@ namespace Ballance2.Package
         if (lua == null)
             throw new MissingReferenceException(PackageName + " 无法导入 " + className + " , 未找到文件");
         realPath = lua.realPath;
+        Profiler.EndSample();
         return lua.data;
     }
     private object RequireLuaFileInternal(GamePackage pack, string fileName, bool once)
@@ -506,7 +530,11 @@ namespace Ballance2.Package
             if(once && requiredLuaFiles.TryGetValue(realPath, out var lastRet)) 
                 return lastRet;
 
-            if(PackageLuaState.doBuffer(lua, realPath, out var v))
+            Profiler.BeginSample(TAG + "RequireLuaFileInternal.doBuffer(" + fileName + ")");
+            bool rss = PackageLuaState.doBuffer(lua, realPath, out var v);
+            Profiler.EndSample();
+
+            if(rss)
                 rs = v;
             else
                 throw new Exception(PackageName + " 无法导入 Lua \"" + fileName + "\" : 执行失败");

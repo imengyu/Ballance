@@ -5,6 +5,7 @@ using System.IO;
 using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Services.Debug;
+using UnityEngine.Profiling;
 
 /*
  * Copyright (c) 2020  mengyu
@@ -193,6 +194,7 @@ namespace Ballance2.Services.LuaService.LuaWapper
     {
       if (self == null)
       {
+        Profiler.BeginSample("LuaObjectCreateClass" + name);
         LuaFunction classInit = null;
         if (DebugLoadScript)
         {
@@ -244,11 +246,13 @@ namespace Ballance2.Services.LuaService.LuaWapper
           GameErrorChecker.LastError = GameError.NotReturn;
           return null;
         }
+        Profiler.EndSample();
+
+        //初始化Lua引入参数
+        InitLuaInternalVars();
+        InitLuaVars(); //初始化引入参数
       }
 
-      //初始化Lua引入参数
-      InitLuaInternalVars();
-      InitLuaVars(); //初始化引入参数
 
       return self;
     }
@@ -276,20 +280,33 @@ namespace Ballance2.Services.LuaService.LuaWapper
       }
       else
       {
-        if (LuaInitFinished != null) LuaInitFinished.Invoke();
+        
+        Profiler.BeginSample("LuaObjectLuaInitFinished" + name);
+        if (LuaInitFinished != null) 
+          LuaInitFinished.Invoke();
+        Profiler.EndSample();
+
         if (awakeCalledBeforeInit && awake != null) CallAwake();
         if (startCalledBeforeInit && start != null && !startCalled)
         {
+          Profiler.BeginSample("LuaObjectCallStart" + name);
           startCalled = true;
           start(self, gameObject);
+          Profiler.EndSample();
         }
+
       }
     }
     private void CallAwake() {
+      
+      Profiler.BeginSample("LuaObjectCallAwake" + name);
+
       if(!awakeCalled && awake != null) {
         awake(self);
         awakeCalled = true;
       }
+
+      Profiler.EndSample();
     }
 
     private void Start()
@@ -297,8 +314,10 @@ namespace Ballance2.Services.LuaService.LuaWapper
       if (!luaInited) startCalledBeforeInit = true;
       else if (start != null && !startCalled)
       {
+        Profiler.BeginSample("LuaObjectCallStart" + name);
         startCalled = true;
         start(self, gameObject);
+        Profiler.EndSample();
       }
     }
     private void Awake()
@@ -324,7 +343,11 @@ namespace Ballance2.Services.LuaService.LuaWapper
         else
         {
           updateTick = UpdateDelta;
-          if (update != null) update(self);
+          if (update != null) {
+            Profiler.BeginSample("LuaObjectUpdate" + name);
+            update(self);
+            Profiler.EndSample();
+          }
         }
       }
     }
@@ -337,7 +360,11 @@ namespace Ballance2.Services.LuaService.LuaWapper
         else
         {
           fixUpdateTick = FixUpdateDelta;
-          if (fixedUpdate != null) fixedUpdate(self);
+          if (fixedUpdate != null) {
+            Profiler.BeginSample("LuaObjectFixedUpdate" + name);
+            fixedUpdate(self);
+            Profiler.EndSample();
+          }
         }
       }
     }
@@ -350,25 +377,42 @@ namespace Ballance2.Services.LuaService.LuaWapper
         else
         {
           lateUpdateTick = UpdateDelta;
-          if (lateUpdate != null) lateUpdate(self);
+          if (lateUpdate != null) {
+            Profiler.BeginSample("LuaObjectUpdate" + name);
+            lateUpdate(self);
+            Profiler.EndSample();
+          }
         }
       }
     }
 
     private void OnDestroy()
     {
-      if (onDestroy != null) onDestroy(self);
+      if (onDestroy != null) {
+        Profiler.BeginSample("LuaObjectCallOnDestroy" + name);
+        onDestroy(self);
+        Profiler.EndSample();
+      }
       StopLuaEvents();
       self = null;
-      if (Package != null) Package.RemoveLuaObject(this);
+      if (Package != null) 
+        Package.RemoveLuaObject(this);
     }
     private void OnDisable()
     {
-      if (onDisable != null) onDisable(self);
+      if (onDisable != null) {
+        Profiler.BeginSample("LuaObjectCallOnDisable" + name);
+        onDisable(self);
+        Profiler.EndSample();
+      }
     }
     private void OnEnable()
     {
-      if (onEnable != null) onEnable(self);
+      if (onEnable != null) {
+        Profiler.BeginSample("LuaObjectCallOnEnable" + name);
+        onEnable(self);
+        Profiler.EndSample();
+      }
     }
 
     private void Reset()
@@ -434,6 +478,8 @@ namespace Ballance2.Services.LuaService.LuaWapper
     }
     private void InitLuaEvents()
     {
+      Profiler.BeginSample("LuaObjectInitLuaEvents" + name);
+
       LuaFunction fun;
 
       fun = self["Start"] as LuaFunction;
@@ -462,6 +508,8 @@ namespace Ballance2.Services.LuaService.LuaWapper
 
       fun = self["Reset"] as LuaFunction;
       if (fun != null) reset = fun.cast<LuaVoidDelegate>();
+
+      Profiler.EndSample();
     }
     private void InitLuaInternalVars()
     {

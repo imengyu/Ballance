@@ -302,10 +302,12 @@ namespace Ballance2.Services
         if (sEnablePackageLoadFilter && !sLoadCustomPackages.Contains(info.Value.packageName)) continue;
 
         var task = pm.RegisterPackage((info.Value.enableLoad ? "Enable:" : "") + info.Value.packageName);
-        yield return task;
+        yield return task.AsIEnumerator();
 
-        if (task.Result && info.Value.enableLoad)
-          yield return pm.LoadPackage(info.Value.packageName);
+        if (task.Result && info.Value.enableLoad) {
+          var task2 = pm.LoadPackage(info.Value.packageName);
+          yield return task2.AsIEnumerator();
+        }
       }
     }
     /// <summary>
@@ -365,24 +367,25 @@ namespace Ballance2.Services
       #region 加载系统内核包
 
       {
-        Profiler.BeginSample("ExecuteSystemCore");
 
         Task<bool> task = systemPackage.LoadPackage();
-
-        yield return new WaitUntil(() => task.IsCompleted);
+        yield return task.AsIEnumerator();
 
         try {
+          Profiler.BeginSample("ExecuteSystemCore");
+
           systemPackage.RunPackageExecutionCode();
           systemPackage.RequireLuaFile("SystemInternal.lua");
           systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
+
+          Profiler.EndSample();
+
         } catch(Exception e) {
           GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "未能成功初始化内部脚本，可能是当前版本配置不正确，请尝试重新下载。\n" + e.ToString());
           StopAllCoroutines();
           yield break;
         }
         
-        Profiler.EndSample();
-
         yield return new WaitForSeconds(1f);
 
         Log.D(TAG, "ExecuteSystemCore ok");
@@ -391,7 +394,8 @@ namespace Ballance2.Services
       {
         //加载游戏主内核包
         Task<bool> task = pm.LoadPackage(corePackageName);
-        yield return new WaitUntil(() => task.IsCompleted);
+        yield return task.AsIEnumerator();
+
         if (!task.Result)
         {
           GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包 “" + corePackageName + "” 加载失败：" + GameErrorChecker.LastError + "\n您可尝试重新安装游戏");
@@ -458,7 +462,7 @@ namespace Ballance2.Services
 
             //加载包
             Task<bool> task = pm.LoadPackage(packageName);
-            yield return new WaitUntil(() => task.IsCompleted);
+            yield return task.AsIEnumerator();
 
             if (task.Result)
             {

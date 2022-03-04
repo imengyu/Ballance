@@ -570,7 +570,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 2
+  DebugType: 0
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -588,7 +588,7 @@ MonoBehaviour:
   - ModulCustomDebug
   - LevelCustomDebug
   DebugLoadCustomPackages: 1
-  DebugSkipIntro: 1
+  DebugSkipIntro: 0
   GameBaseCamera: {fileID: 963194227}
   GameCanvas: {fileID: 2024946136}
   GameGlobalErrorUI: {fileID: 5894142117804493612}

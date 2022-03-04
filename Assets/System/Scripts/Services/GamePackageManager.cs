@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -564,12 +565,16 @@ namespace Ballance2.Services
     [LuaApiParamDescription("packageNameFilter", "包名筛选，为“*”时表示所有包，为正则表达式时使用正则匹配包。")]
     public void NotifyAllPackageRun(string packageNameFilter)
     {
+      Profiler.BeginSample("NotifyAllPackageRun");
+
       foreach (GamePackage package in loadedPackages.Values)
       {
         if (package.Status == GamePackageStatus.LoadSuccess && !package.IsEntryCodeExecuted() &&
-            (packageNameFilter == "*" || Regex.IsMatch(package.PackageName, packageNameFilter)))
+            (packageNameFilter == "*" || Regex.IsMatch(package.PackageName, packageNameFilter))) 
           package.RunPackageExecutionCode();
       }
+
+      Profiler.EndSample();
     }
 
     /// <summary>
@@ -737,6 +742,8 @@ namespace Ballance2.Services
 
       Log.D(TAG, "Unload package {0}", packageName);
 
+      Profiler.BeginSample("UnLoadPackageInternal" + package.PackageName);
+
       if (package.UnLoadWhenDependencyRefNone)
         return true;
 
@@ -763,6 +770,8 @@ namespace Ballance2.Services
             UnLoadPackage(dependencyPackage.PackageName, true);
         }
       }
+
+      Profiler.EndSample();
 
       //卸载
 

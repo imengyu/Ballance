@@ -1,7 +1,3 @@
-require('GamePlayUIControl')
-require('MenuLevelUIControl')
-require('SettingsUIControl')
-
 local GameManager = Ballance2.Services.GameManager
 local GameUIPrefabType = Ballance2.Services.GameUIPrefabType
 local GameStaticResourcesPool = Ballance2.Res.GameStaticResourcesPool
@@ -19,6 +15,10 @@ return {
   Init = function ()
     local thisGamePackage = GamePackage.GetCorePackage()
     GameUIPackage = thisGamePackage
+
+    require('GamePlayUIControl')
+    require('MenuLevelUIControl')
+    require('SettingsUIControl')
 
     GameUIManager:RegisterUIPrefab('PageTransparent', GameUIPrefabType.Page, GameStaticResourcesPool.FindStaticPrefabs('GameUIPageBallanceTransparent'))
     GameUIManager:RegisterUIPrefab('PageWide', GameUIPrefabType.Page, GameStaticResourcesPool.FindStaticPrefabs('GameUIPageBallanceWide'))

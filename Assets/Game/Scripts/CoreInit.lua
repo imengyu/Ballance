@@ -5,6 +5,8 @@ local GameErrorChecker = Ballance2.Services.Debug.GameErrorChecker
 local GameError = Ballance2.Services.Debug.GameError
 local Log = Ballance2.Log
 local CorePackage = GamePackage.GetCorePackage()
+local WaitForSeconds = UnityEngine.WaitForSeconds
+local Yield = UnityEngine.Yield
 
 ---全局 CreateClass 引入
 CreateClass = {}
@@ -21,9 +23,7 @@ require('InitLevelBuilder')
 require('InitBulitInModuls')
 require('KeypadUIManager')
 
-local Intro = require('IntroInit')
-local MenuLevel = require('MenuLevelInit')
-local UIInit = require('UIInit')
+
 
 local TAG = 'Core'
 
@@ -51,110 +51,139 @@ Game = {
   HighScoreManager = nil, ---@type HighscoreManager
 }
 
+local Intro = nil
+local MenuLevel = nil
+local UIInit = nil
 
 function CoreInit()
   Log.D(TAG, 'CoreInit')
-  UIInit.Init()
-  Intro.Init()
-  MenuLevel.Init()
 
-  local GameManagerInstance = GameManager.Instance
-  local GameMediator = GameManager.GameMediator
+  coroutine.resume(coroutine.create(function ()
+    
+    Yield(WaitForSeconds(0.06))
 
-  Game.CommandServer = GameManagerInstance.GameDebugCommandServer
-  Game.PackageManager = GameManager.GetSystemService('GamePackageManager')
-  Game.UIManager = GameManager.GetSystemService('GameUIManager')
-  Game.SoundManager = GameManager.GetSystemService('GameSoundManager')
-  Game.HighScoreManager = require('HighscoreManager')
+    Intro = require('IntroInit')
 
-  CorePackage:RequireLuaClass('ModulBase')
-  CorePackage:RequireLuaClass('ModulPhysics')
-  CorePackage:RequireLuaClass('Ball')
-  
-  LevelBuilderInit()
-  --加载分数数据
-  Game.HighScoreManager.Load()
-  --注册内置键盘
-  KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadLeft.prefab'), CorePackage:GetSpriteAsset('keypad_l.png'))
-  KeypadUIManager.AddKeypad('BaseRight', CorePackage:GetPrefabAsset('KeypadRight.prefab'), CorePackage:GetSpriteAsset('keypad_r.png'))
-  KeypadUIManager.AddKeypad('BaseJoyLeft', CorePackage:GetPrefabAsset('KeypadJoyLeft.prefab'), CorePackage:GetSpriteAsset('keypad_joy_l.png'))
-  KeypadUIManager.AddKeypad('BaseJoyRight', CorePackage:GetPrefabAsset('KeypadJoyRight.prefab'), CorePackage:GetSpriteAsset('keypad_joy_r.png'))
+    Yield(WaitForSeconds(0.06))
 
-  --调试入口
-  if GameManager.DebugMode then
-    require('CoreLuaDebug')
-    require('LevelBuilderDebug')
-    require('ModulDebug')
-    require('LevelDebug')
+    MenuLevel = require('MenuLevelInit')
+    
+    Yield(WaitForSeconds(0.06))
 
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelBuliderEntry", TAG, function (evtName, params)
-      CoreDebugLevelBuliderEntry()
-      return false
-    end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelEnvironmentEntry", TAG, function (evtName, params)
-      CoreDebugLevelEnvironmentEntry()
-      return false
-    end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLuaEntry", TAG, function (evtName, params)
-      CoreDebugLuaEntry()
-      return false
-    end)
-    GameMediator:RegisterEventHandler(CorePackage, "CoreDebugEmptyEntry", TAG, function (evtName, params)
-      CoreDebugEmptyEntry()
-      return false
-    end)
-    GameMediator:RegisterEventHandler(CorePackage, "ModulCustomDebug", TAG, function (evtName, params)
-      ModulCustomDebug()
-      return false
-    end)
-    GameMediator:RegisterEventHandler(CorePackage, "LevelCustomDebug", TAG, function (evtName, params)
-      LevelCustomDebug()
-      return false
-    end)
-  end
+    UIInit = require('UIInit')
+      
+    Yield(WaitForSeconds(0.06))
 
-  local nextLoadLevel = ''
-  GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, function (evtName, params)
-    local scense = params[1]
-    if(scense == 'Level') then 
-      LuaTimer.Add(300, function ()
-        GamePlayInit(function ()
-          if nextLoadLevel ~= '' then
-            Game.LevelBuilder:LoadLevel(nextLoadLevel)
-            nextLoadLevel = ''
-          end
-        end)
+    UIInit.Init()
+    Intro.Init()
+    MenuLevel.Init()
+
+    local GameManagerInstance = GameManager.Instance
+    local GameMediator = GameManager.GameMediator
+
+    Game.CommandServer = GameManagerInstance.GameDebugCommandServer
+    Game.PackageManager = GameManager.GetSystemService('GamePackageManager')
+    Game.UIManager = GameManager.GetSystemService('GameUIManager')
+    Game.SoundManager = GameManager.GetSystemService('GameSoundManager')
+    Game.HighScoreManager = require('HighscoreManager')
+
+    Yield(WaitForSeconds(0.06))
+
+    CorePackage:RequireLuaClass('ModulBase')
+    CorePackage:RequireLuaClass('ModulPhysics')
+    CorePackage:RequireLuaClass('Ball')
+
+    
+    Yield(WaitForSeconds(0.06))
+    
+    LevelBuilderInit()
+    --加载分数数据
+    Game.HighScoreManager.Load()
+    
+    Yield(WaitForSeconds(0.06))
+
+    --注册内置键盘
+    KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadLeft.prefab'), CorePackage:GetSpriteAsset('keypad_l.png'))
+    KeypadUIManager.AddKeypad('BaseRight', CorePackage:GetPrefabAsset('KeypadRight.prefab'), CorePackage:GetSpriteAsset('keypad_r.png'))
+    KeypadUIManager.AddKeypad('BaseJoyLeft', CorePackage:GetPrefabAsset('KeypadJoyLeft.prefab'), CorePackage:GetSpriteAsset('keypad_joy_l.png'))
+    KeypadUIManager.AddKeypad('BaseJoyRight', CorePackage:GetPrefabAsset('KeypadJoyRight.prefab'), CorePackage:GetSpriteAsset('keypad_joy_r.png'))
+
+    --调试入口
+    if GameManager.DebugMode then
+      require('CoreLuaDebug')
+      require('LevelBuilderDebug')
+      require('ModulDebug')
+      require('LevelDebug')
+
+      GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelBuliderEntry", TAG, function (evtName, params)
+        CoreDebugLevelBuliderEntry()
+        return false
+      end)
+      GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLevelEnvironmentEntry", TAG, function (evtName, params)
+        CoreDebugLevelEnvironmentEntry()
+        return false
+      end)
+      GameMediator:RegisterEventHandler(CorePackage, "CoreDebugLuaEntry", TAG, function (evtName, params)
+        CoreDebugLuaEntry()
+        return false
+      end)
+      GameMediator:RegisterEventHandler(CorePackage, "CoreDebugEmptyEntry", TAG, function (evtName, params)
+        CoreDebugEmptyEntry()
+        return false
+      end)
+      GameMediator:RegisterEventHandler(CorePackage, "ModulCustomDebug", TAG, function (evtName, params)
+        ModulCustomDebug()
+        return false
+      end)
+      GameMediator:RegisterEventHandler(CorePackage, "LevelCustomDebug", TAG, function (evtName, params)
+        LevelCustomDebug()
+        return false
       end)
     end
-    return false
-  end)    
-  GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, TAG, function (evtName, params)
-    local scense = params[1]
-    if(scense == 'Level') then 
-      GamePlayUnload()
-    end
-    return false
-  end)
-  
-  --加载关卡入口
-  GameMediator:SubscribeSingleEvent(CorePackage, "CoreStartLoadLevel", TAG, function (evtName, params)
-    if type(params[1]) ~= 'string' then
-      local type = type(params[1]) 
-      GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, 'Param 1 expect string, but got '..type)
+
+    local nextLoadLevel = ''
+    GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, function (evtName, params)
+      local scense = params[1]
+      if(scense == 'Level') then 
+        LuaTimer.Add(300, function ()
+          GamePlayInit(function ()
+            if nextLoadLevel ~= '' then
+              Game.LevelBuilder:LoadLevel(nextLoadLevel)
+              nextLoadLevel = ''
+            end
+          end)
+        end)
+      end
       return false
-    else
-      nextLoadLevel = params[1]
-      Log.D(TAG, 'Start load level '..nextLoadLevel..' ')
-    end
-    GameManagerInstance:RequestEnterLogicScense('Level')
-    return false
-  end)
-  --退出
-  GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_BEFORE_GAME_QUIT, TAG, function ()
-    ---保存分数数据
-    Game.HighScoreManager.Save()
-    return false
-  end)
+    end)    
+    GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, TAG, function (evtName, params)
+      local scense = params[1]
+      if(scense == 'Level') then 
+        GamePlayUnload()
+      end
+      return false
+    end)
+    
+    --加载关卡入口
+    GameMediator:SubscribeSingleEvent(CorePackage, "CoreStartLoadLevel", TAG, function (evtName, params)
+      if type(params[1]) ~= 'string' then
+        local type = type(params[1]) 
+        GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, 'Param 1 expect string, but got '..type)
+        return false
+      else
+        nextLoadLevel = params[1]
+        Log.D(TAG, 'Start load level '..nextLoadLevel..' ')
+      end
+      GameManagerInstance:RequestEnterLogicScense('Level')
+      return false
+    end)
+    --退出
+    GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_BEFORE_GAME_QUIT, TAG, function ()
+      ---保存分数数据
+      Game.HighScoreManager.Save()
+      return false
+    end)
+  end))
 end
 function CoreUnload()
   Log.D(TAG, 'CoreUnload')

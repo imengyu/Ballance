@@ -10,6 +10,7 @@ using Ballance2.Services.Debug;
 using Ballance2.Base.Handler;
 using Ballance2.Utils.ServiceUtils;
 using SLua;
+using UnityEngine.Profiling;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -303,8 +304,12 @@ namespace Ballance2.Services
       }
       if (singleEvents.TryGetValue(evtName, out GameHandler handler))
       {
+        Profiler.BeginSample("NotifySingleEvent" + evtName);
+        
         if (handler != null)
           handler.CallEventHandler(evtName, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
+
+        Profiler.EndSample();
         return true;
       }
       else
@@ -358,6 +363,8 @@ namespace Ballance2.Services
     [LuaApiParamDescription("pararms", "事件参数")]
     public int DispatchGlobalEvent(GameEvent gameEvent, string handlerFilter, params object[] pararms)
     {
+      Profiler.BeginSample("DispatchGlobalEvent_" + gameEvent.EventName);
+
       int handledCount = 0;
       if (gameEvent == null)
       {
@@ -385,6 +392,7 @@ namespace Ballance2.Services
         }
       }
 
+      Profiler.EndSample();
       return handledCount;
     }
     /// <summary>
