@@ -53,11 +53,14 @@ namespace Ballance2
         if(index < pos.Count - 1) {
           index++;
 
-          transform.localPosition = pos[index];
-          transform.rotation = rot[index];
-
           if(MaxIndex > 0 && index >= MaxIndex)
             index = 0;
+            
+          transform.localPosition = pos[index];
+          
+          if(index < rot.Count)
+            transform.rotation = rot[index];
+
         } else {
           index = 0;
         }

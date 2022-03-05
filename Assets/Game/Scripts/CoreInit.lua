@@ -51,31 +51,23 @@ Game = {
   HighScoreManager = nil, ---@type HighscoreManager
 }
 
-local Intro = nil
-local MenuLevel = nil
-local UIInit = nil
+local Intro = require('IntroInit')
+local MenuLevel = require('MenuLevelInit')
+local UIInit = require('UIInit')
 
 function CoreInit()
   Log.D(TAG, 'CoreInit')
 
   coroutine.resume(coroutine.create(function ()
-    
-    Yield(WaitForSeconds(0.06))
-
-    Intro = require('IntroInit')
-
-    Yield(WaitForSeconds(0.06))
-
-    MenuLevel = require('MenuLevelInit')
-    
-    Yield(WaitForSeconds(0.06))
-
-    UIInit = require('UIInit')
-      
-    Yield(WaitForSeconds(0.06))
 
     UIInit.Init()
+
+    Yield(WaitForSeconds(0.06))
+
     Intro.Init()
+
+    Yield(WaitForSeconds(0.06))
+
     MenuLevel.Init()
 
     local GameManagerInstance = GameManager.Instance

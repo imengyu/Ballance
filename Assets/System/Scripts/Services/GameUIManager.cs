@@ -386,7 +386,7 @@ namespace Ballance2.Services
 
     private IEnumerator LateHidePage(GameObject go)
     {
-      yield return new WaitForSeconds(0.3f);
+      yield return new WaitForSeconds(1f);
       go.SetActive(false);
     }
 

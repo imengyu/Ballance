@@ -15,7 +15,7 @@ UFOPositions = {
   { pos = Vector3(-30, 7, 20), flyTime = 1.8, waitTime = 2 },
   { pos = Vector3(8,0,3), flyTime = 1.8, waitTime = 3 },
   { pos = Vector3(0,6,0), flyTime = 1.8, waitTime = 3 },
-  { pos = Vector3(0,6,0), flyTime = 0.7, waitTime = 1.0, startBall = true },
+  { pos = Vector3(0,6,0), flyTime = 0.5, waitTime = 1.0, startBall = true },
   { pos = Vector3(0,0,0), flyTime = 0.3, waitTime = 1.2, catchBall = true },
   { pos = Vector3(0,0,0), flyTime = 0.1, waitTime = 1 },
   { pos = Vector3(0,5,0), flyTime = 0.6, waitTime = 1 },

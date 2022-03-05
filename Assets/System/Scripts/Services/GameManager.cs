@@ -167,6 +167,8 @@ namespace Ballance2.Services
     private string sCustomDebugName = "";
     private List<string> sLoadCustomPackages = new List<string>();
 
+    private XmlDocument systemInit = new XmlDocument();
+
     /// <summary>
     /// 加载调试配置
     /// </summary>
@@ -235,6 +237,8 @@ namespace Ballance2.Services
       
       //加载系统 packages
       yield return StartCoroutine(LoadSystemCore());
+
+      yield return StartCoroutine(LoadSystemPackages());
 
       //加载用户选择的模块
       if (sLoadUserPackages)
@@ -316,22 +320,29 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator LoadSystemCore()
     {
+      yield return 1;
+
       var pm = GetSystemService<GamePackageManager>();
       var corePackageName = GamePackageManager.CORE_PACKAGE_NAME;
       var systemPackage = GamePackage.GetSystemPackage();
 
+      yield return 1;
+
       #region 读取读取SystemInit文件
 
-      XmlDocument systemInit = new XmlDocument();
+      systemInit = new XmlDocument();
       TextAsset systemInitAsset = Resources.Load<TextAsset>("SystemInit");
       if(systemInitAsset == null) {
         GameErrorChecker.ThrowGameError(GameError.FileNotFound, "SystemInit.xml missing! ");
         StopAllCoroutines();
         yield break;
       }
+      yield return 1;
       systemInit.LoadXml(systemInitAsset.text);
 
       #endregion
+
+      yield return new WaitForSeconds(0.1f);
 
       #region 系统配置
 
@@ -365,7 +376,7 @@ namespace Ballance2.Services
       #endregion
 
       #region 加载系统内核包
-
+      
       {
 
         Task<bool> task = systemPackage.LoadPackage();
@@ -385,8 +396,6 @@ namespace Ballance2.Services
           StopAllCoroutines();
           yield break;
         }
-        
-        yield return new WaitForSeconds(1f);
 
         Log.D(TAG, "ExecuteSystemCore ok");
       }
@@ -424,8 +433,13 @@ namespace Ballance2.Services
       }
 
       #endregion
-
-      #region 加载SystemPackages中定义的包
+    }
+    /// <summary>
+    /// 加载系统内核包
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LoadSystemPackages() {
+      var pm = GetSystemService<GamePackageManager>();
 
       XmlNode nodeSystemPackages = systemInit.SelectSingleNode("System/SystemPackages");
 
@@ -434,6 +448,8 @@ namespace Ballance2.Services
       {
         for (int i = 0; i < nodeSystemPackages.ChildNodes.Count; i++)
         {
+          yield return new WaitForSeconds(0.2f);
+
           XmlNode nodePackage = nodeSystemPackages.ChildNodes[i];
 
           if (nodePackage.Name == "Package" && nodePackage.Attributes["name"] != null)
@@ -503,11 +519,11 @@ namespace Ballance2.Services
         //第一次加载基础包，等待其运行
         if (loadStepNow == 0)
         {
-          yield return new WaitForSeconds(0.3f);
+          yield return new WaitForSeconds(0.1f);
 
           pm.NotifyAllPackageRun("*");
 
-          yield return new WaitForSeconds(0.2f);
+          yield return new WaitForSeconds(1.5f);
           
           if (string.IsNullOrEmpty(sCustomDebugName)
 #if UNITY_EDITOR
@@ -529,8 +545,6 @@ namespace Ballance2.Services
 
       //全部加载完毕之后通知所有模块初始化
       pm.NotifyAllPackageRun("*");
-
-      #endregion
     }
 
     #region 系统调试命令

@@ -368,7 +368,7 @@ MonoBehaviour:
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
-  m_ShiftMassCenter: {x: -1, y: -2, z: 0}
+  m_ShiftMassCenter: {x: 0, y: -2, z: 0}
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -1261,7 +1261,7 @@ MonoBehaviour:
   force_factor: 1
   damp_factor: 1
   translation_limit: -1
-  translation_freedom_min: {x: -30000, y: 0, z: 0}
+  translation_freedom_min: {x: -10, y: 0, z: 0}
   translation_freedom_max: {x: 30000, y: 0, z: 0}
   rotation_limit: -1
   rotation_freedom_min: {x: 0, y: 0, z: 0}
@@ -4291,7 +4291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e6108379294ece4d9a6b90635da294b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Mass: 0.5
+  m_Mass: 0.1
   m_Friction: 0.7
   m_Elasticity: 0.4
   m_LinearSpeedDamping: 0.1
@@ -4302,7 +4302,7 @@ MonoBehaviour:
   m_EnableCollision: 1
   m_StartFrozen: 1
   m_Fixed: 0
-  m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_ShiftMassCenter: {x: -2, y: 0, z: 0}
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1

@@ -489,7 +489,7 @@ function GamePlayManager:_HideBalloonEnd(fromUfo)
     self._HideBalloonEndTimerID = nil
   end
   --60秒后隐藏飞船
-  self._HideBalloonEndTimerID = LuaTimer.Add(fromUfo and 60000 or 20000, function ()
+  self._HideBalloonEndTimerID = LuaTimer.Add(fromUfo and 80000 or 40000, function ()
     self._HideBalloonEndTimerID = nil
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
     GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()

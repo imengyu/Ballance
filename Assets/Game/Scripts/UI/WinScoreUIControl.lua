@@ -21,12 +21,12 @@ WinScoreUIControl = ClassicObject:extend()
 function WinScoreUIControl:new() 
   self._ThisTimeHasNewHighscore = false
   self._CountingPointEndCallback = nil ---@type function
+  GameUI.WinScoreUIControl = self
 end
 function WinScoreUIControl:Start() 
   self._SwitchSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_dong.wav", false, true, 'WinScoreUISwitch')
   self._HighscoreSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.UI, "core.sounds.music:Music_Highscore.wav", false, true, 'WinScoreUISwitch')
   self._CountSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_counter.wav", false, true, 'WinScoreUICount')
-
   GameUI.WinScoreUIControl = self
 end
 function WinScoreUIControl:Update() 
