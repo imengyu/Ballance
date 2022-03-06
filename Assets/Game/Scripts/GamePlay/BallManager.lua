@@ -89,7 +89,6 @@ function BallManager:new()
   self.CanControll = false
   self.CanControllCamera = false
   self.ShiftPressed = false
-  self.Events = EventEmitter() ---@type EventEmitter
   self._DebugMode = false
   self._private = {
     BallLightningSphere = nil, ---@type BallLightningSphere
@@ -129,7 +128,21 @@ end
 function BallManager:Awake()
   GamePlay.BallManager = self
   self._private.BallLightningSphere = self._BallLightningSphere:GetLuaClass()
+  
+  --注册事件
+  local events = Game.Mediator:RegisterEventEmitter('BallManager')
+  self.EventBallRegistered = events:RegisterEvent('BallRegistered') --新球注册事件
+  self.EventBallUnRegister = events:RegisterEvent('BallUnRegister') --球删除注册事件
+  self.EventCurrentBallChanged = events:RegisterEvent('CurrentBallChanged') --当前球变化事件
+  self.EventNextRecoverPosChanged = events:RegisterEvent('NextRecoverPosChanged') --球的下一个出生位置变化事件
+  self.EventControllingStatusChanged = events:RegisterEvent('ControllingStatusChanged') --球控制状态变化事件
+  self.EventPlaySmoke = events:RegisterEvent('PlaySmoke') --播放烟雾事件
+  self.EventPlayLighting = events:RegisterEvent('PlayLighting') --播放闪电事件
+  self.EventFlushBallPush = events:RegisterEvent('FlushBallPush') --刷新球推动力状态事件
+  self.EventSetBallPushValue = events:RegisterEvent('SetBallPushValue') --球推动力数值手动更新事件
+  self.EventRemoveAllBallPush = events:RegisterEvent('RemoveAllBallPush') --清除球推动力事件
 
+  --注册内置球
   self:RegisterBall('BallWood', self._BallWood)
   self:RegisterBall('BallStone', self._BallStone)
   self:RegisterBall('BallPaper', self._BallPaper)
@@ -149,6 +162,7 @@ function BallManager:Awake()
   --请求触发设置更新函数
   GameSettings:RequireSettingsLoad("control")
 
+  --注册调试命令
   self._private.CommandId = Game.Manager.GameDebugCommandServer:RegisterCommand('balls', function (eyword, fullCmd, argsCount, args)
     local type = args[1]
     if type == 'play-lighting' then
@@ -187,6 +201,7 @@ function BallManager:Awake()
   )
 end
 function BallManager:OnDestroy()
+  Game.Mediator:UnRegisterEventEmitter('BallManager')
   Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._private.CommandId)
 
   --清除碎片的定时器
@@ -321,7 +336,11 @@ function BallManager:RegisterBall(name, gameObject)
   --设置名称
   if(gameObject.name ~= name) then gameObject.name = name end
 
-  self.Events:emit('BallRegistered', ball, body, speedMeter)
+  self.EventBallRegistered:Emit({
+    ball = ball, 
+    body = body, 
+    speedMeter = speedMeter
+  })
 
   table.insert(self._private.registerBalls, {
     name = name,
@@ -346,7 +365,7 @@ function BallManager:UnRegisterBall(name)
       self:_UnInitBallSounds(ball.rigidbody, ball.speedMeter)
       table.remove(registerBalls, i)
 
-      self.Events:emit('UnRegisterBall', name)
+      self.EventBallUnRegister:Emit(name)
       return true
     end 
   end 
@@ -381,13 +400,13 @@ function BallManager:SetCurrentBall(name, status)
     self._private.currentBall = ball
     self.CurrentBall = ball.ball
     self.CurrentBallName = ball.name
-    self.Events:emit('CurrentBallChanged', name)
+    self.EventCurrentBallChanged:Emit(name)
     self:SetControllingStatus(status)
   end
 end
 ---设置禁用当前正在控制的球
 function BallManager:SetNoCurrentBall()
-  self.Events:emit('CurrentBallChanged', '')
+  self.EventCurrentBallChanged:Emit('')
   self:_DeactiveCurrentBall()
 end
 ---设置当前球的控制的状态
@@ -403,7 +422,7 @@ end
 ---设置下一次球出生位置
 ---@param pos Vector3
 function BallManager:SetNextRecoverPos(pos)
-  self.Events:emit('NextRecoverPosChanged', pos)
+  self.EventNextRecoverPosChanged:Emit(pos)
   self._private.nextRecoverPos = pos
 end
 ---重置指定球的碎片
@@ -468,12 +487,14 @@ function BallManager:_FlushCurrentBallAllStatus()
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
   end
   
-  self.Events:emit('ControllingStatusChanged', status)
+  self.EventControllingStatusChanged:Emit(nil)
 end
 ---取消激活当前的球
 function BallManager:_DeactiveCurrentBall() 
   local current = self._private.currentActiveBall
   if current ~= nil then
+    --清除力
+    self:RemoveAllBallPush()
     --取消激活
     if current.rigidbody.IsPhysicalized then
       self:_PhysicsOrDePhysicsCurrentBall(false)
@@ -493,6 +514,8 @@ function BallManager:_ActiveCurrentBall()
     current.ball.transform.position = self._private.nextRecoverPos
     --设置摄像机跟随对象
     GamePlay.CamManager:SetTarget(current.ball.transform)
+    --清除力
+    self:RemoveAllBallPush()
   end
 end
 ---@param physics boolean
@@ -553,7 +576,7 @@ end
 function BallManager:PlaySmoke(pos)
   self._BallSmoke.transform.position = pos
   self._BallSmoke:SetActive(true)
-  self.Events:emit('PlaySmoke')
+  self.EventPlaySmoke:Emit(nil)
 end
 ---播放球出生时的闪电效果
 ---@param pos Vector3 放置位置
@@ -561,7 +584,7 @@ end
 ---@param lightAnim boolean 是否同时播放灯光效果
 ---@param callback function 完成回调
 function BallManager:PlayLighting(pos, smallToBig, lightAnim, callback) 
-  self.Events:emit('PlayLighting')
+  self.EventPlayLighting:Emit(nil)
   self._private.BallLightningSphere:PlayLighting(pos, smallToBig, lightAnim, callback)
 end
 ---获取当前是否正在运行球出生闪电效果
@@ -794,7 +817,7 @@ function BallManager:FlushBallPush()
     currentBall.pushForceY.Force = 0
   end
 
-  self.Events:emit('FlushBallPush')
+  self.EventFlushBallPush:Emit(nil)
 end
 ---设置球推动方向数值
 ---@param x number
@@ -805,7 +828,7 @@ function BallManager:SetBallPushValue(x, y)
   end
   local currentBall = self._private.currentActiveBall
   local force = self.CurrentBall._Force
-  self.Events:emit('SetBallPushValue', x, y)
+  self.EventSetBallPushValue:Emit({x, y})
   currentBall.pushForceX.Force = x * force
   currentBall.pushForceZ.Force = y * force
 end
@@ -815,10 +838,11 @@ function BallManager:RemoveAllBallPush()
     return
   end
   local currentBall = self._private.currentActiveBall
-  self.Events:emit('RemoveAllBallPush') 
-  currentBall.pushForceX.Force = 0
-  currentBall.pushForceY.Force = 0
-  currentBall.pushForceZ.Force = 0
+  self.EventRemoveAllBallPush:Emit(nil)
+
+  if currentBall.pushForceX then currentBall.pushForceX.Force = 0 end
+  if currentBall.pushForceY then currentBall.pushForceY.Force = 0 end
+  if currentBall.pushForceZ then currentBall.pushForceZ.Force = 0 end
 end
 
 --#endregion

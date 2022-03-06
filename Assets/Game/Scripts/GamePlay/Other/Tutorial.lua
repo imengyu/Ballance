@@ -4,13 +4,15 @@ local Image = UnityEngine.UI.Image
 local Button = UnityEngine.UI.Button
 local Vector3 = UnityEngine.Vector3
 local Axis = UnityEngine.Animations.Axis
-local GameObject = UnityEngine.GameObject
 local ConstraintSource = UnityEngine.Animations.ConstraintSource
 
+local Log = Ballance2.Log
 local I18N = Ballance2.Services.I18N.I18N
 local GamePackage = Ballance2.Package.GamePackage
 local GameSoundType = Ballance2.Services.GameSoundType
 local CorePackage = GamePackage.GetCorePackage()
+
+local TAG = 'Tutorial'
 
 ---第一关教程管理器
 ---@class Tutorial : GameLuaObjectHostClass
@@ -54,92 +56,123 @@ function Tutorial:new()
   self._TutorialUIButtonQuit = nil ---@type Button
 end
 function Tutorial:Start()
-  Game.Mediator:RegisterEventHandler(CorePackage, 'CoreTutorialLevelEventHandler', 'TutorialHandler', function (evtName, params)
+
+  self.startFun = function ()
+    Log.D(TAG, 'Init Tutorial')
+
+    GamePlay.GamePlayManager._ShouldStartByCustom = true
+    GamePlay.GamePlayManager.CanEscPause = false
+    
+    self._TutorialStep = 1
+    self._Tutorial = true
+    self._TutorialShouldDisablePointDown = true
+
+    --先隐藏箭头
+    self.Tut_Richt_Pfeil01:SetActive(false)
+    self.Tut_Richt_Pfeil02:SetActive(false)
+    self.Tut_Richt_Pfeil03:SetActive(false)
+    self.Tut_Richt_Pfeil04:SetActive(false)
+    self.Pfeil_Rund02:SetActive(false)
+    self.Pfeil_Rund01:SetActive(false)
+    self.Pfeil_Hoch:SetActive(false)
+    --初始化教程UI
+    self._TutorialUI = Game.UIManager:InitViewToCanvas(CorePackage:GetPrefabAsset('GameTutorialUI.prefab'), "GameTutorialUI", false)
+    self._TutorialUIBg = self._TutorialUI.transform:GetChild(0):GetComponent(Image)
+    self._TutorialUIText = self._TutorialUI.transform:GetChild(0):GetChild(0):GetComponent(Text)
+    self._TutorialUIButtonContinue = self._TutorialUI.transform:GetChild(0):GetChild(1):GetComponent(Button)
+    self._TutorialUIButtonQuit = self._TutorialUI.transform:GetChild(0):GetChild(2):GetComponent(Button)
+    self._TutorialUI.gameObject:SetActive(false)
+    self:StartSeq()
+
+    --移动到球出生位置
+    self.Pfeil_HochHost.transform.position = GamePlay.SectorManager.CurrentLevelRestPoints[1].point.transform.position
+    --设置箭头跟随摄像机旋转角度
+    local constraintSource = ConstraintSource()
+    constraintSource.sourceTransform = GamePlay.CamManager._CameraHostTransform
+    constraintSource.weight = 1
+
+
+    if self._TutorialCamFinded then
+      self.Pfeil_Runter:SetSource(0, constraintSource)
+    else
+      self.Pfeil_Runter:AddSource(constraintSource)
+    end
+    self.Pfeil_Runter.rotationOffset = Vector3(-90, 0, 0)
+    if self._TutorialCamFinded then
+      self.Pfeil_HochHost:SetSource(0, constraintSource)
+    else
+      self.Pfeil_HochHost:AddSource(constraintSource)
+    end
+    self.Pfeil_HochHost:SetRotationOffset(0, Vector3(0, -90, 0)) 
+    self._TutorialCamFinded = true
+  end
+  self.fallFun = function ()
+    Log.D(TAG, 'Fall handler')
+
+    self._Tutorial = true
+
+    self.Tut_Richt_Pfeil01:SetActive(false)
+    self.Tut_Richt_Pfeil02:SetActive(false)
+    self.Tut_Richt_Pfeil03:SetActive(false)
+    self.Tut_Richt_Pfeil04:SetActive(false)
+
+  end
+  self.quitFun = function ()
+
+    Log.D(TAG, 'Start quit')
+
+    self._Tutorial = false
+
+    LuaTimer.Add(100, function ()
+
+      --删除按键
+      if self._TutorialCurrWaitkey then
+        Game.UIManager:DeleteKeyListen(self._TutorialCurrWaitkey)
+        self._TutorialCurrWaitkey = nil
+      end
+      
+      --重置恢复
+      GamePlay.GamePlayManager._ShouldStartByCustom = false
+      
+      --删除UI
+      if not Slua.IsNull(self._TutorialUI) then
+        UnityEngine.Object.Destroy(self._TutorialUI.gameObject)
+        self._TutorialUI = nil
+      end
+
+      UnityEngine.Object.Destroy(self.gameObject)
+    end)
+
+  end
+
+  self._EventEntery = Game.Mediator:RegisterEventHandler(CorePackage, 'CoreTutorialLevelEventHandler', 'TutorialHandler', function (evtName, params)
     if params[1] == 'beforeStart' then
-      self.startFun = function ()
-        GamePlay.GamePlayManager._ShouldStartByCustom = true
-        GamePlay.GamePlayManager.CanEscPause = false
-        
-        self._TutorialStep = 1
-        self._TutorialShouldDisablePointDown = true
-
-        --先隐藏箭头
-        self.Tut_Richt_Pfeil01:SetActive(false)
-        self.Tut_Richt_Pfeil02:SetActive(false)
-        self.Tut_Richt_Pfeil03:SetActive(false)
-        self.Tut_Richt_Pfeil04:SetActive(false)
-        self.Pfeil_Rund02:SetActive(false)
-        self.Pfeil_Rund01:SetActive(false)
-        self.Pfeil_Hoch:SetActive(false)
-        --初始化教程UI
-        self._TutorialUI = Game.UIManager:InitViewToCanvas(CorePackage:GetPrefabAsset('GameTutorialUI.prefab'), "GameTutorialUI", false)
-        self._TutorialUIBg = self._TutorialUI.transform:GetChild(0):GetComponent(Image)
-        self._TutorialUIText = self._TutorialUI.transform:GetChild(0):GetChild(0):GetComponent(Text)
-        self._TutorialUIButtonContinue = self._TutorialUI.transform:GetChild(0):GetChild(1):GetComponent(Button)
-        self._TutorialUIButtonQuit = self._TutorialUI.transform:GetChild(0):GetChild(2):GetComponent(Button)
-        self._TutorialUI.gameObject:SetActive(false)
-        self:StartSeq()
-
-        --移动到球出生位置
-        self.Pfeil_HochHost.transform.position = GamePlay.SectorManager.CurrentLevelRestPoints[1].point.transform.position
-        --设置箭头跟随摄像机旋转角度
-        local constraintSource = ConstraintSource()
-        constraintSource.sourceTransform = GamePlay.CamManager._CameraHostTransform
-        constraintSource.weight = 1
-
-
-        if self._TutorialCamFinded then
-          self.Pfeil_Runter:SetSource(0, constraintSource)
-        else
-          self.Pfeil_Runter:AddSource(constraintSource)
-        end
-        self.Pfeil_Runter.rotationOffset = Vector3(-90, 0, 0)
-        if self._TutorialCamFinded then
-          self.Pfeil_HochHost:SetSource(0, constraintSource)
-        else
-          self.Pfeil_HochHost:AddSource(constraintSource)
-        end
-        self.Pfeil_HochHost:SetRotationOffset(0, Vector3(0, -90, 0)) 
-        self._TutorialCamFinded = true
-
-        self._Tutorial = true
+      GamePlay.GamePlayManager.EventStart:On(self.startFun);
+      GamePlay.GamePlayManager.EventFall:On(self.fallFun);
+      GamePlay.GamePlayManager.EventQuit:On(self.quitFun);
+    elseif params[1] == 'beforeQuit' then
+      GamePlay.GamePlayManager.EventStart:Off(self.startFun);
+      GamePlay.GamePlayManager.EventFall:Off(self.fallFun);
+      GamePlay.GamePlayManager.EventQuit:Off(self.quitFun);
+      --取消注册事件
+      if self._EventEntery then
+        Game.Mediator:UnRegisterEventHandler('CoreTutorialLevelEventHandler', self._EventEntery)
+        self._EventEntery = nil
       end
-      self.fallFun = function ()
-        self._Tutorial = true
-
-        self.Tut_Richt_Pfeil01:SetActive(false)
-        self.Tut_Richt_Pfeil02:SetActive(false)
-        self.Tut_Richt_Pfeil03:SetActive(false)
-        self.Tut_Richt_Pfeil04:SetActive(false)
-
-      end
-      self.quitFun = function ()
-        self._Tutorial = false
-        if self._TutorialCurrWaitkey then
-          Game.UIManager:DeleteKeyListen(self._TutorialCurrWaitkey)
-        end
-        --删除UI
-        if not Slua.IsNull(self._TutorialUI) then
-          UnityEngine.Object.Destroy(self._TutorialUI.gameObject)
-          self._TutorialUI = nil
-        end
-        UnityEngine.Object.Destroy(self.gameObject)
-
-        GamePlay.GamePlayManager.Events:removeListener('Start', self.startFun):removeListener('Fall', self.fallFun):removeListener('Quit', self.quitFun)
-      end
-      GamePlay.GamePlayManager.Events:addListener('Start', self.startFun):addListener('Fall', self.fallFun):addListener('Quit', self.quitFun)
     end
     return false
   end)
 end
 function Tutorial:StartSeq()
+
+  Log.D(TAG, 'Tutorial StartSeq')
+
+  if (not self._Tutorial) then
+    return
+  end
   local UIManager = Game.UIManager;
   local step1KeyReturn = 0
   local step1KeyQ = 0
-
-  LuaTimer.Add(500, function ()
-    self:ShowTutorialText()
-  end)
 
   local funQuit = function ()
     Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
@@ -147,6 +180,7 @@ function Tutorial:StartSeq()
     UIManager:DeleteKeyListen(step1KeyReturn)
     self:HideTutorial()
     --继续游戏运行
+    GamePlay.GamePlayManager._ShouldStartByCustom = false
     GamePlay.GamePlayManager.CanEscPause = true
     GamePlay.GamePlayManager:ResumeLevel(true)
 
@@ -211,7 +245,7 @@ function Tutorial:StartSeq()
         self.Tut_Richt_Pfeil02.transform.localPosition = Vector3(1, 0, -3) 
       end
     end
-    BallManager.Events:addListener('FlushBallPush', FlushBallPushListener)
+    BallManager.EventFlushBallPush:On(FlushBallPushListener)
 
     ---隐藏四个方向箭头
     local hideRichtPfeil = function ()
@@ -221,7 +255,7 @@ function Tutorial:StartSeq()
       UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil04, 1, true, nil)
       LuaTimer.Add(1000, function ()
         self.Tut_Richt_Pfeil.constraintActive = false
-        BallManager.Events:removeListener('FlushBallPush', FlushBallPushListener)  
+        BallManager.EventFlushBallPush:Off(FlushBallPushListener)
       end)
     end
 
@@ -386,9 +420,13 @@ function Tutorial:StartSeq()
   end)
   self._TutorialUIButtonQuit.onClick:AddListener(funQuit)
 
-  --步骤1，按 q 退出，按回车继续
-  step1KeyQ = UIManager:WaitKey(KeyCode.Q, true, funQuit)
-  step1KeyReturn = UIManager:WaitKey(KeyCode.Return, true, funSeq)
+  LuaTimer.Add(500, function ()
+    --步骤1，按 q 退出，按回车继续
+    step1KeyQ = UIManager:WaitKey(KeyCode.Q, true, funQuit)
+    step1KeyReturn = UIManager:WaitKey(KeyCode.Return, true, funSeq)
+    self:ShowTutorialText()
+  end)
+
 end
 function Tutorial:ShowTutorialText()
   if self._TutorialUI.gameObject.activeSelf then

@@ -23,7 +23,6 @@ function MusicManager:new()
   self.CurrentAudioSource.maxDistance = 2000
   self.CurrentAudioTheme = nil ---@type MusicThemeDataStorage
   self.CurrentAudioEnabled = false
-  self.Events = EventEmitter() ---@type EventEmitter
 
   self._CurrentIsAtmo = false
   self._CurrentForceAtmo = false
@@ -72,8 +71,15 @@ function MusicManager:Start()
           "  enable  ▶ 开启背景音乐"..
           "  disable ▶ 关闭背景音乐"
   )
+
+  --初始化事件
+  local events = Game.Mediator:RegisterEventEmitter('MusicManager')
+  self.EventMusicThemeChanged = events:RegisterEvent('MusicThemeChanged') --音乐主题变化事件
+  self.EventMusicDisable = events:RegisterEvent('MusicDisable') --音乐禁用事件
+  self.EventMusicEnable = events:RegisterEvent('MusicEnable') --音乐启用事件
 end
 function MusicManager:OnDestroy() 
+  Game.Mediator:UnRegisterEventEmitter('MusicManager');
   Game.Manager.GameDebugCommandServer:UnRegisterCommand(self._CommandId)
 end
 
@@ -131,14 +137,14 @@ end
 function MusicManager:SetCurrentTheme(theme) 
   if self.Musics[theme] ~= nil then 
     self.CurrentAudioTheme = self.Musics[theme] 
-    self.Events:emit('MusicThemeChanged', theme)
+    self.EventMusicThemeChanged:Emit(theme)
     return true
   else
     if theme ~= 0 then
       Log.E(TAG, 'Not found music theme '..theme..' , music disabled')
     end
     self.CurrentAudioEnabled = false
-    self.Events:emit('MusicDisable')
+    self.EventMusicDisable:Emit(nil)
     return false
   end
 end
@@ -156,7 +162,7 @@ function MusicManager:EnableBackgroundMusic()
     else
       self.CurrentAudioSource.volume = 1
     end
-    self.Events:emit('MusicEnable')
+    self.EventMusicEnable:Emit(nil)
   end
 end
 ---暂停音乐
@@ -168,7 +174,7 @@ function MusicManager:DisableBackgroundMusic()
   else
     self.CurrentAudioSource.volume = 1
   end
-  self.Events:emit('MusicDisable')
+  self.EventMusicDisable:Emit(nil)
 end
 ---暂停音乐（Atmo除外）
 function MusicManager:DisableBackgroundMusicWithoutAtmo() 
@@ -192,11 +198,11 @@ function MusicManager:DisableInSec(sec)
   self.CurrentAudioEnabled = false 
   LuaTimer.Add(1000, function ()
     self.CurrentAudioSource:Stop()
-    self.Events:emit('MusicDisable')
+    self.EventMusicDisable:Emit(nil)
   end)
   LuaTimer.Add(sec*1000, function ()
     self.CurrentAudioEnabled = true 
-    self.Events:emit('MusicEnable')
+    self.EventMusicEnable:Emit(nil)
   end)
 end
 

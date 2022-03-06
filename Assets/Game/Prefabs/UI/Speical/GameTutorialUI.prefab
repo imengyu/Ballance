@@ -318,6 +318,14 @@ PrefabInstance:
       propertyPath: m_DefaultString
       value: core.ui.Continue
       objectReference: {fileID: 0}
+    - target: {fileID: 8480315052405786786, guid: b94854c9d45074544b75efdc7da4a57a, type: 3}
+      propertyPath: HasClickSound
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8480315052405786786, guid: b94854c9d45074544b75efdc7da4a57a, type: 3}
+      propertyPath: HasSelectSound
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b94854c9d45074544b75efdc7da4a57a, type: 3}
 --- !u!224 &1983387530384658847 stripped
@@ -418,6 +426,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134823, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 870270377270045048, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
+      propertyPath: HasClickSound
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 870270377270045048, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
+      propertyPath: HasSelectSound
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}

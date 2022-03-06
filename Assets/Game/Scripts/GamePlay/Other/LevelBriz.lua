@@ -15,17 +15,15 @@ function LevelBriz:new()
   self._LightEnable = false
   self._LightTick = math.random(10, 90)
   self._LightFlash = false
-  self._LightFlashTick = 0
+  self._LightFlashTick = 10
 end
 function LevelBriz:Start()
   self._BrizLight.color = Color(0,0,0,1)
   Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'CoreBrizLevelEventHandler', 'LevelBrizHandler', function (evtName, params)
     if params[1] == 'beforeStart' then
-      GamePlay.GamePlayManager.Events:addListener('Start', function ()
-        self._LightEnable = true
-      end):addListener('Quit', function ()
-        self._LightEnable = false
-      end)
+      self._LightEnable = true
+    elseif params[1] == 'beforeQuit' then
+      self._LightEnable = false
     end
     return false
   end)
