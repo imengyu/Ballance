@@ -105,7 +105,7 @@ namespace Ballance2.Services
               Entry.GameEntry.Instance.GameGlobalIngameLoading.transform.SetAsLastSibling();
 
             //发送就绪事件
-            GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, "*");
+            GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED);
             return false;
           });
       //退出时的黑
@@ -632,7 +632,7 @@ namespace Ballance2.Services
         onConfirm?.Invoke();
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", 0, false);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, 0, false);
       });
       
       PagesRectTransform.gameObject.SetActive(false);
@@ -671,14 +671,14 @@ namespace Ballance2.Services
         onConfirm?.Invoke();
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", 1, true);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, 1, true);
       });
       btnNo.onClick.AddListener(() =>
       {
         onCancel?.Invoke();
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, "*", 1, false);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, 1, false);
       });
 
       PagesRectTransform.gameObject.SetActive(false);

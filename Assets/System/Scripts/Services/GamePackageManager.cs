@@ -433,7 +433,7 @@ namespace Ballance2.Services
 
         Log.D(TAG, "Package {0} registered", packageName);
         //通知事件
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED, "*", packageName);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_REGISTERED, packageName);
 
         return true;
       }
@@ -508,7 +508,7 @@ namespace Ballance2.Services
 
       Log.D(TAG, "Package {0} unregistered", packageName);
       //通知事件
-      GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNREGISTERED, "*", packageName);
+      GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNREGISTERED, packageName);
       return success;
     }
 
@@ -605,7 +605,7 @@ namespace Ballance2.Services
 
           var msg = string.Format("Package {0} could not load, because RegisterPackage failed", packageName);
           //通知事件
-          GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, msg);
+          GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, packageName, msg);
           Log.E(TAG, msg);
           return false;
         }
@@ -642,7 +642,7 @@ namespace Ballance2.Services
               Log.E(TAG, err);
               //通知事件
               GameManager.GameMediator.DispatchGlobalEvent(
-                  GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, err);
+                  GameEventNames.EVENT_PACKAGE_LOAD_FAILED, packageName, err);
 
               package._Status = GamePackageStatus.LoadFailed;
               return false;
@@ -670,7 +670,7 @@ namespace Ballance2.Services
               Log.E(TAG, err);
               //通知事件
               GameManager.GameMediator.DispatchGlobalEvent(
-                  GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, err);
+                  GameEventNames.EVENT_PACKAGE_LOAD_FAILED, packageName, err);
 
               return false;
             }
@@ -690,7 +690,7 @@ namespace Ballance2.Services
         Log.E(TAG, err);
 
         //通知事件
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, "*", packageName, err);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_FAILED, packageName, err);
         return false;
       }
 
@@ -701,7 +701,7 @@ namespace Ballance2.Services
       Log.D(TAG, "Package {0} loaded", packageName);
 
       //通知事件
-      GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS, "*", packageName, package);
+      GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_LOAD_SUCCESS, packageName, package);
 
       return true;
     }
@@ -777,7 +777,7 @@ namespace Ballance2.Services
 
       //通知事件
       if(GameManager.GameMediator)
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD, "*", packageName, package);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_PACKAGE_UNLOAD, packageName, package);
 
       package._Status = GamePackageStatus.NotLoad;
       package.Destroy();

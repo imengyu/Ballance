@@ -112,19 +112,21 @@ namespace Ballance2.Services.InputManager
     [LuaApiParamDescription("callBack", "回调函数")]
     public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
     {
+      listenKeyId++;
+
       KeyListenerItem item = new KeyListenerItem();
       item.callBack = callBack;
       item.key = key;
       item.key2 = key2;
       item.has2key = key2 != KeyCode.None;
-      item.id = ++listenKeyId;
+      item.id = listenKeyId;
 
       //逆序遍历链表。添加按键至相同按键位置
       LinkedListNode<KeyListenerItem> cur = items.Last;
       while(cur != null) {
         if(cur.Value.key == key) {
-          items.AddBefore(cur, new LinkedListNode<KeyListenerItem>(item));
-          break;
+          items.AddAfter(cur, item);
+          return listenKeyId;
         }
         cur = cur.Previous;
       }
@@ -151,13 +153,18 @@ namespace Ballance2.Services.InputManager
     public void DeleteKeyListen(int id)
     {
       //链表移除
+      int count = 0;
       LinkedListNode<KeyListenerItem> cur = items.First;
       while(cur != null) {
         if(cur.Value.id == id) {
           items.Remove(cur);
-          break;
+          return;
         }
         cur = cur.Next;
+        count++;
+
+        if(count > items.Count)
+          break;
       }
     }
     /// <summary>
@@ -201,7 +208,7 @@ namespace Ballance2.Services.InputManager
           {
             if(!AllowMultipleKey && lastPressedKey == item.key) {
               //相同的按键，并且不允许发送相同按键，则不发送按键
-              item.downed = true;
+              item.downed = false;
             } else {
               item.downed = true;
               item.callBack(item.key, true);

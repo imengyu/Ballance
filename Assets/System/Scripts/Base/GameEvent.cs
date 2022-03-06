@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ballance2.Base.Handler;
+using Ballance2.Services;
 using UnityEngine;
 
 /*
@@ -41,13 +42,35 @@ namespace Ballance2.Base
     /// <summary>
     /// 释放
     /// </summary>
-    [LuaApiDescription("释放")]
+    [SLua.DoNotToLua]
     public void Dispose()
     {
       _EventHandlers.Clear();
       _EventHandlers = null;
+      _Unregistered = true;
+    }
+    
+    /// <summary>
+    /// 取消注册此事件。 同 GameMediator.UnRegisterGlobalEvent。
+    /// </summary>
+    [LuaApiDescription("取消注册此事件。同 GameMediator.UnRegisterGlobalEvent。")]
+    public void Delete() {
+      if(!_Unregistered) {
+        GameManager.GameMediator.UnRegisterGlobalEvent(_EventName);
+      }
     }
 
+    /// <summary>
+    /// 分发此事件。同 GameMediator.DispatchGlobalEvent。
+    /// </summary>
+    [LuaApiDescription("分发此事件。同 GameMediator.DispatchGlobalEvent。")]
+    public void Dispatch(params object [] param) {
+      if(!_Unregistered) {
+        GameManager.GameMediator.DispatchGlobalEvent(this, param);
+      }
+    }
+    
+    private bool _Unregistered = false;
     [SerializeField, SetProperty("EventName")]
     private string _EventName;
     [SerializeField, SetProperty("EventHandlers")]

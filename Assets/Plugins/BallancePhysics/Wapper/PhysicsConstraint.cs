@@ -7,11 +7,6 @@ namespace BallancePhysics.Wapper
   [AddComponentMenu("BallancePhysics/PhysicsConstraint")]
   public class PhysicsConstraint : PhysicsConstraintBase
   {
-    [Tooltip("位置和轴参照")]
-    /// <summary>
-    /// 位置和轴参照
-    /// </summary>
-    public Transform HingeRef;
     [Tooltip("连接到的另外一个物体，如果为空，则连接到世界")]
     /// <summary>
     /// 连接到的另外一个物体，如果为空，则连接到世界
@@ -60,9 +55,15 @@ namespace BallancePhysics.Wapper
         Other.AddPendCreateComponent(this);
         return;
       }
+
       Handle = PhysicsApi.API.set_physics_constraint(obj.Handle, Other != null ? Other.Handle : System.IntPtr.Zero, 
-        force_factor, damp_factor, (int)translation_limit, translation_freedom_min, translation_freedom_max,
-        (int)rotation_limit, rotation_freedom_min, rotation_freedom_max);
+        force_factor, damp_factor, 
+        (int)translation_limit, 
+        translation_freedom_min, 
+        translation_freedom_max,
+        (int)rotation_limit, 
+        rotation_freedom_min, 
+        rotation_freedom_max);
     }
   }
 }

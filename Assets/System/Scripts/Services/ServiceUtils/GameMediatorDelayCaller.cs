@@ -35,7 +35,7 @@ namespace Ballance2.Utils.ServiceUtils
             switch (d.type)
             {
               case GameMediatorDelayCallType.NormalEvent:
-                GameMediator.DispatchGlobalEvent(d.name, d.filter, d.args);
+                GameMediator.DispatchGlobalEvent(d.name, d.args);
                 break;
               case GameMediatorDelayCallType.SingleEvent:
                 GameMediator.NotifySingleEvent(d.name, d.args);
@@ -58,7 +58,6 @@ namespace Ballance2.Utils.ServiceUtils
       public GameMediatorDelayCallType type;
       public string name;
       public int tick;
-      public string filter;
       public object[] args;
     }
 
@@ -71,12 +70,11 @@ namespace Ballance2.Utils.ServiceUtils
       d.args = args;
       data.Add(d);
     }
-    public void AddDelayCallNormal(string name, string filter, float delayeSecond, object[] args)
+    public void AddDelayCallNormal(string name, float delayeSecond, object[] args)
     {
       var d = new DelayCallData();
       d.type = GameMediatorDelayCallType.NormalEvent;
       d.name = name;
-      d.filter = filter;
       d.tick = (int)(delayeSecond / Time.deltaTime);
       d.args = args;
       data.Add(d);

@@ -233,7 +233,7 @@ namespace Ballance2.Services
 
       GameErrorChecker.EnterStrictMode();
 
-      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED, "*");
+      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED);
       
       //加载系统 packages
       yield return StartCoroutine(LoadSystemCore());
@@ -248,7 +248,7 @@ namespace Ballance2.Services
       GetSystemService<GamePackageManager>().NotifyAllPackageRun("*");
 
       //通知初始化完成
-      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "*", null);
+      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
 
       //如果调试配置中设置了CustomDebugName，则进入自定义调试场景，否则进入默认场景
       if (string.IsNullOrEmpty(sCustomDebugName))
@@ -279,7 +279,7 @@ namespace Ballance2.Services
         Log.D(TAG, "Enter GameDebug.");
         if(!RequestEnterLogicScense("GameDebug"))
           GameErrorChecker.ShowSystemErrorMessage("Enter GameDebug failed");
-        GameMediator.DispatchGlobalEvent(sCustomDebugName, "*", GameEntry.Instance.DebugCustomEntryEventParamas);
+        GameMediator.DispatchGlobalEvent(sCustomDebugName, GameEntry.Instance.DebugCustomEntryEventParamas);
         //隐藏初始加载中动画
         HideGlobalStartLoading();
       }
@@ -889,7 +889,7 @@ namespace Ballance2.Services
       if(resolutionsSet >= 0) {
         Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, fullScreen);
         //发出屏幕大小更改事件
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, "*", resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
+        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
       }
       if(quality >= 0) 
         QualitySettings.SetQualityLevel(quality, true);
@@ -1004,7 +1004,7 @@ namespace Ballance2.Services
       if (DebugMode)
         DebugInit.UnInitSystemDebug();
       
-      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT, "*", null);
+      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT);
       ReqGameQuit();
     }
 
@@ -1306,9 +1306,9 @@ namespace Ballance2.Services
 
       Log.I(TAG, "Enter logic scense {0} ", name);
       if (currentScense >= 0)
-        GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_QUIT, "*", logicScenses[currentScense]);
+        GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_QUIT, logicScenses[currentScense]);
       currentScense = curIndex;
-      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_ENTER, "*", logicScenses[currentScense]);
+      GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_LOGIC_SECNSE_ENTER, logicScenses[currentScense]);
       return true;
     }
     /// <summary>

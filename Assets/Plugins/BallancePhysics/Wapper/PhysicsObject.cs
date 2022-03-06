@@ -983,8 +983,6 @@ namespace BallancePhysics.Wapper
 
     #endregion
 
-    private int createTick = 0;
-
     private void OnDestroy() {
       m_ConstantForces.Clear();
       if(IsPhysicalized)

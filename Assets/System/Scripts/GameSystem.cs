@@ -149,6 +149,16 @@ namespace Ballance2
         GameErrorChecker.LastError = GameError.ClassNotFound;
       return o;
     }
+    /// <summary>
+    /// 获取系统服务
+    /// </summary>
+    /// <param name="name">服务名称</param>
+    /// <returns></returns>
+    public static T GetSystemService<T>() where T : GameService
+    {
+      return (T)GameSystem.GetSystemService(typeof(T).Name);
+    }
+    
 
     #endregion
 
