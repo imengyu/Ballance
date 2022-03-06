@@ -128,12 +128,13 @@ function GamePlayUIControl:Start()
   if UNITY_ANDROID or UNITY_IOS then
     self:ReBuildMobileKeyPad()
     self._CurrentMobileKeyPadShow = false
-    GamePlay.GamePlayManager.Events:addListener('Start', function ()
+    GamePlay.GamePlayManager.EventStart:On(function ()
       self._CurrentMobileKeyPadShow = true
       if self._CurrentMobileKeyPad then
         self._CurrentMobileKeyPad.gameObject:SetActive(true)
       end
-    end):addListener('Quit', function ()
+    end)
+    GamePlay.GamePlayManager.EventQuit:On(function ()
       self._CurrentMobileKeyPadShow = false
       if self._CurrentMobileKeyPad then
         self._CurrentMobileKeyPad.gameObject:SetActive(false)

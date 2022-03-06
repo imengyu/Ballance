@@ -81,13 +81,12 @@ function WinScoreUIControl:StartSeq()
   self.HighlightBar3:SetActive(false)
   self.HighlightBar4:SetActive(false)
 
-  self.EscKeyID = GameUIManager:ListenKey(KeyCode.Escape, function ()
-    self:Skip()
-  end)
-
   coroutine.resume(coroutine.create(function()
 
     Yield(WaitForSeconds(5))
+    
+    self.EscKeyID = GameUIManager:WaitKey(KeyCode.Escape, false, function () self:Skip() end)
+    self.ReturnKeyID = GameUIManager:WaitKey(KeyCode.Return, false, function () self:Skip() end)
 
     Game.UIManager:GoPage('PageEndScore')
 
@@ -167,11 +166,7 @@ function WinScoreUIControl:Skip()
   self.HighlightBar2:SetActive(false)
   self.HighlightBar3:SetActive(false)
   self.HighlightBar4:SetActive(true)
-
-  if self.EscKeyID then
-    GameUIManager:DeleteKeyListen(self.EscKeyID)
-    self.EscKeyID = nil
-  end
+  self:_ShowHighscore()
 
   local GamePlayManager = self._GamePlayManager
 
@@ -187,20 +182,20 @@ function WinScoreUIControl:Skip()
   self.ScoreTimePoints.text = tostring(self._ScoreNTimePoints)
   self.ScoreBouns.text = tostring(GamePlayManager.LevelScore)
   self.ScoreExtraLives.text = tostring(self._ScoreNExtraLives)
-  
-  LuaTimer.Add(2000, function ()
-    self:_ShowHighscore()
-  end)
 end
 function WinScoreUIControl:SaveHighscore(entryName) 
   Game.HighScoreManager.AddItem(GamePlay.GamePlayManager.CurrentLevelName, entryName, self._ScoreNTotal)
 end
 function WinScoreUIControl:_ShowHighscore() 
-  if self.EscKeyID then
+  if self.EscKeyID ~= nil then
     GameUIManager:DeleteKeyListen(self.EscKeyID)
     self.EscKeyID = nil
   end
-  
+  if self.ReturnKeyID ~= nil then
+    GameUIManager:DeleteKeyListen(self.ReturnKeyID)
+    self.ReturnKeyID = nil
+  end
+
   Game.UIManager:GoPage('PageHighscoreEntry')
 
   --检查是不是新的高分
