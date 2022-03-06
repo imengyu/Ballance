@@ -3954,7 +3954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1200941180767227194
 Transform:
   m_ObjectHideFlags: 0
@@ -4034,6 +4034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PositionArray: {fileID: 4900000, guid: ae5486cf2d7918d42938bf0e5bdd757e, type: 3}
   RotationArray: {fileID: 4900000, guid: f1a1d38c7a0a7734b931272b99ceeb04, type: 3}
+  RotationIsRightHand: 1
   MaxIndex: 0
   index: 0
 --- !u!1 &5742607773671136906

@@ -1,9 +1,11 @@
-Shader "Custom/TransparentShader"
+Shader "Custom/CustomTransparent"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Tint", Color) = (0, 0, 0, 1)
+        _Color ("Color", Color) = (1,1,1,1)
+        _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _Glossiness ("Smoothness", Range(0,1)) = 0.5
+        _Metallic ("Metallic", Range(0,1)) = 0.0
     }
     SubShader
     {
@@ -13,8 +15,7 @@ Shader "Custom/TransparentShader"
             "Queue"="Transparent" 
         }
 
-        Blend One One  
-
+        Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
             Zwrite Off
@@ -30,7 +31,7 @@ Shader "Custom/TransparentShader"
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
- 
+
             struct v2f
             {
                 float2 uv : TEXCOORD0;

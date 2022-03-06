@@ -63,7 +63,7 @@ function LevelBuilder:Start()
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY')
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_START')
 
-    self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', false)
+    self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', true)
     self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.UI.Core.Controls.Progress) ---@type Progress
     self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
     self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:Find('PanelFailed').gameObject
@@ -164,7 +164,7 @@ function LevelBuilder:LoadLevel(name)
   self._LevelBuilderUI.gameObject:SetActive(true)
   self:UpdateLoadProgress(0)
   self:UpdateErrStatus(false, nil)
-  Game.UIManager:MaskBlackSet(false)
+  Game.UIManager:MaskBlackSet(true)
 
   --加载内置模块
   InitBulitInModuls()
@@ -174,7 +174,7 @@ function LevelBuilder:LoadLevel(name)
   GamePlay.GamePlayManager.GamePhysicsWorld:Create()
 
   --发送开始事件
-  Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_BEFORE_START', '*', nil)
+  Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_BEFORE_START', nil)
 
   --由C#代码加载文件
   self._LevelLoaderNative:LoadLevel(name, 
@@ -196,7 +196,7 @@ function LevelBuilder:LoadLevel(name)
 
       self._CurrentLevelJson = res
       self._CurrentLevelPrefab = prefab
-      Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED', '*', { self._CurrentLevelJson })
+      Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED', { self._CurrentLevelJson })
 
       --检查基础适配
       local missedPackages = ''
@@ -217,7 +217,7 @@ function LevelBuilder:LoadLevel(name)
 
       --载入Prefab
       self._CurrentLevelObject = Game.Manager:InstancePrefab(self._CurrentLevelPrefab, self.gameObject.transform, 'GameLevelMain')
-      Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY', '*', { self._CurrentLevelObject })
+      Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY', { self._CurrentLevelObject })
 
       --加载
       local errStack = ''
@@ -241,7 +241,7 @@ end
 function LevelBuilder:_LoadLevelInternal()
 
   --发送开始事件
-  Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_START', '*', nil)
+  Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_START', nil)
   --加载基础设置
   local level = self._CurrentLevelJson.level
   local levelName = self._CurrentLevelJson.name
@@ -259,7 +259,7 @@ function LevelBuilder:_LoadLevelInternal()
   self:CallLevelCustomModEvent('beforeLoad')
   if level.customModEventName and level.customModEventName ~= '' then
     Game.Mediator:RegisterGlobalEvent(level.customModEventName)
-    Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { 'pre' })
+    Game.Mediator:DispatchGlobalEvent(level.customModEventName, { 'pre' })
   end
 
   Log.D(TAG, 'Check config')
@@ -812,7 +812,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
   coroutine.resume(coroutine.create(function()
 
     --发送开始事件
-    Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_UNLOAD_START', '*', nil)
+    Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_UNLOAD_START', nil)
 
     Log.D(TAG, 'UnLoad moduls')
 
@@ -824,7 +824,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
       local level = self._CurrentLevelJson.level
       self:_CallLoadStep('unload')
       if level.customModEventName and level.customModEventName ~= '' then
-        Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { 'unload' })
+        Game.Mediator:DispatchGlobalEvent(level.customModEventName, { 'unload' })
         Game.Mediator:UnRegisterGlobalEvent(level.customModEventName)
       end
     end
@@ -968,7 +968,7 @@ end
 function LevelBuilder:CallLevelCustomModEvent(type) 
   local level = self._CurrentLevelJson.level
   if level and level.customModEventName and level.customModEventName ~= '' then
-    Game.Mediator:DispatchGlobalEvent(level.customModEventName, '*', { type })
+    Game.Mediator:DispatchGlobalEvent(level.customModEventName, { type })
   end
 end
 function LevelBuilder:_CallLoadStep(type)
