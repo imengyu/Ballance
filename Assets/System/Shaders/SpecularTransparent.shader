@@ -1,4 +1,4 @@
-Shader "Custom/CustomTransparent"
+Shader "Custom/SpecularTransparent"
 {
     Properties
     {

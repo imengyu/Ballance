@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Stick_Bottom
   m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHABLEND_ON
-  m_LightmapFlags: 4
+  m_ShaderKeywords: _ALPHABLEND_ON _EMISSION
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -60,13 +60,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _GlossMapScale: 1
-    - _Glossiness: 0.4
+    - _Glossiness: 0.13
     - _GlossyReflections: 1
     - _Metallic: 0.2
     - _Mode: 2
@@ -78,7 +79,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.4, g: 0.7294118, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.61957103, g: 0.76557744, b: 0.8584906, a: 1}
+    - _Color: {r: 0.22316661, g: 0.53693056, b: 0.8018868, a: 1}
+    - _EmissionColor: {r: 0.23709506, g: 0.31892562, b: 0.4528302, a: 1}
+    - _SpecColor: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
   m_BuildTextureStacks: []

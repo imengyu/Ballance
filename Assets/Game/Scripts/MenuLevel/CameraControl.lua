@@ -1,5 +1,6 @@
 local Vector3 = UnityEngine.Vector3
 local Time = UnityEngine.Time
+local FogMode = UnityEngine.FogMode
 local RenderSettings = UnityEngine.RenderSettings
 local Color = UnityEngine.Color
 local GameManager = Ballance2.Services.GameManager
@@ -49,7 +50,7 @@ function CreateClass:CameraControl()
     self.transformI_Zone_SuDu = self.I_Zone_SuDu.transform
     self.transformI_Zone_NenLi = self.I_Zone_NenLi.transform
     self.transformI_Zone_LiLiang = self.I_Zone_LiLiang.transform
-    self.skyBoxNight = SkyBoxUtils.MakeSkyBox('D')
+    self.skyBoxNight = SkyBoxUtils.MakeSkyBox('M')
     self.skyBoxDay = SkyBoxUtils.MakeSkyBox('C')
     self.menuSound = GameSoundManager:RegisterSoundPlayer(GameSoundType.Background, GameSoundManager:LoadAudioResource('core.sounds.music:Menu_atmo.wav'), false, true, 'MenuSound')
     self.menuSound:Play()
@@ -112,11 +113,14 @@ function CreateClass:CameraControl()
 
   function CameraControl:SetFog(isLz) 
     RenderSettings.fog = true
-    RenderSettings.fogDensity = 0.005
+    RenderSettings.fogDensity = 0.03
+    RenderSettings.fogStartDistance = 100
+    RenderSettings.fogEndDistance = 800
+    RenderSettings.fogMode = FogMode.Linear
     if(isLz) then
       RenderSettings.fogColor = Color(0.180, 0.254, 0.301)
     else
-      RenderSettings.fogColor = Color(0.745, 0.623, 0.384)
+      RenderSettings.fogColor = Color(0.827, 0.784, 0.581)
     end
   end
   ---切换主菜单关卡LightZone模式

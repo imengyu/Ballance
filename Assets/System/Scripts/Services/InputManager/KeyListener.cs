@@ -208,7 +208,10 @@ namespace Ballance2.Services.InputManager
           {
             if(!AllowMultipleKey && lastPressedKey == item.key) {
               //相同的按键，并且不允许发送相同按键，则不发送按键
-              item.downed = false;
+              if(item.downed) {
+                item.downed = false;
+                item.callBack(item.key, false);
+              }
             } else {
               item.downed = true;
               item.callBack(item.key, true);
