@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: P_Dome_MFMat
-  m_Shader: {fileID: 4800000, guid: 836e1f4d588cbee45b35f658bcfa9163, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7f9174b6c3c468f42829266b8810bf48, type: 3}
   m_ShaderKeywords: _DETAIL_MULX2 _EMISSION _NORMALMAP
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -47,6 +47,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: aae66db9d5b1dca4b92a670c741132ed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 2800000, guid: f79c8a877b7396f41bf54a8975c39784, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 2800000, guid: f79c8a877b7396f41bf54a8975c39784, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -65,6 +69,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondTex:
+        m_Texture: {fileID: 2800000, guid: aae66db9d5b1dca4b92a670c741132ed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -87,7 +95,7 @@ Material:
     - _DstBlend: 0
     - _Emission: 0
     - _EnvironmentScale: 0
-    - _Gloss: 2
+    - _Gloss: 20
     - _GlossMapScale: 1
     - _Glossiness: 0.6
     - _GlossyReflections: 1
@@ -101,6 +109,7 @@ Material:
     - _Saturation: 1.15
     - _Shininess: 0.2
     - _SmoothnessTextureChannel: 0
+    - _SpecPower: 0.2
     - _Specular: 0.1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -108,8 +117,10 @@ Material:
     - _ZWrite: 1
     - __dirty: 1
     m_Colors:
+    - _AmbientColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.827451, g: 0.8117647, b: 0.62352943, a: 1}
+    - _Emission: {r: 0.827451, g: 0.8117647, b: 0.62352943, a: 0.5254902}
+    - _EmissionColor: {r: 0.735849, g: 0.7179601, b: 0.503293, a: 1}
     - _ReflectColor: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

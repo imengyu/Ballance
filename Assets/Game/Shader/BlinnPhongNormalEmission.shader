@@ -1,4 +1,4 @@
-Shader "BlinnPhongLikeVirtools" {
+Shader "LikeVirtools/BlinnPhongNormalEmission" {
 	
   Properties {
     _AmbientColor ("Ambient", Color) = (0,0,0,1)
@@ -7,7 +7,7 @@ Shader "BlinnPhongLikeVirtools" {
     _SpecPower ("Specular Power", float) = 0
     _Gloss ("Gloss", float) = 0
     _MainTex ("Texture", 2D) = "white" {}
-    _BumpMap ("Normalmap", 2D) = "bump" {}
+    _BumpMap ("Normal Map", 2D) = "bump" {}
     _Emission ("Emission", 2D) = "white" {}
     _EmissionColor ("Emission Color", Color) = (0,0,0,1)
   }
