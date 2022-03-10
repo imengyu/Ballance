@@ -17,8 +17,6 @@ local CameraControl = {
   I_Zone_NenLi = nil, ---@type GameObject
   I_Zone_LiLiang = nil, ---@type GameObject
   I_Dome = nil, ---@type GameObject
-  I_Light_Night = nil, ---@type GameObject
-  I_Light_Day = nil, ---@type GameObject
   skyBox = nil, ---@type Skybox
   skyBoxNight = nil, ---@type Material
   skyBoxDay = nil, ---@type Material
@@ -132,8 +130,7 @@ function CreateClass:CameraControl()
       GameSoundManager:PlayFastVoice('core.sounds.music:Music_thunder.wav', GameSoundType.Background)
       GameUIManager:MaskBlackSet(true)
       GameUIManager:MaskBlackFadeOut(1)
-      self.I_Light_Night:SetActive(true)
-      self.I_Light_Day:SetActive(false)
+      GameManager.GameLight.color = Color(0.2,0.4,0.6)
       self.I_Zone:SetActive(true)
       self.skyBox.material = self.skyBoxNight
       self.state.isInLightZone = true
@@ -143,8 +140,7 @@ function CreateClass:CameraControl()
         GameUIManager:MaskBlackSet(true)
         GameUIManager:MaskBlackFadeOut(1)
       end
-      self.I_Light_Day:SetActive(true)
-      self.I_Light_Night:SetActive(false)
+      GameManager.GameLight.color = Color(1,1,1)
       self.I_Zone:SetActive(false)
       self.skyBox.material = self.skyBoxDay
       self.state.isInLightZone = false

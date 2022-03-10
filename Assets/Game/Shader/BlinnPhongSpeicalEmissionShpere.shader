@@ -1,4 +1,4 @@
-Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithOneBlend"
+Shader "LikeVirtools/BlinnPhongSpeicalEmissionShpere"
 {
   Properties
   {
@@ -7,7 +7,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithOneBlend"
     _SpecColor ("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
     _Gloss ("Gloss", float) = 0
     _MainTex ("Texture", 2D) = "white" {}
-    _SecondTex ("Second Texture", 2D) = "white" {}
     _Emission ("Emission", Color) = (0,0,0,1)
   }
   SubShader
@@ -37,21 +36,26 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithOneBlend"
       struct v2f
       {
         float2 uv : TEXCOORD0;
-        UNITY_FOG_COORDS(1)
         float3 worldNormal : NORMAL;
 				float3 viewDir : TEXCOORD1;
         float4 vertex : SV_POSITION;
-				float4 uv2 : TEXCOORD2;
+				float2 uv2 : TEXCOORD2;
+        UNITY_FOG_COORDS(3)
       };
 
       sampler2D _MainTex;
-      sampler2D _SecondTex;
-      float4 _SecondTex_ST;
       float4 _MainTex_ST;
 			fixed4 _Color;
 			fixed4 _AmbientColor;
 			fixed4 _Emission;
 			float _Gloss;
+
+      float2 GetUV(float3 r)
+      {
+        float m = sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0)); 
+        float3 n = float3(r.x / m, r.y / m, r.z / m);
+        return float2(0.5 * n.x + 0.5,0.5 * n.y + 0.5);
+      }
 
       v2f vert (appdata v)
       {
@@ -62,7 +66,13 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithOneBlend"
         
 				float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				o.viewDir = _WorldSpaceCameraPos - worldPos;
-				o.uv2 = ComputeScreenPos(o.vertex);
+				
+        float3 posEyeSpace = mul(UNITY_MATRIX_MV,v.vertex).xyz;
+        float3 I = posEyeSpace - float3(0,0,0);
+        float3 N = mul((float3x3)UNITY_MATRIX_MV,v.normal);
+        N = normalize(N);
+        float3 R = reflect(I,N);
+        o.uv2 = GetUV(R);
 
         UNITY_TRANSFER_FOG(o,o.vertex);
         return o;
@@ -70,7 +80,7 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithOneBlend"
 
       fixed4 frag (v2f i) : SV_Target
       { 
-        fixed4 col = tex2D(_MainTex, i.uv) * _Color * tex2Dproj(_SecondTex, i.uv2);
+        fixed4 col = tex2D(_MainTex, i.uv2) * _Color;
 				fixed3 ambient = (UNITY_LIGHTMODEL_AMBIENT.xyz + _AmbientColor) * col;
 				fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
 				fixed3 worldNormal = normalize(i.worldNormal);

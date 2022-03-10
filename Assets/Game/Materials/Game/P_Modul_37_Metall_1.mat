@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: P_Modul_37_Metall_1
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 6e100b1f744cbca44ac87f9ca18e8ac2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -61,6 +61,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Gloss: 20
     - _GlossMapScale: 1
     - _Glossiness: 0.2
     - _GlossyReflections: 1
@@ -74,6 +75,9 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _AmbientColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 0.6784314, g: 0.6784314, b: 0.6784314, a: 1}
+    - _Emission: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
     - _EmissionColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_BuildTextureStacks: []

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PE_UFO
-  m_Shader: {fileID: 4800000, guid: 7f9174b6c3c468f42829266b8810bf48, type: 3}
+  m_Shader: {fileID: 4800000, guid: a1fde486d716e1f419de698e93ed9796, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -59,6 +59,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ReflectionTex:
+        m_Texture: {fileID: 2800000, guid: 35511010135a95e40aab3d1128b44e4e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SecondTex:
         m_Texture: {fileID: 2800000, guid: 35511010135a95e40aab3d1128b44e4e, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -94,8 +98,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AmbientColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Emission: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    - _Color: {r: 0.91764706, g: 0.91764706, b: 0.91764706, a: 1}
+    - _Emission: {r: 0.2901961, g: 0.2901961, b: 0.2901961, a: 1}
     - _EmissionColor: {r: 0.2901961, g: 0.2901961, b: 0.2901961, a: 1}
     - _ReflectColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}

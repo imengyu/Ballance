@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TowerRoof
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 6e100b1f744cbca44ac87f9ca18e8ac2, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -65,6 +65,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Gloss: 100
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -79,7 +80,9 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _AmbientColor: {r: 0.09803922, g: 0.09803922, b: 0.09803922, a: 1}
     - _Color: {r: 0.85490197, g: 0.85490197, b: 0.85490197, a: 1}
+    - _Emission: {r: 0.40392157, g: 0.40392157, b: 0.40392157, a: 1}
     - _EmissionColor: {r: 0.40392157, g: 0.40392157, b: 0.40392157, a: 1}
     - _SpecColor: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
   m_BuildTextureStacks: []

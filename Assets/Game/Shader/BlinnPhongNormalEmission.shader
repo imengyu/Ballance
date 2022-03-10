@@ -8,8 +8,8 @@ Shader "LikeVirtools/BlinnPhongNormalEmission" {
     _Gloss ("Gloss", float) = 0
     _MainTex ("Texture", 2D) = "white" {}
     _BumpMap ("Normal Map", 2D) = "bump" {}
-    _Emission ("Emission", 2D) = "white" {}
-    _EmissionColor ("Emission Color", Color) = (0,0,0,1)
+    _Emission ("Emission", Color) = (0,0,0,1)
+    _EmissionTex ("Emission Texture", 2D) = "white" {} 
   }
 
   SubShader {
@@ -27,19 +27,19 @@ Shader "LikeVirtools/BlinnPhongNormalEmission" {
     //----------------------------------------------
 
     sampler2D _MainTex;
-    sampler2D _Emission;
+    sampler2D _EmissionTex;
     sampler2D _BumpMap;
     samplerCUBE _Cube;
     fixed4 _Color;
     fixed4 _AmbientColor;
-    fixed4 _EmissionColor;
+    fixed4 _Emission;
     half _SpecPower;
     half _Gloss;
     //----------------------------------------------
 
     struct Input {
       float2 uv_MainTex;
-      float2 uv_Emission;
+      float2 uv_EmissionTex;
       float2 uv_BumpMap;
       float3 viewDir;
       float3 worldRefl;
@@ -54,7 +54,7 @@ Shader "LikeVirtools/BlinnPhongNormalEmission" {
       o.Gloss = _Gloss;
       o.Specular = _SpecPower;
       o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
-      o.Emission = tex2D(_Emission, IN.uv_Emission) * _EmissionColor;
+      o.Emission = tex2D(_EmissionTex, IN.uv_EmissionTex) * _Emission;
     }
 
     //----------------------------------------------

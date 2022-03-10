@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: P_Modul_25_Wood
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 6e100b1f744cbca44ac87f9ca18e8ac2, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -65,6 +65,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Gloss: 100
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossyReflections: 1
@@ -78,7 +79,9 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.7042542, g: 0.7735849, b: 0.7340601, a: 1}
+    - _AmbientColor: {r: 0.061899252, g: 0.122641504, b: 0.07943796, a: 1}
+    - _Color: {r: 0.77254903, g: 0.7735849, b: 0.77254903, a: 1}
+    - _Emission: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 0.39215687}
     - _EmissionColor: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 1}
     - _SpecColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 1}
   m_BuildTextureStacks: []

@@ -92,6 +92,11 @@ namespace Ballance2.Services
     /// </summary>
     [LuaApiDescription("根GameActionStore")]
     public GameActionStore GameActionStore { get; internal set; }
+    /// <summary>
+    /// 全局灯光实例
+    /// </summary>
+    [LuaApiDescription("全局灯光实例")]
+    public static Light GameLight { get; private set; }
 
     public static bool DebugMode { get; private set; }
 
@@ -110,6 +115,7 @@ namespace Ballance2.Services
       GameCanvas = gameEntryInstance.GameCanvas;
       DebugMode = gameEntryInstance.DebugMode;
       GameDebugCommandServer = new GameDebugCommandServer();
+      GameLight = GameObject.Find("GameLight").GetComponent<Light>();
 
       try {
         InitBase(gameEntryInstance, () => StartCoroutine(InitAsysc()));

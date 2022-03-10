@@ -1,6 +1,5 @@
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
-local CloneUtils = Ballance2.Utils.CloneUtils
-local KeyListener = Ballance2.Services.InputManager.KeyListener
+local GameObject = UnityEngine.GameObject
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
@@ -18,10 +17,6 @@ local TAG = 'GamePlayManager'
 GamePlayManager = ClassicObject:extend()
 
 function GamePlayManager:new()
-
-  self.GameLightGameObject = nil
-  self.GameLightA = nil
-  self.GameLightB = nil
 
   self.StartLife = 3
   self.StartPoint = 1000
@@ -113,9 +108,6 @@ function GamePlayManager:OnDestroy()
   for _, value in pairs(self._CommandIds) do
     GameDebugCommandServer:UnRegisterCommand(value)
   end
-
-  if (not Slua.IsNull(self.GameLightGameObject)) then UnityEngine.Object.Destroy(self.GameLightGameObject) end 
-  self.GameLightGameObject = nil
 end
 function GamePlayManager:FixedUpdate()
   --分数每半秒减一
@@ -289,23 +281,11 @@ end
 ---@param lightColor Color 灯光颜色
 function GamePlayManager:CreateSkyAndLight(skyBoxPre, customSkyMat, lightColor)
   Game.GamePlay.CamManager:SetSkyBox(customSkyMat or SkyBoxUtils.MakeSkyBox(skyBoxPre)) --Init sky
-
-  if self.GameLightGameObject == nil then
-    self.GameLightGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('Assets/Game/Prefabs/Core/GameLight.prefab'), 'GameLight')
-    self.GameLightA = self.GameLightGameObject.transform:Find('Light'):GetComponent(UnityEngine.Light) ---@type Light
-    self.GameLightB = self.GameLightGameObject.transform:Find('LightShadow'):GetComponent(UnityEngine.Light) ---@type Light
-  end
-
-  self.GameLightGameObject:SetActive(true)
-  self.GameLightA.color = lightColor
-  self.GameLightB.color = lightColor
+  Ballance2.Services.GameManager.GameLight.color = lightColor
 end
 --隐藏天空盒和关卡灯光
 function GamePlayManager:HideSkyAndLight()
   Game.GamePlay.CamManager:SetSkyBox(nil)
-  if self.GameLightGameObject ~= nil then  
-    self.GameLightGameObject:SetActive(false)
-  end
 end
 
 function GamePlayManager:_QuitOrLoadNextLevel(loadNext) 
