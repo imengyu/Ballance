@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 85095162546066068}
   - component: {fileID: 226265094695849406}
   - component: {fileID: 5889480106216109922}
+  - component: {fileID: 8605165192486180445}
   m_Layer: 5
   m_Name: LifeBoard
   m_TagString: Untagged
@@ -76,6 +77,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8605165192486180445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062647468284751746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db2f6b6efa37ad4baf10eeef22ab74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3951310920132228518
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,6 +100,7 @@ GameObject:
   - component: {fileID: 5967053433638843519}
   - component: {fileID: 3647799687592075981}
   - component: {fileID: 399431147414220481}
+  - component: {fileID: 7894679401781723762}
   m_Layer: 5
   m_Name: ScoreBoard
   m_TagString: Untagged
@@ -154,6 +168,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7894679401781723762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3951310920132228518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db2f6b6efa37ad4baf10eeef22ab74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5295842861937213600
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,6 +960,7 @@ GameObject:
   - component: {fileID: 938242838704221825}
   - component: {fileID: 6405076127712876760}
   - component: {fileID: 5835550931648878303}
+  - component: {fileID: 8485895165557202520}
   m_Layer: 5
   m_Name: LifeBoardLeftBaffle
   m_TagString: Untagged
@@ -999,3 +1026,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8485895165557202520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8598704502929217561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db2f6b6efa37ad4baf10eeef22ab74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

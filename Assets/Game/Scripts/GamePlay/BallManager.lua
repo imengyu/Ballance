@@ -3,6 +3,7 @@ local Log = Ballance2.Log
 local KeyListener = Ballance2.Services.InputManager.KeyListener
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 local Vector3 = UnityEngine.Vector3
+local ConstraintSource = UnityEngine.Animations.ConstraintSource
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameErrorChecker = Ballance2.Services.Debug.GameErrorChecker
 local GameManager = Ballance2.Services.GameManager
@@ -65,6 +66,7 @@ local BallRegStorage = {
 ---@field _BallStone GameObject
 ---@field _BallPaper GameObject
 ---@field _BallSmoke GameObject
+---@field _BallShadowProjector ParentConstraint
 ---@field CurrentBallName string 获取当前的球名称 [R]
 ---@field CurrentBall Ball 获取当前的球 [R]
 ---@field PushType number 获取或者设置当前球的推动方向 [RW]
@@ -451,36 +453,36 @@ end
 function BallManager:_FlushCurrentBallAllStatus() 
   local status = self._private.controllingStatus
   if status == BallControlStatus.NoControl then
-    self.CanControll = false
+    self:_SetCanControl(false)
     self.CanControllCamera = false
     self:_DeactiveCurrentBall()
     GamePlay.CamManager:DisbleAll()
   elseif status == BallControlStatus.Control then
-    self.CanControll = true
+    self:_SetCanControl(true)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
   elseif status == BallControlStatus.LockMode then
-    self.CanControll = false
+    self:_SetCanControl(false)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(false)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
   elseif status == BallControlStatus.UnleashingMode then
-    self.CanControll = false
+    self:_SetCanControl(false)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
   elseif status == BallControlStatus.FreeMode then
-    self.CanControll = false
+    self:_SetCanControl(false)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
   elseif status == BallControlStatus.LockLookMode then
-    self.CanControll = false
+    self:_SetCanControl(false)
     self.CanControllCamera = false
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(false)
@@ -489,10 +491,18 @@ function BallManager:_FlushCurrentBallAllStatus()
   
   self.EventControllingStatusChanged:Emit(nil)
 end
+function BallManager:_SetCanControl(can) 
+  self.CanControll = can
+end
 ---取消激活当前的球
 function BallManager:_DeactiveCurrentBall() 
   local current = self._private.currentActiveBall
   if current ~= nil then
+    --隐藏阴影
+    self._BallShadowProjector.constraintActive = false
+    if self._BallShadowProjector.gameObject.activeSelf then
+      self._BallShadowProjector.gameObject:SetActive(false)
+    end
     --清除力
     self:RemoveAllBallPush()
     --取消激活
@@ -510,6 +520,16 @@ function BallManager:_ActiveCurrentBall()
   if current == nil and self._private.currentBall ~= nil then
     current = self._private.currentBall
     self._private.currentActiveBall = self._private.currentBall
+    --设置阴影位置与父级约束    
+    local constraintSource = ConstraintSource()
+    constraintSource.sourceTransform = current.ball.transform
+    constraintSource.weight = 1
+    self._BallShadowProjector:SetSource(0, constraintSource)
+    self._BallShadowProjector.constraintActive = true
+    --显示阴影
+    if not self._BallShadowProjector.gameObject.activeSelf then
+      self._BallShadowProjector.gameObject:SetActive(true)
+    end
     ---设置位置
     current.ball.transform.position = self._private.nextRecoverPos
     --设置摄像机跟随对象

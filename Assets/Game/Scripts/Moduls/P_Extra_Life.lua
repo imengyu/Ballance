@@ -35,7 +35,7 @@ function P_Extra_Life:Start()
   hitinfo = Physics.Raycast(self.transform.position, Vector3(0, -1, 0), Slua.out, 5) 
   if ok and hitinfo.collider ~= nil then
     local parentName = hitinfo.collider.gameObject.tag
-    if parentName == 'Phys_Floors' or parentName == 'Phys_FloorWoods' then
+    if (parentName == 'Phys_Floors' or parentName == 'Phys_FloorWoods') and  parentName ~= 'Phys_FloorRails' then
       self._OnFloor = true
     else
       self._OnFloor = false

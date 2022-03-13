@@ -77,10 +77,12 @@ function Tutorial:Start()
     self.Pfeil_Hoch:SetActive(false)
     --初始化教程UI
     self._TutorialUI = Game.UIManager:InitViewToCanvas(CorePackage:GetPrefabAsset('GameTutorialUI.prefab'), "GameTutorialUI", false)
-    self._TutorialUIBg = self._TutorialUI.transform:GetChild(0):GetComponent(Image)
-    self._TutorialUIText = self._TutorialUI.transform:GetChild(0):GetChild(0):GetComponent(Text)
-    self._TutorialUIButtonContinue = self._TutorialUI.transform:GetChild(0):GetChild(1):GetComponent(Button)
-    self._TutorialUIButtonQuit = self._TutorialUI.transform:GetChild(0):GetChild(2):GetComponent(Button)
+    local view = self._TutorialUI.transform:GetChild(0)
+    local buttonView = self._TutorialUI.transform:GetChild(1)
+    self._TutorialUIBg = view:GetComponent(Image)
+    self._TutorialUIText = view:GetChild(0):GetComponent(Text)
+    self._TutorialUIButtonContinue = buttonView:GetChild(0):GetComponent(Button)
+    self._TutorialUIButtonQuit = buttonView:GetChild(1):GetComponent(Button)
     self._TutorialUI.gameObject:SetActive(false)
     self:StartSeq()
 
@@ -174,22 +176,29 @@ function Tutorial:StartSeq()
   local step1KeyReturn = 0
   local step1KeyQ = 0
 
+  local funStepLock = false
+  local funQuitLock = false
   local funQuit = function ()
-    Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
-    --按 q 退出
-    UIManager:DeleteKeyListen(step1KeyReturn)
-    self:HideTutorial()
-    --继续游戏运行
-    GamePlay.GamePlayManager._ShouldStartByCustom = false
-    GamePlay.GamePlayManager.CanEscPause = true
-    GamePlay.GamePlayManager:ResumeLevel(true)
+    if not funQuitLock then
+      funQuitLock = true
+      Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
+      --按 q 退出
+      UIManager:DeleteKeyListen(step1KeyReturn)
+      self:HideTutorial()
+      --恢复球推动键
+      GamePlay.BallManager._private.keyListener.IsListenKey = true
+      --继续游戏运行
+      GamePlay.GamePlayManager._ShouldStartByCustom = false
+      GamePlay.GamePlayManager.CanEscPause = true
+      GamePlay.GamePlayManager:ResumeLevel(true)
 
-    self.Tut_ExtraLife.onTriggerEnter = nil
-    self.Tut_StoneTranfo.onTriggerEnter = nil
-    self.Tut_Rampe.onTriggerEnter = nil
-    self.Tut_ExtraPoint.onTriggerEnter = nil
-    self.Tut_Checkpoint.onTriggerEnter = nil
-    self.Tut_End.onTriggerEnter = nil
+      self.Tut_ExtraLife.onTriggerEnter = nil
+      self.Tut_StoneTranfo.onTriggerEnter = nil
+      self.Tut_Rampe.onTriggerEnter = nil
+      self.Tut_ExtraPoint.onTriggerEnter = nil
+      self.Tut_Checkpoint.onTriggerEnter = nil
+      self.Tut_End.onTriggerEnter = nil
+    end
   end
   local funStep2 = function ()
     Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
@@ -219,6 +228,8 @@ function Tutorial:StartSeq()
     UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil02, 1, nil)
     UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil03, 1, nil)
     UIManager.UIFadeManager:AddFadeIn(self.Tut_Richt_Pfeil04, 1, nil)
+    
+    self._TutorialUIButtonContinue.gameObject:SetActive(false)
 
     local BallManager = GamePlay.BallManager;
 
@@ -255,6 +266,7 @@ function Tutorial:StartSeq()
       UIManager.UIFadeManager:AddFadeOut(self.Tut_Richt_Pfeil04, 1, true, nil)
       LuaTimer.Add(1000, function ()
         self.Tut_Richt_Pfeil.constraintActive = false
+        self._TutorialUIButtonContinue.gameObject:SetActive(true)
         BallManager.EventFlushBallPush:Off(FlushBallPushListener)
       end)
     end
@@ -301,6 +313,8 @@ function Tutorial:StartSeq()
     Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.Normal)
     self._TutorialUIButtonQuit.gameObject:SetActive(false)
     UIManager:DeleteKeyListen(step1KeyQ)
+    --恢复球推动键
+    GamePlay.BallManager._private.keyListener.IsListenKey = true
 
     --进行下一步
     self:HideTutorial()
@@ -408,7 +422,13 @@ function Tutorial:StartSeq()
   self._TutorialUIButtonContinue.onClick:RemoveAllListeners()
   self._TutorialUIButtonQuit.onClick:RemoveAllListeners()
   self._TutorialUIButtonContinue.onClick:AddListener(function ()
-    if self._TutorialStep == 1  then
+
+    --防止按键安得太快
+    if funStepLock then return end
+    funStepLock = true
+    LuaTimer.Add(1000, function () funStepLock = false end)
+
+    if self._TutorialStep == 1 then
       funSeq()
     elseif self._TutorialStep == 2  then
       funStep1()
@@ -418,13 +438,16 @@ function Tutorial:StartSeq()
       commonTurHide()
     end
   end)
-  self._TutorialUIButtonQuit.onClick:AddListener(funQuit)
+  self._TutorialUIButtonQuit.onClick:AddListener(function () funQuit() end)
+
+  --先暂停球推动键
+  GamePlay.BallManager._private.keyListener.IsListenKey = false
 
   LuaTimer.Add(500, function ()
-    --步骤1，按 q 退出，按回车继续
-    step1KeyQ = UIManager:WaitKey(KeyCode.Q, true, funQuit)
-    step1KeyReturn = UIManager:WaitKey(KeyCode.Return, true, funSeq)
     self:ShowTutorialText()
+    --步骤1，按 q 退出，按回车继续
+    step1KeyReturn = UIManager:WaitKey(KeyCode.Return, true, function () funSeq() end)
+    step1KeyQ = UIManager:WaitKey(KeyCode.Q, true, function () funQuit() end)
   end)
 
 end

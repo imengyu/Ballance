@@ -187,6 +187,8 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
     Log.W(TAG, "No found CurrentLevelEndBalloon !")
   end
 
+  Log.D(TAG, 'Active Sector '..sector)
+
   self.EventSectorActive:Emit({ 
     sector = sector,
     playCheckPointSound = playCheckPointSound
@@ -206,6 +208,8 @@ function SectorManager:DeactiveCurrentSector()
       end
     end 
   end
+
+  Log.D(TAG, 'Deactive current sector '..sector)
 
   self.EventSectorDeactive:Emit({ 
     oldSector = sector 
@@ -231,6 +235,8 @@ function SectorManager:ResetAllSector(active)
     end
   end
   self.CurrentLevelEndBalloon:Reset()
+
+  Log.D(TAG, 'Reset all sector')
 
   self.EventSectorDeactive:Emit({ 
     active = active 

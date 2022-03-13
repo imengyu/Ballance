@@ -259,6 +259,8 @@ function GamePlayManager:_InitAndStart()
       end
     end
 
+    Log.D(TAG, 'Start')
+
     self.EventStart:Emit(nil)
 
     if not self._ShouldStartByCustom then
@@ -289,6 +291,8 @@ function GamePlayManager:HideSkyAndLight()
 end
 
 function GamePlayManager:_QuitOrLoadNextLevel(loadNext) 
+
+  Log.D(TAG, 'Start Quit Level')
 
   local callBack = nil
   if loadNext then
@@ -337,6 +341,8 @@ function GamePlayManager:RestartLevel()
   --黑色进入
   Game.UIManager:MaskBlackFadeIn(1)
 
+  Log.D(TAG, 'Restart Level')
+
   self:_Stop(BallControlStatus.NoControl)
 
   self.EventRestart:Emit(nil)
@@ -364,6 +370,8 @@ end
 function GamePlayManager:PauseLevel(showPauseUI) 
   self:_Stop(BallControlStatus.FreeMode)
 
+  Log.D(TAG, 'Pause')
+
   --停止模拟
   self.GamePhysicsWorld.Simulate = false
 
@@ -378,6 +386,8 @@ end
 ---继续关卡
 ---@param forceRestart boolean 是否强制重置
 function GamePlayManager:ResumeLevel(forceRestart) 
+
+  Log.D(TAG, 'Resume')
 
   --UI
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
@@ -397,6 +407,8 @@ function GamePlayManager:Fall()
 
   if self._DethLock then return end
   self._DethLock = true
+
+  Log.D(TAG, 'Fall . CurrentLife: '..tostring(self.CurrentLife))
 
   --下落音乐
   self._SoundBallFall.volume = 1
@@ -437,6 +449,8 @@ function GamePlayManager:Fall()
 
     self.EventFall:Emit(nil)
   else
+    
+    Log.D(TAG, 'Death')
 
     --禁用控制
     self:_Stop(BallControlStatus.FreeMode)
@@ -461,6 +475,8 @@ function GamePlayManager:Pass()
 
   if self.CurrentLevelPass then return end
 
+  Log.D(TAG, 'Pass')
+
   self.CurrentLevelPass = true
   self._SoundLastSector:Stop() --停止最后一小节的音乐
   self:_Stop(BallControlStatus.UnleashingMode)
@@ -481,7 +497,7 @@ function GamePlayManager:Pass()
   else
     self._SoundFinnal:Play() --播放音乐
     self:_HideBalloonEnd(false) --开始隐藏飞船
-    LuaTimer.Add(5000, function ()
+    LuaTimer.Add(6000, function ()
       GameUI.WinScoreUIControl:StartSeq()
     end)
   end
@@ -497,7 +513,7 @@ function GamePlayManager:_HideBalloonEnd(fromUfo)
     self._HideBalloonEndTimerID = nil
   end
   --60秒后隐藏飞船
-  self._HideBalloonEndTimerID = LuaTimer.Add(fromUfo and 80000 or 40000, function ()
+  self._HideBalloonEndTimerID = LuaTimer.Add(fromUfo and 40000 or 60000, function ()
     self._HideBalloonEndTimerID = nil
     GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
     GamePlay.SectorManager.CurrentLevelEndBalloon:Deactive()

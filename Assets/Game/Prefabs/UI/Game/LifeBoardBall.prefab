@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3195199800857277856}
   - component: {fileID: 3987002052661277225}
   - component: {fileID: 4209840797223988030}
+  - component: {fileID: 2411099035862093799}
   m_Layer: 5
   m_Name: LifeBoardBall
   m_TagString: Untagged
@@ -28,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -65,8 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7978793109757516488, guid: bfda2609231a9784c9eca0cedf2e62aa,
-    type: 3}
+  m_Sprite: {fileID: -7978793109757516488, guid: bfda2609231a9784c9eca0cedf2e62aa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,3 +77,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2411099035862093799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7304222517070319948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db2f6b6efa37ad4baf10eeef22ab74a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

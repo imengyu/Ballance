@@ -27,13 +27,18 @@ P_Extra_Point = ModulBase:extend()
 
 function P_Extra_Point:new()
   P_Extra_Point.super.new(self)
+  self._Actived = false
   self._RotDegree = 6
-  self._Rotate = true
+  self._Rotate = false
   self._FlyUpTime = 2.5
   self._FlyFollowTime = 0.3
+  self.AutoActiveBaseGameObject = false
+  self.EnableBallRangeChecker = true
+  self.BallCheckeRange = 30
 end
 
 function P_Extra_Point:Start()
+  ModulBase.Start(self)
   
   self._P_Extra_Point_Ball_Fly1 = self.P_Extra_Point_Ball1:GetComponent(SmoothFly) ---@type SmoothFly
   self._P_Extra_Point_Ball_Fly2 = self.P_Extra_Point_Ball2:GetComponent(SmoothFly) ---@type SmoothFly
@@ -88,7 +93,7 @@ function P_Extra_Point:Start()
   hitinfo = Physics.Raycast(self.transform.position, Vector3(0, -1, 0), Slua.out, 5) 
   if ok and hitinfo.collider ~= nil then
     local parentName = hitinfo.collider.gameObject.tag
-    if parentName == 'Phys_Floors' or parentName == 'Phys_FloorWoods' then
+    if (parentName == 'Phys_Floors' or parentName == 'Phys_FloorWoods') and  parentName ~= 'Phys_FloorRails' then
       self._OnFloor = true
     end
   else
@@ -161,6 +166,7 @@ function P_Extra_Point:Update()
 end
 
 function P_Extra_Point:Active()
+  ModulBase.Active(self)
   if not self._Actived then
     self.gameObject:SetActive(true)
     self.P_Extra_Point_Floor:SetActive(self._OnFloor)
@@ -171,12 +177,13 @@ function P_Extra_Point:Active()
     self.P_Extra_Point_Ball4:SetActive(true)
     self.P_Extra_Point_Ball5:SetActive(true)
     self.P_Extra_Point_Ball6:SetActive(true)
-    self._Rotate = true
     self._FlyModUp = false
     self._FlyModFollow = false
   end
 end
 function P_Extra_Point:Deactive()
+  ModulBase.Deactive(self)
+  self._Rotate = false
   self.gameObject:SetActive(false)
 end
 function P_Extra_Point:Reset(type)
@@ -206,6 +213,17 @@ function P_Extra_Point:Backup()
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball4)
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball5)
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball6)
+end
+
+function P_Extra_Point:BallEnterRange()
+  if not self._Actived and not self._Rotate then --进入范围后才旋转
+    self._Rotate = true
+  end
+end
+function P_Extra_Point:BallLeaveRange()
+  if not self._Actived and self._Rotate then --离开范围后停止旋转
+    self._Rotate = false
+  end
 end
 
 function CreateClass:P_Extra_Point()
