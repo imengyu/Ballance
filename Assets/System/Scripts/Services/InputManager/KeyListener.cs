@@ -58,8 +58,10 @@ namespace Ballance2.Services.InputManager
     }
 
     private LinkedList<KeyListenerItem> items = new LinkedList<KeyListenerItem>();
+    [SerializeField]
     private bool isListenKey = true;
     private int listenKeyId = 0;
+
 
     /// <summary>
     /// 是否开启监听

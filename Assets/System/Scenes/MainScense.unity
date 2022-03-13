@@ -570,7 +570,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -818,14 +818,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033231942}
-  m_LocalRotation: {x: 0.23486276, y: 0.76218015, z: -0.3323822, w: 0.5034313}
-  m_LocalPosition: {x: 585.5, y: 555.4336, z: 0}
-  m_LocalScale: {x: 0.91477996, y: 0.91477996, z: 0.91477996}
+  m_LocalRotation: {x: 0.032845348, y: -0.919965, z: 0.37345728, w: 0.114521526}
+  m_LocalPosition: {x: 0, y: 200, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 48, y: 114, z: 2}
+  m_LocalEulerAnglesHint: {x: 44, y: -165, z: 2}
 --- !u!1001 &1690386672
 PrefabInstance:
   m_ObjectHideFlags: 0

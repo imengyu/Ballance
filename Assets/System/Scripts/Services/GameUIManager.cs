@@ -206,19 +206,17 @@ namespace Ballance2.Services
     [LuaApiParamDescription("callBack", "回调函数")]
     public int WaitKey(KeyCode code, bool pressedOrReleased, VoidDelegate callback)
     {
-      if(callback != null) {
-        int id = 0;
-        id = keyListener.AddKeyListen(code, (key, down) =>
+      int id = 0;
+      id = keyListener.AddKeyListen(code, (key, down) =>
+      {
+        if (down == pressedOrReleased)
         {
-          if (down == pressedOrReleased)
-          {
-            keyListener.DeleteKeyListen(id);
-            if(callback != null) callback();
-          }
-        });
-        return id;
-      }
-      return 0;
+          keyListener.DeleteKeyListen(id);
+          if(callback != null) 
+            callback();
+        }
+      });
+      return id;
     }
     /// <summary>
     /// 添加侦听器侦听键。

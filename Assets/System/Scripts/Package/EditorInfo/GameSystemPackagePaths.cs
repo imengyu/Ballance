@@ -18,6 +18,8 @@ public static class GameSystemPackagePaths {
     arr.Add("vscode-debuggee", "SystemScrips/Debugger/vscode-debuggee.lua");
     arr.Add("Check.lua", "SystemScrips/GameCoreLib/Check.lua");
     arr.Add("Check", "SystemScrips/GameCoreLib/Check.lua");
+    arr.Add("EventListener.lua", "SystemScrips/GameCoreLib/EventListener.lua");
+    arr.Add("EventListener", "SystemScrips/GameCoreLib/EventListener.lua");
     arr.Add("GameCoreLibInit.lua", "SystemScrips/GameCoreLib/GameCoreLibInit.lua");
     arr.Add("GameCoreLibInit", "SystemScrips/GameCoreLib/GameCoreLibInit.lua");
     arr.Add("Print.lua", "SystemScrips/GameCoreLib/Print.lua");
