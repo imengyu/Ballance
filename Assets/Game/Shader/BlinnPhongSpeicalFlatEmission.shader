@@ -1,4 +1,4 @@
-Shader "LikeVirtools/BlinnPhongSpeicalEmissionShpere"
+Shader "LikeVirtools/BlinnPhongSpeicalFlatEmission"
 {
   Properties
   {
@@ -11,26 +11,27 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionShpere"
   }
   SubShader
   {
-    Tags {  "Queue"="Geometry" "RenderType" = "Opaque" }
+    Tags {
+      "Queue" = "Geometry" 
+      "RenderType" = "Opaque"
+    }
     LOD 100
 
     Pass
     {
       Name "FORWARD" 
-      Tags { 
-        "LightMode" = "ForwardBase" 
-      }
-      
+
+      Tags { "LightMode" = "ForwardBase" }
+
       CGPROGRAM
-      #pragma vertex vert
-      #pragma fragment frag
-      // make fog work
+			#pragma target 3.0
       #pragma multi_compile_fog
       #pragma multi_compile_fwdbase
       #pragma multi_compile LIGHTPROBE_SH
-      #define UNITY_PASS_FORWARDBASE
-      #define USE_SPHERE
-      #define USE_SPHERE_MAP
+      #pragma vertex vert
+      #pragma fragment frag
+      #define UNITY_PASS_FORWARBNASE
+      #define FLAT_EMISSION
 
       //引入头文件
       #include "UnityCG.cginc"
@@ -43,24 +44,27 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionShpere"
 
       ENDCG
     }
+    
     Pass
     {
       Name "FORWARD_DELTA"
+
       Tags { 
         "LightMode" = "ForwardAdd"
       }
-
+      
       Blend One One
 			ZWrite Off
       Fog { Color (0,0,0,0) }
 
       CGPROGRAM
+			#pragma target 3.0
+      #pragma multi_compile_fwdadd
       #pragma vertex vert
       #pragma fragment frag
-      #pragma multi_compile_fwdadd 
       #define UNITY_PASS_FORWARDADD
-      #define USE_SPHERE
-      #define USE_SPHERE_MAP
+      #define USING_LIGHT_MULTI_COMPILE
+      #define FLAT_EMISSION
 
       //引入头文件
       #include "UnityCG.cginc"

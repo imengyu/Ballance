@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Columns_beige_fade
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 86411b68ab4ded94ca5cf7fd52e40ef5, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -66,6 +65,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
+    - _Gloss: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -79,7 +79,9 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
+    - _AmbientColor: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
+    - _Color: {r: 0.9137255, g: 0.9137255, b: 0.9137255, a: 1}
+    - _Emission: {r: 0.32156864, g: 0.32156864, b: 0.32156864, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecColor: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   m_BuildTextureStacks: []

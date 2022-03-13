@@ -31,7 +31,7 @@ struct VertexOutputBase
   float2 uv : TEXCOORD0;
   float3 worldNormal : NORMAL;
   float3 worldPos: TEXCOORD1;
-  float4 vertex : SV_POSITION;
+  float4 pos : SV_POSITION;
   UNITY_FOG_COORDS(2)
   LIGHTING_COORDS(3, 4)
   #ifdef LIGHTPROBE_SH
@@ -59,7 +59,7 @@ float _Gloss;
 VertexOutputBase vertForwardAdd (VertexInput v) 
 {
   VertexOutputBase o;
-  o.vertex = UnityObjectToClipPos(v.vertex);
+  o.pos = UnityObjectToClipPos(v.vertex);
   o.uv = TRANSFORM_TEX(v.uv, _MainTex);
   o.worldNormal = UnityObjectToWorldNormal(v.normal);
   o.worldPos = mul(unity_ObjectToWorld, v.vertex);
@@ -101,7 +101,7 @@ half4 fragForwardAdd (VertexOutputBase i) : SV_Target // backward compatibility 
   fixed3 color = diffuse * atten * _LightColor0.rgb;
   #else
   fixed3 halfDir = normalize(worldLight + worldView);
-  fixed3 specular = _LightColor0.rgb *  _SpecColor.rgb * pow(saturate(dot(halfDir, worldNormal)), _Gloss);
+  fixed3 specular = _LightColor0.rgb * _SpecColor.rgb * pow(saturate(dot(halfDir, worldNormal)), _Gloss * 0.5);
   fixed3 color = (diffuse + specular) * atten * _LightColor0.rgb;
   #endif
   return fixed4(color, 1.0);
@@ -110,10 +110,10 @@ half4 fragForwardAdd (VertexOutputBase i) : SV_Target // backward compatibility 
 VertexOutputBase vertForwardBase (VertexInput v) 
 {
   VertexOutputBase o;
-  o.vertex = UnityObjectToClipPos(v.vertex);
+  o.pos = UnityObjectToClipPos(v.vertex);
   o.uv = TRANSFORM_TEX(v.uv, _MainTex);
   //法线转化到世界空间
-  o.worldNormal = normalize(mul(v.normal, (float3x3)unity_WorldToObject));
+  o.worldNormal = UnityObjectToWorldNormal(v.normal);
   //顶点位置转化到世界空间 
   o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
   
@@ -136,8 +136,8 @@ VertexOutputBase vertForwardBase (VertexInput v)
   o.uv2 = GetSphereUV(R);
   #endif
 
-  UNITY_TRANSFER_LIGHTING(o,o.vertex)
-  UNITY_TRANSFER_FOG(o,o.vertex);
+  UNITY_TRANSFER_LIGHTING(o,o.pos)
+  UNITY_TRANSFER_FOG(o,o.pos);
   return o;
 }
 
@@ -170,23 +170,34 @@ half4 fragForwardBase (VertexOutputBase i) : SV_Target  // backward compatibilit
   //计算Diffuse
   fixed3 diffuse = _LightColor0.rgb * albedo.rgb * saturate(dot(worldNormal, worldLight));
 
+  #ifdef FLAT_EMISSION
+  fixed3 emission = _Emission.rgb * _Emission.a;
+  #else
+  fixed3 emission = _Emission.rgb * albedo.rgb * _Emission.a;
+  #endif
+
   //光照
   UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos.xyz);
 
   #ifdef NO_SPECULAR
-  fixed3 color = max(diffuse, _Emission.rgb * albedo.rgb * _Emission.a) * atten + ambient;
+  fixed3 color = max(diffuse, emission) * atten + ambient;
   #else
   //计算半角向量（光线方向 + 视线方向，结果归一化）
   fixed3 halfDir = normalize(worldLight + worldView);
   //计算Specular（Blinn-Phong计算的是）
   fixed3 specular = _LightColor0.rgb * _SpecColor.rgb * pow(saturate(dot(halfDir, worldNormal)), _Gloss);
   //结果为diffuse + ambient + specular
-  fixed3 color = (max(diffuse, _Emission.rgb * albedo.rgb * _Emission.a) + specular) * atten + ambient;
+  fixed3 color = (max(diffuse, emission) + specular) * atten + ambient;
   #endif
 
   // apply fog
   UNITY_APPLY_FOG(i.fogCoord, color);
+
+  #ifdef USE_TRANSPARENT
+  return fixed4(color, albedo.a);
+  #else
   return fixed4(color, 1.0);
+  #endif
 }
 
 #endif // BLINN_PHONG_NORMAL_EMISSION_INCLUDED

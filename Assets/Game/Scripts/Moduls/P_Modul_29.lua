@@ -19,7 +19,7 @@ function P_Modul_29:new()
   P_Modul_29.super.new(self)
   self._BrigeBreaked = false
   self.EnableBallRangeChecker = true
-  self.BallCheckeRange = 40
+  self.BallCheckeRange = 60
 end
 
 function P_Modul_29:Start()

@@ -110,7 +110,6 @@ function WinScoreUIControl:StartSeq()
     self.HighlightBar2:SetActive(true)
     self._IsCountingPoint = true
     
-    
   end))
 
   self._CountingPointEndCallback = function ()   
@@ -158,6 +157,8 @@ end
 function WinScoreUIControl:IsInSeq() return self._IsInSeq end
 ---跳过分数统计序列
 function WinScoreUIControl:Skip() 
+  if self._Skip then return end
+  
   self._IsInSeq = false
   self._Skip = true
   self._IsCountingPoint = false
@@ -166,7 +167,6 @@ function WinScoreUIControl:Skip()
   self.HighlightBar2:SetActive(false)
   self.HighlightBar3:SetActive(false)
   self.HighlightBar4:SetActive(true)
-  self:_ShowHighscore()
 
   local GamePlayManager = self._GamePlayManager
 
@@ -182,6 +182,9 @@ function WinScoreUIControl:Skip()
   self.ScoreTimePoints.text = tostring(self._ScoreNTimePoints)
   self.ScoreBouns.text = tostring(GamePlayManager.LevelScore)
   self.ScoreExtraLives.text = tostring(self._ScoreNExtraLives)
+  self.ScoreTotal.text = tostring(self._ScoreNTotal)
+
+  LuaTimer.Add(3500, function() self:_ShowHighscore() end)
 end
 function WinScoreUIControl:SaveHighscore(entryName) 
   Game.HighScoreManager.AddItem(GamePlay.GamePlayManager.CurrentLevelName, entryName, self._ScoreNTotal)

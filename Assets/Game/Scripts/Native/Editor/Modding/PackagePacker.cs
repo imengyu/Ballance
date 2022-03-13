@@ -56,6 +56,10 @@ namespace Ballance2.Editor.Modding
               string filesPath = files[i].FullName.Replace("\\", "/");
 
               if (filesPath.EndsWith(".meta")) continue;
+              if (filesPath.EndsWith(".shader")) continue;
+              if (filesPath.EndsWith(".shadergraph")) continue;
+              if (filesPath.EndsWith(".cginc")) continue;
+              if (filesPath.EndsWith(".md")) continue;
               if (filesPath.Contains("NoPackage")) continue;
               if (isCore && filesPath.Contains("Scripts/Native")) continue;
 
