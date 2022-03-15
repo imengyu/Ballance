@@ -25,39 +25,38 @@ function CreateGamePlayUI(package)
   local PageGameWin = GameUIManager:RegisterPage('PageGameWin', 'PageCommon')
   local PageEndScore = GameUIManager:RegisterPage('PageEndScore', 'PageTransparent')
   local PageHighscoreEntry = GameUIManager:RegisterPage('PageHighscoreEntry', 'PageCommon')
-
+  local PageGamePreviewPause = GameUIManager:RegisterPage('PageGamePreviewPause', 'PageCommon')
+  local PageGamePreviewQuitAsk = GameUIManager:RegisterPage('PageGamePreviewQuitAsk', 'PageCommon')
+  
   coroutine.resume(coroutine.create(function ()
     
     PageGamePause:CreateContent(package)
-    Yield(WaitForSeconds(0.06))
     PageGameQuitAsk:CreateContent(package)
-    Yield(WaitForSeconds(0.06))
     PageGameRestartAsk:CreateContent(package)
-    Yield(WaitForSeconds(0.06))
+    Yield(WaitForSeconds(0.1))
     PageGamePause:CreateContent(package)
-    Yield(WaitForSeconds(0.06))
     PageGamePause.CanEscBack = false
     PageGameWin:CreateContent(package)
-    Yield(WaitForSeconds(0.06))
+    Yield(WaitForSeconds(0.1))
     PageGameWinRestartAsk:CreateContent(package)
     PageGameWin.CanEscBack = false
-    Yield(WaitForSeconds(0.06))
     PageEndScore:CreateContent(package)
     PageEndScore.CanEscBack = false
-    Yield(WaitForSeconds(0.06))
+    Yield(WaitForSeconds(0.1))
     PageHighscoreEntry:CreateContent(package)
     PageHighscoreEntry.CanEscBack = false
-    Yield(WaitForSeconds(0.06))
     PageGameFail:CreateContent(package)
     PageGameFail.CanEscBack = false
-    Yield(WaitForSeconds(0.06))
-
+    Yield(WaitForSeconds(0.1))
+    PageGamePreviewPause:CreateContent(package)
+    PageGamePreviewQuitAsk:CreateContent(package)
 
     MessageCenter:SubscribeEvent('BtnGameHomeClick', function () GamePlay.GamePlayManager:QuitLevel() end)
     MessageCenter:SubscribeEvent('BtnNextLevellick', function () GamePlay.GamePlayManager:NextLevel() end)
     MessageCenter:SubscribeEvent('BtnGameRestartClick', function () GameUIManager:GoPage('PageGameRestartAsk') end)
     MessageCenter:SubscribeEvent('BtnGameWinRestartClick', function () GameUIManager:GoPage('PageGameWinRestartAsk') end)
     MessageCenter:SubscribeEvent('BtnGameQuitClick', function () GameUIManager:GoPage('PageGameQuitAsk') end)
+    MessageCenter:SubscribeEvent('BtnGamePreviewQuitClick', function () GameUIManager:GoPage('PageGamePreviewQuitAsk') end)
     MessageCenter:SubscribeEvent('BtnPauseSettingsClick', function () GameUIManager:GoPage('PageSettingsInGame') end)
     MessageCenter:SubscribeEvent('BtnGameFailRestartClick', function ()
       GameUIManager:HideCurrentPage()
@@ -71,8 +70,11 @@ function CreateGamePlayUI(package)
       GameUIManager:HideCurrentPage()
       Game.GamePlay.GamePlayManager:QuitLevel()
     end)
-    MessageCenter:SubscribeEvent('BtnResumeClick', function () 
-      Game.GamePlay.GamePlayManager:ResumeLevel()
+    MessageCenter:SubscribeEvent('BtnResumeClick', function () Game.GamePlay.GamePlayManager:ResumeLevel() end)
+    MessageCenter:SubscribeEvent('BtnPreviewResumeClick', function () Game.GamePlay.GamePreviewManager:ResumeLevel() end)
+    MessageCenter:SubscribeEvent('BtnGamePreviewQuitSureClick', function ()
+      GameUIManager:HideCurrentPage()
+      Game.GamePlay.GamePreviewManager:QuitLevel()
     end)
 
     --高分默认数据
@@ -110,6 +112,8 @@ end
 ---@field _LifeBoardBallPrefab GameObject
 ---@field _LifeBoardBallInfPrefab GameObject
 ---@field _LifeBalls RectTransform
+---@field _DebugStats GuiStats
+---@field _DebugStatValues GuiStatsValue[]
 GamePlayUIControl = ClassicObject:extend()
 
 function GamePlayUIControl:new() 
@@ -120,9 +124,24 @@ function GamePlayUIControl:new()
   self._CurrentMoveBaffleTarget = 0
   self._CurrentMobileKeyPad = nil ---@type GameObject
   self._CurrentMobileKeyPadShow = false
+  self._DebugStatValues = {}
 end
 function GamePlayUIControl:Start() 
   self._ScoreBoardActive.gameObject:SetActive(false)
+
+  --创建调试信息
+  if BALLANCE_DEBUG then
+    self._DebugStatValues['CurrentBall'] = self._DebugStats:AddStat('CurrentBall')
+    self._DebugStatValues['CurrentStatus'] = self._DebugStats:AddStat('CurrentStatus')
+    self._DebugStatValues['Position'] = self._DebugStats:AddStat('Position')
+    self._DebugStatValues['Rotation'] = self._DebugStats:AddStat('Rotation')
+    self._DebugStatValues['CamDirection'] = self._DebugStats:AddStat('CamDirection')
+    self._DebugStatValues['CamState'] = self._DebugStats:AddStat('CamState')
+    self._DebugStatValues['Velocity'] = self._DebugStats:AddStat('Velocity')
+    self._DebugStatValues['PushValue'] = self._DebugStats:AddStat('PushValue')
+    self._DebugStatValues['Sector'] = self._DebugStats:AddStat('Sector')
+    self._DebugStatValues['Moduls'] = self._DebugStats:AddStat('Moduls')
+  end
 
   --手机端还需要创建键盘
   if UNITY_ANDROID or UNITY_IOS then

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!200 &20000000
+ShaderVariantCollection:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GameShaderVariants
+  m_Shaders:
+  - first: {fileID: 4800000, guid: e7ee9cf3f9989c04bb38a9462ad3e6f1, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 98e050f312a67d04abe55aa57c18e5cf, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 6e100b1f744cbca44ac87f9ca18e8ac2, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: a1fde486d716e1f419de698e93ed9796, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 4cb8ec7e731603546b84a777efbb22cc, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 3f618483035616b4ab7450077e0f0fc3, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 86411b68ab4ded94ca5cf7fd52e40ef5, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 25cfef3e833c2c0428813cae65f93436, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: b0876b0baa6e57b4588bf607b8188b22, type: 3}
+    second:
+      variants: []
+  - first: {fileID: 4800000, guid: 697a94993b11dc8478906ef1e5912897, type: 3}
+    second:
+      variants: []

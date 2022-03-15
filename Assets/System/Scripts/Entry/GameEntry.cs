@@ -201,7 +201,7 @@ namespace Ballance2.Entry
       DebugMode = true;
 #else
       if(!DebugMode) {
-        if(PlayerPrefs.GetInt("core.DebugMode", 0) > 0) DebugMode = true;
+        if(PlayerPrefs.GetString("core.DebugMode", "") == "True") DebugMode = true;
         else DebugMode = false;
       }
 #endif

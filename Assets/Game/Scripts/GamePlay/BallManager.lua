@@ -451,44 +451,55 @@ end
   --#region 球状态工作方法
 
 function BallManager:_FlushCurrentBallAllStatus() 
+  local SetDebugStatus = function (stat)
+    --调试信息
+    if BALLANCE_DEBUG then GameUI.GamePlayUI._DebugStatValues['CurrentStatus'].Value = stat end
+  end
+
   local status = self._private.controllingStatus
   if status == BallControlStatus.NoControl then
     self:_SetCanControl(false)
     self.CanControllCamera = false
     self:_DeactiveCurrentBall()
     GamePlay.CamManager:DisbleAll()
+    SetDebugStatus('NoControl')
   elseif status == BallControlStatus.Control then
     self:_SetCanControl(true)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
+    SetDebugStatus('Control')
   elseif status == BallControlStatus.LockMode then
     self:_SetCanControl(false)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(false)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
+    SetDebugStatus('LockMode')
   elseif status == BallControlStatus.UnleashingMode then
     self:_SetCanControl(false)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
+    SetDebugStatus('UnleashingMode')
   elseif status == BallControlStatus.FreeMode then
     self:_SetCanControl(false)
     self.CanControllCamera = true
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(true)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(true)
+    SetDebugStatus('FreeMode')
   elseif status == BallControlStatus.LockLookMode then
     self:_SetCanControl(false)
     self.CanControllCamera = false
     self:_ActiveCurrentBall()
     self:_PhysicsOrDePhysicsCurrentBall(false)
     GamePlay.CamManager:SetCamLook(true):SetCamFollow(false)
+    SetDebugStatus('LockLookMode')
   end
-  
+
   self.EventControllingStatusChanged:Emit(nil)
 end
 function BallManager:_SetCanControl(can) 
@@ -514,15 +525,24 @@ function BallManager:_DeactiveCurrentBall()
     GamePlay.CamManager:SetTarget(nil)
     self._private.currentActiveBall = nil
   end
+  if BALLANCE_DEBUG then 
+    GameUI.GamePlayUI._DebugStatValues['CurrentBall'].Value = 'None' 
+    --删除定时器
+    if self._private.debugFlushInfoTimer then
+      LuaTimer.Delete(self._private.debugFlushInfoTimer)
+      self._private.debugFlushInfoTimer = nil
+    end
+  end
 end
 function BallManager:_ActiveCurrentBall() 
   local current = self._private.currentActiveBall
   if current == nil and self._private.currentBall ~= nil then
     current = self._private.currentBall
+    local currentTransform = current.ball.transform
     self._private.currentActiveBall = self._private.currentBall
     --设置阴影位置与父级约束    
     local constraintSource = ConstraintSource()
-    constraintSource.sourceTransform = current.ball.transform
+    constraintSource.sourceTransform = currentTransform
     constraintSource.weight = 1
     self._BallShadowProjector:SetSource(0, constraintSource)
     self._BallShadowProjector.constraintActive = true
@@ -531,11 +551,35 @@ function BallManager:_ActiveCurrentBall()
       self._BallShadowProjector.gameObject:SetActive(true)
     end
     ---设置位置
-    current.ball.transform.position = self._private.nextRecoverPos
+    currentTransform.position = self._private.nextRecoverPos
     --设置摄像机跟随对象
-    GamePlay.CamManager:SetTarget(current.ball.transform)
+    GamePlay.CamManager:SetTarget(currentTransform)
     --清除力
     self:RemoveAllBallPush()
+    --调试信息
+    if BALLANCE_DEBUG then 
+      GameUI.GamePlayUI._DebugStatValues['CurrentBall'].Value = current.name 
+      local Position = GameUI.GamePlayUI._DebugStatValues['Position']
+      local Rotation = GameUI.GamePlayUI._DebugStatValues['Rotation']
+      local Velocity = GameUI.GamePlayUI._DebugStatValues['Velocity']
+      local PushValue = GameUI.GamePlayUI._DebugStatValues['PushValue']
+      
+      --删除定时器
+      if self._private.debugFlushInfoTimer then
+        LuaTimer.Delete(self._private.debugFlushInfoTimer)
+        self._private.debugFlushInfoTimer = nil
+      end
+      --每秒更新球位置数据
+      self._private.debugFlushInfoTimer = LuaTimer.Add(1000, 1000, function ()
+        Position:SetVector3Value(currentTransform.position)
+        Rotation:SetVector3Value(currentTransform.rotation)
+        if current.rigidbody.IsPhysicalized then
+          Velocity:SetVector3Value(current.rigidbody.SpeedVector)
+        end
+        PushValue.Value = 'X: '..current.pushForceX.Force..' Y: '..current.pushForceY.Force..' Z: '..current.pushForceZ.Force;
+      end)
+    end
+
   end
 end
 ---@param physics boolean

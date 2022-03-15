@@ -259,7 +259,7 @@ namespace BallancePhysics.Wapper
         currentEnvironment = PhysicsEnvironment.GetCurrentScensePhysicsWorld();
         if (currentEnvironment == null)
         {
-          Debug.LogWarning("Not found PhysicsEnvironment, please add it");
+          Debug.LogWarning("[Physicalize:" + name + "] Not found PhysicsEnvironment, please add it");
           return;
         }
 

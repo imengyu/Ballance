@@ -98,7 +98,20 @@ namespace Ballance2.Services
     [LuaApiDescription("全局灯光实例")]
     public static Light GameLight { get; private set; }
 
-    public static bool DebugMode { get; private set; }
+    private static bool _DebugMode = false;
+
+    public static bool DebugMode { 
+      get {
+        return _DebugMode;
+      }  
+      set {
+        if(_DebugMode != value) {
+          _DebugMode = value;
+          if(Instance != null && Instance.GameSettings != null )
+            Instance.GameSettings.SetBool("DebugMode", value);
+        }
+      } 
+    }
 
     private readonly string TAG = "GameManager";
 
@@ -236,6 +249,8 @@ namespace Ballance2.Services
 
       //初始化宏定义
       LuaUtils.InitMacros(GameMainLuaState);
+
+      GameMainLuaState["BALLANCE_DEBUG"] = DebugMode;
 
       GameErrorChecker.EnterStrictMode();
 
@@ -529,7 +544,7 @@ namespace Ballance2.Services
 
           pm.NotifyAllPackageRun("*");
 
-          yield return new WaitForSeconds(1.5f);
+          yield return new WaitForSeconds(0.5f);
           
           if (string.IsNullOrEmpty(sCustomDebugName)
 #if UNITY_EDITOR

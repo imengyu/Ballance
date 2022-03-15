@@ -44,6 +44,14 @@ function P_Modul_08:Deactive()
   end
   ModulBase.Deactive(self)
 end
+
+function P_Modul_08:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_08:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_08:Reset()
   ObjectStateBackupUtils.RestoreObject(self.P_Modul_08_Schaukel.gameObject)
   self._ForceIsLeft = false

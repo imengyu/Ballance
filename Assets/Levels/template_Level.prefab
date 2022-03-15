@@ -47,7 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Template
   AudioAssets: []
-  TextureAssets: []
+  TextureAssets:
+  - {fileID: 2800000, guid: 448b771b65e11b340bc3daba54d49661, type: 3}
 --- !u!1 &7065583789122228534
 GameObject:
   m_ObjectHideFlags: 0

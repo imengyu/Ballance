@@ -104,7 +104,12 @@ half4 fragForwardAdd (VertexOutputBase i) : SV_Target // backward compatibility 
   fixed3 specular = _LightColor0.rgb * _SpecColor.rgb * pow(saturate(dot(halfDir, worldNormal)), _Gloss * 0.5);
   fixed3 color = (diffuse + specular) * atten * _LightColor0.rgb;
   #endif
+  
+  #ifdef USE_TRANSPARENT
+  return fixed4(color, albedo.a);
+  #else
   return fixed4(color, 1.0);
+  #endif
 }
 
 VertexOutputBase vertForwardBase (VertexInput v) 

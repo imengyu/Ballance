@@ -34,54 +34,57 @@ function P_Extra_Point:new()
   self._FlyFollowTime = 0.3
   self.AutoActiveBaseGameObject = false
   self.EnableBallRangeChecker = true
-  self.BallCheckeRange = 30
+  self.BallCheckeRange = 80
 end
 
 function P_Extra_Point:Start()
   ModulBase.Start(self)
   
-  self._P_Extra_Point_Ball_Fly1 = self.P_Extra_Point_Ball1:GetComponent(SmoothFly) ---@type SmoothFly
-  self._P_Extra_Point_Ball_Fly2 = self.P_Extra_Point_Ball2:GetComponent(SmoothFly) ---@type SmoothFly
-  self._P_Extra_Point_Ball_Fly3 = self.P_Extra_Point_Ball3:GetComponent(SmoothFly) ---@type SmoothFly
-  self._P_Extra_Point_Ball_Fly4 = self.P_Extra_Point_Ball4:GetComponent(SmoothFly) ---@type SmoothFly
-  self._P_Extra_Point_Ball_Fly5 = self.P_Extra_Point_Ball5:GetComponent(SmoothFly) ---@type SmoothFly
-  self._P_Extra_Point_Ball_Fly6 = self.P_Extra_Point_Ball6:GetComponent(SmoothFly) ---@type SmoothFly
+  if not self.IsPreviewMode then
+    --初始化xiao'q
+    self._P_Extra_Point_Ball_Fly1 = self.P_Extra_Point_Ball1:GetComponent(SmoothFly) ---@type SmoothFly
+    self._P_Extra_Point_Ball_Fly2 = self.P_Extra_Point_Ball2:GetComponent(SmoothFly) ---@type SmoothFly
+    self._P_Extra_Point_Ball_Fly3 = self.P_Extra_Point_Ball3:GetComponent(SmoothFly) ---@type SmoothFly
+    self._P_Extra_Point_Ball_Fly4 = self.P_Extra_Point_Ball4:GetComponent(SmoothFly) ---@type SmoothFly
+    self._P_Extra_Point_Ball_Fly5 = self.P_Extra_Point_Ball5:GetComponent(SmoothFly) ---@type SmoothFly
+    self._P_Extra_Point_Ball_Fly6 = self.P_Extra_Point_Ball6:GetComponent(SmoothFly) ---@type SmoothFly
 
-  for i = 1, 6, 1 do
-    local fly = self['P_Extra_Point_Ball'..i]:GetComponent(SmoothFly) ---@type SmoothFly
-    local hitAudio = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Hit'):GetComponent(AudioSource) ---@type AudioSource
-    local hitFizz = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Fizz').gameObject
-    local ballParticle = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Ball').gameObject
-    local flowParticle = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Flow').gameObject
+    for i = 1, 6, 1 do
+      local fly = self['P_Extra_Point_Ball'..i]:GetComponent(SmoothFly) ---@type SmoothFly
+      local hitAudio = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Hit'):GetComponent(AudioSource) ---@type AudioSource
+      local hitFizz = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Fizz').gameObject
+      local ballParticle = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Ball').gameObject
+      local flowParticle = self.transform:Find('P_Extra_Point_Ball'..i..'/P_Extra_Point_Flow').gameObject
 
-    Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, hitAudio)
-    self['_P_Extra_Point_Ball_Fly'..i] = fly
-    self['_P_Extra_Point_Ball_Rest'..i] = function ()
-      ballParticle:SetActive(true)
-      flowParticle:SetActive(true)
-      hitFizz:SetActive(false)
-      hitAudio:Stop()
-    end
+      Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, hitAudio)
+      self['_P_Extra_Point_Ball_Fly'..i] = fly
+      self['_P_Extra_Point_Ball_Rest'..i] = function ()
+        ballParticle:SetActive(true)
+        flowParticle:SetActive(true)
+        hitFizz:SetActive(false)
+        hitAudio:Stop()
+      end
 
-    fly.StopWhenArrival = true
-    fly.ArrivalDiatance = 2
-    fly.ArrivalCallback = function ()
-      if not self._FlyUp then
-        ballParticle:SetActive(false)
-        flowParticle:SetActive(false)
-        hitFizz:SetActive(true)
-        hitAudio:Play()
-        GamePlay.GamePlayManager:AddPoint(20) --小球是20分
+      fly.StopWhenArrival = true
+      fly.ArrivalDiatance = 2
+      fly.ArrivalCallback = function ()
+        if not self._FlyUp then
+          ballParticle:SetActive(false)
+          flowParticle:SetActive(false)
+          hitFizz:SetActive(true)
+          hitAudio:Play()
+          GamePlay.GamePlayManager:AddPoint(20) --小球是20分
+        end
       end
     end
-  end
 
-  ---@param otherBody GameObject
-  self.P_Extra_Point_Tigger.onTriggerEnter = function (_, otherBody)
-    if not self._Actived and otherBody.tag == 'Ball' then
-      self._Actived = true
-      self:StartFly()
-      GamePlay.GamePlayManager:AddPoint(100) --大球是100分
+    ---@param otherBody GameObject
+    self.P_Extra_Point_Tigger.onTriggerEnter = function (_, otherBody)
+      if not self._Actived and otherBody.tag == 'Ball' then
+        self._Actived = true
+        self:StartFly()
+        GamePlay.GamePlayManager:AddPoint(100) --大球是100分
+      end
     end
   end
 
@@ -96,7 +99,6 @@ function P_Extra_Point:Start()
     if (parentName == 'Phys_Floors' or parentName == 'Phys_FloorWoods') and  parentName ~= 'Phys_FloorRails' then
       self._OnFloor = true
     end
-  else
   end
 
   self._RotCenter = self.transform.position
@@ -213,6 +215,13 @@ function P_Extra_Point:Backup()
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball4)
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball5)
   ObjectStateBackupUtils.BackUpObject(self.P_Extra_Point_Ball6)
+end
+
+function P_Extra_Point:ActiveForPreview()
+  self:Active()
+end
+function P_Extra_Point:DeactiveForPreview()
+  self:Deactive()
 end
 
 function P_Extra_Point:BallEnterRange()

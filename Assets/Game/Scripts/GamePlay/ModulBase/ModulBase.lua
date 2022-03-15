@@ -14,6 +14,7 @@ function ModulBase:new()
   self.BallRangeChecker = nil
   self.BallRangeCollider = nil
   self.BallInRange = false
+  self.IsPreviewMode = false --指定当前机关是否在预览模式中加载
   self.AutoActiveBaseGameObject = true
 end
 
@@ -74,6 +75,14 @@ function ModulBase:BallEnterRange()
 end
 ---球离开当前机关指定范围时发出此事件
 function ModulBase:BallLeaveRange()
+end
+
+
+---在预览模式中激活时发出此事件
+function ModulBase:ActiveForPreview()
+end
+---在预览模式中隐藏时发出此事件
+function ModulBase:DeactiveForPreview()
 end
 
 ---调试环境的自定义调试操作回调

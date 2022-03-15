@@ -43,6 +43,14 @@ function P_Modul_03:Deactive()
   self.P_Modul_03_Wall07:UnPhysicalize(true)
   ModulBase.Deactive(self)
 end
+
+function P_Modul_03:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_03:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_03:Reset()
   ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
@@ -50,7 +58,7 @@ function P_Modul_03:Backup()
   ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_03:BallEnterRange()
-  if self.IsActive then
+  if not self.IsPreviewMode and self.IsActive then
     self.P_Modul_03_Floor:WakeUp()
   end
 end

@@ -38,78 +38,82 @@ end
 function PE_Balloon:Start()
   ModulBase.Start(self)
 
-  --接近PE_Balloon时禁用背景音乐
-  local musicDisabledByPE_Balloon = false
-  local distanceChecker = self.PE_Balloon_Platform:GetComponent(DistanceChecker) ---@type DistanceChecker
-  distanceChecker.Object2 = GamePlay.BallManager.PosFrame
-  distanceChecker.OnEnterRange = function () 
-    if self._MusicActived then
-      musicDisabledByPE_Balloon = true
-      GamePlay.MusicManager:DisableBackgroundMusic() 
-    end
-    if self.IsActive then
-      self.PE_Balloon_Platform:WakeUp()
-    end
-  end
-  distanceChecker.OnLeaveRange = function () 
-    if self._MusicActived and musicDisabledByPE_Balloon and not GamePlay.GamePlayManager.CurrentLevelPass then
-      musicDisabledByPE_Balloon = false
-      GamePlay.MusicManager:EnableBackgroundMusic()
-    end 
-  end
-  distanceChecker.CheckEnabled = true
+  if not self.IsPreviewMode then
 
-  --PE_Balloon 过关触发器
-  self.PE_Balloon_BallTigger.onTriggerEnter = function (body, other)
-    if other and other.gameObject.tag == "Ball" and not self.BallTiggerActived then
-
-      Log.D('PE_Balloon', 'Break bridge!') 
-
-      self.BallTiggerActived = true
-      self._MusicActived = false
-
-      self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
-      self.PE_Balloon_Platform:WakeUp()
-      self.PE_Balloon_PlatformForce.enabled = false
-      self.PE_Balloon_BoxSlideForce.enabled = false
-
-      --速度放慢一些
-      LuaTimer.Add(200, function ()
-        self.PE_Balloon_BoxSlideForce.enabled = true
-        self.PE_Balloon_BoxSlideForce.Force = 0.8
-
-        --速度再放慢一些
-        LuaTimer.Add(300, function ()
-          self.PE_Balloon_BoxSlideForce.Force = 0.3
-
-          LuaTimer.Add(600, function ()
-            self.PE_Balloon_BoxSlideForce.Force = 0.2
-          end)
-          --速度再放慢一些
-          LuaTimer.Add(40000, function ()
-            self.PE_Balloon_BoxSlideForce.Force = 0.1
-          end)
-        end)
-      end)
-
-      if not BALLANCE_MODUL_DEBUG then
-        GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
+    --接近PE_Balloon时禁用背景音乐
+    local musicDisabledByPE_Balloon = false
+    local distanceChecker = self.PE_Balloon_Platform:GetComponent(DistanceChecker) ---@type DistanceChecker
+    distanceChecker.Object2 = GamePlay.BallManager.PosFrame
+    distanceChecker.OnEnterRange = function () 
+      if self._MusicActived then
+        musicDisabledByPE_Balloon = true
+        GamePlay.MusicManager:DisableBackgroundMusic() 
+      end
+      if self.IsActive then
+        self.PE_Balloon_Platform:WakeUp()
       end
     end
-  end
-  self._MusicActived = false
+    distanceChecker.OnLeaveRange = function () 
+      if self._MusicActived and musicDisabledByPE_Balloon and not GamePlay.GamePlayManager.CurrentLevelPass then
+        musicDisabledByPE_Balloon = false
+        GamePlay.MusicManager:EnableBackgroundMusic()
+      end 
+    end
+    distanceChecker.CheckEnabled = true
 
-  local iWoodOnlyHit = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
-  self.PE_Balloon_Platte00.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte01.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte02.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte03.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte04.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte05.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte06.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte07.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platte08.CollisionID = iWoodOnlyHit
-  self.PE_Balloon_Platform.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+    --PE_Balloon 过关触发器
+    self.PE_Balloon_BallTigger.onTriggerEnter = function (body, other)
+      if other and other.gameObject.tag == "Ball" and not self.BallTiggerActived then
+
+        Log.D('PE_Balloon', 'Break bridge!') 
+
+        self.BallTiggerActived = true
+        self._MusicActived = false
+
+        self.PE_Balloon_Platform_HingeJoint:Destroy() --断开与桥的连接
+        self.PE_Balloon_Platform:WakeUp()
+        self.PE_Balloon_PlatformForce.enabled = false
+        self.PE_Balloon_BoxSlideForce.enabled = false
+
+        --速度放慢一些
+        LuaTimer.Add(200, function ()
+          self.PE_Balloon_BoxSlideForce.enabled = true
+          self.PE_Balloon_BoxSlideForce.Force = 0.8
+
+          --速度再放慢一些
+          LuaTimer.Add(300, function ()
+            self.PE_Balloon_BoxSlideForce.Force = 0.3
+
+            LuaTimer.Add(600, function ()
+              self.PE_Balloon_BoxSlideForce.Force = 0.2
+            end)
+            --速度再放慢一些
+            LuaTimer.Add(40000, function ()
+              self.PE_Balloon_BoxSlideForce.Force = 0.1
+            end)
+          end)
+        end)
+
+        if not BALLANCE_MODUL_DEBUG then
+          GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
+        end
+      end
+    end
+
+    self._MusicActived = false
+
+    local iWoodOnlyHit = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+    self.PE_Balloon_Platte00.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte01.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte02.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte03.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte04.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte05.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte06.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte07.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platte08.CollisionID = iWoodOnlyHit
+    self.PE_Balloon_Platform.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  end
 end
 
 function PE_Balloon:Active()
@@ -220,6 +224,13 @@ function PE_Balloon:Custom(index)
     Log.D('PE_Balloon', 'Test Pass!')
     GamePlay.GamePlayManager:Pass() --通知管理器关卡已结束
   end
+end
+
+function PE_Balloon:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function PE_Balloon:DeactiveForPreview()
+  self.gameObject:SetActive(false)
 end
 
 function CreateClass:PE_Balloon()

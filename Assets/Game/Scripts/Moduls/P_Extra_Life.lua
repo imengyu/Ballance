@@ -16,16 +16,18 @@ function P_Extra_Life:new()
 end
 
 function P_Extra_Life:Start()
-  ---@param otherBody GameObject
-  self.P_Extra_Life_Tigger.onTriggerEnter = function (_, otherBody)
-    if not self._Actived and otherBody.tag == 'Ball' then
-      self._Actived = true
-      self.P_Extra_Life_Sphere:SetActive(false)
-      self.P_Extra_Life_Shadow:SetActive(false)
-      self.P_Extra_Life_Particle_Fizz:SetActive(true)
-      self.P_Extra_Life_Particle_Blob:SetActive(true)
-      Game.SoundManager:PlayFastVoice('core.sounds:Extra_Life_Blob.wav', GameSoundType.Normal)
-      GamePlay.GamePlayManager:AddLife()
+  if not self.IsPreviewMode then
+    ---@param otherBody GameObject
+    self.P_Extra_Life_Tigger.onTriggerEnter = function (_, otherBody)
+      if not self._Actived and otherBody.tag == 'Ball' then
+        self._Actived = true
+        self.P_Extra_Life_Sphere:SetActive(false)
+        self.P_Extra_Life_Shadow:SetActive(false)
+        self.P_Extra_Life_Particle_Fizz:SetActive(true)
+        self.P_Extra_Life_Particle_Blob:SetActive(true)
+        Game.SoundManager:PlayFastVoice('core.sounds:Extra_Life_Blob.wav', GameSoundType.Normal)
+        GamePlay.GamePlayManager:AddLife()
+      end
     end
   end
   --触发射线，检查当前下方是不是路面，如果是，则显示 Shadow 
@@ -67,6 +69,13 @@ function P_Extra_Life:Reset()
   self.P_Extra_Life_Particle_Fizz:SetActive(false)
   self.P_Extra_Life_Particle_Blob:SetActive(false)
   self.P_Extra_Life_Animator.speed = 0
+end
+
+function P_Extra_Life:ActiveForPreview()
+  self:Active()
+end
+function P_Extra_Life:DeactiveForPreview()
+  self:Deactive()
 end
 
 function CreateClass:P_Extra_Life()

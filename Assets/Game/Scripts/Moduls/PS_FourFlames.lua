@@ -23,6 +23,18 @@ function PS_FourFlames:Deactive()
   self.Flame_C:SetActive(false)
   self.Flame_D:SetActive(false)
 end
+function PS_FourFlames:ActiveForPreview()
+  self.Flame_A:SetActive(true)
+  self.Flame_B:SetActive(true)
+  self.Flame_C:SetActive(true)
+  self.Flame_D:SetActive(true)
+end
+function PS_FourFlames:DeactiveForPreview()
+  self.Flame_A:SetActive(false)
+  self.Flame_B:SetActive(false)
+  self.Flame_C:SetActive(false)
+  self.Flame_D:SetActive(false)
+end
 function PS_FourFlames:Reset()
 end
 function PS_FourFlames:Backup()

@@ -27,9 +27,10 @@ public class StartCustomLevel : MonoBehaviour
   public RectTransform PanelNoContent;
   public RectTransform PanelError;
   public RectTransform PanelDepends;
+  public RectTransform PanelNoLevel;
   public Button ButtonBack;
   public Button ButtonStart;
-  public Text TextRefresh;
+  public Button TextRefresh;
   public Text TextErrorContent;
   public Image ImageLogo;
   public Text TextName;
@@ -153,7 +154,7 @@ public class StartCustomLevel : MonoBehaviour
     ButtonBack.onClick.AddListener(Back);
     ButtonDependsBack.onClick.AddListener(HideDependsInfo);
     ButtonEnableAllDepends.onClick.AddListener(EnableAllDepends);
-    EventTriggerListener.Get(TextRefresh.gameObject).onClick = (go) => LoadLevelList(true);
+    TextRefresh.onClick.AddListener(() => LoadLevelList(true));
     EventTriggerListener.Get(TextPreview.gameObject).onClick = (go) => PreviewLevel();
     EventTriggerListener.Get(TextDepends.gameObject).onClick = (go) => ShowDependsInfo();
 
@@ -173,7 +174,20 @@ public class StartCustomLevel : MonoBehaviour
     if(selectedItem != null) {
       gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
       gameUIManager.MaskBlackFadeIn(1);
-      GameManager.Instance.Delay(1000, () => GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", selectedItem.name));
+      GameManager.Instance.Delay(1, () => {
+        Log.D("StartCustomLevel", "StartLevel " + selectedItem.name);
+        GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", new object[]{ selectedItem.name });
+      });
+    }
+  }  
+  private void PreviewLevel() {
+    if(selectedItem != null) {
+      gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
+      gameUIManager.MaskBlackFadeIn(1);
+      GameManager.Instance.Delay(1, () => {
+        Log.D("StartCustomLevel", "PreviewLevel " + selectedItem.name);
+        GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", new object[]{ selectedItem.name, true });
+      });
     }
   }
   private void ShowDependsInfo() {
@@ -211,9 +225,6 @@ public class StartCustomLevel : MonoBehaviour
   private void HideDependsInfo() {
     PanelDepends.gameObject.SetActive(false);
   } 
-  private void PreviewLevel() {
-    gameUIManager.GlobalToast("TODO!");
-  }
 
   private void AddLevelToList(GameLevelInfo info) {
     if(itemPrefabPool.ContainsObjectInParent(info.name))
@@ -323,11 +334,19 @@ public class StartCustomLevel : MonoBehaviour
       }
     }
   }
+  private void ClearSelectLevel() {
+    selectedItem = null;
+    PanelError.gameObject.SetActive(false);
+    PanelContent.gameObject.SetActive(false);
+    PanelNoContent.gameObject.SetActive(false);
+  }
 
   private void LoadLevelList(bool refresh) {
+
     if(refresh) {
       loadedLevels.Clear();
       itemPrefabPool.Clear();
+      ClearSelectLevel();
     }
     if(loadedLevels.Count == 0) {
 #if UNITY_EDITOR
@@ -340,18 +359,21 @@ public class StartCustomLevel : MonoBehaviour
           AddLevelToList(info);
         }
 #else
-      string dir = GamePathManager.GetLevelRealPath("");
+      string dir = GamePathManager.GetLevelRealPath("", false);
       if(Directory.Exists(dir)) {
         DirectoryInfo direction = new DirectoryInfo(dir);
-        DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
-        for (int i = 0; i < dirs.Length; i++)
-          if(!Regex.IsMatch(dirs[i].Name, "^level([0]{1}[0-9]{1})|([1]{1}[0-3]{1})$", RegexOptions.IgnoreCase)) { //排除自带关卡
-            var info = new GameLevelInfo(dirs[i].Name, gamePackageManager);
-            loadedLevels.Add(info);
-            AddLevelToList(info);
-          }
+        FileInfo[] files = direction.GetFiles("*.ballance", SearchOption.TopDirectoryOnly);
+        Log.D("StartCustomLevel", "Scan Level dir \"" + dir + "\" found " + files.Length + " level fileds");
+        for (int i = 0; i < files.Length; i++) {
+          var info = new GameLevelInfo(files[i].Name, gamePackageManager);
+          loadedLevels.Add(info);
+          AddLevelToList(info);
+        }
+      } else {
+        Log.W("StartCustomLevel", "Level dir " + dir + " not exists!");
       }
 #endif
+      PanelNoLevel.gameObject.SetActive(loadedLevels.Count == 0);
     }
   }
 }

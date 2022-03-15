@@ -19,6 +19,7 @@ local TAG = 'SectorManager'
 
 function SectorManager:new() 
   self.CurrentLevelSectorCount = 0
+  self.CurrentLevelModulCount = 0
   self.CurrentLevelSectors = {} ---@type SectorDataStorage[]
   self.CurrentLevelRestPoints = {} ---@type RestPointsDataStorage[]
   self.CurrentLevelEndBalloon = nil ---@type PE_Balloon
@@ -66,6 +67,7 @@ function SectorManager:OnDestroy()
 end
 
 function SectorManager:DoInitAllModuls() 
+  self.CurrentLevelModulCount = #Game.LevelBuilder._CurrentLevelModuls
   --初次加载后通知每个modul进行备份
   for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
     if value ~= nil then
@@ -75,10 +77,15 @@ function SectorManager:DoInitAllModuls()
   end
 end
 function SectorManager:DoUnInitAllModuls() 
+  local preview = Game.LevelBuilder.IsPreviewMode
   --通知每个modul卸载
   for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
     if value ~= nil then
-      value.modul:Deactive()
+      if preview then
+        value.modul:DeactiveForPreview()
+      else
+        value.modul:Deactive()
+      end
       value.modul:UnLoad()
     end
   end
@@ -88,6 +95,14 @@ function SectorManager:ClearAll()
   self.CurrentLevelSectors = {}
   self.CurrentLevelRestPoints = {}
   self.CurrentLevelEndBalloon = nil
+end
+function SectorManager:ActiveAllModulsForPreview() 
+  --通知每个modul卸载
+  for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
+    if value ~= nil then
+      value.modul:ActiveForPreview()
+    end
+  end
 end
 
 ---进入下一小节
@@ -189,6 +204,12 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
 
   Log.D(TAG, 'Active Sector '..sector)
 
+  --调试信息
+  if BALLANCE_DEBUG then 
+    GameUI.GamePlayUI._DebugStatValues['Sector'].Value = sector..'/'..self.CurrentLevelSectorCount
+    GameUI.GamePlayUI._DebugStatValues['Moduls'].Value = (#s.moduls)..'/'..self.CurrentLevelModulCount
+  end
+
   self.EventSectorActive:Emit({ 
     sector = sector,
     playCheckPointSound = playCheckPointSound
@@ -207,6 +228,12 @@ function SectorManager:DeactiveCurrentSector()
         value:Reset('sectorRestart')
       end
     end 
+  end
+
+  --调试信息
+  if BALLANCE_DEBUG then 
+    GameUI.GamePlayUI._DebugStatValues['Sector'].Value = sector..'(Deactive)/'..self.CurrentLevelSectorCount
+    GameUI.GamePlayUI._DebugStatValues['Moduls'].Value = '0'
   end
 
   Log.D(TAG, 'Deactive current sector '..sector)

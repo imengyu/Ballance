@@ -24,7 +24,7 @@ function BallStone:new()
     Stone = 'core.sounds:Roll_Stone_Stone.wav',
     Wood = 'core.sounds:Roll_Stone_Wood.wav',
   }
-  self._RollSound.VolumeFactor = 2.4
+  self._RollSound.VolumeFactor = 2.9
 end
 
 function CreateClass:BallStone()

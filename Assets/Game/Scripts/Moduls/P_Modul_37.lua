@@ -14,13 +14,21 @@ end
 
 function P_Modul_37:Active()
   ModulBase.Active(self)
-  self.P_Modul_37_Bridge:Physicalize()
   self.P_Modul_37_Bridge.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.P_Modul_37_Bridge:Physicalize()
 end
 function P_Modul_37:Deactive()
   self.P_Modul_37_Bridge:UnPhysicalize(true)
   ModulBase.Deactive(self)
 end
+
+function P_Modul_37:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_37:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_37:Reset()
   ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
@@ -28,7 +36,7 @@ function P_Modul_37:Backup()
   ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_37:BallEnterRange()
-  if self.IsActive then
+  if not self.IsPreviewMode and self.IsActive then
     self.P_Modul_37_Bridge:WakeUp()
   end
 end

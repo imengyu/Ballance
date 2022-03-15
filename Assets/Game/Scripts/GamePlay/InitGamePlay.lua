@@ -6,6 +6,7 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 local BallsManagerGameObject = nil
 local GamePlayManagerGameObject = nil
 local GamePlayUIGameObject = nil
+local GamePlayPreviewUIGameObject = nil
 local GameSectorManagerGameObject = nil
 local GameMusicManagerGameObject = nil
 local GameTranfoManagerGameObject = nil
@@ -19,6 +20,7 @@ GamePlay = {
   BallPiecesControll = nil, ---@type BallPiecesControll
   CamManager = nil, ---@type CamManager
   GamePlayManager = nil, ---@type GamePlayManager
+  GamePreviewManager = nil, ---@type GamePreviewManager
   SectorManager = nil, ---@type SectorManager
   MusicManager = nil, ---@type MusicManager
   TranfoManager = nil, ---@type TranfoAminControl
@@ -37,24 +39,23 @@ function GamePlayInit(callback)
 
     --初始化基础对象
     GamePlayManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('GamePlayManager.prefab'), 'GamePlayManager')
-    Yield(WaitForSeconds(0.05))
     Game.Manager:SetGameBaseCameraVisible(false)
     BallsManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('BallManager.prefab'), 'GameBallsManager')
-    Yield(WaitForSeconds(0.05))
     GameSectorManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('SectorManager.prefab'), 'GameSectorManager')
-    Yield(WaitForSeconds(0.05))
     GameMusicManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('MusicManager.prefab'), 'GameMusicManager')
-    Yield(WaitForSeconds(0.05))
     GameTranfoManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('AminTranfo.prefab'), 'GameTranfoManager')
-    Yield(WaitForSeconds(0.05))
     GameLevelBrizGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('LevelBriz.prefab'), 'GameLevelBriz')
-    Yield(WaitForSeconds(0.05))
     GameUFOAnimControllerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('PE_UFO.prefab'), 'GameUFOAnimController')
     --GamePlayUI
     GamePlayUIGameObject = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('GamePlayUI.prefab'), 'GamePlayUI', false).gameObject
-    Yield(WaitForSeconds(0.05))
+    Yield(WaitForSeconds(0.1))
     GamePlayUIGameObject:SetActive(false)
+    --GamePlayUI
+    GamePlayPreviewUIGameObject = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('GamePreviewUI.prefab'), 'GamePlayPreviewUI', false).gameObject
+    Yield(WaitForSeconds(0.1))
+    GamePlayPreviewUIGameObject:SetActive(false)
 
+    Yield(WaitForSeconds(0.2))
     --回调
     callback()
   end))
@@ -75,6 +76,7 @@ function GamePlayUnload()
   if (not Slua.IsNull(BallsManagerGameObject)) then UnityEngine.Object.Destroy(BallsManagerGameObject) end 
   if (not Slua.IsNull(GamePlayManagerGameObject)) then UnityEngine.Object.Destroy(GamePlayManagerGameObject) end 
   if (not Slua.IsNull(GamePlayUIGameObject)) then UnityEngine.Object.Destroy(GamePlayUIGameObject) end 
+  if (not Slua.IsNull(GamePlayPreviewUIGameObject)) then UnityEngine.Object.Destroy(GamePlayPreviewUIGameObject) end 
   if (not Slua.IsNull(GameSectorManagerGameObject)) then UnityEngine.Object.Destroy(GameSectorManagerGameObject) end 
   if (not Slua.IsNull(GameMusicManagerGameObject)) then UnityEngine.Object.Destroy(GameMusicManagerGameObject) end 
   if (not Slua.IsNull(GameTranfoManagerGameObject)) then UnityEngine.Object.Destroy(GameTranfoManagerGameObject) end 
@@ -87,6 +89,7 @@ function GamePlayUnload()
   GameMusicManagerGameObject = nil
   GameSectorManagerGameObject = nil
   GamePlayUIGameObject = nil
+  GamePlayPreviewUIGameObject = nil
   GamePlayManagerGameObject = nil
   BallsManagerGameObject = nil
 

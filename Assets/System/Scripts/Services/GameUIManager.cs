@@ -535,10 +535,7 @@ namespace Ballance2.Services
       }
     }
 
-    private List<ToastData> toastDatas = new List<ToastData>();
-
     private float toastTimeTick = 0;
-    private float toastNextDelayTimeTick = 0;
 
     /// <summary>
     /// 显示全局土司提示
@@ -561,17 +558,7 @@ namespace Ballance2.Services
     public void GlobalToast(string text, float showSec)
     {
       if (showSec <= 0.5f) showSec = 0.5f;
-      if (toastTimeTick <= 0) ShowToast(text, showSec);
-      else toastDatas.Add(new ToastData(text, showSec));
-    }
-
-    private void ShowPendingToast()
-    {
-      if (toastDatas.Count > 0)
-      {
-        ShowToast(toastDatas[0].text, toastDatas[0].showTime);
-        toastDatas.RemoveAt(0);
-      }
+      ShowToast(text, showSec);
     }
     private void ShowToast(string text, float time)
     {
@@ -581,8 +568,10 @@ namespace Ballance2.Services
       UIToast.gameObject.SetActive(true);
       UIToast.SetAsLastSibling();
 
-      UIFadeManager.AddFadeIn(UIToastImage, 0.26f);
-      UIFadeManager.AddFadeIn(UIToastText, 0.25f);
+      if(!UIToastImage.gameObject.activeSelf) {
+        UIFadeManager.AddFadeIn(UIToastImage, 0.26f);
+        UIFadeManager.AddFadeIn(UIToastText, 0.25f);
+      }
       toastTimeTick = time + 0.25f;
     }
     private void UpdateToastShow()
@@ -594,13 +583,7 @@ namespace Ballance2.Services
         {
           UIFadeManager.AddFadeOut(UIToastImage, 0.4f, true);
           UIFadeManager.AddFadeOut(UIToastText, 0.4f, false);
-          toastNextDelayTimeTick = 1.0f;
         }
-      }
-      if (toastNextDelayTimeTick >= 0)
-      {
-        toastNextDelayTimeTick -= Time.deltaTime;
-        if (toastNextDelayTimeTick <= 0) ShowPendingToast();
       }
     }
 

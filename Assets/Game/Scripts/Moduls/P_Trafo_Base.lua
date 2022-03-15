@@ -13,13 +13,15 @@ function P_Trafo_Base:new()
 end
 
 function P_Trafo_Base:Start()
-  ---@param other GameObject
-  self._Tigger.onTriggerEnter = function (_, other)
-    --球，并且球类型于目标类型不一致
-    if not self._TranfoActived and other.tag == 'Ball' and other.name ~= self._TargetBallType then
-      --触发变球
-      self._TranfoActived = true
-      GamePlay.GamePlayManager:ActiveTranfo(self, self._TargetBallType, self._Color)
+  if not self.IsPreviewMode then
+    ---@param other GameObject
+    self._Tigger.onTriggerEnter = function (_, other)
+      --球，并且球类型于目标类型不一致
+      if not self._TranfoActived and other.tag == 'Ball' and other.name ~= self._TargetBallType then
+        --触发变球
+        self._TranfoActived = true
+        GamePlay.GamePlayManager:ActiveTranfo(self, self._TargetBallType, self._Color)
+      end
     end
   end
 end
@@ -34,6 +36,13 @@ function P_Trafo_Base:Reset()
 end
 function P_Trafo_Base:Backup()
 
+end
+
+function P_Trafo_Base:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Trafo_Base:DeactiveForPreview()
+  self.gameObject:SetActive(false)
 end
 
 function CreateClass:P_Trafo_Base()

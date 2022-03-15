@@ -58,6 +58,14 @@ function P_Modul_29:Deactive()
   self._P_Modul_29_Platte09:UnPhysicalize(true)
   ModulBase.Deactive(self)
 end
+
+function P_Modul_29:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_29:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_29:Reset()
   ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
   self._BrigeBreaked = false
@@ -66,7 +74,7 @@ function P_Modul_29:Backup()
   ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_29:BallEnterRange()
-  if self.IsActive then
+  if not self.IsPreviewMode and self.IsActive then
     self._P_Modul_29_Platte04:WakeUp()
   end
 end

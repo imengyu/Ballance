@@ -72,7 +72,8 @@ public class PackageManagerContentUIControl : MonoBehaviour
     };
   }
   private void OnDestroy() {
-    itemDependsPrefabPool.Destroy();
+    if(itemDependsPrefabPool != null)
+      itemDependsPrefabPool.Destroy();
   }
 
   private GamePackage currentPackage;

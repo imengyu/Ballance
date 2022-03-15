@@ -30,6 +30,7 @@ UnityEngine.Yield = function (wait) end
 
 JetBrains = JetBrainsGlobalNamespace
 Unity = UnityGlobalNamespace
+QuickOutline = {}
 ---创建类接口
 CreateClass = {}
 BallancePhysics = {}
@@ -89,3 +90,5 @@ UNITY_WEBGL = false
 
 ---指定当前是不是机关迷你调试环境中
 BALLANCE_MODUL_DEBUG = false
+---获取当前是不是调试模式
+BALLANCE_DEBUG = false

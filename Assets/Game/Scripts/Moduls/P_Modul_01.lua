@@ -14,7 +14,9 @@ function P_Modul_01:new()
   self.BallCheckeRange = 60
 end
 function P_Modul_01:Start()
-  self.P_Modul_01_Pusher.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+  if not self.IsPreviewMode then
+    self.P_Modul_01_Pusher.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+  end
 end
 function P_Modul_01:Active()
   self.gameObject:SetActive(true)
@@ -34,8 +36,16 @@ end
 function P_Modul_01:Backup()
   ObjectStateBackupUtils.BackUpObject(self.gameObject)
 end
+
+function P_Modul_01:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_01:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_01:BallEnterRange()
-  if self.IsActive then
+  if not self.IsPreviewMode and self.IsActive then
     self.P_Modul_01_Pusher:WakeUp()
   end
 end

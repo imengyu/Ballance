@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using CommandUndoRedo;
-using cakeslice;
 using UnityEngine.EventSystems;
 
 namespace RuntimeGizmos
@@ -744,9 +743,6 @@ namespace RuntimeGizmos
 
 				materialsBuffer.Clear();
 				*/
-				Renderer renderer;
-				if(target.gameObject.TryGetComponent<Renderer>(out renderer))
-					target.gameObject.AddComponent<Outline>();
 			}
 		}
 
@@ -776,9 +772,6 @@ namespace RuntimeGizmos
 
 		void RemoveTargetHighlightedRenderers(Transform target)
 		{
-			var line = target.gameObject.GetComponent<Outline>();
-			if(line != null) Destroy(line);
-
 			/*
 			GetTargetRenderers(target, renderersBuffer);
 			RemoveHighlightedRenderers(renderersBuffer);

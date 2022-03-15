@@ -31,19 +31,15 @@ function CreateMenuLevelUI(package)
     PageMain.CanEscBack = false
     Yield(WaitForSeconds(0.1))
     PageAbout:CreateContent(package)
-    Yield(WaitForSeconds(0.1))
     PageHighscore:CreateContent(package)
     Yield(WaitForSeconds(0.1))
     PageQuit:CreateContent(package)
-    Yield(WaitForSeconds(0.1))
     PageLightZone:CreateContent(package)
     Yield(WaitForSeconds(0.1))
     PageAboutCreators:CreateContent(package)
-    Yield(WaitForSeconds(0.1))
     PageAboutProject:CreateContent(package)
     Yield(WaitForSeconds(0.1))
     PageAboutLicense:CreateContent(package)
-    Yield(WaitForSeconds(0.1))
     PageStart:CreateContent(package)
     Yield(WaitForSeconds(0.1))
     PageStartCustomLevel:CreateContent(package)
@@ -152,14 +148,16 @@ function CreateMenuLevelUI(package)
       --增加
       lastClickCount = lastClickCount + 1
       if(lastClickCount >= 4) then
-        if GameManager.DebugMode then
-          GameUIManager:GlobalToast(I18N.Tr('core.ui.SettingsYouAreInDebugMode'))
-          return 
-        else
-          GameUIManager:GlobalToast(I18N.TrF('core.ui.SettingsClickNTimeToDebugMode', { (8-lastClickCount) }))
-        end
         if(lastClickCount >= 8) then
-          GameManager.GameMediator:CallAction(SystemPackage, 'System', 'EnableDebugMode')
+          GameManager.DebugMode = true
+          GameUIManager:GlobalToast(I18N.Tr('core.ui.SettingsYouAreInDebugMode'))
+        else
+          if GameManager.DebugMode then
+            GameUIManager:GlobalToast(I18N.Tr('core.ui.SettingsYouAreInDebugMode'))
+            return 
+          else
+            GameUIManager:GlobalToast(I18N.TrF('core.ui.SettingsClickNTimeToDebugMode', { (8-lastClickCount) }))
+          end
         end
       end
     end)

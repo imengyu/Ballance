@@ -14,13 +14,15 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionTransparentNoSpecular"
       "RenderType"="Transparent"
     }
     LOD 100
-
     Pass
     {
       Blend SrcAlpha OneMinusSrcAlpha
       ZWrite Off
 
       Name "FORWARD" 
+      Tags { 
+        "LightMode" = "ForwardBase" 
+      }
       
       CGPROGRAM
       #pragma vertex vert
@@ -29,8 +31,10 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionTransparentNoSpecular"
       #pragma multi_compile_fog
       #pragma multi_compile_fwdbase
       #pragma multi_compile LIGHTPROBE_SH
+      #define UNITY_PASS_FORWARDBASE
       #define NO_SPECULAR
       #define USE_TRANSPARENT
+
 
       //引入头文件
       #include "UnityCG.cginc"
@@ -40,6 +44,37 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionTransparentNoSpecular"
 
       VertexOutputBase vert (VertexInput v) { return vertForwardBase(v); }
       fixed4 frag (VertexOutputBase i) : SV_Target { return fragForwardBase(i); }
+
+      ENDCG
+    }
+    Pass
+    {
+      Name "FORWARD_DELTA"
+      Tags { 
+        "LightMode" = "ForwardAdd"
+      }
+
+      Blend One One
+			ZWrite Off
+      Fog { Color (0,0,0,0) }
+
+      CGPROGRAM
+      #pragma vertex vert
+      #pragma fragment frag
+      #pragma multi_compile_fwdadd 
+      #define UNITY_PASS_FORWARDADD
+      #define NO_SPECULAR
+      #define USE_TRANSPARENT
+
+
+      //引入头文件
+      #include "UnityCG.cginc"
+      #include "Lighting.cginc"
+      #include "AutoLight.cginc"
+      #include "BlinnPhongSpeicalEmission.cginc"
+
+      VertexOutputBase vert (VertexInput v) { return vertForwardAdd(v); }
+      fixed4 frag (VertexOutputBase i) : SV_Target { return fragForwardAdd(i); }
 
       ENDCG
     }

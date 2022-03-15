@@ -79,6 +79,7 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.FileNotExist">文件不存在</Text>
     <Text name="core.ui.Loading">正在加载，请稍后</Text>
     <Text name="core.ui.ChooseLevelInLeft">在左侧选择一个你要加载的关卡</Text>
+    <Text name="core.ui.NoCustomLevel">看起来你没有安装任何自定义关卡，访问帮助文档了解如何安装自定义关卡</Text>
     <Text name="core.ui.LevelNoDepends">此关卡没有依赖额外的模组</Text>
     <Text name="core.ui.LevelHasDepends">此关卡依赖 {0} 个额外的模组，已成功加载</Text>
     <Text name="core.ui.LevelHasBadDepends">此关卡依赖 {0} 个额外的模组，{1} 个未能成功加载</Text>
@@ -256,6 +257,7 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us
     <Text name="core.ui.FileNotExist">File not exist</Text>
     <Text name="core.ui.Loading">Loading, please wait</Text>
     <Text name="core.ui.ChooseLevelInLeft">Select a level you want to load on the left</Text>
+    <Text name="core.ui.NoCustomLevel">It looks like you haven't installed any custom levels. Visit the help documentation to learn how to install custom levels</Text>
     <Text name="core.ui.LevelNoDepends">This level does not rely on additional modules</Text>
     <Text name="core.ui.LevelHasDepends">This level depends on {0} additional modules and has been loaded successfully</Text>
     <Text name="core.ui.LevelHasBadDepends">This level depends on {0} additional modules, {1} failed to load</Text>
@@ -416,6 +418,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.FileNotExist">檔案不存在</Text>
     <Text name="core.ui.Loading">正在加載，請稍後</Text>
     <Text name="core.ui.ChooseLevelInLeft">在左側選擇一個你要加載的關卡</Text>
+    <Text name="core.ui.NoCustomLevel">看起來你沒有安裝任何自定義關卡，訪問幫助文檔瞭解如何安裝自定義關卡</Text>
     <Text name="core.ui.LevelNoDepends">此關卡沒有依賴額外的模組</Text>
     <Text name="core.ui.LevelHasDepends">此關卡依賴{0}個額外的模組，已成功加載</Text>
     <Text name="core.ui.LevelHasBadDepends">此關卡依賴 {0} 個額外的模組，{1} 個未能成功加載</Text>

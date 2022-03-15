@@ -18,12 +18,12 @@ end
 
 function P_Modul_25:Active()
   ModulBase.Active(self)
+  self.P_Modul_25_Bridge.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
   self.P_Modul_25_Bridge:Physicalize()
   self.P_Modul_25_Bridge_Stopper_Left:Physicalize()
   self.P_Modul_25_Bridge_Stopper_Right:Physicalize()
   self.P_Modul_25_Hinge_Col_Left:Physicalize()
   self.P_Modul_25_Hinge_Col_Right:Physicalize()
-  self.P_Modul_25_Bridge.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
 end
 function P_Modul_25:Deactive()
   self.P_Modul_25_Bridge:UnPhysicalize(true)
@@ -33,6 +33,14 @@ function P_Modul_25:Deactive()
   self.P_Modul_25_Bridge_Stopper_Right:UnPhysicalize(true)
   ModulBase.Deactive(self)
 end
+
+function P_Modul_25:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_25:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_25:Reset()
   ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end

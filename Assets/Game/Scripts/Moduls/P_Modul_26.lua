@@ -37,6 +37,14 @@ function P_Modul_26:Deactive()
   end
   ModulBase.Deactive(self)
 end
+
+function P_Modul_26:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_26:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_26:Reset()
   ObjectStateBackupUtils.RestoreObject(self.P_Modul_26_Rope.gameObject)
   ObjectStateBackupUtils.RestoreObject(self.P_Modul_26_Sack.gameObject)

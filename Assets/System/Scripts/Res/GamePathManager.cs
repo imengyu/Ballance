@@ -321,7 +321,7 @@ namespace Ballance2.Res
 #endif
       }
       
-      if(!result.EndsWith(".ballance"))
+      if(pathorname != "" && !result.EndsWith(".ballance"))
         result += ".ballance";
 
       return (withFileSheme ? "file:///" : "") + result;

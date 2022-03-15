@@ -19,21 +19,23 @@ end
 
 function P_Modul_18:Start()
   ModulBase.Start(self)
-  ---@param other GameObject
-  self.P_Modul_18_Kollisionsquader.onTriggerEnter = function (_, other)
-    if self._CurrentInRangeBall == nil and other.tag == 'Ball' and other.name == 'BallPaper' then
-      self._CurrentInRangeBall = GamePlay.BallManager.CurrentBall._Rigidbody
-      self.CurrentBallForce = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, self.transform:TransformVector(Vector3.up))
-    end
-  end
-  ---@param other GameObject
-  self.P_Modul_18_Kollisionsquader.onTriggerExit = function (_, other)
-    if self._CurrentInRangeBall ~= nil and other.tag == 'Ball' and other.name == 'BallPaper' then
-      if self.CurrentBallForce then
-        self.CurrentBallForce:Delete()
-        self.CurrentBallForceID = nil
+  if not self.IsPreviewMode then
+    ---@param other GameObject
+    self.P_Modul_18_Kollisionsquader.onTriggerEnter = function (_, other)
+      if self._CurrentInRangeBall == nil and other.tag == 'Ball' and other.name == 'BallPaper' then
+        self._CurrentInRangeBall = GamePlay.BallManager.CurrentBall._Rigidbody
+        self.CurrentBallForce = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, self.transform:TransformVector(Vector3.up))
       end
-      self._CurrentInRangeBall = nil
+    end
+    ---@param other GameObject
+    self.P_Modul_18_Kollisionsquader.onTriggerExit = function (_, other)
+      if self._CurrentInRangeBall ~= nil and other.tag == 'Ball' and other.name == 'BallPaper' then
+        if self.CurrentBallForce then
+          self.CurrentBallForce:Delete()
+          self.CurrentBallForceID = nil
+        end
+        self._CurrentInRangeBall = nil
+      end
     end
   end
 end
@@ -54,6 +56,21 @@ function P_Modul_18:Deactive()
   self._CurrentInRangeBall = nil
   ModulBase.Deactive(self)
 end
+
+function P_Modul_18:ActiveForPreview()
+  self.gameObject:SetActive(true)
+  self.P_Modul_18_Particle:SetActive(true)
+  self.P_Modul_18_Particle_Small:SetActive(true)
+  self.P_Modul_18_Sound:Play()
+  self.P_Modul_18_Rotor:Play('P_Modul_18_Rotor_Start_Animation')
+end
+function P_Modul_18:DeactiveForPreview()
+  self.P_Modul_18_Particle:SetActive(false)
+  self.P_Modul_18_Particle_Small:SetActive(false)
+  self.P_Modul_18_Sound:Stop()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_18:Reset()
   self._CurrentInRangeBall = nil
 end

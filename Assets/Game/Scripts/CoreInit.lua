@@ -5,7 +5,6 @@ local GameErrorChecker = Ballance2.Services.Debug.GameErrorChecker
 local GameError = Ballance2.Services.Debug.GameError
 local Log = Ballance2.Log
 local CorePackage = GamePackage.GetCorePackage()
-local WaitForSeconds = UnityEngine.WaitForSeconds
 local Yield = UnityEngine.Yield
 
 ---全局 CreateClass 引入
@@ -22,8 +21,6 @@ require('InitGamePlay')
 require('InitLevelBuilder')
 require('InitBulitInModuls')
 require('KeypadUIManager')
-
-
 
 local TAG = 'Core'
 
@@ -61,13 +58,7 @@ function CoreInit()
   coroutine.resume(coroutine.create(function ()
 
     UIInit.Init()
-
-    Yield(WaitForSeconds(0.06))
-
     Intro.Init()
-
-    Yield(WaitForSeconds(0.06))
-
     MenuLevel.Init()
 
     local GameManagerInstance = GameManager.Instance
@@ -79,20 +70,13 @@ function CoreInit()
     Game.SoundManager = GameManager.GetSystemService('GameSoundManager')
     Game.HighScoreManager = require('HighscoreManager')
 
-    Yield(WaitForSeconds(0.06))
-
     CorePackage:RequireLuaClass('ModulBase')
     CorePackage:RequireLuaClass('ModulPhysics')
     CorePackage:RequireLuaClass('Ball')
-
-    
-    Yield(WaitForSeconds(0.06))
     
     LevelBuilderInit()
     --加载分数数据
     Game.HighScoreManager.Load()
-    
-    Yield(WaitForSeconds(0.06))
 
     --注册内置键盘
     KeypadUIManager.AddKeypad('BaseLeft', CorePackage:GetPrefabAsset('KeypadLeft.prefab'), CorePackage:GetSpriteAsset('keypad_l.png'))
@@ -134,13 +118,14 @@ function CoreInit()
     end
 
     local nextLoadLevel = ''
+    local nextLoadLevelIsPreview = false
     GameMediator:RegisterEventHandler(CorePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, function (evtName, params)
       local scense = params[1]
       if(scense == 'Level') then 
         LuaTimer.Add(300, function ()
           GamePlayInit(function ()
             if nextLoadLevel ~= '' then
-              Game.LevelBuilder:LoadLevel(nextLoadLevel)
+              Game.LevelBuilder:LoadLevel(nextLoadLevel, nextLoadLevelIsPreview)
               nextLoadLevel = ''
             end
           end)
@@ -163,8 +148,9 @@ function CoreInit()
         GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, 'Param 1 expect string, but got '..type)
         return false
       else
+        nextLoadLevelIsPreview = #params >= 2 and type(params[2]) == 'boolean' and params[2]
         nextLoadLevel = params[1]
-        Log.D(TAG, 'Start load level '..nextLoadLevel..' ')
+        Log.D(TAG, 'Start load level '..nextLoadLevel..' preview '..tostring(nextLoadLevelIsPreview))
       end
       GameManagerInstance:RequestEnterLogicScense('Level')
       return false

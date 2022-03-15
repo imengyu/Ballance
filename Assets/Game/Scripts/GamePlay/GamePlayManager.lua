@@ -1,5 +1,4 @@
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
-local GameObject = UnityEngine.GameObject
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
@@ -244,6 +243,7 @@ function GamePlayManager:_InitAndStart()
     GamePlay.SectorManager:SetCurrentSector(1)
     --设置初始球
     GamePlay.BallManager:SetCurrentBall(self.StartBall)
+    GamePlay.CamManager.gameObject:SetActive(true)
     self:_SetCamPos()
     Game.UIManager:MaskBlackFadeOut(1)
     --播放开始音乐
@@ -414,11 +414,13 @@ function GamePlayManager:Fall()
   self._SoundBallFall.volume = 1
   self._SoundBallFall:Play()
 
-  if self.CurrentLife > 0 then
+  if self.CurrentLife > 0 or self.CurrentLife == -1 then
     --禁用控制
     self:_Stop(BallControlStatus.FreeMode)
 
-    self.CurrentLife = self.CurrentLife - 1
+    if self.CurrentLife ~= -1 then
+      self.CurrentLife = self.CurrentLife - 1
+    end
     Game.UIManager:MaskWhiteFadeIn(1)
 
     coroutine.resume(coroutine.create(function()
@@ -449,7 +451,6 @@ function GamePlayManager:Fall()
 
     self.EventFall:Emit(nil)
   else
-    
     Log.D(TAG, 'Death')
 
     --禁用控制
@@ -468,6 +469,7 @@ function GamePlayManager:Fall()
     end))
 
     self.EventDeath:Emit(nil)
+
   end
 end
 ---过关

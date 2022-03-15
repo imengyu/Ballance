@@ -32,14 +32,18 @@ namespace Ballance2.Utils.ServiceUtils
           d.tick--;
           if (d.tick <= 0)
           {
-            switch (d.type)
-            {
-              case GameMediatorDelayCallType.NormalEvent:
-                GameMediator.DispatchGlobalEvent(d.name, d.args);
-                break;
-              case GameMediatorDelayCallType.SingleEvent:
-                GameMediator.NotifySingleEvent(d.name, d.args);
-                break;
+            try {
+              switch (d.type)
+              {
+                case GameMediatorDelayCallType.NormalEvent:
+                  GameMediator.DispatchGlobalEvent(d.name, d.args);
+                  break;
+                case GameMediatorDelayCallType.SingleEvent:
+                  GameMediator.NotifySingleEvent(d.name, d.args);
+                  break;
+              }
+            } catch(System.Exception e) {
+              Log.W("GameMediatorDelayCaller", "Call Delay event " + d.name + " failed because Exception: " + e);
             }
             data.RemoveAt(i);
           }

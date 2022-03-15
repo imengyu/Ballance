@@ -16,7 +16,9 @@ local I18N = Ballance2.Services.I18N.I18N
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local TiggerTester = Ballance2.Game.TiggerTester
 
+local MeshRenderer = UnityEngine.MeshRenderer
 local Application = UnityEngine.Application
+local Color = UnityEngine.Color
 local GUIUtility = UnityEngine.GUIUtility
 local RenderSettings = UnityEngine.RenderSettings
 local GameObject = UnityEngine.GameObject
@@ -40,6 +42,8 @@ local LevelBuilderModulRegStorage = {}
 
 ---关卡建造器
 ---@class LevelBuilder : GameLuaObjectHostClass
+---@field IsPreviewMode boolean 是否是预览模式
+---@field _HalfTransparentMaterial Material
 LevelBuilder = ClassicObject:extend()
 
 function CreateClass:LevelBuilder()
@@ -149,7 +153,8 @@ end
 
 ---加载关卡
 ---@param name string 关卡文件名
-function LevelBuilder:LoadLevel(name)
+---@param preview boolean 是否是预览模式
+function LevelBuilder:LoadLevel(name, preview)
 
   if self._IsLoading then
     Log.E(TAG, 'Level is loading! ')
@@ -157,8 +162,12 @@ function LevelBuilder:LoadLevel(name)
   end
 
   self._IsLoading = true
+  self.IsPreviewMode = preview
 
-  Log.D(TAG, 'Load level start')
+  Log.D(TAG, 'Load level start ')
+  if preview then
+    Log.I(TAG, 'Load level in preview mode')
+  end
 
   ---设置UI为初始状态
   self._LevelBuilderUI.gameObject:SetActive(true)
@@ -170,8 +179,10 @@ function LevelBuilder:LoadLevel(name)
   InitBulitInModuls()
   InitBulitInModulCustomSounds()
 
-  --加载物理环境
-  GamePlay.GamePlayManager.GamePhysicsWorld:Create()
+  if not preview then
+    --加载物理环境
+    GamePlay.GamePlayManager.GamePhysicsWorld:Create()
+  end
 
   --发送开始事件
   Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_BEFORE_START', nil)
@@ -317,30 +328,32 @@ function LevelBuilder:_LoadLevelInternal()
   SectorManager.CurrentLevelSectorCount = level.sectorCount
   SectorManager.CurrentLevelSectors = {}
   SectorManager.CurrentLevelRestPoints = {}
-  GamePlayManager.NextLevelName = tostring(level.nextLevel) or ''
-  GamePlayManager.StartBall = level.firstBall or 'BallWood'
-  GamePlayManager.CurrentLevelName = self._CurrentLevelJson.name
-  GamePlayManager.CurrentEndWithUFO = level.endWithUFO or false
-
-  Log.D(TAG, 'Level Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
-
-  if type(level.defaultHighscoreData) == 'table' then
-    Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
-  else
-    Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, nil)
-    Log.D(TAG, 'Not found user config defaultHighscoreData for this level, using system defaultHighscoreData')
-  end
-
-  if level.startLife and level.startLife > 0 then
-    GamePlayManager.StartLife = level.startLife
-  end
-  if level.startPoint and level.startPoint > 0 then
-    GamePlayManager.StartPoint = level.startPoint
-  end
-  if level.levelScore and level.levelScore > 0 then
-    GamePlayManager.LevelScore = level.levelScore
-  end
+  if not self.IsPreviewMode then
+    GamePlayManager.NextLevelName = tostring(level.nextLevel) or ''
+    GamePlayManager.StartBall = level.firstBall or 'BallWood'
+    GamePlayManager.CurrentLevelName = self._CurrentLevelJson.name
+    GamePlayManager.CurrentEndWithUFO = level.endWithUFO or false
   
+    Log.D(TAG, 'Level Name: '..GamePlayManager.CurrentLevelName..'\nSectors: '..level.sectorCount)
+
+    if type(level.defaultHighscoreData) == 'table' then
+      Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, level.defaultHighscoreData)
+    else
+      Game.HighScoreManager.TryAddDefaultLevelHighScore(levelName, nil)
+      Log.D(TAG, 'Not found user config defaultHighscoreData for this level, using system defaultHighscoreData')
+    end
+
+    if level.startLife and (level.startLife > 0 or level.startLife == -1) then
+      GamePlayManager.StartLife = level.startLife
+    end
+    if level.startPoint and level.startPoint > 0 then
+      GamePlayManager.StartPoint = level.startPoint
+    end
+    if level.levelScore and level.levelScore > 0 then
+      GamePlayManager.LevelScore = level.levelScore
+    end
+    
+  end
 
   self:UpdateLoadProgress(0.1)
   
@@ -402,108 +415,137 @@ function LevelBuilder:_LoadLevelInternal()
     Yield(WaitForSeconds(0.02))
     self:UpdateLoadProgress(0.2)
 
-    Log.D(TAG, 'Load level floors')
+    --预览模式无须物理化这些
+    if not self.IsPreviewMode then
 
-    ---加载 物理路面
-    -----------------------------
-    for _, floor in ipairs(level.floors) do
-      
-      local floorCount = 0
-      local physicsData = GamePhysFloor[floor.name] 
-      if physicsData ~= nil then
+      Log.D(TAG, 'Load level floors')
 
-        --StaticCompound
-        local floorStatic = Game.Manager:InstanceNewGameObject(self.gameObject.transform, floor.name)
-        table.insert(self._CurrentLevelFloors, floorStatic)
+      ---加载 物理路面
+      -----------------------------
+      for _, floor in ipairs(level.floors) do
         
-        --Floor childs
-        for _, name in ipairs(floor.objects) do
-          local go = GameObject.Find(name)
-          if go ~= nil then
-            --Mesh
-            local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
-            if meshFilter ~= nil and meshFilter.mesh  ~= nil then
-              go.transform:SetParent(floorStatic.transform)
-              go.tag = floor.name
-              go:AddComponent(BoxCollider)
-              local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
-              body.DoNotAutoCreateAtAwake = true
-              body.Fixed = true
-              body.BuildRootConvexHull = false
-              body.Concave:Add(meshFilter.mesh)
-              body.Friction = physicsData.Friction
-              body.Elasticity = physicsData.Elasticity
-              body.Layer = physicsData.Layer
-              body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
-              body:Physicalize()
-              if go:GetComponent(MeshCollider) == nil then
+        local floorCount = 0
+        local physicsData = GamePhysFloor[floor.name] 
+        if physicsData ~= nil then
+
+          --StaticCompound
+          local floorStatic = Game.Manager:InstanceNewGameObject(self.gameObject.transform, floor.name)
+          table.insert(self._CurrentLevelFloors, floorStatic)
+          
+          --Floor childs
+          for _, name in ipairs(floor.objects) do
+            local go = GameObject.Find(name)
+            if go ~= nil then
+              --Mesh
+              local meshFilter = go:GetComponent(MeshFilter) ---@type MeshFilter
+              if meshFilter ~= nil and meshFilter.mesh  ~= nil then
+                go.transform:SetParent(floorStatic.transform)
+                go.tag = floor.name
                 go:AddComponent(MeshCollider)
-              end
-
-              if physicsData.HitSound then
-                local hitSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, 'Floor_'..name..'_HitSound')
-                
-                body:EnableContractEventCallback()
-                body.EnableCollisionEvent = true
-                body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.2, 10, 0.5, 0.1)
-                body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.2, 10, 0.5, 0.1)
-                body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.2, 10, 0.5, 0.1)
-                --撞击处理回调
-                ---@param col_id number
-                ---@param speed_precent number
-                body.OnPhysicsCollDetection = function (_, col_id, speed_precent)
-                  hitSound.volume = speed_precent
-                  hitSound:Play()
+                local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+                body.DoNotAutoCreateAtAwake = true
+                body.Fixed = true
+                body.BuildRootConvexHull = false
+                body.Concave:Add(meshFilter.mesh)
+                body.Friction = physicsData.Friction
+                body.Elasticity = physicsData.Elasticity
+                body.Layer = physicsData.Layer
+                body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
+                body:Physicalize()
+                if go:GetComponent(MeshCollider) == nil then
+                  go:AddComponent(MeshCollider)
                 end
+
+                if physicsData.HitSound then
+                  local hitSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, 'Floor_'..name..'_HitSound')
+                  
+                  body:EnableContractEventCallback()
+                  body.EnableCollisionEvent = true
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.2, 10, 0.5, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.2, 10, 0.5, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.2, 10, 0.5, 0.1)
+                  --撞击处理回调
+                  ---@param col_id number
+                  ---@param speed_precent number
+                  body.OnPhysicsCollDetection = function (_, col_id, speed_precent)
+                    hitSound.volume = speed_precent
+                    hitSound:Play()
+                  end
+                end
+              else
+                Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
               end
+              floorCount = floorCount + 1
             else
-              Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
+              Log.W(TAG, 'Not found floor  \''..name..'\' in type \''..floor.name..'\'')
             end
-            floorCount = floorCount + 1
+          end
+
+          if floorCount == 0 then
+            ---没有路面，则隐藏当前静态父级
+            floorStatic:SetActive(false)
           else
-            Log.W(TAG, 'Not found floor  \''..name..'\' in type \''..floor.name..'\'')
+            Log.D(TAG, 'Loaded floor '..floor.name..' count: '..floorCount)
           end
-        end
-
-        if floorCount == 0 then
-          ---没有路面，则隐藏当前静态父级
-          floorStatic:SetActive(false)
+          
         else
-          Log.D(TAG, 'Loaded floor '..floor.name..' count: '..floorCount)
+          Log.E(TAG, 'Unknow floor type \''..floor.name..'\'')
         end
-        
-      else
-        Log.E(TAG, 'Unknow floor type \''..floor.name..'\'')
       end
-    end
 
-    self:UpdateLoadProgress(0.3)
+      self:UpdateLoadProgress(0.3)
 
-    --加载坠落检测区
-    -----------------------------
-    for _, name in ipairs(level.depthTestCubes) do
-      local go = GameObject.Find(name)
-      if go ~= nil then
+      --加载坠落检测区
+      -----------------------------
+      for _, name in ipairs(level.depthTestCubes) do
+        local go = GameObject.Find(name)
+        if go ~= nil then
 
-        --禁用Renderer使物体隐藏
-        local renderer = go:GetComponent(Renderer) ---@type Renderer
-        if renderer ~= nil then renderer.enabled = false end
-        
-        --添加坠落检测区Mesh
-        local collider = go:AddComponent(BoxCollider) ---@type BoxCollider
-        local tigger = go:AddComponent(TiggerTester) ---@type TiggerTester
-        
-        collider.isTrigger = true
-        ---@param other GameObject
-        tigger.onTriggerEnter = function (_, other)
-          --触发球坠落
-          if other.tag == 'Ball' then
-            GamePlayManager:Fall()
+          --禁用Renderer使物体隐藏
+          local renderer = go:GetComponent(Renderer) ---@type Renderer
+          if renderer ~= nil then renderer.enabled = false end
+          
+          --添加坠落检测区Mesh
+          local collider = go:AddComponent(BoxCollider) ---@type BoxCollider
+          local tigger = go:AddComponent(TiggerTester) ---@type TiggerTester
+          
+          collider.isTrigger = true
+          ---@param other GameObject
+          tigger.onTriggerEnter = function (_, other)
+            --触发球坠落
+            if other.tag == 'Ball' then
+              GamePlayManager:Fall()
+            end
           end
+        else
+          Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
         end
-      else
-        Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
       end
+        
+    else
+      --加载坠落检测区信息
+      -----------------------------
+
+      local depthTestCubes = {}
+      for _, name in ipairs(level.depthTestCubes) do
+        local go = GameObject.Find(name)
+        if go ~= nil then
+
+          --添加边框材质
+          local renderer = go:GetComponent(MeshRenderer) ---@type MeshRenderer
+          if renderer == nil then 
+            renderer = go:AddComponent(MeshRenderer) ---@type MeshRenderer
+          end
+          
+          renderer.material = self._HalfTransparentMaterial
+
+          table.insert(depthTestCubes, go)
+        else
+          Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
+        end
+      end
+
+      GamePlay.GamePreviewManager.GameDepthTestCubes = depthTestCubes
     end
 
     self:UpdateLoadProgress(0.4)
@@ -513,7 +555,6 @@ function LevelBuilder:_LoadLevelInternal()
     --调用自定义加载步骤 modul
     -----------------------------
     self:_CallLoadStep("modul")
-
     self:UpdateLoadProgress(0.5)
 
     --加载 modul
@@ -524,6 +565,7 @@ function LevelBuilder:_LoadLevelInternal()
       if modul ~= nil then
         
         local modulCount = 0
+        local modulFailedCount = 0
 
         Log.D(TAG, 'Load modul '..group.name)
 
@@ -539,11 +581,14 @@ function LevelBuilder:_LoadLevelInternal()
             tickCount = tickCount + 1
             modulCount = modulCount + 1
           else
-            Log.W(TAG, 'Not found object \''..name..'\' in group \''..group.name..'\'')
+            modulFailedCount = modulFailedCount + 1
           end 
         end
 
-        Log.D(TAG, 'Loaded modul '..group.name..' count : '..modulCount)
+        Log.D(TAG, 'Loaded modul '..group.name..' count : '..modulCount..(modulFailedCount > 0 and (' failed count: '..modulFailedCount) or ''))
+        if modulFailedCount > 0 then
+          Log.W(TAG, 'Load failed modul '..group.name..' count : '..modulFailedCount)
+        end
       else
         Log.W(TAG, 'Modul \''..group.name..'\' not register')
       end
@@ -557,7 +602,11 @@ function LevelBuilder:_LoadLevelInternal()
     --首次加载 modul
     -----------------------------
     Yield(WaitForSeconds(0.02))
-    SectorManager:DoInitAllModuls()
+
+    --预览模式无须备份机关信息
+    if not self.IsPreviewMode then
+      SectorManager:DoInitAllModuls()
+    end
 
     self:UpdateLoadProgress(0.7)
 
@@ -613,11 +662,19 @@ function LevelBuilder:_LoadLevelInternal()
         if D == nil then Log.W(TAG, 'Failed to load customSkyBox.D texture') end
 
         local skyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T)
-        GamePlayManager:CreateSkyAndLight('', skyMat, level.lightColor)
+        if self.IsPreviewMode then
+          GamePlay.GamePreviewManager:CreateSkyAndLight('', skyMat, level.lightColor)
+        else
+          GamePlayManager:CreateSkyAndLight('', skyMat, level.lightColor)
+        end
       end
     elseif type(level.skyBox) == "string" then
       --使用自带天空盒 
-      GamePlayManager:CreateSkyAndLight(level.skyBox, nil, StringUtils.StringToColor(level.lightColor))
+      if self.IsPreviewMode then
+        GamePlay.GamePreviewManager:CreateSkyAndLight(level.skyBox, nil, StringUtils.StringToColor(level.lightColor))
+      else
+        GamePlayManager:CreateSkyAndLight(level.skyBox, nil, StringUtils.StringToColor(level.lightColor))
+      end
     else
       Log.E(TAG, 'Invalid field \'level.skyBox\': '..DebugUtils.PrintLuaVarAuto(level.skyBox, 1))
     end
@@ -730,11 +787,17 @@ function LevelBuilder:_LoadLevelInternal()
     self:UpdateLoadProgress(1)
     Yield(WaitForSeconds(0.1))
 
-
-
     --最后加载步骤
     -----------------------------
-    Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.3, {})
+    if self.IsPreviewMode then
+      Game.Mediator:DelayedNotifySingleEvent('CoreGamePreviewManagerInitAndStart', 0.3, {
+        self._CurrentLevelJson.name,
+        self._CurrentLevelJson.author,
+        self._CurrentLevelJson.version
+      })
+    else
+      Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.3, {})
+    end
 
     Yield(WaitForSeconds(0.2))
 
@@ -784,7 +847,13 @@ function LevelBuilder:ReplacePrefab(objName, modulPrefab)
   modul.transform.position = obj.transform.position
   modul.transform.rotation = obj.transform.rotation
   --获取类
-  local modulClass = GameLuaObjectHost.GetLuaClassFromGameObject(modul)
+  local modulClass = GameLuaObjectHost.GetLuaClassFromGameObject(modul) ---@type ModulBase 
+  if not modulClass then
+    Log.E(TAG, 'Not find ModulBase class on modul \''..objName..'\'')
+    return nil
+  end
+
+  modulClass.IsPreviewMode = self.IsPreviewMode
   self._CurrentLevelModuls[objName] = {
     go = modul,
     modul = modulClass
@@ -837,9 +906,11 @@ function LevelBuilder:UnLoadLevel(endCallback)
     GamePlay.SectorManager:ClearAll() 
 
     --删除音乐数据
-    local customMusicTheme = self._CurrentLevelJson.customMusicTheme
-    if type(customMusicTheme) == 'table' and type(customMusicTheme.id) == 'number' then
-      GamePlay.MusicManager.Musics[customMusicTheme.id] = nil
+    if self._CurrentLevelJson then
+      local customMusicTheme = self._CurrentLevelJson.customMusicTheme
+      if type(customMusicTheme) == 'table' and type(customMusicTheme.id) == 'number' then
+        GamePlay.MusicManager.Musics[customMusicTheme.id] = nil
+      end
     end
     GamePlay.MusicManager:SetCurrentTheme(1)
     --停止所有背景声音
@@ -868,7 +939,11 @@ function LevelBuilder:UnLoadLevel(endCallback)
     Yield(WaitForSeconds(0.1))
 
     --清空天空和云层
-    GamePlay.GamePlayManager:HideSkyAndLight()
+    if self.IsPreviewMode then
+      GamePlay.GamePreviewManager:HideSkyAndLight()
+    else
+      GamePlay.GamePlayManager:HideSkyAndLight()
+    end
     if self._CurrentLevelSkyLayer ~= nil then
       UnityEngine.Object.Destroy(self._CurrentLevelSkyLayer)
       self._CurrentLevelSkyLayer = nil
@@ -895,7 +970,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
     Yield(WaitForSeconds(0.1))
 
     --删除关卡中所有的物理碰撞信息
-    if GamePlay.GamePlayManager and GamePlay.GamePlayManager.GamePhysicsWorld then
+    if not self.IsPreviewMode and GamePlay.GamePlayManager and GamePlay.GamePlayManager.GamePhysicsWorld then
       GamePlay.GamePlayManager.GamePhysicsWorld:Destroy()
     end
 

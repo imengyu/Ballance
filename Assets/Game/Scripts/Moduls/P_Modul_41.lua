@@ -19,6 +19,14 @@ function P_Modul_41:Deactive()
   self.P_Modul_41_Box:UnPhysicalize(true)
   ModulBase.Deactive(self)
 end
+
+function P_Modul_41:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_41:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_41:Reset()
   ObjectStateBackupUtils.RestoreObject(self.gameObject)
 end

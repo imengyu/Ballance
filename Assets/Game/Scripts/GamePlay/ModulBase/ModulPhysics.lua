@@ -14,16 +14,20 @@ function ModulPhysics:new()
   self.BallCheckeRange = 50
 end
 function ModulPhysics:Start()
-  if self._PhysicsObject == nil then 
-    self._PhysicsObject = self.gameObject:GetComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
-  end
-  if not IsNilOrEmpty(self._PhysicsObjectCollIDName) then
-    self._PhysicsObject.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(self._PhysicsObjectCollIDName)
+  if not self.IsPreviewMode then
+    if self._PhysicsObject == nil then 
+      self._PhysicsObject = self.gameObject:GetComponent(BallancePhysics.Wapper.PhysicsObject) ---@type PhysicsObject
+    end
+    if not IsNilOrEmpty(self._PhysicsObjectCollIDName) then
+      self._PhysicsObject.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(self._PhysicsObjectCollIDName)
+    end
   end
 end
 function ModulPhysics:BallEnterRange()
-  if self._PhysicsObject == nil and self._PhysicsObject.IsPhysicalized then 
-    self._PhysicsObject:WakeUp()
+  if not self.IsPreviewMode then
+    if self._PhysicsObject == nil and self._PhysicsObject.IsPhysicalized then 
+      self._PhysicsObject:WakeUp()
+    end
   end
 end
 function ModulPhysics:Active()
@@ -39,6 +43,13 @@ function ModulPhysics:Reset()
 end
 function ModulPhysics:Backup()
   ObjectStateBackupUtils.BackUpObject(self._PhysicsObject.gameObject)
+end
+
+function ModulPhysics:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function ModulPhysics:DeactiveForPreview()
+  self.gameObject:SetActive(false)
 end
 
 function CreateClass:ModulPhysics()

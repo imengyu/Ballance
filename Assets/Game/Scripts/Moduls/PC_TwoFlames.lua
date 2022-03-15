@@ -13,14 +13,17 @@ function PC_TwoFlames:Start()
   self.FlameSmallLeft:SetActive(false)
   self.FlameSmallRight:SetActive(false)
   self.Flame:SetActive(false)
-  --Tigger 进入事件
-  ---@param otherBody GameObject
-  self.CheckPointTigger.onTriggerEnter = function (s, otherBody)
-    if not self.CheckPointActived and otherBody.tag == 'Ball' then
-      --触发下一关
-      self.CheckPointActived = true
-      self.Flame:SetActive(false)
-      GamePlay.SectorManager:NextSector()
+  
+  if not self.IsPreviewMode then
+    --Tigger 进入事件
+    ---@param otherBody GameObject
+    self.CheckPointTigger.onTriggerEnter = function (s, otherBody)
+      if not self.CheckPointActived and otherBody.tag == 'Ball' then
+        --触发下一关
+        self.CheckPointActived = true
+        self.Flame:SetActive(false)
+        GamePlay.SectorManager:NextSector()
+      end
     end
   end
 end
@@ -34,6 +37,18 @@ function PC_TwoFlames:Deactive()
   self.FlameSmallRight:SetActive(false)
   self.Flame:SetActive(false)
 end
+
+function PC_TwoFlames:ActiveForPreview()
+  self.FlameSmallLeft:SetActive(true)
+  self.FlameSmallRight:SetActive(true)
+  self.gameObject:SetActive(true)
+end
+function PC_TwoFlames:DeactiveForPreview()
+  self.FlameSmallLeft:SetActive(false)
+  self.FlameSmallRight:SetActive(false)
+  self.gameObject:SetActive(false)
+end
+
 function PC_TwoFlames:Reset()
 end
 function PC_TwoFlames:Backup()

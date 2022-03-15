@@ -169,6 +169,22 @@ function CamManager:GetRotateDegreeByType(type)
   end
   return 0
 end
+function CamManager:_UpdateStateForDebugStats()
+  if BALLANCE_DEBUG then 
+    if self.CamRotateValue == CamRotateType.North then 
+      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'North'
+    elseif self.CamRotateValue == CamRotateType.East then 
+      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'East'
+    elseif self.CamRotateValue == CamRotateType.South then 
+      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'South'
+    elseif self.CamRotateValue == CamRotateType.West then 
+      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'West'
+    end
+
+    GameUI.GamePlayUI._DebugStatValues['CamState'].Value = 'IsSpaced: '..tostring(self.CamIsSpaced)
+      ..' Follow: '..tostring(self.CamFollow.Follow)..' Look: '..tostring(self.CamFollow.Look)
+  end
+end
 
 --#region 公共方法
 
@@ -192,6 +208,7 @@ function CamManager:SetPosAndDirByRestPoint(go)
   self._CameraHostTransform.position = go.transform.position
   self.CamRotateValue = type
   self:ResetVector()
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---空格键向上旋转
@@ -210,6 +227,7 @@ function CamManager:RotateUp(enable)
   self._CamRotateUpTick = 0
   self._CamIsRotateingUp = true
   self.EventRotateUpStateChanged:Emit(enable)
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---摄像机旋转指定角度
@@ -227,6 +245,7 @@ function CamManager:RotateTo(val)
   self._CamRotateTick = 0
   self._CamIsRotateing = true
   self.EventRotateDirectionChanged:Emit(self._CamRotateTargetDegree)
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---摄像机向左旋转
@@ -244,6 +263,7 @@ function CamManager:RotateRight()
   self._CamRotateTick = 0
   self._CamIsRotateing = true
   self.EventRotateDirectionChanged:Emit(self._CamRotateTargetDegree)
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---摄像机向右旋转
@@ -261,6 +281,7 @@ function CamManager:RotateLeft()
   self._CamRotateTick = 0
   self._CamIsRotateing = true
   self.EventRotateDirectionChanged:Emit(self._CamRotateTargetDegree)
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---设置主摄像机天空盒材质
@@ -274,6 +295,7 @@ end
 function CamManager:SetCamFollow(enable)
   self.CamFollow.Follow = enable
   self.EventCamFollowChanged:Emit(enable)
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---指定摄像机看着球是否开启
@@ -281,6 +303,7 @@ end
 function CamManager:SetCamLook(enable)
   self.CamFollow.Look = enable
   self.EventCamLookChanged:Emit(enable)
+  self:_UpdateStateForDebugStats()
   return self
 end
 ---指定当前跟踪的目标
@@ -298,6 +321,7 @@ function CamManager:DisbleAll()
   self.EventCamFollowChanged:Emit(false)
   self.EventCamLookChanged:Emit(false)
   self.EventCamFollowTargetChanged:Emit(nil)
+  self:_UpdateStateForDebugStats()
   return self
 end
 

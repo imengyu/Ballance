@@ -18,6 +18,14 @@ function P_Modul_17:Deactive()
   self.Modul17_Dreharme:UnPhysicalize(true)
   ModulBase.Deactive(self)
 end
+
+function P_Modul_17:ActiveForPreview()
+  self.gameObject:SetActive(true)
+end
+function P_Modul_17:DeactiveForPreview()
+  self.gameObject:SetActive(false)
+end
+
 function P_Modul_17:Reset()
   ObjectStateBackupUtils.RestoreObject(self.Modul17_Dreharme.gameObject)
   self._ForceIsLeft = false

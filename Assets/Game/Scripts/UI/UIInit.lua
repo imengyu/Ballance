@@ -9,6 +9,7 @@ GameUIPackage = nil ---@type GamePackage
 GameUI = {
   HighscoreUIControl = nil, ---@type HighscoreUIControl
   WinScoreUIControl = nil, ---@type WinScoreUIControl
+  GamePreviewUI = nil, ---@type GamePlayPreviewUIControl
 }
 
 return {

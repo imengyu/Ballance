@@ -1,5 +1,7 @@
 # Ballance
 
+![image](https://github.com/imengyu/Ballance/blob/master/Assets/System/Textures/splash_app.bmp)
+
 这是2004年Arail 发布的Ballance游戏的开源重制版（制作中）。
 
 ## 先睹为快
@@ -18,7 +20,9 @@
 
 ---
 
-![Demo](https://imengyu.top/assets/images/demo.png)
+![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.png)
+
+![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.gif)
 
 ## 目标
 
@@ -37,10 +41,6 @@
 Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，想尝尝鲜的话可以安装这个哦（手机版更新不是特别及时，先体验 Windows 版吧）。
 
 目前可能BUG比较多，会有很多问题，不要抱太大的期待哦。。等我慢慢修复了。
-
-![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.png)
-
-![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.gif)
 
 ## 开发状态
 
@@ -73,17 +73,16 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 ## 自定义关卡或者模组
 
-### 制作自定义关卡
-
-[制作自定义关卡文档](./Docs/LevelMaking/readme.md)
+### [制作自定义关卡](./Docs/LevelMaking/readme.md)
 
 **重制版不能直接加载 Virtools 的 nmo 文件！** Virtools 的 nmo/cmo 文件是闭源的，谁也不知道怎么加载它，所以本重制版也不打算支持直接加载 nmo。
+
 * 你需要手工重新制作自定义关卡，制作一个新的关卡包，然后才能加载进入游戏。步骤请参考[制作自定义关卡文档](./Docs/LevelMaking/readme.md)。
 * 将制作好的关卡放在 `游戏目录\Ballance_Data\Levels` 文件夹下，打开游戏，在开始中选择 “自定义关卡” 菜单，即可加载自定义关卡。
 
-### 自定义模组
+### [自定义模组](./Docs/LevelMaking/readme.md)
 
-文档TODO. 游戏框架还没有完全成型，现在写mod可能以后升级了会出现问题，所以暂时不要为此写MOD了。
+文档TODO。
 
 ## 项目编辑器内运行步骤
 
@@ -100,9 +99,6 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 * ✅ 已完成
 * ❎ 完成能用但存在问题
 * 🅿 功能有计划但目前暂停开发
-* 🔙 功能回退旧版本
-* 🅾 正在开发未完成
-* 🈹 功能被割舍或不完全并暂停开发
 
 ---
 
@@ -193,6 +189,7 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 * ✅ 更换Shader并尽量接近原版材质效果
 * ✅ 自定义关卡制作教程文档
 * ✅ 添加球的阴影
+* ✅ 关卡预览器
 * 🅾 最终整体调试
 * 🅿 Android and ios 物理模块调试
 * 🅿 制作魔脓空间站的转译版本地图并测试整体系统功能
@@ -201,11 +198,11 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 ---
 
 * 下面的内容不一定会完成，看大家喜不喜欢，如果大家还喜欢这个游戏，我就继续完善下去
-* 🅿 关卡预览器
 * 🅿 steam接入
 * 🅿 发布steam
 * 🅿 发布其他平台
 * 🅿 更新服务器与联网更新功能
+* 🅿 联机玩（关卡，模组，分数共享平台，多人游戏）
 
 ## 联系我
 
