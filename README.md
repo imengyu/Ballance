@@ -1,6 +1,6 @@
 # Ballance
 
-![image](https://github.com/imengyu/Ballance/blob/master/Assets/System/Textures/splash_app.bmp)
+![image](/Assets/System/Textures/splash_app.bmp)
 
 这是2004年Arail 发布的Ballance游戏的开源重制版（制作中）。
 
