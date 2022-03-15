@@ -42,6 +42,24 @@ Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，
 
 目前可能BUG比较多，会有很多问题，不要抱太大的期待哦。。等我慢慢修复了。
 
+## 系统需求
+
+* 最低配置:
+  * 操作系统: Windows 10, 8, 7
+  * 处理器: Dual core 3Ghz+
+  * 内存: 2 GB RAM
+  * 显卡: DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500
+  * DirectX 版本: 11
+  * 存储空间: 至少需要 100 MB 可用空间
+
+* 推荐配置:
+  * 操作系统: Windows 10, 8, 7 (64 Bit)
+  * 处理器: Quad core 3Ghz+
+  * 内存: 4 GB RAM
+  * 显卡: DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360
+  * DirectX 版本: 11
+  * 存储空间: 需要 100 MB 可用空间
+
 ## 开发状态
 
 目前游戏主体架构已经开发的差不多了。整体流程已经可以运行了。
@@ -77,7 +95,7 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 **重制版不能直接加载 Virtools 的 nmo 文件！** Virtools 的 nmo/cmo 文件是闭源的，谁也不知道怎么加载它，所以本重制版也不打算支持直接加载 nmo。
 
-* 你需要手工重新制作自定义关卡，制作一个新的关卡包，然后才能加载进入游戏。步骤请参考[制作自定义关卡文档](./Docs/LevelMaking/readme.md)。
+* 你需要手工重新制作自定义关卡，制作一个新的关卡包，然后才能加载进入游戏。步骤请参考[制作自定义关卡文档](./Docs/LevelMaking/convert-level.md)。
 * 将制作好的关卡放在 `游戏目录\Ballance_Data\Levels` 文件夹下，打开游戏，在开始中选择 “自定义关卡” 菜单，即可加载自定义关卡。
 
 ### [自定义模组](./Docs/LevelMaking/readme.md)
