@@ -18,6 +18,12 @@
 
 **如果您想与我一起开发，欢迎 Fork 项目并提交您的修改，我会对您的 PR 非常重视。**
 
+您可以克隆代码至您的本地开发。
+
+[Github主仓库](https://github.com/imengyu/ballance)
+
+[Gitee镜像仓库, 下载会快一些](https://gitee.com/imengyu/ballance)
+
 ---
 
 ## 欢迎体验
