@@ -253,14 +253,16 @@ public class PackageManagerUIControl : MonoBehaviour {
       if(gamePackageManager.registeredPackages.TryGetValue(packageName, out var pack)) {
         AddPackageToList(pack);
         UpdateStatusText();
-        ScrollView.UpdateData(false);
+        if(ScrollView.gameObject.activeSelf)
+          ScrollView.UpdateData(false);
       }
       return false;
     });
     GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_PACKAGE_UNREGISTERED, TAG, (evtName, param) => {
       RemovePackageFromList(param[0] as string);
       UpdateStatusText();
-      ScrollView.UpdateData(false);
+      if(ScrollView.gameObject.activeSelf)
+        ScrollView.UpdateData(false);
       return false;
     });
   }

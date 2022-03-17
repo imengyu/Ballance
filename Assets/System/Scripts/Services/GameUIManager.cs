@@ -77,6 +77,7 @@ namespace Ballance2.Services
           {
             var GameGlobalMask = UIRoot.transform.Find("GameGlobalMask");
             var GameGlobalDialog = UIRoot.transform.Find("GameGlobalDialog");
+            var GameFpsStat = UIRoot.transform.Find("GameFpsStat");
             GlobalFadeMaskWhite = GameGlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
             GlobalFadeMaskBlack = GameGlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
 
@@ -101,8 +102,17 @@ namespace Ballance2.Services
             TopWindowsRectTransform.SetAsLastSibling();
             GlobalWindowRectTransform.SetAsLastSibling();
             UIToast.SetAsLastSibling();
+            GameFpsStat.SetAsLastSibling();
             if(Entry.GameEntry.Instance != null && Entry.GameEntry.Instance.GameGlobalIngameLoading != null)
               Entry.GameEntry.Instance.GameGlobalIngameLoading.transform.SetAsLastSibling();
+
+            if(!DebugMode) {
+              ListenKey(KeyCode.F10, (k, d) => {
+                if(d) {
+                  GameFpsStat.gameObject.SetActive(!GameFpsStat.gameObject.activeSelf);
+                }
+              });
+            }
 
             //发送就绪事件
             GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED);
@@ -604,9 +614,9 @@ namespace Ballance2.Services
       if(okText == null) okText = I18N.I18N.Tr("core.ui.Ok");
 
       RectTransform rectTransform = InitViewToCanvas(PrefabUIAlertWindow, "AlertWindow", true);
-      Button btnOk = rectTransform.Find("Button").GetComponent<Button>();
-      rectTransform.Find("DialogText").GetComponent<Text>().text = text;
-      rectTransform.Find("Button/Text").GetComponent<Text>().text = okText;
+      Button btnOk = rectTransform.Find("Panel/Button").GetComponent<Button>();
+      rectTransform.Find("Panel/DialogText").GetComponent<Text>().text = text;
+      rectTransform.Find("Panel/Button/Text").GetComponent<Text>().text = okText;
 
       btnOk.onClick.AddListener(() =>
       {
@@ -641,11 +651,11 @@ namespace Ballance2.Services
       if(cancelText == null) cancelText = I18N.I18N.Tr("core.ui.Cancel");
 
       RectTransform rectTransform = InitViewToCanvas(PrefabUIConfirmWindow, "ConfirmWindow", true);
-      Button btnYes = rectTransform.Find("ButtonConfirm").GetComponent<Button>();
-      Button btnNo = rectTransform.Find("ButtonCancel").GetComponent<Button>();
-      rectTransform.Find("ButtonConfirm/Text").GetComponent<Text>().text = okText;
-      rectTransform.Find("ButtonCancel/Text").GetComponent<Text>().text = cancelText;
-      rectTransform.Find("DialogText").GetComponent<Text>().text = text;
+      Button btnYes = rectTransform.Find("Panel/ButtonConfirm").GetComponent<Button>();
+      Button btnNo = rectTransform.Find("Panel/ButtonCancel").GetComponent<Button>();
+      rectTransform.Find("Panel/ButtonConfirm/Text").GetComponent<Text>().text = okText;
+      rectTransform.Find("Panel/ButtonCancel/Text").GetComponent<Text>().text = cancelText;
+      rectTransform.Find("Panel/DialogText").GetComponent<Text>().text = text;
 
       btnYes.onClick.AddListener(() =>
       {

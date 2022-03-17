@@ -10,10 +10,21 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionTransparentNoSpecular"
   SubShader
   {
     Tags {  
-      "Queue"="Transparent" 
-      "RenderType"="Transparent"
+      "Queue" = "Transparent" 
+      "RenderType" = "Transparent"
+      "IgnoreProjector" = "True"
     }
+
     LOD 100
+
+    Pass
+    {
+      // 开启深度写入
+      ZWrite On
+      // 设置颜色通道的写掩码，0为不写入任何颜色
+      ColorMask 0
+    }
+
     Pass
     {
       Blend SrcAlpha OneMinusSrcAlpha
@@ -47,37 +58,5 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionTransparentNoSpecular"
 
       ENDCG
     }
-    Pass
-    {
-      Name "FORWARD_DELTA"
-      Tags { 
-        "LightMode" = "ForwardAdd"
-      }
-
-      Blend One One
-			ZWrite Off
-      Fog { Color (0,0,0,0) }
-
-      CGPROGRAM
-      #pragma vertex vert
-      #pragma fragment frag
-      #pragma multi_compile_fwdadd 
-      #define UNITY_PASS_FORWARDADD
-      #define NO_SPECULAR
-      #define USE_TRANSPARENT
-
-
-      //引入头文件
-      #include "UnityCG.cginc"
-      #include "Lighting.cginc"
-      #include "AutoLight.cginc"
-      #include "BlinnPhongSpeicalEmission.cginc"
-
-      VertexOutputBase vert (VertexInput v) { return vertForwardAdd(v); }
-      fixed4 frag (VertexOutputBase i) : SV_Target { return fragForwardAdd(i); }
-
-      ENDCG
-    }
   }
-  Fallback "VertexLit"
 }

@@ -13,6 +13,7 @@ function P_Modul_08:new()
 end
 function P_Modul_08:Active()
   ModulBase.Active(self)
+  self.P_Modul_08_Schaukel.gameObject:SetActive(true)
   self.P_Modul_08_Schaukel:Physicalize()
   self.P_Modul_08_Schaukel.EnableConstantForce = true
   self._EnableForce = true
@@ -53,12 +54,12 @@ function P_Modul_08:DeactiveForPreview()
 end
 
 function P_Modul_08:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.P_Modul_08_Schaukel.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.P_Modul_08_Schaukel.gameObject)
   self._ForceIsLeft = false
   self._ForceTick = 0
 end
 function P_Modul_08:Backup()
-  ObjectStateBackupUtils.BackUpObject(self.P_Modul_08_Schaukel.gameObject)
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.P_Modul_08_Schaukel.gameObject)
 end
 
 function CreateClass:P_Modul_08()

@@ -1,5 +1,5 @@
+using BallancePhysics.Wapper;
 using UnityEditor;
-using UnityEngine;
 
 namespace BallancePhysics.Editor
 {
@@ -17,6 +17,10 @@ namespace BallancePhysics.Editor
     static void PauseStateChanged(PauseState state)
     {
       PhysicsSystemInit.DoInit();
+      if(state == PauseState.Paused)
+        PhysicsEnvironment.HandleEditorPause();
+      else if(state == PauseState.Unpaused)
+        PhysicsEnvironment.HandleEditorPlay();
     }
     static void Quitting()
     {

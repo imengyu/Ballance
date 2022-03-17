@@ -181,6 +181,9 @@ function P_Extra_Point:Active()
     self.P_Extra_Point_Ball6:SetActive(true)
     self._FlyModUp = false
     self._FlyModFollow = false
+    if self.BallInRange then
+      self._Rotate = true
+    end
   end
 end
 function P_Extra_Point:Deactive()
@@ -225,12 +228,12 @@ function P_Extra_Point:DeactiveForPreview()
 end
 
 function P_Extra_Point:BallEnterRange()
-  if not self._Actived and not self._Rotate then --进入范围后才旋转
+  if self.IsActive and not self._Actived and not self._Rotate then --进入范围后才旋转
     self._Rotate = true
   end
 end
 function P_Extra_Point:BallLeaveRange()
-  if not self._Actived and self._Rotate then --离开范围后停止旋转
+  if self.IsActive and not self._Actived and self._Rotate then --离开范围后停止旋转
     self._Rotate = false
   end
 end

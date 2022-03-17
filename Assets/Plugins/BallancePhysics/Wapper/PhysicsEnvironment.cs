@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static BallancePhysics.PhysicsApi;
@@ -22,6 +24,12 @@ namespace BallancePhysics.Wapper
     /// </summary>
     /// <returns></returns>
     public Vector3 Gravity = new Vector3(0, -9.81f, 0);
+    [Tooltip("指定y坐标低于这个值的时候自动失活物体. 大于 0 的时候不启用")]
+    /// <summary>
+    /// 指定y坐标低于这个值的时候自动失活物体. 大于 0 的时候不启用
+    /// </summary>
+    /// <returns></returns>
+    public float DePhysicsFall = -5000;
     [Tooltip("模拟速率（10-100，一秒钟进行物理模拟的速率）(模拟开始后更改此值无效)")]
     /// <summary>
     /// 模拟速率（10-100，一秒钟进行物理模拟的速率）(模拟开始后更改此值无效)
@@ -83,8 +91,6 @@ namespace BallancePhysics.Wapper
       return 1;
     };
 
-    private int createTick = 0;
-
     /// <summary>
     /// 创建物理环境
     /// </summary>
@@ -110,9 +116,15 @@ namespace BallancePhysics.Wapper
     {
       if (Handle != IntPtr.Zero)
       {
-        List<PhysicsObject> list = new List<PhysicsObject>(objectsDict.Values);
-        foreach(var o in list)
-          o.UnPhysicalize(true);
+        LinkedListNode<PhysicsObject> obj = objects.First;
+        while (obj != null) {
+          var bodyCurrent = obj.Value;
+          if(bodyCurrent.IsPhysicalized) {
+            obj.Value.UnPhysicalize(true);
+            obj = obj.Next;
+            continue;
+          }
+        }
 
         if(DeleteAllSurfacesWhenDestroy)
           PhysicsApi.API.delete_all_surfaces(Handle);
@@ -124,34 +136,44 @@ namespace BallancePhysics.Wapper
       }
     }
 
-    private void Awake()
-    {
-      createTick = 2;
+    private Thread physicsThread = null;
+
+    private void Awake() { 
+      if(AutoCreate)
+        StartCoroutine(LateCreate()); 
     }
     private void OnDestroy()
     {
       if (Handle != IntPtr.Zero)
         Destroy();
     }
+    private IEnumerator LateCreate() {
+      yield return new WaitForSeconds(0.02f);
+      Create();
+    }
+
+    private bool lastPauseIsSimuate = false;
+
     private void FixedUpdate() {
-      if(createTick > 0) {
-        createTick--;
-        if(createTick == 0 && AutoCreate) Create();
-      }
       if(Simulate && Handle != IntPtr.Zero) {
-        PhysicsApi.API.environment_simulate_dtime(Handle, Time.fixedDeltaTime * TimeFactor);
+        PhysicsApi.API.environment_simulate_dtime(Handle, (1.0f / SimulationRate) * TimeFactor);
         PhysicsApi.API.do_update_all(Handle);
 
         float[] dat = new float[4];
-        foreach(var bodyCurrent in objectsDict.Values) 
-        {
-          if(bodyCurrent.Fixed)
+        LinkedListNode<PhysicsObject> obj = objects.First;
+        while (obj != null) {
+          var bodyCurrent = obj.Value;
+          if(bodyCurrent.Fixed) {
+            obj = obj.Next;
             continue;
+          }
 
           var t = bodyCurrent.gameObject.transform;
           IntPtr ptr = bodyCurrent.Handle; //pos 0
-          if(ptr == IntPtr.Zero)
+          if(ptr == IntPtr.Zero) {
+            obj = obj.Next;
             continue;
+          }
 
           ptr = new IntPtr(ptr.ToInt64() + Marshal.SizeOf<int>()); //pos 1
           Marshal.Copy(ptr, dat, 0, 3);      //float[3]
@@ -166,12 +188,37 @@ namespace BallancePhysics.Wapper
 
           if(bodyCurrent.EnableConstantForce)
             bodyCurrent.DoApplyConstantForce();
+
+          if(DePhysicsFall < 0 && p.y < DePhysicsFall) {
+            //DePhysics and DeActive
+            bodyCurrent.UnPhysicalize(true);
+            bodyCurrent.gameObject.SetActive(false);
+          }
+
+          obj = obj.Next;
+        }
+      }
+    }
+
+    [SLua.DoNotToLua]
+    public static void HandleEditorPause() {
+      foreach(var world in PhysicsWorlds.Values) {
+        world.lastPauseIsSimuate = world.Simulate;
+        world.Simulate = false;
+      }
+    }
+    [SLua.DoNotToLua]
+    public static void HandleEditorPlay() {
+      foreach(var world in PhysicsWorlds.Values) {
+        if(world.lastPauseIsSimuate) {
+          world.Simulate = true;
+          world.lastPauseIsSimuate = false;
         }
       }
     }
 
     private Dictionary<string, int> dictSystemGroup = new Dictionary<string, int>();
-    private Dictionary<int, PhysicsObject> objectsDict = new Dictionary<int, PhysicsObject>();
+    private LinkedList<PhysicsObject> objects = new LinkedList<PhysicsObject>();
 
     /// <summary>
     /// [由PhysicsObject自动调用，请勿手动调用]
@@ -180,7 +227,7 @@ namespace BallancePhysics.Wapper
     /// <param name="body"></param>
     internal void AddPhysicsObject(int id, PhysicsObject body)
     {
-      objectsDict.Add(id, body);
+      objects.AddLast(body);
     }
     /// <summary>
     /// [由PhysicsObject自动调用，请勿手动调用]
@@ -188,7 +235,7 @@ namespace BallancePhysics.Wapper
     /// <param name="body"></param>
     internal void RemovePhysicsObject(PhysicsObject body)
     {
-      objectsDict.Remove(body.Id);
+      objects.Remove(body);
     }
 
     /// <summary>
@@ -217,8 +264,12 @@ namespace BallancePhysics.Wapper
     /// <returns>如果未找到则返回null</returns>
     public PhysicsObject GetObjectById(int bodyId)
     {
-      if (objectsDict.TryGetValue(bodyId, out var r))
-        return r;
+      LinkedListNode<PhysicsObject> obj = objects.First;
+      while (obj != null) {
+        if(obj.Value.Id == bodyId)
+          return obj.Value;
+        obj = obj.Next;
+      }
       return null;
     }
 

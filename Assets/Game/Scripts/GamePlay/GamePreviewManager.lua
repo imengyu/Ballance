@@ -67,6 +67,7 @@ end
 function GamePreviewManager:QuitLevel()
   if self._IsLoaded then
     self._IsLoaded = false
+    Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
     Game.UIManager:MaskBlackFadeIn(1)
     LuaTimer.Add(1000, function ()
       GameUI.GamePreviewUI.gameObject:SetActive(false)

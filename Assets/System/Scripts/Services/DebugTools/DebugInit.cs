@@ -5,7 +5,6 @@ using Ballance2.Services;
 using Ballance2.UI.Core;
 using Ballance2.Utils;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Ballance2.DebugTools {
 
@@ -22,12 +21,6 @@ namespace Ballance2.DebugTools {
       //创建Graphy
       var GameGraphy = GameObject.Instantiate(GameStaticResourcesPool.FindStaticPrefabs("PrefabGraphy"));
       GameGraphy.name = "GameGraphy";
-
-      GameManager.Instance.GameDebugCommandServer.RegisterCommand("quit-dev", (keyword, fullCmd, argsCount, args) => {
-        UnInitSystemDebug();
-        GameManager.Instance.GameSettings.SetBool("DebugMode", false);
-        return true;
-      }, 0, "quit-dev > 退出开发者模式");
 
       //创建窗口
       var DebugWindow = GameStaticResourcesPool.FindStaticPrefabs("DebugWindow");
@@ -51,6 +44,14 @@ namespace Ballance2.DebugTools {
       });
 #endif
 
+      GameManager.Instance.GameDebugCommandServer.RegisterCommand("quit-dev", (keyword, fullCmd, argsCount, args) => {
+        UnInitSystemDebug();
+        GameManager.Instance.GameSettings.SetBool("DebugMode", false);
+        GameUIManager.GlobalConfirmWindow("退出开发者模式后必须重启游戏才能生效", "提示", () => {
+          GameManager.Instance.QuitGame();
+        }, () => {}, "重启游戏");
+        return true;
+      }, 0, "quit-dev > 退出开发者模式");
 
       //F12 打开调试窗口
       F12KeyListen = GameUIManager.ListenKey(KeyCode.F12, (key, down) => {
@@ -65,7 +66,7 @@ namespace Ballance2.DebugTools {
       GameUIManager.DeleteKeyListen(F12KeyListen);
 
       if (GlobalDebugWindow != null) {
-        UnityEngine.Object.Destroy(GlobalDebugWindow);
+        GlobalDebugWindow.Close();
         GlobalDebugWindow = null;
       }
       if (GameDebugFloatButton != null) {

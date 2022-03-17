@@ -13,12 +13,13 @@ function P_Modul_26:new()
 end
 function P_Modul_26:Active()
   ModulBase.Active(self)
+  self.P_Modul_26_Rope.gameObject:SetActive(true)
+  self.P_Modul_26_Sack.gameObject:SetActive(true)
   self.P_Modul_26_Rope:Physicalize()
   self.P_Modul_26_Sack:Physicalize()
   self.P_Modul_26_Sack.EnableConstantForce = true
   self._ForceTimer = LuaTimer.Add(500, 1500, function ()
     self._ForceState = not self._ForceState
-
     --切换方向
     if self._ForceState then
       self.P_Modul_26_Sack_Force.Force = 0.5

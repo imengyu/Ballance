@@ -114,6 +114,7 @@ end
 ---@field _LifeBalls RectTransform
 ---@field _DebugStats GuiStats
 ---@field _DebugStatValues GuiStatsValue[]
+---@field _TextDebugMode GameObject
 GamePlayUIControl = ClassicObject:extend()
 
 function GamePlayUIControl:new() 
@@ -141,6 +142,9 @@ function GamePlayUIControl:Start()
     self._DebugStatValues['PushValue'] = self._DebugStats:AddStat('PushValue')
     self._DebugStatValues['Sector'] = self._DebugStats:AddStat('Sector')
     self._DebugStatValues['Moduls'] = self._DebugStats:AddStat('Moduls')
+    self._TextDebugMode:SetActive(true)
+  else
+    self._TextDebugMode:SetActive(false)
   end
 
   --手机端还需要创建键盘

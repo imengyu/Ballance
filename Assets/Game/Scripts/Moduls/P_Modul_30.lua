@@ -15,6 +15,7 @@ end
 function P_Modul_30:Active()
   ModulBase.Active(self)
   self.P_Modul_30_Wippe.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
+  self.P_Modul_30_Wippe.gameObject:SetActive(true)
   self.P_Modul_30_Wippe:Physicalize()
 end
 function P_Modul_30:Deactive()
@@ -30,10 +31,10 @@ function P_Modul_30:DeactiveForPreview()
 end
 
 function P_Modul_30:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
 function P_Modul_30:Backup()
-  ObjectStateBackupUtils.BackUpObject(self.gameObject)
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_30:BallEnterRange()
   if not self.IsPreviewMode and self.IsActive then

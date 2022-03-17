@@ -57,7 +57,7 @@ public class StartCustomLevel : MonoBehaviour
   private GameObjectPool itemPrefabPool;
   private GameObjectPool itemDependsPrefabPool;
 
-  private List<GameLevelInfo> loadedLevels = new List<GameLevelInfo>();
+  private static List<GameLevelInfo> loadedLevels = new List<GameLevelInfo>();
   private GameLevelInfo selectedItem = null;
   private bool dependesChanged = true;
 
@@ -134,7 +134,7 @@ public class StartCustomLevel : MonoBehaviour
     public GameLevelDependencies[] requiredPackages;
   }
   [Serializable]
-  public class GameLevelDependencies
+  private class GameLevelDependencies
   {
     public string name;
     public int minVersion;
@@ -164,6 +164,7 @@ public class StartCustomLevel : MonoBehaviour
     });
   }
   private void OnDestroy() {
+    loadedLevels.Clear();
     itemPrefabPool.Destroy();
   }
 
@@ -255,16 +256,29 @@ public class StartCustomLevel : MonoBehaviour
         PanelNoContent.gameObject.SetActive(false);
 
         string jsonString = "";
-  #if UNITY_EDITOR
-        string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + name;
+        #if UNITY_EDITOR
+        string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + info.name;
         //在编辑器中加载
-        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
-          jsonString = File.ReadAllText(realPackagePath);
+        if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath)) {
+          jsonString = File.ReadAllText(realPackagePath + "/Level.json");
+          info.Set(JsonUtility.FromJson<GameLevelInfoJSON>(jsonString));
+
+          var logo = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(realPackagePath + "/DebugLevelLogo.png");
+          if(logo != null) {
+            info.logo = Sprite.Create(logo,
+              new Rect(Vector2.zero, new Vector2(logo.width, logo.height)),
+              new Vector2(0.5f, 0.5f));
+          }
+        }
         else
-  #else
+        #else
         if(true) 
-  #endif
+        #endif
         {
+          #if UNITY_EDITOR
+          Log.D("StartCustomLevel", "realPackagePath not exists: " + realPackagePath);
+          #endif
+
           string path = GamePathManager.GetLevelRealPath(info.name.ToLower(), false);
           UnityWebRequest request = UnityWebRequest.Get(path);
           yield return request.SendWebRequest();
@@ -272,7 +286,7 @@ public class StartCustomLevel : MonoBehaviour
           if (request.result != UnityWebRequest.Result.Success)
           {
             if (request.responseCode == 404)
-              info.error = I18N.Tr("core.ui.FileNotExist");
+              info.error = path + '\n' + I18N.Tr("core.ui.FileNotExist");
             else if (request.responseCode == 403)
               info.error = "No permission to read file";
             else
@@ -286,7 +300,6 @@ public class StartCustomLevel : MonoBehaviour
               info.error = "Wrong level, failed to load AssetBundle";
             else {
 
-
               var json = assetBundle.LoadAsset<TextAsset>("Level.json");
               if (json != null) {
                 jsonString = json.text;
@@ -295,14 +308,14 @@ public class StartCustomLevel : MonoBehaviour
               else 
                 info.error = "Wrong level, no Level.json";
 
-              
-
               var logo = assetBundle.LoadAsset<Texture2D>("LevelLogo.png");
               if(logo != null) {
                 info.logo = Sprite.Create(logo,
                   new Rect(Vector2.zero, new Vector2(logo.width, logo.height)),
                   new Vector2(0.5f, 0.5f));
               }
+
+              assetBundle.UnloadAsync(false);
             }
           }
         }
@@ -365,7 +378,7 @@ public class StartCustomLevel : MonoBehaviour
         FileInfo[] files = direction.GetFiles("*.ballance", SearchOption.TopDirectoryOnly);
         Log.D("StartCustomLevel", "Scan Level dir \"" + dir + "\" found " + files.Length + " level fileds");
         for (int i = 0; i < files.Length; i++) {
-          var info = new GameLevelInfo(files[i].Name, gamePackageManager);
+          var info = new GameLevelInfo(Path.GetFileNameWithoutExtension(files[i].Name), gamePackageManager);
           loadedLevels.Add(info);
           AddLevelToList(info);
         }

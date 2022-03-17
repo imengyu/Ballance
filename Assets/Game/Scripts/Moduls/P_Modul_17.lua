@@ -10,6 +10,7 @@ end
 
 function P_Modul_17:Active()
   ModulBase.Active(self)
+  self.Modul17_Dreharme.gameObject:SetActive(true)
   self.Modul17_Dreharme:Physicalize()
   self.Modul17_Dreharme.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
   self._EnableForce = true
@@ -27,7 +28,7 @@ function P_Modul_17:DeactiveForPreview()
 end
 
 function P_Modul_17:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.Modul17_Dreharme.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.Modul17_Dreharme.gameObject)
   self._ForceIsLeft = false
   self._ForceTick = 0
 end

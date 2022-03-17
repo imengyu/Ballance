@@ -70,7 +70,7 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">提交BUG</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">复制错误信息</Text>
     <Text name="core.ui.ErrorUIErrInfoCopied">错误信息已复制到剪贴板</Text>
-    <Text name="core.ui.SettingsYouAreInDebugMode">你已经在开发者模式了哦</Text>
+    <Text name="core.ui.SettingsYouAreInDebugMode">你已经在开发者模式了哦，第一次开启需要重启游戏才能生效</Text>
     <Text name="core.ui.SettingsClickNTimeToDebugMode">再点击 {0} 次进入开发者模式了</Text>
     <Text name="core.ui.SettingsVersion">版本：{0}</Text>
     <Text name="core.ui.StartThisLevel">游玩此关卡</Text>
@@ -248,7 +248,7 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">Submit bug</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">Copy error message</Text>
     <Text name="core.ui.ErrorUIErrInfoCopied">Error message copied !</Text>
-    <Text name="core.ui.SettingsYouAreInDebugMode">You're already in developer mode</Text>
+    <Text name="core.ui.SettingsYouAreInDebugMode">You're already in developer mode, you need to restart the game for the first time to take effect</Text>
     <Text name="core.ui.SettingsClickNTimeToDebugMode">Click {0} again to enter the developer mode</Text>
     <Text name="core.ui.SettingsVersion">Version: {0}</Text>
     <Text name="core.ui.StartThisLevel">Start this Level</Text>
@@ -409,7 +409,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">提交BUG</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">複製錯誤資訊</Text>
     <Text name="core.ui.ErrorUIErrInfoCopied">錯誤資訊已複製到剪貼板</Text>
-    <Text name="core.ui.SettingsYouAreInDebugMode">你已經在開發者模式了</Text>
+    <Text name="core.ui.SettingsYouAreInDebugMode">你已經在開發者模式了，第一次开启需要重启游戏才能生效</Text>
     <Text name="core.ui.SettingsClickNTimeToDebugMode">再點擊 {0} 次進入開發者模式</Text>
     <Text name="core.ui.SettingsVersion">版本：{0}</Text>
     <Text name="core.ui.StartThisLevel">遊玩此關卡</Text>

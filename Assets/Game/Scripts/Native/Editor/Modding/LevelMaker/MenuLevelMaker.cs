@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text.RegularExpressions;
 using Ballance2.Config.Settings;
 using Ballance2.Res;
 using UnityEditor;
@@ -20,7 +21,7 @@ namespace Ballance2.Editor.Modding.LevelMaker
       EditorWindow.GetWindowWithRect(typeof(WindowLevelPacker), new Rect(200, 150, 350, 400));
     }
 
-    [@MenuItem("Ballance/关卡制作/打包Levels下所有关卡至输出目录", false, 102)]
+    [@MenuItem("Ballance/关卡制作/打包所有内置关卡至输出目录", false, 102)]
     static void PackBuiltInLevelFile()
     {
       WindowChoosePlatform choosePlatformWindow = EditorWindow.GetWindowWithRect<WindowChoosePlatform>(new Rect(200, 150, 450, 250));
@@ -39,7 +40,7 @@ namespace Ballance2.Editor.Modding.LevelMaker
 
           EditorUtility.DisplayProgressBar("正在打包", "正在打包 " + name, i / (float)dirs.Length);
           
-          if(name != "MakerAssets") {
+          if(name != "MakerAssets" && Regex.IsMatch(name.ToLower(), "^level([0]{1}[0-9]{1})|([1]{1}[0-3]{1})$", RegexOptions.IgnoreCase)) {
             string p = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + name + "/Level.json";
             var levelJsonFile = AssetDatabase.LoadAssetAtPath<TextAsset>(p);
             if(levelJsonFile != null)

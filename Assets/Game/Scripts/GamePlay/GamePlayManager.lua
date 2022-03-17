@@ -243,6 +243,7 @@ function GamePlayManager:_InitAndStart()
     GamePlay.SectorManager:SetCurrentSector(1)
     --设置初始球
     GamePlay.BallManager:SetCurrentBall(self.StartBall)
+    GamePlay.BallManager.CanControllCamera = true
     GamePlay.CamManager.gameObject:SetActive(true)
     self:_SetCamPos()
     Game.UIManager:MaskBlackFadeOut(1)
@@ -414,6 +415,9 @@ function GamePlayManager:Fall()
   self._SoundBallFall.volume = 1
   self._SoundBallFall:Play()
 
+  --禁用键盘摄像机控制
+  GamePlay.BallManager.CanControllCamera = false
+
   if self.CurrentLife > 0 or self.CurrentLife == -1 then
     --禁用控制
     self:_Stop(BallControlStatus.FreeMode)
@@ -483,6 +487,7 @@ function GamePlayManager:Pass()
   self._SoundLastSector:Stop() --停止最后一小节的音乐
   self:_Stop(BallControlStatus.UnleashingMode)
 
+  --禁用键盘摄像机控制
   GamePlay.BallManager.CanControllCamera = false
 
   --过关后马上渐变淡出云层，因为摄像机要看到边界的地方了

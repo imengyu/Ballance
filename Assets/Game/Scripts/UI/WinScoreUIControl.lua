@@ -201,6 +201,12 @@ function WinScoreUIControl:_ShowHighscore()
 
   Game.UIManager:GoPage('PageHighscoreEntry')
 
+  --重置文字为0
+  self.ScoreTimePoints.text = '0'
+  self.ScoreBouns.text = '0'
+  self.ScoreExtraLives.text = '0'
+  self.ScoreTotal.text = '0'
+
   --检查是不是新的高分
   local PageHighscoreEntry = Game.UIManager:GetCurrentPage()
   local HighscoreEntryNameTextScore = PageHighscoreEntry.Content:Find('TextScore'):GetComponent(Text) ---@type Text

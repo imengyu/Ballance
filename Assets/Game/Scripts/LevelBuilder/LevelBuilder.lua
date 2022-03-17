@@ -275,6 +275,10 @@ function LevelBuilder:_LoadLevelInternal()
 
   Log.D(TAG, 'Check config')
 
+  if self.IsPreviewMode and not self._CurrentLevelJson.allowPreview then
+    self:UpdateErrStatus(true, 'BAD_CONFIG', 'Not support preview')
+    return
+  end
   --首先检查配置是否正确
   if level.sectorCount < 1 then
     self:UpdateErrStatus(true, 'BAD_CONFIG', 'There must be at least 1 sector in this level')
@@ -425,6 +429,7 @@ function LevelBuilder:_LoadLevelInternal()
       for _, floor in ipairs(level.floors) do
         
         local floorCount = 0
+        local sleepCount = 0
         local physicsData = GamePhysFloor[floor.name] 
         if physicsData ~= nil then
 
@@ -434,6 +439,12 @@ function LevelBuilder:_LoadLevelInternal()
           
           --Floor childs
           for _, name in ipairs(floor.objects) do
+
+            if sleepCount > 128 then
+              Yield(WaitForSeconds(0.01))
+              sleepCount = 0
+            end
+
             local go = GameObject.Find(name)
             if go ~= nil then
               --Mesh
@@ -476,6 +487,7 @@ function LevelBuilder:_LoadLevelInternal()
                 Log.W(TAG, 'Not found MeshFilter or mesh in floor  \''..name..'\'')
               end
               floorCount = floorCount + 1
+              sleepCount = sleepCount + 1
             else
               Log.W(TAG, 'Not found floor  \''..name..'\' in type \''..floor.name..'\'')
             end
@@ -837,7 +849,10 @@ function LevelBuilder:ReplacePrefab(objName, modulPrefab)
     return nil
   end
   local obj = GameObject.Find(objName)
-  if obj == nil then return nil end
+  if obj == nil then 
+    Log.E(TAG, 'Not find modul placeholder \''..objName..'\'')
+    return nil 
+  end
 
   --隐藏占位符
   obj:SetActive(false) 

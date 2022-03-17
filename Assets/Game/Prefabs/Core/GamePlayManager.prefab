@@ -545,6 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gravity: {x: 0, y: -20, z: 0}
+  DePhysicsFall: -1000
   SimulationRate: 66
   TimeFactor: 2
   DeleteAllSurfacesWhenDestroy: 1

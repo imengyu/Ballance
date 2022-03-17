@@ -1,6 +1,7 @@
 local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
 local Log = Ballance2.Log
+local Yield = UnityEngine.Yield
 
 ---节管理器
 ---@class SectorManager : GameLuaObjectHostClass
@@ -67,12 +68,13 @@ function SectorManager:OnDestroy()
 end
 
 function SectorManager:DoInitAllModuls() 
-  self.CurrentLevelModulCount = #Game.LevelBuilder._CurrentLevelModuls
+  self.CurrentLevelModulCount = 0
   --初次加载后通知每个modul进行备份
   for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do
     if value ~= nil then
       value.modul:Backup()
       value.modul:Deactive()
+      self.CurrentLevelModulCount = self.CurrentLevelModulCount + 1
     end
   end
 end
@@ -155,19 +157,6 @@ end
 ---@param playCheckPointSound boolean 是否播放节点音乐
 function SectorManager:ActiveCurrentSector(playCheckPointSound) 
   local sector = GamePlay.GamePlayManager.CurrentSector
-  --激活当前节的机关
-  local s = self.CurrentLevelSectors[sector]
-  if s == nil and sector ~= 0 then
-    Log.E(TAG, 'Sector '..sector..' not found')
-    GamePlay.GamePlayManager.CurrentSector = 0 
-    return
-  end
-  for _, value in pairs(s.moduls) do
-    if value ~= nil then  
-      value:Active()
-    end
-  end 
-
   local nowSector = self.CurrentLevelRestPoints[sector]
 
   --设置火焰状态
@@ -204,11 +193,34 @@ function SectorManager:ActiveCurrentSector(playCheckPointSound)
 
   Log.D(TAG, 'Active Sector '..sector)
 
-  --调试信息
-  if BALLANCE_DEBUG then 
-    GameUI.GamePlayUI._DebugStatValues['Sector'].Value = sector..'/'..self.CurrentLevelSectorCount
-    GameUI.GamePlayUI._DebugStatValues['Moduls'].Value = (#s.moduls)..'/'..self.CurrentLevelModulCount
-  end
+  --激活当前节的机关
+  local count = 0
+  coroutine.resume(coroutine.create(function()
+    local s = self.CurrentLevelSectors[sector]
+    if s == nil and sector ~= 0 then
+      Log.E(TAG, 'Sector '..sector..' not found')
+      GamePlay.GamePlayManager.CurrentSector = 0 
+      return
+    end
+    for _, value in pairs(s.moduls) do
+      if value ~= nil then  
+        value:Active()
+      end
+      --延时下防止一下生成过多机关
+      count = count + 1
+      if count > 16 then
+        count = 0
+        Yield(nil) 
+      end
+    end 
+
+    --调试信息
+    if BALLANCE_DEBUG then 
+      GameUI.GamePlayUI._DebugStatValues['Sector'].Value = sector..'/'..self.CurrentLevelSectorCount
+      GameUI.GamePlayUI._DebugStatValues['Moduls'].Value = (#s.moduls)..'/'..self.CurrentLevelModulCount
+    end
+  end))
+
 
   self.EventSectorActive:Emit({ 
     sector = sector,

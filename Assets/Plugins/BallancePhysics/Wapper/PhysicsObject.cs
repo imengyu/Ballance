@@ -317,10 +317,10 @@ namespace BallancePhysics.Wapper
         }
 
         Handle = PhysicsApi.API.physicalize(currentEnvironment.Handle, name, m_Layer, currentEnvironment.GetSystemGroup(m_SystemGroupName),
-         m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
-         m_RotSpeedDamping, m_BallRadius, m_UseBall, m_BuildRootConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
-         m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, surfaceName,
-         pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius, m_CollisionID);
+        m_SubSystemId, m_SubSystemDontCollideWith, m_Mass, m_Friction, m_Elasticity, m_LinearSpeedDamping,
+        m_RotSpeedDamping, m_BallRadius, m_UseBall, m_BuildRootConvexHull, m_AutoMassCenter, m_EnableCollision, m_StartFrozen,
+        m_Fixed, transform.position, m_ShiftMassCenter, transform.rotation, m_UseExistsSurface, surfaceName,
+        pConvexs.Count, pConvexs, pConcavies.Count, pConcavies, m_ExtraRadius, m_CollisionID);
         
         foreach (var ptr in pConvexs)
           PhysicsApi.API.delete_points_buffer(ptr);
@@ -438,7 +438,7 @@ namespace BallancePhysics.Wapper
       }
       set {
         m_Fixed = value;
-        if(IsPhysicalized)
+        if(IsPhysicalized) 
           PhysicsApi.API.physics_change_unmovable_flag(Handle, value);
       }
     }
@@ -447,13 +447,13 @@ namespace BallancePhysics.Wapper
     /// </summary>
     public bool EnableGravity {
       get {
-        if(IsPhysicalized)
+        if(IsPhysicalized) 
           return PhysicsApi.API.physics_is_gravity_enabled(Handle);
         return m_EnableGravity;
       }
       set {
         m_EnableGravity = value;
-        if(IsPhysicalized)
+        if(IsPhysicalized) 
           PhysicsApi.API.physics_enable_gravity(Handle, m_EnableGravity);
       }
     }  
@@ -681,15 +681,16 @@ namespace BallancePhysics.Wapper
     /// <param name="rotVec">该矢量的每个分量表示施加在该对象相关核心轴上的旋转力。</param>
     public void Torque(Vector3 rotVec) {
       checkPhysicalized();
-      if(rotVec.sqrMagnitude > 0)
+      if(rotVec.sqrMagnitude > 0) {
         PhysicsApi.API.physics_torque(Handle, rotVec);
+      }
     }
     /// <summary>
     /// 为物体添加速度
     /// </summary>
     /// <param name="speed">速度（世界坐标系）</param>
     public void AddSpeed(Vector3 speed) {
-      checkPhysicalized();
+      checkPhysicalized(); 
       PhysicsApi.API.physics_add_speed(Handle, speed);
     }
   

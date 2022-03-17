@@ -12,8 +12,9 @@ end
 
 function P_Modul_41:Active()
   ModulBase.Active(self)
-  self.P_Modul_41_Box:Physicalize()
   self.P_Modul_41_Box.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit')
+  self.P_Modul_41_Box.gameObject:SetActive(true)
+  self.P_Modul_41_Box:Physicalize()
 end
 function P_Modul_41:Deactive()
   self.P_Modul_41_Box:UnPhysicalize(true)

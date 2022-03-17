@@ -15,6 +15,8 @@ function P_Modul_18:new()
   self._CurrentInRangeBall = nil ---@type PhysicsObject
   self.AutoActiveBaseGameObject = false
   self.CurrentBallForce = nil
+  self.EnableBallRangeChecker = true
+  self.BallCheckeRange = 80
 end
 
 function P_Modul_18:Start()
@@ -41,20 +43,20 @@ function P_Modul_18:Start()
 end
 function P_Modul_18:Active()
   ModulBase.Active(self)
-  self.P_Modul_18_Particle:SetActive(true)
-  self.P_Modul_18_Particle_Small:SetActive(true)
   self.P_Modul_18_Sound:Play()
-  self.P_Modul_18_Kollisionsquader.gameObject:SetActive(true)
   self.P_Modul_18_Rotor:Play('P_Modul_18_Rotor_Start_Animation')
+  self.P_Modul_18_Kollisionsquader.gameObject:SetActive(true)
+  if self.BallInRange then
+    self.P_Modul_18_Particle:SetActive(true)
+    self.P_Modul_18_Particle_Small:SetActive(true)
+  end
 end
 function P_Modul_18:Deactive()
-  self.P_Modul_18_Particle:SetActive(false)
-  self.P_Modul_18_Particle_Small:SetActive(false)
-  self.P_Modul_18_Sound:Stop()
-  self.P_Modul_18_Kollisionsquader.gameObject:SetActive(false)
-  self.P_Modul_18_Rotor:Play('P_Modul_18_Rotor_Stop_Animation')
-  self._CurrentInRangeBall = nil
   ModulBase.Deactive(self)
+  self._CurrentInRangeBall = nil
+  self.P_Modul_18_Sound:Stop()
+  self.P_Modul_18_Rotor:Play('P_Modul_18_Rotor_Stop_Animation')
+  self.P_Modul_18_Kollisionsquader.gameObject:SetActive(false)
 end
 
 function P_Modul_18:ActiveForPreview()
@@ -71,6 +73,18 @@ function P_Modul_18:DeactiveForPreview()
   self.gameObject:SetActive(false)
 end
 
+function P_Modul_18:BallEnterRange()
+  if self.IsActive then
+    self.P_Modul_18_Particle:SetActive(true)
+    self.P_Modul_18_Particle_Small:SetActive(true) 
+  end
+end
+function P_Modul_18:BallLeaveRange()
+  if self.IsActive then
+    self.P_Modul_18_Particle:SetActive(false)
+    self.P_Modul_18_Particle_Small:SetActive(false)
+  end
+end
 function P_Modul_18:Reset()
   self._CurrentInRangeBall = nil
 end

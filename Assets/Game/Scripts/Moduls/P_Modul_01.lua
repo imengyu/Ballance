@@ -10,8 +10,6 @@ P_Modul_01 = ModulBase:extend()
 
 function P_Modul_01:new()
   P_Modul_01.super.new(self)
-  self.EnableBallRangeChecker = true
-  self.BallCheckeRange = 60
 end
 function P_Modul_01:Start()
   if not self.IsPreviewMode then
@@ -20,6 +18,9 @@ function P_Modul_01:Start()
 end
 function P_Modul_01:Active()
   self.gameObject:SetActive(true)
+  self.P_Modul_01_Rinne.gameObject:SetActive(true)
+  self.P_Modul_01_Filter.gameObject:SetActive(true)
+  self.P_Modul_01_Pusher.gameObject:SetActive(true)
   self.P_Modul_01_Rinne:Physicalize()
   self.P_Modul_01_Filter:Physicalize()
   self.P_Modul_01_Pusher:Physicalize()
@@ -31,10 +32,10 @@ function P_Modul_01:Deactive()
   self.gameObject:SetActive(false)
 end
 function P_Modul_01:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
 function P_Modul_01:Backup()
-  ObjectStateBackupUtils.BackUpObject(self.gameObject)
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 
 function P_Modul_01:ActiveForPreview()
@@ -42,12 +43,6 @@ function P_Modul_01:ActiveForPreview()
 end
 function P_Modul_01:DeactiveForPreview()
   self.gameObject:SetActive(false)
-end
-
-function P_Modul_01:BallEnterRange()
-  if not self.IsPreviewMode and self.IsActive then
-    self.P_Modul_01_Pusher:WakeUp()
-  end
 end
 
 function CreateClass:P_Modul_01()

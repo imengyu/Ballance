@@ -41,14 +41,17 @@ function DoLevelAutoGroup(level, transform)
       level.internalObjects.PC_CheckPoints[sector] = name
     elseif string.startWith(name, 'S_') then
       --静态路面组
+      local floor_type = string.sub(name, 3)
       local c_names = {}
       local c_transform =  transform:GetChild(i)
       local c_childCount = c_transform.childCount - 1
       for i = 0, c_childCount, 1 do
-        table.insert(c_names, c_transform:GetChild(i).gameObject.name)
+        local go = c_transform:GetChild(i).gameObject
+        go.name = go.name..floor_type..tostring(i)
+        table.insert(c_names, go.name)
       end
       table.insert(level.floors, {
-        name = 'Phys_'..string.sub(name, 3),
+        name = 'Phys_'..floor_type,
         objects = c_names
       })
     elseif name == 'DepthTestCubes' then
@@ -56,7 +59,9 @@ function DoLevelAutoGroup(level, transform)
       local c_transform =  transform:GetChild(i)
       local c_childCount = c_transform.childCount - 1
       for i = 0, c_childCount, 1 do
-        table.insert(level.depthTestCubes, c_transform:GetChild(i).gameObject.name)
+        local go = c_transform:GetChild(i).gameObject
+        go.name = go.name..'DepthTestCubes'..tostring(i)
+        table.insert(level.depthTestCubes, go.name)
       end
     elseif string.contains(name, ':') then
       local arr = string.split(name, ':')

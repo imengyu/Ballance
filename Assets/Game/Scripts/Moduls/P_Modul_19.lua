@@ -10,10 +10,13 @@ function P_Modul_19:new()
   P_Modul_19.super.new(self)
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 60
+  self.WakeUpLock = false
 end
 
 function P_Modul_19:Active()
   ModulBase.Active(self)
+  self.WakeUpLock = false
+  self.P_Modul_19_Flaps.gameObject:SetActive(true)
   self.P_Modul_19_Flaps:Physicalize()
   self.P_Modul_19_Flaps.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName('Wood')
 end
@@ -30,13 +33,14 @@ function P_Modul_19:DeactiveForPreview()
 end
 
 function P_Modul_19:Reset()
-  ObjectStateBackupUtils.RestoreObject(self.gameObject)
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
 end
 function P_Modul_19:Backup()
-  ObjectStateBackupUtils.BackUpObject(self.gameObject)
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
 end
 function P_Modul_19:BallEnterRange()
-  if not self.IsPreviewMode and self.IsActive then
+  if not self.IsPreviewMode and not self.WakeUpLock and self.IsActive then
+    self.WakeUpLock = true
     self.P_Modul_19_Flaps:WakeUp()
   end
 end

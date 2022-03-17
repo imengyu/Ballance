@@ -20,18 +20,6 @@
 
 ---
 
-![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.png)
-
-![Demo13](https://raw.githubusercontent.com/imengyu/Ballance/main/demo1.gif)
-
-## 目标
-
-* 与原版物理差不多。（2022/01 已完成）
-* **ivp物理引擎**。（2022/01 已完成）
-* 支持MOD和自定义关卡加载。（已完成）
-* 支持用Lua来开发MOD。（已完成）
-* 完善游戏主体。
-
 ## 欢迎体验
 
 目前仅有Level1体验版，仅有一个关卡，你可以先尝尝鲜。。
@@ -39,8 +27,6 @@
 体验版文件放在项目根目录 `体验版-Windows-Ballance-Beta.zip` ， 或者点击[这里](https://github.com/imengyu/Ballance/raw/main/%E4%BD%93%E9%AA%8C%E7%89%88-Windows-Ballance-Beta.zip)下载, 解压后运行 `Ballance.exe` 就可以看到效果啦。
 
 Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，想尝尝鲜的话可以安装这个哦（手机版更新不是特别及时，先体验 Windows 版吧）。
-
-目前可能BUG比较多，会有很多问题，不要抱太大的期待哦。。等我慢慢修复了。
 
 ## 系统需求
 
@@ -89,6 +75,14 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 ---
 
+## 目标
+
+* 与原版物理差不多。（2022/01 已完成）
+* **ivp物理引擎**。（2022/01 已完成）
+* 支持MOD和自定义关卡加载。（已完成）
+* 支持用Lua来开发MOD。（已完成）
+* 完善游戏主体。
+
 ## 自定义关卡或者模组
 
 ### [制作自定义关卡](./Docs/LevelMaking/readme.md)
@@ -102,7 +96,7 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 文档TODO。
 
-## 项目编辑器内运行步骤
+## Unity运行步骤
 
 提示：*(目前暂无Mac/Linux版本的物理引擎文件，请使用Win版本的Unity进行调试)*
 
@@ -112,6 +106,34 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
 5. 点击运行，即可查看效果啦
 
+## 图片
+
+原版关卡
+
+![Demo13](Docs/DemoImages/6.jpg)
+![Demo13](Docs/DemoImages/7.jpg)
+![Demo13](Docs/DemoImages/9.jpg)
+
+13关的大螺旋
+
+![Demo13](Docs/DemoImages/9.gif)
+![Demo13](Docs/DemoImages/10.png)
+
+自制地图（魔脓空间站）（转译版地图）
+
+![Demo13](Docs/DemoImages/3.jpg)
+![Demo13](Docs/DemoImages/4.jpg)
+![Demo13](Docs/DemoImages/5.jpg)
+
+关卡预览器查看13关
+
+![Demo13](Docs/DemoImages/8.jpg)
+
+用关卡预览器查看自制地图
+
+![Demo13](Docs/DemoImages/1.jpg)
+![Demo13](Docs/DemoImages/2.jpg)
+
 ## TODO: 项目待完成内容
 
 * ✅ 已完成
@@ -119,6 +141,9 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 * 🅿 功能有计划但目前暂停开发
 
 ---
+
+<details>
+<summary>很早就完成的内容</summary>
 
 * ✅ 基础系统
 * ✅ 事件系统
@@ -200,6 +225,11 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 * ✅ 关卡管理菜单
 * ✅ 关于菜单
 * ✅ 手机端适配
+
+</details>
+
+---
+
 * ✅ 过关后才能进入下一关
 * ✅ 第一关的教程
 * ✅ 菜单的键盘逻辑
@@ -208,14 +238,14 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 * ✅ 自定义关卡制作教程文档
 * ✅ 添加球的阴影
 * ✅ 关卡预览器
+* ✅ 制作魔脓空间站的转译版本地图并测试整体系统功能
 * 🅾 最终整体调试
-* 🅿 Android and ios 物理模块调试
-* 🅿 制作魔脓空间站的转译版本地图并测试整体系统功能
 * 🅿 自定义模组开发教程文档
 
 ---
 
 * 下面的内容不一定会完成，看大家喜不喜欢，如果大家还喜欢这个游戏，我就继续完善下去
+* 🅿 Android and ios 物理模块调试
 * 🅿 steam接入
 * 🅿 发布steam
 * 🅿 发布其他平台

@@ -29,6 +29,7 @@ function PC_TwoFlames:Start()
 end
 
 function PC_TwoFlames:Active()
+  self.CheckPointActived = true
   self.FlameSmallLeft:SetActive(true)
   self.FlameSmallRight:SetActive(true)
 end

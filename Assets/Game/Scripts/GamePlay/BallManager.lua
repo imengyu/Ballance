@@ -226,34 +226,6 @@ function BallManager:OnDestroy()
   self._private.keyListener:ClearKeyListen()
 end
 
---[[
-function BallManager:OnGUI()
-  if(self._DebugMode) then
-    local rect = self._private.rect
-    local ball = self._private.currentBall rect.y = 100
-    
-    GUI.Label(rect, "ControlState: "..self._private.controllingStatus) rect.y = rect.y + 16
-    if(ball ~= nil) then
-      GUI.Label(rect, "CurrentBall: "..ball.name) rect.y = rect.y + 16
-      GUI.Label(rect, "Pos: "..LuaUtils.Vector3ToString(ball.ball.transform.position)) rect.y = rect.y + 16
-      GUI.Label(rect, "Rot: "..LuaUtils.Vector3ToString(ball.ball.transform.eulerAngles)) rect.y = rect.y + 16
-      GUI.Label(rect, "LinearVelocity : "..LuaUtils.Vector3ToString(ball.rigidbody.LinearVelocity)) rect.y = rect.y + 16
-      GUI.Label(rect, "AngularVelocity : "..LuaUtils.Vector3ToString(ball.rigidbody.AngularVelocity)) rect.y = rect.y + 16
-    else
-      GUI.Label(rect, "CurrentBall: nil") rect.y = rect.y + 16
-    end
-    GUI.Label(rect, "PushType: "..self.PushType) rect.y = rect.y + 16
-
-    local cam = GamePlay.CamManager
-    if(cam ~= nil) then
-      GUI.Label(rect, "CameraDirection: "..cam.CamRotateValue) rect.y = rect.y + 16
-      GUI.Label(rect, "CameraFollow: "..LuaUtils.BooleanToString(cam.FollowEnable)) rect.y = rect.y + 16
-      GUI.Label(rect, "CameraLook: "..LuaUtils.BooleanToString(cam.LookEnable)) rect.y = rect.y + 16
-    end
-  end
-end
-]]--
-
 --#region 球基础控制方法
 
 ---注册球 
@@ -575,8 +547,10 @@ function BallManager:_ActiveCurrentBall()
         Rotation:SetVector3Value(currentTransform.rotation)
         if current.rigidbody.IsPhysicalized then
           Velocity:SetVector3Value(current.rigidbody.SpeedVector)
+          PushValue.Value = '('..string.format("%.2f", current.pushForceX.Force) 
+            ..', '..string.format("%.2f", current.pushForceY.Force)
+            ..', '..string.format("%.2f", current.pushForceZ.Force)
         end
-        PushValue.Value = 'X: '..current.pushForceX.Force..' Y: '..current.pushForceY.Force..' Z: '..current.pushForceZ.Force;
       end)
     end
 
@@ -601,6 +575,8 @@ function BallManager:_PhysicsOrDePhysicsCurrentBall(physics)
       current.ball:Active()
       --启动球的声音
       GamePlay.BallSoundManager:AddSoundableBall(current)
+      --取消推动
+      self:RemoveAllBallPush()
       --需要重新发送按键状态，因为可能在变球时用户还是按住按键，而此时球已经切换了，球的恒力需要重新设置
       self._private.keyListener:ReSendPressingKey()
     end
@@ -690,20 +666,20 @@ function BallManager:_InitKeyEvents()
   local keyListener = self._private.keyListener
   local keySets = self._private.keySets
   keyListener:ClearKeyListen()
-  keyListener:AddKeyListen(keySets.keyFront, keySets.keyFront2, function (key, down) self:_UpArrow_Key(key, down) end)
-  keyListener:AddKeyListen(keySets.keyBack, keySets.keyBack2, function (key, down) self:_DownArrow_Key(key, down) end)
+  keyListener:AddKeyListen(keySets.keyFront, function (key, down) self:_UpArrow_Key(key, down) end)
+  keyListener:AddKeyListen(keySets.keyBack, function (key, down) self:_DownArrow_Key(key, down) end)
   keyListener:AddKeyListen(keySets.keyUp, function (key, down) self:_Up_Key(key, down) end)
-  keyListener:AddKeyListen(keySets.keyDown,function (key, down) self:_Down_Key(key, down) end)
+  keyListener:AddKeyListen(keySets.keyDown, function (key, down) self:_Down_Key(key, down) end)
   keyListener:AddKeyListen(keySets.keyUpCamera, function (key, down) self:_Space_Key(key, down)  end)
   keyListener:AddKeyListen(keySets.keyRoateCamera, keySets.keyRoateCamera2, function (key, down) self:_Shift_Key(key, down)  end)
 
   --是否反向控制  
   if(self._private.reverseControl) then
-    keyListener:AddKeyListen(keySets.keyLeft, keySets.keyLeft2, function (key, down) self:_RightArrow_Key(key, down) end)
-    keyListener:AddKeyListen(keySets.keyRight, keySets.keyRight2, function (key, down) self:_LeftArrow_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_RightArrow_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_LeftArrow_Key(key, down) end)
   else
-    keyListener:AddKeyListen(keySets.keyLeft, keySets.keyLeft2, function (key, down) self:_LeftArrow_Key(key, down) end)
-    keyListener:AddKeyListen(keySets.keyRight, keySets.keyRight2, function (key, down) self:_RightArrow_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_LeftArrow_Key(key, down) end)
+    keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_RightArrow_Key(key, down) end)
   end
 
   --测试按扭
@@ -751,18 +727,13 @@ function BallManager:_OnControlSettingsChanged()
   local GameSettings = self._private.GameSettings
   local keySets = self._private.keySets
   keySets.keyFront = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.front", "UpArrow"))
-  keySets.keyFront2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.front2", "W"))
   keySets.keyUp = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up", "Q"))
   keySets.keyDown = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.down", "E"))
   keySets.keyBack = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.back", "DownArrow"))
-  keySets.keyBack2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.back2", "S"))
   keySets.keyLeft = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.left", "LeftArrow"))
-  keySets.keyLeft2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.left2", "A"))
   keySets.keyRight = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.right", "RightArrow"))
-  keySets.keyRight2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.right2", "D"))
   keySets.keyRoateCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.roate", "LeftShift"))
   keySets.keyRoateCamera2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.roate2", "RightShift"))
-  keySets.keyUpCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up_cam", "Space"))
   keySets.keyUpCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up_cam", "Space"))
 
   self._private.reverseControl = GameSettings:GetBool("control.reverse", false)

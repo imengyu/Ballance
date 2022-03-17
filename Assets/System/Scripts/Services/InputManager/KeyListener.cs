@@ -52,6 +52,7 @@ namespace Ballance2.Services.InputManager
       public KeyCode key2;
       public KeyCode key;
       public bool downed = false;
+      public bool downed2 = false;
       public bool has2key = false;
       public KeyDelegate callBack;
       public int id;
@@ -89,12 +90,24 @@ namespace Ballance2.Services.InputManager
       LinkedListNode<KeyListenerItem> cur = items.Last;
       while(cur != null) {
         var item = cur.Value;
-        if (item.has2key && item.downed)
-          item.callBack(item.key2, true);
-        else
-          item.callBack(item.key2, false);
-        if (item.downed)
-          item.callBack(item.key, true);
+        if (item.has2key) {
+          if(item.downed2) {
+            if(Input.GetKey(item.key2)) item.callBack(item.key2, true);
+            else {
+              item.downed2 = false;
+              item.callBack(item.key2, false);
+            }
+          }
+          else
+            item.callBack(item.key2, false);
+        } 
+        if(item.downed) {
+          if(Input.GetKey(item.key)) item.callBack(item.key, true);
+          else {
+            item.downed = false;
+            item.callBack(item.key, false);
+          }
+        }
         else
           item.callBack(item.key, false);
         cur = cur.Previous;
@@ -196,12 +209,12 @@ namespace Ballance2.Services.InputManager
           {
             if (Input.GetKeyDown(item.key2) && !item.downed)
             {
-              item.downed = true;
+              item.downed2 = true;
               item.callBack(item.key2, true);
             }
             if (Input.GetKeyUp(item.key2) && item.downed)
             {
-              item.downed = false;
+              item.downed2 = false;
               item.callBack(item.key2, false);
             }
           }
