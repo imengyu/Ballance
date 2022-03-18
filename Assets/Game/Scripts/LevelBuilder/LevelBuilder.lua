@@ -66,6 +66,7 @@ function LevelBuilder:Start()
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED')
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY')
     Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_START')
+    Game.Mediator:RegisterGlobalEvent('EVENT_LEVEL_BUILDER_UNLOAD_START')
 
     self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', true)
     self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.UI.Core.Controls.Progress) ---@type Progress
@@ -177,7 +178,6 @@ function LevelBuilder:LoadLevel(name, preview)
 
   --加载内置模块
   InitBulitInModuls()
-  InitBulitInModulCustomSounds()
 
   if not preview then
     --加载物理环境
@@ -186,6 +186,9 @@ function LevelBuilder:LoadLevel(name, preview)
 
   --发送开始事件
   Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_BEFORE_START', nil)
+
+  --加载内置声音
+  InitBulitInModulCustomSounds()
 
   --由C#代码加载文件
   self._LevelLoaderNative:LoadLevel(name, 

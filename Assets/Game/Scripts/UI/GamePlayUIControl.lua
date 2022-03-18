@@ -142,6 +142,7 @@ function GamePlayUIControl:Start()
     self._DebugStatValues['PushValue'] = self._DebugStats:AddStat('PushValue')
     self._DebugStatValues['Sector'] = self._DebugStats:AddStat('Sector')
     self._DebugStatValues['Moduls'] = self._DebugStats:AddStat('Moduls')
+    self._DebugStatValues['PhysicsTime'] = self._DebugStats:AddStat('PhysicsTime')
     self._TextDebugMode:SetActive(true)
   else
     self._TextDebugMode:SetActive(false)

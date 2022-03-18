@@ -535,16 +535,22 @@ function BallManager:_ActiveCurrentBall()
       local Rotation = GameUI.GamePlayUI._DebugStatValues['Rotation']
       local Velocity = GameUI.GamePlayUI._DebugStatValues['Velocity']
       local PushValue = GameUI.GamePlayUI._DebugStatValues['PushValue']
+      local PhysicsTime = GameUI.GamePlayUI._DebugStatValues['PhysicsTime']
+      local GamePhysicsWorld = GamePlay.GamePlayManager.GamePhysicsWorld
       
       --删除定时器
       if self._private.debugFlushInfoTimer then
         LuaTimer.Delete(self._private.debugFlushInfoTimer)
         self._private.debugFlushInfoTimer = nil
       end
-      --每秒更新球位置数据
+      --每秒更新球位置调试显示数据
       self._private.debugFlushInfoTimer = LuaTimer.Add(1000, 1000, function ()
+        --球位置
         Position:SetVector3Value(currentTransform.position)
         Rotation:SetVector3Value(currentTransform.rotation)
+        --物理时间
+        PhysicsTime.Value = string.format("%.2f ms", GamePhysicsWorld.PhysicsTime * 1000)
+        --球的速度和推动数据
         if current.rigidbody.IsPhysicalized then
           Velocity:SetVector3Value(current.rigidbody.SpeedVector)
           PushValue.Value = '('..string.format("%.2f", current.pushForceX.Force) 

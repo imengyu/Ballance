@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using static BallancePhysics.PhysicsApi;
 
@@ -136,8 +137,6 @@ namespace BallancePhysics.Wapper
       }
     }
 
-    private Thread physicsThread = null;
-
     private void Awake() { 
       if(AutoCreate)
         StartCoroutine(LateCreate()); 
@@ -152,11 +151,21 @@ namespace BallancePhysics.Wapper
       Create();
     }
 
+    /// <summary>
+    /// 获取上一帧的物理执行时间
+    /// </summary>
+    /// <value></value>
+    public float PhysicsTime { get; private set; }
+
     private bool lastPauseIsSimuate = false;
 
     private void FixedUpdate() {
       if(Simulate && Handle != IntPtr.Zero) {
-        PhysicsApi.API.environment_simulate_dtime(Handle, (1.0f / SimulationRate) * TimeFactor);
+        Profiler.BeginSample("PhysicsEnvironmentUpdate");
+        
+	      float startTime = Time.realtimeSinceStartup;
+
+        PhysicsApi.API.environment_simulate_dtime(Handle, /*(1.0f / SimulationRate)*/ (Time.fixedDeltaTime)  * TimeFactor);
         PhysicsApi.API.do_update_all(Handle);
 
         float[] dat = new float[4];
@@ -197,6 +206,9 @@ namespace BallancePhysics.Wapper
 
           obj = obj.Next;
         }
+
+        PhysicsTime = Time.realtimeSinceStartup - startTime;
+        Profiler.EndSample();
       }
     }
 

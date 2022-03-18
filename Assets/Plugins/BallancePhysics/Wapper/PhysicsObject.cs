@@ -929,6 +929,14 @@ namespace BallancePhysics.Wapper
         onCollDetection.Remove(col_id);
       }
     }
+    /// <summary>
+    /// 移除全部碰撞工具事件处理
+    /// </summary>
+    public void DeleteAllCollDetection() {
+      foreach(var coll in onCollDetection)
+        PhysicsApi.API.destroy_physics_coll_detection(coll.Value);
+      onCollDetection.Clear();
+    }
 
     /// <summary>
     /// 添加指定层的接触工具事件处理
@@ -951,6 +959,14 @@ namespace BallancePhysics.Wapper
         PhysicsApi.API.destroy_physics_contract_detection(onContractDetection[col_id]);
         onContractDetection.Remove(col_id);
       }
+    }
+    /// <summary>
+    /// 移除全部接触工具事件处理
+    /// </summary>
+    public void DeleteAllContractDetection() {
+      foreach(var coll in onContractDetection)
+        PhysicsApi.API.destroy_physics_contract_detection(coll.Value);
+      onContractDetection.Clear();
     }
 
     #endregion

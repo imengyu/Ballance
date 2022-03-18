@@ -1,5 +1,4 @@
 local BulitInModulsLoaded = false
-local BulitInModulsSoundLoaded = false
 
 function InitBulitInModuls()
   if BulitInModulsLoaded then
@@ -38,10 +37,6 @@ end
 
 ---注册内置机关的自定义声音组
 function InitBulitInModulCustomSounds()
-  if BulitInModulsSoundLoaded then
-    return
-  end
-
   local BallSoundManager = GamePlay.BallSoundManager
   BallSoundManager:AddSoundCollData(BallSoundManager:GetSoundCollIDByName('Dome'), {
     MinSpeed = 5,
@@ -83,5 +78,4 @@ function InitBulitInModulCustomSounds()
     HasRollSound = false,
     HitSoundName = 'Paper'
   })
-  BulitInModulsSoundLoaded = true
 end

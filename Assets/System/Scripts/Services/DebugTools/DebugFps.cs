@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class DebugFps : MonoBehaviour
 {
-  public float showTime = 1f;
+  public float showTime = 0.4f;
   public Text text;
 
   private int count = 0;
@@ -14,7 +14,7 @@ public class DebugFps : MonoBehaviour
   private void Start() {
     Instance = this;
   }
-  void Update()
+  private void Update()
   {
     count++;
     deltaTime += Time.deltaTime;

@@ -191,19 +191,14 @@ end
 ---@param ball BallRegStorage
 function BallSoundManager:RemoveSoundableBall(ball) 
   --移除回调
-  ball.rigidbody:DisableCollisionDetection()
   ball.rigidbody.OnPhysicsCollDetection = nil
   ball.rigidbody.OnPhysicsContactOn = nil
   ball.rigidbody.OnPhysicsContactOff = nil
+  ball.rigidbody:DeleteAllCollDetection()
+  ball.rigidbody:DeleteAllContractDetection()
+  ball.rigidbody:DisableCollisionDetection()
   --移除声音层工具侦听
-  for id, value in pairs(self._SoundCollData) do
-    if value ~= nil then
-      ball.rigidbody:DeleteCollDetection(id)
-      if value.HasRollSound then
-        ball.rigidbody:DeleteContractDetection(id)
-
-      end
-    end
+  for id, _ in pairs(self._SoundCollData) do
     local sound = self._CurrentPlayingRollSounds[id]
     if sound ~= nil then
       self._CurrentPlayingRollSounds[id] = nil
