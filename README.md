@@ -112,7 +112,7 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
 5. 点击运行，即可查看效果啦
 
-## 图片
+## 游戏相册
 
 原版关卡
 
@@ -120,6 +120,7 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 ![Demo](Docs/DemoImages/12.jpg)
 ![Demo](Docs/DemoImages/13.jpg)
 ![Demo](Docs/DemoImages/14.jpg)
+![Demo](Docs/DemoImages/18.jpg)
 ![Demo](Docs/DemoImages/9.jpg)
 ![Demo](Docs/DemoImages/6.jpg)
 ![Demo](Docs/DemoImages/7.jpg)

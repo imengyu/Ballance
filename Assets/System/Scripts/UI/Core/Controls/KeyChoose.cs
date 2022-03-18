@@ -57,15 +57,25 @@ namespace Ballance2.UI.Core.Controls
       TextValue.text = _value.ToString();
     }
 
+    private bool waitForKey = false;
+
+    public void StartWaitKey() {
+      waitForKey = true;
+    }
+
     void Start()
     {
       UpdateValue();
     }
-    void Update()
+    void OnGUI()
     {
-      if (Input.anyKeyDown && EventSystem.current.currentSelectedGameObject == gameObject)
+      if (Input.anyKeyDown && waitForKey)
       {
-        value = Event.current.keyCode;
+        Event e = Event.current;
+        if (e.isKey) {
+          value = e.keyCode;
+          waitForKey = false;
+        }
       }
     }
   }

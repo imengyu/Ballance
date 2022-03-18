@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 3813222730679796895}
   - component: {fileID: 1645799627705860909}
   - component: {fileID: -2889487254912065053}
-  - component: {fileID: -7647201638444892540}
   m_Layer: 5
   m_Name: PageSettingsControls
   m_TagString: Untagged
@@ -150,18 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   select: {fileID: 3809879258017260384}
---- !u!114 &-7647201638444892540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3813222730679796893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18784209b574e7c4db413b11d4e6c814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3863744442651165473
 GameObject:
   m_ObjectHideFlags: 0
