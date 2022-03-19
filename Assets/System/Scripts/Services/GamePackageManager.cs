@@ -138,6 +138,17 @@ namespace Ballance2.Services
     /// 扫描模块
     /// </summary>
     internal void ScanUserPackages(Dictionary<string, GamePackageRegisterInfo> list) {
+#if UNITY_EDITOR
+      DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
+      DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
+      for (int i = 0; i < dirs.Length; i++) {
+        //扫描文件夹中没有的包，添加到列表中
+        var rel = Path.GetFileName(dirs[i].FullName.Replace('\\', '/'));
+        if(StringUtils.IsPackageName(rel) && !list.ContainsKey(rel) && !IsPackageRegistered(rel)) {
+          list.Add(rel, new GamePackageRegisterInfo(rel, false, true));
+        }
+      }
+#else
       var dirPath = GamePathManager.GetResRealPath("package", "", false, false);
       if(Directory.Exists(dirPath)) {
         //扫描文件夹中没有的包，添加到列表中
@@ -152,6 +163,7 @@ namespace Ballance2.Services
           }
         } 
       }
+#endif
     }
     /// <summary>
     /// 读取模块包状态
@@ -178,10 +190,10 @@ namespace Ballance2.Services
         packageEnableStatusListXml.LoadXml(ConstStrings.DEFAULT_PACKAGE_STATUS_XML);
 
       Dictionary<string, GamePackageRegisterInfo> lastRegisteredPackages = new Dictionary<string, GamePackageRegisterInfo>();
-      XmlNode nodeNoPackagePackagee = packageEnableStatusListXml.SelectSingleNode("NoPackagePackagee");
+      XmlNode nodeNoPackagePackagee = packageEnableStatusListXml.SelectSingleNode("PackageConfig/NoPackagePackagee");
       if (nodeNoPackagePackagee != null)
         NoPackageMode = bool.Parse(nodeNoPackagePackagee.InnerText);
-      XmlNode nodePackageList = packageEnableStatusListXml.SelectSingleNode("PackageList");
+      XmlNode nodePackageList = packageEnableStatusListXml.SelectSingleNode("PackageConfig/PackageList");
       if (nodePackageList != null)
       {
         foreach (XmlNode n in nodePackageList) {
@@ -216,17 +228,22 @@ namespace Ballance2.Services
       nodeNoPackagePackagee.InnerText = NoPackageMode.ToString();
       foreach (var s in registeredPackages.Values)
       {
+        if(s.package.IsSystemPackage())
+          continue;
+
         XmlNode node = xml.CreateElement("Package");
         XmlAttribute attr = xml.CreateAttribute("enabled");
         attr.Value = s.enableLoad.ToString();
+        node.Attributes.Append(attr);
         attr = xml.CreateAttribute("trusted");
         attr.Value = s.trustPackage.ToString();
+        node.Attributes.Append(attr);
         node.InnerText = s.package.PackageName;
         nodePackageList.AppendChild(node);
       }
 
       //save
-      packageEnableStatusListXml.Save(sw);
+      xml.Save(sw);
       sw.Close();
       sw.Dispose();
 
@@ -370,6 +387,10 @@ namespace Ballance2.Services
       else if(true) 
 #endif
       {
+        #if UNITY_EDITOR
+        Log.D(TAG, "Check package path : {0}", realPackagePath);
+        #endif
+
         //路径转换
         realPackagePath = GamePathManager.GetResRealPath("package", packageName + ".ballance");
         string realPackagePathInCore = GamePathManager.GetResRealPath("core", packageName + ".ballance");

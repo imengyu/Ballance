@@ -102,16 +102,18 @@ namespace Ballance2.Services
             TopWindowsRectTransform.SetAsLastSibling();
             GlobalWindowRectTransform.SetAsLastSibling();
             UIToast.SetAsLastSibling();
-            GameFpsStat.SetAsLastSibling();
             if(Entry.GameEntry.Instance != null && Entry.GameEntry.Instance.GameGlobalIngameLoading != null)
               Entry.GameEntry.Instance.GameGlobalIngameLoading.transform.SetAsLastSibling();
 
-            if(!DebugMode) {
-              ListenKey(KeyCode.F10, (k, d) => {
-                if(d) {
-                  GameFpsStat.gameObject.SetActive(!GameFpsStat.gameObject.activeSelf);
-                }
-              });
+            if(GameFpsStat != null) {
+              GameFpsStat.SetAsLastSibling();
+              if(!DebugMode) {
+                ListenKey(KeyCode.F10, (k, d) => {
+                  if(d) {
+                    GameFpsStat.gameObject.SetActive(!GameFpsStat.gameObject.activeSelf);
+                  }
+                });
+              }
             }
 
             //发送就绪事件
@@ -597,6 +599,9 @@ namespace Ballance2.Services
       }
     }
 
+    private RectTransform rectTransformGlobalConfirmWindow;
+    private RectTransform rectTransformGlobalAlertWindow;
+
     /// <summary>
     /// 显示全局 Alert 对话框（窗口模式）
     /// </summary>
@@ -613,7 +618,8 @@ namespace Ballance2.Services
     {
       if(okText == null) okText = I18N.I18N.Tr("core.ui.Ok");
 
-      RectTransform rectTransform = InitViewToCanvas(PrefabUIAlertWindow, "AlertWindow", true);
+      RectTransform rectTransform = rectTransformGlobalAlertWindow == null ? 
+        (rectTransformGlobalAlertWindow = InitViewToCanvas(PrefabUIAlertWindow, "AlertWindow", true)) : rectTransformGlobalAlertWindow;
       Button btnOk = rectTransform.Find("Panel/Button").GetComponent<Button>();
       rectTransform.Find("Panel/DialogText").GetComponent<Text>().text = text;
       rectTransform.Find("Panel/Button/Text").GetComponent<Text>().text = okText;
@@ -623,6 +629,7 @@ namespace Ballance2.Services
         onConfirm?.Invoke();
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
+        rectTransformGlobalAlertWindow.gameObject.SetActive(false);
         GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, 0, false);
       });
       
@@ -650,7 +657,8 @@ namespace Ballance2.Services
       if(okText == null) okText = I18N.I18N.Tr("core.ui.Ok");
       if(cancelText == null) cancelText = I18N.I18N.Tr("core.ui.Cancel");
 
-      RectTransform rectTransform = InitViewToCanvas(PrefabUIConfirmWindow, "ConfirmWindow", true);
+      RectTransform rectTransform = rectTransformGlobalConfirmWindow == null ? 
+        (rectTransformGlobalConfirmWindow = InitViewToCanvas(PrefabUIConfirmWindow, "ConfirmWindow", true)) : rectTransformGlobalConfirmWindow;
       Button btnYes = rectTransform.Find("Panel/ButtonConfirm").GetComponent<Button>();
       Button btnNo = rectTransform.Find("Panel/ButtonCancel").GetComponent<Button>();
       rectTransform.Find("Panel/ButtonConfirm/Text").GetComponent<Text>().text = okText;
@@ -663,6 +671,7 @@ namespace Ballance2.Services
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
         GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, 1, true);
+        rectTransform.gameObject.SetActive(false);
       });
       btnNo.onClick.AddListener(() =>
       {
@@ -670,6 +679,7 @@ namespace Ballance2.Services
         PagesRectTransform.gameObject.SetActive(true);
         WindowsRectTransform.gameObject.SetActive(true);
         GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GLOBAL_ALERT_CLOSE, 1, false);
+        rectTransform.gameObject.SetActive(false);
       });
 
       PagesRectTransform.gameObject.SetActive(false);

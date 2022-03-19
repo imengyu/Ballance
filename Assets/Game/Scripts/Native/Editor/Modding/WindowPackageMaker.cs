@@ -151,11 +151,11 @@ namespace Ballance2.Editor.Modding
             TargetVersion.InnerText = GameConst.GameBulidVersion.ToString();
 
             XmlNode EntryCode = xml.SelectSingleNode("Package/EntryCode");
-            XmlNode CodeType = xml.SelectSingleNode("Package/CodeType");
+            XmlNode ContainCSharp = xml.SelectSingleNode("Package/ContainCSharp");
             XmlNode PackageType = xml.SelectSingleNode("Package/Type");
 
             EntryCode.InnerText = this.EntryCode;
-            CodeType.InnerText = this.PackageType == GamePackageType.Module ? this.ContainCSharp.ToString() : "None";
+            ContainCSharp.InnerText = this.ContainCSharp.ToString();
             PackageType.InnerText = this.PackageType.ToString();
 
             xml.Save(folderPath + "/PackageDef.xml");

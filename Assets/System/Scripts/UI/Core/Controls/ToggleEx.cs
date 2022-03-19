@@ -79,7 +79,7 @@ namespace Ballance2.UI.Core.Controls
         if (on != value)
         {
           on = value;
-          if (!Application.isEditor && onValueChanged != null)
+          if (onValueChanged != null)
             onValueChanged.Invoke(on);
           UpdateOn();
         }

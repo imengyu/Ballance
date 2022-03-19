@@ -122,7 +122,6 @@ public class PackageManagerUIControl : MonoBehaviour {
         });
       }
 
-      ToggleEnable.onValueChanged.RemoveAllListeners();
 
       if(packageStateChanges.TryGetValue(name, out var pack))
         ToggleEnable.isOn = pack.newState;//缓存中的状态
@@ -130,6 +129,7 @@ public class PackageManagerUIControl : MonoBehaviour {
         ToggleEnable.isOn = data.enableLoad;
 
       ToggleEnable.gameObject.SetActive(true);
+      ToggleEnable.onValueChanged.RemoveAllListeners();
       ToggleEnable.onValueChanged.AddListener((on) => {
         AddPackageStateChange(data.packageName, on, data.enableLoad);
       });
@@ -161,7 +161,7 @@ public class PackageManagerUIControl : MonoBehaviour {
   }
 
   private void AddPackageStateChange(string name, bool state, bool intitalState) {
-    if(packageStateChanges.TryGetValue(name, out var pack)) {
+    if(!packageStateChanges.TryGetValue(name, out var pack)) {
       if(state != intitalState) {
         pack = new PackageStateChange(name, state);
         packageStateChanges.Add(name, pack); 
@@ -200,7 +200,7 @@ public class PackageManagerUIControl : MonoBehaviour {
   }
 
   private void UnloadPackage(string name) {
-    gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageUnaloadTip"), I18N.TrF("core.ui.PackageWantUnaload", packageStateChanges.Count), () => {
+    gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageUnaloadTip")  + '\n' + I18N.TrF("core.ui.PackageWantUnaload", packageStateChanges.Count), "", () => {
       packageStateChanges.Clear();
       gameUIManager.BackPreviusPage();
     }, () => {
@@ -289,14 +289,14 @@ public class PackageManagerUIControl : MonoBehaviour {
       //保存状态
       gamePackageManager.SavePackageRegisterInfo();
       //重启游戏
-      GameManager.Instance.RestartGame();
+      GameManager.Instance.QuitGame();
     } else {
       gameUIManager.BackPreviusPage();
     }
   }
   private void Back() {
     if(packageStateChanges.Count > 0) {
-      gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManagerTip"), I18N.TrF("core.ui.PackageManagerChangeTip", packageStateChanges.Count), () => {
+      gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManagerTip")  + '\n' + I18N.TrF("core.ui.PackageManagerChangeTip", packageStateChanges.Count), "", () => {
         packageStateChanges.Clear();
         gameUIManager.BackPreviusPage();
       }, () => {
