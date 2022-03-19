@@ -202,6 +202,9 @@
       * 如果是 Win 版本，只需要选择 Standalone Windows 即可。
       * 如果是 android 版本，需要选择 Android。
       * 如果是 ios 版本，需要选择 iOS
+
+      注意：Win/android/ios版本不能混用，会无法加载。
+
     * 可以选择打包至 DebugFolder，文件会输出至 `项目目录/Debug/Levels` 下。
 
       ![图片](37.jpg)
