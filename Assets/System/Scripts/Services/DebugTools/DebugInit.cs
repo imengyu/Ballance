@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Ballance2.DebugTools {
 
   class DebugInit {
+    internal static GameObject GameGraphy = null;
     private static Window GlobalDebugWindow = null;
     private static RectTransform GameDebugStatsArea = null;
     private static RectTransform GameDebugFloatButton = null;
@@ -19,7 +20,7 @@ namespace Ballance2.DebugTools {
       var GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>();
 
       //创建Graphy
-      var GameGraphy = GameObject.Instantiate(GameStaticResourcesPool.FindStaticPrefabs("PrefabGraphy"));
+      GameGraphy = GameObject.Instantiate(GameStaticResourcesPool.FindStaticPrefabs("PrefabGraphy"));
       GameGraphy.name = "GameGraphy";
 
       //创建窗口

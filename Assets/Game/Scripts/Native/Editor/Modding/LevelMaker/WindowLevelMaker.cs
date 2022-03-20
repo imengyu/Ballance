@@ -76,6 +76,7 @@ namespace Ballance2.Editor.Modding.LevelMaker
             File.Copy(GamePathManager.DEBUG_LEVEL_FOLDER + "/template_Level.json", folderPath + "/Level.json");
             File.Copy(GamePathManager.DEBUG_LEVEL_FOLDER + "/template_Level.prefab", folderPath + "/Level.prefab");
             File.Copy(GamePathManager.DEBUG_LEVEL_FOLDER + "/template_LevelLogo.png", folderPath + "/LevelLogo.png");
+            File.Copy(GamePathManager.DEBUG_LEVEL_FOLDER + "/template_LevelPreview.png", folderPath + "/LevelPreview.png");
 
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("提示", "生成模板成功！", "好的");

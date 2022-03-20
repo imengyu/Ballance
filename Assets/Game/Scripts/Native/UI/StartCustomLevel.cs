@@ -41,6 +41,8 @@ public class StartCustomLevel : MonoBehaviour
   public Text TextPreview;
   public Text TextDepends;
   public Image ImageDepends;
+  public Image ImageBigImage;
+  public Sprite NoPreviewImage;
   public Sprite IconSuccess;
   public Sprite IconError;
 
@@ -74,6 +76,7 @@ public class StartCustomLevel : MonoBehaviour
     public bool dependsSuccess;
     public string dependsStatus;
     public Sprite logo;
+    public Sprite image;
 
     private GamePackageManager pm = null;
 
@@ -150,6 +153,11 @@ public class StartCustomLevel : MonoBehaviour
     itemPrefabPool = new GameObjectPool("itemPrefabPool", PanelListPrefab, 32, 256, PanelListContentView);
     itemDependsPrefabPool = new GameObjectPool("itemDependsPrefabPool", PanelDependsListPrefab, 32, 128, PanelDependsListContentView);
 
+    PanelContent.gameObject.SetActive(false);
+    PanelNoContent.gameObject.SetActive(true);
+    PanelError.gameObject.SetActive(false);
+    PanelDepends.gameObject.SetActive(false);
+    PanelNoLevel.gameObject.SetActive(false);
     ButtonStart.onClick.AddListener(StartLevel);
     ButtonBack.onClick.AddListener(Back);
     ButtonDependsBack.onClick.AddListener(HideDependsInfo);
@@ -263,11 +271,17 @@ public class StartCustomLevel : MonoBehaviour
           jsonString = File.ReadAllText(realPackagePath + "/Level.json");
           info.Set(JsonUtility.FromJson<GameLevelInfoJSON>(jsonString));
 
-          var logo = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(realPackagePath + "/DebugLevelLogo.png");
+          var logo = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(realPackagePath + "/LevelLogo.png");
           if(logo != null) {
             info.logo = Sprite.Create(logo,
               new Rect(Vector2.zero, new Vector2(logo.width, logo.height)),
               new Vector2(0.5f, 0.5f));
+          }
+          var image = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(realPackagePath + "/LevelPreview.png");
+          if(image != null) {
+            info.image = Sprite.Create(image,
+              new Rect(Vector2.zero, new Vector2(image.width, image.height)),
+              new Vector2(1f, 1f));
           }
         }
         else
@@ -314,6 +328,12 @@ public class StartCustomLevel : MonoBehaviour
                   new Rect(Vector2.zero, new Vector2(logo.width, logo.height)),
                   new Vector2(0.5f, 0.5f));
               }
+              var image = assetBundle.LoadAsset<Texture2D>("LevelPreview.png");
+              if(image != null) {
+                info.image = Sprite.Create(image,
+                  new Rect(Vector2.zero, new Vector2(image.width, image.height)),
+                  new Vector2(0.5f, 0.5f));
+              }
 
               assetBundle.UnloadAsync(false);
             }
@@ -335,6 +355,7 @@ public class StartCustomLevel : MonoBehaviour
         TextIntroduction.text = info.introduction;
         TextPreview.gameObject.SetActive(info.allowPreview);
         ImageDepends.sprite = info.dependsSuccess ? IconSuccess : IconError;
+        ImageBigImage.sprite = info.image != null ? info.image : NoPreviewImage;
         ImageLogo.sprite = info.logo;
         TextDepends.text = info.dependsStatus;
 

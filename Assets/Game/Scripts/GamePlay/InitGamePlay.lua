@@ -36,6 +36,8 @@ function GamePlayInit(callback)
   Game.GamePlay = GamePlay
   
   coroutine.resume(coroutine.create(function()
+    Game.UIManager:SetUIOverlayVisible(true)    
+    Yield(WaitForSeconds(0.2))
 
     --初始化基础对象
     GamePlayManagerGameObject = CloneUtils.CloneNewObject(Game.CorePackage:GetPrefabAsset('GamePlayManager.prefab'), 'GamePlayManager')
@@ -52,7 +54,7 @@ function GamePlayInit(callback)
     GamePlayUIGameObject:SetActive(false)
     --GamePlayUI
     GamePlayPreviewUIGameObject = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('GamePreviewUI.prefab'), 'GamePlayPreviewUI', false).gameObject
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.2))
     GamePlayPreviewUIGameObject:SetActive(false)
 
     Yield(WaitForSeconds(0.2))

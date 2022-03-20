@@ -706,24 +706,24 @@ function BallManager:_InitKeyEvents()
       end
     end)
     self._private.keyListener:AddKeyListen(KeyCode.Alpha4, function (key, downed)
-      if(downed) then
-        self:SetControllingStatus(BallControlStatus.NoControl)
-        self:SetNextRecoverPos(Vector3.zero)
-      end
+      GamePlay.GamePlayManager:_Rebirth()
     end)  
     self._private.keyListener:AddKeyListen(KeyCode.Alpha5, function (key, downed)
       if(downed) then
-        self:ThrowPeices('BallWood')
+        GamePlay.GamePlayManager:AddLife()
       end
     end)    
     self._private.keyListener:AddKeyListen(KeyCode.Alpha6, function (key, downed)
       if(downed) then
-        self:ThrowPeices('BallStone')
+        GamePlay.GamePlayManager:Fall()
       end
-    end)  
+    end)
     self._private.keyListener:AddKeyListen(KeyCode.Alpha7, function (key, downed)
       if(downed) then
-        self:ThrowPeices('BallPaper')
+        if(downed) then
+          self:SetControllingStatus(BallControlStatus.NoControl)
+          self:SetNextRecoverPos(Vector3.zero)
+        end
       end
     end)   
   end

@@ -7,6 +7,8 @@ P_Modul_34 = ModulBase:extend()
 
 function P_Modul_34:new()
   P_Modul_34.super.new(self)
+  self.EnableBallRangeChecker = true
+  self.BallCheckeRange = 60
 end
 
 function P_Modul_34:Start()
@@ -43,6 +45,11 @@ function P_Modul_34:Reset()
 end
 function P_Modul_34:Backup()
   ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
+end
+function P_Modul_34:BallEnterRange()
+  if not self.IsPreviewMode and self.IsActive then
+    self.P_Modul_34_Schiebestein:WakeUp()
+  end
 end
 
 function CreateClass:P_Modul_34()

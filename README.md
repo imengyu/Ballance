@@ -1,30 +1,23 @@
 # Ballance
 
-![image](/Assets/System/Textures/splash_app.bmp)
-
-这是2004年Arail 发布的Ballance游戏的开源重制版（制作中）。
-
-## 先睹为快
-
-[先看看演示视频](https://www.bilibili.com/video/BV1Dg411P7xp/)
-
 ## 简介
 
-这是Ballance游戏的开源重制版，在制作中，还未完成，但已初具雏形。
+这是 Ballance 游戏的开源 Unity 重制版.
 
-游戏使用Unity开发，主要流程大都使用Lua作为语言（为了兼顾MOD与热更），游戏框架使用C#写。
-
-这个项目目前由作者工作之余一个人做，大约5天更新一次。
-
-**如果您想与我一起开发，欢迎 Fork 项目并提交您的修改，我会对您的 PR 非常重视。**
-
-您可以克隆代码至您的本地开发。
-
-[Github主仓库](https://github.com/imengyu/ballance)
-
-[Gitee镜像仓库, 下载会快一些](https://gitee.com/imengyu/ballance)
+![image](/Assets/System/Textures/splash_app.bmp)
 
 ---
+
+## 文档目录
+
+* [游戏教程](./Docs/Help/readme.md)
+* [项目运行帮助文档](./Docs/Help/project-help.md)
+* [制作自定义关卡文档](./Docs/LevelMaking/readme.md)
+  * [转换原版Ballance的nmo关卡](./Docs/LevelMaking/convert-level.md)
+  * [新制作新关卡](./Docs/LevelMaking/make-level.md)
+* [自定义模组制作文档](./Docs/SystemModding/readme.md)
+  * [API文档](./Docs/LuaApi/readme.md)
+  * [调试工具](./Docs/Help/debug-tools.md)
 
 ## 欢迎体验
 
@@ -36,81 +29,10 @@ Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，
 
 ## 系统需求
 
-* 最低配置:
-  * 操作系统: Windows 10, 8, 7
-  * 处理器: Dual core 3Ghz+
-  * 内存: 2 GB RAM
-  * 显卡: DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500
-  * DirectX 版本: 11
-  * 存储空间: 至少需要 100 MB 可用空间
-
-* 推荐配置:
-  * 操作系统: Windows 10, 8, 7 (64 Bit)
-  * 处理器: Quad core 3Ghz+
-  * 内存: 4 GB RAM
-  * 显卡: DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360
-  * DirectX 版本: 11
-  * 存储空间: 需要 100 MB 可用空间
-
-## 开发状态
-
-目前游戏主体架构已经开发的差不多了。整体流程已经可以运行了。
-可以加载关卡，加载机关，游戏UI，游戏流程基本完成。
-目前仅剩细节优化。
-
-<details>
-<summary>关于作者</summary>
-
-作者是一个Ballance忠实粉丝，从最初为原版Ballance作图，到后面开发相关的小工具，最后又想让这个老游戏重新焕发生机。
-这个项目从2018年就开始了，当时还在B吧里发布过一个测试版本，可惜太烂。中间又高考，停了好长时间，一直到大学快毕业才又想起来，一直想把它做好，可是因为天生拖延症，一拖再拖。到现在工作了，才终于有动力做。
-
-</details>
-
-<details>
-<summary>关于物理引擎</summary>
-
-物理引擎使用ivp的源代码，发现这个这个物理引擎真的很意外。通过反编译virtools的physics.dll，然后不断搜索，通过比对，发现，曾经Valve的某个知名游戏发生
-源代码泄露事件（hl2）中的物理引擎源代码，与virtools物理引擎里面的字符串居然一模一样，可以说virtools物理引擎就是这个源代码编译出来的。
-
-[物理引擎的C++源代码可以到这里查看](https://github.com/nillerusr/source-physics) (这个不是作者本人的仓库，我在这里复制了一份用来编译).
-
-后来仔细了解了下，才知道这个物理引擎ivp全名是Ipion Virtual Physics，也是很早有名的引擎了（年龄比我还大，我是00后，这个物理引擎是98年的），后来被havok收购，相关的信息应该都被封杀了，互联网上现在已经找不到了。
-
-Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到了这个引擎，可以让重制版游戏与原版物理效果几乎一模一样的。
-</details>
-
----
-
-## 目标
-
-* 与原版物理差不多。（2022/01 已完成）
-* **ivp物理引擎**。（2022/01 已完成）
-* 支持MOD和自定义关卡加载。（已完成）
-* 支持用Lua来开发MOD。（已完成）
-* 完善游戏主体。
-
-## 自定义关卡或者模组
-
-### [制作自定义关卡](./Docs/LevelMaking/readme.md)
-
-**重制版不能直接加载 Virtools 的 nmo 文件！** Virtools 的 nmo/cmo 文件是闭源的，谁也不知道怎么加载它，所以本重制版也不打算支持直接加载 nmo。
-
-* 你需要手工重新制作自定义关卡，制作一个新的关卡包，然后才能加载进入游戏。步骤请参考[制作自定义关卡文档](./Docs/LevelMaking/convert-level.md)。
-* 将制作好的关卡放在 `游戏目录\Ballance_Data\Levels` 文件夹下，打开游戏，在开始中选择 “自定义关卡” 菜单，即可加载自定义关卡。
-
-### [自定义模组](./Docs/LevelMaking/readme.md)
-
-文档TODO。
-
-## Unity运行步骤
-
-提示：*(目前暂无Mac/Linux版本的物理引擎文件，请使用Win版本的Unity进行调试)*
-
-1. 请下载 Unity 2021.2.7+ 版本打开项目。
-2. 点击菜单“SLua”>“All”>“Make”以生成Lua相关文件。
-3. 打开 System/Scenes/MainScene.unity 场景。
-4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
-5. 点击运行，即可查看效果啦
+||操作系统|处理器|内存|显卡|DirectX 版本|存储空间|
+|---|---|---|---|---|---|---|
+|最低配置|Windows 11, 10, 8, 7|Dual core 3Ghz+|1 GB RAM|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|11|100 MB 可用空间|
+|推荐配置|Windows 11, 10, 8, 7|Quad core 3Ghz+|2 GB RAM|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|11|200 MB 可用空间|
 
 ## 游戏相册
 
@@ -147,6 +69,39 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 ![Demo](Docs/DemoImages/1.jpg)
 ![Demo](Docs/DemoImages/2.jpg)
+
+## 开发状态
+
+目前游戏主体架构已经开发的差不多了。整体流程已经可以运行了。
+可以加载关卡，加载机关，游戏UI，游戏流程基本完成。
+目前仅剩细节优化。
+
+<details>
+<summary>关于作者</summary>
+
+贴吧ID: q717021
+
+作者是一个Ballance忠实粉丝，从最初为原版Ballance作图，到后面开发相关的小工具，最后又想让这个老游戏重新焕发生机。
+这个项目从2018年就开始了，当时还在B吧里发布过一个测试版本，可惜太烂。中间又高考，停了好长时间，一直到大学快毕业才又想起来，一直想把它做好，可是因为天生拖延症，一拖再拖。到现在工作了，才终于有动力做。
+
+现在只有作者一个人为爱编写这个游戏，非常欢迎加入我一起开发呀。
+
+</details>
+
+<details>
+<summary>关于物理引擎</summary>
+
+物理引擎使用ivp的源代码，发现这个这个物理引擎真的很意外。通过反编译virtools的physics.dll，然后不断搜索，通过比对，发现，曾经Valve的某个知名游戏发生
+源代码泄露事件（hl2）中的物理引擎源代码，与virtools物理引擎里面的字符串居然一模一样，可以说virtools物理引擎就是这个源代码编译出来的。
+
+[物理引擎的C++源代码可以到这里查看](https://github.com/nillerusr/source-physics) (这个不是作者本人的仓库，我在这里复制了一份用来编译).
+
+后来仔细了解了下，才知道这个物理引擎ivp全名是Ipion Virtual Physics，也是很早有名的引擎了（年龄比我还大，我是00后，这个物理引擎是98年的），后来被havok收购，相关的信息应该都被封杀了，互联网上现在已经找不到了。
+
+Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到了这个引擎，可以让重制版游戏与原版物理效果几乎一模一样的。
+</details>
+
+---
 
 ## TODO: 项目待完成内容
 
@@ -239,15 +194,15 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 * ✅ 关卡管理菜单
 * ✅ 关于菜单
 * ✅ 手机端适配
+* ✅ 过关后才能进入下一关
+* ✅ 第一关的教程
+* ✅ 菜单的键盘逻辑
+* ✅ 手机方向键盘
 
 </details>
 
 ---
 
-* ✅ 过关后才能进入下一关
-* ✅ 第一关的教程
-* ✅ 菜单的键盘逻辑
-* ✅ 手机方向键盘
 * ✅ 更换Shader并尽量接近原版材质效果
 * ✅ 自定义关卡制作教程文档
 * ✅ 添加球的阴影

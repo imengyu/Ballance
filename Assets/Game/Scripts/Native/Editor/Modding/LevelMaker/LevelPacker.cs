@@ -22,6 +22,7 @@ namespace Ballance2.Editor.Modding.LevelMaker
           List<string> allAssetsPath = new List<string>();
           allAssetsPath.Add(AssetDatabase.GetAssetPath(packDefFile));
           allAssetsPath.Add(projLevelDirPath + "/LevelLogo.png");
+          allAssetsPath.Add(projLevelDirPath + "/LevelPreview.png");
           allAssetsPath.Add(projLevelDirPath + "/Level.prefab");
 
           //打包

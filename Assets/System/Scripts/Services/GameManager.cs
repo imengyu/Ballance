@@ -215,17 +215,6 @@ namespace Ballance2.Services
     /// <returns></returns>
     private IEnumerator InitAsysc()
     {
-      if(GameEntry.Instance.DebugEnableLuaDebugger)
-      {
-        Profiler.BeginSample("GameManagerStartDebugger");
-        //初始化lua调试器
-        GameMainLuaState.doString(@"
-            local SystemPackage = Ballance2.Package.GamePackage.GetSystemPackage()
-            SystemPackage:RequireLuaFile('debugger')
-            InternalStart('" + GameEntry.Instance.DebugLuaDebugger + "')", "GameManagerStartDebugger");
-        Profiler.EndSample();
-      }
-
       //检测lua绑定状态
       object o = GameMainLuaState.doString(@"return Ballance2.Services.GameManager.EnvBindingCheckCallback()", "GameManagerSystemInit");
       if (o != null &&  (
@@ -421,6 +410,17 @@ namespace Ballance2.Services
         Log.D(TAG, "ExecuteSystemCore ok");
       }
 
+      //初始化lua调试器
+      if(GameEntry.Instance.DebugEnableLuaDebugger)
+      {
+        Profiler.BeginSample("GameManagerStartDebugger");
+        GameMainLuaState.doString(@"
+            local SystemPackage = Ballance2.Package.GamePackage.GetSystemPackage()
+            SystemPackage:RequireLuaFile('debugger')
+            InternalStart('" + GameEntry.Instance.DebugLuaDebugger + "')", "GameManagerStartDebugger");
+        Profiler.EndSample();
+      }
+      
       {
         //加载游戏主内核包
         Task<bool> task = pm.LoadPackage(corePackageName);
@@ -1116,6 +1116,24 @@ namespace Ballance2.Services
     #region 其他方法
 
     private Camera lastActiveCam = null;
+
+    /// <summary>
+    /// 进行截图
+    /// </summary>
+    [LuaApiDescription("进行截图")]
+    public void CaptureScreenshot() {
+      //创建目录
+      string saveDir = Application.persistentDataPath + "/Screenshot/";
+      if(!Directory.Exists(saveDir))
+        Directory.CreateDirectory(saveDir);
+
+      //保存图片
+      string savePath = saveDir + "Screenshot" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
+      ScreenCapture.CaptureScreenshot(savePath);
+      Log.D(TAG, "CaptureScreenshot to " + savePath);
+      //提示
+      Delay(1.0f, () => GetSystemService<GameUIManager>().GlobalToast(I18N.I18N.TrF("global.CaptureScreenshotSuccess", "", savePath)));
+    }
 
     /// <summary>
     /// 设置基础摄像机状态

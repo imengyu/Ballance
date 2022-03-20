@@ -9,6 +9,7 @@ using Ballance2.UI.Utils;
 using Ballance2.Utils;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -77,7 +78,6 @@ namespace Ballance2.Services
           {
             var GameGlobalMask = UIRoot.transform.Find("GameGlobalMask");
             var GameGlobalDialog = UIRoot.transform.Find("GameGlobalDialog");
-            var GameFpsStat = UIRoot.transform.Find("GameFpsStat");
             GlobalFadeMaskWhite = GameGlobalMask.Find("GlobalFadeMaskWhite").gameObject.GetComponent<Image>();
             GlobalFadeMaskBlack = GameGlobalMask.Find("GlobalFadeMaskBlack").gameObject.GetComponent<Image>();
 
@@ -93,6 +93,8 @@ namespace Ballance2.Services
             InitAllObects();
             InitWindowManagement();
             InitCommands();
+            InitF9CaptureScreenshot();
+            InitF8SwitchViews();
 
             //更新主管理器中的Canvas变量
             GameManager.Instance.GameCanvas = ViewsRectTransform;
@@ -104,17 +106,7 @@ namespace Ballance2.Services
             UIToast.SetAsLastSibling();
             if(Entry.GameEntry.Instance != null && Entry.GameEntry.Instance.GameGlobalIngameLoading != null)
               Entry.GameEntry.Instance.GameGlobalIngameLoading.transform.SetAsLastSibling();
-
-            if(GameFpsStat != null) {
-              GameFpsStat.SetAsLastSibling();
-              if(!DebugMode) {
-                ListenKey(KeyCode.F10, (k, d) => {
-                  if(d) {
-                    GameFpsStat.gameObject.SetActive(!GameFpsStat.gameObject.activeSelf);
-                  }
-                });
-              }
-            }
+            InitF10FpsSwitch();
 
             //发送就绪事件
             GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED);
@@ -129,6 +121,70 @@ namespace Ballance2.Services
       });
       return true;
     }
+
+    #region 特殊按键的控制
+
+    //F10切换FPS显示
+    private void InitF10FpsSwitch() {
+      var GameFpsStat = UIRoot.transform.Find("GameFpsStat");
+      if(GameFpsStat != null) {
+        GameFpsStat.SetAsLastSibling();
+        if(!DebugMode) {
+          ListenKey(KeyCode.F10, (k, d) => {
+            if(d)
+              GameFpsStat.gameObject.SetActive(!GameFpsStat.gameObject.activeSelf);
+          });
+        }
+      } 
+      if(DebugMode) {
+        ListenKey(KeyCode.F10, (k, d) => {
+          if(d) {
+            var GameGraphy = DebugTools.DebugInit.GameGraphy;
+            if(GameFpsStat != null) {
+              if(GameFpsStat.gameObject.activeSelf) {
+                GameFpsStat.gameObject.SetActive(false);
+                GameGraphy.SetActive(true);
+              } else if(GameGraphy.activeSelf) {
+                GameFpsStat.gameObject.SetActive(false);
+                GameGraphy.SetActive(false);
+              } else {
+                GameFpsStat.gameObject.SetActive(true);
+                GameGraphy.SetActive(false);
+              }
+            } else
+              GameGraphy.SetActive(!GameGraphy.activeSelf);
+          }
+        });
+      }
+    }
+    //F9截屏
+    private void InitF9CaptureScreenshot() {
+      ListenKey(KeyCode.F9, (k, d) => { if(d) GameManager.Instance.CaptureScreenshot(); });
+    }
+    //F8切换顶层视图的显示
+    private void InitF8SwitchViews() {
+      ListenKey(KeyCode.F8, (k, d) => {
+        if(d) SetUIOverlayVisible(!TopViewsRectTransform.gameObject.activeSelf);
+      });
+    }
+
+    /// <summary>
+    /// 切换遮罩UI是否显示
+    /// </summary>
+    /// <param name="visible">是否显示</param>
+    [LuaApiDescription("切换遮罩UI是否显示")]
+    [LuaApiParamDescription("visible", "是否显示")]
+    public void SetUIOverlayVisible(bool visible) {
+      if(visible) {
+        TopViewsRectTransform.gameObject.SetActive(true);
+        ViewsRectTransform.gameObject.SetActive(true);
+      } else {
+        TopViewsRectTransform.gameObject.SetActive(false);
+        ViewsRectTransform.gameObject.SetActive(false);
+      }
+    }
+
+    #endregion
 
     /// <summary>
     /// UI 根
@@ -534,18 +590,8 @@ namespace Ballance2.Services
     private RectTransform UIToast;
     private Image UIToastImage;
     private Text UIToastText;
-
-    private struct ToastData
-    {
-      public string text;
-      public float showTime;
-
-      public ToastData(string t, float i)
-      {
-        text = t;
-        showTime = i;
-      }
-    }
+    private FadeObject UIToastImageFadeObject;
+    private FadeObject UIToastTextFadeObject;
 
     private float toastTimeTick = 0;
 
@@ -579,22 +625,44 @@ namespace Ballance2.Services
       UIToast.sizeDelta = new Vector2(UIToast.sizeDelta.x, h > 50 ? h : 50);
       UIToast.gameObject.SetActive(true);
       UIToast.SetAsLastSibling();
-
-      if(!UIToastImage.gameObject.activeSelf) {
-        UIFadeManager.AddFadeIn(UIToastImage, 0.26f);
-        UIFadeManager.AddFadeIn(UIToastText, 0.25f);
-      }
       toastTimeTick = time + 0.25f;
+
+      if(UIToastTextFadeObject != null) {
+        UIToastTextFadeObject.ResetTo(1);
+        UIToastTextFadeObject.Delete();
+        UIToastTextFadeObject = null;
+      } else {
+        UIToastTextFadeObject = UIFadeManager.AddFadeIn(UIToastText, 0.26f);
+      }
+      if(UIToastImageFadeObject != null) {
+        UIToastImageFadeObject.ResetTo(1);
+        UIToastImageFadeObject.Delete();
+        UIToastImageFadeObject = null;
+      } else {
+        UIToastImageFadeObject = UIFadeManager.AddFadeIn(UIToastImage, 0.26f);
+      }
     }
     private void UpdateToastShow()
     {
-      if (toastTimeTick >= 0)
+      if (toastTimeTick > 0)
       {
         toastTimeTick -= Time.deltaTime;
         if (toastTimeTick <= 0)
         {
-          UIFadeManager.AddFadeOut(UIToastImage, 0.4f, true);
-          UIFadeManager.AddFadeOut(UIToastText, 0.4f, false);
+          if(UIToastTextFadeObject != null) {
+            UIToastTextFadeObject.ResetTo(0);
+            UIToastTextFadeObject.Delete();
+            UIToastTextFadeObject = null;
+          } else {
+            UIToastTextFadeObject = UIFadeManager.AddFadeOut(UIToastText, 0.4f, false);
+          }
+          if(UIToastImageFadeObject != null) {
+            UIToastImageFadeObject.ResetTo(0);
+            UIToastImageFadeObject.Delete();
+            UIToastImageFadeObject = null;
+          } else {
+            UIToastImageFadeObject = UIFadeManager.AddFadeOut(UIToastImage, 0.4f, false);
+          }
         }
       }
     }

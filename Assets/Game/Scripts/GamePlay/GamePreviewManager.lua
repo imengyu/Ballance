@@ -23,7 +23,6 @@ function GamePreviewManager:Awake()
   --注册全局事件
   Mediator:SubscribeSingleEvent(Game.CorePackage, "CoreGamePreviewManagerInitAndStart", 'GamePreviewManager', function (evtName, params)
     Game.SoundManager:PlayFastVoice('core.sounds:Misc_StartLevel.wav', GameSoundType.Normal) --播放开始音乐
-    Game.UIManager:CloseAllPage()
     GameUI.GamePreviewUI.gameObject:SetActive(true)
     GameUI.GamePreviewUI:SetLevelInfo(params[1], params[2], params[3])
     GameUI.GamePreviewUI:SetFreeCamera(self.GamePreviewFreeCamera)
@@ -32,8 +31,11 @@ function GamePreviewManager:Awake()
     self.GamePreviewMinimapCamera.gameObject:SetActive(true)
     self.GamePreviewCamera.gameObject:SetActive(true)
     GamePlay.SectorManager:ActiveAllModulsForPreview() ---激活机关
+
+    Game.UIManager:CloseAllPage()
     Game.UIManager:MaskBlackFadeOut(1)
     self._IsLoaded = true
+
     --ESC键
     self.escKeyId = Game.UIManager:ListenKey(KeyCode.Escape, function (key, down)
       if down then

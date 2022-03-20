@@ -58,7 +58,7 @@ function SectorManager:Start()
   end, 1, "sector <next/set/reset/reset-all> 节管理器命令"..
           "  next                  ▶ 进入下一小节"..
           "  set <sector:number>   ▶ 设置当前激活的小节"..
-          "  reset <sector:number> ▶ 重置指定的小节"..
+          "  reset <sector:number> ▶ 重置指定的小节机关"..
           "  reset-all             ▶ 重置所有小节"
   )
 end

@@ -75,11 +75,7 @@ function GamePlayManager:Awake()
       self:_Start(true)
     return true
   end, 1, 'gos <count:number> > 跳转到指定的小节'))
-  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('rebirth', function () 
-    GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
-    self:_SetCamPos()
-    self:_Start(true) 
-  return true end, 0, 'rebirth > 重新出生'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('rebirth', function () self:_Rebirth() return true end, 0, 'rebirth > 重新出生（不消耗生命球）'))
   table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('addlife', function () self:AddLife() return true end, 0, 'addlife > 添加一个生命球'))
   table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('addtime', function (keyword, fullCmd, argsCount, args) 
     local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
@@ -87,7 +83,22 @@ function GamePlayManager:Awake()
     self:AddPoint(tonumber(nx))  
     return true
   end, 1, 'addtime <count:number> > 添加时间点 count：要添加数量'))
-
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('settime', function (keyword, fullCmd, argsCount, args) 
+    local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
+    if not ox then return false end
+    if nx < 0 then nx = 0 end
+    self.CurrentPoint = nx
+    GameUI.GamePlayUI:SetPointText(nx)
+    return true
+  end, 1, 'settime <count:number> > 设置当前时间点数量 count：数量'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('setlife', function (keyword, fullCmd, argsCount, args) 
+    local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
+    if not ox then return false end
+    if nx < -1 then nx = -1 end
+    self.CurrentLife = nx
+    GameUI.GamePlayUI:SetLifeBallCount(nx)
+    return true
+  end, 1, 'setlife <count:number> > 设置当前生命球数量 count：数量'))
 end
 function GamePlayManager:OnDestroy()
 
@@ -220,6 +231,12 @@ function GamePlayManager:_SetCamPos()
     GamePlay.CamManager:SetPosAndDirByRestPoint(startRestPoint):SetTarget(startRestPoint.transform):SetCamLook(true)
   end
 end
+---重新出生（不消耗生命球）
+function GamePlayManager:_Rebirth() 
+  GamePlay.BallManager:SetControllingStatus(BallControlStatus.NoControl)
+  self:_SetCamPos()
+  self:_Start(true) 
+end
 
 ---LevelBuilder 就绪，现在GamePlayManager进行初始化
 function GamePlayManager:_InitAndStart() 
@@ -230,6 +247,7 @@ function GamePlayManager:_InitAndStart()
   self._IsCountDownPoint = false
 
   coroutine.resume(coroutine.create(function()
+
     --UI
     Game.UIManager:CloseAllPage()
     GameUI.GamePlayUI.gameObject:SetActive(true)
@@ -591,6 +609,10 @@ end
 ---添加时间点数
 ---@param count number|nil 时间点数，默认为10
 function GamePlayManager:AddPoint(count) 
+  if count < 0 then
+    Log.E(TAG, "AddPoint count can not be negative!")
+    return
+  end
   self.CurrentPoint = self.CurrentPoint + (count or 10)
   GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
   GameUI.GamePlayUI:TwinklePoint()

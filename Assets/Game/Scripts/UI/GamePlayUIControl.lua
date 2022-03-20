@@ -48,6 +48,7 @@ function CreateGamePlayUI(package)
     PageGameFail:CreateContent(package)
     PageGameFail.CanEscBack = false
     Yield(WaitForSeconds(0.1))
+    PageGamePreviewPause.CanEscBack = false
     PageGamePreviewPause:CreateContent(package)
     PageGamePreviewQuitAsk:CreateContent(package)
 

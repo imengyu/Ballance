@@ -85,7 +85,11 @@ namespace Ballance2.Editor.Modding
       choosePlatformWindow.Show();
     }
 
-
+    [@MenuItem("Ballance/工具/清空 BuiltInPackages 目录", false, 103)]
+    public static void DeleteBuiltInPackages() {
+      Directory.Delete("Assets/StreamingAssets/BuiltInPackages", true);
+      EditorUtility.DisplayDialog("提示", "清空成功", "确定");
+    }
     [@MenuItem("Ballance/工具/编译系统脚本到Reources目录", false, 103)]
     public static void CopyScriptToReourcesFolder()
     {

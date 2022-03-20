@@ -19,6 +19,7 @@
     <Text name="global.PermissionTitle">需要读取文件权限</Text>
     <Text name="global.PermissionMore">如果您需要加载MOD或者关卡，则必须启用读取本地文件的存储权限，
 才能保证正常的游戏功能</Text>
+    <Text name="global.CaptureScreenshotSuccess">截图已保存！{0}</Text>
   </Language>
   <Language name="ChineseTraditional">
     <Text name="global.GameErrorTitle">糟糕！發生了一個重大錯誤！</Text>
@@ -41,6 +42,7 @@
     <Text name="global.PermissionTitle">需要讀取檔案許可權</Text>
     <Text name="global.PermissionMore">如果您需要加載MOD或者關卡，則必須啟用讀取本地檔案的存儲許可權，
 才能保證正常的遊戲功能</Text>
+    <Text name="global.CaptureScreenshotSuccess">截圖已保存！{0}</Text>
   </Language>
   <Language name="English">
     <Text name="global.GameErrorTitle">Oops! A error has occurred!</Text>
@@ -62,5 +64,6 @@ Before playing, please carefully read all the contents of the user agreement and
     <Text name="global.Agree">Agree</Text>
     <Text name="global.PermissionTitle">Read file permissions are required</Text>
     <Text name="global.PermissionMore">If you need to load mod or level, you must enable the storage permission to read local files.</Text>
+    <Text name="global.CaptureScreenshotSuccess">Screenshot saved! {0}</Text>
   </Language>
 </I18n>

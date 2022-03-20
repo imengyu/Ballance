@@ -34,7 +34,7 @@ function P_Extra_Point:new()
   self._FlyFollowTime = 0.3
   self.AutoActiveBaseGameObject = false
   self.EnableBallRangeChecker = true
-  self.BallCheckeRange = 80
+  self.BallCheckeRange = 140
 end
 
 function P_Extra_Point:Start()
