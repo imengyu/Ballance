@@ -706,7 +706,9 @@ function BallManager:_InitKeyEvents()
       end
     end)
     self._private.keyListener:AddKeyListen(KeyCode.Alpha4, function (key, downed)
-      GamePlay.GamePlayManager:_Rebirth()
+      if(downed) then
+        GamePlay.GamePlayManager:_Rebirth()
+      end
     end)  
     self._private.keyListener:AddKeyListen(KeyCode.Alpha5, function (key, downed)
       if(downed) then

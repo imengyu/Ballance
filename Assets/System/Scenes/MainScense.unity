@@ -692,9 +692,9 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugEnableLuaDebugger: 0
+  DebugEnableLuaDebugger: 1
   DebugLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds

@@ -154,6 +154,10 @@ function CreateClass:BallLightningSphere()
     local Ball_LightningSphereInnernA = self.Ball_LightningSphereInnernA
     local Ball_LightningSphereInnernB = self.Ball_LightningSphereInnernB
 
+    if self.lighing then
+      return
+    end
+
     --播放闪电声音
     self.lighing = true
     self.lighingLight = false
@@ -162,6 +166,7 @@ function CreateClass:BallLightningSphere()
         self.ballLightningMusic:Play()
     end
     
+    self.Ball_Light.transform.position = position
     --显示球
     Ball_LightningSphereInnernA.gameObject:SetActive(true)
     Ball_LightningSphereInnernA.transform.position = position
