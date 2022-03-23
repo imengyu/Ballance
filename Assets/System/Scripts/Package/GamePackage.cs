@@ -380,7 +380,7 @@ namespace Ballance2.Package
     /// <summary>
     /// 导入 Lua 类到当前模块虚拟机中。
     /// 注意，类函数以 “CreateClass:类名” 开头，
-    /// 关于 Lua 类，请参考 Docs/SystemModding/lua-class.md 。
+    /// 关于 Lua 类，请参考 docs/SystemModding/lua-class.md 。
     /// </summary>
     /// <param name="className">类名</param>
     /// <returns>类创建函数</returns>

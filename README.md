@@ -33,37 +33,37 @@ Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，
 
 原版关卡
 
-![Demo](Docs/DemoImages/11.jpg)
-![Demo](Docs/DemoImages/12.jpg)
-![Demo](Docs/DemoImages/13.jpg)
-![Demo](Docs/DemoImages/14.jpg)
-![Demo](Docs/DemoImages/18.jpg)
-![Demo](Docs/DemoImages/9.jpg)
-![Demo](Docs/DemoImages/6.jpg)
-![Demo](Docs/DemoImages/7.jpg)
-![Demo](Docs/DemoImages/15.jpg)
-![Demo](Docs/DemoImages/16.jpg)
-![Demo](Docs/DemoImages/17.jpg)
+![Demo](docs/DemoImages/11.jpg)
+![Demo](docs/DemoImages/12.jpg)
+![Demo](docs/DemoImages/13.jpg)
+![Demo](docs/DemoImages/14.jpg)
+![Demo](docs/DemoImages/18.jpg)
+![Demo](docs/DemoImages/9.jpg)
+![Demo](docs/DemoImages/6.jpg)
+![Demo](docs/DemoImages/7.jpg)
+![Demo](docs/DemoImages/15.jpg)
+![Demo](docs/DemoImages/16.jpg)
+![Demo](docs/DemoImages/17.jpg)
 
 13关的大螺旋
 
-![Demo](Docs/DemoImages/9.gif)
-![Demo](Docs/DemoImages/10.png)
+![Demo](docs/DemoImages/9.gif)
+![Demo](docs/DemoImages/10.png)
 
 自制地图（魔脓空间站）（转译版地图）
 
-![Demo](Docs/DemoImages/3.jpg)
-![Demo](Docs/DemoImages/4.jpg)
-![Demo](Docs/DemoImages/5.jpg)
+![Demo](docs/DemoImages/3.jpg)
+![Demo](docs/DemoImages/4.jpg)
+![Demo](docs/DemoImages/5.jpg)
 
 关卡预览器查看13关
 
-![Demo](Docs/DemoImages/8.jpg)
+![Demo](docs/DemoImages/8.jpg)
 
 用关卡预览器查看自制地图
 
-![Demo](Docs/DemoImages/1.jpg)
-![Demo](Docs/DemoImages/2.jpg)
+![Demo](docs/DemoImages/1.jpg)
+![Demo](docs/DemoImages/2.jpg)
 
 ## 开发状态
 

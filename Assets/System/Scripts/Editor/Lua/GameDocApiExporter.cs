@@ -13,8 +13,8 @@ namespace Slua
 {
   public static class GameDocApiExporter
   {
-    const string OutPath = "Docs/LuaApi/cs-api/class";
-    const string SidePath = "Docs/LuaApi/cs-api/_sidebar.md";
+    const string OutPath = "docs/LuaApi/cs-api/class";
+    const string SidePath = "docs/LuaApi/cs-api/_sidebar.md";
 
     private static bool PreCheck() 
     {
