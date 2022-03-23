@@ -8,16 +8,11 @@
 
 ---
 
-## 文档目录
+## 开发文档
 
-* [游戏教程](./Docs/Help/readme.md)
-* [项目运行帮助文档](./Docs/Help/project-help.md)
-* [制作自定义关卡文档](./Docs/LevelMaking/readme.md)
-  * [转换原版Ballance的nmo关卡](./Docs/LevelMaking/convert-level.md)
-  * [新制作新关卡](./Docs/LevelMaking/make-level.md)
-* [自定义模组制作文档](./Docs/SystemModding/readme.md)
-  * [API文档](./Docs/LuaApi/readme.md)
-  * [调试工具](./Docs/Help/debug-tools.md)
+[完整开发文档可以参考这里](https://imengyu.github.io/Ballance/readme)
+
+[API文档参考这里](https://imengyu.github.io/Ballance/#/LuaApi/readme)
 
 ## 欢迎体验
 
