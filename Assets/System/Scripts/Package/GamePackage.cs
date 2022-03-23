@@ -1,5 +1,4 @@
-﻿using Ballance2.Base;
-using Ballance2.Base.Handler;
+﻿using Ballance2.Base.Handler;
 using Ballance2.Config;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
@@ -38,6 +37,7 @@ namespace Ballance2.Package
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("模块包实例")]
+  [LuaApiNotes(@"这是游戏 Lua 模组的主要承载类，主要负责：模块运行环境初始化卸载、资源读取相关。")]
   public class GamePackage
   {
     /// <summary>
@@ -81,10 +81,7 @@ namespace Ballance2.Package
         RunPackageBeforeUnLoadCode();
 
       //GameManager.DestroyManagersInMod(PackageName);
-      if(GameManager.GameMediator)
-        GameManager.GameMediator.UnloadAllPackageActionStore(this);
       HandlerClear();
-      ActionClear();
 
       if (requiredLuaClasses != null)
       {
@@ -125,18 +122,20 @@ namespace Ballance2.Package
       _CorePackage = pack; 
     }
     /// <summary>
-    /// 获取核心的模块包
+    /// 获取 Ballance 核心的模块包。核心模块包包名是 core。
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("获取核心的模块包")]
+    [LuaApiDescription("获取 Ballance 核心的模块包。核心模块包包名是 core。")]
+    [LuaApiNotes("Ballance 核心模块包是 Ballance 游戏的主要模块，所有游戏代码与资源均在这个包中，是所有模组的依赖。")]
     public static GamePackage GetCorePackage() { 
       return _CorePackage; 
     }
     /// <summary>
-    /// 获取系统的模块包
+    /// 获取系统核心的模块包，包名是 system 。
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("获取系统模块包")]
+    [LuaApiDescription("获取系统核心的模块包，包名是 system 。")]
+    [LuaApiNotes("系统核心模块包存放了一些系统初始化脚本、工具脚本等等，是 Ballance 核心模块包的依赖。")]
     public static GamePackage GetSystemPackage() { 
       return _SystemPackage; 
     }
@@ -158,14 +157,14 @@ namespace Ballance2.Package
     #region 模块运行环境
 
     /// <summary>
-    /// C# 程序集
+    /// C# 程序集, 如果当前模组设置加载了 C# 模块，则可以在这里访问程序集。
     /// </summary>
-    [LuaApiDescription("C# 程序集")]
+    [LuaApiDescription("C# 程序集, 如果当前模组设置加载了 C# 模块，则可以在这里访问程序集。")]
     public Assembly CSharpAssembly { get; protected set; }
     /// <summary>
     /// 程序入口
     /// </summary>
-    [LuaApiDescription("程序入口")]
+    [LuaApiNoDoc()]
     public GamePackageEntry PackageEntry = new GamePackageEntry();
     
     internal int flag = 0;
@@ -196,11 +195,11 @@ namespace Ballance2.Package
     public bool IsUnloadCodeExecuted() { return (flag & FLAG_CODE_UNLOD_CODE_RUN) == FLAG_CODE_UNLOD_CODE_RUN; }
 
     /// <summary>
-    /// 设置标志位
+    /// 设置当前模块的标志位
     /// </summary>
     /// <param name="flag">标志位，（GamePackage.FLAG_*）</param>
-    [LuaApiDescription("设置标志位")]
-    [LuaApiParamDescription("flag", "标志位，（GamePackage.FLAG_*）")]
+    [LuaApiDescription("设置当前模块的标志位")]
+    [LuaApiParamDescription("flag", "标志位（GamePackage.FLAG_*）")]
     public void SetFlag(int flag)  {
 
       if((this.flag & FLAG_PACK_NOT_UNLOADABLE) == FLAG_PACK_NOT_UNLOADABLE && (flag & FLAG_PACK_NOT_UNLOADABLE) != FLAG_PACK_NOT_UNLOADABLE) {
@@ -214,9 +213,9 @@ namespace Ballance2.Package
       this.flag = flag;
     }
     /// <summary>
-    /// 获取标志位
+    /// 获取当前模块的标志位
     /// </summary>
-    [LuaApiDescription("获取标志位")]
+    [LuaApiDescription("获取当前模块的标志位")]
     public int GetFlag() { return flag; }
 
     /// <summary>
@@ -312,10 +311,10 @@ namespace Ballance2.Package
     }    
 
     /// <summary>
-    /// 运行模块初始化代码
+    /// 运行模块初始化代码，模块的 初始化代码 只能运行一次，不能重复运行。
     /// </summary>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("运行模块初始化代码", "返回是否成功")]
+    [LuaApiDescription("运行模块初始化代码，模块的 初始化代码 只能运行一次，不能重复运行。", "返回是否成功")]
     public bool RunPackageExecutionCode()
     {
       if (Type != GamePackageType.Module)
@@ -344,10 +343,10 @@ namespace Ballance2.Package
       return true;
     }
     /// <summary>
-    /// 运行模块卸载回调
+    /// 运行模块卸载回调，模块的 卸载回调 只能运行一次，不能重复运行。
     /// </summary>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("运行模块卸载回调", "返回是否成功")]
+    [LuaApiDescription("运行模块卸载回调，模块的 卸载回调 只能运行一次，不能重复运行。", "返回是否成功")]
     public bool RunPackageBeforeUnLoadCode()
     {
       if (Type != GamePackageType.Module)
@@ -381,18 +380,21 @@ namespace Ballance2.Package
     /// <summary>
     /// 导入 Lua 类到当前模块虚拟机中。
     /// 注意，类函数以 “CreateClass:类名” 开头，
-    /// 关于 Lua 类，请参考 Docs/LuaClass 。
+    /// 关于 Lua 类，请参考 Docs/SystemModding/lua-class.md 。
     /// </summary>
     /// <param name="className">类名</param>
     /// <returns>类创建函数</returns>
     /// <exception cref="MissingReferenceException">
-    /// 如果没有在当前模块包中找到类文件或是类创建函数 @* ，则抛出 MissingReferenceException 异常。
+    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
     /// </exception>
     /// <exception cref="Exception">
     /// 如果Lua执行失败，则抛出此异常。
     /// </exception>
     [LuaApiDescription("导入 Lua 类到当前模块虚拟机中", "类创建函数")]
     [LuaApiParamDescription("className", "类名")]
+    [LuaApiNotes(@"注意，类函数以 `CreateClass:类名` 开头，关于 Lua 类的说明，请参考 [LuaClass](SystemModding/lua-class.md) 。")]
+    [LuaApiException("MissingReferenceException", "如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。")]
+    [LuaApiException("Exception", "如果Lua执行失败，则抛出此异常。")]
     public LuaFunction RequireLuaClass(string className)
     {
 
@@ -442,57 +444,69 @@ namespace Ballance2.Package
     /// 导入Lua文件到当前模块虚拟机中
     /// </summary>
     /// <param name="fileName">LUA文件名</param>
-    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <returns>返回执行结果</returns>
     /// <exception cref="MissingReferenceException">
-    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// 如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。
     /// </exception>
     /// <exception cref="Exception">
     /// 如果Lua执行失败，则抛出此异常。
     /// </exception>
     [LuaApiDescription("导入Lua文件到当前模块虚拟机中。不重复导入", "返回执行结果")]
     [LuaApiParamDescription("fileName", "LUA文件名")]
+    [LuaApiException("MissingReferenceException", "如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。")]
+    [LuaApiException("Exception", "如果Lua执行失败，则抛出此异常。")]
     public object RequireLuaFile(string fileName) { return RequireLuaFileInternal(this, fileName, true); }
     /// <summary>
-    /// 导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
+    /// 导入Lua文件到当前模块虚拟机中，允许重复导入执行。
     /// </summary>
     /// <param name="fileName">LUA文件名</param>
-    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <returns>返回执行结果</returns>
     /// <exception cref="MissingReferenceException">
-    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// 如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。
     /// </exception>
     /// <exception cref="Exception">
     /// 如果Lua执行失败，则抛出此异常。
     /// </exception>
-    [LuaApiDescription("导入Lua文件到当前模块虚拟机中，允许重复导入", "返回执行结果")]
+    [LuaApiDescription("导入Lua文件到当前模块虚拟机中，允许重复导入执行。", "返回执行结果")]
     [LuaApiParamDescription("fileName", "LUA文件名")]
+    [LuaApiException("MissingReferenceException", "如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。")]
+    [LuaApiException("Exception", "如果Lua执行失败，则抛出此异常。")]
     public object RequireLuaFileNoOnce(string fileName) { return RequireLuaFileInternal(this, fileName, false); }
     /// <summary>
-    /// 从其他模块导入Lua文件到当前模块虚拟机中
+    /// 从其他模块导入Lua文件到当前模块虚拟机中。
     /// </summary>
+    /// <param name="otherPack">要导入Lua文件所属模块实例</param>
     /// <param name="fileName">LUA文件名</param>
-    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <returns>返回执行结果</returns>
     /// <exception cref="MissingReferenceException">
-    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// 如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。
     /// </exception>
     /// <exception cref="Exception">
     /// 如果Lua执行失败，则抛出此异常。
     /// </exception>
-    [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中。不重复导入", "返回执行结果")]
+    [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中。", "返回执行结果")]
+    [LuaApiParamDescription("otherPack", "要导入Lua文件所属模块实例")]
     [LuaApiParamDescription("fileName", "LUA文件名")]
+    [LuaApiException("MissingReferenceException", "如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。")]
+    [LuaApiException("Exception", "如果Lua执行失败，则抛出此异常。")]
     public object RequireLuaFile(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, true); }
     /// <summary>
-    /// 从其他模块导入Lua文件到当前模块虚拟机中，仅导入一次，不重复导入
+    /// 从其他模块导入Lua文件到当前模块虚拟机中，允许重复导入
     /// </summary>
+    /// <param name="otherPack">要导入Lua文件所属模块实例</param>
     /// <param name="fileName">LUA文件名</param>
-    /// <returns>如果对应文件已导入，则返回true，否则返回false</returns>
+    /// <returns>返回执行结果</returns>
     /// <exception cref="MissingReferenceException">
-    /// 如果没有在当前模块包中找到类文件或是类创建函数 CreateClass:* ，则抛出 MissingReferenceException 异常。
+    /// 如果没有在指定模块包中找到Lua文件，则抛出 MissingReferenceException 异常。
     /// </exception>
     /// <exception cref="Exception">
     /// 如果Lua执行失败，则抛出此异常。
     /// </exception>
     [LuaApiDescription("从其他模块导入Lua文件到当前模块虚拟机中，允许重复导入", "返回执行结果")]
     [LuaApiParamDescription("fileName", "LUA文件名")]
+    [LuaApiParamDescription("otherPack", "要导入Lua文件所属模块实例")]
+    [LuaApiException("MissingReferenceException", "如果没有在当前模块包中找到Lua文件，则抛出 MissingReferenceException 异常。")]
+    [LuaApiException("Exception", "如果Lua执行失败，则抛出此异常。")]
     public object RequireLuaFileNoOnce(GamePackage otherPack, string fileName) { return RequireLuaFileInternal(otherPack, fileName, false); }
     
     private Dictionary<string, object> requiredLuaFiles = null;
@@ -617,7 +631,7 @@ namespace Ballance2.Package
     /// <param name="pararms">参数</param>
     [LuaApiDescription("调用模块主代码的lua函数")]
     [LuaApiParamDescription("funName", "lua函数名称")]
-    [LuaApiParamDescription("pararms", "参数")]
+    [LuaApiParamDescription("pararms", "参数数组")]
     public void CallLuaFun(string funName, params object[] pararms)
     {
         LuaFunction f = GetLuaFun(funName);
@@ -625,12 +639,12 @@ namespace Ballance2.Package
         else Log.E(TAG, "CallLuaFun Failed because function {0} not founnd", funName);
     }
     /// <summary>
-    /// 调用指定的lua虚拟脚本中的lua无参函数
+    /// 调用指定的 GameLuaObjectHost 脚本中的lua无参函数
     /// </summary>
-    /// <param name="luaObjectName">lua虚拟脚本名称</param>
+    /// <param name="luaObjectName">GameLuaObjectHost 脚本名称</param>
     /// <param name="funName">lua函数名称</param>
-    [LuaApiDescription("调用指定的lua虚拟脚本中的lua无参函数")]
-    [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
+    [LuaApiDescription("调用指定的GameLuaObjectHost脚本中的lua无参函数")]
+    [LuaApiParamDescription("luaObjectName", "GameLuaObjectHost脚本名称")]
     [LuaApiParamDescription("funName", "lua函数名称")]
     public void CallLuaFun(string luaObjectName, string funName)
     {
@@ -640,14 +654,14 @@ namespace Ballance2.Package
         else Log.E(TAG, "CallLuaFun Failed because object {0} not founnd", luaObjectName);
     }
     /// <summary>
-    /// 调用指定的lua虚拟脚本中的lua函数
+    /// 调用指定的GameLuaObjectHost脚本中的lua函数
     /// </summary>
-    /// <param name="luaObjectName">lua虚拟脚本名称</param>
+    /// <param name="luaObjectName">GameLuaObjectHost脚本名称</param>
     /// <param name="funName">lua函数名称</param>
     /// <param name="pararms">参数</param>
     /// <returns>Lua函数返回的对象，如果调用该函数失败，则返回null</returns>
-    [LuaApiDescription("调用指定的lua虚拟脚本中的lua函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
-    [LuaApiParamDescription("luaObjectName", "lua虚拟脚本名称")]
+    [LuaApiDescription("调用指定的GameLuaObjectHost脚本中的lua函数", "Lua函数返回的对象，如果调用该函数失败，则返回null")]
+    [LuaApiParamDescription("luaObjectName", "GameLuaObjectHost脚本名称")]
     [LuaApiParamDescription("funName", "lua函数名称")]
     [LuaApiParamDescription("pararms", "参数")]
     public object CallLuaFunWithParam(string luaObjectName, string funName, params object[] pararms)
@@ -664,17 +678,18 @@ namespace Ballance2.Package
 
     #region LUA 组件
 
-    //管理当前模块下的所有lua虚拟脚本，统一管理、释放
+    //管理当前模块下的所有GameLuaObjectHost脚本，统一管理、释放
     private List<GameLuaObjectHost> luaObjects = new List<GameLuaObjectHost>();
 
     /// <summary>
-    /// 注册lua虚拟脚本到物体上
+    /// 注册GameLuaObjectHost脚本到物体上
     /// </summary>
-    /// <param name="name">lua虚拟脚本的名称</param>
+    /// <param name="name">GameLuaObjectHost脚本的名称</param>
     /// <param name="gameObject">要附加的物体</param>
     /// <param name="className">目标代码类名</param>
-    [LuaApiDescription("注册lua虚拟脚本到物体上")]
-    [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
+    /// <returns>返回新注册的 GameLuaObjectHost 实例</returns>
+    [LuaApiDescription("注册GameLuaObjectHost脚本到物体上", "返回新注册的 GameLuaObjectHost 实例")]
+    [LuaApiParamDescription("name", "GameLuaObjectHost脚本的名称")]
     [LuaApiParamDescription("gameObject", "要附加的物体")]
     [LuaApiParamDescription("className", "目标代码类名")]
     public GameLuaObjectHost RegisterLuaObject(string name, GameObject gameObject, string className)
@@ -688,14 +703,14 @@ namespace Ballance2.Package
         return newGameLuaObjectHost;
     }
     /// <summary>
-    /// 查找lua虚拟脚本
+    /// 查找GameLuaObjectHost脚本
     /// </summary>
-    /// <param name="name">lua虚拟脚本的名称</param>
-    /// <param name="gameLuaObjectHost">输出lua虚拟脚本</param>
+    /// <param name="name">GameLuaObjectHost脚本的名称</param>
+    /// <param name="gameLuaObjectHost">输出GameLuaObjectHost脚本</param>
     /// <returns>返回是否找到对应脚本</returns>
-    [LuaApiDescription("查找lua虚拟脚本", "返回是否找到对应脚本")]
-    [LuaApiParamDescription("name", "lua虚拟脚本的名称")]
-    [LuaApiParamDescription("gameLuaObjectHost", "输出lua虚拟脚本")]
+    [LuaApiDescription("查找GameLuaObjectHost脚本", "返回是否找到对应脚本")]
+    [LuaApiParamDescription("name", "GameLuaObjectHost脚本的名称")]
+    [LuaApiParamDescription("gameLuaObjectHost", "输出GameLuaObjectHost脚本")]
     public bool FindLuaObject(string name, out GameLuaObjectHost gameLuaObjectHost)
     {
         foreach (GameLuaObjectHost luaObjectHost in luaObjects)
@@ -709,7 +724,7 @@ namespace Ballance2.Package
         gameLuaObjectHost = null;
         return false;
     }
-    //清除已释放的lua虚拟脚本
+    //清除已释放的GameLuaObjectHost脚本
     internal void RemoveLuaObject(GameLuaObjectHost o)
     {
         if (luaObjects != null)
@@ -816,78 +831,95 @@ namespace Ballance2.Package
     /// <summary>
     /// 获取模块文件路径
     /// </summary>
+    [LuaApiDescription("获取模块文件路径")]
     public string PackageFilePath { get; protected set; }
     /// <summary>
     /// 获取模块包名
     /// </summary>
+    [LuaApiDescription("获取模块包名")]
     public string PackageName { get; protected set; }
     /// <summary>
     /// 获取模块版本号
     /// </summary>
+    [LuaApiDescription("获取模块版本号")]
     public int PackageVersion { get; protected set; }
     /// <summary>
     /// 获取基础信息
     /// </summary>
+    [LuaApiDescription("获取基础信息")]
     public GamePackageBaseInfo BaseInfo { get; protected set; }
     /// <summary>
     /// 获取模块更新时间
     /// </summary>
+    [LuaApiDescription("获取模块更新时间")]
     public DateTime UpdateTime { get; protected set; }
     /// <summary>
     /// 获取获取是否是系统必须包
     /// </summary>
+    [LuaApiDescription("获取获取是否是系统必须包")]
     public bool SystemPackage { get; internal set; }
 
     /// <summary>
     /// 获取模块加载错误
     /// </summary>
+    [LuaApiDescription("获取模块加载错误")]
     public string LoadError { get; protected set; } = "";
 
     /// <summary>
     /// 获取模块PackageDef文档
     /// </summary>
+    [LuaApiDescription("获取模块PackageDef文档")]
     public XmlDocument PackageDef { get; protected set; }
     /// <summary>
     /// 获取模块AssetBundle
     /// </summary>
+    [LuaApiDescription("获取模块AssetBundle")]
     public AssetBundle AssetBundle { get; protected set; }
 
     /// <summary>
     /// 获取表示模块目标游戏内核版本
     /// </summary>
+    [LuaApiDescription("获取表示模块目标游戏内核版本")]
     public int TargetVersion { get; protected set; } = GameConst.GameBulidVersion;
     /// <summary>
     /// 获取表示模块可以正常使用的最低游戏内核版本
     /// </summary>
+    [LuaApiDescription("获取表示模块可以正常使用的最低游戏内核版本")]
     public int MinVersion { get; protected set; } = GameConst.GameBulidVersion;
     /// <summary>
     /// 获取模块是否兼容当前内核
     /// </summary>
+    [LuaApiDescription("获取模块是否兼容当前内核")]
     public bool IsCompatible { get; protected set; }
 
     /// <summary>
     /// 获取模块入口代码
     /// </summary>
+    [LuaApiDescription("获取模块入口代码")]
     public string EntryCode { get; protected set; }
     /// <summary>
     /// 获取模块类型
     /// </summary>
+    [LuaApiDescription("获取模块类型")]
     public GamePackageType Type { get; protected set; } = GamePackageType.Asset;
     /// <summary>
     /// 指示本模组是否要加载 CSharp 代码
     /// </summary>
+    [LuaApiDescription("指示本模组是否要加载 CSharp 代码")]
     public bool ContainCSharp { get; protected set; } = false;
 
     internal GamePackageStatus _Status = GamePackageStatus.NotLoad;
 
     /// <summary>
-    /// 获取模块状态
+    /// 获取模块加载状态
     /// </summary>
+    [LuaApiDescription("获取模块加载状态")]
     public GamePackageStatus Status { get { return _Status; } }
     /// <summary>
     /// 转为字符串显示
     /// </summary>
     /// <returns></returns>
+    [LuaApiNoDoc]
     public override string ToString()
     {
       return "Package: " + PackageName + "(" + PackageVersion + ") => " + _Status;
@@ -896,6 +928,7 @@ namespace Ballance2.Package
     /// 展示所有资源
     /// </summary>
     /// <returns></returns>
+    [LuaApiNoDoc]
     public virtual string ListResource()
     {
       StringBuilder sb = new StringBuilder();
@@ -1032,6 +1065,7 @@ namespace Ballance2.Package
     /// </summary>
     [LuaApiDescription("表示代码资源")]
     [SLua.CustomLuaClass]
+    [LuaApiNoDoc]
     public class CodeAsset {
       /// <summary>
       /// 代码字符串
@@ -1222,8 +1256,7 @@ namespace Ballance2.Package
     #region 模块从属资源处理
 
     private HashSet<GameHandler> packageHandlers = new HashSet<GameHandler>();
-    private HashSet<GameAction> packageActions = new HashSet<GameAction>();
-
+  
     internal void HandlerReg(GameHandler handler)
     {
       packageHandlers.Add(handler);
@@ -1231,14 +1264,6 @@ namespace Ballance2.Package
     internal void HandlerRemove(GameHandler handler)
     {
       packageHandlers.Remove(handler);
-    }
-    internal void ActionReg(GameAction action)
-    {
-      packageActions.Add(action);
-    }
-    internal void ActionRemove(GameAction action)
-    {
-      packageActions.Remove(action);
     }
 
     //释放所有从属于当前模块的GameHandler
@@ -1249,14 +1274,6 @@ namespace Ballance2.Package
         gameHandler.Dispose();
       list.Clear();
       packageHandlers.Clear();
-    }
-    private void ActionClear()
-    {
-      List<GameAction> list = new List<GameAction>(packageActions);
-      foreach (GameAction action in list)
-        action.Store.UnRegisterAction(action);
-      list.Clear();
-      packageActions.Clear();
     }
 
     #endregion

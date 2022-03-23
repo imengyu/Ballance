@@ -9,6 +9,7 @@ namespace Ballance2.Game
   /// 手机键盘UI控制
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class SimpleTouchDirectionKeyController : UIBehaviour
   {
     [SLua.DoNotToLua]

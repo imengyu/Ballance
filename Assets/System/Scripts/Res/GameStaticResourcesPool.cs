@@ -23,17 +23,18 @@ namespace Ballance2.Res
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("游戏静态资源池")]
+  [LuaApiNotes(@"可在 GameEntry 中配置静态引用资源，打包后无需加载，可使用本工具类直接获取。但太多静态引用资源会导致游戏启动变慢。")]
   public class GameStaticResourcesPool
   {
     public static GameObject PrefabUIEmpty { get; private set; }
     public static GameObject PrefabEmpty { get; private set; }
 
     /// <summary>
-    /// 在静态引入资源中查找
+    /// 在静态引入资源中查找指定名称的预制体资源
     /// </summary>
     /// <param name="name">资源名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("在静态引入资源中查找", "")]
+    /// <returns>如果找到指定预制体资源，则返回预制体实例，否则返回null</returns>
+    [LuaApiDescription("在静态引入资源中查找指定名称的预制体资源", "如果找到指定预制体资源，则返回预制体实例，否则返回null")]
     [LuaApiParamDescription("name", "资源名称")]
     public static GameObject FindStaticPrefabs(string name)
     {
@@ -47,12 +48,10 @@ namespace Ballance2.Res
       return null;
     }
     /// <summary>
-    /// 在静态引入资源中查找
+    /// 在静态引入资源中查找指定名称的资源
     /// </summary>
     /// <param name="name">资源名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("在静态引入资源中查找", "")]
-    [LuaApiParamDescription("name", "资源名称")]
+    /// <returns如果找到指定资源，则返回资源实例，否则返回null></returns>
     public static T FindStaticAssets<T>(string name) where T : UnityEngine.Object
     {
       if (GameAssets == null)
@@ -65,11 +64,11 @@ namespace Ballance2.Res
       return null;
     }
     /// <summary>
-    /// 在静态引入资源中查找
+    /// 在静态引入资源中查找指定名称的资源
     /// </summary>
     /// <param name="name">资源名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("在静态引入资源中查找", "")]
+    /// <returns>如果找到指定资源，则返回资源实例，否则返回null</returns>
+    [LuaApiDescription("在静态引入资源中查找指定名称的资源", "如果找到指定资源，则返回资源实例，否则返回null")]
     [LuaApiParamDescription("name", "资源名称")]
     public static Object FindStaticAssets(string name)
     {

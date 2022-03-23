@@ -27,6 +27,7 @@ namespace Ballance2.UI.Core
   [ExecuteInEditMode]
   [AddComponentMenu("Ballance/UI/Controls/Window")]
   [LuaApiDescription("基础 UI 窗口")]
+  [LuaApiNotes("为游戏提供了一个可以拖拽，调整大小的窗口，用于游戏内部某些UI的使用。要创建窗口，可以调用 `GameUIManager.CreateWindow` 函数。")]
   [SLua.CustomLuaClass]
   public class Window : MonoBehaviour
   {

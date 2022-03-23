@@ -17,9 +17,14 @@ using UnityEngine;
 namespace Ballance2.Game
 {
   [CustomLuaClass]
+  [LuaApiDescription("材质贴图滚动组件。在游戏中用于云层的滚动。")]
   public class TextureScroller : MonoBehaviour
   {
+    [Tooltip("设置需要滚动的材质")]
+    [LuaApiDescription("设置需要滚动的材质")]
     public Material Material;
+    [Tooltip("设置材质滚动的速度")]
+    [LuaApiDescription("设置材质滚动的速度")]
     public Vector2 ScrollSpeed;
 
     private Vector2 scrollOff;

@@ -26,6 +26,7 @@ namespace Ballance2.UI.Core.Controls
   [ExecuteInEditMode]
   [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/I18NText")]
+  [LuaApiNoDoc]
   public class I18NText : Text
   {
     [SerializeField]

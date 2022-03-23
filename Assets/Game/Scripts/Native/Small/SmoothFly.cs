@@ -16,38 +16,59 @@ using UnityEngine;
 namespace Ballance2.Game.Utils
 {    
   [SLua.CustomLuaClass]
+  [LuaApiDescription("指定 平滑移动脚本 SmoothFly 平滑移动的类型")]
   public enum SmoothFlyType {
-    [LuaApiDescription("SmoothDamp")]
+    [LuaApiDescription("使用 SmoothDamp 函数平滑移动")]
     SmoothDamp,
-    [LuaApiDescription("直接移动")]
+    [LuaApiDescription("使用 Lerp 曲线直接移动")]
     Lerp
   }
-  [LuaApiDescription("平滑移动脚本")]
   [SLua.CustomLuaClass]
+  [LuaApiDescription("平滑移动脚本")]
+  [LuaApiNotes("平滑移动脚本，可将物体平滑移动至指定目标", @"
+你可以先在需要平滑移动的物体上绑定此脚本，然后设置平滑移动目标，开启，随后在 `ArrivalCallback` 中就可以接收移动完成事件，例如：
+```lua
+local smoothFly = gameObject:AddComponent(SmoothFly)
+smoothFly.TargetTransform = 移动目标
+smoothFly.Fly = true --开启移动
+smoothFly.ArrivalDiatance = function() 
+  --移动结束时执行某些功能
+end
+```
+")]
   public class SmoothFly : MonoBehaviour {
 
     [SLua.CustomLuaClass]
     public delegate void CallbackDelegate(SmoothFly fly);
 
-    [LuaApiDescription("平滑移动目标变换")]
+    [LuaApiDescription("设置平滑移动目标变换")]
+    [Tooltip("设置平滑移动目标变换")]
     public Transform TargetTransform;
-    [LuaApiDescription("平滑移动目标位置")]
+    [LuaApiDescription("设置平滑移动目标位置")]
+    [Tooltip("设置平滑移动目标位置")]
     public Vector3 TargetPos = Vector3.zero;
-    [LuaApiDescription("是否开启平滑移动")]
+    [LuaApiDescription("设置是否开启平滑移动")]
+    [Tooltip("设置是否开启平滑移动")]
     public bool Fly = false;
-    [LuaApiDescription("平滑移动时间")]
+    [LuaApiDescription("设置平滑移动时间（秒）")]
+    [Tooltip("设置平滑移动时间（秒）")]
     public float Time = 1.0f;
-    [LuaApiDescription("最大速度")]
+    [LuaApiDescription("设置最大速度")]
+    [Tooltip("设置最大速度")]
     public float MaxSpeed = 0;
-    [LuaApiDescription("当前的速度")]
+    [LuaApiDescription("获取当前的速度")]
+    [Tooltip("获取当前的速度")]
     public Vector3 CurrentVelocity = Vector3.zero;
-    [LuaApiDescription("达到目标时停止")]
+    [LuaApiDescription("设置是否达到目标时停止")]
+    [Tooltip("设置是否达到目标时停止")]
     public bool StopWhenArrival = false;
-    [LuaApiDescription("达到目标判断阈值")]
+    [LuaApiDescription("设置达到目标判断阈值")]
+    [Tooltip("设置达到目标判断阈值")]
     public float ArrivalDiatance = 0.1f;
-    [LuaApiDescription("达到目标时回调")]
+    [LuaApiDescription("设置达到目标时的事件回调")]
     public CallbackDelegate ArrivalCallback;
-    [LuaApiDescription("飞行类型")]
+    [LuaApiDescription("设置平滑移动的类型")]
+    [Tooltip("设置平滑移动的类型")]
     public SmoothFlyType Type = SmoothFlyType.SmoothDamp;
 
     private float LerpTick = 0;

@@ -12,6 +12,7 @@ namespace Ballance2.UI.Core.Controls
   [DisallowMultipleComponent]
   [SLua.CustomLuaClass]
   [LuaApiDescription("滚动列表Ex, 适用于多条数据")]
+  [LuaApiNoDoc]
   public class ScrollViewEx : ScrollView
   {
     protected override void Awake()

@@ -28,6 +28,7 @@ namespace Ballance2.Services
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("声音管理器")]
+  [LuaApiNotes("声音管理器，用于管理声音部分通用功能，支持快速使用名称播放一个声音。")]
   public class GameSoundManager : GameService
   {
     #region 初始化和定义
@@ -192,14 +193,14 @@ namespace Ballance2.Services
       return clip;
     }
     /// <summary>
-    /// 注册 SoundPlayer
+    /// 注册一个声音，并设置声音资源文件
     /// </summary>
     /// <param name="assets">音频资源字符串</param>
     /// <param name="playOnAwake">是否在开始时播放</param>
     /// <param name="activeStart">播放对象是否开始时激活</param>
     /// <param name="name">播放对象的名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("注册 SoundPlayer", "")]
+    /// <returns>返回 AudioSource 实例</returns>
+    [LuaApiDescription("注册一个声音，并设置声音资源文件", "返回 AudioSource 实例")]
     [LuaApiParamDescription("assets", "音频资源字符串")]
     [LuaApiParamDescription("playOnAwake", "是否在开始时播放")]
     [LuaApiParamDescription("activeStart", "播放对象是否开始时激活")]
@@ -228,14 +229,14 @@ namespace Ballance2.Services
       return audioSource;
     }
     /// <summary>
-    /// 注册 SoundPlayer
+    /// 注册一个声音，并设置声音资源文件
     /// </summary>
     /// <param name="audioClip">音频源文件</param>
     /// <param name="playOnAwake">是否在开始时播放</param>
     /// <param name="activeStart">播放对象是否开始时激活</param>
     /// <param name="name">播放对象的名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("注册 SoundPlayer", "")]
+    /// <returns>返回 AudioSource 实例</returns>
+    [LuaApiDescription("注册一个声音，并设置声音资源文件", "返回 AudioSource 实例")]
     [LuaApiParamDescription("audioClip", "音频源文件")]
     [LuaApiParamDescription("playOnAwake", "是否在开始时播放")]
     [LuaApiParamDescription("activeStart", "播放对象是否开始时激活")]
@@ -256,12 +257,12 @@ namespace Ballance2.Services
       return audioSource;
     }
     /// <summary>
-    /// 注册已有 SoundPlayer
+    /// 注册已有 AudioSource 至声音管理器
     /// </summary>
     /// <param name="type">声音所属类型</param>
     /// <param name="audioSource">AudioSource</param>
-    /// <returns></returns>
-    [LuaApiDescription("注册已有 AudioSource 为 SoundPlayer", "")]
+    /// <returns>返回原 AudioSource 实例</returns>
+    [LuaApiDescription("注册已有 AudioSource 至声音管理器", "返回原 AudioSource 实例")]
     [LuaApiParamDescription("type", "声音所属类型")]
     [LuaApiParamDescription("audioSource", "AudioSource")]
     public AudioSource RegisterSoundPlayer(GameSoundType type, AudioSource audioSource)
@@ -272,11 +273,11 @@ namespace Ballance2.Services
       return audioSource;
     }
     /// <summary>
-    /// 检查指定 SoundPlayer 是否注册
+    /// 检查指定 AudioSource 是否已经注册至声音管理器
     /// </summary>
     /// <param name="audioSource">AudioSource</param>
-    /// <returns></returns>
-    [LuaApiDescription("检查指定 SoundPlayer 是否注册", "")]
+    /// <returns>如果已经注册至声音管理器返回 true，否则返回 false</returns>
+    [LuaApiDescription("检查指定 AudioSource 是否已经注册至声音管理器", "如果已经注册至声音管理器返回 true，否则返回 false")]
     [LuaApiParamDescription("audioSource", "AudioSource")]
     public bool IsSoundPlayerRegistered(AudioSource audioSource)
     {
@@ -288,11 +289,12 @@ namespace Ballance2.Services
       return false;
     }
     /// <summary>
-    /// 销毁 SoundPlayer
+    /// 销毁 AudioSource
     /// </summary>
-    /// <param name="assets">SoundPlayer</param>
-    [LuaApiDescription("销毁 SoundPlayer")]
-    [LuaApiParamDescription("audioSource", "SoundPlayer")]
+    /// <param name="assets">要销毁的 AudioSource 实例</param>
+    /// <returns>返回销毁是否成功</returns>
+    [LuaApiDescription("销毁 AudioSource", "返回销毁是否成功")]
+    [LuaApiParamDescription("audioSource", "要销毁的 AudioSource 实例")]
     public bool DestroySoundPlayer(AudioSource audioSource)
     {
       AudioGlobalControl audioGlobalControl = null;
@@ -382,8 +384,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="soundName">声音资源字符串</param>
     /// <param name="type">声音类型</param>
-    /// <returns></returns>
-    [LuaApiDescription("快速播放一个短声音", "")]
+    /// <returns>返回播放是否成功</returns>
+    [LuaApiDescription("快速播放一个短声音", "返回播放是否成功")]
     [LuaApiParamDescription("soundName", "声音资源字符串")]
     [LuaApiParamDescription("type", "声音类型")]
     public bool PlayFastVoice(string soundName, GameSoundType type)
@@ -391,15 +393,15 @@ namespace Ballance2.Services
       return PlayFastVoice(null, soundName, type);
     }
     /// <summary>
-    /// 快速播放一个短声音
+    /// 快速播放一个指定模块包中的短声音资源
     /// </summary>
     /// <param name="package">所属模块</param>
-    /// <param name="soundName">声音资源字符串</param>
+    /// <param name="soundName">声音资源路径</param>
     /// <param name="type">声音类型</param>
-    /// <returns></returns>
-    [LuaApiDescription("快速播放一个短声音", "")]
+    /// <returns>返回播放是否成功</returns>
+    [LuaApiDescription("快速播放一个指定模块包中的短声音资源", "返回播放是否成功")]
     [LuaApiParamDescription("package", "所属模块")]
-    [LuaApiParamDescription("soundName", "声音资源字符串")]
+    [LuaApiParamDescription("soundName", "声音资源路径")]
     [LuaApiParamDescription("type", "声音类型")]
     public bool PlayFastVoice(GamePackage package, string soundName, GameSoundType type)
     {

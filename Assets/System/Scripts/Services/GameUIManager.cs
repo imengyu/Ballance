@@ -9,7 +9,6 @@ using Ballance2.UI.Utils;
 using Ballance2.Utils;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,10 +31,17 @@ using static Ballance2.Services.GameManager;
 namespace Ballance2.Services
 {
   /// <summary>
-  /// UI 管理器
+  /// UI 管理器，用于管理UI通用功能
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("UI 管理器")]
+  [LuaApiDescription("UI 管理器，用于管理UI通用功能")]
+  [LuaApiNotes(@"UI 管理器提供了者几种种UI通用功能：
+* Window 为游戏提供了一个可以拖拽，调整大小的窗口，用于游戏内部某些UI的使用。要创建窗口，可以调用 `GameUIManager.CreateWindow` 函数。
+* Page 页与窗口不太一样，窗口可以同时打开多个，页只能同时显示一个，相当于独占的全屏窗口。要创建页，可以调用 `GameUIManager.RegisterPage` 函数。
+* MaskBlack 全局的黑色转场渐变遮罩。
+* MaskWhite 全局的白色转场渐变遮罩。
+* GlobalAlert 全局的弹出独占对话框。
+")]
   public class GameUIManager : GameService
   {
     #region 基础
@@ -187,9 +193,9 @@ namespace Ballance2.Services
     #endregion
 
     /// <summary>
-    /// UI 根
+    /// UI 根 Canvas 的 RectTransform
     /// </summary>
-    [LuaApiDescription("UI 根")]
+    [LuaApiDescription("UI 根 Canvas 的 RectTransform")]
     public RectTransform UIRoot;
     /// <summary>
     /// 渐变管理器
@@ -262,13 +268,13 @@ namespace Ballance2.Services
     private KeyListener keyListener = null;
 
     /// <summary>
-    /// 侦听某个按键一次
+    /// 侦听某个键盘按键一次
     /// </summary>
     /// <param name="code">按键值</param>
     /// <param name="pressedOrReleased">如果为true，则侦听按下事件，否则侦听松开事件</param>
     /// <param name="callback">回调</param>
-    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    [LuaApiDescription("侦听某个按键一次", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听</returns>
+    [LuaApiDescription("侦听某个键盘按键一次", "返回一个ID, 可使用 DeleteKeyListen 删除侦听")]
     [LuaApiParamDescription("key", "键值")]
     [LuaApiParamDescription("pressedOrReleased", "如果为true，则侦听按下事件，否则侦听松开事件")]
     [LuaApiParamDescription("callBack", "回调函数")]
@@ -287,12 +293,12 @@ namespace Ballance2.Services
       return id;
     }
     /// <summary>
-    /// 添加侦听器侦听键。
+    /// 添加键盘按键侦听
     /// </summary>
-    /// <param name="key">键值。</param>
-    /// <param name="callBack">回调函数。</param>
-    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    [LuaApiDescription("添加侦听器侦听键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    /// <param name="key">键值</param>
+    /// <param name="callBack">回调函数</param>
+    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听</returns>
+    [LuaApiDescription("添加键盘按键侦听", "返回一个ID, 可使用 DeleteKeyListen 删除侦听")]
     [LuaApiParamDescription("key", "键值")]
     [LuaApiParamDescription("callBack", "回调函数")]
     public int ListenKey(KeyCode key, KeyListener.KeyDelegate callBack)
@@ -335,8 +341,8 @@ namespace Ballance2.Services
     /// 获取 UI 控件预制体
     /// </summary>
     /// <param name="name">名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("获取 UI 控件预制体")]
+    /// <returns>如果找到指定名称预制体，则返回其实例，如果未找到，则返回 null</returns>
+    [LuaApiDescription("获取 UI 控件预制体", "如果找到指定名称预制体，则返回其实例，如果未找到，则返回 null")]
     [LuaApiParamDescription("name", "名称")]
     public GameObject GetUIPrefab(string name, GameUIPrefabType type)
     {
@@ -460,8 +466,8 @@ namespace Ballance2.Services
     /// 跳转到页
     /// </summary>
     /// <param name="name">页名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("跳转到页")]
+    /// <returns>返回跳转是否成功</returns>
+    [LuaApiDescription("跳转到页", "返回跳转是否成功")]
     [LuaApiParamDescription("name", "页名称")]
     public bool GoPage(string name)
     {
@@ -471,11 +477,11 @@ namespace Ballance2.Services
     /// 跳转到页并携带参数
     /// </summary>
     /// <param name="name">页名称</param>
-    /// <param name="options">参数</param>
-    /// <returns></returns>
-    [LuaApiDescription("跳转到页并携带参数")]
+    /// <param name="options">打开页所需要携带的参数，在页中可以使用 `GameUIPage.LastOption` 读取到传递进入页的参数。</param>
+    /// <returns>返回跳转是否成功</returns>
+    [LuaApiDescription("跳转到页并携带参数", "返回跳转是否成功")]
     [LuaApiParamDescription("name", "页名称")]
-    [LuaApiParamDescription("options", "参数")]
+    [LuaApiParamDescription("options", "打开页所需要携带的参数，在页中可以使用 `GameUIPage.LastOption` 读取到传递进入页的参数。")]
     public bool GoPageWithOptions(string name, Dictionary<string, string> options)
     {
       if (currentPage != null && currentPage.name == name)
@@ -496,16 +502,16 @@ namespace Ballance2.Services
       return true;
     }
     /// <summary>
-    /// 获取当前显示页
+    /// 获取当前显示的页实例
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("获取当前显示页")]
+    [LuaApiDescription("获取当前显示的页实例")]
     public GameUIPage GetCurrentPage() { return currentPage; }
     /// <summary>
-    /// 隐藏当前显示页
+    /// 隐藏当前显示的页
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("隐藏当前显示页")]
+    [LuaApiDescription("隐藏当前显示的页")]
     public void HideCurrentPage()
     {
       if (currentPage != null)
@@ -534,9 +540,10 @@ namespace Ballance2.Services
     /// <summary>
     /// 返回上一页并携带参数
     /// </summary>
+    /// <param name="options">传递返回上一页参数，页中可以使用 `GameUIPage.LastBackOptions` 读取到传递进入上一页的参数。</param>
     /// <returns>如果可以返回，则返回true，否则返回false</returns>
     [LuaApiDescription("返回上一页并携带参数", "如果可以返回，则返回true，否则返回false")]
-    [LuaApiParamDescription("options", "参数")]
+    [LuaApiParamDescription("options", "传递返回上一页参数，页中可以使用 `GameUIPage.LastBackOptions` 读取到传递进入上一页的参数。")]
     public bool BackPreviusPageWithOptions(Dictionary<string, string> options)
     {
       if (pageStack.Count > 0)
@@ -618,6 +625,7 @@ namespace Ballance2.Services
       if (showSec <= 0.5f) showSec = 0.5f;
       ShowToast(text, showSec);
     }
+    
     private void ShowToast(string text, float time)
     {
       UIToastText.text = text;
@@ -671,13 +679,13 @@ namespace Ballance2.Services
     private RectTransform rectTransformGlobalAlertWindow;
 
     /// <summary>
-    /// 显示全局 Alert 对话框（窗口模式）
+    /// 显示全局 Alert 独占对话框
     /// </summary>
     /// <param name="text">内容</param>
     /// <param name="title">标题</param>
     /// <param name="okText">OK 按钮文字</param>
     /// <returns>返回对话框ID</returns>
-    [LuaApiDescription("显示全局 Alert 对话框（窗口模式）", "返回对话框ID")]
+    [LuaApiDescription("显示全局 Alert 独占对话框", "返回对话框ID")]
     [LuaApiParamDescription("text", "内容")]
     [LuaApiParamDescription("title", "标题")]
     [LuaApiParamDescription("onConfirm", "OK 按钮点击回调")]
@@ -706,14 +714,14 @@ namespace Ballance2.Services
       return 0;
     }
     /// <summary>
-    /// 显示全局 Confirm 对话框（窗口模式）
+    /// 显示全局 Confirm 独占对话框
     /// </summary>
     /// <param name="text">内容</param>
     /// <param name="title">标题</param>
     /// <param name="okText">OK 按钮文字</param>
     /// <param name="cancelText">Cancel 按钮文字</param>
     /// <returns></returns>
-    [LuaApiDescription("显示全局 Confirm 对话框（窗口模式）", "返回对话框ID")]
+    [LuaApiDescription("显示全局 Confirm 独占对话框", "返回对话框ID")]
     [LuaApiParamDescription("text", "内容")]
     [LuaApiParamDescription("title", "标题")]
     [LuaApiParamDescription("onConfirm", "OK 按钮点击回调")]
@@ -830,11 +838,11 @@ namespace Ballance2.Services
     /// 创建自定义窗口（默认不显示）
     /// </summary>
     /// <param name="title">标题</param>
-    /// <param name="customView">窗口自定义View</param>
+    /// <param name="customView">窗口自定义内容View</param>
     /// <returns>返回窗口实例</returns>
     [LuaApiDescription("创建自定义窗口（默认不显示）", "返回窗口实例")]
     [LuaApiParamDescription("title", "标题")]
-    [LuaApiParamDescription("customView", "窗口自定义View")]
+    [LuaApiParamDescription("customView", "窗口自定义内容View")]
     public Window CreateWindow(string title, RectTransform customView)
     {
       return CreateWindow(title, customView, false);
@@ -844,12 +852,12 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="title">标题</param>
     /// <param name="show">创建后是否立即显示</param>
-    /// <param name="customView">窗口自定义View</param>
+    /// <param name="customView">窗口自定义内容View</param>
     /// <returns>返回窗口实例</returns>
     [LuaApiDescription("创建自定义窗口", "返回窗口实例")]
     [LuaApiParamDescription("title", "标题")]
     [LuaApiParamDescription("show", "创建后是否立即显示")]
-    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("customView", "窗口自定义内容View")]
     public Window CreateWindow(string title, RectTransform customView, bool show)
     {
       return CreateWindow(title, customView, show, 0, 0, 0, 0);
@@ -859,7 +867,7 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="title">标题</param>
     /// <param name="show">创建后是否立即显示</param>
-    /// <param name="customView">窗口自定义View</param>
+    /// <param name="customView">窗口自定义内容View</param>
     /// <param name="x">X 坐标</param>
     /// <param name="y">Y 坐标</param>
     /// <param name="w">宽度，0 使用默认</param>
@@ -868,7 +876,7 @@ namespace Ballance2.Services
     [LuaApiDescription("创建自定义窗口", "返回窗口实例")]
     [LuaApiParamDescription("title", "标题")]
     [LuaApiParamDescription("show", "创建后是否立即显示")]
-    [LuaApiParamDescription("title", "标题")]
+    [LuaApiParamDescription("customView", "窗口自定义内容View")]
     [LuaApiParamDescription("x", "X 坐标")]
     [LuaApiParamDescription("y", "Y 坐标")]
     [LuaApiParamDescription("w", "宽度，0 使用默认")]
@@ -903,8 +911,8 @@ namespace Ballance2.Services
     /// 注册窗口到管理器中
     /// </summary>
     /// <param name="window">窗口实例</param>
-    /// <returns></returns>
-    [LuaApiDescription("注册窗口到管理器中")]
+    /// <returns>返回窗口实例</returns>
+    [LuaApiDescription("注册窗口到管理器中", "返回窗口实例")]
     [LuaApiParamDescription("window", "窗口实例")]
     public Window RegisterWindow(Window window)
     {
@@ -1310,6 +1318,7 @@ namespace Ballance2.Services
   /// UIPrefab的类型
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public enum GameUIPrefabType
   {
     /// <summary>

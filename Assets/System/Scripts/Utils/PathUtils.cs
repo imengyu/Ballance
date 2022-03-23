@@ -19,10 +19,10 @@ using System.Text;
 namespace Ballance2.Utils
 {
   /// <summary>
-  /// 路径字符串工具类
+  /// 路径字符串工具类, 提供了一些路径的处理工具方法。
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("路径字符串工具类")]
+  [LuaApiDescription("路径字符串工具类, 提供了一些路径的处理工具方法。")]
   public static class PathUtils
   {
     /// <summary>
@@ -184,8 +184,8 @@ namespace Ballance2.Utils
     /// 修复文件路径的 file:/// 前缀
     /// </summary>
     /// <param name="path">路径</param>
-    /// <returns></returns>
-    [LuaApiDescription("修复文件路径的 file:/// 前缀", "")]
+    /// <returns>返回不带 file:/// 前缀的路径</returns>
+    [LuaApiDescription("修复文件路径的 file:/// 前缀", "返回不带 file:/// 前缀的路径")]
     [LuaApiParamDescription("path", "路径")]
     public static string FixFilePathScheme(string path)
     {

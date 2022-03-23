@@ -19,13 +19,11 @@ using UnityEngine.Profiling;
 * GameMediator.cs
 * 
 * 用途：
-* 游戏中介者管理器，用于游戏中央事件与操作的转发与处理。
-* 中介者提供了3中交互方法，分别是：
-* 事件：
+* 游戏中介者管理器，用于游戏中央事件的转发与处理。
+* 中介者提供了事件交互方法：
+
 *   全局事件：发送整体全局事件，让多个接受方接受事件。
 *   单一事件：发送单向全局事件，让一个接受方接受事件。
-* 操作：
-*   发送操作至一个接受方，获取操作返回值。
 *
 * 作者：
 * mengyu
@@ -39,6 +37,18 @@ namespace Ballance2.Services
   [Serializable]
   [SLua.CustomLuaClass]
   [LuaApiDescription("游戏中介者")]
+  [LuaApiNotes(@"游戏中介者管理器，用于游戏中央事件的转发与处理。
+
+中介者提供了事件交互方法：
+
+* 全局事件：发送整体全局事件，让多个接受方接受事件。
+* 单一事件：发送单向全局事件，让一个接受方接受事件。 
+* 事件发射器：某个类发送一组事件，让许多接受方订阅事件。 
+
+?> **提示：** 单一事件与全局数据无须手动使用 `RegisterGlobalEvent`/`RegisterSingleEvent` 注册，你可以直接执行相关方法，例如 `DispatchGlobalEvent` 等等，
+如果事件没有注册，它会自动调用注册。
+
+")]
   public class GameMediator : GameService
   {
     private readonly string TAG = "GameMediator";
@@ -55,13 +65,11 @@ namespace Ballance2.Services
       if (go != null)
         UnityEngine.Object.Destroy(go);
       UnLoadAllEvents();
-      UnLoadAllActions();
     }
     [DoNotToLua]
     public override bool Initialize()
     {
       InitAllEvents();
-      InitAllActions();
       
       DelayCaller = gameObject.AddComponent<GameMediatorDelayCaller>();
       DelayCaller.GameMediator = this;
@@ -602,259 +610,6 @@ namespace Ballance2.Services
 
     #endregion
 
-    #region 全局操作控制器
-
-    [SerializeField, SetProperty("Actions")]
-    private Dictionary<string, GameActionStore> actionStores = null;
-
-    /// <summary>
-    /// 注册全局共享数据存储池
-    /// </summary>
-    /// <param name="package">所属包</param>
-    /// <param name="name">池名称</param>
-    /// <returns>如果注册成功，返回池对象；如果已经注册，则返回已经注册的池对象</returns>
-    [LuaApiDescription("注册全局共享数据存储池", "如果注册成功，返回池对象；如果已经注册，则返回已经注册的池对象")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("name", "池名称")]
-    public GameActionStore RegisterActionStore(GamePackage package, string name)
-    {
-      string keyName = package.PackageName + ":" + name;
-      GameActionStore store;
-      if (string.IsNullOrEmpty(name))
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, "RegisterGlobalDataStore name 参数未提供");
-        return null;
-      }
-      if (actionStores.ContainsKey(keyName))
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, "共享操作仓库 {0} 已经注册", keyName);
-        store = actionStores[keyName];
-        return store;
-      }
-
-      store = new GameActionStore(package, name);
-      actionStores.Add(keyName, store);
-      return store;
-    }
-    /// <summary>
-    /// 获取全局共享数据存储池
-    /// </summary>
-    /// <param name="package">所属包</param>
-    /// <param name="name">池名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("获取全局共享数据存储池")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("name", "池名称")]
-    public GameActionStore GetActionStore(GamePackage package, string name)
-    {
-      actionStores.TryGetValue(package.PackageName + ":" + name, out GameActionStore s);
-      return s;
-    }
-    /// <summary>
-    /// 释放已注册的全局共享数据存储池
-    /// </summary>
-    /// <param name="package">所属包</param>
-    /// <param name="name">池名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("释放已注册的全局共享数据存储池")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("name", "池名称")]
-    public bool UnRegisterActionStore(GamePackage package, string name)
-    {
-      string keyName = package.PackageName + ":" + name;
-      if (string.IsNullOrEmpty(name))
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG,
-            "UnRegisterActionStore name 参数未提供");
-        return false;
-      }
-      if (!actionStores.ContainsKey(keyName))
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG,
-            "共享操作仓库 {0} 未注册", keyName);
-        return false;
-      }
-
-      actionStores[keyName].Destroy();
-      actionStores.Remove(keyName);
-      return false;
-    }
-    /// <summary>
-    /// 释放已注册的全局共享数据存储池
-    /// </summary>
-    /// <param name="name">池名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("释放已注册的全局共享数据存储池")]
-    [LuaApiParamDescription("name", "池名称")]
-    public bool UnRegisterActionStore(GameActionStore store)
-    {
-      if (!actionStores.ContainsKey(store.KeyName))
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG,
-            "actionStores {0} 未注册", store.KeyName);
-        return false;
-      }
-
-      actionStores[store.KeyName].Destroy();
-      return false;
-    }
-
-    //卸载所属模块的全部操作
-    internal void UnloadAllPackageActionStore(GamePackage package)
-    {
-      List<string> keys = new List<string>(actionStores.Keys);
-      GameActionStore store;
-      foreach (string key in keys)
-      {
-        store = actionStores[key];
-        if (store.Package == package)
-          UnRegisterActionStore(store);
-      }
-    }
-
-    /// <summary>
-    /// 调用操作
-    /// </summary>
-    /// <param name="package">所属包</param>
-    /// <param name="storeName">操作仓库名称</param>
-    /// <param name="name">操作名称</param>
-    /// <param name="param">调用参数</param>
-    /// <returns></returns>
-    [LuaApiDescription("调用操作")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("storeName", "操作仓库名称")]
-    [LuaApiParamDescription("name", "服务名称")]
-    [LuaApiParamDescription("param", "调用参数")]
-    public GameActionCallResult CallAction(GamePackage package, string storeName, string name, params object[] param)
-    {
-      string keyName = package.PackageName + ":" + storeName;
-      if (!actionStores.ContainsKey(keyName))
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG,
-            "共享操作仓库 {0} 未注册", keyName);
-        return GameActionCallResult.FailResult;
-      }
-      return CallAction(actionStores[keyName], name, param);
-    }
-    /// <summary>
-    /// 调用操作
-    /// </summary>
-    /// <param name="store">操作仓库</param>
-    /// <param name="name">操作名称</param>
-    /// <param name="param">调用参数</param>
-    /// <returns></returns>
-    [LuaApiDescription("调用操作")]
-    [LuaApiParamDescription("name", "服务名称")]
-    [LuaApiParamDescription("store", "操作仓库")]
-    [LuaApiParamDescription("param", "调用参数")]
-    public GameActionCallResult CallAction(GameActionStore store, string name, params object[] param)
-    {
-      return store.CallAction(name, param);
-    }
-    /// <summary>
-    /// 调用操作
-    /// </summary>
-    /// <param name="action">操作实体</param>
-    /// <param name="param">调用参数</param>
-    /// <returns></returns>
-    [LuaApiDescription("调用操作")]
-    [LuaApiParamDescription("action", "操作实体")]
-    [LuaApiParamDescription("param", "调用参数")]
-    public GameActionCallResult CallAction(GameAction action, params object[] param)
-    {
-      GameErrorChecker.LastError = GameError.None;
-      GameActionCallResult result = GameActionCallResult.FailResult;
-
-      if (action == null)
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, "CallAction action 参数为空");
-        return result;
-      }
-      if (action.Name == GameAction.Empty.Name)
-      {
-        GameErrorChecker.SetLastErrorAndLog(GameError.Empty, TAG, "CallAction action 为空");
-        return result;
-      }
-      if (action.CallTypeCheck != null && action.CallTypeCheck.Length > 0)
-      {
-        //参数类型检查
-        int argCount = action.CallTypeCheck.Length;
-        if (argCount > param.Length)
-        {
-          Log.W(TAG, "操作 {0} 至少需要 {1} 个参数", action.Name, argCount);
-          return result;
-        }
-        string allowType, typeName;
-        for (int i = 0; i < argCount; i++)
-        {
-          allowType = action.CallTypeCheck[i];
-          if (param[i] == null)
-          {
-            if (allowType != "null" &&
-               (!allowType.Contains("/") && !allowType.Contains("null")))
-            {
-              Log.W(TAG, "操作 {0} 参数 {1} 不能为null", action.Name, i);
-              return result;
-            }
-          }
-          else
-          {
-            typeName = param[i].GetType().Name;
-            if (allowType != typeName &&
-                (!allowType.Contains("/") && !allowType.Contains(typeName)))
-            {
-              Log.W(TAG, "操作 {0} 参数 {1} 类型必须是 {2}", action.Name, i, action.CallTypeCheck[i]);
-              return result;
-            }
-          }
-        }
-      }
-
-      //Log.Log(TAG, "CallAction {0} -> {1}", action.Name, StringUtils.ValueArrayToString(param));
-
-      result = action.GameHandler.CallActionHandler(param);
-      if (!result.Success)
-        Log.W(TAG, "操作 {0} 执行失败 {1}", action.Name, GameErrorChecker.LastError);
-
-      return result;
-    }
-
-    /// <summary>
-    /// 内核的 ActinoStore
-    /// </summary>
-    [LuaApiDescription("内核的 ActinoStore")]
-    public GameActionStore SystemActionStore { get; private set; }
-
-    private void UnLoadAllActions()
-    {
-      if (actionStores != null)
-      {
-        foreach (var actionStore in actionStores)
-          actionStore.Value.Destroy();
-        actionStores.Clear();
-        actionStores = null;
-      }
-    }
-    private void InitAllActions()
-    {
-      actionStores = new Dictionary<string, GameActionStore>();
-
-      //注册内置事件
-      SystemActionStore = RegisterActionStore(GamePackage.GetSystemPackage(), SYSTEM_ACTION_STORE_NAME);
-      SystemActionStore.RegisterAction(GamePackage.GetSystemPackage(), "QuitGame", "GameManager", (param) =>
-      {
-        GameManager.Instance.QuitGame();
-        return GameActionCallResult.SuccessResult;
-      }, null);
-    }
-
-    /// <summary>
-    /// 内核的 ActinoStore 名称
-    /// </summary>
-    public const string SYSTEM_ACTION_STORE_NAME = "core";
-
-    #endregion
-
     #region 调试命令
 
     private void InitCommands()
@@ -867,8 +622,6 @@ namespace Ballance2.Services
             return HandleSingleEventCommand(args);
           case "event":
             return HandleEventCommand(args);
-          case "action":
-            return HandleActionCommand(args);
         }
         return false;
       }, 1, "gm <single_event/event/action/store>\n" +
@@ -877,11 +630,7 @@ namespace Ballance2.Services
               "    notify <eventName:string> [params:any[]] 通知一个单一事件\n" +
               "  event\n" +
               "    all 显示所有全局事件\n" +
-              "    dispatch <eventName:string> <handleFilter:string> [params:any[]] 进行全局事件分发。handleFilter为“*”时表示所有，为正则使用正则匹配。\n" +
-              "  action\n" +
-              "    stores 显示所有全局操作仓库\n" +
-              "    list <storeName:string> 显示指定操作仓库的所有操作\n" +
-              "    call <storeName:string> <actionName:string> [params:any[]] 调用指定操作\n");
+              "    dispatch <eventName:string> <handleFilter:string> [params:any[]] 进行全局事件分发。handleFilter为“*”时表示所有，为正则使用正则匹配。\n");
     }
     private bool HandleSingleEventCommand(string[] args)
     {
@@ -942,58 +691,6 @@ namespace Ballance2.Services
 
             int handlers = DispatchGlobalEvent(name, filter, StringUtils.TryConvertStringArrayToValueArray(args, 4));
             Log.V(TAG, "DispatchGlobalEvent finish > {0}", handlers);
-            return true;
-          }
-      }
-      return false;
-    }
-    private bool HandleActionCommand(string[] args)
-    {
-      string act = "";
-      if (!DebugUtils.CheckDebugParam(1, args, out act)) return false;
-      switch (act)
-      {
-        case "stores":
-          {
-            StringBuilder stringBuilder = new StringBuilder("ActionStores: ");
-            stringBuilder.AppendLine(actionStores.Count.ToString());
-            foreach (var i in actionStores)
-            {
-              stringBuilder.AppendLine(string.Format("{0} => {2} > Package: {1} Actions: {3}",
-                  i.Key, i.Value.Package.PackageName, i.Value.Name, i.Value.Actions.Count));
-            }
-            Log.V(TAG, stringBuilder.ToString());
-            return true;
-          }
-        case "list":
-          {
-            string name = "";
-            if (!DebugUtils.CheckDebugParam(2, args, out name)) return false;
-
-            if (!actionStores.TryGetValue(name, out var actionStore))
-            {
-              Log.E(TAG, "未找到指定 ActionStore {0}", name);
-              return false;
-            }
-
-            StringBuilder stringBuilder = new StringBuilder(actionStore.Name);
-            stringBuilder.Append("Actions: ");
-            stringBuilder.AppendLine(actionStore.Actions.Count.ToString());
-            foreach (var i in actionStore.Actions)
-            {
-              stringBuilder.AppendLine(string.Format("{0} => Handler: {1}", i.Value.Name, i.Value.GameHandler.Name));
-            }
-            Log.V(TAG, stringBuilder.ToString());
-            return true;
-          }
-        case "call":
-          {
-            string storename = "";
-            string name = "";
-            if (!DebugUtils.CheckDebugParam(2, args, out storename)) return false;
-            if (!DebugUtils.CheckDebugParam(3, args, out name)) return false;
-
-            CallAction(GamePackage.GetSystemPackage(), storename, name, StringUtils.TryConvertStringArrayToValueArray(args, 4));
             return true;
           }
       }

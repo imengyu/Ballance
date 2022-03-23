@@ -23,6 +23,7 @@ namespace Ballance2.UI.Core.Controls
   /// </summary>
   [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/KeyChoose")]
+  [LuaApiNoDoc]
   public class KeyChoose : MonoBehaviour
   {
     public Text Text;

@@ -22,6 +22,7 @@ namespace Ballance2.Services.LuaService.LuaWapper.GameLuaWapperEvents
     /// Lua的 EventTrigger 包装
     /// </summary>
     [CustomLuaClass]
+    [LuaApiNoDoc]
     [LuaApiDescription("Lua的 EventTrigger 包装")]
     public class GameLuaObjectEventTriggerCaller : GameLuaObjectEventCaller, 
         IPointerEnterHandler, IEventSystemHandler, IPointerExitHandler, 

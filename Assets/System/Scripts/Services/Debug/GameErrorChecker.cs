@@ -25,10 +25,13 @@ using UnityEngine;
 namespace Ballance2.Services.Debug
 {
   /// <summary>
-  /// 错误检查器。使用错误检查器获取游戏API的调用错误。
+  /// 错误检查器
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("错误检查器。使用错误检查器获取游戏API的调用错误")]
+  [LuaApiDescription("错误检查器")]
+  [LuaApiNotes(@"使用错误检查器获取游戏API的调用错误。
+
+错误检查器还可负责弹出全局错误窗口以检查BUG.")]
   public class GameErrorChecker
   {
     private static GameGlobalErrorUI gameGlobalErrorUI;
@@ -97,9 +100,9 @@ namespace Ballance2.Services.Debug
     [LuaApiDescription("获取当前是否是严格模式")]
     public static bool StrictMode { get; private set; }
     /// <summary>
-    /// 进入严格模式。严格模式中如果Lua代码出现异常，则将立即停止游戏。
+    /// 进入严格模式。严格模式中如果Lua代码出现异常，则将立即弹出错误提示并停止游戏。
     /// </summary>
-    [LuaApiDescription("进入严格模式。严格模式中如果Lua代码出现异常，则将立即停止游戏。")]
+    [LuaApiDescription("进入严格模式。严格模式中如果Lua代码出现异常，则将立即弹出错误提示并停止游戏。")]
     public static void EnterStrictMode()
     {
       StrictModeStack++;

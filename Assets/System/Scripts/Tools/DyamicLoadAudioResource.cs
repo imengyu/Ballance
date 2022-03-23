@@ -16,26 +16,30 @@ using Ballance2.Services;
 
 namespace Ballance2.Sys.Tools
 {
-    [RequireComponent(typeof(AudioSource))]
-    public class DyamicLoadAudioResource : MonoBehaviour {
+  [RequireComponent(typeof(AudioSource))]
+  [LuaApiNoDoc]
+  public class DyamicLoadAudioResource : MonoBehaviour
+  {
 
-        [Tooltip("声音资源路径，与 GameSoundManager 约定的声音资源路径格式一致。")]
-        public string AssetString = "";
-        [Tooltip("指定声音所属类型")]
-        public GameSoundType SoundType = GameSoundType.Normal;
+    [Tooltip("声音资源路径，与 GameSoundManager 约定的声音资源路径格式一致。")]
+    public string AssetString = "";
+    [Tooltip("指定声音所属类型")]
+    public GameSoundType SoundType = GameSoundType.Normal;
 
-        private AudioSource AudioSource;
+    private AudioSource AudioSource;
 
-        private void Awake() {
-            AudioSource = GetComponent<AudioSource>();
-            if(GameManager.Instance == null) {
-                UnityEngine.Debug.LogError("LoadAudioResource failed: GameSystem not init!");
-                return;
-            }
+    private void Awake()
+    {
+      AudioSource = GetComponent<AudioSource>();
+      if (GameManager.Instance == null)
+      {
+        UnityEngine.Debug.LogError("LoadAudioResource failed: GameSystem not init!");
+        return;
+      }
 
-            var SoundManager = GameManager.Instance.GetSystemService<GameSoundManager>();
-            AudioSource.clip = SoundManager.LoadAudioResource(AssetString);
-            SoundManager.RegisterSoundPlayer(SoundType, AudioSource);
-        }
+      var SoundManager = GameManager.Instance.GetSystemService<GameSoundManager>();
+      AudioSource.clip = SoundManager.LoadAudioResource(AssetString);
+      SoundManager.RegisterSoundPlayer(SoundType, AudioSource);
     }
+  }
 }

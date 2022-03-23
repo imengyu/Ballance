@@ -23,6 +23,7 @@ namespace Ballance2.Base.Handler
   /// </summary>
   [CustomLuaClass]
   [LuaApiDescription("游戏通用接收器")]
+  [LuaApiNoDoc]
   public class GameHandler
   {
     private static readonly string TAG = "GameHandler";
@@ -66,17 +67,6 @@ namespace Ballance2.Base.Handler
     {
       return false;
     }
-    /// <summary>
-    /// 调用操作接收器
-    /// </summary>
-    /// <param name="pararms">参数</param>
-    /// <returns>返回是否中断剩余事件分发/返回Action是否成功</returns>
-    [LuaApiDescription("调用操作接收器", "返回是否中断剩余事件分发/返回Action是否成功")]
-    [LuaApiParamDescription("pararms", "参数")]
-    public virtual GameActionCallResult CallActionHandler(params object[] pararms)
-    {
-      return null;
-    }
 
     /// <summary>
     /// 所属模块
@@ -95,10 +85,6 @@ namespace Ballance2.Base.Handler
     public bool Destroyed { get; private set; } = false;
 
     //自定义接收器
-    public static GameHandler CreateCsActionHandler(GamePackage gamePackage, string name, GameActionHandlerDelegate actionHandler)
-    {
-      return CreateHandlerInternal(gamePackage, name, new GameCSharpHandler(actionHandler));
-    }
     public static GameHandler CreateCsEventHandler(GamePackage gamePackage, string name, GameEventHandlerDelegate eventHandler)
     {
       return CreateHandlerInternal(gamePackage, name, new GameCSharpHandler(eventHandler));

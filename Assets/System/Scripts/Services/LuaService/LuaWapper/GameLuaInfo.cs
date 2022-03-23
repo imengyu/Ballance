@@ -21,6 +21,7 @@ namespace Ballance2.Services.LuaService.LuaWapper
   /// lua 引入 var 信息
   /// </summary>
   [CustomLuaClass]
+  [LuaApiNoDoc]
   [LuaApiDescription("lua 引入 var 信息")]
   [Serializable]
   public class LuaVarObjectInfo
@@ -358,6 +359,7 @@ namespace Ballance2.Services.LuaService.LuaWapper
   [Serializable]
   [CustomLuaClass]
   [LuaApiDescription("指定引入数据的类型")]
+  [LuaApiNoDoc]
   public enum LuaVarObjectType
   {
     None = 0,

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Services.Debug;
 using UnityEngine.Profiling;
@@ -22,7 +21,7 @@ using UnityEngine.Profiling;
 namespace Ballance2.Services.LuaService.LuaWapper
 {
   /// <summary>
-  /// 简易 Lua 脚本承载组件（感觉很像 Lua 的 MonoBehaviour）
+  /// Lua 脚本承载组件（感觉很像 Lua 的 MonoBehaviour）
   /// </summary>
   /// <remarks>
   /// ✧使用方法：
@@ -47,14 +46,32 @@ namespace Ballance2.Services.LuaService.LuaWapper
   ///     self.transform 访问当前对象的 transform;
   ///     self.monoBehaviour 访问当前 GameLuaObjectHost;
   ///     self.gameObject 访问 gameObject;
-  ///     self.store 访问 GlobalStore
-  ///     self.actionStore 访问 ActionStore;
   ///
   /// 
   /// </remarks>
   [CustomLuaClass]
   [AddComponentMenu("Ballance/Lua/GameLuaObjectHost")]
-  [LuaApiDescription("简易 Lua 脚本承载组件")]
+  [LuaApiDescription("Lua 脚本承载组件")]
+  [LuaApiNotes(@"
+[完整文档请参考这里](SystemModding/lua-class.md)
+
+* 使用方法：
+  * 可以直接绑定此组件至你的 Prefab 上，填写 LuaClassName 与 LuaPackageName，Instantiate Prefab 后 GameLuaObjectHost 会自动找到模块并加载 Lua 文件并执行。如果找不到模块或Lua 文件，将会抛出错误。
+  * 也可以在 GameMod 中直接调用 RegisterLuaObject 注册一个 Lua 对象
+  * 以上两种方法都可以在 GamePackage 中使用 FindLuaObject 找到你注册的 Lua 对象
+
+* 参数引入
+  可以在编辑器中设置 LuaInitialVars 添加你想引入的参数，承载组件会自动将的参数设置到你的 Lua脚本 self 上，通过 self.参数名 就可以访问了。
+  
+* Unity消息
+  * ★ 你可以在 Lua 类中添加 Start、Update、Awake、OnDestroy等等方法（也可以不写），承载组件会自动调用这些方法，Lua使用起来就像在C#中使用MonoBehaviour一样, 无需你写其他代码。
+  * ★ GameLuaObjectHost默认实现 Awake Start Update FixedUpdate LateUpdate GUI Destroy Enable Disable 这几个事件，如果需要更多事件，在编辑器中 “Lua 类 On * 事件接收器” 这个设置中添加你需要的事件类别，编辑器中下方会显示可用的事件。
+  
+* 你可以使用这几个变量来访问当前对象上的固定变量：
+  * `self.transform` 访问当前对象的 `transform`;
+  * `self.monoBehaviour` 访问当前 `GameLuaObjectHost`;
+  * `self.gameObject` 访问 `gameObject`;
+")]
   public class GameLuaObjectHost : MonoBehaviour
   {
     public const string TAG = "GameLuaObjectHost";
@@ -63,25 +80,25 @@ namespace Ballance2.Services.LuaService.LuaWapper
     /// Lua 对象名字，用于 FindLuaObject 查找
     /// </summary>
     [Tooltip("Lua 对象名字，用于 FindLuaObject 查找")]
-    [LuaApiDescription("Lua 对象名字")]
+    [LuaApiDescription("Lua 对象名字，用于 FindLuaObject 查找")]
     public string Name;
     /// <summary>
-    /// 获取或设置 Lua的类名（eg MenuLevel）
+    /// 获取 Lua的类名（eg MenuLevel）
     /// </summary>
     [Tooltip("设置 Lua的类名（eg MenuLevel）")]
-    [LuaApiDescription("Lua的类名")]
+    [LuaApiDescription("获取 Lua的类名（eg MenuLevel）")]
     public string LuaClassName;
     /// <summary>
-    /// 获取或设置 Lua类的文件名（eg MenuLevel.lua）
+    /// 获取 Lua类的文件名（eg MenuLevel.lua）
     /// </summary>
     [Tooltip("设置 Lua类的文件名（eg MenuLevel.lua）")]
-    [LuaApiDescription("Lua类的文件名")]
+    [LuaApiDescription("获取 Lua类的文件名（eg MenuLevel.lua）")]
     public string LuaFileName;
     /// <summary>
     /// 获取或设置 Lua 类所在的模块包名（该模块类型必须是 Module 并可运行）。设置后该对象会自动注册到 LuaObject 中
     /// </summary>
     [Tooltip("设置 Lua 类所在的模块包名（该模块类型必须是 Module 并可运行）。设置后该对象会自动注册到 LuaObject 中")]
-    [LuaApiDescription("Lua 类所在的模块包名")]
+    [LuaApiDescription("获取 Lua 类所在的模块包名")]
     public string LuaPackageName;
     /// <summary>
     /// 设置 Lua 初始参数，用于方便地从 Unity 编辑器直接引入初始参数至 Lua，这些变量会设置到 Lua self 上，可直接获取。
@@ -100,14 +117,6 @@ namespace Ballance2.Services.LuaService.LuaWapper
     [Tooltip("设置 Lua 脚本执行顺序，等于0时立即初始化。这个值越大，脚本越晚被执行。请设置为大于等于0的值。")]
     [SerializeField]
     public int ExecuteOrder = 0;
-    [Tooltip("是否创建 GlobalStore，勾选后会创建此Lua脚本的共享数据仓库(仓库名字是 包名:Name)，可以使用 self.store 或 GameLuaObjectHost.Store 访问 ")]
-    [LuaApiDescription("是否创建 GlobalStore")]
-    [SerializeField]
-    public bool CreateStore = false;
-    [Tooltip("是否自动创建共享操作仓库，勾选后会创建此Lua脚本的操作仓库(仓库名字是 包名:Name)，可以使用 self.actionStore 或 GameLuaObjectHost.ActionStore 访问 ")]
-    [LuaApiDescription("是否自动创建共享操作仓库")]
-    [SerializeField]
-    public bool CreateActionStore = false;
     [Tooltip("在调试环境中加载脚本，需要先添加LuaDebugMini调试环境至场景中")]
     [DoNotToLua]
     [SerializeField]
@@ -139,11 +148,6 @@ namespace Ballance2.Services.LuaService.LuaWapper
     /// </summary>
     [LuaApiDescription("获取对应模块包")]
     public GamePackage Package { get; set; }
-    /// <summary>
-    /// 获取此Lua脚本的共享操作仓库
-    /// </summary>
-    [LuaApiDescription("获取此Lua脚本的共享操作仓库")]
-    public GameActionStore ActionStore { get; set; }
     /// <summary>
     /// 获取该 Lua 脚本所属包包名
     /// </summary>
@@ -460,11 +464,6 @@ namespace Ballance2.Services.LuaService.LuaWapper
         Package.AddeLuaObject(this);
 
         _PackageName = Package.PackageName;
-        
-        if (CreateActionStore)
-        {
-          ActionStore = GameManager.GameMediator.RegisterActionStore(Package, Name);
-        }
 
         LuaState = Package.PackageLuaState;
         if (LuaState == null)
@@ -516,7 +515,6 @@ namespace Ballance2.Services.LuaService.LuaWapper
       LuaSelf["transform"] = transform;
       LuaSelf["monoBehaviour"] = this;
       LuaSelf["gameObject"] = gameObject;
-      LuaSelf["actionStore"] = ActionStore;
       LuaSelf["package"] = Package;
     }
     private void InitLuaVars()

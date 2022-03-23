@@ -26,6 +26,7 @@ namespace Ballance2.Res
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("路径管理器")]
+  [LuaApiNotes("游戏外部资源文件的路径配置与路径转换工具类。")]
   public static class GamePathManager
   {
     /// <summary>
@@ -167,12 +168,12 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="type">资源种类（core: 核心文件、level：关卡、package：模块）</param>
     /// <param name="pathorname">相对路径或名称</param>
-    /// <param name="replacePlatform">是否替换文件路径中的[Platform]</param>
-    /// <returns></returns>
-    [LuaApiDescription("将资源的相对路径转为资源真实路径")]
+    /// <param name="replacePlatform">是否替换文件路径中的 [Platform] 字符串</param>
+    /// <returns>返回资源真实路径</returns>
+    [LuaApiDescription("将资源的相对路径转为资源真实路径", "返回资源真实路径")]
     [LuaApiParamDescription("type", "资源种类（gameinit、core: 核心文件、level：关卡、package：模块）")]
     [LuaApiParamDescription("pathorname", "相对路径或名称")]
-    [LuaApiParamDescription("replacePlatform", "是否替换文件路径中的[Platform]")]
+    [LuaApiParamDescription("replacePlatform", "是否替换文件路径中的 [Platform] 字符串")]
     public static string GetResRealPath(string type, string pathorname, bool replacePlatform = true, bool withFileSheme = true)
     {
       string result = null;
@@ -276,8 +277,8 @@ namespace Ballance2.Res
     /// 将关卡资源的相对路径转为关卡资源真实路径
     /// </summary>
     /// <param name="pathorname">关卡的相对路径或名称</param>
-    /// <returns></returns>
-    [LuaApiDescription("将关卡资源的相对路径转为关卡资源真实路径", "")]
+    /// <returns>返回资源真实路径</returns>
+    [LuaApiDescription("将关卡资源的相对路径转为关卡资源真实路径", "返回资源真实路径")]
     [LuaApiParamDescription("pathorname", "关卡的相对路径或名称")]
     public static string GetLevelRealPath(string pathorname, bool withFileSheme = true)
     {
@@ -333,6 +334,9 @@ namespace Ballance2.Res
     /// <param name="newPath"></param>
     /// <param name="buf"></param>
     /// <returns></returns>
+    [LuaApiDescription("Replace Path In Resource Identifier (Identifier:Path:Arg0:Arg1)", "")]
+    [LuaApiParamDescription("oldIdentifier", "Identifier Want br replace")]
+    [LuaApiNotes("!> 这个函数没有用了。")]
     public static string ReplacePathInResourceIdentifier(string newPath, ref string[] buf)
     {
       if (buf.Length > 1)
@@ -351,6 +355,10 @@ namespace Ballance2.Res
     /// <param name="oldIdentifier">资源标识符</param>
     /// <param name="outPath">输出资源路径</param>
     /// <returns></returns>
+    [LuaApiDescription("分割资源标识符", "")]
+    [LuaApiParamDescription("oldIdentifier", "资源标识符")]
+    [LuaApiParamDescription("outPath", "输出资源路径")]
+    [LuaApiNotes("!> 这个函数没有用了。")]
     public static string[] SplitResourceIdentifier(string oldIdentifier, out string outPath)
     {
       string[] buf = oldIdentifier.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);

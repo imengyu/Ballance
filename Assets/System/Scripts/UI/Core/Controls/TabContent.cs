@@ -10,6 +10,7 @@ namespace Ballance2.UI.Core.Controls
   /// </summary>
   [SLua.CustomLuaClass]
   [Serializable]
+  [LuaApiNoDoc]
   public class TabContent : UIBehaviour
   {
     public RectTransform Tab;

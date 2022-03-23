@@ -22,6 +22,7 @@ using UnityEngine;
 namespace Ballance2.Services.LuaService.Lua
 {
   [CustomLuaClass]
+  [LuaApiNoDoc]
   public static class LuaGlobalApi
   {
     [CustomLuaClass]

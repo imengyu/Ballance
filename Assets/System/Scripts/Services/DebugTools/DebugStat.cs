@@ -27,6 +27,8 @@ using UnityEngine.UI;
 
 class DebugStat : MonoBehaviour
 {
+  public static DebugStat Instance { get; private set; }
+
   private int tick = 0;
   private string allocatedMemory;
   private string unusedReservedMemory;
@@ -41,8 +43,8 @@ class DebugStat : MonoBehaviour
 
   private StringBuilder sb = new StringBuilder();
 
-  private Window WindowSystemInfo = null;
-  private Window WindowStats = null;
+  public Window WindowSystemInfo = null;
+  public Window WindowStats = null;
 
   private int logObserver = 0;
 
@@ -53,25 +55,12 @@ class DebugStat : MonoBehaviour
 
   private void Start()
   {
+    Instance = this;
+
     var SystemPackage = GamePackage.GetSystemPackage();
     GameUIManager = GameManager.Instance.GetSystemService<GameUIManager>();
     StatText.text = "";
 
-    //操作
-    GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowSystemInfo", "DebugStat", (param) => {
-      if((bool)param[0])
-        WindowSystemInfo.Show();
-      else
-        WindowSystemInfo.Hide();
-      return GameActionCallResult.SuccessResult;
-    }, new string[] { "System.Boolean" });
-    GameManager.Instance.GameActionStore.RegisterAction(SystemPackage, "DbgStatShowStats", "DebugStat", (param) => {
-      if((bool)param[0])
-        WindowStats.Show();
-      else
-        WindowStats.Hide();
-      return GameActionCallResult.SuccessResult;
-    }, new string[] { "System.Boolean" });
     GameManager.GameMediator.SubscribeSingleEvent(SystemPackage, "DebugToolsClear", "DebugStat", (evtName, param) => {
       StatText.text = "";
       return false;
@@ -103,11 +92,6 @@ class DebugStat : MonoBehaviour
     if (logObserver > 0) {
       Log.UnRegisterLogObserver(logObserver);
       logObserver = 0;
-    }
-    if (GameManager.Instance != null)
-    {
-      GameManager.Instance.GameActionStore.UnRegisterAction("DbgStatShowSystemInfo");
-      GameManager.Instance.GameActionStore.UnRegisterAction("DbgStatShowStats");
     }
     if (WindowSystemInfo != null)
     {

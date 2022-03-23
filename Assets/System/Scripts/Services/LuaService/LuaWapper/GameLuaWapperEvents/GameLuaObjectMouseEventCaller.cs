@@ -23,6 +23,7 @@ namespace Ballance2.Services.LuaService.LuaWapper.GameLuaWapperEvents
     /// Lua 鼠标事件调用器
     /// </summary>
     [CustomLuaClass]
+    [LuaApiNoDoc]
     [LuaApiDescription("Lua 鼠标事件调用器")]
     public class GameLuaObjectMouseEventCaller : GameLuaObjectEventCaller
     {

@@ -24,6 +24,7 @@ namespace Ballance2.UI.Core.Controls
   [ExecuteInEditMode]
   [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/SplitView")]
+  [LuaApiNoDoc]
   public class SplitView : UIBehaviour
   {
     protected override void Start()

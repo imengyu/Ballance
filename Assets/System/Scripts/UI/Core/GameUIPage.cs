@@ -31,6 +31,7 @@ namespace Ballance2.UI.Core
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("UI页实例")]
+  [LuaApiNotes("页与窗口不太一样，窗口可以同时打开多个，页只能同时显示一个，相当于独占的全屏窗口。要创建页，可以调用 `GameUIManager.RegisterPage` 函数。")]
   public class GameUIPage : MonoBehaviour
   {
     public RectTransform Content;

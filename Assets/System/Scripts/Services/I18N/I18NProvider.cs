@@ -22,6 +22,7 @@ namespace Ballance2.Services.I18N
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("国际化支持类")]
+  [LuaApiNotes("国际化支持类，用于加载并处理国际化字符串资源以及读取本地化字符串。")]
   public static class I18NProvider
   {
     private const string TAG = "I18NProvider";
@@ -118,10 +119,10 @@ namespace Ballance2.Services.I18N
     }
 
     /// <summary>
-    /// 设置当前游戏语言
+    /// 设置当前游戏语言。此函数只能设置语言至设置，无法立即生效，必须重启游戏才能生效。
     /// </summary>
     /// <param name="language">语言</param>
-    [LuaApiDescription("设置当前游戏语言")]
+    [LuaApiDescription("设置当前游戏语言。此函数只能设置语言至设置，无法立即生效，必须重启游戏才能生效。")]
     [LuaApiParamDescription("language", "语言")]
     public static void SetCurrentLanguage(SystemLanguage language)
     {

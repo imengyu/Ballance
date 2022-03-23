@@ -17,20 +17,6 @@ namespace Ballance2.Base.Handler
 {
   class GameLuaHandler : GameHandler
   {
-    public override GameActionCallResult CallActionHandler(params object[] pararms)
-    {
-      if (Destroyed)
-        return null;
-      GameActionCallResult result = null;
-      object rso;
-      if (luaSelf != null) rso = luaFunction.call(luaSelf, pararms);
-      else rso = luaFunction.call(pararms);
-      if (rso != null && rso is GameActionCallResult)
-        result = rso as GameActionCallResult;
-      if (result == null)
-        return GameActionCallResult.CreateActionCallResult(false);
-      return result;
-    }
     public override bool CallEventHandler(string evtName, params object[] pararms)
     {
       if (Destroyed) return false;

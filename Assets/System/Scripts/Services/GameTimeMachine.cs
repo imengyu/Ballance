@@ -22,6 +22,7 @@ namespace Ballance2.Services
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("更新状态管理器")]
+  [LuaApiNotes("TimeMachine提供了另一种方式，实现类似MonoBehaviour中的Update之类的方法的功能。以便于我们在某些场合更方便的编写时间驱动的代码。")]
   public class GameTimeMachine : GameService
   {
     private const string TAG = "GameTimeMachine";
@@ -48,12 +49,14 @@ namespace Ballance2.Services
     /// </summary>
     [SLua.CustomLuaClass]
     [LuaApiDescription("注册时的更新实例，使用此实例可以取消注册更新函数。")]
+    [LuaApiNoDoc()]
     public class GameTimeMachineTimeTicket {
 
       private GameTimeMachine service = null;
       internal int sleepTick = 0;
       internal int errTickCount = 0;
 
+      [SLua.DoNotToLua]
       public GameTimeMachineTimeTicket(GameTimeMachine service, Action updateAction, int order, int interval) {
         this.service = service;
         this.updateAction = updateAction;
@@ -62,20 +65,24 @@ namespace Ballance2.Services
       }
       
       /// <summary>
-      /// 更新函数。
+      /// 获取当前实例的更新函数。
       /// </summary>
+      [LuaApiDescription("获取当前实例的更新函数。")]
       public Action updateAction { get; }
       /// <summary>
-      /// 当前更新函数的更新顺序。顺序越小，越先被调用。
+      /// 获取当前更新函数的更新顺序。顺序越小，越先被调用。
       /// </summary>
+      [LuaApiDescription("获取当前更新函数的更新顺序。顺序越小，越先被调用。")]
       public int order { get; }
       /// <summary>
-      /// 当前更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。
+      /// 获取或者设置当前更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。
       /// </summary>
+      [LuaApiDescription("获取或者设置当前更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
       public int interval;
       /// <summary>
-      /// 指定当前更新实例是否启用。可以动态改变此值。
+      /// 获取指定当前更新实例是否启用。可以动态改变此值。
       /// </summary>
+      [LuaApiDescription("获取指定当前更新实例是否启用。可以动态改变此值。")]
       public bool enable { get; private set; } = true;
 
       /// <summary>

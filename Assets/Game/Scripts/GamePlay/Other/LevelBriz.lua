@@ -19,6 +19,7 @@ function LevelBriz:new()
 end
 function LevelBriz:Start()
   self._BrizLight.color = Color(0,0,0,1)
+  --注册模组自定义入口
   Game.Mediator:RegisterEventHandler(GamePackage.GetCorePackage(), 'CoreBrizLevelEventHandler', 'LevelBrizHandler', function (evtName, params)
     if params[1] == 'beforeStart' then
       self._LightEnable = true

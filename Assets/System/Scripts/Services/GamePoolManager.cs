@@ -25,7 +25,7 @@ namespace Ballance2.Services
   /// 对象池管理器，分普通类对象池+资源游戏对象池
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("对象池管理器，分普通类对象池+资源游戏对象池")]
+  [LuaApiDescription("对象池管理器，可以注册、管理对象池")]
   public class GamePoolManager : GameService
   {
     private const string TAG = "GamePoolManager";

@@ -25,6 +25,7 @@ namespace Ballance2.Utils
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("克隆工具类")]
+  [LuaApiNotes("提供了一些工具方法，可方便的克隆出空物体，或是使用已有Prefab克隆出新物体。")]
   public static class CloneUtils
   {
     /// <summary>

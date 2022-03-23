@@ -30,6 +30,7 @@ namespace Ballance2.Game
   public delegate void GameLevelLoaderNativeErrCallback(string code, string err);
 
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class LevelAssets
   {
     public AssetBundle AssetBundle;
@@ -118,6 +119,7 @@ namespace Ballance2.Game
   }
 
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class GameLevelLoaderNative : MonoBehaviour
   {
     private readonly string TAG = "GameLevelLoaderNative";

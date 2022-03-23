@@ -346,8 +346,10 @@ namespace Slua
           paramstr.Append(ReplaceLuaKeyWord(param.Name));
         }
 
-        if(method.ReturnType != null && method.ReturnType != typeof(void))
-          sb.AppendFormat("---@return {0} {1}\n", GetLuaType(method.ReturnType, out paramOrgType), AppendParamOrgType(paramOrgType, methodRetComment));
+        if(method.ReturnType != null && method.ReturnType != typeof(void)) {
+          sb.AppendFormat("---@returns {0} {1}\n", GetLuaType(method.ReturnType, out paramOrgType), AppendParamOrgType(paramOrgType, methodRetComment));
+          sb.AppendFormat("---@return {0}\n", GetLuaType(method.ReturnType, out paramOrgType));
+        }
 
         if (method.IsStatic)      
           sb.AppendFormat("function {0}.{1}({2}) end\n", ReplaceLuaKeyWord(t.Name), ReplaceLuaKeyWord(method.Name), paramstr);     

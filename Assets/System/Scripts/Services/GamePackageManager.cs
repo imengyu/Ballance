@@ -36,28 +36,30 @@ namespace Ballance2.Services
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("框架模块管理器")]
+  [LuaApiNotes(@"框架包管理器，用于管理模块包的注册、加载、卸载等流程。一并提供了从模块包中读取资源的相关API。")]
   public class GamePackageManager : GameService
   {
     private static readonly string TAG = "GamePackageManager";
 
     /// <summary>
-    /// 系统模块的包名
+    /// 系统模块的包名，
     /// </summary>
-    [LuaApiDescription("系统模块的包名")]
+    [LuaApiDescription("系统核心模块的包名。系统核心模块包存放了一些系统初始化脚本、工具脚本等等，是 Ballance 核心模块包的依赖。")]
     public const string SYSTEM_PACKAGE_NAME = "system";
     /// <summary>
     /// 游戏主模块的包名
     /// </summary>
-    [LuaApiDescription("游戏主模块的包名")]
+    [LuaApiDescription("获取 Ballance 核心的模块包的包名。Ballance 核心模块包是 Ballance 游戏的主要模块，所有游戏代码与资源均在这个包中，是所有模组的依赖。")]
     public const string CORE_PACKAGE_NAME = "core";
 
+    [SLua.DoNotToLua]
     public GamePackageManager() : base(TAG) { }
 
     /// <summary>
-    /// 是否是无模块模式
+    /// 是否是无模块模式。无模块模式开启时不会加载第三方模组。
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("是否是无模块模式")]
+    [LuaApiDescription("是否是无模块模式。无模块模式开启时不会加载第三方模组。")]
     public bool NoPackageMode { get; set; }
 
     [SLua.DoNotToLua]
@@ -330,11 +332,11 @@ namespace Ballance2.Services
     /// 注册模块
     /// </summary>
     /// <param name="packageName">包名</param>
-    /// <param name="load">是否立即加载</param>
+    /// <param name="load">是否在注册后立即加载此模块</param>
     /// <returns>返回是否加载成功。要获得错误代码，请获取 <see cref="GameErrorChecker.LastError"/></returns>
     [LuaApiDescription("注册模块", "返回是否加载成功。要获得错误代码，请获取 GameErrorChecker.LastError")]
     [LuaApiParamDescription("packageName", "包名")]
-    [LuaApiParamDescription("load", "是否立即加载")]
+    [LuaApiParamDescription("load", "是否在注册后立即加载此模块")]
     public async Task<bool> RegisterPackage(string packageName)
     {
       bool forceEnablePackage = false;
@@ -823,12 +825,12 @@ namespace Ballance2.Services
     }
 
     /// <summary>
-    /// 检查指定需求的模块是否加载
+    /// 检查指定版本的模块是否加载
     /// </summary>
     /// <param name="packageName">模块包名</param>
     /// <param name="ver">模块所须最小版本</param>
-    /// <returns>如果已加载并且版本符合</returns>
-    [LuaApiDescription("检查指定需求的模块是否加载", "如果已加载并且版本符合")]
+    /// <returns>如果已加载并且版本符合，则返回 true，否则返回false</returns>
+    [LuaApiDescription("检查指定版本的模块是否加载", "如果已加载并且版本符合，则返回 true，否则返回false")]
     [LuaApiParamDescription("packageName", "模块包名")]
     [LuaApiParamDescription("ver", "模块所须最小版本")]
     public bool CheckRequiredPackage(string packageName, int ver)
@@ -1022,6 +1024,8 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("全局读取资源包中的代码资源", "返回CodeAsset实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiNotes(@"?> 全局读取时您需要填写指定包名，例如 `__com.mymod__/test.lua` 是读取 `com.mymod` 模组下的 test.lua 资源。")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public GamePackage.CodeAsset GetCodeAsset(string pathorname, out GamePackage package)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1038,6 +1042,8 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的文字资源", "返回TextAsset实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiNotes(@"?> 全局读取时您需要填写指定包名，例如 `__com.mymod__/test.txt` 是读取 `com.mymod` 模组下的 test.txt 资源。下方几个读取方法参数也是一样的，不再赘述。")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public TextAsset GetTextAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1053,6 +1059,7 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的 Prefab 资源", "返回资源实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public GameObject GetPrefabAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1068,6 +1075,7 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的 Texture 资源", "返回资源实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public Texture GetTextureAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1083,6 +1091,7 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的 Texture2D 资源", "返回资源实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public Texture2D GetTexture2DAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1098,6 +1107,7 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的 Sprite 资源", "返回资源实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public Sprite GetSpriteAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1113,6 +1123,7 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的 Material 资源", "返回资源实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public Material GetMaterialAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);
@@ -1128,6 +1139,7 @@ namespace Ballance2.Services
     /// </exception>
     [LuaApiDescription("读取模块资源包中的 AudioClip 资源", "返回资源实例，如果未找到，则返回null")]
     [LuaApiParamDescription("pathorname", "资源路径")]
+    [LuaApiException("RequireFailedException", "未找到指定的模块包。")]
     public AudioClip GetAudioClipAsset(string pathorname)
     {
       var pack = TryGetPackageByPath(pathorname, out var path);

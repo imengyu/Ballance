@@ -24,6 +24,7 @@ namespace Ballance2.Services.LuaService.LuaWapper.GameLuaWapperEvents
     /// Lua Particle 事件调用器
     /// </summary>
     [CustomLuaClass]
+    [LuaApiNoDoc]
     [LuaApiDescription("Lua Particle 事件调用器")]
     public class GameLuaObjectParticleEventCaller : GameLuaObjectEventCaller
     {

@@ -252,11 +252,17 @@ namespace Ballance2
     }
     public void OnShowSysInfoCheckChange()
     {
-      GameManager.Instance.GameActionStore.CallAction("DbgStatShowSystemInfo", CheckBoxSysInfo.isOn);
+      if(CheckBoxSysInfo.isOn)
+        DebugStat.Instance.WindowSystemInfo.Show();
+      else
+        DebugStat.Instance.WindowSystemInfo.Hide();
     }
     public void OnShowMemInfoCheckChange()
     {
-      GameManager.Instance.GameActionStore.CallAction("DbgStatShowStats", CheckBoxMemInfo.isOn);
+      if(CheckBoxMemInfo.isOn)
+        DebugStat.Instance.WindowStats.Show();
+      else
+        DebugStat.Instance.WindowStats.Hide();
     }
 
     public void CopyStacktrace()

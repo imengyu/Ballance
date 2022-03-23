@@ -23,7 +23,6 @@ namespace Ballance2.Utils
   /// <summary>
   /// Zip 帮助类。用于读取操作Zip文件
   /// </summary>
-  [SLua.CustomLuaClass]
   public class ZipUtils
   {
     /// <summary>

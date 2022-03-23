@@ -82,9 +82,9 @@ namespace Ballance2.Base
     [LuaApiDescription("获取事件名称")]
     public string EventName { get { return _EventName; } }
     /// <summary>
-    /// 获取事件接收器
+    /// 获取事件的接收器列表
     /// </summary>
-    [LuaApiDescription("获取事件接收器")]
+    [LuaApiDescription("获取事件的接收器列表")]
     public List<GameHandler> EventHandlers { get { return _EventHandlers; } }
   }
 

@@ -17,6 +17,7 @@ using UnityEngine;
  */
 
 [CustomLuaClass]
+    [LuaApiNoDoc]
 public class LuaDebugMini : MonoBehaviour {
 
   [DoNotToLua]

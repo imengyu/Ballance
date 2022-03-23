@@ -17,6 +17,7 @@ using UnityEngine.EventSystems;
 
 namespace Ballance2.Services.InputManager
 {
+  [CustomLuaClass]
   public delegate void GameObjectDelegate(GameObject go);
   
   /// <summary>
@@ -24,6 +25,7 @@ namespace Ballance2.Services.InputManager
   /// </summary>
   [CustomLuaClass]
   [LuaApiDescription("UI 事件侦听器")]
+  [LuaApiNotes("不再推荐使用。推荐使用UGUI的事件进行绑定。")]
   public class EventTriggerListener : EventTrigger
   {
     /// <summary>
@@ -44,6 +46,7 @@ namespace Ballance2.Services.InputManager
     /// <summary>
     /// 鼠标离开事件
     /// </summary>
+    [LuaApiDescription("鼠标离开事件")]
     public GameObjectDelegate onExit;
     /// <summary>
     /// 鼠标放开事件

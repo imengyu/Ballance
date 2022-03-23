@@ -26,6 +26,7 @@ using UnityEngine;
 namespace Ballance2.Entry
 {
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class GameDebugEntry : MonoBehaviour
   {
     public static GameDebugEntry Instance { get; private set; }

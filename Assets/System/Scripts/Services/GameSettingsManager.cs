@@ -34,6 +34,11 @@ namespace Ballance2.Services
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("系统设置管理器")]
+  [LuaApiNotes("游戏设置管理器，用于管理整个游戏的设置", @"使用方法：
+1. 通过 `GameSettingsManager.GetSettings('com.your.packagename')` 获取设置执行器。
+2. 设置执行器可调用 `RegisterSettingsUpdateCallback` 订阅用户将设置更改的信息，将设置保存至本地。
+3. UI可以通过 `NotifySettingsUpdate` 通知用户更改了设置信息。
+")]
   public static class GameSettingsManager
   {
     private static Dictionary<string, GameSettingsActuator> settingsActuators = null;
@@ -42,8 +47,8 @@ namespace Ballance2.Services
     /// 获取设置执行器
     /// </summary>
     /// <param name="packageName">设置执行器所使用包名</param>
-    /// <returns></returns>
-    [LuaApiDescription("获取设置执行器")]
+    /// <returns>返回设置执行器实例</returns>
+    [LuaApiDescription("获取设置执行器", "返回设置执行器实例")]
     [LuaApiParamDescription("packageName", "设置执行器所使用包名")]
     public static GameSettingsActuator GetSettings(string packageName)
     {
@@ -89,10 +94,10 @@ namespace Ballance2.Services
   }
 
   /// <summary>
-  /// 设置执行器
+  /// 设置执行器，用于管理具体的设置条目
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("设置执行器")]
+  [LuaApiDescription("设置执行器，用于管理具体的设置条目")]
   public class GameSettingsActuator
   {
     /// <summary>

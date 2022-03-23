@@ -33,6 +33,19 @@ namespace Ballance2.Utils
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("文件工具类")]
+  [LuaApiNotes(@"文件工具类。提供了文件操作相关工具方法。
+
+Lua 中不允许直接访问文件系统，因此此处提供了一些方法来允许Lua读写本地配置文件,操作或删除本地目录等。
+
+但注意，这些API不允许访问用户文件，只允许访问以下目录：
+* 游戏主目录（Windows/linux exe同级与子目录）
+* Application.dataPath
+* Application.persistentDataPath
+* Application.temporaryCachePath
+* Application.streamingAssetsPath
+
+尝试访问不可访问的目录将会抛出异常。
+")]
   public class FileUtils
   {
     private static byte[] zipHead = new byte[4] { 0x50, 0x4B, 0x03, 0x04 };
@@ -45,6 +58,7 @@ namespace Ballance2.Utils
     /// <returns>如果文件头匹配则返回true，否则返回false</returns>
     [LuaApiDescription("检测文件头是不是zip", "如果文件头匹配则返回true，否则返回false")]
     [LuaApiParamDescription("file", "要检测的文件路径")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static bool TestFileIsZip(string file)
     {
       return TestFileHead(file, zipHead);
@@ -56,6 +70,7 @@ namespace Ballance2.Utils
     /// <returns>如果文件头匹配则返回true，否则返回false</returns>
     [LuaApiDescription("检测文件头是不是unityFs", "如果文件头匹配则返回true，否则返回false")]
     [LuaApiParamDescription("file", "要检测的文件路径")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static bool TestFileIsAssetBundle(string file)
     {
       return TestFileHead(file, untyFsHead);
@@ -69,6 +84,7 @@ namespace Ballance2.Utils
     [LuaApiDescription("检测自定义文件头", "如果文件头匹配则返回true，否则返回false")]
     [LuaApiParamDescription("file", "要检测的文件路径")]
     [LuaApiParamDescription("head", "自定义文件头")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static bool TestFileHead(string file, byte[] head)
     {
       SecurityUtils.CheckFileAccess(file);
@@ -83,6 +99,7 @@ namespace Ballance2.Utils
     [LuaApiParamDescription("path", "文件路径")]
     [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
     [LuaApiParamDescription("data", "要写入的文件")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static void WriteFile(string path, bool append, string data)
     {
       SecurityUtils.CheckFileAccess(path);
@@ -100,13 +117,15 @@ namespace Ballance2.Utils
     public static bool DirectoryExists(string path) { return Directory.Exists(path); }
     [LuaApiDescription("创建目录")]
     [LuaApiParamDescription("path", "目录路径")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static void CreateDirectory(string path)
     {
       SecurityUtils.CheckFileAccess(path);
       Directory.CreateDirectory(path);
     }
-    [LuaApiDescription("读取文件至字符串", "返回文件路径")]
+    [LuaApiDescription("读取文件至字符串", "返回文件内容")]
     [LuaApiParamDescription("path", "文件路径")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static string ReadFile(string path)
     {
       SecurityUtils.CheckFileAccess(path);
@@ -128,6 +147,7 @@ namespace Ballance2.Utils
     /// <returns>返回字节数组</returns>
     [LuaApiDescription("读取文件所有内容为字节数组。注意：此 API 不能读取用户个人的本地文件。", "返回字节数组")]
     [LuaApiParamDescription("file", "文件路径")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static byte[] ReadAllToBytes(string file)
     {
       SecurityUtils.CheckFileAccess(file);
@@ -139,6 +159,7 @@ namespace Ballance2.Utils
     }
     [LuaApiDescription("删除指定的文件或目录》注意：此 API 不能删除用户个人的本地文件。")]
     [LuaApiParamDescription("path", "文件")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
     public static void RemoveFile(string path)
     {
       SecurityUtils.CheckFileAccess(path);
@@ -148,6 +169,16 @@ namespace Ballance2.Utils
       else if (File.Exists(path))
         File.Delete(path);
     }
+    [LuaApiDescription("删除指定的目录》注意：此 API 不能删除用户个人的本地文件。")]
+    [LuaApiParamDescription("path", "目录的路径")]
+    [LuaApiException("FileAccessException", "尝试访问不可访问的目录将会抛出异常。")]
+    public static void RemoveDirectory(string path)
+    {
+      SecurityUtils.CheckFileAccess(path);
+      if (Directory.Exists(path))
+        Directory.Delete(path, true);
+    }
+    
 
     /// <summary>
     /// 把文件大小（字节）按单位转换为可读的字符串

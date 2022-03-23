@@ -21,10 +21,10 @@ using UnityEngine;
 namespace Ballance2.Utils
 {
   /// <summary>
-  /// 通用帮助类
+  /// 通用帮助类，提供了一些工具方法
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("通用帮助类")]
+  [LuaApiDescription("通用帮助类，提供了一些工具方法")]
   public class CommonUtils
   {
     private static System.Random random = new System.Random();

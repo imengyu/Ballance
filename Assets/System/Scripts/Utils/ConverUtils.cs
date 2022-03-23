@@ -20,7 +20,7 @@ namespace Ballance2.Utils
   /// 字符串转换类
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("字符串转换类")]
+  [LuaApiNoDoc()]
   public static class ConverUtils
   {
     private static readonly string TAG = "ConverUtils";

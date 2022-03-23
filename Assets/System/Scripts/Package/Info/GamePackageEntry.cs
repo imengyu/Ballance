@@ -18,6 +18,7 @@ namespace Ballance2.Package
   /// 所有模块代码层的处理事件、回调都将在这里触发。
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class GamePackageEntry {
 
     //事件回调

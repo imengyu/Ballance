@@ -87,26 +87,6 @@ namespace Ballance2.Base.Handler
       }
       return false;
     }
-    public override GameActionCallResult CallActionHandler(params object[] pararms)
-    {
-      if (Destroyed) return null;
-      if (initSuccess)
-      {
-        GameActionCallResult rs = null;
-        object rso = null;
-        object[] pararms2 = new object[pararms.Length + handlerArgs.Length];
-        for (int i = 0; i < pararms.Length; i++)
-          pararms2[i] = pararms[i];
-        for (int i = 0; i < handlerArgs.Length; i++)
-          pararms2[i + pararms.Length] = handlerArgs[i];
-        if (targetObject != null) rso = handlerFunc.call(targetObject.LuaSelf, pararms2);
-        else rso = handlerFunc.call(pararms2);
-        if (rso is GameActionCallResult)
-          rs = rso as GameActionCallResult;
-        return rs;
-      }
-      return null;
-    }
     public override object CallCustomHandler(params object[] pararms)
     {
       if (Destroyed) return false;

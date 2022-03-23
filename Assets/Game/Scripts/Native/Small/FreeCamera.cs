@@ -13,7 +13,7 @@ using static Ballance2.Services.GameManager;
  * FreeCamera.cs
  * 
  * 用途：
- * 自由摄像机脚本。
+ * 自由摄像机脚本，包含了方向键移动，鼠标左键拖动，右键旋转视图，滚轮缩放功能。
  * 
  * 作者：
  * mengyu
@@ -22,21 +22,36 @@ using static Ballance2.Services.GameManager;
 namespace Ballance2.Game
 {
   [CustomLuaClass]
+  [LuaApiDescription("自由摄像机脚本，包含了方向键移动，鼠标左键拖动，右键旋转视图，滚轮缩放功能。")]
   public class FreeCamera : MonoBehaviour
   {
-    public bool EnableDebug = true;
+    [Tooltip("是否启用线框渲染")]
+    [LuaApiDescription("是否启用线框渲染")]
     public bool Wireframe = false;
+    [Tooltip("是否启用当前摄像机上的 AudioListener")]
+    [LuaApiDescription("是否启用当前摄像机上的 AudioListener")]
     public bool Audio = true;
+    [Tooltip("是否启用雾渲染")]
+    [LuaApiDescription("是否启用雾渲染")]
     public bool Fog = true;
+    [Tooltip("是否启用天空盒渲染")]
+    [LuaApiDescription("是否启用天空盒渲染")]
     public bool SkyBox = true;
+    [Tooltip("获取当前摄像机的一个实例。")]
+    [LuaApiDescription("获取当前摄像机的一个实例。")]
     public static FreeCamera Instance;
+    [Tooltip("摄像机速度更改事件")]
+    [LuaApiDescription("摄像机速度更改事件")]
     public VoidDelegate onCamSpeedChanged;
 
     [DoNotToLua]
+    [Tooltip("眼睛鼠标")]
     public Texture2D cursorDragEyeTexture;
     [DoNotToLua]
+    [Tooltip("拖动时的眼睛鼠标")]
     public Texture2D cursorDragEyeFreeTexture;
     [DoNotToLua]
+    [Tooltip("拖动时的鼠标")]
     public Texture2D cursorDragHandTexture;
     private AudioListener AudioListener;
 
@@ -67,18 +82,38 @@ namespace Ballance2.Game
         mainCam.clearFlags = _SkyBox ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
     }
 
+    [Tooltip("摄像机键盘移动速度")]
+    [LuaApiDescription("摄像机键盘移动速度")]
     public float cameraSpeed = 4f;
+    [Tooltip("摄像机鼠标水平移动速度")]
+    [LuaApiDescription("摄像机鼠标水平移动速度")]
     public float m_moveSensitivityX = 1f;
+    [Tooltip("摄像机鼠标垂直移动速度")]
+    [LuaApiDescription("摄像机鼠标垂直移动速度")]
     public float m_moveSensitivityY = 1f;
+    [Tooltip("摄像机缩放速度")]
+    [LuaApiDescription("摄像机缩放速度")]
     public float m_moveSensitivityZoom = 1f;
     //Roate camera
+    [Tooltip("摄像机水平移动速度")]
+    [LuaApiDescription("摄像机水平移动速度")]
     public float m_sensitivityX = 10f;
+    [Tooltip("摄像机垂直移动速度")]
+    [LuaApiDescription("摄像机垂直移动速度")]
     public float m_sensitivityY = 10f;
     // 水平方向的 镜头转向
+    [Tooltip("摄像机转向最小角度")]
+    [LuaApiDescription("摄像机转向最小角度")]
     public float m_minimumX = -360f;
+    [Tooltip("摄像机转向最大角度")]
+    [LuaApiDescription("摄像机转向最大角度")]
     public float m_maximumX = 360f;
     // 垂直方向的 镜头转向 (这里给个限度 最大仰角为45°)
+    [Tooltip("镜头转向垂直最小仰角")]
+    [LuaApiDescription("镜头转向垂直最小仰角")]
     public float m_minimumY = -45f;
+    [Tooltip("镜头转向垂直最大仰角")]
+    [LuaApiDescription("镜头转向垂直最大仰角")]
     public float m_maximumY = 45f;
 
     private float m_rotationY = 0f;
@@ -105,146 +140,145 @@ namespace Ballance2.Game
       if (Fog != _Fog) UpdateFog();
       if (SkyBox != _SkyBox) UpdateSkyBox();
 
-      if (EnableDebug)
+
+      //在GUI上拖动除外
+      if (!EventSystem.current.IsPointerOverGameObject() && GUIUtility.hotControl == 0)
       {
-        //在GUI上拖动除外
-        if (!EventSystem.current.IsPointerOverGameObject() && GUIUtility.hotControl == 0)
+        const bool mouseLeftMoveCamera = true;
+
+        //左键(或者中键)平移
+        //===============================
+
+        if ((mouseLeftMoveCamera && Input.GetMouseButton(0)) || Input.GetMouseButton(2))
         {
-          const bool mouseLeftMoveCamera = true;
+          Vector3 p0 = transform.position;
+          Vector3 p01 = p0 - transform.right * Input.GetAxisRaw("Mouse X") * m_moveSensitivityX * Time.timeScale;
+          transform.position = p01 - transform.up * Input.GetAxisRaw("Mouse Y") * m_moveSensitivityY * Time.timeScale;
 
-          //左键(或者中键)平移
-          //===============================
+          Cursor.SetCursor(cursorDragHandTexture, Vector2.zero, CursorMode.Auto);
+        }
 
-          if ((mouseLeftMoveCamera && Input.GetMouseButton(0)) || Input.GetMouseButton(2))
-          {
-            Vector3 p0 = transform.position;
-            Vector3 p01 = p0 - transform.right * Input.GetAxisRaw("Mouse X") * m_moveSensitivityX * Time.timeScale;
-            transform.position = p01 - transform.up * Input.GetAxisRaw("Mouse Y") * m_moveSensitivityY * Time.timeScale;
-
-            Cursor.SetCursor(cursorDragHandTexture, Vector2.zero, CursorMode.Auto);
-          }
-
-          //右键旋转
-          //===============================
+        //右键旋转
+        //===============================
 
 #if (UNITY_IPHONE || UNITY_ANDROID) && !UNITY_EDITOR
-          //移动端是两个手指旋转
-          else if (Input.touchCount > 0 && lastDownTouchId >= 0)
-          {
-              for (int i = 0; i < Input.touches.Length; i++)
-              {
-                  if (Input.touches[i].fingerId == lastDownTouchId && Input.touches[i].phase == TouchPhase.Moved)
-                  {
-                      float m_rotationX = transform.localEulerAngles.y + Input.touches[i].deltaPosition.x * Time.deltaTime * m_sensitivityX;
-                      m_rotationY += Input.touches[i].deltaPosition.y * Time.deltaTime * m_sensitivityY;
-                      m_rotationY = Mathf.Clamp(m_rotationY, m_minimumY, m_maximumY);
-                      transform.localEulerAngles = new Vector3(-m_rotationY, m_rotationX, 0);
-                      break;
-                  }
-              }
-          }
-          else lastDownTouchId = 0;
+        //移动端是两个手指旋转
+        else if (Input.touchCount > 0 && lastDownTouchId >= 0)
+        {
+            for (int i = 0; i < Input.touches.Length; i++)
+            {
+                if (Input.touches[i].fingerId == lastDownTouchId && Input.touches[i].phase == TouchPhase.Moved)
+                {
+                    float m_rotationX = transform.localEulerAngles.y + Input.touches[i].deltaPosition.x * Time.deltaTime * m_sensitivityX;
+                    m_rotationY += Input.touches[i].deltaPosition.y * Time.deltaTime * m_sensitivityY;
+                    m_rotationY = Mathf.Clamp(m_rotationY, m_minimumY, m_maximumY);
+                    transform.localEulerAngles = new Vector3(-m_rotationY, m_rotationX, 0);
+                    break;
+                }
+            }
+        }
+        else lastDownTouchId = 0;
 #else
-          else if (Input.GetMouseButton(1))
-          {
-            float m_rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * m_sensitivityX;
-            m_rotationY += Input.GetAxis("Mouse Y") * m_sensitivityY;
-            m_rotationY = Mathf.Clamp(m_rotationY, m_minimumY, m_maximumY);
+        else if (Input.GetMouseButton(1))
+        {
+          float m_rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * m_sensitivityX;
+          m_rotationY += Input.GetAxis("Mouse Y") * m_sensitivityY;
+          m_rotationY = Mathf.Clamp(m_rotationY, m_minimumY, m_maximumY);
 
-            transform.localEulerAngles = new Vector3(-m_rotationY, m_rotationX, 0);
+          transform.localEulerAngles = new Vector3(-m_rotationY, m_rotationX, 0);
 
-            Cursor.SetCursor(cursorDragEyeFreeTexture, Vector2.zero, CursorMode.Auto);
-          }
-          if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))
-          {
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-          }
+          Cursor.SetCursor(cursorDragEyeFreeTexture, Vector2.zero, CursorMode.Auto);
+        }
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))
+        {
+          Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
 #endif  
-          //在右键按下时
-          if (Input.GetMouseButton(1))
+        //在右键按下时
+        if (Input.GetMouseButton(1))
+        {
+          //空格键抬升高度
+          if (Input.GetKey(KeyCode.Q))
           {
-            //空格键抬升高度
-            if (Input.GetKey(KeyCode.Q))
-            {
-              transform.Translate(Vector3.up * cameraSpeed * Time.deltaTime, Space.Self);
-            }
-            if (Input.GetKey(KeyCode.E))
-            {
-              transform.Translate(Vector3.down * cameraSpeed * Time.deltaTime, Space.Self);
-            }
-            //w键
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-            {
-              this.gameObject.transform.Translate(new Vector3(0, 0, cameraSpeed * Time.deltaTime));
-            }
-            //s键
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-            {
-              this.gameObject.transform.Translate(new Vector3(0, 0, -cameraSpeed * Time.deltaTime));
-            }
-            //a键
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            {
-              this.gameObject.transform.Translate(new Vector3(-(cameraSpeed) * Time.deltaTime, 0, 0));
-            }
-            //d键
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-              this.gameObject.transform.Translate(new Vector3((cameraSpeed) * Time.deltaTime, 0, 0));
-            }
-
-            //增加移动速度
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            {
-              if (cameraSpeed < 1)
-                cameraSpeed -= 0.01f;
-              else if (cameraSpeed < 5)
-                cameraSpeed -= 0.2f;
-              else if (cameraSpeed < 10)
-                cameraSpeed -= 2f;
-              else if (cameraSpeed < 150)
-                cameraSpeed -= 10f;
-              else if (cameraSpeed < 500)
-                cameraSpeed -= 50f;
-              else 
-                cameraSpeed -= 100f;
-
-              onCamSpeedChanged?.Invoke();
-            }
-            //减少移动速度
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
-            {
-              if (cameraSpeed < 1)
-                cameraSpeed += 0.01f;
-              else if (cameraSpeed < 10)
-                cameraSpeed += 0.2f;
-              else if (cameraSpeed < 20)
-                cameraSpeed += 2f;
-              else if (cameraSpeed < 150)
-                cameraSpeed += 10f;
-              else if (cameraSpeed < 500)
-                cameraSpeed += 50f;
-              else cameraSpeed += 100f;
-
-              onCamSpeedChanged?.Invoke();
-            }
+            transform.Translate(Vector3.up * cameraSpeed * Time.deltaTime, Space.Self);
           }
-          else
+          if (Input.GetKey(KeyCode.E))
           {
-            //（缩小）后退
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            {
-              this.gameObject.transform.Translate(new Vector3(0, 0, cameraSpeed * -m_moveSensitivityZoom * Time.deltaTime));
-            }
-            //（放大）前进
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
-            {
-              this.gameObject.transform.Translate(new Vector3(0, 0, cameraSpeed * m_moveSensitivityZoom * Time.deltaTime));
-            }
+            transform.Translate(Vector3.down * cameraSpeed * Time.deltaTime, Space.Self);
+          }
+          //w键
+          if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+          {
+            this.gameObject.transform.Translate(new Vector3(0, 0, cameraSpeed * Time.deltaTime));
+          }
+          //s键
+          if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+          {
+            this.gameObject.transform.Translate(new Vector3(0, 0, -cameraSpeed * Time.deltaTime));
+          }
+          //a键
+          if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+          {
+            this.gameObject.transform.Translate(new Vector3(-(cameraSpeed) * Time.deltaTime, 0, 0));
+          }
+          //d键
+          if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+          {
+            this.gameObject.transform.Translate(new Vector3((cameraSpeed) * Time.deltaTime, 0, 0));
+          }
 
+          //增加移动速度
+          if (Input.GetAxis("Mouse ScrollWheel") < 0)
+          {
+            if (cameraSpeed < 1)
+              cameraSpeed -= 0.01f;
+            else if (cameraSpeed < 5)
+              cameraSpeed -= 0.2f;
+            else if (cameraSpeed < 10)
+              cameraSpeed -= 2f;
+            else if (cameraSpeed < 150)
+              cameraSpeed -= 10f;
+            else if (cameraSpeed < 500)
+              cameraSpeed -= 50f;
+            else 
+              cameraSpeed -= 100f;
+
+            onCamSpeedChanged?.Invoke();
+          }
+          //减少移动速度
+          if (Input.GetAxis("Mouse ScrollWheel") > 0)
+          {
+            if (cameraSpeed < 1)
+              cameraSpeed += 0.01f;
+            else if (cameraSpeed < 10)
+              cameraSpeed += 0.2f;
+            else if (cameraSpeed < 20)
+              cameraSpeed += 2f;
+            else if (cameraSpeed < 150)
+              cameraSpeed += 10f;
+            else if (cameraSpeed < 500)
+              cameraSpeed += 50f;
+            else cameraSpeed += 100f;
+
+            onCamSpeedChanged?.Invoke();
           }
         }
+        else
+        {
+          //（缩小）后退
+          if (Input.GetAxis("Mouse ScrollWheel") < 0)
+          {
+            this.gameObject.transform.Translate(new Vector3(0, 0, cameraSpeed * -m_moveSensitivityZoom * Time.deltaTime));
+          }
+          //（放大）前进
+          if (Input.GetAxis("Mouse ScrollWheel") > 0)
+          {
+            this.gameObject.transform.Translate(new Vector3(0, 0, cameraSpeed * m_moveSensitivityZoom * Time.deltaTime));
+          }
+
+        }
       }
+      
     }
     private void LateUpdate()
     {

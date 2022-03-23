@@ -39,7 +39,16 @@ namespace Ballance2.Services
   /// <summary>
   /// 游戏管理器
   /// </summary>
-  [SLua.CustomLuaClass]
+  [SLua.CustomLuaClass] 
+  [LuaApiDescription("游戏管理器")]
+  [LuaApiNotes(@"
+游戏管理器是整个游戏框架最基础的管理组件，负责游戏的启动、初始化、退出功能。当然，它也提供了很多方便的API供游戏脚本调用。
+
+要获取游戏管理器实例，可以使用
+```lua
+GameManager.Instance
+```
+")]
   public class GameManager : GameService
   {
     public GameManager() : base("GameManager") {}
@@ -47,59 +56,74 @@ namespace Ballance2.Services
     #region 全局关键组件变量
 
     /// <summary>
-    /// 实例
+    /// 获取当前 GameManager 实例
     /// </summary>
-    [LuaApiDescription("实例")]
+    [LuaApiDescription("获取当前 GameManager 实例")]
+    [LuaApiNotes("使用 `GameManager.Instance` 可以快速获取 GameManager 的实例，这是一个非常有用的方法。")]
     public static GameManager Instance { get; private set; }
     /// <summary>
-    /// GameMediator 实例
+    /// 获取中介者 GameMediator 实例
     /// </summary>
-    [LuaApiDescription("GameMediator 实例")]
+    [LuaApiDescription("获取中介者 GameMediator 实例")]
     public static GameMediator GameMediator { get; internal set; }
     /// <summary>
-    /// 系统设置实例
+    /// 获取系统设置实例
     /// </summary>
-    [LuaApiDescription("系统设置实例")]
+    [LuaApiDescription("获取系统设置实例。这是 core 模块的设置实例，与 `GameSettingsManager.GetSettings(\"core\")` 获取的是相同的。")]
     public GameSettingsActuator GameSettings { get; private set; }
     /// <summary>
-    /// 基础摄像机
+    /// 获取基础摄像机
     /// </summary>
-    [LuaApiDescription("基础摄像机")]
+    [LuaApiDescription("获取基础摄像机。基础摄像机是游戏摄像机还未加载时激活的摄像机，当游戏摄像机加载完成需要切换时，本摄像机应该禁用。")]
     public Camera GameBaseCamera { get; private set; }
     /// <summary>
-    /// 根Canvas
+    /// 获取根Canvas
     /// </summary>
-    [LuaApiDescription("根Canvas")]
+    [LuaApiDescription("获取根Canvas")]
     public RectTransform GameCanvas { get; internal set; }
     /// <summary>
-    /// 主虚拟机
+    /// 获取主虚拟机
     /// </summary>
-    [LuaApiDescription("主虚拟机")]
+    [LuaApiDescription("获取主虚拟机")]
+    [LuaApiNotes("此对象不公开，在 Lua 无法使用。")]
     public LuaSvr GameMainEnv { get; internal set; }
     /// <summary>
-    /// 游戏全局Lua虚拟机
+    /// 获取游戏全局Lua虚拟机
     /// </summary>
-    [LuaApiDescription("游戏全局Lua虚拟机")]
+    [LuaApiDescription("获取游戏全局Lua虚拟机")]
+    [LuaApiNotes("此对象不公开，在 Lua 无法使用。")]
     public LuaSvr.MainState GameMainLuaState { get; private set; }
     /// <summary>
-    /// 调试命令控制器
+    /// 获取调试命令控制器
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("调试命令控制器")]
+    [LuaApiDescription("获取调试命令控制器。可以获取全局 GameDebugCommandServer 单例，你可以通过它来注册你的调试命令。")]
     public GameDebugCommandServer GameDebugCommandServer { get; private set; }
     /// <summary>
-    /// 根GameActionStore
+    /// 获取全局灯光实例
     /// </summary>
-    [LuaApiDescription("根GameActionStore")]
-    public GameActionStore GameActionStore { get; internal set; }
-    /// <summary>
-    /// 全局灯光实例
-    /// </summary>
-    [LuaApiDescription("全局灯光实例")]
+    [LuaApiDescription("获取全局灯光实例。这是一个全局照亮的环境光, 与游戏内的主光源是同一个。")]
     public static Light GameLight { get; private set; }
 
     private static bool _DebugMode = false;
 
+    /// <summary>
+    /// 获取或者设置当前是否处于开发者模式
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取或者设置当前是否处于开发者模式")]
+    [LuaApiNotes(@"设置调试模式后需要重启才能生效。
+    
+如果是调试模式，在 lua 中 会设置 `BALLANCE_DEBUG` 全局变量为 `true`，为了方便你可以通过判断这个变量来获取是不是调试模式：
+```lua
+---这两个功能是一样的
+if GameManager.DebugMode then
+  --是调试模式，执行某些功能
+end
+if BALLANCE_DEBUG then
+  --是调试模式，执行某些功能
+end
+```")]
     public static bool DebugMode { 
       get {
         return _DebugMode;
@@ -156,7 +180,6 @@ namespace Ballance2.Services
       InitCommands();
       InitVideoSettings();
 
-      GameActionStore = GameMediator.RegisterActionStore(GameSystemPackage.GetSystemPackage(), "System");
       Profiler.BeginSample("BindLua");
       
       GameMainEnv = new LuaSvr();      
@@ -303,13 +326,6 @@ namespace Ballance2.Services
       var pm = GetSystemService<GamePackageManager>();
       var list = pm.LoadPackageRegisterInfo();
       pm.ScanUserPackages(list);
-
-      //Save action
-      GameActionStore.RegisterAction(GamePackage.GetSystemPackage(), "SavePackageRegisterInfo", "GameManager", (param) =>
-      {
-        pm.SavePackageRegisterInfo();
-        return GameActionCallResult.SuccessResult;
-      }, null);
 
       foreach (var info in list)
       {
@@ -973,9 +989,10 @@ namespace Ballance2.Services
     }
 
     /// <summary>
-    /// 开始退出游戏流程
+    /// 请求开始退出游戏流程
     /// </summary>
-    [LuaApiDescription("退出游戏")]
+    [LuaApiDescription("请求开始退出游戏流程")]
+    [LuaApiNotes("调用此 API 将立即开始退出游戏流程，无法取消。")]
     public void QuitGame()
     {
       Log.D(TAG, "QuitGame");
@@ -990,6 +1007,7 @@ namespace Ballance2.Services
     /// 重启游戏
     /// </summary>
     [LuaApiDescription("重启游戏")]
+    [LuaApiNotes("**不推荐**使用，本重启函数只能关闭框架然后重新运行一次，会出现很多不可预料的问题，应该退出游戏让用户手动重启。")]
     public void RestartGame()
     {
       QuitGame();
@@ -1100,16 +1118,18 @@ namespace Ballance2.Services
     /// <returns>返回服务实例，如果没有找到，则返回null</returns>
     [LuaApiDescription("获取系统服务", "返回服务实例，如果没有找到，则返回null")]
     [LuaApiParamDescription("name", "服务名称")]
+    [LuaApiNotes("使用 `GameManager.GetSystemService(name)` 来获取其他游戏基础服务组件的实例。", @"
+下面的示例演示了如何获取一些系统服务。
+```lua
+local PackageManager = GameManager.GetSystemService('GamePackageManager') ---@type GamePackageManager
+local UIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
+local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type GameSoundManager
+```
+")]
     public static GameService GetSystemService(string name)
     {
       return GameSystem.GetSystemService(name);
     }
-
-    #endregion
-
-    #region 虚拟机执行方法
-
-
 
     #endregion
 
@@ -1120,8 +1140,9 @@ namespace Ballance2.Services
     /// <summary>
     /// 进行截图
     /// </summary>
-    [LuaApiDescription("进行截图")]
-    public void CaptureScreenshot() {
+    [LuaApiDescription("进行截图", "返回截图保存的路径")]
+    [LuaApiNotes("截图默认保存至 `{Application.persistentDataPath}/Screenshot/` 目录下。")]
+    public string CaptureScreenshot() {
       //创建目录
       string saveDir = Application.persistentDataPath + "/Screenshot/";
       if(!Directory.Exists(saveDir))
@@ -1133,6 +1154,7 @@ namespace Ballance2.Services
       Log.D(TAG, "CaptureScreenshot to " + savePath);
       //提示
       Delay(1.0f, () => GetSystemService<GameUIManager>().GlobalToast(I18N.I18N.TrF("global.CaptureScreenshotSuccess", "", savePath)));
+      return savePath;
     }
 
     /// <summary>
@@ -1141,6 +1163,7 @@ namespace Ballance2.Services
     /// <param name="visible">是否显示</param>
     [LuaApiDescription("设置基础摄像机状态")]
     [LuaApiParamDescription("visible", "是否显示")]
+    [LuaApiNotes("基础摄像机是游戏摄像机还未加载时激活的摄像机，当游戏摄像机加载完成需要切换时，应该调用此API禁用本摄像机。")]
     public void SetGameBaseCameraVisible(bool visible)
     {
       if (visible)
@@ -1174,10 +1197,7 @@ namespace Ballance2.Services
     /// 隐藏全局初始Loading动画
     /// </summary>
     [LuaApiDescription("隐藏全局初始Loading动画")]
-    public void HideGlobalStartLoading() { 
-      GameEntry.Instance.GameGlobalIngameLoading.SetActive(false); 
-      Log.D(TAG, "HideGlobalStartLoading"); 
-    }
+    public void HideGlobalStartLoading() { GameEntry.Instance.GameGlobalIngameLoading.SetActive(false); }
     /// <summary>
     /// 显示全局初始Loading动画
     /// </summary>
@@ -1235,7 +1255,7 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
-    [LuaApiDescription("新建一个新的 GameObject ", "返回新对象")]
+    [LuaApiDescription("新建一个新的空 GameObject ", "返回新对象")]
     [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstanceNewGameObject(string name)
     {
@@ -1254,9 +1274,10 @@ namespace Ballance2.Services
     /// <param name="append">是否追加写入文件，否则为覆盖写入</param>
     /// <param name="path">要写入的文件</param>
     [LuaApiDescription("写入字符串至指定文件")]
-    [LuaApiParamDescription("path", "文件路径")]
+    [LuaApiParamDescription("path", "要写入的文件路径")]
     [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
-    [LuaApiParamDescription("data", "要写入的文件")]
+    [LuaApiParamDescription("data", "要写入的文件数据")]
+    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public void WriteFile(string path, bool append, string data) { FileUtils.WriteFile(path, append, data); }
     /// <summary>
     /// 检查文件是否存在
@@ -1264,7 +1285,8 @@ namespace Ballance2.Services
     /// <param name="path">文件路径</param>
     /// <returns>返回文件是否存在</returns>
     [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
-    [LuaApiParamDescription("path", "文件路径")]
+    [LuaApiParamDescription("path", "要检查的文件路径")]
+    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public bool FileExists(string path) { return FileUtils.FileExists(path); }
     /// <summary>
     /// 检查目录是否存在
@@ -1272,14 +1294,16 @@ namespace Ballance2.Services
     /// <param name="path">目录路径</param>
     /// <returns>返回是否存在</returns>
     [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
-    [LuaApiParamDescription("path", "文件路径")]
+    [LuaApiParamDescription("path", "要读取的文件路径")]
+    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public bool DirectoryExists(string path) { return FileUtils.DirectoryExists(path); }
     /// <summary>
     /// 创建目录
     /// </summary>
     /// <param name="path">目录路径</param>
     [LuaApiDescription("创建目录")]
-    [LuaApiParamDescription("path", "目录路径")]
+    [LuaApiParamDescription("path", "创建目录的路径")]
+    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public void CreateDirectory(string path) { FileUtils.CreateDirectory(path); }
     /// <summary>
     /// 读取文件至字符串
@@ -1287,22 +1311,41 @@ namespace Ballance2.Services
     /// <param name="path">文件</param>
     /// <returns>返回文件男人</returns>
     [LuaApiDescription("读取文件至字符串", "返回文件路径")]
-    [LuaApiParamDescription("path", "文件路径")]
+    [LuaApiParamDescription("path", "要读取的文件路径")]
+    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public string ReadFile(string path) { return FileUtils.ReadFile(path); }
     /// <summary>
     /// 删除指定的文件或目录
     /// </summary>
     /// <param name="path">文件</param>
     [LuaApiDescription("删除指定的文件或目录")]
-    [LuaApiParamDescription("path", "文件")]
+    [LuaApiParamDescription("path", "要删除文件的路径")]
     public void RemoveFile(string path) { FileUtils.RemoveFile(path); }
+    /// <summary>
+    /// 删除指定的目录
+    /// </summary>
+    /// <param name="path">文件</param>
+    [LuaApiDescription("删除指定的目录")]
+    [LuaApiParamDescription("path", "要删除目录的路径")]
+    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
+    public void RemoveDirectory(string path) { FileUtils.RemoveDirectory(path); }
 
     /// <summary>
-    /// 延时
+    /// 延时执行回调
     /// </summary>
     /// <param name="sec">延时时长，秒</param>
     /// <param name="callback">回调</param>
-    [LuaApiDescription("延时. Lua中不推荐使用这个函数，请使用LuaTimer")]
+    [LuaApiDescription("延时执行回调")]
+    [LuaApiParamDescription("sec", "延时时长，秒")]
+    [LuaApiParamDescription("callback", "回调")]
+    [LuaApiNotes("Lua中不推荐使用这个函数，请使用 LuaTimer ", @"
+下面的示例演示了演示的使用：
+```lua
+GameManager.Instance:Delay(1.5, function() 
+  --此回调将在1.5秒后被调用。
+end)
+```
+")]
     public void Delay(float sec, VoidDelegate callback)
     {
       var d = new DelayItem();
@@ -1330,7 +1373,30 @@ namespace Ballance2.Services
     /// <param name="name">场景名字</param>
     /// <returns>返回是否成功</returns>
     [LuaApiDescription("进入指定逻辑场景", "返回是否成功")]
-    [LuaApiParamDescription("name", "场景名字")]
+    [LuaApiParamDescription("name", "场景名字")]    
+    [LuaApiNotes(@"
+逻辑场景是类似于 Unity 场景的功能，但是它无需频繁加载卸载。切换逻辑场景实际上是在同一个 Unity 场景中操作，因此速度快。
+
+切换逻辑场景将发出 EVENT_LOGIC_SECNSE_QUIT 与 EVENT_LOGIC_SECNSE_ENTER 全局事件，子模块根据这两个事件来隐藏或显示自己的东西，从而达到切换场景的效果。
+", @"
+下面的示例演示了如何监听进入离开逻辑场景，并显示或隐藏自己的内容：
+```lua
+GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, 'Intro', function (evtName, params)
+  local scense = params[1]
+  if(scense == 'Intro') then 
+    --进入场景时显示自己的东西
+  end
+  return false
+end)    
+GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, 'Intro', function (evtName, params)
+  local scense = params[1]
+  if(scense == 'Intro') then 
+    --离开场景时隐藏自己的东西
+  end
+  return false
+end)
+```
+")]
     public bool RequestEnterLogicScense(string name)
     {
       int curIndex = logicScenses.IndexOf(name);

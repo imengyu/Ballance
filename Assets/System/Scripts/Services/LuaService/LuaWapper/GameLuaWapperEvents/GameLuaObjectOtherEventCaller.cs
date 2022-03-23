@@ -23,6 +23,7 @@ namespace Ballance2.Services.LuaService.LuaWapper.GameLuaWapperEvents
     /// Lua 其他不常用事件调用器
     /// </summary>
     [CustomLuaClass]
+    [LuaApiNoDoc]
     [LuaApiDescription("Lua 其他不常用事件调用器")]
     public class GameLuaObjectOtherEventCaller : GameLuaObjectEventCaller
     {

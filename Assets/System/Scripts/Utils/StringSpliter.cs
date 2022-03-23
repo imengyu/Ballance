@@ -24,6 +24,7 @@ namespace Ballance2.Utils
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("字符串分割器")]
+  [LuaApiNotes("可快速按要求分割字符串。")]
   public class StringSpliter
   {
     /// <summary>

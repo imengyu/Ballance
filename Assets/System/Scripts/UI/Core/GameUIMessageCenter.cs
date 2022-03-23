@@ -28,6 +28,7 @@ namespace Ballance2.UI.Core
   [AddComponentMenu("Ballance/UI/MessageCenter")]
   [SLua.CustomLuaClass]
   [LuaApiDescription("UI 消息中心，方便Lua层处理UI事件")]
+  [LuaApiNotes("此类提供了简单事件的绑定、数值同步绑定两个功能。")]
   public class GameUIMessageCenter : MonoBehaviour
   {
 

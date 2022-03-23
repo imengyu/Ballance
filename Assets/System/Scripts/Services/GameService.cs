@@ -22,6 +22,7 @@ namespace Ballance2.Services
   [LuaApiDescription("系统服务基类")]
   public class GameService : MonoBehaviour 
   {
+    [SLua.DoNotToLua]
     public GameService(string name)
     {
       Name = name;

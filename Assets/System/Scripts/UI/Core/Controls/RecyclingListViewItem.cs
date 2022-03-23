@@ -9,6 +9,7 @@ namespace Ballance2.UI.Core.Controls
   /// </summary>
   [RequireComponent(typeof(RectTransform))]
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class RecyclingListViewItem : MonoBehaviour
   {
 

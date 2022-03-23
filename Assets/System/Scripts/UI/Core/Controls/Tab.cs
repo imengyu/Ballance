@@ -30,6 +30,7 @@ namespace Ballance2.UI.Core.Controls
   [ExecuteInEditMode]
   [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/Tab")]
+  [LuaApiNoDoc]
   public class Tab : UIBehaviour
   {   
     public Dictionary<string, TabContent> tabs = new Dictionary<string, TabContent>();

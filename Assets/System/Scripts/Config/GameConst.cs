@@ -14,10 +14,10 @@
 namespace Ballance2.Config
 {
   /// <summary>
-  /// 静态常量配置
+  /// 游戏的一些静态常量
   /// </summary>
   [SLua.CustomLuaClass]
-  [LuaApiDescription("静态常量配置")]
+  [LuaApiDescription("游戏的一些静态常量")]
   public static class GameConst
   {
     /// <summary>

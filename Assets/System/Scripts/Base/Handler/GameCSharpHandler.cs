@@ -16,19 +16,6 @@ namespace Ballance2.Base.Handler
 {
   class GameCSharpHandler : GameHandler
   {
-    public override GameActionCallResult CallActionHandler(params object[] pararms)
-    {
-      if (Destroyed)
-        return null;
-      if (actionHandlerDelegate != null)
-      {
-        if (LuaUtils.CheckParamIsLuaTable(pararms))
-          return actionHandlerDelegate.Invoke(LuaUtils.LuaTableArrayToObjectArray(pararms));
-        else
-          return actionHandlerDelegate.Invoke(pararms);
-      }
-      return base.CallActionHandler(pararms);
-    }
     public override bool CallEventHandler(string evtName, params object[] pararms)
     {
       if (Destroyed)
@@ -55,11 +42,6 @@ namespace Ballance2.Base.Handler
       }
       return base.CallCustomHandler(pararms);
     }
-
-    public GameCSharpHandler(GameActionHandlerDelegate actionHandlerDelegate)
-    {
-      this.actionHandlerDelegate = actionHandlerDelegate;
-    }
     public GameCSharpHandler(GameEventHandlerDelegate eventHandlerDelegate)
     {
       this.eventHandlerDelegate = eventHandlerDelegate;
@@ -70,13 +52,11 @@ namespace Ballance2.Base.Handler
     }
 
     private GameCustomHandlerDelegate customHandlerDelegate = null;
-    private GameActionHandlerDelegate actionHandlerDelegate = null;
     private GameEventHandlerDelegate eventHandlerDelegate = null;
 
     public override void Dispose()
     {
       customHandlerDelegate = null;
-      actionHandlerDelegate = null;
       eventHandlerDelegate = null;
       base.Dispose();
     }

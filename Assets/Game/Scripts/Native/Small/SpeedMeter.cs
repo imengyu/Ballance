@@ -20,19 +20,26 @@ namespace Ballance2.Game
 {
   [CustomLuaClass]
   [LuaApiDescription("速度计")]
+  [LuaApiNotes("速度计组件，用于测量物体的移动速度。")]
   public class SpeedMeter : MonoBehaviour
   {
+    [Tooltip("是否要开始测速")]
     [LuaApiDescription("是否要开始测速")]
     public bool Enabled = true;
-    [LuaApiDescription("目标")]
+    [Tooltip("测速的目标，如果为空，则对当前物体测速")]
+    [LuaApiDescription("测速的目标，如果为空，则对当前物体测速")]
     public Transform Target;
+    [Tooltip("相对速度计算的最大值")]
     [LuaApiDescription("相对速度计算的最大值")]
     public float MaxSpeed = 1;
+    [Tooltip("相对速度计算的最小值")]
     [LuaApiDescription("相对速度计算的最小值")]
     public float MinSpeed = 0;
 
-    [LuaApiDescription("相对速度 0-1")]
+    [Tooltip("相对速度 0-1")]
+    [LuaApiDescription("相对速度 0-1, 即 (NowAbsoluteSpeed - MinSpeed) / (MaxSpeed - MinSpeed)")]
     public float NowRelativeSpeed;
+    [Tooltip("绝对速度 m/s ")]
     [LuaApiDescription("绝对速度 m/s ")]
     public float NowAbsoluteSpeed;
 
@@ -41,7 +48,7 @@ namespace Ballance2.Game
     private bool CheckOnce = false;
     private SpeedMeterDelegate CheckOnceCallback = null;
 
-    [LuaApiDescription("检查回调")]
+    [LuaApiDescription("检查回调, 通过设置这个回调，可以每帧获取一次速度值")]
     public SpeedMeterDelegate Callback = null;
 
     private void Start() {
@@ -74,7 +81,8 @@ namespace Ballance2.Game
       }
     }
     
-    [LuaApiDescription("检查一次")]
+    [LuaApiDescription("手动调用检查一次速度")]
+    [LuaApiParamDescription("callback", "速度计算回调")]
     public void TestOnce(SpeedMeterDelegate callback) {
       Enabled = true;
       LastPosIsNull = true;

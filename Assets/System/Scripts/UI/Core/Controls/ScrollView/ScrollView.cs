@@ -13,6 +13,7 @@ namespace Ballance2.UI.Core.Controls
   [DisallowMultipleComponent]
   [SLua.CustomLuaClass]
   [LuaApiDescription("滚动列表")]
+  [LuaApiNoDoc]
   public class ScrollView : ScrollRect
   {
 
@@ -34,6 +35,7 @@ namespace Ballance2.UI.Core.Controls
     // for hide and show
     [SLua.CustomLuaClass]
     [LuaApiDescription("列表滚动方向")]
+    [LuaApiNoDoc]
     public enum ItemLayoutType
     {
       // 最后一位表示滚动方向

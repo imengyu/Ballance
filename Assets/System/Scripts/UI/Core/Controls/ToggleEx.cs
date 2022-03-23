@@ -23,6 +23,7 @@ namespace Ballance2.UI.Core.Controls
   /// </summary>
   [ExecuteInEditMode]
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   [AddComponentMenu("Ballance/UI/Controls/ToggleEx")]
   public class ToggleEx : MonoBehaviour
   {

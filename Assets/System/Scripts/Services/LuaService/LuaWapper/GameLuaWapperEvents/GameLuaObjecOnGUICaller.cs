@@ -20,6 +20,7 @@ namespace Ballance2.Services.LuaService.LuaWapper.GameLuaWapperEvents
     /// Lua Animator 事件调用器
     /// </summary>
     [CustomLuaClass]
+    [LuaApiNoDoc]
     [LuaApiDescription("Lua OnGUI 函数调用器")]
     public class GameLuaObjecOnGUICaller : GameLuaObjectEventCaller
     {

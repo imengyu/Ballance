@@ -28,7 +28,7 @@ local vector3Instance = Vector3(1,0,0)
 
 要知道 API 是不是可以用，可以试一试写定义，
 
-![图片](../SystemModding/21.jpg)
+![图片](images/1.jpg)
 
 如果没有这个定义，说明它没有导出到Lua，只能在Mono编译的情况下用反射调用，速度非常慢。
 
@@ -38,7 +38,7 @@ local vector3Instance = Vector3(1,0,0)
 
 框架向Lua提供了很多的 API，你可以按需使用。
 
-完整文档参考TODO。
+[完整文档参考](./cs-api/readme.md)。
 
 ```lua
 --导入Unity的定义
@@ -54,4 +54,4 @@ Log.D('Test', 'Hello world!')
 
 这一部分是游戏Lua部分专用的API, C#端是无法访问的。
 
-完整文档参考TODO。
+[完整文档参考](./game-api/readme.md)。

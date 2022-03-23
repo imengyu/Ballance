@@ -23,6 +23,19 @@ namespace Ballance2.Services.InputManager
   /// </summary>
   [SLua.CustomLuaClass]
   [LuaApiDescription("键盘按键事件事件侦听器")]
+  [LuaApiNotes(@"此类可以方便的侦听键盘按键事件。
+
+```lua
+local lisnster = KeyListener.Get(self.gameObject)
+lisnster:AddKeyListen(KeyCode.A, function(key, downed) 
+  if downed then
+    ---当 A 键按下时将会发出此事件
+  end
+end)
+```
+
+如果你只需要单次监听某个按键，无须单独使用此类，可以直接使用 GameUIManager 上的 WaitKey，具体参见 [GameUIManager](Ballance2.Services.GameUIManager) 。
+")]
   public class KeyListener : MonoBehaviour
   {
     /// <summary>
@@ -115,13 +128,13 @@ namespace Ballance2.Services.InputManager
     }
 
     /// <summary>
-    /// 添加侦听器侦听键。
+    /// 添加侦听器侦听键，可以一次监听两个键。
     /// </summary>
     /// <param name="key">键值。</param>
     /// <param name="key2">键值2。</param>
     /// <param name="callBack">回调函数。</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    [LuaApiDescription("添加侦听器侦听键", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
+    [LuaApiDescription("添加侦听器侦听键，可以一次监听两个键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
     [LuaApiParamDescription("key", "键值")]
     [LuaApiParamDescription("key2", "键值2")]
     [LuaApiParamDescription("callBack", "回调函数")]

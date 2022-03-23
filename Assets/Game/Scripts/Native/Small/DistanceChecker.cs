@@ -21,14 +21,17 @@ namespace Ballance2.Game
 {
   [CustomLuaClass]
   [LuaApiDescription("距离检查器")]
+  [LuaApiNotes("距离检查器，用于测量两个物体的距离，以在指定范围内触发自定义事件。")]
   public class DistanceChecker : MonoBehaviour
   {
     [Tooltip("物体1")]
     [LuaApiDescription("物体1")]
     public Transform Object1;
+
     [Tooltip("物体2")]
     [LuaApiDescription("物体2")]
     public Transform Object2;
+
     [Tooltip("检查距离")]
     [LuaApiDescription("检查距离")]
     public float Diatance;
@@ -40,9 +43,9 @@ namespace Ballance2.Game
     [LuaApiDescription("最大检查Tick")]
     public int CheckTickMax = 300;
 
-    [LuaApiDescription("进入范围")]
+    [LuaApiDescription("进入范围事件")]
     public GameObjectDelegate OnEnterRange;
-    [LuaApiDescription("离开范围")]
+    [LuaApiDescription("离开范围事件")]
     public GameObjectDelegate OnLeaveRange;
 
     private int CheckTickNow = 0;

@@ -50,6 +50,4 @@ namespace Ballance2.Services.LuaService.LuaWapper
 
     [CustomLuaClass]
     public delegate bool LuaReturnBoolDelegate(LuaTable self);
-    [CustomLuaClass]
-    public delegate bool LuaActionStoreReturnBoolDelegate(LuaTable self, GameActionStore store);
 }

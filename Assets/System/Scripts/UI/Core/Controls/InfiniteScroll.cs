@@ -18,6 +18,7 @@ namespace Ballance2.UI.Core.Controls
   /// Infinite scroller for long lists
   /// </summary>
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class InfiniteScroll : MonoBehaviour, IDropHandler
   {
     /// <summary>

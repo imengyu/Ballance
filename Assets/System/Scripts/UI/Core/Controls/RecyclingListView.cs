@@ -18,6 +18,7 @@ namespace Ballance2.UI.Core.Controls
   /// </summary>
   [RequireComponent(typeof(ScrollRect))]
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public class RecyclingListView : MonoBehaviour
   {
     [Tooltip("Prefab for all the child view objects in the list")]

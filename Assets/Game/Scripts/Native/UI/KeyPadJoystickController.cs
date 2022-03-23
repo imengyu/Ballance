@@ -6,6 +6,7 @@ using static Ballance2.Services.GameManager;
 namespace Ballance2.Game
 {
   [SLua.CustomLuaClass]
+  [LuaApiNoDoc]
   public enum KeyPadJoystickDirection {
     None = 0,
     Left = 1,
@@ -28,6 +29,7 @@ namespace Ballance2.Game
   /// </summary>
   [SLua.CustomLuaClass]
   [RequireComponent(typeof(SimpleTouchController))]
+  [LuaApiNoDoc]
   public class KeyPadJoystickController : MonoBehaviour
   {
     public KeyPadJoystickValueChanged ValueChanged;

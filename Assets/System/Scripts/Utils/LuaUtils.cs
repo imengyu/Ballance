@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using SLua;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace Ballance2.Utils
   /// Lua 工具类
   /// </summary>
   [CustomLuaClass]
-  [LuaApiDescription("Lua 工具类. 部分函数为 C# 设计，在Lua端调用可能会有性能问题。")]
+  [LuaApiDescription("Lua 工具类。部分函数为 C# 设计，在Lua端调用可能会有性能问题。")]
   public class LuaUtils
   {
     /// <summary>
@@ -29,6 +30,7 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
+    [DoNotToLua]
     public static object[] LuaTableArrayToObjectArray(object[] param)
     {
       if (param == null)
@@ -49,6 +51,7 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
+    [DoNotToLua]
     public static bool CheckParamIsLuaTable(object[] param)
     {
       return param != null && param.Length == 1 && param[0] != null && param[0].GetType() == typeof(LuaTable);
@@ -58,6 +61,7 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
+    [DoNotToLua]
     public static object[] AutoCheckParamIsLuaTableAndConver(object[] param)
     {
       if (CheckParamIsLuaTable(param))
@@ -87,18 +91,21 @@ namespace Ballance2.Utils
     {
       return param ? "true" : "false";
     }
+    
     [LuaApiDescription("Vector3转为字符串表示")]
     public static string Vector3ToString(Vector3 param) { return param.ToString(); }
     [LuaApiDescription("Vector4转为字符串表示")]
     public static string Vector4ToString(Vector4 param) { return param.ToString(); }
     [LuaApiDescription("Vector2转为字符串表示")]
     public static string Vector2ToString(Vector2 param) { return param.ToString(); }
+    
     [LuaApiDescription("字符串转为布尔值")]
     [LuaApiParamDescription("param", "字符串 \"true\" 或者 \"false\"")]
     public static bool StringToBool(string param)
     {
       return param == "true";
     }
+    
     [LuaApiDescription("字符串转为KeyCode")]
     [LuaApiParamDescription("param", "字符串")]
     public static KeyCode StringToKeyCode(string param)
@@ -106,7 +113,9 @@ namespace Ballance2.Utils
       return (KeyCode)System.Enum.Parse(typeof(KeyCode), param);
     }
 
-    [LuaApiDescription("Lua按位与函数")]
+    [LuaApiDescription("将十六进制颜色字符串转为颜色实例", "如果转换失败，则返回黑色。")]
+    [LuaApiParamDescription("param", "将十六进制颜色字符")]
+    [LuaApiNotes("?> 此函数是 `ColorUtility.TryParseHtmlString` 函数的封装。")]
     public static Color HTMLStringToColor(string htmlColor)
     {
       if (!ColorUtility.TryParseHtmlString(htmlColor, out var color))
@@ -115,31 +124,49 @@ namespace Ballance2.Utils
     }
 
     [LuaApiDescription("Lua按位与函数")]
+    [LuaApiParamDescription("a", "左值")]
+    [LuaApiParamDescription("b", "右值")]
+    [LuaApiNotes("?> 此函数存在跨语言调用，建议不要在 Update 中频繁调用，可能会存在性能问题。")]
     public static int And(int a, int b)
     {
       return a & b;
     }
     [LuaApiDescription("Lua按位或函数")]
+    [LuaApiParamDescription("a", "左值")]
+    [LuaApiParamDescription("b", "右值")]
+    [LuaApiNotes("?> 此函数存在跨语言调用，建议不要在 Update 中频繁调用，可能会存在性能问题。")]
     public static int Or(int a, int b)
     {
       return a | b;
     }
     [LuaApiDescription("Lua按位异或函数")]
+    [LuaApiParamDescription("a", "左值")]
+    [LuaApiParamDescription("b", "右值")]
+    [LuaApiNotes("?> 此函数存在跨语言调用，建议不要在 Update 中频繁调用，可能会存在性能问题。")]
     public static int Xor(int a, int b)
     {
       return a ^ b;
     }
     [LuaApiDescription("Lua按位非函数")]
+    [LuaApiParamDescription("a", "左值")]
+    [LuaApiParamDescription("b", "右值")]
+    [LuaApiNotes("?> 此函数存在跨语言调用，建议不要在 Update 中频繁调用，可能会存在性能问题。")]
     public static int Not(int a)
     {
       return ~a;
     }
     [LuaApiDescription("Lua按左移函数")]
+    [LuaApiParamDescription("a", "左值")]
+    [LuaApiParamDescription("b", "右值")]
+    [LuaApiNotes("?> 此函数存在跨语言调用，建议不要在 Update 中频繁调用，可能会存在性能问题。")]
     public static int LeftMove(int a, int b)
     {
       return a << b;
     }
     [LuaApiDescription("Lua按右移函数")]
+    [LuaApiParamDescription("a", "左值")]
+    [LuaApiParamDescription("b", "右值")]
+    [LuaApiNotes("?> 此函数存在跨语言调用，建议不要在 Update 中频繁调用，可能会存在性能问题。")]
     public static int RightMove(int a, int b)
     {
       return a >> b;
@@ -219,23 +246,25 @@ namespace Ballance2.Utils
     public delegate bool BoolDelegate();
 
     /// <summary>
-    /// 创建 WaitUntil 
+    /// 创建 WaitUntil 实例
     /// </summary>
-    /// <param name="f">创建 WaitUntil </param>
+    /// <param name="f">回调</param>
     /// <returns></returns>
-    [LuaApiDescription("创建 WaitUntil ")]
+    [LuaApiDescription("创建 WaitUntil 实例")]
     [LuaApiParamDescription("f", "回调")]
+    [LuaApiNotes("?> Lua 中使用 WaitUntil 可能存在性能问题，不推荐使用。")]
     public WaitUntil CreateWaitUntil(BoolDelegate f) {
       return new WaitUntil(() => f());
     }
     
     /// <summary>
-    /// 创建 WaitWhile 
+    /// 创建 WaitWhile 回调 
     /// </summary>
-    /// <param name="f">创建 WaitWhile </param>
+    /// <param name="f">回调</param>
     /// <returns></returns>
-    [LuaApiDescription("创建 WaitWhile ")]
+    [LuaApiDescription("创建 WaitWhile 实例")]
     [LuaApiParamDescription("f", "回调")]
+    [LuaApiNotes("?> Lua 中使用 WaitWhile 可能存在性能问题，不推荐使用。")]
     public WaitWhile CreateWaitWhile(BoolDelegate f) {
       return new WaitWhile(() => f());
     }
