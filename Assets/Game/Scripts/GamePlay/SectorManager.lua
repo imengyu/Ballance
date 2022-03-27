@@ -9,13 +9,15 @@ local Yield = UnityEngine.Yield
 ---@class SectorManager : GameLuaObjectHostClass
 SectorManager = ClassicObject:extend()
 
+---小节数据存储结构
 ---@class SectorDataStorage
----@field moduls ModulBase[]
+---@field moduls ModulBase[] 当前小节的所有机关实例
 SectorDataStorage = {}
 
+---出生点数据存储结构
 ---@class RestPointsDataStorage
----@field point GameObject
----@field flame PC_TwoFlames
+---@field point GameObject 出生点占位符对象
+---@field flame PC_TwoFlames 火焰机关
 RestPointsDataStorage = {}
 
 local TAG = 'SectorManager'
@@ -115,7 +117,7 @@ function SectorManager:NextSector()
     self:SetCurrentSector(GamePlay.GamePlayManager.CurrentSector + 1)
   end
 end
----设置当前节
+---设置当前激活的小节
 ---@param sector number
 function SectorManager:SetCurrentSector(sector) 
   local oldSector = GamePlay.GamePlayManager.CurrentSector
@@ -257,7 +259,7 @@ function SectorManager:DeactiveCurrentSector()
   })
 end
 ---重置当前节的机关
----@param active boolean 重置机关后是否激活
+---@param active boolean 重置机关后是否重新激活
 function SectorManager:ResetCurrentSector(active)  
   self:DeactiveCurrentSector()
   if active then
@@ -265,7 +267,7 @@ function SectorManager:ResetCurrentSector(active)
   end
 end
 ---重置所有机关
----@param active boolean 重置机关后是否激活
+---@param active boolean 重置机关后是否重新激活
 function SectorManager:ResetAllSector(active) 
   --通知每个modul卸载
   for _, value in pairs(Game.LevelBuilder._CurrentLevelModuls) do

@@ -1,5 +1,3 @@
----@gendoc
-
 local Vector3 = UnityEngine.Vector3
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds

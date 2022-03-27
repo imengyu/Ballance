@@ -15,13 +15,13 @@ BallPiecesControll = {
   _TimerIds = {}
 } 
 
----球碎片数据
+---球碎片数据结构定义
 ---@class BallPiecesData
 ---@field bodys PhysicsObject[] 所有的碎片物理体
 ---@field parent GameObject 父级游戏对象
 ---@field fadeOutTimerID number|nil 淡出延时定时器
 ---@field delayHideTimerID number|nil 隐藏延时定时器
----@field throwed boolean 获取是否已经抛出了
+---@field throwed boolean 获取碎片是否已经抛出了
 ---@field fadeObjects FadeObject[] 淡出控制对象
 BallPiecesData = {}
 

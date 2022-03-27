@@ -1,5 +1,3 @@
----@gendoc
-
 local Vector2 = UnityEngine.Vector2
 local Renderer = UnityEngine.Renderer
 local Yield = UnityEngine.Yield

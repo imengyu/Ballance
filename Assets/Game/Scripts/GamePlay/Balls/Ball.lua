@@ -1,4 +1,11 @@
 ---@gendoc
+--[[
+---@gen_remark_start
+
+
+
+---@gen_remark_end
+]]--
 
 local GameSoundType = Ballance2.Services.GameSoundType
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
@@ -28,7 +35,6 @@ function Ball:new()
   self._PiecesData = nil
   self._PiecesMinForce = 0
   self._PiecesMaxForce = 5
-  self._PiecesMass = 1
   self._PiecesHaveColSound = {}
   self._PiecesPhysCallback = nil
   self._PiecesColSoundMaxSpeed = 25
@@ -170,24 +176,24 @@ function Ball:_InitSounds()
   end
 end
 
----激活时
+---当前球激活事件
 function Ball:Active()
 end
----取消激活时
+---当前球取消激活事件
 function Ball:Deactive()
 end
----获取碎片
+---当前球获取碎片
 function Ball:GetPieces()
   return self._Pieces
 end
----丢出此作类的碎片时
+---丢出此类的碎片事件
 ---@param pos Vector3
 function Ball:ThrowPieces(pos)
   if self._PiecesData then
     GamePlay.BallPiecesControll:ThrowPieces(self._PiecesData, pos, self._PiecesMinForce, self._PiecesMaxForce)
   end
 end
----回收此作类的碎片时
+---回收此类的碎片事件
 function Ball:ResetPieces() 
   if self._PiecesData then
     GamePlay.BallPiecesControll:ResetPieces(self._PiecesData)

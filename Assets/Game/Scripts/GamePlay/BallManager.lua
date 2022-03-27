@@ -20,17 +20,13 @@ local Rect = UnityEngine.Rect
 ---球推动定义
 ---@class BallPushType
 BallPushType = {
-  None = 0,
+  None = 0,--无推动
   Forward = 0x2,-- 前
   Back = 0x4,-- 后
-  Left = 0x8,-- 左
+  Left = 0x8,--左 
   Right = 0x10,-- 右
-  Up = 0x20, -- 上
-  Down = 0x40, -- 下
-  ForwardLeft = 0xA, --Forward | Left,
-  ForwardRight = 0x12, --Forward | Right,
-  BackLeft = 0xC, --Back | Left,
-  BackRight = 0x14,-- Back | Right,
+  Up = 0x20, -- 上升
+  Down = 0x40, -- 下降
 }
 
 ---指定球的控制状态
@@ -50,15 +46,16 @@ BallControlStatus = {
   LockLookMode = 5,
 }
 
+---球注册信息存储结构
 ---@class BallRegStorage
 local BallRegStorage = {
-  name = '',
-  ball = nil, ---@type Ball
-  rigidbody = nil, ---@type PhysicsObject
-  pushForceX = nil, ---@type PhysicsConstantForceData
-  pushForceY = nil, ---@type PhysicsConstantForceData
-  pushForceZ = nil, ---@type PhysicsConstantForceData
-  speedMeter = nil, ---@type SpeedMeter
+  name = '', --球名称
+  ball = nil, ---@type Ball 球类实例
+  rigidbody = nil, ---@type PhysicsObject 球的刚体实例, 仅当前球激活时才有此实例
+  pushForceX = nil, ---@type PhysicsConstantForceData 球的X轴推动力, 仅当前球激活时才有此实例
+  pushForceY = nil, ---@type PhysicsConstantForceData 球的Y轴推动力, 仅当前球激活时才有此实例
+  pushForceZ = nil, ---@type PhysicsConstantForceData 球的Z轴推动力, 仅当前球激活时才有此实例
+  speedMeter = nil, ---@type SpeedMeter 球的速度计
 }
 
 ---球管理器，负责管理球的注册、运动控制、特殊效果等等。
@@ -72,12 +69,12 @@ local BallRegStorage = {
 ---@field CurrentBallName string 获取当前的球名称 [R]
 ---@field CurrentBall Ball 获取当前的球 [R]
 ---@field PushType number 获取或者设置当前球的推动方向 [RW]
----@field CanControll boolean 获取当前用户是否可以控制球 [R]
----@field CanControllCamera boolean 获取当前用户是否可以控制摄像机 [R]
+---@field CanControll boolean 获取或者设置当前用户是否可以控制球 [RW]
+---@field CanControllCamera boolean 获取或者设置当前用户是否可以控制摄像机 [RW]
 ---@field ShiftPressed boolean 获取当前用户是否按下Shift键 [R]
----@field PosFrame Transform 获取当前球的位置 [R]
----@field KeyStateUp boolean 获取上按键状态 [RW]
----@field KeyStateDown boolean 获取下按键状态 [RW]
+---@field PosFrame Transform 获取当前球的位置变换实例 [R]
+---@field KeyStateUp boolean 获取上升按键状态 [RW]
+---@field KeyStateDown boolean 获取下降按键状态 [RW]
 ---@field KeyStateForward boolean 获取前进按键状态 [RW]
 ---@field KeyStateBack boolean 获取后退按键状态 [RW]
 ---@field KeyStateLeft boolean 获取左按键状态 [RW]
@@ -232,7 +229,7 @@ end
 
 ---注册球 
 ---@param name string 球名称
----@param gameObject GameObject 球对象
+---@param gameObject GameObject 球游戏对象，必须已经添加到场景中
 function BallManager:RegisterBall(name, gameObject)
 
   --检查是否注册
@@ -358,11 +355,11 @@ function BallManager:GetRegisterBall(name)
     end 
   end
 end
----获取当前的球
+---获取当前激活的球
 function BallManager:GetCurrentBall() return self._private.currentBall end
 ---设置当前正在控制的球 
 ---@param name string 球名称，不可为空
----@param status number|nil 同时设置新的状态
+---@param status number|nil 同时设置新的控制状态, 如果为空，则保持之前的控制状态
 function BallManager:SetCurrentBall(name, status)
   if(name == nil or name == '') then
     GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, 'You must provide a name for the ball')
@@ -396,13 +393,13 @@ function BallManager:SetControllingStatus(status)
   end
 end
 ---设置下一次球出生位置
----@param pos Vector3
+---@param pos Vector3 出生位置
 function BallManager:SetNextRecoverPos(pos)
   self.EventNextRecoverPosChanged:Emit(pos)
   self._private.nextRecoverPos = pos
 end
 ---重置指定球的碎片
----@param typeName string 球类型名称
+---@param typeName string 球名称，不可为空
 function BallManager:ResetPeices(typeName)
   local ball = self:GetRegisterBall(typeName)
   if ball ~= nil then
@@ -412,7 +409,7 @@ function BallManager:ResetPeices(typeName)
   end
 end
 ---抛出指定球的碎片
----@param typeName string 球类型名称
+---@param typeName string 球名称，不可为空
 function BallManager:ThrowPeices(typeName, pos)
   local ball = self:GetRegisterBall(typeName)
   if ball ~= nil then
@@ -630,7 +627,7 @@ end
 ---@param pos Vector3 放置位置
 ---@param smallToBig boolean 是否由小到大
 ---@param lightAnim boolean 是否同时播放灯光效果
----@param callback function 完成回调
+---@param callback function 播放完成后，会调用这个完成回调
 function BallManager:PlayLighting(pos, smallToBig, lightAnim, callback) 
   self.EventPlayLighting:Emit(nil)
   self._private.BallLightningSphere:PlayLighting(pos, smallToBig, lightAnim, callback)
@@ -642,8 +639,8 @@ function BallManager:IsLighting()
 end
 ---快速将球锁定并移动至目标位置
 ---@param pos Vector3 目标位置
----@param time number 时间
----@param callback function 完成回调
+---@param time number 时间 (秒)
+---@param callback function 移动完成后会调用此回调
 function BallManager:FastMoveTo(pos, time, callback)
 
   --锁定
@@ -864,9 +861,9 @@ function BallManager:FlushBallPush()
 
   self.EventFlushBallPush:Emit(nil)
 end
----设置球推动方向数值
----@param x number
----@param y number
+---设置球推动方向数值，此函数可以用于摇杆控制
+---@param x number X轴推动力百分比（[-1,1]）
+---@param y number Y轴推动力百分比（[-1,1]）
 function BallManager:SetBallPushValue(x, y)
   if self.CurrentBall == nil or self._private.currentActiveBall == nil or not self.CanControll then
     return

@@ -5,15 +5,18 @@
   * [新制作新关卡](/LevelMaking/make-level.md)
 * [自定义模组制作文档](/SystemModding/readme.md)
   * 机关制作
-    [创建机关](/LuaApi/lua-api/class/GamePlayManager)
-
+    * TODO
   * 球制作
-
+    * TODO
   * 修改内置球物理数据
+    * TODO
+  * 模组Demo
+    * [自定义球例子](/SystemModding/bouncing-ball-demo/readme.md)
+    * [自定义机关例子](/SystemModding/ejector-demo/readme.md)
+    * [计时器例子](/SystemModding/timer-demo/readme.md)
 
   * [Lua类文档](/SystemModding/lua-class.md)
   * [调试工具](/Help/debug-tools.md)
-  * [API文档](/LuaApi/readme.md)
-    * [框架API文档](/LuaApi/cs-api/readme.md)
-    * [游戏API文档](/LuaApi/game-api/readme.md)
-
+  * [API文档总览](/LuaApi/readme.md)
+  * [框架API文档](/LuaApi/cs-api/readme.md)
+  * [游戏API文档](/LuaApi/game-api/readme.md)

@@ -33,11 +33,11 @@
   * `BallPiecesControll` -> [BallPiecesControll](/LuaApi/lua-api/class/BallPiecesControll) : 默认的球碎片抛出和回收器。提供默认的球碎片抛出和回收效果控制。
   * `CamManager` -> [CamManager](/LuaApi/lua-api/class/CamManager) : 摄像机管理器，负责游戏中的摄像机运动。
   * `GamePlayManager` -> [GamePlayManager](/LuaApi/lua-api/class/GamePlayManager) : 游戏玩管理器，是游戏的主要控制管理器。
-  * `GamePreviewManager` -> [GamePreviewManager](/LuaApi/lua-api/class/GamePreviewManager) : 关卡预览管理器，负责关卡预览模式时的一些控制行为。
+  * `GamePreviewManager` -> GamePreviewManager : 关卡预览管理器，负责关卡预览模式时的一些控制行为。
   * `SectorManager` -> [SectorManager](/LuaApi/lua-api/class/SectorManager) : 节管理器，负责控制关卡游戏中每个小节机关的状态。
   * `MusicManager` -> [MusicManager](/LuaApi/lua-api/class/MusicManager) : 背景音乐管理器，控制游戏中的背景音乐。
-  * `TranfoManager` -> [TranfoAminControl](/LuaApi/lua-api/class/TranfoAminControl) : 变球器动画控制器。
-  * `UFOAnimController` -> [UFOAnimController](/LuaApi/lua-api/class/UFOAnimController) : 游戏结束时的UFO动画控制器。
+  * `TranfoManager` -> TranfoAminControl : 变球器动画控制器。
+  * `UFOAnimController` -> UFOAnimController : 游戏结束时的UFO动画控制器。
   * `BallSoundManager` -> [BallSoundManager](/LuaApi/lua-api/class/BallSoundManager) : 球声音管理器，负责管理球的滚动碰撞声音。
 
 * `GameUI` -> `table`
@@ -117,16 +117,10 @@
     调用 `os.exit` 相当于调用  `GameManager.Instance:QuitGame()`。
 
 * `io.*`
-
-    文件操作相关API为例保证安全性，文件路径只能访问自由有目录，不能访问玩家的个人文件夹。参见下方Lua文件访问安全。
-
 * `os.remove`
-
-    与上方IO操作说明相同，不能访问全部文件和文件夹。
-
 * `os.rename`
 
-    与上方IO操作说明相同，不能访问全部文件和文件夹。
+    文件操作相关API为例保证安全性，文件路径只能访问私有目录，不能访问玩家的个人文件夹。参见下方Lua文件访问安全。
 
 ### 新增的函数
 
@@ -138,7 +132,7 @@
 
     否则函数将会在调用代码所属模组中加载资源文件。
 
-    ?> 注意，返回默认是 `UnityEngine.Object` 类型，需要使用 `SLua.As` 函数转换类型。
+?> 注意，返回默认是 `UnityEngine.Object` 类型，需要使用 `SLua.As` 函数转换类型。
 
 ## Lua文件访问安全
 

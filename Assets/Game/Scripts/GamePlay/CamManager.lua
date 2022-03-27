@@ -219,7 +219,7 @@ function CamManager:SetPosAndDirByRestPoint(go)
   return self
 end
 ---空格键向上旋转
----@param enable boolean
+---@param enable boolean 状态
 function CamManager:RotateUp(enable)
   self.CamIsSpaced = enable
   self._CamRotateUpStart.y = self.transform.localPosition.y
@@ -238,7 +238,7 @@ function CamManager:RotateUp(enable)
   return self
 end
 ---摄像机旋转指定角度
----@param val number 方向 CamRotateValue
+---@param val number 旋转方向 CamRotateValue
 function CamManager:RotateTo(val)
   self.CamRotateValue = val
   local target = self:GetRotateDegreeByType(self.CamRotateValue)
@@ -255,7 +255,7 @@ function CamManager:RotateTo(val)
   self:_UpdateStateForDebugStats()
   return self
 end
----摄像机向左旋转
+---摄像机向右旋转
 function CamManager:RotateRight()
   self.CamRotateValue = self.CamRotateValue - 1
   if(self.CamRotateValue < 0) then self.CamRotateValue = 3 end
@@ -273,7 +273,7 @@ function CamManager:RotateRight()
   self:_UpdateStateForDebugStats()
   return self
 end
----摄像机向右旋转
+---摄像机向左旋转
 function CamManager:RotateLeft()
   self.CamRotateValue = self.CamRotateValue + 1
   if(self.CamRotateValue > 3) then self.CamRotateValue = 0 end
@@ -297,7 +297,7 @@ function CamManager:SetSkyBox(mat)
   self._SkyBox.material = mat
   return self
 end
----指定摄像机跟随球是否开启
+---指定摄像机是否开启跟随球
 ---@param enable boolean
 function CamManager:SetCamFollow(enable)
   self.CamFollow.Follow = enable
@@ -305,7 +305,7 @@ function CamManager:SetCamFollow(enable)
   self:_UpdateStateForDebugStats()
   return self
 end
----指定摄像机看着球是否开启
+---指定摄像机是否开启看着球
 ---@param enable boolean
 function CamManager:SetCamLook(enable)
   self.CamFollow.Look = enable
@@ -313,7 +313,7 @@ function CamManager:SetCamLook(enable)
   self:_UpdateStateForDebugStats()
   return self
 end
----指定当前跟踪的目标
+---指定当前摄像机跟踪的目标
 ---@param target Transform
 function CamManager:SetTarget(target)
   self.Target = target
@@ -321,6 +321,8 @@ function CamManager:SetTarget(target)
   self.EventCamFollowTargetChanged:Emit(target)
   return self
 end
+---禁用所有摄像机功能
+---@return CamManager
 function CamManager:DisbleAll()
   self.CamFollow.Follow = false
   self.CamFollow.Look = false

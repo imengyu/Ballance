@@ -1,4 +1,44 @@
 ---@gendoc
+--[[
+---@gen_remark_start
+你可以继承此类来实现自己的机关：例如:
+```lua
+---@class P_Modul_Test : ModulBase
+P_Modul_Test = ModulBase:extend()
+
+function P_Modul_Test:new()
+  P_Modul_Test.super.new(self)
+  --new 一般是初始化某些变量
+end
+function P_Modul_Test:Start()
+  --初始化时可以执行某些操作
+end
+function P_Modul_Test:Active()
+  self.gameObject:SetActive(true)
+  --这是机关激活时执行的操作，例如关激活时一般会物理化组件
+  self.P_Modul_Test_Pusher:Physicalize()
+end
+function P_Modul_Test:Deactive()
+  --这是机关失活时执行的操作，例如一般会取消物理化组件
+  self.P_Modul_Test_Pusher:UnPhysicalize(true)
+  self.gameObject:SetActive(false)
+end
+function P_Modul_Test:Reset()
+  --这是机关重置时执行的操作，一般会恢复当前物体至初始位置（Backup -> Reset）
+  ObjectStateBackupUtils.RestoreObjectAndChilds(self.gameObject)
+end
+function P_Modul_Test:Backup()
+  --这是机关初始化时，需要备份当前物体的初始位置
+  ObjectStateBackupUtils.BackUpObjectAndChilds(self.gameObject)
+end
+
+function CreateClass:P_Modul_Test()
+  --需要公开此类给 Lua 承载组件
+  return P_Modul_Test()
+end
+```
+---@gen_remark_end
+]]--
 
 local TiggerTester = Ballance2.Game.TiggerTester
 local SphereCollider = UnityEngine.SphereCollider
@@ -15,9 +55,9 @@ function ModulBase:new()
   ModulBase.super.new(self)
   self.BallRangeChecker = nil
   self.BallRangeCollider = nil
-  self.BallInRange = false
-  self.IsPreviewMode = false --指定当前机关是否在预览模式中加载
-  self.AutoActiveBaseGameObject = true
+  self.BallInRange = false --获取玩家球是否在当前机关球区域检测范围内
+  self.IsPreviewMode = false --获取当前机关是否在预览模式中加载
+  self.AutoActiveBaseGameObject = true --获取或者设置当前机关基类是否自动控制当前机关的激活与失活
 end
 
 ---初始化
@@ -88,7 +128,7 @@ function ModulBase:DeactiveForPreview()
 end
 
 ---调试环境的自定义调试操作回调
----@param index number 参数
+---@param index number 按扭参数
 function ModulBase:Custom(index)
 end
 

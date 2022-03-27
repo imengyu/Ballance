@@ -405,7 +405,7 @@ function GamePlayManager:PauseLevel(showPauseUI)
   self.EventPause:Emit(nil)
 end
 ---继续关卡
----@param forceRestart boolean 是否强制重置
+---@param forceRestart boolean 是否强制重置，会造成当前小节重置，默认false
 function GamePlayManager:ResumeLevel(forceRestart) 
 
   Log.D(TAG, 'Resume')
@@ -421,7 +421,7 @@ function GamePlayManager:ResumeLevel(forceRestart)
   self.EventResume:Emit(nil)
 end
 
----球坠落
+---触发球坠落
 function GamePlayManager:Fall() 
 
   if self.CurrentLevelPass then return end
@@ -496,7 +496,7 @@ function GamePlayManager:Fall()
 
   end
 end
----过关
+---触发过关
 function GamePlayManager:Pass() 
 
   if self.CurrentLevelPass then return end

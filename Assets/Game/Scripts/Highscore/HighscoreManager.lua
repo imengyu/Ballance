@@ -15,8 +15,7 @@ HighscoreData = {
   LevelNames = {}
 }
 
----高分管理器
----负则管理每个关卡的分数
+---高分管理器，负责管理每个关卡的分数
 ---@class HighscoreManager
 HighscoreManager = {}
 
@@ -110,11 +109,12 @@ function HighscoreManager.InitCommand()
 end
 
 ---获取指定关卡的分数列表
----@param levelName string
+---@param levelName string 关卡名称
 function HighscoreManager.GetData(levelName)
   return HighscoreData.Data[levelName]
 end
 ---获取分数管理器中有存储数据的所有关卡名称
+---@returns 所有关卡名称数组
 function HighscoreManager.GetLevelNames()
   return HighscoreData.LevelNames
 end
@@ -170,7 +170,7 @@ function HighscoreManager.CheckLevelPassState(levelName)
   return levelData == true
 end
 
----添加默认分数至指定关卡中
+---添加默认分数至指定关卡的分数数据中
 ---@param levelName string 关卡名称
 ---@param data table 默认数据，可为 nil，为 nil 时根据在 DefaultHighscoreData 中定义的 defaultHighscoreData.DefaultHightScoreLev01_11Data 加载数据
 function HighscoreManager.TryAddDefaultLevelHighScore(levelName, data)

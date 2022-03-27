@@ -23,8 +23,6 @@ class GameLuaObjectHostInspector : Editor
     private SerializedProperty pLuaFileName;
     private SerializedProperty pLuaPackageName;
     private SerializedProperty pExecuteOrder;
-    private SerializedProperty pCreateStore;
-    private SerializedProperty pCreateActionStore;
     private SerializedProperty pManualInputScript;
     private SerializedProperty pUpdateDelta;
     private SerializedProperty pFixUpdateDelta;
@@ -83,8 +81,6 @@ class GameLuaObjectHostInspector : Editor
         pLuaPackageName = serializedObject.FindProperty("LuaPackageName");
         pLuaInitialVars = serializedObject.FindProperty("LuaInitialVars");
         pExecuteOrder = serializedObject.FindProperty("ExecuteOrder");
-        pCreateStore = serializedObject.FindProperty("CreateStore");
-        pCreateActionStore = serializedObject.FindProperty("CreateActionStore");
         pManualInputScript = serializedObject.FindProperty("ManualInputScript");
         pUpdateDelta = serializedObject.FindProperty("UpdateDelta");
         pFixUpdateDelta = serializedObject.FindProperty("FixUpdateDelta");
@@ -433,10 +429,6 @@ class GameLuaObjectHostInspector : Editor
             }
             EditorGUI.EndDisabledGroup();
         }
-
-        EditorGUILayout.PropertyField(pCreateStore);
-        EditorGUILayout.PropertyField(pCreateActionStore);
-
 
         EditorGUILayout.Space(5);
         EditorGUILayout.EndVertical();

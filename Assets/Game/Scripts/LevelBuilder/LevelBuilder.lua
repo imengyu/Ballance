@@ -42,7 +42,7 @@ local LevelBuilderModulStorage = {}
 ---@field name string
 local LevelBuilderModulRegStorage = {}
 
----关卡建造器
+---关卡加载器
 ---@class LevelBuilder : GameLuaObjectHostClass
 ---@field IsPreviewMode boolean 是否是预览模式
 ---@field _HalfTransparentMaterial Material
@@ -132,9 +132,9 @@ function LevelBuilder:UpdateLoadProgress(precent)
 end
 
 ---设置加载失败状态
----@param err boolean
----@param statuaCode string
----@param errMessage string
+---@param err boolean 是否失败
+---@param statuaCode string 状态码
+---@param errMessage string 错误信息
 function LevelBuilder:UpdateErrStatus(err, statuaCode, errMessage)  
   
   if err then
@@ -154,7 +154,7 @@ function LevelBuilder:UpdateErrStatus(err, statuaCode, errMessage)
   end
 end
 
----加载关卡
+---开始加载关卡序列
 ---@param name string 关卡文件名
 ---@param preview boolean 是否是预览模式
 function LevelBuilder:LoadLevel(name, preview)
@@ -1041,7 +1041,7 @@ end
 ---注册自定义加载步骤
 ---@param name string 名称
 ---@param callback function(levelBuilder, type) 回调， 第一个参数为 levelBuilder 实例；第二个参数是当前步骤的类型。
----@param type "pre"|"modul"|"last"|"unload" 回调
+---@param type "pre"|"modul"|"last"|"unload" 回调类型
 function LevelBuilder:RegisterLoadStep(name, callback, type)
   if self._RegisteredLoadSteps[name] ~= nil then
     GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, 'LoadStep {0} already registered! ', { name })

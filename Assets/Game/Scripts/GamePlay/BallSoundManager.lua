@@ -1,11 +1,19 @@
 ---@gendoc
+---@gendoc
+--[[
+---@gen_remark_start
+
+---@gen_remark_end
+]]--
+
 ---球声音管理器，负责管理球的滚动碰撞声音。
 ---@class BallSoundManager : GameLuaObjectHostClass
 BallSoundManager = ClassicObject:extend()
 
+---球声音碰撞信息
 ---@class BallSoundCollData 
 ---@field MinSpeed number 碰撞检测最低速度
----@field MaxSpeed number 碰撞检测最搞速度
+---@field MaxSpeed number 碰撞检测最高速度
 ---@field SleepAfterwards number 碰撞检测延时
 ---@field SpeedThreadhold number 碰撞检测最低速度阈值
 ---@field TimeDelayStart number 滚动检测起始延时
@@ -93,7 +101,7 @@ function BallSoundManager:RemoveAllSoundCollData()
 end
 
 ---添加球碰撞声音组
----@param colId number 自定义碰撞层ID
+---@param colId number 自定义碰撞层ID，为防止重复，请使用 GetSoundCollIDByName 使用名称获取ID
 ---@param data BallSoundCollData 碰撞数据
 ---@return number BallSoundCollData 碰撞数据
 function BallSoundManager:AddSoundCollData(colId, data) 
@@ -110,7 +118,7 @@ function BallSoundManager:RemoveSoundCollData(colId)
   self._SoundCollData[colId] = nil
 end
 ---通过名称分配一个可用的声音组ID, 如果名称存在，则返回同样的ID
----@param name string
+---@param name string 自定义声音组名称
 function BallSoundManager:GetSoundCollIDByName(name) 
   if type(self._CollIDNames[name]) == 'number' then
     return self._CollIDNames[name]
@@ -122,7 +130,7 @@ function BallSoundManager:GetSoundCollIDByName(name)
   end
 end
 
----添加球的声音处理函数
+---添加球的声音处理函数(由BallManager调用)
 ---@param ball BallRegStorage
 function BallSoundManager:AddSoundableBall(ball) 
   --添加声音层工具侦听
@@ -188,7 +196,7 @@ function BallSoundManager:AddSoundableBall(ball)
     end
   end
 end
----移除球的声音处理函数
+---移除球的声音处理函数(由BallManager调用)
 ---@param ball BallRegStorage
 function BallSoundManager:RemoveSoundableBall(ball) 
   --移除回调
@@ -209,7 +217,7 @@ function BallSoundManager:RemoveSoundableBall(ball)
   end
 end
 
----滚动声音音量与速度处理
+---滚动声音音量与速度处理(由BallManager调用)
 ---@param ball Ball
 ---@param speedMeter SpeedMeter
 function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
@@ -230,6 +238,7 @@ function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   end
 end
 
+---强制停止所有球声音
 function BallSoundManager:StopAllSound()
   for _, value in pairs(self._CurrentPlayingRollSounds) do
     if value then

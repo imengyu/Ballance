@@ -1,5 +1,3 @@
----@gendoc
-
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local KeyCode = UnityEngine.KeyCode
 local GameSoundType = Ballance2.Services.GameSoundType
