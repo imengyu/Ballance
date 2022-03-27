@@ -10,9 +10,14 @@
 
 ## 文档
 
-[完整文档可以参考这里](https://imengyu.github.io/Ballance/#/readme)
+[完整文档可以参考这里](https://imengyu.top/ballance-docs/#/readme)
 
-[API文档参考这里](https://imengyu.github.io/Ballance/#/LuaApi/readme)
+[API文档参考这里](https://imengyu.top/ballance-docs/#/LuaApi/readme)
+
+[完整文档可以参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/readme)
+
+[API文档参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/LuaApi/readme)
+
 
 ## 欢迎体验
 
