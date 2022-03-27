@@ -1,3 +1,5 @@
+---@gendoc
+
 local GameSoundType = Ballance2.Services.GameSoundType
 local PhysicsObject = BallancePhysics.Wapper.PhysicsObject
 local MeshFilter = UnityEngine.MeshFilter

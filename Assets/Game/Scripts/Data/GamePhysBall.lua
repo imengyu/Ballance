@@ -1,3 +1,5 @@
+---@gendoc
+
 ---@class GamePhysBallData 
 ---@field Force number
 ---@field Friction number

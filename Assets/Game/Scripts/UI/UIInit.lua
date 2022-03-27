@@ -6,6 +6,7 @@ local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type Gam
 
 GameUIPackage = nil ---@type GamePackage
 
+---游戏UI组件全局索引
 GameUI = {
   HighscoreUIControl = nil, ---@type HighscoreUIControl
   WinScoreUIControl = nil, ---@type WinScoreUIControl

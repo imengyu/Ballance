@@ -1,8 +1,10 @@
+---@gendoc
+
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local KeyCode = UnityEngine.KeyCode
 local GameSoundType = Ballance2.Services.GameSoundType
 
----关卡预览管理器
+---关卡预览管理器，负责关卡预览模式时的一些控制行为。
 ---@class GamePreviewManager : GameLuaObjectHostClass
 ---@field GamePhysicsWorld PhysicsEnvironment
 ---@field GamePreviewCamera Camera

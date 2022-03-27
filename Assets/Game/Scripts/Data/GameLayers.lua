@@ -1,3 +1,4 @@
+---@gendoc
 ---游戏物理碰撞层定义
 GameLayers = {
   LAYER_PHY_GLOBAL = 0,

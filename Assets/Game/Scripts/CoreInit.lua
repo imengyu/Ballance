@@ -42,7 +42,7 @@ Game = {
   GamePlay = nil, 
   --获取关卡建造器模块 [R]
   LevelBuilder = nil, ---@type LevelBuilder
-  --获取调试命令 [R]
+  --获取调试命令服务 [R]
   CommandServer = nil, ---@type GameDebugCommandServer
   --获取分数管理器 [R]
   HighScoreManager = nil, ---@type HighscoreManager

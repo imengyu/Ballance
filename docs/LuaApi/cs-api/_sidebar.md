@@ -1,4 +1,4 @@
-﻿* [返回主页](/LuaApi/readme.md)
+﻿* [返回主页]/LuaApi/readme.md)
 * [简介](/LuaApi/cs-api/readme.md)
 * [Ballance2.Log](/LuaApi/cs-api/class/Ballance2.Log.md)
 * [Ballance2.LogLevel](/LuaApi/cs-api/class/Ballance2.LogLevel.md)

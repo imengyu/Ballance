@@ -1,6 +1,17 @@
 ﻿# Ballance2.UI.Utils.UIAnchorPosUtils 
 UI 组件锚点位置工具
 
+## 注解
+
+UI 组件锚点位置工具可以方便的为您设置 
+RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
+这几个令人头疼的变量了，在代码里也可以像编辑器里一样的参数来设置RectTransform了。
+
+具体分为：Pivot（枢轴）、Anchor（锚点）、Left/Right/Top/Bottom. 与编辑器里显示的一致。
+
+具体可参考每个函数的注释。
+
+
 
 ## 方法
 

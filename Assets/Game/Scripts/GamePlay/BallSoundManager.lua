@@ -1,4 +1,5 @@
----球声音管理器
+---@gendoc
+---球声音管理器，负责管理球的滚动碰撞声音。
 ---@class BallSoundManager : GameLuaObjectHostClass
 BallSoundManager = ClassicObject:extend()
 

@@ -1,3 +1,5 @@
+---@gendoc
+
 local json = require("json")
 local defaultHighscoreData = require("DefaultHighscoreData")
 local Application = UnityEngine.Application

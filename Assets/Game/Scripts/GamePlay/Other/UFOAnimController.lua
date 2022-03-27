@@ -1,9 +1,11 @@
+---@gendoc
+
 local Vector3 = UnityEngine.Vector3
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local ufoPositions = require('UFOPositions') ---@type UFOPositionItem[]
 
----UFO动画管理器
+---游戏结束时的UFO动画控制器。
 ---@class UFOAnimController : GameLuaObjectHostClass
 ---@field PE_UFO_Arm_Inner_01 Animator
 ---@field PE_UFO_Arm_Inner_02 Animator

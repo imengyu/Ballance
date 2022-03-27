@@ -1,9 +1,10 @@
+---@gendoc
+
 local CommonUtils = Ballance2.Utils.CommonUtils
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 local FadeManager = Game.UIManager.UIFadeManager
-local Vector3 = UnityEngine.Vector3
 
----球碎片回收器
+---默认的球碎片抛出和回收器。提供默认的球碎片抛出和回收效果控制。
 ---@class BallPiecesControll : GameLuaObjectHostClass
 BallPiecesControll = {
   _CamMgr = nil, ---@type CamManager
@@ -16,12 +17,12 @@ BallPiecesControll = {
 
 ---球碎片数据
 ---@class BallPiecesData
----@field bodys PhysicsObject[]
----@field parent GameObject
----@field fadeOutTimerID number|nil
----@field delayHideTimerID number|nil
----@field throwed boolean
----@field fadeObjects FadeObject[]
+---@field bodys PhysicsObject[] 所有的碎片物理体
+---@field parent GameObject 父级游戏对象
+---@field fadeOutTimerID number|nil 淡出延时定时器
+---@field delayHideTimerID number|nil 隐藏延时定时器
+---@field throwed boolean 获取是否已经抛出了
+---@field fadeObjects FadeObject[] 淡出控制对象
 BallPiecesData = {}
 
 function CreateClass:BallPiecesControll()
@@ -37,9 +38,9 @@ function CreateClass:BallPiecesControll()
     GamePlay.BallPiecesControll = self
   end
     
-  ---抛出碎片
-  ---@param data BallPiecesData
-  ---@param pos Vector3
+  ---开始抛出碎片
+  ---@param data BallPiecesData 碎片数据集
+  ---@param pos Vector3 抛出的位置
   ---@param minForce number 推动最小力
   ---@param maxForce number 推动最大力
   ---@param timeLive number 碎片存活时间（30个tick为单位）
@@ -104,7 +105,7 @@ function CreateClass:BallPiecesControll()
     end
   end
   ---回收碎片
-  ---@param data BallPiecesData
+  ---@param data BallPiecesData 碎片数据集
   function BallPiecesControll:ResetPieces(data)
 
     local parent = data.parent

@@ -41,7 +41,7 @@ namespace Ballance2.Services.LuaService.Lua
       pm = null;
     }
 
-    private static string[] internalLuaLib = { "string","utf8","table","math","os","debug", "socket.core", "socket", "table", "string", "coroutine", "MikuLuaProfiler", "miku_unpack_return_value" };
+    private static string[] internalLuaLib = { "string","utf8","io","package","table","math","os","debug", "socket.core", "socket", "table", "string", "coroutine", "MikuLuaProfiler", "miku_unpack_return_value" };
     private static string[] internalLuaFile = { "json","classic","debugger","vscode-debuggee","mobdebug","dkjson", "Table" };
 
     /// <summary>
@@ -88,9 +88,6 @@ namespace Ballance2.Services.LuaService.Lua
           if(s == pathOrName) {
             //普通require
             ret = originalRequire(pathOrName);
-            //去除OS模块中的危险函数
-            if(pathOrName == "os") 
-              SecurityUtils.FixModuleOs((ret as LuaTable));
             break;
           }
         //处理一些游戏内置模块
@@ -200,6 +197,51 @@ namespace Ballance2.Services.LuaService.Lua
         return LuaObject.error(l,e);
       }
     }
+    
+    [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+    [StaticExport]
+    public static int os_remove(IntPtr l) {
+      try {
+        string pathOrName;
+        LuaObject.checkType(l, 1, out pathOrName);
+
+        FileUtils.RemoveDirectory(pathOrName);
+
+        LuaObject.pushValue(l, true);
+        LuaObject.pushValue(l, true);
+        return 2;
+      }
+      catch(Exception e) {
+        LuaObject.pushValue(l, true);
+        LuaObject.pushValue(l, false);
+        LuaObject.pushValue(l,e.ToString());
+        return 3;
+      }
+    }
+    [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+    [StaticExport]
+    public static int os_rename(IntPtr l) {
+      try {
+        string oldname, newname;
+        LuaObject.checkType(l, 1, out oldname);
+        LuaObject.checkType(l, 2, out newname);
+
+        SecurityUtils.CheckFileAccess(oldname);
+        SecurityUtils.CheckFileAccess(newname);
+        File.Move(oldname, newname);
+
+        LuaObject.pushValue(l, true);
+        LuaObject.pushValue(l, true);
+        return 2;
+      }
+      catch(Exception e) {
+        LuaObject.pushValue(l,true);
+        LuaObject.pushValue(l, false);
+        LuaObject.pushValue(l,e.ToString());
+        return 3;
+      }
+    }
+
   
   }
 

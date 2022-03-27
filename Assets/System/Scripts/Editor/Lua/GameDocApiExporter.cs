@@ -13,6 +13,8 @@ namespace Slua
 {
   public static class GameDocApiExporter
   {
+    const string BackPath = "/LuaApi/cs-api/readme.md";
+    const string HomePath = "/LuaApi/readme.md";
     const string OutPath = "docs/LuaApi/cs-api/class";
     const string SidePath = "docs/LuaApi/cs-api/_sidebar.md";
 
@@ -35,7 +37,7 @@ namespace Slua
         return;
       GenNext();
     }
-    [MenuItem("Ballance/Lua API 文档/清空", false, 104)]
+    [MenuItem("Ballance/Lua API 文档/清空框架", false, 104)]
     public static void GenClear()
     {
       if (Directory.Exists(OutPath))
@@ -54,7 +56,7 @@ namespace Slua
       if (!Directory.Exists(path))
         Directory.CreateDirectory(path);
 
-      var sbSide = new StringBuilder("* [返回主页](/LuaApi/readme.md)\n* [简介](/LuaApi/cs-api/readme.md)\n");
+      var sbSide = new StringBuilder("* [返回主页]" + HomePath + ")\n* [简介](" + BackPath + ")\n");
 
       var assembly = Assembly.Load("Assembly-CSharp-firstpass");
       var types = assembly.GetTypes();

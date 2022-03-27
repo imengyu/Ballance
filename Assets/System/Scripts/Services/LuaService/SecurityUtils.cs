@@ -29,46 +29,67 @@ namespace Ballance2.Services.LuaService
       "io"
     };
 
-    public static void FixModuleOs(LuaTable os)
-    {
-      os["execute"] = null;
-      os["exit"] = null;
-      os["getenv"] = null;
-      os["remove"] = null;
-      os["rename"] = null;
-      os["setlocale"] = null;
-    }
-
     public static void FixLuaSecure(LuaState state)
     {
       LuaGlobalApi.SetRequire(state.getFunction("require"));
-      state.doString(@"
-        io = nil
-        dofile = nil
-        getfenv = nil
-        load = nil
-        loadfile = nil
-        loadstring = nil
-        setfenv = nil
-        package.loadlib = nil
-        package.seeall = nil
-        package.loaded = nil
-        package.loaders = nil
-        os.execute = nil
-        os.exit = nil
-        os.getenv = nil
-        os.remove = nil
-        os.rename = nil
-        os.setlocale = nil
-        if Ballance2 ~= nil then
-          if Ballance2.Services.LuaService.Lua.LuaGlobalApi.loadAsset ~= nil then
-            loadAsset = Ballance2.Services.LuaService.Lua.LuaGlobalApi.loadAsset
-          end
-          if Ballance2.Services.LuaService.Lua.LuaGlobalApi.require ~= nil then
-            require = Ballance2.Services.LuaService.Lua.LuaGlobalApi.require
-          end
-        end
-      ", "SecurityUtils");
+      state.doString(@"---Fix danger functions
+io = nil
+dofile = nil
+getfenv = nil
+load = nil
+loadfile = nil
+loadstring = nil
+setfenv = nil
+package.loadlib = nil
+package.seeall = nil
+package.loaded = nil
+package.loaders = nil
+os.execute = nil
+os.getenv = nil
+os.setlocale = nil
+
+local LuaGlobalApi = Ballance2.Services.LuaService.Lua.LuaGlobalApi
+local GameManager = Ballance2.Services.GameManager
+local SecurityUtils = Ballance2.Services.LuaService.SecurityUtils
+local originalIoInput = io.input
+local originalIoOutput = io.output
+local originalIoOpen = io.open
+local originalIoLines = io.lines
+
+loadAsset = LuaGlobalApi.loadAsset
+require = LuaGlobalApi.require
+os.remove = LuaGlobalApi.os_remove
+os.rename = LuaGlobalApi.os_rename
+os.exit = function(code) 
+  GameManager.Instance:QuitGame() 
+  return code and code or 1
+end
+
+io.input = function(file) 
+  if type(file) == 'string' then
+    SecurityUtils.CheckFileAccess(file)
+  end
+  return originalIoInput(file)
+end
+io.output = function(file) 
+  if type(file) == 'string' then
+    SecurityUtils.CheckFileAccess(file)
+  end
+  return originalIoOutput(file)
+end
+io.open = function(file, mode) 
+  if type(file) == 'string' then
+    SecurityUtils.CheckFileAccess(file)
+  end
+  return originalIoOpen(file, mode)
+end
+io.lines = function(file, ...) 
+  if type(file) == 'string' then
+    SecurityUtils.CheckFileAccess(file)
+  end
+  return originalIoLines(file, ...)
+end
+", "SecurityUtils");
     }
     public static bool CheckRequire(string pathOrName)
     {

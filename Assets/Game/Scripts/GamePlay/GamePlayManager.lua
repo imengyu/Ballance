@@ -1,3 +1,5 @@
+---@gendoc
+
 local SkyBoxUtils = Ballance2.Game.Utils.SkyBoxUtils
 local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameSoundType = Ballance2.Services.GameSoundType
@@ -10,7 +12,7 @@ local AudioRolloffMode = UnityEngine.AudioRolloffMode
 local Log = Ballance2.Log
 local TAG = 'GamePlayManager'
 
----游戏管理器
+---游戏玩管理器，是游戏的主要控制管理器。
 ---@class GamePlayManager : GameLuaObjectHostClass
 ---@field GamePhysicsWorld PhysicsEnvironment
 GamePlayManager = ClassicObject:extend()

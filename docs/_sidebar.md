@@ -4,8 +4,16 @@
   * [转换原版Ballance的nmo关卡](/LevelMaking/convert-level.md)
   * [新制作新关卡](/LevelMaking/make-level.md)
 * [自定义模组制作文档](/SystemModding/readme.md)
+  * 机关制作
+    [创建机关](/LuaApi/lua-api/class/GamePlayManager)
+
+  * 球制作
+
+  * 修改内置球物理数据
+
+  * [Lua类文档](/SystemModding/lua-class.md)
+  * [调试工具](/Help/debug-tools.md)
   * [API文档](/LuaApi/readme.md)
     * [框架API文档](/LuaApi/cs-api/readme.md)
     * [游戏API文档](/LuaApi/game-api/readme.md)
-  * [Lua类文档](/SystemModding/lua-class.md)
-  * [调试工具](/Help/debug-tools.md)
+

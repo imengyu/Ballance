@@ -13,7 +13,7 @@ local GameTranfoManagerGameObject = nil
 local GameLevelBrizGameObject = nil
 local GameUFOAnimControllerGameObject = nil
 
----模块全局索引
+---游戏玩模块全局索引
 ---@class GamePlay
 GamePlay = {
   BallManager = nil, ---@type BallManager

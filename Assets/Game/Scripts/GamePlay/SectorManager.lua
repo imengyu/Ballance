@@ -1,9 +1,11 @@
+---@gendoc
+
 local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
 local Log = Ballance2.Log
 local Yield = UnityEngine.Yield
 
----节管理器
+---节管理器，负责控制关卡游戏中每个小节机关的状态。
 ---@class SectorManager : GameLuaObjectHostClass
 SectorManager = ClassicObject:extend()
 

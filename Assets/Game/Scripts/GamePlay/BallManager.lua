@@ -1,3 +1,5 @@
+---@gendoc
+
 local KeyCode = UnityEngine.KeyCode
 local Log = Ballance2.Log
 local KeyListener = Ballance2.Services.InputManager.KeyListener
@@ -59,7 +61,7 @@ local BallRegStorage = {
   speedMeter = nil, ---@type SpeedMeter
 }
 
----球管理器
+---球管理器，负责管理球的注册、运动控制、特殊效果等等。
 ---@class BallManager : GameLuaObjectHostClass
 ---@field _BallLightningSphere GameLuaObjectHost
 ---@field _BallWood GameObject

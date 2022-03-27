@@ -1,16 +1,23 @@
+---@gendoc
+
 local Vector3 = UnityEngine.Vector3
 local Quaternion = UnityEngine.Quaternion
 local Time = UnityEngine.Time
 local CamFollow = Ballance2.Game.CamFollow
 
+---摄像机旋转方向
 CamRotateType = {
+  ---北。面向+X轴。
   North = 0,
+  ---东。面向-Z轴。
   East = 1,
+  ---南。面向-X轴。
   South = 2,
+  ---西。面向+Z轴。
   West = 3,
 }
 
----摄像机管理器
+---摄像机管理器，负责游戏中的摄像机运动。
 ---@class CamManager : GameLuaObjectHostClass
 ---@field _CameraHost GameObject
 ---@field _CameraHostTransform Transform

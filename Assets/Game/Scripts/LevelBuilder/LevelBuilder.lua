@@ -1,3 +1,5 @@
+---@gendoc
+
 require('AutoGroup')
 local json = require('json') ---@type json
 

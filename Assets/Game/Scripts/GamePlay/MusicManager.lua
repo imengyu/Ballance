@@ -1,8 +1,10 @@
+---@gendoc
+
 local GameSoundType = Ballance2.Services.GameSoundType
 local Log = Ballance2.Log
 local CommonUtils = Ballance2.Utils.CommonUtils
 
----背景音乐管理器
+---背景音乐管理器，控制游戏中的背景音乐。
 ---@class MusicManager : GameLuaObjectHostClass
 MusicManager = ClassicObject:extend()
 

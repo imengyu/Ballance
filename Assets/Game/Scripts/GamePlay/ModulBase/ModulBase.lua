@@ -1,3 +1,5 @@
+---@gendoc
+
 local TiggerTester = Ballance2.Game.TiggerTester
 local SphereCollider = UnityEngine.SphereCollider
 

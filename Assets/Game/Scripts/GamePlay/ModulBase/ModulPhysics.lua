@@ -1,3 +1,5 @@
+---@gendoc
+
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 
 ---带物理的机关基类，你可用于只有一个物体的简单物理机关
