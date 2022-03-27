@@ -8,9 +8,9 @@
 
 ---
 
-## 开发文档
+## 文档
 
-[完整开发文档可以参考这里](https://imengyu.github.io/Ballance/#/readme)
+[完整文档可以参考这里](https://imengyu.github.io/Ballance/#/readme)
 
 [API文档参考这里](https://imengyu.github.io/Ballance/#/LuaApi/readme)
 
