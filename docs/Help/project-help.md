@@ -8,7 +8,20 @@
 * 编辑器：VScode 或者 Visual Studio
 * 克隆本项目 https://github.com/imengyu/Ballance 至您的本地.
 
-## 教程
+## 步骤
+
+1. 使用 Unity 2021.2.1 以上版本导入项目并打开
+2. 在编辑器里运行
+
+  (目前暂无Mac版本的物理引擎文件，请使用Win版本的Unity进行调试)
+
+    1. 使用 Unity 2021.2.7+ 版本打开项目。
+    2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
+    3. 打开 System/Scenes/MainScene.unity 场景。
+    4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
+    5. 点击运行，即可查看效果。
+
+## FAQ
 
 ### 如何下载 Unity ？
 
@@ -25,16 +38,6 @@ Unity 个人版是免费的，你可以在 [Unity官网](https://unity.cn/releas
 ![image](1.jpg)
 
 导入后即可在列表中找到 Ballance项目，点击打开即可。
-
-### 在编辑器里运行
-
-提示：*(目前暂无Mac版本的物理引擎文件，请使用Win版本的Unity进行调试)*
-
-1. 使用 Unity 2021.2.7+ 版本打开项目。
-2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
-3. 打开 System/Scenes/MainScene.unity 场景。
-4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
-5. 点击运行，即可查看效果啦。
 
 ### 如何开启发行版的调试模式
 

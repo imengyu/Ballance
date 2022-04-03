@@ -44,7 +44,9 @@ BallSoundCollData<br/>返回碰撞数据
 
 `colId` number <br/>自定义碰撞层ID
 
-### 通过名称分配一个可用的声音组ID, 如果名称存在，则返回同样的ID
+### BallSoundManager:GetSoundCollIDByName(name) 
+
+通过名称分配一个可用的声音组ID, 如果名称存在，则返回同样的ID
 
 #### 参数
 

@@ -53,6 +53,8 @@ LuaTimer = {}
 ---增加一个一次性Timer, timer在delay时间后触发, 单位ms.
 ---@param delay number
 ---@param func function
+---@return number
+---@returns number 返回一个ID，可以使用 LuaTimer.Delete(id) 删除Timer
 function LuaTimer.Add(delay,func) end 
 
 ---增加一个Timer, delay表示延迟时间,单位ms, cycle表示周期时间,单位ms, func为回调的lua函数, Add函数返回一个timer id,用于Delete函数删除某个已经添加的Timer
@@ -60,6 +62,7 @@ function LuaTimer.Add(delay,func) end
 ---@param cycle number
 ---@param func function
 ---@return number
+---@returns number 返回一个ID，可以使用 LuaTimer.Delete(id) 删除Timer
 function LuaTimer.Add(delay,cycle,func) end 
 
 ---删除指定id的timer.

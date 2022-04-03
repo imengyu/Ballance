@@ -19,9 +19,9 @@
   * `SoundManager` -> [GameSoundManager](../cs-api/class/Ballance2.Services.GameSoundManager) : 获取声音管理器
   * `CorePackage` -> [GamePackage](../cs-api/class/Ballance2.Package.GamePackage) : 获取系统包
   * `GamePlay` -> table : 获取游戏玩模块（也可直接使用全局变量GamePlay获取）
-  * `LevelBuilder` -> [LevelBuilder](/LuaApi/lua-api/class/LevelBuilder) : 获取关卡加载器模块
+  * `LevelBuilder` -> [LevelBuilder](/LuaApi/game-api/class/LevelBuilder) : 获取关卡加载器模块
   * `CommandServer` -> [GameDebugCommandServer](../cs-api/class/Ballance2.Services.GameDebugCommandServer) : 获取调试命令服务
-  * `HighScoreManager` -> HighScoreManager : 获取分数管理器
+  * `HighScoreManager` -> [HighScoreManager](/LuaApi/game-api/class/HighscoreManager) : 获取分数管理器
 
 * `GamePlay` -> `table`
 
@@ -29,16 +29,16 @@
 
   ?> **注意** 此模块仅可在游玩关卡时访问，在初始化和主菜单中是无法访问到的。
 
-  * `BallManager` -> [BallManager](/LuaApi/lua-api/class/BallManager) : 球管理器，负责管理球的注册、运动控制、特殊效果等等。
-  * `BallPiecesControll` -> [BallPiecesControll](/LuaApi/lua-api/class/BallPiecesControll) : 默认的球碎片抛出和回收器。提供默认的球碎片抛出和回收效果控制。
-  * `CamManager` -> [CamManager](/LuaApi/lua-api/class/CamManager) : 摄像机管理器，负责游戏中的摄像机运动。
-  * `GamePlayManager` -> [GamePlayManager](/LuaApi/lua-api/class/GamePlayManager) : 游戏玩管理器，是游戏的主要控制管理器。
+  * `BallManager` -> [BallManager](/LuaApi/game-api/class/BallManager) : 球管理器，负责管理球的注册、运动控制、特殊效果等等。
+  * `BallPiecesControll` -> [BallPiecesControll](/LuaApi/game-api/class/BallPiecesControll) : 默认的球碎片抛出和回收器。提供默认的球碎片抛出和回收效果控制。
+  * `CamManager` -> [CamManager](/LuaApi/game-api/class/CamManager) : 摄像机管理器，负责游戏中的摄像机运动。
+  * `GamePlayManager` -> [GamePlayManager](/LuaApi/game-api/class/GamePlayManager) : 游戏玩管理器，是游戏的主要控制管理器。
   * `GamePreviewManager` -> GamePreviewManager : 关卡预览管理器，负责关卡预览模式时的一些控制行为。
-  * `SectorManager` -> [SectorManager](/LuaApi/lua-api/class/SectorManager) : 节管理器，负责控制关卡游戏中每个小节机关的状态。
-  * `MusicManager` -> [MusicManager](/LuaApi/lua-api/class/MusicManager) : 背景音乐管理器，控制游戏中的背景音乐。
+  * `SectorManager` -> [SectorManager](/LuaApi/game-api/class/SectorManager) : 节管理器，负责控制关卡游戏中每个小节机关的状态。
+  * `MusicManager` -> [MusicManager](/LuaApi/game-api/class/MusicManager) : 背景音乐管理器，控制游戏中的背景音乐。
   * `TranfoManager` -> TranfoAminControl : 变球器动画控制器。
   * `UFOAnimController` -> UFOAnimController : 游戏结束时的UFO动画控制器。
-  * `BallSoundManager` -> [BallSoundManager](/LuaApi/lua-api/class/BallSoundManager) : 球声音管理器，负责管理球的滚动碰撞声音。
+  * `BallSoundManager` -> [BallSoundManager](/LuaApi/game-api/class/BallSoundManager) : 球声音管理器，负责管理球的滚动碰撞声音。
 
 * `GameUI` -> `table`
 

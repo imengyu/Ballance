@@ -14,15 +14,20 @@
 
 [API文档参考这里](http://ballance-docs.imengyu.top/#/LuaApi/readme)
 
-## 欢迎体验
+[完整文档可以参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/readme)
 
+[API文档参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/LuaApi/readme)
 
 ## 系统需求
 
-||操作系统|处理器|内存|显卡|DirectX 版本|存储空间|
-|---|---|---|---|---|---|---|
-|最低配置|Windows 11, 10, 8, 7|Dual core 3Ghz+|1 GB RAM|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|11|100 MB 可用空间|
-|推荐配置|Windows 11, 10, 8, 7|Quad core 3Ghz+|2 GB RAM|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|11|200 MB 可用空间|
+||最低配置|推荐配置|
+|---|---|---|
+|操作系统|Windows 7-11|Windows 7-11|
+|处理器|Dual core 3Ghz+|Quad core 3Ghz+|
+|内存|1 GB RAM|2 GB RAM|
+|显卡|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|
+|DirectX 版本|11|11|
+|存储空间|100 MB 可用空间|200 MB 可用空间|
 
 ## 游戏相册
 

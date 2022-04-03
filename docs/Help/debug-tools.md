@@ -41,3 +41,7 @@
 * 按 <kbd>4</kbd> 快速重置到当前小节出生点，不会消耗生命球。
 * 按 <kbd>5</kbd> 加一个生命球。
 * 按 <kbd>6</kbd> 触发死亡。与fall命令相同。
+
+## 调试 Lua 代码
+
+请参考[模组制作文档](../SystemModding/readme.md)的调试 Lua 代码章节。

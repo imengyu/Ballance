@@ -1,12 +1,10 @@
-# 模组 Lua 开发 API 参考文档
+# API总览
 
 这是 Lua 开发 API 参考文档。
 
-## Lua 类
+在进行开发之前，推荐您阅读相关Demo和示例，并参考API文档。
 
-框架提供了 Lua 面向对象的组件，和 Lua 的 MonoBehavior，你可以使用这些组件来开发。
-
-具体参考[LUA 类的帮助](../SystemModding/lua-class.md).
+如果遇到问题或者文档不全有错误等，欢迎提出 Issue！
 
 ## Unity 公开的 API
 
@@ -30,11 +28,11 @@ local vector3Instance = Vector3(1,0,0)
 
 ![图片](images/1.jpg)
 
-如果没有这个定义，说明它没有导出到Lua，只能在Mono编译的情况下用反射调用，速度非常慢。
+如果没有这个定义，说明它没有导出到Lua，不能用。
 
 如果你急需这个API，欢迎向我提出Issue，我会把它加进去。
 
-## Ballance 项目 C# 框架 公开的 API
+## Ballance C#框架API
 
 框架向Lua提供了很多的 API，你可以按需使用。
 
@@ -50,7 +48,14 @@ Log.D('Test', 'Hello world!')
 
 本框架的 API 全部都有详细的说明文档，只要你生成了Lua代码提示文件并且正确配置，API都有详细的代码提示。具体参考[环境配置](../SystemModding/readme.md#环境配置)。
 
-## Ballance 游戏 Lua API
+
+## Lua 类
+
+框架提供了 Lua 面向对象的组件，和 Lua 的 MonoBehavior，你可以使用这些组件来开发。
+
+具体参考[LUA 类的帮助](../SystemModding/lua-class.md).
+
+## Ballance Lua API
 
 这一部分是游戏Lua部分专用的API, C#端是无法访问的。
 

@@ -56,7 +56,7 @@
 
 `showPauseUI` boolean <br/>是否显示暂停界面
 
-### GamePlayManager:PauseLevel(showPauseUI)
+### GamePlayManager:ResumeLevel(forceRestart)
 
 继续关卡
 
@@ -78,7 +78,7 @@
 
 #### 参数
 
-`tranfo` P_Trafo_Base <br/>是否强制重置，会造成当前小节重置，默认false
+`tranfo` P_Trafo_Base <br/>变球器实例
 
 `targetType` string <br/>要变成的目标球类型
 
