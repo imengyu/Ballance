@@ -56,7 +56,7 @@ namespace Slua
       if (!Directory.Exists(path))
         Directory.CreateDirectory(path);
 
-      var sbSide = new StringBuilder("* [返回主页]" + HomePath + ")\n* [简介](" + BackPath + ")\n");
+      var sbSide = new StringBuilder("* [返回主页](" + HomePath + ")\n* [简介](" + BackPath + ")\n");
 
       var assembly = Assembly.Load("Assembly-CSharp-firstpass");
       var types = assembly.GetTypes();

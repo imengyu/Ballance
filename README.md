@@ -10,22 +10,12 @@
 
 ## 文档
 
-[完整文档可以参考这里](https://imengyu.top/ballance-docs/#/readme)
+[完整文档可以参考这里](http://ballance-docs.imengyu.top/#/readme)
 
-[API文档参考这里](https://imengyu.top/ballance-docs/#/LuaApi/readme)
-
-[完整文档可以参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/readme)
-
-[API文档参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/LuaApi/readme)
-
+[API文档参考这里](http://ballance-docs.imengyu.top/#/LuaApi/readme)
 
 ## 欢迎体验
 
-目前仅有Level1体验版，仅有一个关卡，你可以先尝尝鲜。。
-
-体验版文件放在项目根目录 `体验版-Windows-Ballance-Beta.zip` ， 或者点击[这里](https://github.com/imengyu/Ballance/raw/main/%E4%BD%93%E9%AA%8C%E7%89%88-Windows-Ballance-Beta.zip)下载, 解压后运行 `Ballance.exe` 就可以看到效果啦。
-
-Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，想尝尝鲜的话可以安装这个哦（手机版更新不是特别及时，先体验 Windows 版吧）。
 
 ## 系统需求
 
@@ -55,7 +45,7 @@ Android 体验版放在项目根目录 `体验版-Android-Ballance-Beta.apk` ，
 ![Demo](docs/DemoImages/9.gif)
 ![Demo](docs/DemoImages/10.png)
 
-自制地图（魔脓空间站）（转译版地图）
+（转译版）自制地图（魔脓空间站）
 
 ![Demo](docs/DemoImages/3.jpg)
 ![Demo](docs/DemoImages/4.jpg)
