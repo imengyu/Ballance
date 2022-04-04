@@ -11,6 +11,31 @@
 |CurrentLevelSectors|`SectorDataStorage[]`|获取当前关卡的小节机关数据|
 |CurrentLevelRestPoints|`RestPointsDataStorage[]`|获取当前关卡的出生点数据|
 
+## 事件
+
+* EventSectorChanged 小节更改事件
+  * 参数 table
+  |名称|类型|说明|
+  |---|---|---|
+  |sector|number|当前的小节|
+  |oldSector|number|之前的小节|
+* EventSectorDeactive 小节结束事件
+  * 参数 table
+  |名称|类型|说明|
+  |---|---|---|
+  |oldSector|number|结束的小节|
+* EventSectorActive 小节激活事件
+  * 参数 table
+  |名称|类型|说明|
+  |---|---|---|
+  |sector|number|当前的小节|
+  |playCheckPointSound|boolean|是否播放节点音乐（可用于区分是否是用户还是程序激活节）|
+* EventResetAllSector 所有节重置事件
+  * 参数 table
+  |名称|类型|说明|
+  |---|---|---|
+  |active|boolean|重置机关后是否重新激活|
+
 ## 定义
 
 ### SectorDataStorage 小节数据存储结构

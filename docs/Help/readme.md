@@ -1,5 +1,7 @@
 # 简介
 
+![image](../DemoImages/preview.jpg)
+
 Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 [快乐的梦鱼](https://imengyu.top) 制作。
 
 这个重制版复刻了原版90%的内容，并且使用了新的架构，增加了许多新的功能，你可以非常轻松的制作自定义模组或者地图，并且，新游戏适配新电脑，你可以在Windows7-11的新系统上运行，不会出现奇奇怪怪的兼容性问题。

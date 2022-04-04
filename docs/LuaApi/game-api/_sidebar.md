@@ -19,5 +19,5 @@
   * [GamePhysBall](/LuaApi/game-api/class/GamePhysBall)
   * [GamePhysFloor](/LuaApi/game-api/class/GamePhysFloor)
 * SLua框架API
-  * [Slua](/LuaApi/game-api/class/Slua)
-  * [LuaTimer](/LuaApi/game-api/class/LuaTimer)
+  * [Slua](/LuaApi/game-api/system/Slua)
+  * [LuaTimer](/LuaApi/game-api/system/LuaTimer)

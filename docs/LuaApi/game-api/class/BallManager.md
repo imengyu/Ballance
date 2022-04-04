@@ -19,6 +19,33 @@
 |KeyStateLeft|boolean|获取左按键状态|
 |KeyStateRight|boolean|获取右按键状态|
 
+## 事件
+
+* EventBallRegistered 新球注册事件
+  * 参数 table
+  |名称|类型|说明|
+  |---|---|---|
+  |ball|[Ball](Ball.md)|球的实例|
+  |body|[PhysicsObject](../../cs-api/class/BallancePhysics.Wapper.PhysicsObject.md)|这个球的刚体组件|
+  |speedMeter|[SpeedMeter](../../cs-api/class/Ballance2.Game.SpeedMeter.md)|这个球的速度计组件|
+* EventBallUnRegister 球删除注册事件
+  * 参数 string 取消注册球的名称
+* EventCurrentBallChanged 当前球变化事件
+  * 参数 string 当前球的名称
+* EventNextRecoverPosChanged 球的下一个出生位置变化事件
+  * 参数 Vector3 球的下一个出生位置
+* EventControllingStatusChanged 球控制状态变化事件
+* EventPlaySmoke 播放烟雾事件
+* EventPlayLighting 播放闪电事件
+* EventFlushBallPush 刷新球推动力状态事件
+* EventSetBallPushValue 球推动力数值手动更新事件
+  * 参数 table
+  |名称|类型|说明|
+  |---|---|---|
+  |x|number|X轴推动力百分比（[-1,1]）|
+  |y|number|Y轴推动力百分比（[-1,1]）|
+* EventRemoveAllBallPush 清除球推动力事件
+
 ## 定义
 
 ### BallPushType 球推动定义

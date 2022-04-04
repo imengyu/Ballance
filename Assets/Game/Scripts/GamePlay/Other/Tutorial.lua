@@ -149,11 +149,11 @@ function Tutorial:Start()
 
   self._EventEntery = Game.Mediator:RegisterEventHandler(CorePackage, 'CoreTutorialLevelEventHandler', 'TutorialHandler', function (evtName, params)
     if params[1] == 'beforeStart' then
-      GamePlay.GamePlayManager.EventStart:On(self.startFun);
+      GamePlay.GamePlayManager.EventBeforeStart:On(self.startFun);
       GamePlay.GamePlayManager.EventFall:On(self.fallFun);
       GamePlay.GamePlayManager.EventQuit:On(self.quitFun);
     elseif params[1] == 'beforeQuit' then
-      GamePlay.GamePlayManager.EventStart:Off(self.startFun);
+      GamePlay.GamePlayManager.EventBeforeStart:Off(self.startFun);
       GamePlay.GamePlayManager.EventFall:Off(self.fallFun);
       GamePlay.GamePlayManager.EventQuit:Off(self.quitFun);
       --取消注册事件

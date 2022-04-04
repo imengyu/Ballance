@@ -33,7 +33,6 @@ namespace Ballance2.Services.LuaService
     {
       LuaGlobalApi.SetRequire(state.getFunction("require"));
       state.doString(@"---Fix danger functions
-io = nil
 dofile = nil
 getfenv = nil
 load = nil

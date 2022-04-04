@@ -88,7 +88,7 @@ function CamManager:Start()
   local events = Game.Mediator:RegisterEventEmitter('CamManager')
   self.EventRotateUpStateChanged = events:RegisterEvent('RotateUpStateChanged') --空格键升起摄像机状态变化事件
   self.EventRotateDirectionChanged = events:RegisterEvent('RotateDirectionChanged') --摄像机旋转方向变化事件
-  self.EventCamFollowChanged = events:RegisterEvent('CamFollowChanged') --摄像机跟踪目标变化事件
+  self.EventCamFollowChanged = events:RegisterEvent('CamFollowChanged') --摄像机是否跟踪目标变化事件
   self.EventCamLookChanged = events:RegisterEvent('CamLookChanged') --摄像机对准目标变化事件
   self.EventCamFollowTargetChanged = events:RegisterEvent('CamFollowTargetChanged') --摄像机跟踪目标变化事件
 

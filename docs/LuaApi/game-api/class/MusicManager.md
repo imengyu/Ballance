@@ -2,6 +2,13 @@
 
 背景音乐管理器，控制游戏中的背景音乐。
 
+## 事件
+
+* EventMusicThemeChanged 音乐主题变化事件
+  * 参数 number 表示当前的音乐主题
+* EventMusicDisable 音乐禁用事件
+* EventMusicEnable 音乐启用事件
+
 ## 方法
 
 ### MusicManager:SetCurrentTheme(theme)

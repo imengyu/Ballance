@@ -17,6 +17,14 @@
 |CamRotateValue|number|获取当前摄像机方向（0-3, CamRotateType）设置请使用 `RotateTo` 方法|
 |CamFollow|[CamFollow](../../cs-api/class/Ballance2.Game.CamFollow)|获取摄像机跟随脚本|
 
+## 事件
+
+* EventRotateUpStateChanged 空格键升起摄像机状态变化事件
+* EventRotateDirectionChanged 摄像机旋转方向变化事件
+* EventCamFollowChanged 摄像机是否跟踪目标变化事件
+* EventCamLookChanged 摄像机对准目标变化事件
+* EventCamFollowTargetChanged 摄像机跟踪目标变化事件
+
 ## 定义
 
 ### CamRotateType 摄像机旋转方向

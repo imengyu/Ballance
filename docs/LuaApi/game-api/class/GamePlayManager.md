@@ -21,18 +21,21 @@
 
 ## 事件
 
-* EventStart 关卡开始事件
+* EventBeforeStart 关卡开始之前事件
+* EventStart 关卡开始事件(包括球下落后重新开始一个小节)
+  * 参数 boolean 表示这是不是当前关卡第一次开始（否则就是球下落后重新开始一个小节）
 * EventQuit 关卡退出事件
 * EventFall 玩家球掉落事件
 * EventDeath 关卡球掉落并且没有生命游戏结束事件（不会发出Fall）
-* EventResume 继续事件
-* EventPause 暂停事件
+* EventResume ESC继续事件
+* EventPause ESC暂停事件
 * EventRestart 重新开始关卡事件
 * EventUfoAnimFinish UFO动画完成事件
 * EventPass 过关事件
 * EventHideBalloonEnd 过关后飞船隐藏事件
 * EventAddLife 生命增加事件
 * EventAddPoint 分数增加事件
+  * 参数 number 表示增加的分数
 
 ## 方法
 

@@ -134,6 +134,7 @@ function GamePlayManager:_DeleteEvents()
 end
 function GamePlayManager:_InitEvents() 
   local events = Game.Mediator:RegisterEventEmitter('GamePlay')
+  self.EventBeforeStart = events:RegisterEvent('BeforeStart') --关卡开始之前事件
   self.EventStart = events:RegisterEvent('Start') --关卡开始事件
   self.EventQuit = events:RegisterEvent('Quit') --关卡退出事件
   self.EventFall = events:RegisterEvent('Fall') --玩家球掉落事件
@@ -214,6 +215,12 @@ function GamePlayManager:_Start(isStartBySector, customerFn)
     GamePlay.BallManager:PlayLighting(startPos, true, true, function ()
       --开始控制
       GamePlay.BallManager:SetNextRecoverPos(startPos)
+      --发送事件
+      self.EventStart:Emit(self._FirstStart)
+      --设置标志
+      if self._FirstStart then
+        self._FirstStart = false
+      end
 
       if type(customerFn) == 'function' then
         customerFn()
@@ -280,9 +287,11 @@ function GamePlayManager:_InitAndStart()
       end
     end
 
+    self._FirstStart = true
+
     Log.D(TAG, 'Start')
 
-    self.EventStart:Emit(nil)
+    self.EventBeforeStart:Emit(nil)
 
     if not self._ShouldStartByCustom then
       Yield(WaitForSeconds(1))

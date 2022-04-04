@@ -112,7 +112,7 @@ namespace Ballance2.Services.LuaService.Lua
             var fileName = LuaUtils.GetLuaCallerFileName(l);
             var packName = PackageNameByLuaFilePath(fileName);
 
-            var pack = pm.FindPackage(packName);
+            var pack = pm.FindRegisteredPackage(packName);
             if (pack != null) {
               //有斜杠
               if (pathOrName.Contains("/")) {
