@@ -461,10 +461,10 @@ function LevelBuilder:_LoadLevelInternal()
                 local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
                 body.DoNotAutoCreateAtAwake = true
                 body.Fixed = true
-                body.BuildRootConvexHull = false
                 body.Concave:Add(meshFilter.mesh)
                 body.Friction = physicsData.Friction
                 body.Elasticity = physicsData.Elasticity
+                body.BuildRootConvexHull = false
                 body.Layer = physicsData.Layer
                 body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
                 body:Physicalize()

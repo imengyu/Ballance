@@ -72,7 +72,7 @@ namespace Ballance2.Game
       {
         if (Look)
         {
-          LookSmoothTarget.transform.position = Vector3.SmoothDamp(transform.position, Target.position, ref smoothTargetVelocity, SmoothToTargetTime);
+          LookSmoothTarget.transform.position = Vector3.SmoothDamp(LookSmoothTarget.transform.position, Target.position, ref smoothTargetVelocity, SmoothToTargetTime);
 
           if (CameraTransform != null)
             CameraTransform.LookAt(LookSmoothTarget);

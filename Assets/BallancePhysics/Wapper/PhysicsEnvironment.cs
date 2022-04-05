@@ -201,13 +201,13 @@ namespace BallancePhysics.Wapper
             continue;
           }
 
-          ptr = new IntPtr(ptr.ToInt64() + Marshal.SizeOf<int>()); //pos 1
+          ptr = IntPtr.Add(ptr, Marshal.SizeOf<int>()); //pos 1
           Marshal.Copy(ptr, dat, 0, 3);      //float[3]
 
           var p = new Vector3(dat[0], dat[1], dat[2]);
           t.position = p;
 
-          ptr = new IntPtr(ptr.ToInt64() + Marshal.SizeOf<float>() * 3); //pos 4
+          ptr = IntPtr.Add(ptr, Marshal.SizeOf<float>() * 3); //pos 4
           Marshal.Copy(ptr, dat, 0, 4);      //float[4]
 
           t.rotation = new Quaternion(dat[0], dat[1], dat[2], dat[3]);

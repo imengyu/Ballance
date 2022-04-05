@@ -38,7 +38,7 @@ function InitTimerMain(thisGamePackage)
           TimeValue = TimeValue + Time.deltaTime --增加时间
         end, 0, 0) 
         --下面的更新函数用于更新Text，因为Text不需要每帧更新，不然消耗较大
-        UpdateTick = GameTimeMachine:RegisterUpdate(function ()
+        UpdateTick2 = GameTimeMachine:RegisterUpdate(function ()
           --这里还需要把秒转换下，变成时分秒格式
           local _, ms = math.modf(TimeValue)
           local seconds = math.fmod(TimeValue, 60)

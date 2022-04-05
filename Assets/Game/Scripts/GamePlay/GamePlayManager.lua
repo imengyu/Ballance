@@ -586,18 +586,19 @@ function GamePlayManager:ActiveTranfo(tranfo, targetType, color)
   GamePlay.BallManager:FastMoveTo(targetPos, 0.1, function ()
     --播放变球动画
     GamePlay.TranfoManager:PlayAnim(tranfo.gameObject.transform, color, tranfo.gameObject, function ()
-      
+
+      --先停止摄像机跟随
+      GamePlay.CamManager:SetCamFollow(false):SetCamLook(false)
       --播放烟雾
       GamePlay.BallManager:PlaySmoke(targetPos)
-
       --先设置无球
       GamePlay.BallManager:SetNoCurrentBall()
-
       --切换球并且抛出碎片
       GamePlay.BallManager:ThrowPeices(oldBallType, targetPos)
-
       --激活新球
       GamePlay.BallManager:SetCurrentBall(targetType, BallControlStatus.Control)
+      --重新开启摄像机跟随
+      GamePlay.CamManager:SetCamFollow(true):SetCamLook(true)
 
       --重置状态
       tranfo:Reset()
