@@ -19,6 +19,12 @@
 |PhysicsWorlds|table |所有物理环境索引|
 |Handle|[IntPtr](https://docs.microsoft.com/zh-cn/dotnet/api/System.IntPtr) |获取当前物理环境的底层指针|
 |PhysicsTime|number [float](../types.md)|获取上一帧的物理执行时间 (秒)|
+|PhysicsActiveBodies|number [int](../types.md)|获取当前激活的物理对象个数|
+|PhysicsBodies|number [int](../types.md)|获取当前所有的物理对象个数|
+|PhysicsConstantPushBodies|number [int](../types.md)|获取当前正在恒力推动的物理对象个数|
+|PhysicsFallCollectBodies|number [int](../types.md)|获取当前坠落回收物理对象个数|
+|PhysicsFixedBodies|number [int](../types.md)|获取当前固定物理对象个数|
+|PhysicsUpdateBodies|number [int](../types.md)|获取当前更新物理对象个数|
 
 ## 方法
 

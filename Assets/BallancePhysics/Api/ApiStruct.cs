@@ -61,6 +61,15 @@ namespace BallancePhysics.Api
     private fn_delete_raycast_result delete_raycast_result;
     private fn_surface_exist_by_name _surface_exist_by_name;
     public fn_physics_set_col_id physics_set_col_id;
+    public fn_do_update_all_physics_contact_detection do_update_all_physics_contact_detection;
+    private fn_get_stats _get_stats;
+
+    public void get_stats(IntPtr env, ref int active_count) {
+      IntPtr active_count_ptr = Marshal.AllocHGlobal(Marshal.SizeOf<int>());
+      _get_stats(env, active_count_ptr, IntPtr.Zero);
+      active_count = Marshal.ReadInt32(active_count_ptr);
+      Marshal.FreeHGlobal(active_count_ptr);
+    }
 
     public void physics_set_name(IntPtr body, string name) {
       var namePtr = Marshal.StringToHGlobalAnsi(name);
@@ -536,6 +545,8 @@ namespace BallancePhysics.Api
       i++;
       physics_set_contract_listener = Marshal.GetDelegateForFunctionPointer<fn_physics_set_contract_listener>(apiArray[i++]);
       physics_remove_contract_listener = Marshal.GetDelegateForFunctionPointer<fn_physics_remove_contract_listener>(apiArray[i++]);
+      do_update_all_physics_contact_detection = Marshal.GetDelegateForFunctionPointer<fn_do_update_all_physics_contact_detection>(apiArray[i++]);
+      _get_stats = Marshal.GetDelegateForFunctionPointer<fn_get_stats>(apiArray[i++]);
       InitSuccess = true;
     }
       

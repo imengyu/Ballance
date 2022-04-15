@@ -173,17 +173,69 @@ namespace BallancePhysics.Wapper
     /// <value></value>
     [LuaApiDescription("获取上一帧的物理执行时间 (秒)")]
     public float PhysicsTime { get; private set; }
+    /// <summary>
+    /// 获取当前激活的物理对象个数
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前激活的物理对象个数")]
+    public int PhysicsActiveBodies { get { return _PhysicsActiveBodies; } }
+    /// <summary>
+    /// 获取当前所有的物理对象个数
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前所有的物理对象个数")]
+    public int PhysicsBodies { get; private set; }
+    /// <summary>
+    /// 获取当前正在恒力推动的物理对象个数
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前正在恒力推动的物理对象个数")]
+    public int PhysicsConstantPushBodies { get { return _PhysicsConstantPushBodies; } }
+    /// <summary>
+    /// 获取当前坠落回收物理对象个数
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前坠落回收物理对象个数")]
+    public int PhysicsFallCollectBodies { get { return _PhysicsFallCollectBodies; } }
+    /// <summary>
+    /// 获取当前固定物理对象个数
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前固定物理对象个数")]
+    public int PhysicsFixedBodies { get { return _PhysicsFixedBodies; } }
+    /// <summary>
+    /// 获取当前更新物理对象个数
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前更新物理对象个数")]
+    public int PhysicsUpdateBodies { get { return _PhysicsUpdateBodies; } }
 
+    private int _PhysicsActiveBodies = 0;
+    private int _PhysicsConstantPushBodies = 0;
+    private int _PhysicsFallCollectBodies = 0;
+    private int _PhysicsFixedBodies = 0;
+    private int _PhysicsUpdateBodies = 0;
     private bool lastPauseIsSimuate = false;
 
     private void FixedUpdate() {
       if(Simulate && Handle != IntPtr.Zero) {
         Profiler.BeginSample("PhysicsEnvironmentUpdate");
         
+        //设置计数
+
 	      float startTime = Time.realtimeSinceStartup;
+        PhysicsBodies = objects.Count;
+        _PhysicsUpdateBodies = 0;
+        _PhysicsConstantPushBodies = 0;
+        _PhysicsFallCollectBodies = 0;
+        _PhysicsFixedBodies = 0;
+
+        //模拟
 
         PhysicsApi.API.environment_simulate_dtime(Handle, /*(1.0f / SimulationRate)*/ (Time.fixedDeltaTime)  * TimeFactor);
         PhysicsApi.API.do_update_all(Handle);
+
+        //更新位置到C#
 
         float[] dat = new float[4];
         LinkedListNode<PhysicsObject> obj = objects.First;
@@ -191,6 +243,7 @@ namespace BallancePhysics.Wapper
           var bodyCurrent = obj.Value;
           if(bodyCurrent.Fixed) {
             obj = obj.Next;
+            _PhysicsFixedBodies++;
             continue;
           }
 
@@ -211,14 +264,19 @@ namespace BallancePhysics.Wapper
           Marshal.Copy(ptr, dat, 0, 4);      //float[4]
 
           t.rotation = new Quaternion(dat[0], dat[1], dat[2], dat[3]);
+          _PhysicsUpdateBodies++;
 
-          if(bodyCurrent.EnableConstantForce)
+          if(bodyCurrent.EnableConstantForce) {
             bodyCurrent.DoApplyConstantForce();
+            _PhysicsConstantPushBodies++;
+          }
 
+          //坠落回收
           if(DePhysicsFall < 0 && p.y < DePhysicsFall) {
             //DePhysics and DeActive
             bodyCurrent.UnPhysicalize(true);
             bodyCurrent.gameObject.SetActive(false);
+            _PhysicsFallCollectBodies++;
           }
 
           obj = obj.Next;
@@ -226,6 +284,16 @@ namespace BallancePhysics.Wapper
 
         PhysicsTime = Time.realtimeSinceStartup - startTime;
         Profiler.EndSample();
+
+        //更新碰撞处理器
+        
+        Profiler.BeginSample("PhysicsEnvironmentContactEvent");
+        PhysicsApi.API.do_update_all_physics_contact_detection(Handle);
+        Profiler.EndSample();
+
+        //获取一些参数
+
+        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies);
       }
     }
 

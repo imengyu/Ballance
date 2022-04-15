@@ -129,7 +129,7 @@ end
 function BallManager:Awake()
   GamePlay.BallManager = self
   self._private.BallLightningSphere = self._BallLightningSphere:GetLuaClass()
-  
+
   --注册事件
   local events = Game.Mediator:RegisterEventEmitter('BallManager')
   self.EventBallRegistered = events:RegisterEvent('BallRegistered') --新球注册事件
@@ -535,6 +535,7 @@ function BallManager:_ActiveCurrentBall()
       local Velocity = GameUI.GamePlayUI._DebugStatValues['Velocity']
       local PushValue = GameUI.GamePlayUI._DebugStatValues['PushValue']
       local PhysicsTime = GameUI.GamePlayUI._DebugStatValues['PhysicsTime']
+      local PhysicsObjects = GameUI.GamePlayUI._DebugStatValues['PhysicsObjects']
       local GamePhysicsWorld = GamePlay.GamePlayManager.GamePhysicsWorld
       
       --删除定时器
@@ -543,12 +544,22 @@ function BallManager:_ActiveCurrentBall()
         self._private.debugFlushInfoTimer = nil
       end
       --每秒更新球位置调试显示数据
-      self._private.debugFlushInfoTimer = LuaTimer.Add(1000, 1000, function ()
+      self._private.debugFlushInfoTimer = LuaTimer.Add(500, 400, function ()
         --球位置
         Position:SetVector3Value(currentTransform.position)
         Rotation:SetVector3Value(currentTransform.rotation)
         --物理时间
         PhysicsTime.Value = string.format("%.2f ms", GamePhysicsWorld.PhysicsTime * 1000)
+        --物理对象信息
+        PhysicsObjects.Value = string.format("All/Active/Update %d/%d/%d\nFixed/FallCollect/Push %d/%d/%d", 
+          GamePhysicsWorld.PhysicsBodies, 
+          GamePhysicsWorld.PhysicsActiveBodies, 
+          GamePhysicsWorld.PhysicsUpdateBodies,
+          GamePhysicsWorld.PhysicsFixedBodies,
+          GamePhysicsWorld.PhysicsFallCollectBodies, 
+          GamePhysicsWorld.PhysicsConstantPushBodies
+        )
+
         --球的速度和推动数据
         if current.rigidbody.IsPhysicalized then
           Velocity:SetVector3Value(current.rigidbody.SpeedVector)

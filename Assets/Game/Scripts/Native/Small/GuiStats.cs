@@ -74,6 +74,10 @@ statPos:Delete()
       stats.Remove(stat);
     }
 
+    [LuaApiDescription("每隔多少秒更新一次文字")]
+    [Tooltip("每隔多少秒更新一次文字")]
+    public float UpdateTime = 1;
+
     [Tooltip("如果使用GUI模式，你可以通过设置这个来控制GUI显示区域")]
     [LuaApiDescription("如果使用GUI模式，你可以通过设置这个来控制GUI显示区域")]
     public Rect DisplayArea = new Rect(0, 200, 300, 500);
@@ -83,7 +87,7 @@ statPos:Delete()
     private void Update() {
       if(SetToText) {
         tick += Time.deltaTime;
-        if(tick > 1) {
+        if(tick >= UpdateTime) {
           StringBuilder sb = new StringBuilder();
 
           LinkedListNode<GuiStatsValue> value = stats.First;

@@ -3,6 +3,8 @@
 local CommonUtils = Ballance2.Utils.CommonUtils
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 local FadeManager = Game.UIManager.UIFadeManager
+local Yield = UnityEngine.Yield
+local WaitForEndOfFrame = UnityEngine.WaitForEndOfFrame
 
 ---默认的球碎片抛出和回收器。提供默认的球碎片抛出和回收效果控制。
 ---@class BallPiecesControll : GameLuaObjectHostClass
@@ -87,21 +89,44 @@ function CreateClass:BallPiecesControll()
         end
       end
 
-      for _, body in ipairs(data.bodys) do
-        local forceDir = body.transform.localPosition
-        body.gameObject:SetActive(true)
-        forceDir.y = forceDir.y + 2
-        forceDir:Normalize() --力的方向是从原点向碎片位置
-        body:Physicalize() --物理
-        body:Impluse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
-      end
-
       ---延时消失
       data.delayHideTimerID = LuaTimer.Add((timeLive or 20) * 2000, function ()
         data.delayHideTimerID = nil
         self:ResetPieces(data)
       end)
 
+      local count = 0
+
+      --物理化并且抛出碎片
+      coroutine.resume(coroutine.create(function()
+
+        for _, body in ipairs(data.bodys) do
+
+          --防止一下抛出太多碎片
+          count = count + 1
+          if count > 4 then
+            Yield(WaitForEndOfFrame())
+            count = 0
+          end
+
+          body:Physicalize() --物理
+        end
+
+        for _, body in ipairs(data.bodys) do
+
+          count = count + 1
+          if count > 4 then
+            Yield(WaitForEndOfFrame())
+            count = 0
+          end
+
+          local forceDir = body.transform.localPosition
+          body.gameObject:SetActive(true)
+          forceDir.y = forceDir.y + 2
+          forceDir:Normalize()
+          body:Impluse(forceDir * CommonUtils.RandomFloat(minForce, maxForce)) --施加力
+        end
+      end))
     end
   end
   ---回收碎片

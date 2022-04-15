@@ -19,7 +19,7 @@
 ```lua
 --产生一个渐变，对象是当前物体，并且渐变完成后自动隐藏物体
 --最后一个参数为null表示它会自动去当前物体的MeshRenderer上查找材质来进行渐变。
-local fadeObject = obj:AddFadeOut(self.gameObject, 1.0, true, null);
+local fadeObject = GameUIManager.UIFadeManager:AddFadeOut(self.gameObject, 1.0, true, null);
 
 --创建的fadeObject随时可以停止，或者设置当前的渐变值。
 fadeObject:Delete(); --停止

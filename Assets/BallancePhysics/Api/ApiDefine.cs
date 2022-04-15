@@ -184,4 +184,9 @@ namespace BallancePhysics.Api
   public delegate void fn_physics_remove_contract_listener(IntPtr body);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_physics_set_col_id(IntPtr body, int col_id);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_do_update_all_physics_contact_detection(IntPtr world);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_get_stats(IntPtr world, IntPtr active_time, IntPtr event_time);
+  
 }
