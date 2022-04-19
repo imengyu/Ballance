@@ -14,5 +14,5 @@ return {
     CoreUnload()
     return true
   end,
-  PackageVersion = 1,
+  PackageVersion = 15,
 }

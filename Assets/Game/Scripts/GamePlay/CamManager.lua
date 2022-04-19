@@ -44,7 +44,7 @@ CamManager = ClassicObject:extend()
 function CamManager:new()
   self._CameraRotateTime = 0.4
   self._CameraRotateUpTime = 0.8
-  self._CameraNormalZ = 18
+  self._CameraNormalZ = 17
   self._CameraNormalY = 30
   self._CameraSpaceY = 55
   self._CameraSpaceZ = 8

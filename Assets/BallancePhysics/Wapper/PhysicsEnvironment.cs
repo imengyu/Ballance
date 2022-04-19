@@ -216,6 +216,8 @@ namespace BallancePhysics.Wapper
     private int _PhysicsFixedBodies = 0;
     private int _PhysicsUpdateBodies = 0;
     private bool lastPauseIsSimuate = false;
+    private List<PhysicsObject> nextNeedUnFallCollectObjects = new List<PhysicsObject>();
+    private int tick = 0;
 
     private void FixedUpdate() {
       if(Simulate && Handle != IntPtr.Zero) {
@@ -229,11 +231,17 @@ namespace BallancePhysics.Wapper
         _PhysicsConstantPushBodies = 0;
         _PhysicsFallCollectBodies = 0;
         _PhysicsFixedBodies = 0;
+        if(tick < 1024) tick ++;
+        else tick = 0;
 
         //模拟
 
         PhysicsApi.API.environment_simulate_dtime(Handle, /*(1.0f / SimulationRate)*/ (Time.fixedDeltaTime)  * TimeFactor);
         PhysicsApi.API.do_update_all(Handle);
+
+        //获取一些参数
+
+        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies);
 
         //更新位置到C#
 
@@ -274,8 +282,7 @@ namespace BallancePhysics.Wapper
           //坠落回收
           if(DePhysicsFall < 0 && p.y < DePhysicsFall) {
             //DePhysics and DeActive
-            bodyCurrent.UnPhysicalize(true);
-            bodyCurrent.gameObject.SetActive(false);
+            nextNeedUnFallCollectObjects.Add(bodyCurrent);
             _PhysicsFallCollectBodies++;
           }
 
@@ -286,14 +293,23 @@ namespace BallancePhysics.Wapper
         Profiler.EndSample();
 
         //更新碰撞处理器
-        
-        Profiler.BeginSample("PhysicsEnvironmentContactEvent");
-        PhysicsApi.API.do_update_all_physics_contact_detection(Handle);
-        Profiler.EndSample();
+         
+        if(tick % 6 == 0) {
+          Profiler.BeginSample("PhysicsEnvironmentContactEvent");
+          PhysicsApi.API.do_update_all_physics_contact_detection(Handle);
+          Profiler.EndSample();
+        }
 
-        //获取一些参数
-
-        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies);
+        //需要反物理化坠落的物体
+        if(nextNeedUnFallCollectObjects.Count > 0) {
+          for (var i = nextNeedUnFallCollectObjects.Count - 1; i >= 0; i--)
+          {
+            var bodyCurrent = nextNeedUnFallCollectObjects[i];
+            bodyCurrent.UnPhysicalize(true);
+            bodyCurrent.gameObject.SetActive(false);
+          }
+          nextNeedUnFallCollectObjects.Clear();
+        }
       }
     }
 

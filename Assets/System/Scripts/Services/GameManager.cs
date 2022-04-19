@@ -928,6 +928,8 @@ end
         //发出屏幕大小更改事件
         GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
       }
+      if(fullScreen != Screen.fullScreen)
+        Screen.fullScreen = fullScreen;
       if(quality >= 0) 
         QualitySettings.SetQualityLevel(quality, true);
       if(vSync >= 0) 

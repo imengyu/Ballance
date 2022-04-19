@@ -57,6 +57,8 @@ namespace Ballance2.Game
     [Tooltip("摄像机平滑移动的时间")]
     public float SmoothTimeY = 0.5f;
 
+    [LuaApiDescription("摄像机查看跟随锚点平滑移动的时间")]
+    [Tooltip("摄像机查看跟随锚点平滑移动的时间")]
     public float SmoothToTargetTime = 0.1f;
 
     [Tooltip("指定当前跟踪的目标")]
@@ -72,7 +74,11 @@ namespace Ballance2.Game
       {
         if (Look)
         {
-          LookSmoothTarget.transform.position = Vector3.SmoothDamp(LookSmoothTarget.transform.position, Target.position, ref smoothTargetVelocity, SmoothToTargetTime);
+          LookSmoothTarget.transform.position = Vector3.SmoothDamp(
+            LookSmoothTarget.transform.position, 
+            Target.position, 
+            ref smoothTargetVelocity, 
+            SmoothToTargetTime);
 
           if (CameraTransform != null)
             CameraTransform.LookAt(LookSmoothTarget);

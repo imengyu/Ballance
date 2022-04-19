@@ -921,8 +921,6 @@ MonoBehaviour:
     componentClassVal: Ballance2.Game.GuiStats
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -941,6 +939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 3793511921022688617}
   SetToText: 1
+  UpdateTime: 0.4
   DisplayArea:
     serializedVersion: 2
     x: 20

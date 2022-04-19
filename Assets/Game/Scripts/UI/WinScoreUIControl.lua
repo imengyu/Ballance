@@ -16,6 +16,13 @@ local I18N = Ballance2.Services.I18N.I18N
 ---@field HighlightBar2 GameObject
 ---@field HighlightBar3 GameObject
 ---@field HighlightBar4 GameObject
+---@field _GamePlayManager GamePlayManager
+---@field _CountSound AudioSource
+---@field _HighscoreSound AudioSource
+---@field _SwitchSound AudioSource
+---@field _CountingPointEndCallback function
+---@field _IsInSeq boolean
+---@field _ScoreNTotal number
 WinScoreUIControl = ClassicObject:extend()
 
 function WinScoreUIControl:new() 
@@ -188,6 +195,7 @@ function WinScoreUIControl:Skip()
 end
 function WinScoreUIControl:SaveHighscore(entryName) 
   Game.HighScoreManager.AddItem(GamePlay.GamePlayManager.CurrentLevelName, entryName, self._ScoreNTotal)
+  Game.HighScoreManager.AddLevelPassState(GamePlay.GamePlayManager.NextLevelName)
 end
 function WinScoreUIControl:_ShowHighscore() 
   if self.EscKeyID ~= nil then

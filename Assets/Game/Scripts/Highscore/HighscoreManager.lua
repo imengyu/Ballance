@@ -71,6 +71,7 @@ function HighscoreManager.InitCommand()
       if type == 'clear' then
         HighscoreData.Data = defaultHighscoreData.DefaultHighscoreData
         HighscoreData.LevelNames = defaultHighscoreData.DefaultHighscoreLevelNamesData
+        HighscoreData.LevelPassStateData = {}
         Log.D('highscore', 'Reset to default')
         return true
       elseif type == 'open-all' then
@@ -161,6 +162,12 @@ function HighscoreManager.CheckLevelHighScore(levelName, score)
     end
   end
   return true
+end
+
+---设置指定关卡已经过关
+---@param levelName string 关卡名称
+function HighscoreManager.AddLevelPassState(levelName)
+  HighscoreData.LevelPassStateData[levelName] = true
 end
 
 ---检查指定关卡是否有过关记录

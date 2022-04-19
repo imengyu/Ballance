@@ -399,7 +399,9 @@ public class StartCustomLevel : MonoBehaviour
         FileInfo[] files = direction.GetFiles("*.ballance", SearchOption.TopDirectoryOnly);
         Log.D("StartCustomLevel", "Scan Level dir \"" + dir + "\" found " + files.Length + " level fileds");
         for (int i = 0; i < files.Length; i++) {
-          var info = new GameLevelInfo(Path.GetFileNameWithoutExtension(files[i].Name), gamePackageManager);
+          string name = Path.GetFileNameWithoutExtension(files[i].Name);
+          if(Regex.IsMatch(name, "^level\\d{2}$")) continue;
+          var info = new GameLevelInfo(name, gamePackageManager);
           loadedLevels.Add(info);
           AddLevelToList(info);
         }

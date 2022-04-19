@@ -565,7 +565,7 @@ function BallManager:_ActiveCurrentBall()
           Velocity:SetVector3Value(current.rigidbody.SpeedVector)
           PushValue.Value = '('..string.format("%.2f", current.pushForceX.Force) 
             ..', '..string.format("%.2f", current.pushForceY.Force)
-            ..', '..string.format("%.2f", current.pushForceZ.Force)
+            ..', '..string.format("%.2f", current.pushForceZ.Force)..')'
         end
       end)
     end

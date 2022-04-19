@@ -158,7 +158,7 @@ statPos:Delete()
     public void SetVector4Value(Vector4 v) { Value = v.ToString(); }
     [LuaApiDescription("设置当前条目的 Vector3 数据，数据会自动转为字符串表示形式")]
     [LuaApiParamDescription("v", "条目的 Vector3 数据")]
-    public void SetVector3Value(Vector2 v) { Value = v.ToString(); }
+    public void SetVector3Value(Vector3 v) { Value = v.ToString(); }
     [LuaApiDescription("设置当前条目的 Vector2 数据，数据会自动转为字符串表示形式")]
     [LuaApiParamDescription("v", "条目的 Vector2 数据")]
     public void SetVector2Value(Vector2 v) { Value = v.ToString(); }

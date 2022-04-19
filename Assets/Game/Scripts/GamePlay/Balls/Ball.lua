@@ -65,7 +65,7 @@ function Ball:new()
     PitchBase = 0.6,
     PitchFactor = 0.9,
     VolumeBase = 0,
-    VolumeFactor = 1.9,
+    VolumeFactor = 2.1,
   }
 end
 
