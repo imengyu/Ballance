@@ -8,7 +8,7 @@ namespace BallancePhysics.Api
 {
   public class ApiStruct
   {
-    public const int Version = 2301;
+    public const int Version = 2302;
     
     public bool InitSuccess { get; private set; } = false;
 
@@ -23,6 +23,7 @@ namespace BallancePhysics.Api
     public fn_destroy_environment destroy_environment;
     public fn_environment_simulate_dtime environment_simulate_dtime;
     public fn_environment_simulate_until environment_simulate_until;
+    public fn_environment_simulate_variable_time_step environment_simulate_variable_time_step;
     public fn_environment_reset_time environment_reset_time;
     public fn_environment_new_system_group environment_new_system_group;
     public fn_environment_set_collision_layer_masks environment_set_collision_layer_masks;
@@ -64,11 +65,16 @@ namespace BallancePhysics.Api
     public fn_do_update_all_physics_contact_detection do_update_all_physics_contact_detection;
     private fn_get_stats _get_stats;
 
-    public void get_stats(IntPtr env, ref int active_count) {
+    public void get_stats(IntPtr env, ref int active_count, ref double time) {
       IntPtr active_count_ptr = Marshal.AllocHGlobal(Marshal.SizeOf<int>());
-      _get_stats(env, active_count_ptr, IntPtr.Zero);
+      IntPtr time_ptr = Marshal.AllocHGlobal(Marshal.SizeOf<double>());
+      _get_stats(env, active_count_ptr, time_ptr);
       active_count = Marshal.ReadInt32(active_count_ptr);
+      double[] result = new double[1];
+      Marshal.Copy(time_ptr, result, 0, 1);
+      time = result[0];
       Marshal.FreeHGlobal(active_count_ptr);
+      Marshal.FreeHGlobal(time_ptr);
     }
 
     public void physics_set_name(IntPtr body, string name) {
@@ -462,7 +468,8 @@ namespace BallancePhysics.Api
       _create_environment = Marshal.GetDelegateForFunctionPointer<fn_create_environment>(apiArray[i++]);
       destroy_environment = Marshal.GetDelegateForFunctionPointer<fn_destroy_environment>(apiArray[i++]);
       environment_simulate_dtime = Marshal.GetDelegateForFunctionPointer<fn_environment_simulate_dtime>(apiArray[i++]);
-      environment_simulate_until= Marshal.GetDelegateForFunctionPointer<fn_environment_simulate_until>(apiArray[i++]);
+      environment_simulate_until = Marshal.GetDelegateForFunctionPointer<fn_environment_simulate_until>(apiArray[i++]);
+      environment_simulate_variable_time_step = Marshal.GetDelegateForFunctionPointer<fn_environment_simulate_variable_time_step>(apiArray[i++]);
       environment_reset_time = Marshal.GetDelegateForFunctionPointer<fn_environment_reset_time>(apiArray[i++]);
       environment_new_system_group = Marshal.GetDelegateForFunctionPointer<fn_environment_new_system_group>(apiArray[i++]);
       environment_set_collision_layer_masks = Marshal.GetDelegateForFunctionPointer<fn_environment_set_collision_layer_masks>(apiArray[i++]);

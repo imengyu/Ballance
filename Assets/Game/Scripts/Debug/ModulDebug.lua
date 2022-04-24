@@ -138,6 +138,10 @@ function ModulCustomDebug()
     button = ui.transform:Find('ButtonQuit'):GetComponent(UnityEngine.UI.Button)
     button.onClick:AddListener(function ()
       ui.gameObject:SetActive(false)
+
+      
+
+
       GameManager:QuitGame()
     end);
     button = ui.transform:Find('ButtonBackup'):GetComponent(UnityEngine.UI.Button)
@@ -158,25 +162,28 @@ function ModulCustomDebug()
 
     PR_Resetpoint:SetActive(false)
 
-    --初始备份数据
-    Modul_Class:Backup()
-    Modul_Class:Deactive()
+    Modul_Class.gameObject:SetActive(true);
+    LuaTimer.Add(300, function ()
+      --初始备份数据
+      Modul_Class:Backup()
+      Modul_Class:Deactive()
 
-    --构建数据
-    GamePlay.SectorManager.CurrentLevelSectorCount = 1
-    GamePlay.SectorManager.CurrentLevelSectors = {
-      { moduls = { Modul_Class } }
-    }
-    GamePlay.SectorManager.CurrentLevelRestPoints = {
-      {
-        point = PR_Resetpoint,
-        flame = nil
+      --构建数据
+      GamePlay.SectorManager.CurrentLevelSectorCount = 1
+      GamePlay.SectorManager.CurrentLevelSectors = {
+        { moduls = { Modul_Class } }
       }
-    }
-    GamePlay.GamePlayManager:CreateSkyAndLight('L', nil, StringUtils.StringToColor('#B09D89'))
+      GamePlay.SectorManager.CurrentLevelRestPoints = {
+        {
+          point = PR_Resetpoint,
+          flame = nil
+        }
+      }
+      GamePlay.GamePlayManager:CreateSkyAndLight('L', nil, StringUtils.StringToColor('#B09D89'))
 
-    UpdateText('Active')
-    --开始关卡
-    Game.Mediator:NotifySingleEvent("CoreGamePlayManagerInitAndStart")
+      UpdateText('Active')
+      --开始关卡
+      Game.Mediator:NotifySingleEvent("CoreGamePlayManagerInitAndStart")
+    end)
   end)
 end

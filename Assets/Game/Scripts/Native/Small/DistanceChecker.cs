@@ -51,12 +51,12 @@ namespace Ballance2.Game
     private int CheckTickNow = 0;
     private bool LastEnter = false;
 
-    void Update()
+    void FixedUpdate()
     {
       if(CheckTickNow > 0) 
         CheckTickNow--;
       else {
-        if(CheckEnabled) {
+        if(CheckEnabled && Object1 != null && Object2 != null) {
           var distance = (Object1.position - Object2.position).sqrMagnitude;
           if(distance <= Diatance) {
             if(!LastEnter) {

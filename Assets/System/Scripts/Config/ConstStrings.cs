@@ -23,8 +23,8 @@ namespace Ballance2.Config
   
     public const string BallancePrivacyPolicy = "https://imengyu.top/linkJump?to=ballance_argeement";
     public const string BallanceUserAgreement = "https://imengyu.top/linkJump?to=ballance_privacy_policy";
-    public const string BallanceHomePage = "https://imengyu.top/ballance";
-    public const string BallanceDocPage = "https://imengyu.top/ballance/doc";
+    public const string BallanceHomePage = "http://ballance-docs.imengyu.top/";
+    public const string BallanceDocPage = "http://ballance-docs.imengyu.top/";
     public const string MengyuHomePage = "https://imengyu.top";
   }
 }

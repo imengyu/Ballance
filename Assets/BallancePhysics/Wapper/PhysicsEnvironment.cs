@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Ballance2;
+using Ballance2.Services;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
@@ -106,6 +108,8 @@ namespace BallancePhysics.Wapper
       return 1;
     };
 
+    private GameTimeMachine.GameTimeMachineTimeTicket fixedUpdateTicket = null;
+
     /// <summary>
     /// 手动创建物理环境
     /// </summary>
@@ -123,8 +127,13 @@ namespace BallancePhysics.Wapper
 
         PhysicsWorlds.Add(currentScenseIndex, this);
         Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks(), Marshal.GetFunctionPointerForDelegate(callback));
+      
+        fixedUpdateTicket = GameManager.GameTimeMachine.RegisterFixedUpdate(_FixedUpdate, 15);
       }
     }
+
+    private bool destroyLock = false;
+
     /// <summary>
     /// 手动销毁物理环境
     /// </summary>
@@ -133,6 +142,15 @@ namespace BallancePhysics.Wapper
     {
       if (Handle != IntPtr.Zero)
       {
+        if(fixedUpdateTicket != null)
+        {
+          fixedUpdateTicket.Unregister();
+          fixedUpdateTicket = null;
+        }
+
+        Simulate = false;
+        destroyLock = true;
+
         LinkedListNode<PhysicsObject> obj = objects.First;
         while (obj != null) {
           var bodyCurrent = obj.Value;
@@ -142,6 +160,8 @@ namespace BallancePhysics.Wapper
             continue;
           }
         }
+        Debug.Log("Destroy: " + objects.Count + " PhysicsObject destroyed. ");
+        objects.Clear();
 
         if(DeleteAllSurfacesWhenDestroy)
           PhysicsApi.API.delete_all_surfaces(Handle);
@@ -150,6 +170,8 @@ namespace BallancePhysics.Wapper
 
         int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
         PhysicsWorlds.Remove(currentScenseIndex);
+
+        destroyLock = false;
       }
     }
 
@@ -186,6 +208,12 @@ namespace BallancePhysics.Wapper
     [LuaApiDescription("获取当前所有的物理对象个数")]
     public int PhysicsBodies { get; private set; }
     /// <summary>
+    /// 获取当前模拟的物理时间
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("获取当前模拟的物理时间")]
+    public double PhysicsSimuateTime { get { return _PhysicsSimuateTime; } }
+    /// <summary>
     /// 获取当前正在恒力推动的物理对象个数
     /// </summary>
     /// <value></value>
@@ -209,19 +237,32 @@ namespace BallancePhysics.Wapper
     /// <value></value>
     [LuaApiDescription("获取当前更新物理对象个数")]
     public int PhysicsUpdateBodies { get { return _PhysicsUpdateBodies; } }
+    /// <summary>
+    /// 获取物理力大小系数。
+    /// </summary>
+    [LuaApiDescription("获取物理力大小系数。")]
+    public float PhysicsFactorFinalValue = 1;
 
     private int _PhysicsActiveBodies = 0;
     private int _PhysicsConstantPushBodies = 0;
     private int _PhysicsFallCollectBodies = 0;
     private int _PhysicsFixedBodies = 0;
     private int _PhysicsUpdateBodies = 0;
+    private double _PhysicsSimuateTime = 0;
     private bool lastPauseIsSimuate = false;
     private List<PhysicsObject> nextNeedUnFallCollectObjects = new List<PhysicsObject>();
-    private int tick = 0;
 
-    private void FixedUpdate() {
+    private void _FixedUpdate() {
       if(Simulate && Handle != IntPtr.Zero) {
+
+        if(destroyLock) {
+          Debug.Log("Bad state, no Simulate at destroy!");
+          return;
+        }
+
         Profiler.BeginSample("PhysicsEnvironmentUpdate");
+
+        PhysicsFactorFinalValue = 1;//TimeFactor;//(Time.fixedDeltaTime / (1.0f / SimulationRate));
         
         //设置计数
 
@@ -231,22 +272,24 @@ namespace BallancePhysics.Wapper
         _PhysicsConstantPushBodies = 0;
         _PhysicsFallCollectBodies = 0;
         _PhysicsFixedBodies = 0;
-        if(tick < 1024) tick ++;
-        else tick = 0;
 
-        //模拟
-
-        PhysicsApi.API.environment_simulate_dtime(Handle, /*(1.0f / SimulationRate)*/ (Time.fixedDeltaTime)  * TimeFactor);
-        PhysicsApi.API.do_update_all(Handle);
-
-        //获取一些参数
-
-        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies);
-
-        //更新位置到C#
-
+        //先更新推力
         float[] dat = new float[4];
         LinkedListNode<PhysicsObject> obj = objects.First;
+  
+        //模拟
+        Profiler.BeginSample("PhysicsEnvironmentSimulate");
+        //var max = 3;
+        //for (var i = 0; i < max; i++)
+          PhysicsApi.API.environment_simulate_dtime(Handle, /* Time.fixedDeltaTime */(1.0f / SimulationRate));
+        Profiler.EndSample();
+
+        PhysicsApi.API.do_update_all(Handle);
+        //获取一些参数
+        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies, ref _PhysicsSimuateTime);
+
+        //更新位置到C#
+        obj = objects.First;
         while (obj != null) {
           var bodyCurrent = obj.Value;
           if(bodyCurrent.Fixed) {
@@ -257,11 +300,6 @@ namespace BallancePhysics.Wapper
 
           var t = bodyCurrent.gameObject.transform;
           IntPtr ptr = bodyCurrent.Handle; //pos 0
-          if(ptr == IntPtr.Zero) {
-            obj = obj.Next;
-            continue;
-          }
-
           ptr = IntPtr.Add(ptr, Marshal.SizeOf<int>()); //pos 1
           Marshal.Copy(ptr, dat, 0, 3);      //float[3]
 
@@ -274,32 +312,28 @@ namespace BallancePhysics.Wapper
           t.rotation = new Quaternion(dat[0], dat[1], dat[2], dat[3]);
           _PhysicsUpdateBodies++;
 
-          if(bodyCurrent.EnableConstantForce) {
-            bodyCurrent.DoApplyConstantForce();
-            _PhysicsConstantPushBodies++;
-          }
-
           //坠落回收
           if(DePhysicsFall < 0 && p.y < DePhysicsFall) {
             //DePhysics and DeActive
             nextNeedUnFallCollectObjects.Add(bodyCurrent);
             _PhysicsFallCollectBodies++;
           }
+          else if(bodyCurrent.EnableConstantForce) {
+            bodyCurrent.DoApplyConstantForce();
+            _PhysicsConstantPushBodies++;
+          }
 
           obj = obj.Next;
         }
 
-        PhysicsTime = Time.realtimeSinceStartup - startTime;
         Profiler.EndSample();
 
         //更新碰撞处理器
-         
-        if(tick % 6 == 0) {
+        if(GameTimeMachine.FixedUpdateTick % 48 == 0) {
           Profiler.BeginSample("PhysicsEnvironmentContactEvent");
           PhysicsApi.API.do_update_all_physics_contact_detection(Handle);
           Profiler.EndSample();
         }
-
         //需要反物理化坠落的物体
         if(nextNeedUnFallCollectObjects.Count > 0) {
           for (var i = nextNeedUnFallCollectObjects.Count - 1; i >= 0; i--)
@@ -310,6 +344,9 @@ namespace BallancePhysics.Wapper
           }
           nextNeedUnFallCollectObjects.Clear();
         }
+
+        //结束时间
+        PhysicsTime = Time.realtimeSinceStartup - startTime;
       }
     }
 
@@ -340,6 +377,11 @@ namespace BallancePhysics.Wapper
     /// <param name="body"></param>
     internal void AddPhysicsObject(int id, PhysicsObject body)
     {
+      if(destroyLock) {
+        Debug.Log("Bad state, not allow create PhysicsObject at destroy!");
+        return;
+      }
+
       objects.AddLast(body);
     }
     /// <summary>
@@ -348,7 +390,8 @@ namespace BallancePhysics.Wapper
     /// <param name="body"></param>
     internal void RemovePhysicsObject(PhysicsObject body)
     {
-      objects.Remove(body);
+      if(!destroyLock) 
+        objects.Remove(body);
     }
 
     /// <summary>

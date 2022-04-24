@@ -20,12 +20,12 @@ local TiggerTester = Ballance2.Game.TiggerTester
 
 local MeshRenderer = UnityEngine.MeshRenderer
 local Application = UnityEngine.Application
-local Color = UnityEngine.Color
 local GUIUtility = UnityEngine.GUIUtility
 local RenderSettings = UnityEngine.RenderSettings
 local GameObject = UnityEngine.GameObject
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
+local WaitForEndOfFrame = UnityEngine.WaitForEndOfFrame
 local MeshFilter = UnityEngine.MeshFilter
 local BoxCollider = UnityEngine.BoxCollider
 local MeshCollider = UnityEngine.MeshCollider
@@ -784,7 +784,7 @@ function LevelBuilder:_LoadLevelInternal()
     end
 
     self:UpdateLoadProgress(0.9)
-    Yield(WaitForSeconds(0.2))
+    Yield(WaitForEndOfFrame())
 
     Log.D(TAG, 'Load others')
 
@@ -802,18 +802,18 @@ function LevelBuilder:_LoadLevelInternal()
     Log.D(TAG, 'Load finish')
 
     self:UpdateLoadProgress(1)
-    Yield(WaitForSeconds(0.1))
+    Yield(WaitForSeconds(0.5))
 
     --最后加载步骤
     -----------------------------
     if self.IsPreviewMode then
-      Game.Mediator:DelayedNotifySingleEvent('CoreGamePreviewManagerInitAndStart', 0.3, {
+      Game.Mediator:DelayedNotifySingleEvent('CoreGamePreviewManagerInitAndStart', 0.1, {
         self._CurrentLevelJson.name,
         self._CurrentLevelJson.author,
         self._CurrentLevelJson.version
       })
     else
-      Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.3, {})
+      Game.Mediator:DelayedNotifySingleEvent('CoreGamePlayManagerInitAndStart', 0.1, {})
     end
 
     Yield(WaitForSeconds(0.2))
@@ -918,7 +918,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
       end
     end
 
-    Yield(WaitForSeconds(0.5))
+    Yield(WaitForEndOfFrame())
 
     Log.D(TAG, 'Clear all')
 
@@ -941,7 +941,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
     for _, value in pairs(self._CurrentLevelModuls) do
       if value ~= nil then 
         if tickCount > 16 then
-          Yield(WaitForSeconds(0.08))
+          Yield(WaitForEndOfFrame())
           tickCount = 0
         end
         UnityEngine.Object.Destroy(value.go)
@@ -955,8 +955,6 @@ function LevelBuilder:UnLoadLevel(endCallback)
         UnityEngine.Object.Destroy(value)
       end
     end
-
-    Yield(WaitForSeconds(0.1))
 
     --清空天空和云层
     if self.IsPreviewMode then
@@ -979,15 +977,11 @@ function LevelBuilder:UnLoadLevel(endCallback)
     self._CurrentLevelModuls = {}
     self._CurrentLevelFloors = {}
 
-    Yield(WaitForSeconds(0.1))
-
     Log.D(TAG, 'Unload level asset')
 
     --卸载AssetBundle
     self._LevelLoaderNative:UnLoadLevel(self._CurrentLevelAsset)
     self._CurrentLevelAsset = nil
-
-    Yield(WaitForSeconds(0.1))
 
     --删除关卡中所有的物理碰撞信息
     if not self.IsPreviewMode and GamePlay.GamePlayManager and GamePlay.GamePlayManager.GamePhysicsWorld then

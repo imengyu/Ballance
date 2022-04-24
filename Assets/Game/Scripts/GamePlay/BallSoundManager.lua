@@ -63,8 +63,6 @@ function BallSoundManager:_AddInternalSoundCollData()
     MaxSpeed = 30,
     SleepAfterwards = 0.6,
     SpeedThreadhold = 20,
-    TimeDelayStart = 0.3,
-    TimeDelayEnd = 0.3,
     HasRollSound = true,
     RollSoundName = 'Stone',
     HitSoundName = 'Stone'
@@ -74,8 +72,6 @@ function BallSoundManager:_AddInternalSoundCollData()
     MaxSpeed = 30,
     SleepAfterwards = 0.6,
     SpeedThreadhold = 20,
-    TimeDelayStart = 0.3,
-    TimeDelayEnd = 0.3,
     HasRollSound = true,
     RollSoundName = 'Wood',
     HitSoundName = 'Wood'
@@ -85,8 +81,6 @@ function BallSoundManager:_AddInternalSoundCollData()
     MaxSpeed = 30,
     SleepAfterwards = 0.6,
     SpeedThreadhold = 20,
-    TimeDelayStart = 0.3,
-    TimeDelayEnd = 0.3,
     HasRollSound = true,
     RollSoundName = 'Metal',
     HitSoundName = 'Metal'
@@ -133,12 +127,13 @@ end
 ---添加球的声音处理函数(由BallManager调用)
 ---@param ball BallRegStorage
 function BallSoundManager:AddSoundableBall(ball) 
+  print('AddSoundableBall '..ball.name)
   --添加声音层工具侦听
   for id, value in pairs(self._SoundCollData) do
     if value ~= nil then
       ball.rigidbody:AddCollDetection(id, value.MinSpeed, value.MaxSpeed, value.SleepAfterwards, value.SpeedThreadhold)
       if value.HasRollSound then
-        ball.rigidbody:AddContractDetection(id, value.TimeDelayStart, value.TimeDelayEnd)
+        ball.rigidbody:AddContractDetection(id, ball.ball._RollSound.TimeDelayStart, ball.ball._RollSound.TimeDelayEnd)
       end
     end
   end
@@ -173,6 +168,8 @@ function BallSoundManager:AddSoundableBall(ball)
   ---接触开始处理回调
   ---@param col_id number
   ball.rigidbody.OnPhysicsContactOn = function (_, col_id)
+    
+    --print('ball '..ball.name..' OnPhysicsContactOn: '..tostring(col_id));
     local data = self._SoundCollData[col_id]
     if data and data.HasRollSound then
       local sound = ball.ball._RollSound.Sounds[data.RollSoundName] or ball.ball._RollSound.Sounds.All
@@ -186,6 +183,7 @@ function BallSoundManager:AddSoundableBall(ball)
   ---@param col_id number
   ball.rigidbody.OnPhysicsContactOff = function (_, col_id)
     local data = self._SoundCollData[col_id]
+    --print('ball '..ball.name..' OnPhysicsContactOff: '..tostring(col_id));
     if data and data.HasRollSound then
       local sound = ball.ball._RollSound.Sounds[data.RollSoundName] or ball.ball._RollSound.Sounds.All
       if sound then
@@ -199,6 +197,7 @@ end
 ---移除球的声音处理函数(由BallManager调用)
 ---@param ball BallRegStorage
 function BallSoundManager:RemoveSoundableBall(ball) 
+  print('RemoveSoundableBall '..ball.name)
   --移除回调
   ball.rigidbody.OnPhysicsCollDetection = nil
   ball.rigidbody.OnPhysicsContactOn = nil
@@ -228,6 +227,8 @@ function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
 
   if vol > 1 then vol = 1 end
   if pit > 1 then pit = 1 end
+
+  print('speed '..tostring(speed)..' count: '..(#self._CurrentPlayingRollSounds))
 
   --将音量设置到正在播放的声音中
   for _, value in pairs(self._CurrentPlayingRollSounds) do

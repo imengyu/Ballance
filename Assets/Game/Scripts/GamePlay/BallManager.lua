@@ -156,7 +156,7 @@ function BallManager:Awake()
   end)
   self._private.GameSettings = GameSettings
   self._DebugMode = GameManager.DebugMode
-  self.PosFrame = GamePlay.CamManager._PosFrame
+  self.PosFrame = GamePlay.CamManager._CamOrientTransform
 
   --初始化键盘侦听
   self._private.keyListener = KeyListener.Get(self.gameObject)
@@ -292,8 +292,8 @@ function BallManager:RegisterBall(name, gameObject)
   --设置推动物理参数
   ball._PiecesMinForce = physicsData.PiecesMinForce
   ball._PiecesMaxForce = physicsData.PiecesMaxForce
-  ball._Force = physicsData.Force * 2
-  ball._UpForce = physicsData.UpForce * 3
+  ball._Force = physicsData.Force
+  ball._UpForce = physicsData.UpForce * 1.5
   ball._DownForce = physicsData.DownForce
   if(pieces ~= nil) then
     ObjectStateBackupUtils.BackUpObjectAndChilds(pieces) --备份碎片的状态
@@ -416,6 +416,18 @@ function BallManager:ThrowPeices(typeName, pos)
     ball.ball:ThrowPieces(pos or self._private.nextRecoverPos) 
   else
     Log.W(TAG, 'Ball type '..typeName..' not found')
+  end
+end
+---恢复摄像机相关移动
+function BallManager:StartCamMove()
+  if GamePlay.CamManager.Target == nil then
+    GamePlay.CamManager:SetTarget(self._private.currentBall.ball.transform)
+  end
+end
+---停止摄像机相关移动
+function BallManager:StopCamMove()
+  if GamePlay.CamManager.Target ~= nil then
+    GamePlay.CamManager:SetTarget(nil)
   end
 end
 
@@ -544,12 +556,12 @@ function BallManager:_ActiveCurrentBall()
         self._private.debugFlushInfoTimer = nil
       end
       --每秒更新球位置调试显示数据
-      self._private.debugFlushInfoTimer = LuaTimer.Add(500, 400, function ()
+      self._private.debugFlushInfoTimer = LuaTimer.Add(500, 500, function ()
         --球位置
         Position:SetVector3Value(currentTransform.position)
         Rotation:SetVector3Value(currentTransform.rotation)
         --物理时间
-        PhysicsTime.Value = string.format("%.2f ms", GamePhysicsWorld.PhysicsTime * 1000)
+        PhysicsTime.Value = string.format("%.2f ms / %.3f s", GamePhysicsWorld.PhysicsTime * 1000, GamePhysicsWorld.PhysicsSimuateTime)
         --物理对象信息
         PhysicsObjects.Value = string.format("All/Active/Update %d/%d/%d\nFixed/FallCollect/Push %d/%d/%d", 
           GamePhysicsWorld.PhysicsBodies, 
@@ -744,15 +756,15 @@ function BallManager:_OnControlSettingsChanged()
   --当设置更改时或加载时，更新设置到当前变量
   local GameSettings = self._private.GameSettings
   local keySets = self._private.keySets
-  keySets.keyFront = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.front", "UpArrow"))
-  keySets.keyUp = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up", "Q"))
-  keySets.keyDown = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.down", "E"))
-  keySets.keyBack = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.back", "DownArrow"))
-  keySets.keyLeft = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.left", "LeftArrow"))
-  keySets.keyRight = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.right", "RightArrow"))
-  keySets.keyRoateCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.roate", "LeftShift"))
-  keySets.keyRoateCamera2 = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.roate2", "RightShift"))
-  keySets.keyUpCamera = LuaUtils.StringToKeyCode(GameSettings:GetString("control.key.up_cam", "Space"))
+  keySets.keyFront = GameSettings:GetInt("control.key.front", KeyCode.UpArrow)
+  keySets.keyUp = GameSettings:GetInt("control.key.up", KeyCode.Q)
+  keySets.keyDown = GameSettings:GetInt("control.key.down", KeyCode.E)
+  keySets.keyBack = GameSettings:GetInt("control.key.back", KeyCode.DownArrow)
+  keySets.keyLeft = GameSettings:GetInt("control.key.left", KeyCode.LeftArrow)
+  keySets.keyRight = GameSettings:GetInt("control.key.right", KeyCode.RightArrow)
+  keySets.keyRoateCamera = GameSettings:GetInt("control.key.roate", KeyCode.LeftShift)
+  keySets.keyRoateCamera2 = GameSettings:GetInt("control.key.roate2", KeyCode.RightShift)
+  keySets.keyUpCamera = GameSettings:GetInt("control.key.up_cam", KeyCode.Space)
 
   self._private.reverseControl = GameSettings:GetBool("control.reverse", false)
   self:_InitKeyEvents()
@@ -824,7 +836,20 @@ function BallManager:_Space_Key(key, down)
   end
 end
 function BallManager:_Shift_Key(key, down) 
-  self.ShiftPressed = down 
+  self.ShiftPressed = down
+  if down and self._LeftPressed then
+    --旋转摄像机
+    if (self.CanControllCamera) then
+      GamePlay.CamManager:RotateLeft()
+      self.ShiftPressed = false --防止重复触发
+    end
+  elseif down and self._RightPressed then
+    --旋转摄像机
+    if (self.CanControllCamera) then
+      GamePlay.CamManager:RotateRight()
+      self.ShiftPressed = false --防止重复触发
+    end
+  end
 end
 
 --#endregion

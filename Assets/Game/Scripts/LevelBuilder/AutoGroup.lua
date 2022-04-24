@@ -24,7 +24,8 @@ function DoLevelAutoGroup(level, transform)
   end
 
   for i = 0, childCount, 1 do
-    local name = transform:GetChild(i).gameObject.name
+    local go = transform:GetChild(i).gameObject
+    local name = go.name
     if name =='PS_LevelStart' then
       --开始火焰
       level.internalObjects.PS_LevelStart = 'PS_LevelStart'
@@ -40,20 +41,24 @@ function DoLevelAutoGroup(level, transform)
       local sector = string.sub(name, 15)
       level.internalObjects.PC_CheckPoints[sector] = name
     elseif string.startWith(name, 'S_') then
-      --静态路面组
-      local floor_type = string.sub(name, 3)
-      local c_names = {}
-      local c_transform =  transform:GetChild(i)
-      local c_childCount = c_transform.childCount - 1
-      for i = 0, c_childCount, 1 do
-        local go = c_transform:GetChild(i).gameObject
-        go.name = go.name..floor_type..tostring(i)
-        table.insert(c_names, go.name)
+      if go.activeSelf then
+        --静态路面组
+        local floor_type = string.sub(name, 3)
+        local c_names = {}
+        local c_transform =  transform:GetChild(i)
+        local c_childCount = c_transform.childCount - 1
+        for i = 0, c_childCount, 1 do
+          local go = c_transform:GetChild(i).gameObject
+          if go.activeSelf then
+            go.name = go.name..floor_type..tostring(i)
+            table.insert(c_names, go.name)
+          end
+        end
+        table.insert(level.floors, {
+          name = 'Phys_'..floor_type,
+          objects = c_names
+        })
       end
-      table.insert(level.floors, {
-        name = 'Phys_'..floor_type,
-        objects = c_names
-      })
     elseif name == 'DepthTestCubes' then
       --坠落检测区
       local c_transform =  transform:GetChild(i)
@@ -64,22 +69,24 @@ function DoLevelAutoGroup(level, transform)
         table.insert(level.depthTestCubes, go.name)
       end
     elseif string.contains(name, ':') then
-      local arr = string.split(name, ':')
-      if #arr > 2 then
-        local nname = arr[1]
-        local sector = arr[#arr]
-        if string.startWith(nname, 'P_') then
-          --机关
-          local gdata = groupsTemp[nname]
-          local sdata = level.sectors[sector]
-          if gdata == nil then
-            gdata = {}
-            groupsTemp[nname] = gdata
+      if go.activeSelf then
+        local arr = string.split(name, ':')
+        if #arr > 2 then
+          local nname = arr[1]
+          local sector = arr[#arr]
+          if string.startWith(nname, 'P_') then
+            --机关
+            local gdata = groupsTemp[nname]
+            local sdata = level.sectors[sector]
+            if gdata == nil then
+              gdata = {}
+              groupsTemp[nname] = gdata
+            end
+            table.insert(gdata, name)
+            table.insert(sdata, name)
+          --elseif string.startWith(name, 'K_') then
+            --Internal TODO
           end
-          table.insert(gdata, name)
-          table.insert(sdata, name)
-        --elseif string.startWith(name, 'K_') then
-          --Internal TODO
         end
       end
     end

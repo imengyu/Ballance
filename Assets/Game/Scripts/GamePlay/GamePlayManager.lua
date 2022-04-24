@@ -5,6 +5,7 @@ local GameSettingsManager = Ballance2.Services.GameSettingsManager
 local GameSoundType = Ballance2.Services.GameSoundType
 local DebugUtils = Ballance2.Utils.DebugUtils
 local KeyCode = UnityEngine.KeyCode
+local Time = UnityEngine.Time
 local Yield = UnityEngine.Yield
 local WaitForSeconds = UnityEngine.WaitForSeconds
 local Vector3 = UnityEngine.Vector3
@@ -37,6 +38,7 @@ function GamePlayManager:new()
 
   self._IsGamePlaying = false
   self._IsCountDownPoint = false
+  self._UpdateTick = 0
   self._CommandIds = {}
   self._HideBalloonEndTimerID = nil
   --Used by Tutorial
@@ -121,11 +123,16 @@ function GamePlayManager:OnDestroy()
     GameDebugCommandServer:UnRegisterCommand(value)
   end
 end
-function GamePlayManager:FixedUpdate()
-  --分数每半秒减一
-  if self._IsCountDownPoint and self.CurrentPoint > 0 then
-    self.CurrentPoint = self.CurrentPoint - 1
-    GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
+function GamePlayManager:Update()
+  self._UpdateTick = self._UpdateTick + Time.deltaTime
+  if self._UpdateTick >= 0.5 then
+    --计数清零
+    self._UpdateTick = 0
+    --分数每半秒减一
+    if self._IsCountDownPoint and self.CurrentPoint > 0 then
+      self.CurrentPoint = self.CurrentPoint - 1
+      GameUI.GamePlayUI:SetPointText(self.CurrentPoint)
+    end
   end
 end
 
@@ -294,7 +301,7 @@ function GamePlayManager:_InitAndStart()
     self.EventBeforeStart:Emit(nil)
 
     if not self._ShouldStartByCustom then
-      Yield(WaitForSeconds(1))
+      Yield(WaitForSeconds(0.7))
 
       --模拟
       self.GamePhysicsWorld.Simulate = true
@@ -341,7 +348,7 @@ function GamePlayManager:_QuitOrLoadNextLevel(loadNext)
   self.EventQuit:Emit(nil)
 
   --停止背景音乐
-  GamePlay.MusicManager:DisableBackgroundMusic()
+  GamePlay.MusicManager:DisableBackgroundMusic(true)
 
   Game.UIManager:CloseAllPage()
   Game.UIManager:MaskBlackFadeIn(0.7)
@@ -404,6 +411,8 @@ function GamePlayManager:PauseLevel(showPauseUI)
 
   --停止模拟
   self.GamePhysicsWorld.Simulate = false
+  --停止摄像机跟随
+  GamePlay.BallManager:StopCamMove()
 
   --UI
   if showPauseUI then
@@ -423,6 +432,8 @@ function GamePlayManager:ResumeLevel(forceRestart)
   Game.SoundManager:PlayFastVoice('core.sounds:Menu_click.wav', GameSoundType.UI)
   Game.UIManager:CloseAllPage()
 
+  --重新开始摄像机跟随
+  GamePlay.BallManager:StartCamMove()
   --停止继续
   self.GamePhysicsWorld.Simulate = true
   self:_Start(forceRestart or false)

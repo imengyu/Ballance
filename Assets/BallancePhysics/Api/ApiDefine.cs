@@ -25,6 +25,8 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_environment_simulate_until(IntPtr world, float dtime);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void fn_environment_simulate_variable_time_step(IntPtr world, float dtime);
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate int fn_environment_new_system_group(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_environment_set_collision_layer_masks(IntPtr world, uint layerId, uint toMask, int enable);
@@ -187,6 +189,6 @@ namespace BallancePhysics.Api
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   public delegate void fn_do_update_all_physics_contact_detection(IntPtr world);
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-  public delegate void fn_get_stats(IntPtr world, IntPtr active_time, IntPtr event_time);
+  public delegate void fn_get_stats(IntPtr world, IntPtr active_time, IntPtr time);
   
 }

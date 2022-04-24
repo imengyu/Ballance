@@ -93,22 +93,22 @@ function BindSettingsUI(MessageCenter)
   end)
   --控制
   local updateControlKeyUp = MessageCenter:SubscribeValueBinder('ControlKeyUp', function(val)
-    GameSettings:SetInt("control.keyup", val)
+    GameSettings:SetInt("control.key.front", val)
   end)
   local updateControlKeyDown = MessageCenter:SubscribeValueBinder('ControlKeyDown', function(val)
-    GameSettings:SetInt("control.keydown", val)
+    GameSettings:SetInt("control.key.back", val)
   end)
   local updateControlKeyLeft = MessageCenter:SubscribeValueBinder('ControlKeyLeft', function(val)
-    GameSettings:SetInt("control.keyleft", val)
+    GameSettings:SetInt("control.key.left", val)
   end)
   local updateControlKeyRight = MessageCenter:SubscribeValueBinder('ControlKeyRight', function(val)
-    GameSettings:SetInt("control.keyright", val)
+    GameSettings:SetInt("control.key.right", val)
   end)
   local updateControlKeyOverlookCam = MessageCenter:SubscribeValueBinder('ControlKeyOverlookCam', function(val)
-    GameSettings:SetInt("control.overlookcam", val)
+    GameSettings:SetInt("control.key.up_cam", val)
   end)
   local updateControlKeyRoateCam = MessageCenter:SubscribeValueBinder('ControlKeyRoateCam', function(val)
-    GameSettings:SetInt("control.roatecam", val)
+    GameSettings:SetInt("control.key.roate", val)
   end)
   local updateControlReverse = MessageCenter:SubscribeValueBinder('ControlReverse', function(val)
     GameSettings:SetBool("control.reverse", val)
@@ -169,22 +169,22 @@ function BindSettingsUI(MessageCenter)
   end)
   MessageCenter:SubscribeEvent('BtnSettingsControlsClick', function () 
     if updateControlKeyUp then
-      updateControlKeyUp:Invoke(GameSettings:GetInt("control.keyup", KeyCode.UpArrow))
+      updateControlKeyUp:Invoke(GameSettings:GetInt("control.key.front", KeyCode.UpArrow))
     end
     if updateControlKeyDown then
-      updateControlKeyDown:Invoke(GameSettings:GetInt("control.keydown", KeyCode.DownArrow))
+      updateControlKeyDown:Invoke(GameSettings:GetInt("control.key.back", KeyCode.DownArrow))
     end
     if updateControlKeyLeft then
-      updateControlKeyLeft:Invoke(GameSettings:GetInt("control.keyleft", KeyCode.LeftArrow))
+      updateControlKeyLeft:Invoke(GameSettings:GetInt("control.key.left", KeyCode.LeftArrow))
     end
     if updateControlKeyRight then
-      updateControlKeyRight:Invoke(GameSettings:GetInt("control.keyright", KeyCode.RightArrow))
+      updateControlKeyRight:Invoke(GameSettings:GetInt("control.key.right", KeyCode.RightArrow))
     end
     if updateControlKeyOverlookCam then
-      updateControlKeyOverlookCam:Invoke(GameSettings:GetInt("control.overlookcam", KeyCode.Space))
+      updateControlKeyOverlookCam:Invoke(GameSettings:GetInt("control.key.up_cam", KeyCode.Space))
     end
     if updateControlKeyRoateCam then
-      updateControlKeyRoateCam:Invoke(GameSettings:GetInt("control.roatecam", KeyCode.LeftShift))
+      updateControlKeyRoateCam:Invoke(GameSettings:GetInt("control.key.roate", KeyCode.LeftShift))
     end
     if updateControlReverse then
       updateControlReverse:Invoke(GameSettings:GetBool("control.reverse", false))

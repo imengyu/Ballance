@@ -400,7 +400,13 @@ public class StartCustomLevel : MonoBehaviour
         Log.D("StartCustomLevel", "Scan Level dir \"" + dir + "\" found " + files.Length + " level fileds");
         for (int i = 0; i < files.Length; i++) {
           string name = Path.GetFileNameWithoutExtension(files[i].Name);
-          if(Regex.IsMatch(name, "^level\\d{2}$")) continue;
+          if(Regex.IsMatch(name, "^level\\d{2}$")) {
+            //调用HighscoreManager，检查过关状态
+            object boolVLUE = GameManager.Instance.GameMainLuaState.doString("return HighscoreManager.CheckLevelPassState('" + name + "')");
+            if(boolVLUE is bool && (bool)boolVLUE != true) {
+              continue;
+            }
+          }
           var info = new GameLevelInfo(name, gamePackageManager);
           loadedLevels.Add(info);
           AddLevelToList(info);

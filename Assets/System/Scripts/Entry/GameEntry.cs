@@ -76,6 +76,12 @@ namespace Ballance2.Entry
     public GameGlobalErrorUI GameGlobalErrorUI = null;
     public Text GameDebugBeginStats;
 
+#if UNITY_ANDROID
+    private bool GlobalGamePermissionTipDialogClosed = false;
+#endif
+#if UNITY_ANDROID || UNITY_IOS
+    private bool GlobalGameUserAgreementTipDialogClosed = false;
+#endif
     public GameObject GlobalGamePermissionTipDialog = null;
     public GameObject GlobalGameUserAgreementTipDialog = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
@@ -83,8 +89,6 @@ namespace Ballance2.Entry
     public GameObject GameGlobalIngameLoading = null;
     public Text GlobalGameSysErrMessageDebuggerTipDialogText = null;
 
-    private bool GlobalGamePermissionTipDialogClosed = false;
-    private bool GlobalGameUserAgreementTipDialogClosed = false;
 
     #endregion
 
@@ -114,6 +118,8 @@ namespace Ballance2.Entry
 
     #region 用户许可相关
 
+
+#if UNITY_ANDROID || UNITY_IOS
     /// <summary>
     /// 显示许可对话框
     /// </summary>
@@ -129,6 +135,7 @@ namespace Ballance2.Entry
         return false;
       }
     }
+#endif
     /// <summary>
     /// 检查android权限是否申请
     /// </summary>
@@ -148,7 +155,10 @@ namespace Ballance2.Entry
     public void ArgeedUserArgeement()
     {
       PlayerPrefs.SetInt("UserAgreementAgreed", 1);
+      
+#if UNITY_ANDROID || UNITY_IOS
       GlobalGameUserAgreementTipDialogClosed = true;
+#endif
     }
     /// <summary>
     /// 请求安卓权限
@@ -157,8 +167,8 @@ namespace Ballance2.Entry
     {
 #if UNITY_ANDROID
       //Permission.RequestUserPermission(Permission.ExternalStorageWrite);
-#endif
       GlobalGamePermissionTipDialogClosed = true;
+#endif
     }
     /// <summary>
     /// 退出游戏
@@ -177,7 +187,9 @@ namespace Ballance2.Entry
     /// </summary>
     public void DisallowAndroidPermission()
     {
+#if UNITY_ANDROID
       GlobalGameUserAgreementTipDialogClosed = true;
+#endif
     }
 
     #endregion
@@ -217,7 +229,7 @@ namespace Ballance2.Entry
       GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
       GameSystem.PreInit();
 
-
+#if UNITY_ANDROID
       if (TestAndroidPermission())
       {
         GlobalGamePermissionTipDialog.SetActive(true);
@@ -226,12 +238,15 @@ namespace Ballance2.Entry
         yield return new WaitUntil(() => GlobalGamePermissionTipDialogClosed);
         GameGlobalIngameLoading.SetActive(true);
       }
+#endif
+#if UNITY_ANDROID || UNITY_IOS
       if (ShowUserArgeement())
       {
         GameGlobalIngameLoading.SetActive(false);
         yield return new WaitUntil(() => GlobalGameUserAgreementTipDialogClosed);
         GameGlobalIngameLoading.SetActive(true);
       }
+#endif
 
       GameErrorChecker.SetGameErrorUI(GameGlobalErrorUI);
       GameSystemInit.FillStartParameters(this);
@@ -242,6 +257,8 @@ namespace Ballance2.Entry
         GameSystem.Init();
       else
         GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "DebugMode not right.");
+
+      yield break;
     }
   }
   /// <summary>

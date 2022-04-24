@@ -168,13 +168,19 @@ function MusicManager:EnableBackgroundMusic()
   end
 end
 ---暂停音乐
-function MusicManager:DisableBackgroundMusic() 
+---@param fast boolean 是否快速停止（没有渐变）
+function MusicManager:DisableBackgroundMusic(fast) 
   self.CurrentAudioEnabled = false 
-  --淡出当前正在播放的音乐
-  if self.CurrentAudioSource.isPlaying then
-    Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 1)
+  if fast then
+    self.CurrentAudioSource.volume = 0
+    self.CurrentAudioSource:Stop()
   else
-    self.CurrentAudioSource.volume = 1
+    --淡出当前正在播放的音乐
+    if self.CurrentAudioSource.isPlaying then
+      Game.UIManager.UIFadeManager:AddAudioFadeOut(self.CurrentAudioSource, 1)
+    else
+      self.CurrentAudioSource.volume = 1
+    end
   end
   self.EventMusicDisable:Emit(nil)
 end

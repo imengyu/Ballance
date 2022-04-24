@@ -75,7 +75,7 @@ end
     private Vector3 LerpStart = Vector3.zero;
     private Vector3 LerpEnd = Vector3.zero;
     
-    private void Update() {
+    private void FixedUpdate() {
       if(Fly) {
         if(Type == SmoothFlyType.SmoothDamp) {
           var targetPos = GetPos();

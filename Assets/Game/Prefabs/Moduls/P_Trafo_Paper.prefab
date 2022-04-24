@@ -263,8 +263,6 @@ MonoBehaviour:
     componentClassVal: 
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -364,7 +362,7 @@ GameObject:
   - component: {fileID: 2083946596759162704}
   - component: {fileID: 2840934663894311805}
   - component: {fileID: 1469589099434979581}
-  - component: {fileID: 8745170190370485299}
+  - component: {fileID: 2842736397433534863}
   m_Layer: 0
   m_Name: P_Trafo_Paper_MF
   m_TagString: Untagged
@@ -450,8 +448,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &8745170190370485299
-BoxCollider:
+--- !u!135 &2842736397433534863
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -461,5 +459,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.9317, y: 4.931701, z: 0.48350623}
-  m_Center: {x: 0, y: 0, z: 0.233249}
+  m_Radius: 2.3
+  m_Center: {x: 0, y: 0, z: 0}

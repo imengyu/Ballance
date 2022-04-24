@@ -17,6 +17,7 @@ local Log = Ballance2.Log
 ---可继承此类来重写你自己的球
 ---@class Ball : GameLuaObjectHostClass
 ---@field _CamMgr CamManager
+---@field _Force number
 ---@field _Rigidbody PhysicsObject
 ---@field _Pieces GameObject
 ---@field _PiecesData BallPiecesData
@@ -61,11 +62,13 @@ function Ball:new()
       Stone = '',
       Wood = '',
     },
+    TimeDelayStart = 0.5,
+    TimeDelayEnd = 0.5,
     Sounds = {}, --请勿设置此字段
     PitchBase = 0.6,
-    PitchFactor = 0.9,
+    PitchFactor = 0.03,
     VolumeBase = 0,
-    VolumeFactor = 2.1,
+    VolumeFactor = 0.05,
   }
 end
 

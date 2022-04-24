@@ -53,12 +53,14 @@ namespace Ballance2.Services
     public class GameTimeMachineTimeTicket {
 
       private GameTimeMachine service = null;
+      private int type;
       internal int sleepTick = 0;
       internal int errTickCount = 0;
 
       [SLua.DoNotToLua]
-      public GameTimeMachineTimeTicket(GameTimeMachine service, Action updateAction, int order, int interval) {
+      public GameTimeMachineTimeTicket(GameTimeMachine service, Action updateAction, int order, int interval, int type) {
         this.service = service;
+        this.type = type;
         this.updateAction = updateAction;
         this.order = order;
         this.interval = interval;
@@ -105,39 +107,50 @@ namespace Ballance2.Services
       /// </summary>
       [LuaApiDescription("取消注册当前更新函数。")]
       public void Unregister() {
-        int ind = service.updates.IndexOf(this);
-        if(ind >= 0)
-          service.updates.RemoveAt(ind);
-      }
-    }
-
-    private List<GameTimeMachineTimeTicket> updates = new List<GameTimeMachineTimeTicket>();
-    private List<GameTimeMachineTimeTicket> lateUpdates = new List<GameTimeMachineTimeTicket>();
-    private List<GameTimeMachineTimeTicket> fixUpdates = new List<GameTimeMachineTimeTicket>();
-
-    private void InsertTimeMachineTimeTicketToList(GameTimeMachineTimeTicket ticket, List<GameTimeMachineTimeTicket> list) {
-      //根据order直接插入到指定位置
-      GameTimeMachineTimeTicket current = null;
-      for(int i = 0; i < list.Count; i++) {
-        current = list[i];
-        if(ticket.order < current.order) {
-          list.Insert(i, ticket);
-          return;
+        switch(type) {
+          case 0: 
+            service.updates.Remove(this);
+            break;
+          case 1: 
+            service.lateUpdates.Remove(this);
+            break;
+          case 2: 
+            service.fixUpdates.Remove(this);
+            break;
         }
       }
+    }
+
+    private LinkedList<GameTimeMachineTimeTicket> updates = new LinkedList<GameTimeMachineTimeTicket>();
+    private LinkedList<GameTimeMachineTimeTicket> lateUpdates = new LinkedList<GameTimeMachineTimeTicket>();
+    private LinkedList<GameTimeMachineTimeTicket> fixUpdates = new LinkedList<GameTimeMachineTimeTicket>();
+
+    private void InsertTimeMachineTimeTicketToList(GameTimeMachineTimeTicket ticket, LinkedList<GameTimeMachineTimeTicket> list) {
+      //根据order直接插入到指定位置
+      LinkedListNode<GameTimeMachineTimeTicket> item = list.First;
+      while(item != null) {
+        if(item.Value.order >= ticket.order) {
+          list.AddBefore(item, ticket);
+          return;
+        }
+        item = item.Next;
+      }
       //末尾
-      list.Add(ticket);
+      list.AddFirst(ticket);
     } 
-    private void RemoveActionInList(Action updateAction, List<GameTimeMachineTimeTicket> list) {
-      for(int i = list.Count - 1; i >= 0; i--) {
-        if(list[i].updateAction == updateAction)
-          list.RemoveAt(i);
+    private void RemoveActionInList(Action updateAction, LinkedList<GameTimeMachineTimeTicket> list) {
+      LinkedListNode<GameTimeMachineTimeTicket> item = list.First;
+      while(item != null) {
+        if(item.Value.updateAction == updateAction)
+          list.Remove(item);
+        item = item.Next;
       }
     }
-    private void DoFlushUpdateList(string name, List<GameTimeMachineTimeTicket> list) {
+    private void DoFlushUpdateList(string name, LinkedList<GameTimeMachineTimeTicket> list) {
       GameTimeMachineTimeTicket current = null;
-      for(int i = 0; i < list.Count; i++) {
-        current = list[i];
+      LinkedListNode<GameTimeMachineTimeTicket> item = list.First;
+      while(item != null) {
+        current = item.Value;
         if(current.enable) {
           //睡眠
           if(current.interval > 0) {
@@ -156,13 +169,14 @@ namespace Ballance2.Services
           } catch(Exception e) {
             current.errTickCount++;
             if(current.errTickCount < 5) 
-              Log.W(TAG, name + " TimeMachine encountered an exception more than {0} times in {1} order: {2} interval: {3}. exception: {4}", current.errTickCount, i, current.order, current.interval, e.ToString());
+              Log.W(TAG, name + " TimeMachine encountered an exception more than {0} times in {1} order: {2} interval: {3}. exception: {4}", current.errTickCount, current.updateAction.ToString(), current.order, current.interval, e.ToString());
             else {
               current.Disable();
-              Log.E(TAG, name + " TimeMachine encountered an exception more than 5 times in {0} order: {1} interval: {2}, and it was disabled. exception: {3}", i, current.order, current.interval, e.ToString());
+              Log.E(TAG, name + " TimeMachine encountered an exception more than 5 times in {0} order: {1} interval: {2}, and it was disabled. exception: {3}", current.updateAction.ToString(), current.order, current.interval, e.ToString());
             }
           }
         }
+        item = item.Next;
       }
     }
 
@@ -177,8 +191,8 @@ namespace Ballance2.Services
     [LuaApiParamDescription("updateAction", "更新函数。")]
     [LuaApiParamDescription("order", "函数的更新顺序。顺序越小，越先被调用。")]
     [LuaApiParamDescription("interval", "更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
-    public GameTimeMachineTimeTicket RegisterUpdate(Action updateAction, int order = 0, int interval = 1) {
-      var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval);
+    public GameTimeMachineTimeTicket RegisterUpdate(Action updateAction, int order = 0, int interval = 0) {
+      var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval, 1);
       InsertTimeMachineTimeTicketToList(ticket, updates);
       return ticket;
     }
@@ -203,8 +217,8 @@ namespace Ballance2.Services
     [LuaApiParamDescription("updateAction", "更新函数。")]
     [LuaApiParamDescription("order", "函数的更新顺序。顺序越小，越先被调用。")]
     [LuaApiParamDescription("interval", "更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
-    public GameTimeMachineTimeTicket RegisterLateUpdate(Action updateAction, int order = 0, int interval = 1) {
-      var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval);
+    public GameTimeMachineTimeTicket RegisterLateUpdate(Action updateAction, int order = 0, int interval = 0) {
+      var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval, 2);
       InsertTimeMachineTimeTicketToList(ticket, lateUpdates);
       return ticket;
     }
@@ -229,8 +243,8 @@ namespace Ballance2.Services
     [LuaApiParamDescription("updateAction", "更新函数。")]
     [LuaApiParamDescription("order", "函数的更新顺序。顺序越小，越先被调用。")]
     [LuaApiParamDescription("interval", "更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
-    public GameTimeMachineTimeTicket RegisterFixedUpdate(Action updateAction, int order = 0, int interval = 1) {
-      var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval);
+    public GameTimeMachineTimeTicket RegisterFixedUpdate(Action updateAction, int order = 0, int interval = 0) {
+      var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval, 3);
       InsertTimeMachineTimeTicketToList(ticket, fixUpdates);
       return ticket;
     }
@@ -244,6 +258,8 @@ namespace Ballance2.Services
       RemoveActionInList(updateAction, fixUpdates);
     }
 
+    public static int FixedUpdateTick = 0;
+
     protected override void Update() {
       DoFlushUpdateList("Update", updates);
     }
@@ -251,6 +267,9 @@ namespace Ballance2.Services
       DoFlushUpdateList("LateUpdate", lateUpdates);
     }
     private void FixedUpdate() {
+      if(FixedUpdateTick <= 1024) FixedUpdateTick++;
+      else FixedUpdateTick = 0;
+
       DoFlushUpdateList("FixedUpdate", fixUpdates);
     }
 

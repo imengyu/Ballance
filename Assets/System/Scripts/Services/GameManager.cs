@@ -104,7 +104,20 @@ GameManager.Instance
     /// </summary>
     [LuaApiDescription("获取全局灯光实例。这是一个全局照亮的环境光, 与游戏内的主光源是同一个。")]
     public static Light GameLight { get; private set; }
+    /// <summary>
+    /// GameTimeMachine 的一个实例. 
+    /// </summary>
+    /// <value></value>
+    [LuaApiDescription("GameTimeMachine 的一个实例。")]
+    public static GameTimeMachine GameTimeMachine { 
+      get {
+        if(_GameTimeMachine == null)
+          _GameTimeMachine = GameSystem.GetSystemService<GameTimeMachine>();
+        return _GameTimeMachine;
+      }
+    }
 
+    private static GameTimeMachine _GameTimeMachine = null;
     private static bool _DebugMode = false;
 
     /// <summary>
@@ -287,6 +300,8 @@ end
       if (string.IsNullOrEmpty(sCustomDebugName))
       {
 #if UNITY_EDITOR
+        yield return new WaitForSeconds(0.5f);
+
         //进入场景
         if (DebugMode && GameEntry.Instance.DebugSkipIntro) {
           //进入场景
@@ -485,7 +500,7 @@ end
       {
         for (int i = 0; i < nodeSystemPackages.ChildNodes.Count; i++)
         {
-          yield return new WaitForSeconds(0.2f);
+          yield return new WaitForSeconds(0.02f);
 
           XmlNode nodePackage = nodeSystemPackages.ChildNodes[i];
 
@@ -556,11 +571,7 @@ end
         //第一次加载基础包，等待其运行
         if (loadStepNow == 0)
         {
-          yield return new WaitForSeconds(0.1f);
-
           pm.NotifyAllPackageRun("*");
-
-          yield return new WaitForSeconds(0.5f);
           
           if (string.IsNullOrEmpty(sCustomDebugName)
 #if UNITY_EDITOR
@@ -578,7 +589,7 @@ end
         }
       }
 
-      yield return new WaitForSeconds(0.2f);
+      yield return new WaitForSeconds(0.1f);
 
       //全部加载完毕之后通知所有模块初始化
       pm.NotifyAllPackageRun("*");

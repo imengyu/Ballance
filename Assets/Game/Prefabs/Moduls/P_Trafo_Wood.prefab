@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1630831757045384699}
   - component: {fileID: 2674016415471115395}
   - component: {fileID: 467250762087925665}
-  - component: {fileID: 4354455814670347025}
+  - component: {fileID: 3770746332001874439}
   m_Layer: 0
   m_Name: P_Trafo_Wood_MF
   m_TagString: Untagged
@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &4354455814670347025
-BoxCollider:
+--- !u!135 &3770746332001874439
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -192,8 +192,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.9317, y: 4.931701, z: 0.48350623}
-  m_Center: {x: 0, y: 0, z: 0.233249}
+  m_Radius: 2.3
+  m_Center: {x: 0, y: 0, z: 0.2}
 --- !u!1 &8364104576429199987
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,8 +457,6 @@ MonoBehaviour:
     componentClassVal: 
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

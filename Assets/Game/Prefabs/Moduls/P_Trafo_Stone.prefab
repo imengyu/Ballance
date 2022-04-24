@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4563521970223823415}
   - component: {fileID: 5902649918193914021}
   - component: {fileID: 831865546933478610}
-  - component: {fileID: 7071287740308974624}
   - component: {fileID: 2976840918208467118}
+  - component: {fileID: 1958777542089899066}
   m_Layer: 0
   m_Name: P_Trafo_Stone_MF
   m_TagString: Untagged
@@ -86,19 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7071287740308974624
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 275325326541823740}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.9317, y: 4.931701, z: 0.48350623}
-  m_Center: {x: 0, y: 0, z: 0.233249}
 --- !u!114 &2976840918208467118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +98,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9b1c55d1172884488b14c092689dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &1958777542089899066
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275325326541823740}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6730452989418452412
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,8 +457,6 @@ MonoBehaviour:
     componentClassVal: 
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
