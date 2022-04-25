@@ -137,6 +137,7 @@ function GamePlayUIControl:Start()
     self._DebugStatValues['CurrentStatus'] = self._DebugStats:AddStat('CurrentStatus')
     self._DebugStatValues['Position'] = self._DebugStats:AddStat('Position')
     self._DebugStatValues['Rotation'] = self._DebugStats:AddStat('Rotation')
+    self._DebugStatValues['PhysicsState'] = self._DebugStats:AddStat('PhysicsState')
     self._DebugStatValues['CamDirection'] = self._DebugStats:AddStat('CamDirection')
     self._DebugStatValues['CamState'] = self._DebugStats:AddStat('CamState')
     self._DebugStatValues['Velocity'] = self._DebugStats:AddStat('Velocity')
@@ -154,7 +155,7 @@ function GamePlayUIControl:Start()
   if UNITY_ANDROID or UNITY_IOS then
     self:ReBuildMobileKeyPad()
     self._CurrentMobileKeyPadShow = false
-    GamePlay.GamePlayManager.EventBeforeStart6:On(function ()
+    GamePlay.GamePlayManager.EventBeforeStart:On(function ()
       self._CurrentMobileKeyPadShow = true
       if self._CurrentMobileKeyPad then
         self._CurrentMobileKeyPad.gameObject:SetActive(true)

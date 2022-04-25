@@ -28,6 +28,7 @@ local Log = Ballance2.Log
 ---@field _PiecesPhysCallback function 物理化碎片自定义处理回调 (gameObject, physicsData) => PhysicsObject，如果为nil，则碎片将使用默认参数来物理化
 ---@field _UpForce number 球的向上推力（调试时Q按键）
 ---@field _DownForce number 球的向下推力（调试时E按键）
+---@field _SoundManagerDebugStrings string
 Ball = ClassicObject:extend()
 
 function Ball:new()
@@ -158,8 +159,8 @@ function Ball:_InitSounds()
   local SoundManager = Game.SoundManager
   for key, value in pairs(self._HitSound.Names) do
     if type(value) == 'string' and value ~= '' then
-      local sound2 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSoundHit'..key..'2')
-      local sound1 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, 'BallSoundHit'..key..'1')
+      local sound2 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true,  self.gameObject.name..'SoundHit'..key..'2')
+      local sound1 = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, false, true, self.gameObject.name..'SoundHit'..key..'1')
       self._HitSound.Sounds[key] = {
         isSound1 = true,
         sound2 = sound2,
@@ -169,7 +170,7 @@ function Ball:_InitSounds()
   end
   for key, value in pairs(self._RollSound.Names) do
     if type(value) == 'string' and value ~= '' then
-      local sound = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, true, true, 'BallSoundRoll'..key)
+      local sound = SoundManager:RegisterSoundPlayer(GameSoundType.BallEffect, value, true, true, self.gameObject.name..'SoundRoll'..key)
       sound.loop = true
       sound.playOnAwake = true
       sound.volume = 0

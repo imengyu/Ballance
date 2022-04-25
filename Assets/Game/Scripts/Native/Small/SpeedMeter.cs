@@ -83,6 +83,12 @@ namespace Ballance2.Game
         fixedUpdateTicket = null;
       }
     }
+    private void OnEnable() {
+      if (fixedUpdateTicket != null) fixedUpdateTicket.Enable();
+    }
+    private void OnDisable() {
+      if (fixedUpdateTicket != null) fixedUpdateTicket.Disable();
+    }
 
     private void _FixedUpdate() {
       if(Enabled && Target != null) {
@@ -94,7 +100,7 @@ namespace Ballance2.Game
           NowAbsoluteSpeed = len;
           NowRelativeSpeed = (NowAbsoluteSpeed - MinSpeed) / (MaxSpeed - MinSpeed);
 
-          if(Callback != null)
+          if(Callback != null && GameTimeMachine.FixedUpdateTick % 24 == 0)
             Callback.Invoke(this);
           if(CheckOnce) {
             CheckOnceCallback?.Invoke(this);

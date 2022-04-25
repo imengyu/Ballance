@@ -323,13 +323,16 @@ namespace BallancePhysics.Wapper
             _PhysicsConstantPushBodies++;
           }
 
+          if(GameTimeMachine.FixedUpdateTick % 10 == 0) 
+            bodyCurrent.DoSendContractCacheEvent();
+
           obj = obj.Next;
         }
 
         Profiler.EndSample();
 
         //更新碰撞处理器
-        if(GameTimeMachine.FixedUpdateTick % 48 == 0) {
+        if(GameTimeMachine.FixedUpdateTick % 12 == 0) {
           Profiler.BeginSample("PhysicsEnvironmentContactEvent");
           PhysicsApi.API.do_update_all_physics_contact_detection(Handle);
           Profiler.EndSample();
@@ -348,6 +351,15 @@ namespace BallancePhysics.Wapper
         //结束时间
         PhysicsTime = Time.realtimeSinceStartup - startTime;
       }
+    }
+
+    private void OnEnable() {
+      if(fixedUpdateTicket != null)
+        fixedUpdateTicket.Enable();
+    }
+    private void OnDisable() {
+      if(fixedUpdateTicket != null)
+        fixedUpdateTicket.Disable();
     }
 
     [SLua.DoNotToLua]

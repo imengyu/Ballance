@@ -14,6 +14,8 @@ function BallPaper:new()
   self._PaperPiecesSound = nil
   self._HitSound.Names.All = 'core.sounds:Hit_Paper.wav'
   self._RollSound.Names.All = 'core.sounds:Roll_Paper.wav'
+  self._RollSound.TimeDelayStart = 0.8
+  self._RollSound.TimeDelayEnd = 0.1
   ---自定义物理化碎片
   ---@param go GameObject
   ---@param data table

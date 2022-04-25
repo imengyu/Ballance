@@ -548,6 +548,7 @@ function BallManager:_ActiveCurrentBall()
       local PushValue = GameUI.GamePlayUI._DebugStatValues['PushValue']
       local PhysicsTime = GameUI.GamePlayUI._DebugStatValues['PhysicsTime']
       local PhysicsObjects = GameUI.GamePlayUI._DebugStatValues['PhysicsObjects']
+      local PhysicsState = GameUI.GamePlayUI._DebugStatValues['PhysicsState'];
       local GamePhysicsWorld = GamePlay.GamePlayManager.GamePhysicsWorld
       
       --删除定时器
@@ -574,10 +575,18 @@ function BallManager:_ActiveCurrentBall()
 
         --球的速度和推动数据
         if current.rigidbody.IsPhysicalized then
+          PhysicsState.Value = string.format("%.2f", current.speedMeter.NowAbsoluteSpeed)
+            .. ' ContractState: ' .. current.rigidbody.ContractCacheString
+            ..current.ball._SoundManagerDebugStrings
+
           Velocity:SetVector3Value(current.rigidbody.SpeedVector)
           PushValue.Value = '('..string.format("%.2f", current.pushForceX.Force) 
             ..', '..string.format("%.2f", current.pushForceY.Force)
             ..', '..string.format("%.2f", current.pushForceZ.Force)..')'
+        else
+          PhysicsState.Value = ''
+          PushValue.Value = ''
+          Velocity.Value = ''
         end
       end)
     end

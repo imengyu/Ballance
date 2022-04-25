@@ -127,7 +127,7 @@ end
 ---添加球的声音处理函数(由BallManager调用)
 ---@param ball BallRegStorage
 function BallSoundManager:AddSoundableBall(ball) 
-  print('AddSoundableBall '..ball.name)
+  Log.D(TAG, 'AddSoundableBall '..ball.name)
   --添加声音层工具侦听
   for id, value in pairs(self._SoundCollData) do
     if value ~= nil then
@@ -138,6 +138,7 @@ function BallSoundManager:AddSoundableBall(ball)
     end
   end
   --添加回调
+  ball.rigidbody:EnableCollisionDetection()
   ball.rigidbody:EnableContractEventCallback()
   ---撞击处理回调
   ---@param col_id number
@@ -197,7 +198,7 @@ end
 ---移除球的声音处理函数(由BallManager调用)
 ---@param ball BallRegStorage
 function BallSoundManager:RemoveSoundableBall(ball) 
-  print('RemoveSoundableBall '..ball.name)
+  Log.D(TAG, 'RemoveSoundableBall '..ball.name)
   --移除回调
   ball.rigidbody.OnPhysicsCollDetection = nil
   ball.rigidbody.OnPhysicsContactOn = nil
@@ -228,11 +229,20 @@ function BallSoundManager:HandlerBallRollSpeedChange(ball, speedMeter)
   if vol > 1 then vol = 1 end
   if pit > 1 then pit = 1 end
 
-  print('speed '..tostring(speed)..' count: '..(#self._CurrentPlayingRollSounds))
+  --print('speed '..tostring(speed)..' count: '..(#self._CurrentPlayingRollSounds))
+
+  if BALLANCE_DEBUG then
+    ball._SoundManagerDebugStrings = ''
+  end
 
   --将音量设置到正在播放的声音中
-  for _, value in pairs(self._CurrentPlayingRollSounds) do
+  for id, value in pairs(self._CurrentPlayingRollSounds) do
     if value then
+
+      if BALLANCE_DEBUG then
+        ball._SoundManagerDebugStrings = ball._SoundManagerDebugStrings..string.format('\n> [%d %s] %.2f %.2f', id, value.name, vol, pit)
+      end
+
       value.volume = vol
       value.pitch = pit
     end
@@ -241,6 +251,7 @@ end
 
 ---强制停止所有球声音
 function BallSoundManager:StopAllSound()
+  Log.D(TAG, 'StopAllSound')
   for _, value in pairs(self._CurrentPlayingRollSounds) do
     if value then
       value.volume = 0

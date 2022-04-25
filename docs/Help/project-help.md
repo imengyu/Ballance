@@ -10,39 +10,28 @@
 
 ## 步骤
 
-1. 使用 Unity 2021.2.1 以上版本导入项目并打开
-2. 在编辑器里运行
+1. 下载 Unity
 
-  (目前暂无Mac版本的物理引擎文件，请使用Win版本的Unity进行调试)
+  Unity 个人版是免费的，你可以在 [Unity官网](https://unity.cn/releases) 上下载（需要先注册个账号）
+
+  注意，本项目最低需要 Unity 2021.2.7+ 的版本。
+
+  推荐下载 Unity Hub，可在Unity Hub中自动安装 Unity。
+
+2. 使用 Unity 2021.2.1 以上版本导入项目并打开
+
+  你可以打开 Unity Hub，选择从本地导入项目，然后选择你下载存放本项目的路径，即可导入。
+
+  ![image](1.jpg)
+
+  导入后即可在列表中找到 Ballance项目，点击打开即可。
+
+3. 在编辑器里运行
+
+  (目前暂无Mac/Linux版本的物理引擎文件，请使用Windows版本的Unity进行调试)
 
     1. 使用 Unity 2021.2.7+ 版本打开项目。
     2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
-    3. 打开 System/Scenes/MainScene.unity 场景。
+    3. 打开 Scenes/MainScene.unity 场景。
     4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
     5. 点击运行，即可查看效果。
-
-## FAQ
-
-### 如何下载 Unity ？
-
-Unity 个人版是免费的，你可以在 [Unity官网](https://unity.cn/releases) 上下载（需要先注册个账号）
-
-注意，本项目最低需要 Unity 2021.2.7+ 的版本。
-
-推荐下载 Unity Hub，可在Unity Hub中自动安装 Unity。
-
-### 如何导入本项目至 Unity ？
-
-你可以打开 Unity Hub，选择从本地导入项目，然后选择你下载存放本项目的路径，即可导入。
-
-![image](1.jpg)
-
-导入后即可在列表中找到 Ballance项目，点击打开即可。
-
-### 如何开启发行版的调试模式
-
-调试模式可查看日志，运行测试命令，球可飞行等等。（在 UnityEditor 下永远是调试模式）
-
-1. 运行游戏
-2. 在主菜单 > 关于中，连续点击版本号直到弹出提示
-3. 重新启动游戏，然后你就进入了调试模式。

@@ -4,6 +4,7 @@ using UnityEngine;
 using BallancePhysics.Api;
 using System.Runtime.InteropServices;
 using System.Collections;
+using System.Text;
 
 namespace BallancePhysics.Wapper
 {
@@ -920,6 +921,9 @@ namespace BallancePhysics.Wapper
     private CollisionEventCallback collisionEventCallback = null;
     private FrictionEventCallback frictionEventCallback = null;
     private ContractEventCallback contractEventCallback = null;
+    
+    private Dictionary<int, bool> contractStateCache = new Dictionary<int, bool>();
+    private Dictionary<int, bool> contractStateCache2 = new Dictionary<int, bool>();
 
     private void OnCollisionEvent(IntPtr self, IntPtr other, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal) {
       if(self == Handle && OnPhysicsCollision != null) {
@@ -975,14 +979,38 @@ namespace BallancePhysics.Wapper
       }
     }
     private void OnContractEvent(IntPtr self, int col_id, short type, float speed_precent, short isOn) {
-      if(type == 1) {
+      if(type == 1)
         OnPhysicsCollDetection?.Invoke(this, col_id, speed_precent);
-      } else if(type == 2) {
-        if(isOn == 1) 
-          OnPhysicsContactOn?.Invoke(this, col_id);
-        else
-          OnPhysicsContactOff?.Invoke(this, col_id);
-      } 
+      else if(type == 2) {
+        if(isOn == 1) {
+          contractStateCache[col_id] = true;
+          contractStateCache2[col_id] = true;
+        }
+        else {
+          contractStateCache[col_id] = false;
+          contractStateCache2[col_id] = false;
+        }
+      }
+    }
+
+    internal void DoSendContractCacheEvent() {
+      foreach(var item in contractStateCache)
+        (item.Value ? OnPhysicsContactOn : OnPhysicsContactOff).Invoke(this, item.Key);
+      contractStateCache.Clear();
+    }
+
+    public string ContractCacheString {
+      get {
+        StringBuilder sb = new StringBuilder();
+        foreach(var item in contractStateCache2) {
+          if(item.Value) {
+            sb.Append("[");
+            sb.Append(item.Key);
+            sb.Append("]");
+          }
+        }
+        return sb.ToString();
+      }
     }
 
     /// <summary>

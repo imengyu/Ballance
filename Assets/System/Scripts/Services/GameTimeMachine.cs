@@ -267,7 +267,7 @@ namespace Ballance2.Services
       DoFlushUpdateList("LateUpdate", lateUpdates);
     }
     private void FixedUpdate() {
-      if(FixedUpdateTick <= 1024) FixedUpdateTick++;
+      if(FixedUpdateTick < 1024) FixedUpdateTick++;
       else FixedUpdateTick = 0;
 
       DoFlushUpdateList("FixedUpdate", fixUpdates);
