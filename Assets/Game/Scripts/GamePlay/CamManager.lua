@@ -316,9 +316,14 @@ function CamManager:SetCamLook(enable)
   return self
 end
 ---指定当前摄像机跟踪的目标
----@param target Transform
-function CamManager:SetTarget(target)
-  self.Target = target
+---@param target Transform 目标
+---@param noUpdatePos boolean|nil 禁止设置目标时的位置同步
+function CamManager:SetTarget(target, noUpdatePos)
+  if noUpdatePos then
+    self.CamFollow:SetTargetWithoutUpdatePos(target)
+  else
+    self.Target = target
+  end
   self.CamFollow.Target = target
   self.EventCamFollowTargetChanged:Emit(target)
   return self

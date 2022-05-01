@@ -458,7 +458,7 @@ namespace BallancePhysics.Api
       try {
         get_version = Marshal.GetDelegateForFunctionPointer<fn_get_version>(apiArray[i++]);
       } catch(Exception e) {
-        throw new Exception("[BallancePhysics] Failed to get native function, Maybe you choose the wrong way to use it. \nException: " + e.ToString());
+        throw new Exception("[BallancePhysics] Failed to get native function, Maybe system does not support it. \nException: " + e.ToString());
       }
       
       var v = get_version();

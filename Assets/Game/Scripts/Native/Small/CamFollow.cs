@@ -45,6 +45,10 @@ namespace Ballance2.Game
       }
     }
 
+    [LuaApiDescription("设置跟踪的目标，不更新位置")]
+    public void SetTargetWithoutUpdatePos(Transform t) {
+      _Target = t;
+    }
 
     [Tooltip("指定当前跟踪的目标")]
     [SerializeField]

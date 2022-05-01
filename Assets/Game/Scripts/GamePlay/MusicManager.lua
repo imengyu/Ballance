@@ -168,7 +168,7 @@ function MusicManager:EnableBackgroundMusic()
   end
 end
 ---暂停音乐
----@param fast boolean 是否快速停止（没有渐变）
+---@param fast boolean|nil 是否快速停止（没有渐变）
 function MusicManager:DisableBackgroundMusic(fast) 
   self.CurrentAudioEnabled = false 
   if fast then

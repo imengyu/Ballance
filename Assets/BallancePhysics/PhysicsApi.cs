@@ -10,8 +10,10 @@ namespace BallancePhysics
   {
     #region 基础定义
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_EDITOR_WIN
     private const string DLL_NNAME = "bphysics_unity";
+#elif UNITY_EDITOR
+    private const string DLL_NNAME = "bphysics";
 #elif UNITY_IPHONE
 	  private const string DLL_NNAME = "_Internal";
 #else

@@ -229,7 +229,7 @@ function GamePlayManager:_Start(isStartBySector, customerFn)
         self._FirstStart = false
       end
 
-      if type(customerFn) == 'function' then
+      if customerFn ~= nil and type(customerFn) == 'function' then
         customerFn()
       else
         GamePlay.BallManager:SetControllingStatus(BallControlStatus.Control)
@@ -403,7 +403,7 @@ function GamePlayManager:QuitLevel()
   self:_QuitOrLoadNextLevel(false)
 end
 ---暂停关卡
----@param showPauseUI boolean 是否显示暂停界面
+---@param showPauseUI boolean|nil 是否显示暂停界面
 function GamePlayManager:PauseLevel(showPauseUI) 
   self:_Stop(BallControlStatus.FreeMode)
 
@@ -423,7 +423,7 @@ function GamePlayManager:PauseLevel(showPauseUI)
   self.EventPause:Emit(nil)
 end
 ---继续关卡
----@param forceRestart boolean 是否强制重置，会造成当前小节重置，默认false
+---@param forceRestart boolean|nil 是否强制重置，会造成当前小节重置，默认false
 function GamePlayManager:ResumeLevel(forceRestart) 
 
   Log.D(TAG, 'Resume')

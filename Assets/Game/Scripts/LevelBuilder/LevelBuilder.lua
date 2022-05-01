@@ -114,7 +114,7 @@ function LevelBuilder:Start()
     end)
 
     self._LevelLoaderNative = self.gameObject:GetComponent(Ballance2.Game.GameLevelLoaderNative) ---@type GameLevelLoaderNative
-    self:UpdateErrStatus(false, nil)
+    self:UpdateErrStatus(false, nil, nil)
     return false
   end)
 end
@@ -156,7 +156,7 @@ end
 
 ---开始加载关卡序列
 ---@param name string 关卡文件名
----@param preview boolean 是否是预览模式
+---@param preview boolean|nil 是否是预览模式
 function LevelBuilder:LoadLevel(name, preview)
 
   if self._IsLoading then
@@ -175,7 +175,7 @@ function LevelBuilder:LoadLevel(name, preview)
   ---设置UI为初始状态
   self._LevelBuilderUI.gameObject:SetActive(true)
   self:UpdateLoadProgress(0)
-  self:UpdateErrStatus(false, nil)
+  self:UpdateErrStatus(false, nil, nil)
   Game.UIManager:MaskBlackSet(true)
 
   --加载内置模块
@@ -219,7 +219,7 @@ function LevelBuilder:LoadLevel(name, preview)
       local requiredPackages = self._CurrentLevelJson.requiredPackages
       if type(requiredPackages) == "table" and #requiredPackages > 0 then
         for k, v in pairs(requiredPackages) do
-          if v.name ~= nil and not Game.PackageManager.CheckRequiredPackage(v.name. v.minVersion or 0) then 
+          if v.name ~= nil and not Game.PackageManager:CheckRequiredPackage(v.name, v.minVersion or 0) then 
             missedPackages = missedPackages + '\nName： '..v.name..' Version：'..v.minVersion 
           end
         end
@@ -992,7 +992,7 @@ function LevelBuilder:UnLoadLevel(endCallback)
 
     self._IsLoading = false
 
-    if type(endCallback) == 'function' then
+    if endCallback ~= nil and type(endCallback) == 'function' then
       endCallback()
     else
       --通知回到menulevel

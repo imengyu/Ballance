@@ -1,5 +1,7 @@
 # Ballance
 
+[English readme](./README.en.md);
+
 ## 简介
 
 这是 Ballance 游戏的开源 Unity 重制版.
@@ -7,6 +9,50 @@
 ![image](/Assets/System/Textures/splash_app.bmp)
 
 ---
+
+## 特性
+
+* 原版游戏内容和玩法
+* 1-13 关游戏内容
+* 自制地图（以魔脓空间站为例）
+* 关卡预览器
+* 模组管理器
+* **使用Lua开发自定义模组或者机关**
+
+## 系统需求
+
+||最低配置|推荐配置|
+|---|---|---|
+|操作系统|Windows 7-11|Windows 7-11|
+|处理器|Quad core 3Ghz+|Dual core 3Ghz+|
+|内存|1 GB RAM|2 GB RAM|
+|显卡|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|
+|DirectX 版本|11|11|
+|存储空间|60 MB 可用空间|100 MB 可用空间|
+
+## 安装
+
+1. 前往 [Releases](https://github.com/imengyu/Ballance/releases) 找到最新版本。
+2. 下载对应的 zip 安装包。
+3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
+
+## 开启调试模式
+
+在 UnityEditor 中运行时，永远是调试模式。
+
+### 如果你需要开启独立版的调试模式，可以：
+
+1. 在关于页面，连续点击版本号8次，弹出调试模式提示，
+2. 然后重启游戏，就进入了调试模式。
+3. 按F12可以开启控制台。
+
+在调试模式中，可以按Q键上升球，E键下降球。
+
+在控制台输入 `quit-dev` 指令可以关闭调试模式。
+
+### 开启所有原版关卡
+
+进入调试模式后在控制台输入 highscore open-all 指令就可以开启全部关卡。
 
 ## 文档
 
@@ -17,17 +63,6 @@
 [完整文档可以参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/readme)
 
 [API文档参考这里 - Github Pages](https://imengyu.github.io/Ballance/#/LuaApi/readme)
-
-## 系统需求
-
-||最低配置|推荐配置|
-|---|---|---|
-|操作系统|Windows 7-11|Windows 7-11|
-|处理器|Dual core 3Ghz+|Quad core 3Ghz+|
-|内存|1 GB RAM|2 GB RAM|
-|显卡|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|
-|DirectX 版本|11|11|
-|存储空间|100 MB 可用空间|200 MB 可用空间|
 
 ## 游戏相册
 
@@ -203,13 +238,14 @@ Virtools诞生比较早，应该也是购买了这个引擎。很幸运，找到
 
 ---
 
-* 🅾 最终整体调试
+* ✅ 最终整体调试
 * 🅾 自定义模组开发教程文档
+* 🅿 Android 物理模块调试
 
 ---
 
 * 下面的内容不一定会完成，看大家喜不喜欢，如果大家还喜欢这个游戏，我就继续完善下去
-* 🅿 Android and ios 物理模块调试
+* 🅿 iOS 物理模块调试
 * 🅿 steam接入
 * 🅿 发布steam
 * 🅿 发布其他平台

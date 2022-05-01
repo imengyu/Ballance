@@ -167,7 +167,7 @@ function BallManager:Awake()
   self._private.CommandId = Game.Manager.GameDebugCommandServer:RegisterCommand('balls', function (eyword, fullCmd, argsCount, args)
     local type = args[1]
     if type == 'play-lighting' then
-      self:PlayLighting(self._private.nextRecoverPos)
+      self:PlayLighting(self._private.nextRecoverPos, true, true, nil)
     elseif type == 'set-recover-pos' then
       local ox, nx = DebugUtils.CheckIntDebugParam(1, args, Slua.out, true, 0)
       if not ox then return false end
@@ -367,6 +367,7 @@ function BallManager:SetCurrentBall(name, status)
   local ball = self:GetRegisterBall(name)
   if(ball == nil) then
     GameErrorChecker.SetLastErrorAndLog(GameError.NotRegister, TAG, 'Ball {0} not register', { name })
+    return
   end
   if(self._private.currentBall ~= ball) then
     self:_DeactiveCurrentBall()
@@ -421,7 +422,7 @@ end
 ---恢复摄像机相关移动
 function BallManager:StartCamMove()
   if GamePlay.CamManager.Target == nil then
-    GamePlay.CamManager:SetTarget(self._private.currentBall.ball.transform)
+    GamePlay.CamManager:SetTarget(self._private.currentBall.ball.transform, true)
   end
 end
 ---停止摄像机相关移动
@@ -518,9 +519,9 @@ function BallManager:_DeactiveCurrentBall()
   end
 end
 function BallManager:_ActiveCurrentBall() 
-  local current = self._private.currentActiveBall
+  local current = self._private.currentActiveBall ---@type BallRegStorage
   if current == nil and self._private.currentBall ~= nil then
-    current = self._private.currentBall
+    current = self._private.currentBall---@type BallRegStorage
     local currentTransform = current.ball.transform
     self._private.currentActiveBall = self._private.currentBall
     --设置阴影位置与父级约束    

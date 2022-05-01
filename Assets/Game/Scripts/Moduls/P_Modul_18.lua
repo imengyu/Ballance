@@ -1,5 +1,4 @@
 local Vector3 = UnityEngine.Vector3
-local Time = UnityEngine.Time
 
 ---@class P_Modul_18 : ModulBase 
 ---@field P_Modul_18_Kollisionsquader TiggerTester
@@ -22,16 +21,18 @@ end
 function P_Modul_18:Start()
   ModulBase.Start(self)
   if not self.IsPreviewMode then
+    ---球进入时给一个方向向上的恒力
     ---@param other GameObject
     self.P_Modul_18_Kollisionsquader.onTriggerEnter = function (_, other)
-      if self._CurrentInRangeBall == nil and other.tag == 'Ball' and other.name == 'BallPaper' then
+      if self._CurrentInRangeBall == nil and other.tag == 'Ball' then
         self._CurrentInRangeBall = GamePlay.BallManager.CurrentBall._Rigidbody
         self.CurrentBallForce = self._CurrentInRangeBall:AddConstantForceLocalCenter(self.P_Modul_18_Force, self.transform:TransformVector(Vector3.up))
       end
     end
+    ---球离开时去除恒力
     ---@param other GameObject
     self.P_Modul_18_Kollisionsquader.onTriggerExit = function (_, other)
-      if self._CurrentInRangeBall ~= nil and other.tag == 'Ball' and other.name == 'BallPaper' then
+      if self._CurrentInRangeBall ~= nil and other.tag == 'Ball' then
         if self.CurrentBallForce then
           self.CurrentBallForce:Delete()
           self.CurrentBallForceID = nil
