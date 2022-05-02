@@ -1,6 +1,6 @@
 # Ballance
 
-[Chinese Readmre](./README.md);
+[Chinese Readmre](./README.md)
 
 ## Introduction
 
@@ -38,9 +38,9 @@ This is an open source unity remake version of ballance game.
 
 ## Installation steps
 
-1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version。
-2. Download the corresponding zip installation package。
-3. After decompression, run `ballance.exe` to start the game。
+1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version.
+2. Download the corresponding zip installation package.
+3. Unzip all files, then run `ballance.exe` to start the game.
 
 ## Turn on debugging mode
 
@@ -54,7 +54,7 @@ When running in unity editor, it is always debug mode.
 
 In the debugging mode, you can press the Q key to raise the ball and the e key to lower the ball.
 
-Enter the 'quit dev' command on the console to turn off the debugging mode.
+Enter the `quit dev` command on the console to turn off the debugging mode.
 
 ### Open all original levels
 
