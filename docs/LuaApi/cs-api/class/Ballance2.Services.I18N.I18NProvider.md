@@ -33,6 +33,23 @@
 boolean <br/>加载是否成功
 
 
+### `静态` PreLoadLanguageResources(xmlAssets)
+
+加载语言定义文件
+
+
+#### 参数
+
+
+`xmlAssets` string <br/>语言定义XML字符串
+
+
+
+#### 返回值
+
+table <br/>加载是否成功
+
+
 ### `静态` LoadLanguageResources(xmlAssets)
 
 加载语言定义文件
@@ -75,32 +92,13 @@ number [SystemLanguage](https://docs.unity3d.com/ScriptReference/SystemLanguage.
 
 ### `静态` GetLanguageString(key)
 
-使用当前系统语言获取语言字符串
+获取语言字符串
 
 
 #### 参数
 
 
 `key` string <br/>字符串键值
-
-
-
-#### 返回值
-
-string <br/>如果找到对应键值字符串，则返回字符串，否则返回null
-
-
-### `静态` GetLanguageString(key, lang)
-
-使用指定语言获取语言字符串
-
-
-#### 参数
-
-
-`key` string <br/>字符串键值
-
-`lang` number [SystemLanguage](https://docs.unity3d.com/ScriptReference/SystemLanguage.html)<br/>指定语言
 
 
 

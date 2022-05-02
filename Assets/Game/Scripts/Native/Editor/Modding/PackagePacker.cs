@@ -17,7 +17,6 @@ namespace Ballance2.Editor.Modding
     private static string projModDirPath = "";
     private static string projLogoFile = "";
     private static string packPackageName = "";
-    private static string packLogoName = "";
     private static bool packShouldCompile = true;
     private static bool packContainCSharp = false;
 
@@ -109,6 +108,7 @@ namespace Ballance2.Editor.Modding
       projPath = Directory.GetCurrentDirectory().Replace("\\", "/") + "/";
       projModDefFile = projPath + AssetDatabase.GetAssetPath(packDefFile);
       projModDirPath = projPath + Path.GetDirectoryName(AssetDatabase.GetAssetPath(packDefFile));
+      projLogoFile = projModDirPath + Path.DirectorySeparatorChar + "PackageLogo.png";
 
       //模块信息处理
       XmlDocument packDefXmlDoc = new XmlDocument();
@@ -126,15 +126,6 @@ namespace Ballance2.Editor.Modding
           {
             if (attribute.Name == "packageName")
               packPackageName = attribute.Value;
-          }
-          foreach (XmlNode nodec in node.ChildNodes)
-          {
-            if (nodec.Name == "Logo")
-            {
-              packLogoName = nodec.InnerText;
-              projLogoFile = projModDirPath + Path.DirectorySeparatorChar + nodec.InnerText;
-              break;
-            }
           }
           break;
         }
@@ -159,9 +150,12 @@ namespace Ballance2.Editor.Modding
       ZipUtils.AddFileToZip(zipStream, bundlePath + ".assetbundle.manifest", "/assets/" + Path.GetFileName(bundlePath) + ".assetbundle.manifest", ref crc);
       ZipUtils.AddFileToZip(zipStream, projModDefFile, projModDirPath.Length, ref crc);
 
+      //添加I18脚本
+      var i18nRes = projModDirPath + Path.DirectorySeparatorChar + "PackageLanguageResPre.xml"; 
+      if (File.Exists(i18nRes)) ZipUtils.AddFileToZip(zipStream, i18nRes, projModDirPath.Length, ref crc);
+
       //添加logo图片
       if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, ref crc);
-      else Debug.LogWarning("模块的 Logo 没有找到：" + projLogoFile);
 
       //添加lua代码
       int i = 0, len = allLuaPath.Count;
@@ -185,9 +179,19 @@ namespace Ballance2.Editor.Modding
         else ZipUtils.AddFileToZip(zipStream, path, "/class" + path.Substring(basePath.Length), ref crc);
         i++;
       }
+      
       //编译C#代码
       if(packContainCSharp && allCsPath.Count > 0) {
-        //TODO: 编译C#代码
+        EditorUtility.DisplayProgressBar("请稍后", "正在编译C#代码", 0.5F);
+
+        if(CSharpCompiler.CompileToCsharpDll(packPackageName, projModDirPath + Path.DirectorySeparatorChar + "/Native", true)) {
+          var dll = projModDirPath + Path.DirectorySeparatorChar + "Native.dll"; 
+          if (File.Exists(dll)) ZipUtils.AddFileToZip(zipStream, dll, projModDirPath.Length, ref crc);
+        } else {
+          Debug.LogError("编译 DLL 失败。");
+        }
+
+        EditorUtility.ClearProgressBar();
       }
 
       zipStream.Finish();

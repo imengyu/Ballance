@@ -22,7 +22,6 @@
     <Description>
       <![CDATA[这是<color=#f00>一个模块</color>]]>
     </Description>
-    <Logo>PackageLogo.png</Logo>
     <Link>https://yourwebsite.com</Link> <!--模块主页URL-->
     <AuthorLink>https://yourwebsite.com</AuthorLink><!--模块作者主页URL-->
     <DocLink>https://yourwebsite.com</DocLink><!--模块文档URL-->
@@ -64,6 +63,7 @@
   <Type>Module</Type>
   <!--
     指示本模组是否要加载 CSharp 代码，只有开启了此选项才能加载 CSharp 代码。
+    加载器会加载文件名为 [包名].dll 的dll。例如这个模组会加载zip包中的 com.imengyu.test.dll
     提示：CSharp 代码必须在非AOT平台才能加载。
     因此推荐使用 Lua（游戏API基本支持）
   -->

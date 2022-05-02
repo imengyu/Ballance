@@ -85,7 +85,7 @@ namespace Ballance2
           message = message.Substring(0, 32767);
 
         var logColor = Log.GetLogColor(level);
-        var t = string.Format("<color=#{0}>{1}/{2} {3}</color>", Log.GetLogColor(level), Log.LogLevelToString(level), tag, message);
+        var t = string.Format("<color=#999>{1}/{2}</color> <color=#{0}>{3}</color>", Log.GetLogColor(level), Log.LogLevelToString(level), tag, message);
 
         var newEle = CloneUtils.CloneNewObjectWithParent(LogItemPrefab, this.LogContentView);
         var text = newEle.GetComponent<Text>();
@@ -268,7 +268,7 @@ namespace Ballance2
     public void CopyStacktrace()
     {
       UnityEngine.GUIUtility.systemCopyBuffer = LogStacktraceText.text;
-      GameUIManager.GlobalToast("已复制到剪贴板", 1);
+      GameUIManager.GlobalToast("Copied!", 1);
     }
     //执行命令
     public void ExecCommand()

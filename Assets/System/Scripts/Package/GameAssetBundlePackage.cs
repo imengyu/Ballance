@@ -51,6 +51,8 @@ namespace Ballance2.Package
         }
         else
         {
+          PreLoadI18NResource(null);
+
           TextAsset modDefTextAsset = AssetBundle.LoadAsset<TextAsset>("PackageDef.xml");
           if (modDefTextAsset == null || string.IsNullOrEmpty(modDefTextAsset.text))
           {

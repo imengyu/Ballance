@@ -477,9 +477,9 @@ function LevelBuilder:_LoadLevelInternal()
                   
                   body:EnableContractEventCallback()
                   body.EnableCollisionEvent = true
-                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.2, 10, 0.5, 0.1)
-                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.2, 10, 0.5, 0.1)
-                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.2, 10, 0.5, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.1, 8, 0.5, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.1, 8, 0.5, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.1, 8, 0.5, 0.1)
                   --撞击处理回调
                   ---@param col_id number
                   ---@param speed_precent number

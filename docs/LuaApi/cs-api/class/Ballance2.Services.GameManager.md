@@ -25,6 +25,7 @@ GameManager.Instance
 |GameMainLuaState|`SLua.LuaSvr+MainState` |获取游戏全局Lua虚拟机|
 |GameDebugCommandServer|[GameDebugCommandServer](./Ballance2.Services.GameDebugCommandServer.md) |获取调试命令控制器。可以获取全局 GameDebugCommandServer 单例，你可以通过它来注册你的调试命令。|
 |GameLight|[Light](https://docs.unity3d.com/ScriptReference/Light.html) |获取全局灯光实例。这是一个全局照亮的环境光, 与游戏内的主光源是同一个。|
+|GameTimeMachine|[GameTimeMachine](./Ballance2.Services.GameTimeMachine.md) |GameTimeMachine 的一个实例。|
 |DebugMode|boolean |获取或者设置当前是否处于开发者模式|
 
 ## 方法

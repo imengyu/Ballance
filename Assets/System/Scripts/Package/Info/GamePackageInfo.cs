@@ -89,26 +89,26 @@ namespace Ballance2.Package
   [LuaApiDescription("模块基础信息")]
   public class GamePackageBaseInfo
   {
+    private GamePackage package;
+
     [DoNotToLua]
-    public GamePackageBaseInfo(XmlNode xmlNodeBaseInfo)
+    public GamePackageBaseInfo(XmlNode xmlNodeBaseInfo, GamePackage package)
     {
+      this.package = package;
       if (xmlNodeBaseInfo != null)
         for (int i = 0; i < xmlNodeBaseInfo.ChildNodes.Count; i++)
         {
           switch (xmlNodeBaseInfo.ChildNodes[i].Name)
           {
-            case "Name": Name = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-            case "Author": Author = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
-            case "Introduction": Introduction = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerXml); break;
-            case "Logo": Logo = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-            case "Link": Link = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-            case "DocLink": DocLink = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-            case "AuthorLink": AuthorLink = xmlNodeBaseInfo.ChildNodes[i].InnerText; break;
-            case "Description": Description = FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
-            case "VersionName":
-              VersionName = xmlNodeBaseInfo.ChildNodes[i].InnerText == "{internal.core.versionName}" ? GameConst.GameVersion :
-                  FixCdData(xmlNodeBaseInfo.ChildNodes[i].InnerText);
-              break;
+            case "Name": Name = CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+            case "Author": Author = FixCdData(CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText)); break;
+            case "Introduction": Introduction = FixCdData(CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerXml)); break;
+            case "Logo": Logo = CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+            case "Link": Link = CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+            case "DocLink": DocLink = CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+            case "AuthorLink": AuthorLink = CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText); break;
+            case "Description": Description = FixCdData(CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText)); break;
+            case "VersionName": VersionName = FixCdData(CheckAndGetI18NString(xmlNodeBaseInfo.ChildNodes[i].InnerText)); break;
             case "Dependencies":
               for (int j = 0, jc = xmlNodeBaseInfo.ChildNodes[i].ChildNodes.Count; j < jc; j++)
               {
@@ -121,6 +121,19 @@ namespace Ballance2.Package
         }
     }
 
+    private string CheckAndGetI18NString(string x)
+    {
+      if (x.StartsWith("{") && x.EndsWith("}")) {
+        var key = x.Substring(1, x.Length - 2);
+        if (key == "internal.core.versionName")
+          return GameConst.GameVersion;
+        else {
+          var str = package.GetPackageI18NResourceInPre(key);
+          return str == null ? "[unknow:" + key + "]" : str;
+        }
+      }
+      return x;
+    }
     private string FixCdData(string x)
     {
       if (x.Length > 12 && x.StartsWith("<![CDATA[") && x.EndsWith("]]>"))

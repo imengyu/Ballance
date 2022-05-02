@@ -138,10 +138,6 @@ function ModulCustomDebug()
     button = ui.transform:Find('ButtonQuit'):GetComponent(UnityEngine.UI.Button)
     button.onClick:AddListener(function ()
       ui.gameObject:SetActive(false)
-
-      
-
-
       GameManager:QuitGame()
     end);
     button = ui.transform:Find('ButtonBackup'):GetComponent(UnityEngine.UI.Button)

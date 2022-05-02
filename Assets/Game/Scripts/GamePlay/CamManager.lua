@@ -322,9 +322,9 @@ function CamManager:SetTarget(target, noUpdatePos)
   if noUpdatePos then
     self.CamFollow:SetTargetWithoutUpdatePos(target)
   else
-    self.Target = target
+    self.CamFollow.Target = target
   end
-  self.CamFollow.Target = target
+  self.Target = target
   self.EventCamFollowTargetChanged:Emit(target)
   return self
 end

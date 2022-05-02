@@ -37,8 +37,6 @@ namespace Ballance2.Package
     {
       PackageFilePath = PathUtils.FixFilePathScheme(filePath);
 
-      bool defFileLoadSuccess = false;
-      bool defFileFounded = false;
       ZipInputStream zip = null;
       MemoryStream ms = null;
 
@@ -68,30 +66,36 @@ namespace Ballance2.Package
 
         UpdateTime = File.GetLastWriteTime(PackageFilePath);
 
+        XmlDocument packageDef = null;
+        Sprite logo = null;
+
+        //搜索zip内容
         ZipEntry theEntry;
         while ((theEntry = zip.GetNextEntry()) != null)
         {
           if (theEntry.Name == "/PackageDef.xml" || theEntry.Name == "PackageDef.xml")
-          {
-            defFileFounded = true;
-            defFileLoadSuccess = await LoadPackageDefInZip(zip, theEntry);
-          }
-          else if (BaseInfo != null &&
-              (theEntry.Name == "/" + BaseInfo.Logo || theEntry.Name == BaseInfo.Logo))
-            LoadLogoInZip(zip, theEntry);
+            packageDef = await LoadPackageDefInZip(zip, theEntry); //加载定义文件
+          else if (theEntry.Name == "/PackageLanguageResPre.xml" || theEntry.Name == "PackageLanguageResPre.xml")
+            await LoadPackageLanguageResPreInZip(zip, theEntry); //加载语言文件
+          else if (theEntry.Name == "/PackageLogo.png" || theEntry.Name == "PackageLogo.png")
+            logo = await LoadLogoInZip(zip, theEntry); //加载图标
         }
 
         zip.Close();
         zip.Dispose();
 
-        if (!defFileFounded)
+        if (packageDef == null)
         {
           GameErrorChecker.SetLastErrorAndLog(GameError.PackageDefNotFound, TAG, "PackageDef.xml not found");
           LoadError = "模块并不包含 PackageDef.xml";
           return false;
+        } 
+        else 
+        {
+          bool res = ReadInfo(packageDef);
+          BaseInfo.LogoTexture = logo;
+          return res;
         }
-
-        return defFileLoadSuccess;
       }
       catch(Exception e) {
         GameErrorChecker.SetLastErrorAndLog(GameError.ExecutionFailed, TAG, "加载异常 " + e.ToString());
@@ -162,9 +166,11 @@ namespace Ballance2.Package
           }
           else if (theEntry.Name.StartsWith("class/"))
           {
-            await LoadCodeAsset(zip, theEntry);
+            LoadCodeAsset(zip, theEntry);
           }
         }
+
+        Log.D(TAG, "Load {0} code asset", packageCodeAsset.Count);
 
         if(assetbundleFound) 
           result = await base.LoadPackage();
@@ -184,7 +190,7 @@ namespace Ballance2.Package
       return false;
     }
 
-    private async Task<bool> LoadPackageDefInZip(ZipInputStream zip, ZipEntry theEntry)
+    private async Task<XmlDocument> LoadPackageDefInZip(ZipInputStream zip, ZipEntry theEntry)
     {
       MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
 
@@ -200,7 +206,7 @@ namespace Ballance2.Package
       catch (System.Exception e)
       {
         GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e + "\nCheck content: " + content);
-        return false;
+        return null;
       }
       finally
       {
@@ -208,26 +214,44 @@ namespace Ballance2.Package
         ms.Dispose();
       }
 
-      return ReadInfo(PackageDef);
+      return PackageDef;
     }
-    private void LoadLogoInZip(ZipInputStream zip, ZipEntry theEntry)
+    private async Task<bool> LoadPackageLanguageResPreInZip(ZipInputStream zip, ZipEntry theEntry)
+    {
+      MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
+      try
+      {
+        PreLoadI18NResource(StringUtils.GetUtf8Bytes(StringUtils.FixUtf8BOM(ms.ToArray())));
+      }
+      catch
+      {
+        return false;
+      }
+      finally
+      {
+        ms.Close();
+        ms.Dispose();
+      }
+      return true;
+    }
+    private async Task<Sprite> LoadLogoInZip(ZipInputStream zip, ZipEntry theEntry)
     {
       try
       {
         Texture2D texture2D = new Texture2D(128, 128);
-        MemoryStream ms = ZipUtils.ReadZipFileToMemory(zip);
+        MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
         texture2D.LoadImage(ms.ToArray());
         ms.Close();
         ms.Dispose();
 
-        BaseInfo.LogoTexture = Sprite.Create(texture2D,
+        return Sprite.Create(texture2D,
             new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)),
             new Vector2(0.5f, 0.5f));
       }
       catch (Exception e)
       {
-        BaseInfo.LogoTexture = null;
         Log.E(TAG, "在加载模块的 Logo {0} 失败\n错误信息：{1}", BaseInfo.Logo, e.ToString());
+        return null;
       }
     }
 
@@ -261,9 +285,9 @@ namespace Ballance2.Package
       Log.D(TAG, "AssetBundle {0} loaded", theEntry.Name);
       return true;
     }
-    private async Task LoadCodeAsset(ZipInputStream zip, ZipEntry theEntry)
+    private void LoadCodeAsset(ZipInputStream zip, ZipEntry theEntry)
     {
-      MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
+      MemoryStream ms = ZipUtils.ReadZipFileToMemory(zip);
 
       var codeAssetStorage = new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name, PackageFilePath + "/" + theEntry.Name);
       var key = theEntry.Name;

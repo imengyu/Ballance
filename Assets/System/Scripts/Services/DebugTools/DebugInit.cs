@@ -5,6 +5,7 @@ using Ballance2.Services;
 using Ballance2.UI.Core;
 using Ballance2.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ballance2.DebugTools {
 
@@ -48,9 +49,9 @@ namespace Ballance2.DebugTools {
       GameManager.Instance.GameDebugCommandServer.RegisterCommand("quit-dev", (keyword, fullCmd, argsCount, args) => {
         UnInitSystemDebug();
         GameManager.Instance.GameSettings.SetBool("DebugMode", false);
-        GameUIManager.GlobalConfirmWindow("退出开发者模式后必须重启游戏才能生效", "提示", () => {
-          GameManager.Instance.QuitGame();
-        }, () => {}, "重启游戏");
+        GameUIManager.GlobalConfirmWindow("After exiting developer mode, you must restart the game to take effect", "Tip", () => {
+          GameManager.Instance.RestartGame();
+        }, () => {}, "Restart game");
         return true;
       }, 0, "quit-dev > 退出开发者模式");
 

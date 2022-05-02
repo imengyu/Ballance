@@ -63,13 +63,12 @@ namespace Ballance2.Package
     [DoNotToLua]
     public virtual async Task<bool> LoadPackage()
     {
-      FixBundleShader();
+      //FixBundleShader();
       LoadI18NResource();
 
       //模块代码环境初始化
       if (Type == GamePackageType.Module)
         return await LoadPackageCodeBase();
-
       return true;
     }
     [DoNotToLua]
@@ -249,22 +248,22 @@ namespace Ballance2.Package
           if(!pm.GetTrustPackageDialogResult()) {
             //用户拒绝了加载
             GameErrorChecker.LastError = GameError.AccessDenined;
-            Log.E(TAG, "用户拒绝了加载模块 " + PackageName);
+            Log.E(TAG, "[C#] 用户拒绝了加载模块 " + PackageName);
             return false;
           }
         }
 
         //加载C#程序集
-        CSharpAssembly = LoadCodeCSharp(EntryCode);
+        CSharpAssembly = LoadCodeCSharp(PackageName + ".dll");
         if (CSharpAssembly == null) {
-          Log.E(TAG, "无法加载DLL：" + EntryCode);
+          Log.E(TAG, "[C#] 无法加载DLL：" + PackageName + ".dll");
           return false;
         }
         
         Type type = CSharpAssembly.GetType("PackageEntry");
         if (type == null)
         {
-          Log.W(TAG, "未找到 PackageEntry ");
+          Log.W(TAG, "[C#] 未找到 PackageEntry ");
           GameErrorChecker.LastError = GameError.ClassNotFound;
           return false;
         }
@@ -274,16 +273,20 @@ namespace Ballance2.Package
           MethodInfo methodInfo = type.GetMethod("Main");  //根据方法名获取MethodInfo对象
           if (type == null)
           {
-            Log.W(TAG, "未找到 PackageEntry.Main()");
+            Log.W(TAG, "[C#] 未找到 PackageEntry.Main()");
             GameErrorChecker.LastError = GameError.FunctionNotFound;
           } 
           else  
           {
             object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this });
-            if (b is bool && !((bool)b))
+            if (b is bool) 
             {
-              Log.W(TAG, "模块 PackageEntry.Main 返回了错误");
-              GameErrorChecker.LastError = GameError.ExecutionFailed;
+              if(!((bool)b))
+              {
+                Log.W(TAG, "[C#] 模块 PackageEntry.Main 返回了错误");
+                GameErrorChecker.LastError = GameError.ExecutionFailed;
+                return false;
+              }
             }
           }
         }
@@ -300,7 +303,7 @@ namespace Ballance2.Package
         {
           Log.E(TAG, "模块初始化返回了错误");
           GameErrorChecker.LastError = GameError.ExecutionFailed;
-          return (bool)b;
+          return false;
         }
       }
 
@@ -780,7 +783,7 @@ namespace Ballance2.Package
       PackageVersion = VerConverter(attributeVersion.Value);
 
       //BaseInfo
-      BaseInfo = new GamePackageBaseInfo(nodeBaseInfo);
+      BaseInfo = new GamePackageBaseInfo(nodeBaseInfo, this);
 
       //Compatibility
       XmlNode nodeCompatibility = nodePackage.SelectSingleNode("Compatibility");
@@ -1164,6 +1167,35 @@ namespace Ballance2.Package
         }
       }
 #endif
+
+    }
+
+    private Dictionary<string, string> preI18NResource = new Dictionary<string, string>();
+
+    /// <summary>
+    /// 在当前模块中预加载的国际化语言资源寻找字符串
+    /// </summary>
+    /// <param name="key">键</param>
+    /// <returns>返回国际化字符串，如果未找到，则返回null</returns>
+    [LuaApiDescription("在当前模块中预加载的国际化语言资源寻找字符串", "返回国际化字符串，如果未找到，则返回null")]
+    [LuaApiParamDescription("key", "键")]
+    public string GetPackageI18NResourceInPre(string key) {
+      if(preI18NResource.TryGetValue(key, out var s))
+        return s;
+      return null;
+    }
+
+    /// <summary>
+    /// 预加载国际化语言资源
+    /// </summary>
+    protected void PreLoadI18NResource(string resString) {
+      if (resString != null)
+        preI18NResource = I18NProvider.PreLoadLanguageResources(resString);
+      else {
+        var res = GetTextAsset("PackageLanguageResPre.xml");
+        if (res != null)
+          preI18NResource = I18NProvider.PreLoadLanguageResources(res.text);
+      }
     }
     /// <summary>
     /// 加载模块的国际化语言资源

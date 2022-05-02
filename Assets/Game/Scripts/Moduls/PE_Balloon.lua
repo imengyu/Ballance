@@ -183,7 +183,7 @@ function PE_Balloon:Active()
       _SoundLastSector.spatialBlend = 0
       _SoundLastSector:Play()
 
-      GamePlay.MusicManager:DisableInSec(15)      
+      GamePlay.MusicManager:DisableInSec(70)      
       Yield(WaitForSeconds(5))
 
       --该音乐播放5秒后淡出

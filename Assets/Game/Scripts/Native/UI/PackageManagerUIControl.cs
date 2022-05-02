@@ -289,7 +289,7 @@ public class PackageManagerUIControl : MonoBehaviour {
       //保存状态
       gamePackageManager.SavePackageRegisterInfo();
       //重启游戏
-      GameManager.Instance.QuitGame();
+      GameManager.Instance.RestartGame();
     } else {
       gameUIManager.BackPreviusPage();
     }

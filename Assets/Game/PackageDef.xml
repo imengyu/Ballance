@@ -3,17 +3,14 @@
   <BaseInfo>
     <Name>Ballance Core</Name>
     <Author>Ballance</Author>
-    <Introduction>Ballance 基础系统包，包含全部自带基础球与基础机关</Introduction>
-    <Description>
-      Ballance 基础系统包，包含全部自带基础球与基础机关，是所有MOD的基础依赖，不可卸载。
-    </Description>
-    <Logo>PackageLogo.png</Logo>
+    <Introduction>{core.package.Introduction}</Introduction>
+    <Description>{core.package.Description}</Description>
     <Link>https://imengyu.top/ballanceProject</Link>
     <AuthorLink>https://imengyu.top/</AuthorLink>
     <DocLink>https://imengyu.top/ballanceProject/doc</DocLink>
     <VersionName>{internal.core.versionName}</VersionName>
     <Dependencies>
-      <Package name="system" minVer="16" mustLoad="true"></Package>
+      <Package name="system" minVer="17" mustLoad="true"></Package>
     </Dependencies>
   </BaseInfo>
   <EntryCode>PackageEntry</EntryCode>

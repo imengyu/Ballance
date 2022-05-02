@@ -11,6 +11,7 @@
 |---|---|---|
 |DEBUG_PACKAGE_FOLDER|string |调试模组包存放路径|
 |DEBUG_LEVEL_FOLDER|string |调试关卡存放路径|
+|DEBUG_CORE_FOLDER|string ||
 ## 属性
 
 |名称|类型|说明|

@@ -52,6 +52,7 @@ Ballance 物理物体组件
 |EnableGravity|boolean |获取当前物体上是否启用了重力|
 |EnableCollisionEvent|boolean |获取或设置当前物体上是否启用碰撞事件|
 |EnableConstantForce|boolean |是否启用施加在这个物体上的恒力|
+|ContractCacheString|string ||
 
 ## 方法
 

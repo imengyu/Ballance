@@ -12,6 +12,7 @@
 |DeleteAllSurfacesWhenDestroy|boolean |是否在销毁环境时自动删除所有碰撞层|
 |Simulate|boolean |是否启用模拟|
 |AutoCreate|boolean |是否自动创建|
+|PhysicsFactorFinalValue|number [float](../types.md)|获取物理力大小系数。|
 ## 属性
 
 |名称|类型|说明|
@@ -21,6 +22,7 @@
 |PhysicsTime|number [float](../types.md)|获取上一帧的物理执行时间 (秒)|
 |PhysicsActiveBodies|number [int](../types.md)|获取当前激活的物理对象个数|
 |PhysicsBodies|number [int](../types.md)|获取当前所有的物理对象个数|
+|PhysicsSimuateTime|number [double](../types.md)|获取当前模拟的物理时间|
 |PhysicsConstantPushBodies|number [int](../types.md)|获取当前正在恒力推动的物理对象个数|
 |PhysicsFallCollectBodies|number [int](../types.md)|获取当前坠落回收物理对象个数|
 |PhysicsFixedBodies|number [int](../types.md)|获取当前固定物理对象个数|

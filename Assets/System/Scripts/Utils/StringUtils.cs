@@ -342,8 +342,8 @@ namespace Ballance2.Utils
           && buffer[2] == bomBuffer[2])
       {
         byte[] bomBufferFixed = new byte[bomBuffer.Length - 3];
-        for (int i = 0; i < bomBuffer.Length - 3; i++)
-          bomBufferFixed[i] = bomBuffer[i + 3];
+        for (int i = 0; i < buffer.Length - 3; i++)
+          bomBufferFixed[i] = buffer[i + 3];
         return bomBufferFixed;
       }
       return buffer;

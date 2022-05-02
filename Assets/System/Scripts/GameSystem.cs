@@ -301,12 +301,12 @@ namespace Ballance2
 
         if (IsRestart)
         {
-          System.GC.Collect();
-          PreInit();
-          IsRestart = false;
-          Init();
+          //Restart game
+          #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX
+          System.Diagnostics.Process.Start(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+          #endif
         }
-        else QuitPlayer();
+        QuitPlayer();
       }
     }
     /// <summary>

@@ -572,8 +572,6 @@ MonoBehaviour:
     componentClassVal: QuickOutline
   LuaPublicVars: []
   ExecuteOrder: 100
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -1027,8 +1025,6 @@ MonoBehaviour:
     componentClassVal: QuickOutline
   LuaPublicVars: []
   ExecuteOrder: 100
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -1841,8 +1837,6 @@ MonoBehaviour:
     componentClassVal: UnityEngine.Skybox
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -2965,7 +2959,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 58fb8afde889e3a47b0c0aa81369e51e, type: 2}
   - {fileID: 2100000, guid: 021e6d404dff278449c9a6ec25168d78, type: 2}
   - {fileID: 2100000, guid: f43392ce4e49f8a42afea694c4f24221, type: 2}
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 021e6d404dff278449c9a6ec25168d78, type: 2}
   - {fileID: 2100000, guid: dfdbf6b88917baf4a8268d4474f026a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -3668,8 +3662,6 @@ MonoBehaviour:
     componentClassVal: QuickOutline
   LuaPublicVars: []
   ExecuteOrder: 100
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

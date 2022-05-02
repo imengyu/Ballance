@@ -34,7 +34,7 @@ GUI显示状态的条目
 #### 参数
 
 
-`v` [Vector2](https://docs.unity3d.com/ScriptReference/Vector2.html) <br/>条目的 Vector3 数据
+`v` [Vector3](https://docs.unity3d.com/ScriptReference/Vector3.html) <br/>条目的 Vector3 数据
 
 
 

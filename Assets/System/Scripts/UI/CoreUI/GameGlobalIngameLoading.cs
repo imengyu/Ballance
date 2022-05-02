@@ -6,7 +6,7 @@ namespace Ballance2.UI.Utils
   public class GameGlobalIngameLoading : MonoBehaviour {
     public Text TextStatus;
 
-    private int currentLogObserver = 0;
+    /* private int currentLogObserver = 0;
 
     private void OnEnable() {
       TextStatus.text = "";
@@ -19,6 +19,6 @@ namespace Ballance2.UI.Utils
         Log.UnRegisterLogObserver(currentLogObserver);
         currentLogObserver = 0;
       }
-    }
+    } */
   }
 }

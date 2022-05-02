@@ -247,7 +247,7 @@ function BindSettingsUI(MessageCenter)
   end)
 
   --重启游戏
-  MessageCenter:SubscribeEvent('BtnRestartGameClick', function () GameManager.Instance:QuitGame() end)
+  MessageCenter:SubscribeEvent('BtnRestartGameClick', function () GameManager.Instance:RestartGame() end)
   
 
 end

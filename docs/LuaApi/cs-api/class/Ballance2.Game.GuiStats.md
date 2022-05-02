@@ -33,6 +33,7 @@ statPos:Delete()
 |---|---|---|
 |text|[Text](https://docs.unity3d.com/ScriptReference/UI.Text.html) |如果使用Text模式，请设置要设置数据文字的目标Text|
 |SetToText|boolean |是否使用Text模式，否则使用GUI模式，Text模式会将最终数据文字设置到Text上，而GUI模式是直接调用GUI显示在屏幕上|
+|UpdateTime|number [float](../types.md)|每隔多少秒更新一次文字|
 |DisplayArea|[Rect](https://docs.unity3d.com/ScriptReference/Rect.html) |如果使用GUI模式，你可以通过设置这个来控制GUI显示区域|
 
 ## 方法

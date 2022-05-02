@@ -5,6 +5,11 @@
 
 TimeMachine提供了另一种方式，实现类似MonoBehaviour中的Update之类的方法的功能。以便于我们在某些场合更方便的编写时间驱动的代码。
 
+## 字段
+
+|名称|类型|说明|
+|---|---|---|
+|FixedUpdateTick|number [int](../types.md)||
 
 ## 方法
 

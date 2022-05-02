@@ -40,6 +40,8 @@ namespace Ballance2.Res
     [LuaApiDescription("调试关卡存放路径")]
     public const string DEBUG_LEVEL_FOLDER = "Assets/Levels";
 
+    public const string DEBUG_CORE_FOLDER = "Assets/Game";
+
     private static string _DEBUG_PATH = "";
     private static string _DEBUG_OUTPUT_PATH = "";
  

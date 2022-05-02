@@ -76,6 +76,7 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.StartThisLevel">游玩此关卡</Text>
     <Text name="core.ui.PreviewThisLevel">预览此关卡</Text>
     <Text name="core.ui.Refresh">刷新</Text>
+    <Text name="core.ui.Unknow">未知</Text>
     <Text name="core.ui.FileNotExist">文件不存在</Text>
     <Text name="core.ui.Loading">正在加载，请稍后</Text>
     <Text name="core.ui.ChooseLevelInLeft">在左侧选择一个你要加载的关卡</Text>
@@ -105,6 +106,16 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.PackageManagerNotTrustAndDelete">不信任并删除</Text>
     <Text name="core.ui.PackageManagerCheckInfo">查看模组信息</Text>
     <Text name="core.ui.PackageManagerNoDepends">此模组没有依赖额外的模组</Text>
+    <Text name="core.ui.PackageManagerLinkVisitSite">访问项目主页</Text>
+    <Text name="core.ui.PackageManagerLinkVisitDoc">访问文档</Text>
+    <Text name="core.ui.PackageManagerLinkVisiAuthor">访问作者主页</Text>
+    <Text name="core.ui.PackageManagerPackageInfoTitle">模组信息</Text>
+    <Text name="core.ui.PackageManagerPackageIntroductionTitle">模组简介</Text>
+    <Text name="core.ui.PackageManagerPackageDependsTitle">模组依赖的模组</Text>
+    <Text name="core.ui.PackageManagerPackageName">包名</Text>
+    <Text name="core.ui.PackageManagerPackageVersion">版本</Text>
+    <Text name="core.ui.PackageManagerPackageAuthor">作者</Text>
+    <Text name="core.ui.PackageManagerPackageInstallTime">安装和更新时间</Text>
     <Text name="core.ui.PackageSystemPackage">核心模组无法卸载或禁用</Text>
     <Text name="core.ui.PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸载模组提示</Text>
@@ -187,6 +198,7 @@ Ballance 平衡球 是一款滚球游戏。
     <Text name="core.ui.RestartLevel">Restart Level</Text>
     <Text name="core.ui.Quit">Quit</Text>
     <Text name="core.ui.Tip">Tip</Text>
+    <Text name="core.ui.Unknow">Unknow</Text>
     <Text name="core.ui.Continue">Continue</Text>
     <Text name="core.ui.QuitToMenu">Back To Menu</Text>
     <Text name="core.ui.AboutProject">About Project</Text>
@@ -240,10 +252,10 @@ Ballance 平衡球 是一款滚球游戏。
     <Text name="core.ui.SettingsQualityVeryHigh">VeryHigh</Text>
     <Text name="core.ui.SettingsQualityUltra">Ultra</Text>
     <Text name="core.ui.LevelLoaderErrorUITitle">Level load failed</Text>
-    <Text name="core.ui.LevelLoaderErrorUIMessage">Level developer: you can press F12 to enter the console to view more error information.
+    <Text name="core.ui.LevelLoaderErrorUIMessage">Level developer: you can press F12 to open console to view more error information.
 Player: if this is a level made by a third party player, you can feed back error information to the producer.
-If this is the game's own level, you can click "Submit bug" or visit
-https://github.com/imengyu/ballance/issues/ Feedback errors to us
+If this is the game's original level, you can click "Submit bug" or visit
+https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     </Text>
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">Submit bug</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">Copy error message</Text>
@@ -258,13 +270,13 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us
     <Text name="core.ui.Loading">Loading, please wait</Text>
     <Text name="core.ui.ChooseLevelInLeft">Select a level you want to load on the left</Text>
     <Text name="core.ui.NoCustomLevel">It looks like you haven't installed any custom levels. Visit the help documentation to learn how to install custom levels</Text>
-    <Text name="core.ui.LevelNoDepends">This level does not rely on additional modules</Text>
+    <Text name="core.ui.LevelNoDepends">This level does not rely on any additional modules</Text>
     <Text name="core.ui.LevelHasDepends">This level depends on {0} additional modules and has been loaded successfully</Text>
     <Text name="core.ui.LevelHasBadDepends">This level depends on {0} additional modules, {1} failed to load</Text>
     <Text name="core.ui.LevelEnableAllDepends">Try to enable all dependencies for this level</Text>
     <Text name="core.ui.LevelAllDependsTile">All dependencies of level {0} ({1})</Text>
-    <Text name="core.ui.VersionMismatch">Dependent version too low</Text>
-    <Text name="core.ui.LevelEnableAllDependsTodo">Do not support automatic download or enable Depends now, please manually open or install.</Text>
+    <Text name="core.ui.VersionMismatch">Dependency version too low</Text>
+    <Text name="core.ui.LevelEnableAllDependsTodo">We do not support automatic download or enable dependency now, please open or install manually.</Text>
     <Text name="core.ui.PackageManagerEnableAll">Enable all modules</Text>
     <Text name="core.ui.PackageManagerDisableAll">Disable all modules</Text>
     <Text name="core.ui.PackageManagerSave">Save changes</Text>
@@ -275,13 +287,23 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us
     <Text name="core.ui.PackageManagerGiveUpSave">Discard changes</Text>
     <Text name="core.ui.PackageManagerPackNotFound">The module {0} was not found and does not appear to be installed here.</Text>
     <Text name="core.ui.PackageManagerOptional">Optional</Text>
-    <Text name="core.ui.PackageManagerNoDepends">This module does not depend on additional modules</Text>
+    <Text name="core.ui.PackageManagerNoDepends">This module does not depend on any additional modules</Text>
     <Text name="core.ui.PackageManagerTrustTitle">Module {0} is trying to load a c# module. Do you want to allow it?</Text>
-    <Text name="core.ui.PackageManagerTrustDescrb">Module c# module has full file access rights. If allowed, this module will be able to access your personal files and modify the settings of your computer. Therefore, it is dangerous to load this module. Please confirm whether this module is officially downloaded before loading. If you do not trust this module, please do not load it.</Text>
+    <Text name="core.ui.PackageManagerTrustDescrb">Module in c# is poweful and dangerous. If allowed, this module will be able to access your personal files and modify the settings of your computer. Therefore, it is dangerous to load this module. Please confirm whether this module is officially downloaded before loading. If you do not trust this module, please do not load it.</Text>
     <Text name="core.ui.PackageManagerTrustAndsLoad">Trust and load</Text>
     <Text name="core.ui.PackageManagerNotTrust">Distrust</Text>
     <Text name="core.ui.PackageManagerNotTrustAndDelete">Distrust and delete</Text>
     <Text name="core.ui.PackageManagerCheckInfo">View module information</Text>
+    <Text name="core.ui.PackageManagerLinkVisitSite">Visit project home page</Text>
+    <Text name="core.ui.PackageManagerLinkVisitDoc">Visit document page</Text>
+    <Text name="core.ui.PackageManagerLinkVisiAuthor">Visit author's home page</Text>
+    <Text name="core.ui.PackageManagerPackageInfoTitle">Module information</Text>
+    <Text name="core.ui.PackageManagerPackageIntroductionTitle">Module introduction</Text>
+    <Text name="core.ui.PackageManagerPackageDependsTitle">Module dependencies</Text>
+    <Text name="core.ui.PackageManagerPackageName">Package name</Text>
+    <Text name="core.ui.PackageManagerPackageVersion">Version</Text>
+    <Text name="core.ui.PackageManagerPackageAuthor">Author</Text>
+    <Text name="core.ui.PackageManagerPackageInstallTime">Installation and update time</Text>
     <Text name="core.ui.PackageSystemPackage">Core module cannot be uninstalled or disabled</Text>
     <Text name="core.ui.PackageWantUnaload">Do you want to uninstall the module? It will be uninstalled from the game immediately. The module file will be deleted and cannot be recovered!</Text>
     <Text name="core.ui.PackageUnaloadTip">Uninstall module tip</Text>
@@ -343,6 +365,7 @@ Quit the tutorial with "RETURN" ...
     <Text name="core.ui.Ok">確定</Text>
     <Text name="core.ui.Yes">是</Text>
     <Text name="core.ui.No">否</Text>
+    <Text name="core.ui.Unknow">未知</Text>
     <Text name="core.ui.Cancel">取消</Text>
     <Text name="core.ui.Restart">重啓遊戲</Text>
     <Text name="core.ui.Continue">继续</Text>
@@ -443,73 +466,84 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.PackageManagerNotTrust">不信任</Text>
     <Text name="core.ui.PackageManagerNotTrustAndDelete">不信任並删除</Text>
     <Text name="core.ui.PackageManagerCheckInfo">查看模組資訊</Text>
+    <Text name="core.ui.PackageManagerLinkVisitSite">訪問項目主頁</Text>
+    <Text name="core.ui.PackageManagerLinkVisitDoc">訪問檔案</Text>
+    <Text name="core.ui.PackageManagerLinkVisiAuthor">訪問作者主頁</Text>
+    <Text name="core.ui.PackageManagerPackageInfoTitle">模組資訊</Text>
+    <Text name="core.ui.PackageManagerPackageIntroductionTitle">模組簡介</Text>
+    <Text name="core.ui.PackageManagerPackageDependsTitle">模組依賴的模組</Text>
+    <Text name="core.ui.PackageManagerPackageName">包名</Text>
+    <Text name="core.ui.PackageManagerPackageVersion">版本</Text>
+    <Text name="core.ui.PackageManagerPackageAuthor">作者</Text>
+    <Text name="core.ui.PackageManagerPackageInstallTime">安裝和更新時間</Text>
     <Text name="core.ui.PackageSystemPackage">覈心模組無法卸載或禁用</Text>
     <Text name="core.ui.PackageWantUnaload">你希望卸載模組嗎？ 它將立即從遊戲中卸載。 模組檔案將被删除，無法恢復！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸載模組提示</Text>
-    <Text name="core.ui.TutorialText1">欢迎来到 Ballance！
-游戏教程：
-您可以随时使用“ESC”键停止或退出游戏。
-你可以按“回车”键继续游戏教程，或按“Q”键退出教程。
-    </Text>
-    <Text name="core.ui.TutorialText2">视图旋转：
-按住左“SHIFT”键并使用“LEFT”或“RIGHT”箭头键将视图旋转90°。
+    <Text name="core.ui.TutorialText1">歡迎來到 Ballance！
+遊戲教程：
+您可以隨時使用“ESC”鍵停止或退出遊戲。
+你可以按“回車”鍵繼續遊戲教程，或按“Q”鍵退出教程。
 
-按“回车”键继续...
     </Text>
-    <Text name="core.ui.TutorialText3">俯瞰视图：
-按住“空格键”以升高摄像机，你可以看的更高。
+    <Text name="core.ui.TutorialText2">視圖旋轉：
+按住左“SHIFT”鍵並使用“LEFT”或“RIGHT”箭頭鍵將視圖旋轉90°。
 
-按“回车”键继续...
+按“回車”鍵繼續…
     </Text>
-    <Text name="core.ui.TutorialText4">移动球：
-请将视线转向前方，直到看到前面有两座塔楼的轨道。
-使用“箭头”键（不带“SHIFT”）向前、向后、向左和向右移动球。
+    <Text name="core.ui.TutorialText3">俯瞰視圖：
+按住“空白鍵”以升高攝像機，你可以看的更高。
+
+按“回車”鍵繼續…
+    </Text>
+    <Text name="core.ui.TutorialText4">移動球：
+請將視線轉向前方，直到看到前面有兩座塔樓的軌道。
+使用“箭頭”鍵（不帶“SHIFT”）向前、向後、向左和向右移動球。
 
 请沿着这条路走！
     </Text>
-    <Text name="core.ui.TutorialText5">额外生命球：
-如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。
+    <Text name="core.ui.TutorialText5">額外生命球：
+如果你從軌道上掉下來，你就會失去一條生命。 你的剩餘生命將顯示在荧幕的右下角。 通過碰撞“額外生命球”，你可以獲得額外的生命。
 
-按“回车”键继续...
+按“回車”鍵繼續…
     </Text>
-    <Text name="core.ui.TutorialText6">变球器：
-通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。
+    <Text name="core.ui.TutorialText6">變球器：
+通過使用“變球器”，你可以改變球的材質。 變球器顯示的資料表示變球器的類型。
 
-这是一个石质变球器。
+這是一個石質變球器。
 
-按“回车”键继续...
+按“回車”鍵繼續…
     </Text>
-    <Text name="core.ui.TutorialText7">这个斜坡太陡了，不能用石球！
+    <Text name="core.ui.TutorialText7">這個斜坡太陡了，不能用石球！
 
-找一个木制变球器，再试一次。
+找一個木制變球器，再試一次。
 
-提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！
+提示：轉動視圖（SHIFT+LEFT/RIGHT），以獲得更好的方向。 向後滾動可能很危險！
 
-按“回车”键继续...
+按“回車”鍵繼續…
     </Text>
-    <Text name="core.ui.TutorialText8">额外分数球：
+    <Text name="core.ui.TutorialText8">額外分數球：
 
-左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。
+左邊的顯示幕顯示的是你的實際時間點，在比賽中時間點會不斷减少。 你可以通過多拿一個分數球來提高分數。
 
-按“回车”键继续...
+按“回車”鍵繼續…
     </Text>
-    <Text name="core.ui.TutorialText9">检查点：
+    <Text name="core.ui.TutorialText9">檢查點：
 
-这是你必须通过的第一个检查点。
+這是你必須通過的第一個檢查點。
 
-如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。
+如果你在遊戲中失去了生命，你可以從最後一個檢查點繼續遊戲。
 
-按“回车”键继续...
+按“回車”鍵繼續…
     </Text>
-    <Text name="core.ui.TutorialText10">最后有一些提示：
+    <Text name="core.ui.TutorialText10">最後有一些提示：
 
-如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。
+如果你在某個時候遇到困難或需要一些科技幫助，請查看“Ballance HTML幫助”，它可以通過Windows開始菜單訪問（不是在遊戲期間！）。
 
-额外提示：上面是原版提示。如果你遇到了游戏的BUG或是有新的建议，请前往项目 https://github.com/imengyu/ballance/issues/ 向我们提交 Issues 反馈错误。
+額外提示：上面是原版提示。 如果你遇到了遊戲的BUG或是有新的建議，請前往項目 https://github.com/imengyu/ballance/issues/ 向我們提交Issues迴響錯誤。
 
-欢迎前往 Ballance 吧讨论游戏！
+歡迎前往Ballance吧討論遊戲！
 
-按“回车”键退出教程...
+按“回車”鍵退出教程…
     </Text>
   </Language>
 </I18n>

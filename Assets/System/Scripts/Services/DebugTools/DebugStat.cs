@@ -146,7 +146,7 @@ class DebugStat : MonoBehaviour
     if(logStatItems.Count >= 10) 
       logStatItems.RemoveAt(0);
 
-    string str = string.Format("<color=#{0}>{1}/{2} {3}</color>", Log.GetLogColor(level), Log.LogLevelToString(level), tag, message);
+    string str = string.Format("<color=#ccc>{1}/{2}</color> <color=#{0}>{3}</color>", Log.GetLogColor(level), Log.LogLevelToString(level), tag, message.Replace('\n', ' '));
     logStatItems.Add(str);
 
     StringBuilder sb = new StringBuilder();

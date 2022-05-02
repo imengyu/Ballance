@@ -50,11 +50,22 @@ namespace Ballance2.Package
         {
           PackageDef = new XmlDocument();
           PackageDef.Load(defPath);
+          XmlNode nodePackage = PackageDef.SelectSingleNode("Package");
+          XmlAttribute attributeName = nodePackage.Attributes["name"];
+          PackageName = attributeName.Value;
         }
         catch (Exception e)
         {
           GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, "Format error in PackageDef.xml : " + e);
           return false;
+        }
+        try
+        {
+          PreLoadI18NResource(null);
+        }
+        catch (Exception e)
+        {
+          Log.W(TAG, "Pre load language failed : " + e);
         }
         UpdateTime = File.GetLastWriteTime(defPath);
         if(ReadInfo(PackageDef)) 
@@ -162,6 +173,9 @@ namespace Ballance2.Package
       }
       return base.LoadCodeCSharp(pathorname);
     }
+
+    protected virtual string DebugFolder => GamePathManager.DEBUG_PACKAGE_FOLDER;
+
     public override T GetAsset<T>(string pathorname)
     {
 #if UNITY_EDITOR
@@ -169,7 +183,11 @@ namespace Ballance2.Package
         return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(pathorname);
       else
       {
-        var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + PackageName + "/" + pathorname);
+
+        var path = DebugFolder + "/" + PackageName + "/" + pathorname;
+        var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
+        if (asset == null && pathorname.Contains("."))
+          asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(Path.GetFileNameWithoutExtension(path));
         if (asset == null && !pathorname.Contains("/") && !pathorname.Contains("\\"))
         {
           string fullPath = GetFullPathByName(pathorname);

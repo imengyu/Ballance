@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package name="core.sounds.music" version="1">
   <BaseInfo>
-    <Name>原版音乐包</Name>
+    <Name>{core.sounds.music.package.Name}</Name>
     <Author>Ballance</Author>
-    <Introduction>原版音乐资源包</Introduction>
-    <Description>原版音乐资源包, 包含原版游戏的全部背景音乐资源</Description>
-    <Logo>PackageLogo.jpg</Logo>
+    <Introduction>{core.sounds.music.package.Introduction}</Introduction>
+    <Description>{core.sounds.music.package.Description}</Description>
     <Link>https://imengyu.top/ballanceProject</Link>
     <AuthorLink>https://imengyu.top/ballanceProject</AuthorLink>
     <DocLink>https://imengyu.top/ballanceProject</DocLink>

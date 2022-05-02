@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Ballance2.Services.Debug;
 using Ballance2.Services;
+using Ballance2.Res;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -30,5 +31,8 @@ namespace Ballance2.Package
       PackageName = GamePackageManager.CORE_PACKAGE_NAME;
       PackageFilePath = packageRealPath;
     }
+
+    protected override string DebugFolder => GamePathManager.DEBUG_CORE_FOLDER;
+
   }
 }

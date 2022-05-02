@@ -274,6 +274,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2024946136}
     m_Modifications:
+    - target: {fileID: 3715326137320221484, guid: bd7e600d2cecbdd44ae3131bb1544ec5, type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7059145561469175277, guid: bd7e600d2cecbdd44ae3131bb1544ec5, type: 3}
       propertyPath: m_Name
       value: GameGlobalIngameLoading
@@ -694,7 +698,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 2
+  DebugType: 0
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds

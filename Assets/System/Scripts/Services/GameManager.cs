@@ -605,6 +605,11 @@ end
         QuitGame();
         return false;
       }, 0, "quit > 退出游戏");
+      srv.RegisterCommand("restart-game", (keyword, fullCmd, argsCount, args) =>
+      {
+        RestartGame();
+        return false;
+      }, 0, "restart-game > 重启游戏");
       srv.RegisterCommand("s", (keyword, fullCmd, argsCount, args) =>
       {
         var type = (string)args[0];

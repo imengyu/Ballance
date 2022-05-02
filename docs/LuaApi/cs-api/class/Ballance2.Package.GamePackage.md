@@ -595,6 +595,23 @@ boolean <br/>返回是否找到对应脚本
 [Assembly](https://docs.microsoft.com/zh-cn/dotnet/api/System.Reflection.Assembly) <br/>如果加载成功则返回已加载的Assembly，否则将抛出异常，若当前环境并不支持加载，则返回null
 
 
+### GetPackageI18NResourceInPre(key)
+
+在当前模块中预加载的国际化语言资源寻找字符串
+
+
+#### 参数
+
+
+`key` string <br/>键
+
+
+
+#### 返回值
+
+string <br/>返回国际化字符串，如果未找到，则返回null
+
+
 ### AddCustomProp(name, data)
 
 添加自定义数据

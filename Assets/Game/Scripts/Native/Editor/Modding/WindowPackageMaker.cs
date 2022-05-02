@@ -160,8 +160,23 @@ namespace Ballance2.Editor.Modding
 
             xml.Save(folderPath + "/PackageDef.xml");
 
-            if(this.PackageType == GamePackageType.Module &&  GenEntryCodeTemplate)
-                File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.lua", folderPath + "/" + this.EntryCode);
+            if(this.PackageType == GamePackageType.Module &&  GenEntryCodeTemplate) {
+              File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.lua", folderPath + "/" + this.EntryCode);
+              if (this.ContainCSharp) {
+                Directory.CreateDirectory(folderPath + "/Native");
+                File.WriteAllText(folderPath + "/Native/PackageEntry.cs", string.Format(@"
+namespace {0}
+{
+  public class PackageEntry
+  {
+    public bool Main() {
+      //Your mod logic
+      return true;
+    }
+  }
+}", modPackageName));
+              }
+            }
 
             File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageLogo.png", folderPath + "/PackageLogo.png");
 

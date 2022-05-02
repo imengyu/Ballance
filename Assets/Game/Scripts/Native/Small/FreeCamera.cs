@@ -123,6 +123,9 @@ namespace Ballance2.Game
     private bool moveCam = false;
     private Vector3 currentVelocity = Vector3.zero;
     private Camera mainCam;
+#if (UNITY_IPHONE || UNITY_ANDROID) && !UNITY_EDITOR
+    private int lastDownTouchId = 0;
+#endif
 
     private void Awake()
     {
