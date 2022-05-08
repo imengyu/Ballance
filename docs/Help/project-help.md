@@ -4,7 +4,7 @@
 
 ## 准备
 
-* Unity 2021.2.1 以上版本.
+* Unity 2021.2.3 以上版本.
 * 编辑器：VScode 或者 Visual Studio
 * 克隆本项目 https://github.com/imengyu/Ballance 至您的本地.
 
@@ -27,8 +27,6 @@
   导入后即可在列表中找到 Ballance项目，点击打开即可。
 
 3. 在编辑器里运行
-
-  (目前暂无Mac/Linux版本的物理引擎文件，请使用Windows版本的Unity进行调试)
 
     1. 使用 Unity 2021.2.7+ 版本打开项目。
     2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。

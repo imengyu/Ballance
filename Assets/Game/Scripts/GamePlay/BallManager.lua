@@ -394,8 +394,16 @@ function BallManager:SetControllingStatus(status)
   end
 end
 ---设置下一次球出生位置
----@param pos Vector3 出生位置
+---@param pos Vector3|nil 出生位置，如果不填，则自动设置为当前球位置
 function BallManager:SetNextRecoverPos(pos)
+  --自动设置为当前球位置
+  if pos == nil then
+    local current = self._private.currentActiveBall
+    if current ~= nil then
+      pos = current.ball.transform.position
+    end
+  end
+
   self.EventNextRecoverPosChanged:Emit(pos)
   self._private.nextRecoverPos = pos
 end
@@ -724,6 +732,7 @@ function BallManager:_InitKeyEvents()
   if self._DebugMode then
     self._private.keyListener:AddKeyListen(KeyCode.Alpha1, function (key, downed)
       if(downed) then
+        self:SetNextRecoverPos()
         self:SetCurrentBall('BallWood', BallControlStatus.Control)
       end
     end)

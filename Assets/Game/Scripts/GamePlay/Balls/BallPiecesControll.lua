@@ -4,7 +4,7 @@ local CommonUtils = Ballance2.Utils.CommonUtils
 local ObjectStateBackupUtils = Ballance2.Utils.ObjectStateBackupUtils
 local FadeManager = Game.UIManager.UIFadeManager
 local Yield = UnityEngine.Yield
-local WaitForEndOfFrame = UnityEngine.WaitForEndOfFrame
+local WaitForSeconds = UnityEngine.WaitForSeconds
 
 ---默认的球碎片抛出和回收器。提供默认的球碎片抛出和回收效果控制。
 ---@class BallPiecesControll : GameLuaObjectHostClass
@@ -104,8 +104,8 @@ function CreateClass:BallPiecesControll()
 
           --防止一下抛出太多碎片
           count = count + 1
-          if count > 4 then
-            Yield(WaitForEndOfFrame())
+          if count > 3 then
+            Yield(WaitForSeconds(0.01))
             count = 0
           end
 
@@ -115,8 +115,8 @@ function CreateClass:BallPiecesControll()
         for _, body in ipairs(data.bodys) do
 
           count = count + 1
-          if count > 4 then
-            Yield(WaitForEndOfFrame())
+          if count > 3 then
+            Yield(WaitForSeconds(0.01))
             count = 0
           end
 

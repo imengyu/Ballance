@@ -9,7 +9,7 @@ P_Modul_26 = ModulBase:extend()
 function P_Modul_26:new()
   P_Modul_26.super.new(self)
   self._ForceTimer = nil
-  self._ForceState = false
+  self._ForceState = true
 end
 function P_Modul_26:Active()
   ModulBase.Active(self)
@@ -18,7 +18,7 @@ function P_Modul_26:Active()
   self.P_Modul_26_Rope:Physicalize()
   self.P_Modul_26_Sack:Physicalize()
   self.P_Modul_26_Sack.EnableConstantForce = true
-  self._ForceTimer = LuaTimer.Add(500, 1500, function ()
+  self._ForceTimer = LuaTimer.Add(0, 1300, function ()
     self._ForceState = not self._ForceState
     --切换方向
     if self._ForceState then

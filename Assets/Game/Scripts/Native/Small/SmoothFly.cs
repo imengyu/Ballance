@@ -77,27 +77,30 @@ end
     
     private void FixedUpdate() {
       if(Fly) {
-        if(Type == SmoothFlyType.SmoothDamp) {
-          var targetPos = GetPos();
-          if(MaxSpeed <= 0)
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref CurrentVelocity, Time);
-          else
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref CurrentVelocity, Time, MaxSpeed);
+        switch (Type) {
+          case SmoothFlyType.SmoothDamp: {
+            var targetPos = GetPos();
+            if(MaxSpeed <= 0)
+              transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref CurrentVelocity, Time);
+            else
+              transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref CurrentVelocity, Time, MaxSpeed);
 
-          if((transform.position - targetPos).sqrMagnitude < ArrivalDiatance) 
-            Arrival();
-          
-        } else if(Type == SmoothFlyType.Lerp) {
-          if(LerpTick == 0) {
-            LerpStart = transform.position;
-            LerpEnd = GetPos();
-          }
-          if(LerpTick <= Time){
-            transform.position = Vector3.Lerp(LerpStart,LerpEnd , LerpTick);
-            LerpTick += UnityEngine.Time.deltaTime;
-          } else {
-            LerpTick = 0;
-            Arrival();
+            if((transform.position - targetPos).sqrMagnitude < ArrivalDiatance) 
+              Arrival();
+            break;
+          } 
+          case SmoothFlyType.Lerp: {
+            if(LerpTick == 0) {
+              LerpStart = transform.position;
+            }
+            if(LerpTick <= Time){
+              transform.position = Vector3.Lerp(LerpStart, GetPos(), LerpTick);
+              LerpTick += UnityEngine.Time.deltaTime;
+            } else {
+              LerpTick = 0;
+              Arrival();
+            }
+            break;
           }
         }
       }

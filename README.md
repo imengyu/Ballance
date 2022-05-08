@@ -21,11 +21,16 @@
 
 ## 系统需求
 
+支持系统
+
+* Windows 7 或更高
+* MacOS High Sierra 10.13+ (Intel) 或更高
+* Android 6.0 或更高
+
 ||最低配置|推荐配置|
 |---|---|---|
-|操作系统|Windows 7-11|Windows 7-11|
 |处理器|Quad core 3Ghz+|Dual core 3Ghz+|
-|内存|1 GB RAM|2 GB RAM|
+|内存|1 GB RAM (512MB或许也可以运行，但是有可能会OOM) |2 GB RAM|
 |显卡|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|
 |DirectX 版本|11|11|
 |存储空间|60 MB 可用空间|100 MB 可用空间|
@@ -53,6 +58,22 @@
 ### 开启所有原版关卡
 
 进入调试模式后在控制台输入 highscore open-all 指令就可以开启全部关卡。
+
+### 项目源码的运行
+
+需要：
+
+* Unity 2021.2.3 以上版本.
+* 编辑器：VScode 或者 Visual Studio
+* 克隆或者下载本项目 `https://github.com/imengyu/Ballance` 至您的本地.
+
+步骤：
+
+1. 使用 Unity 打开项目。
+2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
+3. 打开 `Scenes/MainScene.unity` 场景。
+4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
+5. 点击运行，即可查看效果。
 
 ## 文档
 

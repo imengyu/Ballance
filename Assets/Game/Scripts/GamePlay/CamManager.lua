@@ -47,7 +47,7 @@ function CamManager:new()
   self._CameraRotateUpTime = 0.8
   self._CameraNormalZ = 17
   self._CameraNormalY = 30
-  self._CameraSpaceY = 60
+  self._CameraSpaceY = 55
   self._CameraSpaceZ = 8
   self.CamRightVector = Vector3.right
   self.CamLeftVector = Vector3.left

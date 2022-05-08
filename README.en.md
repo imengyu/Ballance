@@ -27,9 +27,14 @@ This is an open source unity remake version of ballance game.
 
 ## System requirements
 
+Minimum requirements
+
+* Windows 7+
+* MacOS High Sierra 10.13+ (Intel)
+* Android 6.0+
+
 ||Minimum|Recommended|
 |---|---|---|
-|Operating system|Windows 7|Windows 7-11|
 |Processor|Quad core 3Ghz+|Dual core 3Ghz+|
 |Memory|1 GB RAM|2 GB RAM|
 |Graphics card|DirectX 10.1 capable GPU with 512 MB VRAM - GeForce GTX 260, Radeon HD 4850 or Intel HD Graphics 5500|DirectX 11 capable GPU with 2 GB VRAM - GeForce GTX 750 Ti, Radeon R7 360|
@@ -59,6 +64,22 @@ Enter the `quit dev` command on the console to turn off the debugging mode.
 ### Open all original levels
 
 After entering the debugging mode, you can enter `highscore open-all` command in the console to open all levels.
+
+### How to run project source code
+
+You need:
+
+* Install Unity 2021.2.3+
+* Install a code editor (VScode or Visual Studio)
+* Clone or download this project `https://github.com/imengyu/Ballance` to your computer.
+
+Steps:
+
+1. Open the project with unity.
+2. When running for the first time, you need to click the menu "Slua > All > Make" to generate Lua interface files. After generation, you don't need generate again.
+3. Open `Scenes/MainScene.unity` scene.
+4. Select the `GameEntry` object, set `Debug Type` to `NoDebug` in the inspector.
+5. Click Run and you can see the game.
 
 ## Game album
 

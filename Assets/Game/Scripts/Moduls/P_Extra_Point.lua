@@ -30,8 +30,10 @@ function P_Extra_Point:new()
   self._Actived = false
   self._RotDegree = 6
   self._Rotate = false
-  self._FlyUpTime = 2.5
+  self._FlyUpTime = 0.4
   self._FlyFollowTime = 0.3
+  self._FlyTargetUpTime = 0.3
+  self._FlyTargetFollowTime = 0.2
   self.AutoActiveBaseGameObject = false
   self.EnableBallRangeChecker = true
   self.BallCheckeRange = 140
@@ -41,7 +43,7 @@ function P_Extra_Point:Start()
   ModulBase.Start(self)
   
   if not self.IsPreviewMode then
-    --初始化xiao'q
+    --初始化小球
     self._P_Extra_Point_Ball_Fly1 = self.P_Extra_Point_Ball1:GetComponent(SmoothFly) ---@type SmoothFly
     self._P_Extra_Point_Ball_Fly2 = self.P_Extra_Point_Ball2:GetComponent(SmoothFly) ---@type SmoothFly
     self._P_Extra_Point_Ball_Fly3 = self.P_Extra_Point_Ball3:GetComponent(SmoothFly) ---@type SmoothFly
@@ -64,11 +66,14 @@ function P_Extra_Point:Start()
         hitFizz:SetActive(false)
         hitAudio:Stop()
       end
-
+      
+      fly.Type = SmoothFlyType.SmoothDamp
+      fly.TargetTransform = self['P_Extra_Point_Target'..i].transform
       fly.StopWhenArrival = true
       fly.ArrivalDiatance = 2
       fly.ArrivalCallback = function ()
         if not self._FlyUp then
+          self['P_Extra_Point_Target'..i].Fly = false --停止追逐
           ballParticle:SetActive(false)
           flowParticle:SetActive(false)
           hitFizz:SetActive(true)
@@ -122,36 +127,54 @@ function P_Extra_Point:StartFly()
   self.P_Extra_Point_Fizz:SetActive(true)
   self.P_Extra_Point_Sound:Play()
 
-  local upY = 16
+  --目标平移到指定位置
+
+  local upY = 30
 
   for i = 1, 6, 1 do
+
     local ball = self['P_Extra_Point_Ball'..i] ---@type GameObject
+    local flyTarget = self['P_Extra_Point_Target'..i] ---@type SmoothFly
     local fly = self['_P_Extra_Point_Ball_Fly'..i] ---@type SmoothFly
     local posMult = Vector3(1.2, 1, 1.2)
-    local localPos = Vector3.Scale(ball.transform.localPosition, posMult)
-  
-    fly.Type = SmoothFlyType.Lerp
-    fly.TargetTransform = nil
-    fly.TargetPos = self.transform:TransformPoint(localPos.x, upY, localPos.z)
+    local pos = ball.transform.localPosition
+    local localPos = Vector3.Scale(pos, posMult)
+
+    flyTarget.transform.localPosition = pos
+    flyTarget.CurrentVelocity = Vector3.zero
+    flyTarget.TargetTransform = nil
+    flyTarget.TargetPos = self.transform:TransformPoint(localPos.x, upY, localPos.z)
+    flyTarget.Fly = true
+    flyTarget.Time = self._FlyTargetUpTime
+
     fly.Time = self._FlyUpTime
+    fly.CurrentVelocity = Vector3.zero
+    fly.StopWhenArrival = false
     fly.Fly = true
-    upY = upY + 0.2
+
+    upY = upY + 0.3
   end
 
   local fTime =  self._FlyFollowTime
 
-  LuaTimer.Add(1250, function ()
+  LuaTimer.Add(750, function ()
+    for i = 1, 6, 1 do
+      local fly = self['P_Extra_Point_Target'..i] ---@type SmoothFly
+      fly.TargetPos = Vector3.zero
+      fly.TargetTransform = GamePlay.CamManager.Target
+      fly.Time = self._FlyTargetFollowTime
+      fly.CurrentVelocity = Vector3.zero
+    end
+  end)
+  LuaTimer.Add(1000, function ()
     self.P_Extra_Point_Fizz:SetActive(false)
     self._FlyUp = false
-
-    local followTarget = GamePlay.CamManager.Target
     for i = 1, 6, 1 do
       local fly = self['_P_Extra_Point_Ball_Fly'..i] ---@type SmoothFly
+      fly.StopWhenArrival = true
       fly.Fly = true
-      fly.Type = SmoothFlyType.SmoothDamp
-      fly.TargetTransform = followTarget
       fly.Time = fTime
-      fTime = fTime - 0.02
+      fTime = fTime - 0.03
     end
   end)
 end
@@ -194,18 +217,18 @@ end
 function P_Extra_Point:Reset(type)
   if(type == 'levelRestart') then
     self._Actived = false
-    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball1)
-    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball2)
-    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball3)
-    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball4)
-    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball5)
-    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball6)
     self._P_Extra_Point_Ball_Fly1.Fly = false
     self._P_Extra_Point_Ball_Fly2.Fly = false
     self._P_Extra_Point_Ball_Fly3.Fly = false
     self._P_Extra_Point_Ball_Fly4.Fly = false
     self._P_Extra_Point_Ball_Fly5.Fly = false
     self._P_Extra_Point_Ball_Fly6.Fly = false
+    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball1)
+    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball2)
+    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball3)
+    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball4)
+    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball5)
+    ObjectStateBackupUtils.RestoreObject(self.P_Extra_Point_Ball6)
     for i = 1, 6, 1 do
       self['_P_Extra_Point_Ball_Rest'..i]()
     end

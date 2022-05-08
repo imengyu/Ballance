@@ -139,7 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb668054c1bb70428b8bba9f606dbfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 3571393709594280166}
   Other: {fileID: 0}
   force_factor: 1
   damp_factor: 1
@@ -933,8 +932,6 @@ MonoBehaviour:
     componentClassVal: BallancePhysics.Wapper.PhysicsObject
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

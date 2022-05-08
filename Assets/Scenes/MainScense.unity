@@ -693,12 +693,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af892bd37df8f99459503c4cb759c1c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugMode: 1
+  DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -706,7 +706,7 @@ MonoBehaviour:
     PackageName: core.sounds.music
   - Enable: 1
     PackageName: core.assets.skys
-  DebugCustomEntryEvent: CoreDebugLevelEnvironmentEntry
+  DebugCustomEntryEvent: LevelCustomDebug
   DebugCustomEntryEventParamas: []
   DebugCustomEntries:
   - CoreDebugEmptyEntry
@@ -766,11 +766,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e372b1646b4e6e44e8e119d94718db53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModulName: P_Box_01
-  ModulInstance: {fileID: 6519714479909359513, guid: 7adf8c288c7861b4e8b3577f3c2f24d1, type: 3}
+  ModulName: P_Extra_Point_01
+  ModulInstance: {fileID: 116406, guid: 14a1960897e6359409ddd3990d2fa155, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
-  LevelName: level08
+  LevelName: level01
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

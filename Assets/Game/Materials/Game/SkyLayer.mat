@@ -2,14 +2,17 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SkyLayer
   m_Shader: {fileID: 4800000, guid: e7ee9cf3f9989c04bb38a9462ad3e6f1, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _EMISSION
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _ALPHABLEND_ON
+  - _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -54,7 +57,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 550bc03f31e06d54e80a12103627045c, type: 3}
         m_Scale: {x: 2, y: 2}
-        m_Offset: {x: 0.6048192, y: 0.12680793}
+        m_Offset: {x: 0.2911148, y: 0.81311774}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
