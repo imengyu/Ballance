@@ -30,7 +30,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalFlatEmission"
       #pragma multi_compile LIGHTPROBE_SH
       #pragma vertex vert
       #pragma fragment frag
-      #define UNITY_PASS_FORWARBNASE
       #define FLAT_EMISSION
 
       //引入头文件
@@ -62,7 +61,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalFlatEmission"
       #pragma multi_compile_fwdadd
       #pragma vertex vert
       #pragma fragment frag
-      #define UNITY_PASS_FORWARDADD
       #define USING_LIGHT_MULTI_COMPILE
       #define FLAT_EMISSION
 

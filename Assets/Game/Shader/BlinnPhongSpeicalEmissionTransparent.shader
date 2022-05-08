@@ -42,7 +42,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionTransparent"
       #pragma vertex vert
       #pragma fragment frag
       #define USE_TRANSPARENT
-      #define UNITY_PASS_FORWARBNASE
 
       //引入头文件
       #include "UnityCG.cginc"

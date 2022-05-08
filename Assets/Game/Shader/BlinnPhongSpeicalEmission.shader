@@ -30,7 +30,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmission"
       #pragma multi_compile LIGHTPROBE_SH
       #pragma vertex vert
       #pragma fragment frag
-      #define UNITY_PASS_FORWARBNASE
 
       //引入头文件
       #include "UnityCG.cginc"
@@ -61,7 +60,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmission"
       #pragma multi_compile_fwdadd
       #pragma vertex vert
       #pragma fragment frag
-      #define UNITY_PASS_FORWARDADD
       #define USING_LIGHT_MULTI_COMPILE
 
       //引入头文件

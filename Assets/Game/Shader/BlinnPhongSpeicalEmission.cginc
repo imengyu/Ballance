@@ -59,6 +59,8 @@ float _Gloss;
 VertexOutputBase vertForwardAdd (VertexInput v) 
 {
   VertexOutputBase o;
+  UNITY_INITIALIZE_OUTPUT(VertexOutputBase, o);
+  
   o.pos = UnityObjectToClipPos(v.vertex);
   o.uv = TRANSFORM_TEX(v.uv, _MainTex);
   o.worldNormal = UnityObjectToWorldNormal(v.normal);
@@ -115,6 +117,8 @@ half4 fragForwardAdd (VertexOutputBase i) : SV_Target // backward compatibility 
 VertexOutputBase vertForwardBase (VertexInput v) 
 {
   VertexOutputBase o;
+  UNITY_INITIALIZE_OUTPUT(VertexOutputBase, o);
+
   o.pos = UnityObjectToClipPos(v.vertex);
   o.uv = TRANSFORM_TEX(v.uv, _MainTex);
   //法线转化到世界空间

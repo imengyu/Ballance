@@ -29,7 +29,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithReflectionShpereBlend"
       #pragma multi_compile_fog
       #pragma multi_compile_fwdbase
       #pragma multi_compile LIGHTPROBE_SH
-      #define UNITY_PASS_FORWARDBASE
       #define USE_SPHERE
       #define USE_SPHERE_REFLECTION
 
@@ -59,7 +58,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionWithReflectionShpereBlend"
       #pragma vertex vert
       #pragma fragment frag
       #pragma multi_compile_fwdadd 
-      #define UNITY_PASS_FORWARDADD
       #define USE_SPHERE
       #define USE_SPHERE_REFLECTION
 

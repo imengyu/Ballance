@@ -43,7 +43,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalFlatEmissionTransparent"
       #pragma multi_compile_fog
       #pragma multi_compile_fwdbase
       #pragma multi_compile LIGHTPROBE_SH
-      #define UNITY_PASS_FORWARDBASE
       #define FLAT_EMISSION
       #define USING_LIGHT_MULTI_COMPILE
       #define USE_TRANSPARENT

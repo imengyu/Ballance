@@ -26,7 +26,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionNoSpecular"
       #pragma multi_compile_fog
       #pragma multi_compile_fwdbase
       #pragma multi_compile LIGHTPROBE_SH
-      #define UNITY_PASS_FORWARDBASE
       #define NO_SPECULAR
 
       //引入头文件
@@ -55,7 +54,6 @@ Shader "LikeVirtools/BlinnPhongSpeicalEmissionNoSpecular"
       #pragma vertex vert
       #pragma fragment frag
       #pragma multi_compile_fwdadd 
-      #define UNITY_PASS_FORWARDADD
       #define NO_SPECULAR
 
       //引入头文件
