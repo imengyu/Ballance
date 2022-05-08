@@ -50,10 +50,12 @@ namespace Ballance2.Services.LuaService.Lua
     /// <param name="path">Lua文件路径</param>
     /// <returns></returns>
     public static string PackageNameByLuaFilePath(string path) {
+      #if UNITY_EDITOR
       if(CurrentPath == "")
         CurrentPath = Directory.GetCurrentDirectory().Replace("\\", "/") + "/";
       if(PathUtils.IsAbsolutePath(path))
         path = path.Replace(CurrentPath, "");
+      #endif
       if(path.StartsWith("Assets/Game"))
         return GamePackageManager.CORE_PACKAGE_NAME;
       if(path.StartsWith("Assets/System/Scripts/SystemScrips"))

@@ -147,6 +147,11 @@ namespace Ballance2.Game
           errCallback("FILE_NOT_EXISTS", "文件 \"" + path + "\" 不存在");
           return;
         }
+        #if UNITY_STANDALONE_OSX || UNITY_IOS
+        if(!path.Contains("jar:file://"))
+          path = "file://" + path;
+        #endif
+
         Log.D(TAG, "Load package : {0}", path);
         //加载资源包
         StartCoroutine(Loader(new LevelAssets(path), callback, errCallback));

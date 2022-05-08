@@ -26,7 +26,7 @@ namespace Ballance2.Editor.Lua
                 Directory.CreateDirectory(cachePath);
             
             tempFilePath = string.Format("{0}/{1}.luac", cachePath, StringUtils.MD5String(source));
-            var argument = string.Format("{0}-o \"{1}\" \"{2}\"", withDebugInfo ? "" : "-s ", tempFilePath, source);
+            var argument = string.Format("{0}-o \"{1}\" \"{2}\"", withDebugInfo ? "" : "-s ", tempFilePath, source).Replace("//", "/");
 
             
             #region Process

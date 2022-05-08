@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 public static class GameSystemPackagePaths {
   public static void AddName(Dictionary<string, string> arr) {
+    arr.Add("SystemInternal.lua", "SystemScrips/SystemInternal.lua");
+    arr.Add("SystemInternal", "SystemScrips/SystemInternal.lua");
     arr.Add("classic.lua", "SystemScrips/classic.lua");
     arr.Add("classic", "SystemScrips/classic.lua");
     arr.Add("json.lua", "SystemScrips/json.lua");
     arr.Add("json", "SystemScrips/json.lua");
-    arr.Add("SystemInternal.lua", "SystemScrips/SystemInternal.lua");
-    arr.Add("SystemInternal", "SystemScrips/SystemInternal.lua");
     arr.Add("debugger.lua", "SystemScrips/Debugger/debugger.lua");
     arr.Add("debugger", "SystemScrips/Debugger/debugger.lua");
     arr.Add("dkjson.lua", "SystemScrips/Debugger/dkjson.lua");

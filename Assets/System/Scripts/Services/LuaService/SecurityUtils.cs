@@ -99,17 +99,22 @@ end
     }
     public static void CheckFileAccess(string path)
     {
-      if (currentDir == "")
-      {
-        currentDir = Directory.GetCurrentDirectory();
-        currentDir = currentDir.Replace("\\", "/");
-      }
       if (path.StartsWith("http://") || path.StartsWith("https://") ||
           path.StartsWith("ftp://") || path.StartsWith("ftps://"))
         return;
       if (path.StartsWith("file:///"))
         path = path.Substring(8);
-      if (!Path.IsPathRooted(path))
+
+      if (currentDir == "")
+      {
+        #if UNITY_EDITOR || UNITY_EDITOR_WIN
+        currentDir = Directory.GetCurrentDirectory();
+        currentDir = currentDir.Replace("\\", "/");
+        #elif UNITY_STANDALONE
+        currentDir = Application.dataPath;
+        #endif
+      }
+      if (currentDir != "" && !Path.IsPathRooted(path))
         path = currentDir + "/" + path;
       else
         path = Path.GetFullPath(path);

@@ -35,6 +35,20 @@ namespace Ballance2.Editor.Modding
           }
           else EditorUtility.DisplayDialog("错误", "Output文件夹不存在：\n" + debugFolder + "\n▼\n" + folder, "确定");
         }
+        else if (target == BuildTarget.StandaloneOSX)
+        {
+          //Mac 直接复制到输出目录
+          string folder = DebugSettings.Instance.OutputAppMac + "/Contents/";
+          if (Directory.Exists(debugFolder) && Directory.Exists(folder))
+          {
+            CopyDebugFolder("Core", debugFolder, folder);
+            CopyDebugFolder("Packages", debugFolder, folder);
+            CopyDebugFolder("Levels", debugFolder, folder);
+
+            EditorUtility.DisplayDialog("提示", "复制成功", "确定");
+          }
+          else EditorUtility.DisplayDialog("错误", "Output文件夹不存在：\n" + debugFolder + "\n▼\n" + folder, "确定");
+        }
         else if (target == BuildTarget.Android || target == BuildTarget.iOS)
         {
           //IOS/Android 则复制到 StreamAssets
