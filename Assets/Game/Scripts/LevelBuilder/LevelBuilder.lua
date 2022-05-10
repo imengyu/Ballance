@@ -72,7 +72,7 @@ function LevelBuilder:Start()
 
     self._LevelBuilderUI = Game.UIManager:InitViewToCanvas(Game.CorePackage:GetPrefabAsset('LevelBuilderUI.prefab'), 'GameLevelBuilderUI', true)
     self._LevelBuilderUIProgress = self._LevelBuilderUI:Find('Progress'):GetComponent(Ballance2.UI.Core.Controls.Progress) ---@type Progress
-    self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
+    self._LevelBuilderUITextErrorContent = self._LevelBuilderUI:Find('PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent'):GetComponent(UnityEngine.UI.Text) ---@type Text
     self._LevelBuilderUIPanelFailed = self._LevelBuilderUI:Find('PanelFailed').gameObject
     self._LevelBuilderUIButtonBack = self._LevelBuilderUI:Find('PanelFailed/ButtonBack'):GetComponent(UnityEngine.UI.Button) ---@type Button
     self._LevelBuilderUIButtonSubmitBug = self._LevelBuilderUI:Find('PanelFailed/ButtonSubmitBug'):GetComponent(UnityEngine.UI.Button) ---@type Button
@@ -477,13 +477,14 @@ function LevelBuilder:_LoadLevelInternal()
                   
                   body:EnableContractEventCallback()
                   body.EnableCollisionEvent = true
-                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.1, 8, 0.5, 0.1)
-                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.1, 8, 0.5, 0.1)
-                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.1, 8, 0.5, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodenFlap'), 0.2, 20, 0.2, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('Wood'), 0.2, 28, 0.2, 0.1)
+                  body:AddCollDetection(GamePlay.BallSoundManager:GetSoundCollIDByName('WoodOnlyHit'), 0.2, 20, 0.2, 0.1)
                   --撞击处理回调
                   ---@param col_id number
                   ---@param speed_precent number
                   body.OnPhysicsCollDetection = function (_, col_id, speed_precent)
+                    Log.I('T', 'OnPhysicsCollDetection: '..col_id)
                     hitSound.volume = speed_precent
                     hitSound:Play()
                   end

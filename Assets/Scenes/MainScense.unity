@@ -499,8 +499,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -146, y: -18}
-  m_SizeDelta: {x: 165, y: 16}
+  m_AnchoredPosition: {x: -146, y: -15.682892}
+  m_SizeDelta: {x: 165, y: 13.1037}
   m_Pivot: {x: 0.46824187, y: 0.49999988}
 --- !u!114 &782628378
 MonoBehaviour:
@@ -551,7 +551,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 13
+    m_FontSize: 11
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
@@ -770,7 +770,7 @@ MonoBehaviour:
   ModulInstance: {fileID: 116406, guid: 14a1960897e6359409ddd3990d2fa155, type: 3}
   ModulTestFloor: {fileID: 5785579616074760193, guid: 1e7666ce23f170c4a821475fb2830b09, type: 3}
   ModulTestUI: {fileID: 3584871362566811978, guid: b01f637c6dd6e6940a77392b7887a622, type: 3}
-  LevelName: level01
+  LevelName: level11
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

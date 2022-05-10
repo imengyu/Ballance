@@ -143,8 +143,8 @@ namespace Ballance2.Game
         string path = PathUtils.FixFilePathScheme(GamePathManager.GetLevelRealPath(name.ToLower(), false));
         if(!path.Contains("jar:file://") && !File.Exists(path))
         {
-          Log.E(TAG, "File not exists : {0}", path);
-          errCallback("FILE_NOT_EXISTS", "文件 \"" + path + "\" 不存在");
+          Log.E(TAG, "File not exist : {0}", path);
+          errCallback("FILE_NOT_EXISTS", "File not exist: \"" + path + "\"");
           return;
         }
         #if UNITY_STANDALONE_OSX || UNITY_IOS

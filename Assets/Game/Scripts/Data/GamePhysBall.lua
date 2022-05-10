@@ -79,7 +79,7 @@ GamePhysBall = {
       RotDamp = 0.2,
     },
     PiecesMinForce = 8,
-    PiecesMaxForce = 18,
+    PiecesMaxForce = 16,
     UpForce = 3,
     DownForce = 0.05,
     BallRadius = 2,
@@ -91,7 +91,7 @@ GamePhysBall = {
     Friction = 0.5,
     Elasticity = 0.4,
     Mass = 0.2,
-    LinearDamp = 1.5,
+    LinearDamp = 1.3,
     RotDamp = 0.1,
     PiecesPhysicsData = {
       Elasticity = 1,

@@ -18,7 +18,7 @@ function P_Modul_26:Active()
   self.P_Modul_26_Rope:Physicalize()
   self.P_Modul_26_Sack:Physicalize()
   self.P_Modul_26_Sack.EnableConstantForce = true
-  self._ForceTimer = LuaTimer.Add(0, 1300, function ()
+  self._ForceTimer = LuaTimer.Add(0, 1400, function ()
     self._ForceState = not self._ForceState
     --切换方向
     if self._ForceState then

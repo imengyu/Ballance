@@ -10,7 +10,7 @@
     <DocLink>https://imengyu.top/ballanceProject/doc</DocLink>
     <VersionName>{internal.core.versionName}</VersionName>
     <Dependencies>
-      <Package name="system" minVer="28" mustLoad="true"></Package>
+      <Package name="system" minVer="30" mustLoad="true"></Package>
     </Dependencies>
   </BaseInfo>
   <EntryCode>PackageEntry</EntryCode>
