@@ -5031,7 +5031,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 30
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -5328,7 +5328,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0.8
   MinDistance: 10
-  MaxDistance: 60
+  MaxDistance: 80
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -6265,8 +6265,6 @@ MonoBehaviour:
     componentClassVal: Ballance2.Game.Utils.SmoothFly
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

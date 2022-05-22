@@ -76,13 +76,13 @@ function PE_Balloon:Start()
         self.PE_Balloon_BoxSlideForce.enabled = false
 
         --速度放慢一些
-        LuaTimer.Add(200, function ()
+        LuaTimer.Add(1300, function ()
           self.PE_Balloon_BoxSlideForce.enabled = true
           self.PE_Balloon_BoxSlideForce.Force = 0.2
 
           --速度再放慢一些
           LuaTimer.Add(300, function ()
-            self.PE_Balloon_BoxSlideForce.Force = 0.5
+            self.PE_Balloon_BoxSlideForce.Force = 0.38
 
             LuaTimer.Add(600, function ()
               self.PE_Balloon_BoxSlideForce.Force = 0.2

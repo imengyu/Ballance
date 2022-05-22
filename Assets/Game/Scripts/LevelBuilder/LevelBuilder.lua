@@ -484,7 +484,6 @@ function LevelBuilder:_LoadLevelInternal()
                   ---@param col_id number
                   ---@param speed_precent number
                   body.OnPhysicsCollDetection = function (_, col_id, speed_precent)
-                    Log.I('T', 'OnPhysicsCollDetection: '..col_id)
                     hitSound.volume = speed_precent
                     hitSound:Play()
                   end
