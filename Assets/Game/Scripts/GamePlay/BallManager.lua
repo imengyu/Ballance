@@ -79,6 +79,7 @@ local BallRegStorage = {
 ---@field KeyStateBack boolean 获取后退按键状态 [RW]
 ---@field KeyStateLeft boolean 获取左按键状态 [RW]
 ---@field KeyStateRight boolean 获取右按键状态 [RW]
+---@field BallSpeedFactor number 球速度倍数，默认1 [RW]
 BallManager = ClassicObject:extend()
 
 local TAG = 'BallManager'
@@ -89,6 +90,7 @@ function BallManager:new()
   self.CurrentBallName = ''
   self.CanControll = false
   self.CanControllCamera = false
+  self.BallSpeedFactor = 1
   self.ShiftPressed = false
   self._DebugMode = false
   self._private = {
@@ -881,7 +883,7 @@ function BallManager:FlushBallPush()
     return
   end
   local currentBall = self._private.currentActiveBall
-  local force = self.CurrentBall._Force
+  local force = self.CurrentBall._Force * self.BallSpeedFactor
 
   --前进后退
   if self.KeyStateForward and self.KeyStateBack then

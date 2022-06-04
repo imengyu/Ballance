@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -166,6 +166,10 @@ PrefabInstance:
       propertyPath: m_SpriteState.m_HighlightedSprite
       value: 
       objectReference: {fileID: 6691177558344763123, guid: 9814f4b7d8952a849bef0dee4b3ce9d3, type: 3}
+    - target: {fileID: 6322723725673039328, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6322723725673039328, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
       propertyPath: m_FontData.m_FontSize
       value: 14

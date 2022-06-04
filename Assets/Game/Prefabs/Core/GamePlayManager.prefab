@@ -392,8 +392,6 @@ MonoBehaviour:
     componentClassVal: UnityEngine.Camera
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -547,10 +545,11 @@ MonoBehaviour:
   Gravity: {x: 0, y: -20, z: 0}
   DePhysicsFall: -1000
   SimulationRate: 66
-  TimeFactor: 2
+  TimeFactor: 1
   DeleteAllSurfacesWhenDestroy: 1
   Simulate: 1
   AutoCreate: 0
+  PhysicsFactorFinalValue: 1
 --- !u!1 &5596289492510622567
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,7 +659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222d29238f763f84d9919ac3fc80b94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableDebug: 1
   Wireframe: 0
   Audio: 1
   Fog: 1
@@ -830,8 +828,6 @@ MonoBehaviour:
     componentClassVal: BallancePhysics.Wapper.PhysicsEnvironment
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0

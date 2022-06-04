@@ -95,14 +95,23 @@ function GamePlayManager:Awake()
     GameUI.GamePlayUI:SetPointText(nx)
     return true
   end, 1, 'settime <count:number> > 设置当前时间点数量 count：数量'))
-  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('setlife', function (keyword, fullCmd, argsCount, args) 
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('set-physics-speed', function (keyword, fullCmd, argsCount, args) 
     local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
     if not ox then return false end
-    if nx < -1 then nx = -1 end
-    self.CurrentLife = nx
-    GameUI.GamePlayUI:SetLifeBallCount(nx)
+    if nx < 0.5 then nx = 0.5 end
+    if nx > 5 then nx = 5 end
+    GamePlay.GamePlayManager.GamePhysicsWorld.TimeFactor = nx
     return true
-  end, 1, 'setlife <count:number> > 设置当前生命球数量 count：数量'))
+  end, 1, 'set-physics-speed <speed:number> > 设置物理引擎模拟速率 speed：速率，默认是 1，可以设置 0.5 - 5.0'))
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('set-physics-speed', function (keyword, fullCmd, argsCount, args) 
+    local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
+    if not ox then return false end
+    if nx < 0.1 then nx = 0.1 end
+    if nx > 10 then nx = 10 end
+    GamePlay.BallManager.BallSpeedFactor = nx
+    GamePlay.BallManager:FlushBallPush()
+    return true
+  end, 1, 'set-ball-speed <count:number> > 设置倍速球 speed：速率，默认是 1，可以设置 0.1 - 10.0'))
 end
 function GamePlayManager:OnDestroy()
 

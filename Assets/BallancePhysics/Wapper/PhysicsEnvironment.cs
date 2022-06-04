@@ -119,7 +119,7 @@ namespace BallancePhysics.Wapper
       int currentScenseIndex = SceneManager.GetActiveScene().buildIndex;
       if (PhysicsWorlds.ContainsKey(currentScenseIndex))
         Debug.LogError("There can only one PhysicsWorld instance in a scense.");
-      else
+      else if(Handle == IntPtr.Zero)
       {
         var layerNames = Resources.Load<PhysicsLayerNames>("BallancePhysicsLayerNames");
         if(layerNames == null)
@@ -134,6 +134,14 @@ namespace BallancePhysics.Wapper
 
     private bool destroyLock = false;
 
+    /// <summary>
+    /// 获取当前物理环境是否创建
+    /// </summary>
+    [LuaApiDescription("获取当前物理环境是否创建")]
+    public bool IsCreated()
+    {
+      return Handle != IntPtr.Zero;
+    }
     /// <summary>
     /// 手动销毁物理环境
     /// </summary>
@@ -181,8 +189,7 @@ namespace BallancePhysics.Wapper
     }
     private void OnDestroy()
     {
-      if (Handle != IntPtr.Zero)
-        Destroy();
+      Destroy();
     }
     private IEnumerator LateCreate() {
       yield return new WaitForSeconds(0.02f);
@@ -262,7 +269,7 @@ namespace BallancePhysics.Wapper
 
         Profiler.BeginSample("PhysicsEnvironmentUpdate");
 
-        PhysicsFactorFinalValue = 1;//TimeFactor;//(Time.fixedDeltaTime / (1.0f / SimulationRate));
+        PhysicsFactorFinalValue = TimeFactor;//(Time.fixedDeltaTime / (1.0f / SimulationRate));
         
         //设置计数
 
@@ -279,9 +286,7 @@ namespace BallancePhysics.Wapper
   
         //模拟
         Profiler.BeginSample("PhysicsEnvironmentSimulate");
-        //var max = 3;
-        //for (var i = 0; i < max; i++)
-          PhysicsApi.API.environment_simulate_dtime(Handle, /* Time.fixedDeltaTime */(1.0f / SimulationRate));
+        PhysicsApi.API.environment_simulate_dtime(Handle, /* Time.fixedDeltaTime */(1.0f / SimulationRate) * TimeFactor);
         Profiler.EndSample();
 
         PhysicsApi.API.do_update_all(Handle);
