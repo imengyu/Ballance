@@ -140,6 +140,7 @@ struct Loader_TextureInfo {
 	int width;
 	int height;
 	int videoPixelFormat;
+	int bufferSize;
 };
 struct Loader_MeshInfo {
 	int vertexCount;
@@ -223,15 +224,54 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileTexture(void* objPtr) {
 		info->width = obj->GetWidth();
 		info->height = obj->GetHeight();
 		info->videoPixelFormat = (int)obj->GetVideoPixelFormat();
+		switch (obj->GetVideoPixelFormat())
+		{
+		case VX_PIXELFORMAT::_24_RGB888:
+		case VX_PIXELFORMAT::_24_BGR888:
+			info->bufferSize = info->width * info->height * 3;
+		case VX_PIXELFORMAT::_32_ABGR8888:
+		case VX_PIXELFORMAT::_32_ARGB8888:
+		case VX_PIXELFORMAT::_32_RGBA8888:
+		case VX_PIXELFORMAT::_32_RGB888:
+			info->bufferSize = info->width * info->height * 4;
+		default:
+			info->bufferSize = 0;
+			break;
+		}
 	}
-
 	return info;
 }
 
-EXTERN_C API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr) {
+EXTERN_C API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr, float* vertices, int* triangles, float* normals, float* uv) {
 	CKMesh* obj = (CKMesh*)objPtr;
 	if (obj) {
-
+		int vertexCount = obj->GetVertexCount();
+		int faceCount = obj->GetFaceCount();
+		VxVector pos;
+		for (int i = 0; i < vertexCount; i++) {
+			obj->GetVertexPosition(i, &pos); //vertices
+			vertices[i * 3] = pos.x;
+			vertices[i * 3 + 1] = pos.y;
+			vertices[i * 3 + 2] = pos.z;
+			obj->GetVertexNormal(i, &pos); //normals
+			normals[i * 3] = pos.x;
+			normals[i * 3 + 1] = pos.y;
+			normals[i * 3 + 2] = pos.z;
+			obj->GetVertexTextureCoordinates(i, &uv[i * 2], &uv[i * 2 + 1], 0); //uv0
+		}
+		for (int i = 0; i < faceCount; i++) {
+			int a, b, c;
+			obj->GetFaceVertexIndex(i, a, b, c);
+			triangles[i * 3] = a;
+			triangles[i * 3 + 1] = b;
+			triangles[i * 3 + 2] = c;
+		}
 	}
 }
-
+EXTERN_C API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned char* dataBuffer) {
+	CKTexture* obj = (CKTexture*)objPtr;
+	if (obj && info && info->bufferSize) {
+		auto ptr = obj->LockSurfacePtr();
+		memcpy(dataBuffer, ptr, info->bufferSize);
+	}
+}
