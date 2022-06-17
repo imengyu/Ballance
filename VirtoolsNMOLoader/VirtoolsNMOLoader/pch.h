@@ -7,12 +7,12 @@
 #ifndef PCH_H
 #define PCH_H
 
-#ifdef VIRTOOLSNMOLOADER_EXPORTS
-#include "CKAll.h"
-#endif
 // 添加要在此处预编译的标头
 #include "framework.h"
 
+#ifdef VIRTOOLSNMOLOADER_EXPORTS
+#include "CKAll.h"
+#endif
 
 #define API_EXPORT __declspec(dllexport)
 
