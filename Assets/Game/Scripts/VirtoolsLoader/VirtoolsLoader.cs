@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Ballance2.Package;
 using UnityEngine;
 
 namespace Ballance2 {
@@ -46,7 +47,7 @@ namespace Ballance2 {
     /// 加载NMO至场景
     /// </summary>
     /// <param name="fileFullPath"></param>
-    public static VirtoolsLoaderLoadNMOResult LoadNMOToScense(string fileFullPath) {
+    public static VirtoolsLoaderLoadNMOResult LoadNMOToScense(string fileFullPath, GamePackage basePackage) {
       
       //读取文件
       IntPtr nmoFile = VirtoolsLoaderApi.Loader_SolveNmoFileRead(fileFullPath, IntPtr.Zero);
@@ -70,35 +71,83 @@ namespace Ballance2 {
 
         switch (classId)
         {
-        case CKCID_3DENTITY:
-          break;
-        case CKCID_3DOBJECT:
-          break;
-        case CKCID_MESH:
-          break;
-        case CKCID_MATERIAL:
-          break;
-        case CKCID_TEXTURE:
-          break;
-        case CKCID_GROUP: {
-          int groupObjCount = VirtoolsLoaderApi.Loader_CKGroupGetObjectCount(objPtr);
-          char objGroupObjName[512];
-          int objGroupClassId = 0;
-          for (int i = 0; i < groupObjCount; i++)
-          {
-            void* objGroupPtr = VirtoolsLoaderApi.Loader_CKGroupGetObject(objPtr, i, &objGroupClassId, objGroupObjName);
-            if (objGroupPtr && objGroupClassId == CKCID_3DOBJECT) {
-              printf("    GroupObject: %s\n", objGroupObjName);
+        case CKCID_3DOBJECT: {
+          //读取3d对象
+          IntPtr infoPtr = VirtoolsLoaderApi.Loader_SolveNmoFile3dEntity(objPtr);
+          Loader_3dEntityInfo info =  Marshal.PtrToStructure<Loader_3dEntityInfo>(infoPtr);
+
+          //创建对象
+          GameObject go = new GameObject();
+          go.name = objName;
+          go.transform.position = new Vector3(info.position[0], info.position[1], info.position[2]);
+          go.transform.rotation = new Quaternion(info.quaternion[0], info.quaternion[1], info.quaternion[2], info.quaternion[3]);
+          go.transform.localScale = new Vector3(info.scale[0], info.scale[1], info.scale[2]);
+          MeshFilter meshFilter = go.AddComponent<MeshFilter>();
+          MeshRenderer meshRenderer = go.AddComponent<MeshRenderer>();
+
+          //读取Mesh
+          for (int i = 0; i < info.meshCount; ) {
+            IntPtr meshPtr = VirtoolsLoaderApi.Loader_CK3dEntityGetMeshObj(objPtr, i);
+            IntPtr meshInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMesh(meshPtr);
+            Loader_MeshInfo meshInfo =  Marshal.PtrToStructure<Loader_MeshInfo>(infoPtr);
+
+            Mesh mesh = new Mesh();
+            //读取顶点数组、三角形数组、法线数组
+
+
+            //读取Material
+            for (int j = 0; j < meshInfo.materialCount; j++) {
+              IntPtr matPtr = VirtoolsLoaderApi.Loader_CK3dEntityGetMeshObj(meshPtr, i);
+              IntPtr matNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matPtr);
+              string matName = Marshal.PtrToStringAnsi(matNamePtr);
+
+              //如果材质名称是内定材质，则直接使用，否则从 virtools 读取材质
+              Material baseMat = basePackage.GetMaterialAsset(matName);
+              if (baseMat) {
+
+              } else {
+                //从 virtools 读取材质
+                IntPtr matInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMesh(matPtr);
+                Loader_MaterialInfo matInfo = Marshal.PtrToStructure<Loader_MaterialInfo>(matInfoPtr);
+
+                //baseMat = new Material();
+
+                
+              }
             }
+            break;
           }
           break;
         }
-        default:
-          printf("  UNKNOW CKCID: %d %s\n", classId, objName);
+        case CKCID_GROUP: {
+          
+          //创建组信息
+          if(!result.groupList.ContainsKey(objName))
+            result.groupList.Add(objName, new List<string>());
+
+          List<string> groupName = result.groupList[objName];
+
+          //循环组对象
+          int groupObjCount = VirtoolsLoaderApi.Loader_CKGroupGetObjectCount(objPtr);
+          IntPtr groupObjNamePtr = Marshal.AllocHGlobal(512);
+          IntPtr groupObjClassIdPtr = Marshal.AllocHGlobal(Marshal.SizeOf<int>());
+          for (int i = 0; i < groupObjCount; i++)
+          {
+            IntPtr objGroupPtr = VirtoolsLoaderApi.Loader_CKGroupGetObject(objPtr, i, groupObjClassIdPtr, groupObjNamePtr);
+            if (objGroupPtr != IntPtr.Zero && Marshal.ReadInt32(groupObjClassIdPtr) == CKCID_3DOBJECT) {
+              groupName.Add(Marshal.PtrToStringAnsi(groupObjNamePtr));//添加名称到组
+            }
+          }
+          Marshal.FreeHGlobal(groupObjNamePtr);
+          Marshal.FreeHGlobal(groupObjClassIdPtr);
           break;
         }
+        }
 
-      } while (objPtr);
+      } while (objPtr != IntPtr.Zero);
+
+      Marshal.FreeHGlobal(objNamePtr);
+      Marshal.FreeHGlobal(classIdPtr);
 
       //关闭文件
       VirtoolsLoaderApi.Loader_SolveNmoFileDestroy(nmoFile);
@@ -107,12 +156,15 @@ namespace Ballance2 {
     }
 
     public class VirtoolsLoaderLoadNMOResult {
-      public List<GameObject> objectList;
-      public Dictionary<string, string[]> groupList;
+      public List<GameObject> objectList = new List<GameObject>();
+      public Dictionary<string, Material> materialList = new Dictionary<string, Material>();
+      public Dictionary<string, Mesh> meshList = new Dictionary<string, Mesh>();
+      public Dictionary<string, Texture> textureList = new Dictionary<string, Texture>();
+      public Dictionary<string, List<string>> groupList = new Dictionary<string, List<string>>();
 
       public string[] GetGroupList(string groupName) {
         if (groupList.TryGetValue(groupName, out var l))
-          return l;
+          return l.ToArray();
         return null;
       }
       public string[] GetGroupNames() {

@@ -23,6 +23,7 @@
     * [游戏架构](/SystemModding/base-construct.md)
     * [游戏流程图](/SystemModding/base-flow.md)
     * [事件总览](/SystemModding/events.md)
+  * [编译游戏](/Help/production.md)
 * **API 参考手册**
   * [API总览](/LuaApi/readme.md)
   * [Lua类](/SystemModding/lua-class.md)

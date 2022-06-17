@@ -720,14 +720,14 @@ function BallManager:_InitKeyEvents()
   keyListener:AddKeyListen(keySets.keyDown, function (key, down) self:_Down_Key(key, down) end)
   keyListener:AddKeyListen(keySets.keyUpCamera, function (key, down) self:_Space_Key(key, down)  end)
   keyListener:AddKeyListen(keySets.keyRoateCamera, keySets.keyRoateCamera2, function (key, down) self:_Shift_Key(key, down)  end)
+  keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_LeftArrow_Key(key, down) end)
+  keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_RightArrow_Key(key, down) end)
 
   --是否反向控制  
   if(self._private.reverseControl) then
     keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_RightArrow_Key(key, down) end)
     keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_LeftArrow_Key(key, down) end)
   else
-    keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_LeftArrow_Key(key, down) end)
-    keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_RightArrow_Key(key, down) end)
   end
 
   --测试按扭
@@ -817,7 +817,11 @@ function BallManager:_RightArrow_Key(key, down)
     self:FlushBallPush()
     --旋转摄像机
     if (self.CanControllCamera and self.ShiftPressed) then
-      GamePlay.CamManager:RotateRight()
+      if(self._private.reverseControl) then
+        GamePlay.CamManager:RotateLeft()
+      else
+        GamePlay.CamManager:RotateRight()
+      end
     end
   end
 end
@@ -835,7 +839,11 @@ function BallManager:_LeftArrow_Key(key, down)
     self:FlushBallPush()
     --旋转摄像机
     if (self.CanControllCamera and self.ShiftPressed) then
-      GamePlay.CamManager:RotateLeft()
+      if(self._private.reverseControl) then
+        GamePlay.CamManager:RotateRight()
+      else
+        GamePlay.CamManager:RotateLeft()
+      end
     end
   end
 end
@@ -861,13 +869,21 @@ function BallManager:_Shift_Key(key, down)
   if down and self._LeftPressed then
     --旋转摄像机
     if (self.CanControllCamera) then
-      GamePlay.CamManager:RotateLeft()
+      if(self._private.reverseControl) then
+        GamePlay.CamManager:RotateRight()
+      else
+        GamePlay.CamManager:RotateLeft()
+      end
       self.ShiftPressed = false --防止重复触发
     end
   elseif down and self._RightPressed then
     --旋转摄像机
     if (self.CanControllCamera) then
-      GamePlay.CamManager:RotateRight()
+      if(self._private.reverseControl) then
+        GamePlay.CamManager:RotateLeft()
+      else
+        GamePlay.CamManager:RotateRight()
+      end
       self.ShiftPressed = false --防止重复触发
     end
   end

@@ -158,6 +158,9 @@ EXTERN_C API_EXPORT int Loader_CK3dEntityGetMeshCount(void* objPtr) {
 EXTERN_C API_EXPORT void* Loader_CK3dEntityGetMeshObj(void* objPtr, int index) {
 	return ((CK3dEntity*)objPtr)->GetMesh(index);
 }
+EXTERN_C API_EXPORT void* Loader_CKMeshyGetMaterialObj(void* objPtr, int index) {
+	return ((CKMesh*)objPtr)->GetMaterial(index);
+}
 EXTERN_C API_EXPORT void* Loader_CKObjectGetName(void* objPtr) {
 	return ((CKObject*)objPtr)->GetName();
 }
@@ -171,6 +174,7 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileMesh(void* objPtr) {
 		info->vertexCount = obj->GetVertexCount();
 		info->faceCount = obj->GetFaceCount();
 		info->channelCount = obj->GetChannelCount();
+		info->materialCount = obj->GetMaterialCount();
 	}
 	return info;
 }

@@ -19,6 +19,7 @@ struct Loader_MeshInfo {
 	int vertexCount;
 	int faceCount;
 	int channelCount;
+	int materialCount;
 };
 struct Loader_3dEntityInfo {
 	float position[3];
@@ -46,6 +47,7 @@ EXTERN_C {
 	API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFileTexture(void* objPtr);
+	API_EXPORT void* Loader_CKMeshyGetMaterialObj(void* objPtr, int index);
 	API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr, float* vertices, int* triangles, float* normals, float** uvs);
 	API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned char* dataBuffer);
 #ifdef __cplusplus

@@ -32,6 +32,8 @@ namespace Ballance2 {
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern int Loader_CK3dEntityGetMeshCount(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
+    public static extern IntPtr Loader_CKMeshyGetMaterialObj(IntPtr objPtr, int index);
+    [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_CK3dEntityGetMeshObj(IntPtr objPtr, int index);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_CKObjectGetName(IntPtr objPtr);
@@ -52,41 +54,42 @@ namespace Ballance2 {
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
   public struct Loader_MaterialInfo
   {
-    float power;
+    public float power;
     [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    float[] ambient;
+    public float[] ambient;
     [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    float[] diffuse;
+    public float[] diffuse;
     [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    float[] specular;
+    public float[] specular;
     [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    float[] emissive;
-    IntPtr textureObject;
+    public float[] emissive;
+    public IntPtr textureObject;
   }
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
   public struct Loader_TextureInfo
   {
-    int width;
-    int height;
-    int videoPixelFormat;
-    int bufferSize;
+    public int width;
+    public int height;
+    public int videoPixelFormat;
+    public int bufferSize;
   }  
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
   public struct Loader_MeshInfo
   {
-    int vertexCount;
-    int faceCount;
-    int channelCount;
+    public int vertexCount;
+    public int faceCount;
+    public int channelCount;
+    public int materialCount;
   }  
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
   public struct Loader_3dEntityInfo
   {
     [MarshalAs(UnmanagedType.R4, SizeConst=3)]
-    float[] position;
+    public float[] position;
     [MarshalAs(UnmanagedType.R4, SizeConst=3)]
-    float[] quaternion;
+    public float[] quaternion;
     [MarshalAs(UnmanagedType.R4, SizeConst=3)]
-    float[] scale;
-	  int meshCount;
+    public float[] scale;
+	  public int meshCount;
   }
 }

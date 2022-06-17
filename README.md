@@ -6,22 +6,36 @@
 
 这是 Ballance 游戏的开源 Unity 重制版.
 
+Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以运行在更多的平台上，希望让 Ballance 可以
+方便的拓展功能开发关卡、模组（后者已经被 [BallanceModLoader](https://github.com/Gamepiaynmo/BallanceModLoader) 实现了），并不是为了取代原版游戏而制作的。
+
+本项目完全开源，你可自行编译、修改、拓展游戏的固有内容。
+
+本项目完成了原版的特性：
+
+* 原版游戏内容和玩法
+* 1-13 关游戏内容
+* 物理效果相似度 85%
+
+本项目相对于原版增加了以下一些特性：
+
+* Android 版本、Mac版本（你也可以尝试编译其他平台）
+* 无须兼容模式运行，调整窗口化、全屏、分辨率、帧率、物理速率、球速
+* 自制地图接口（以魔脓空间站为例）
+* Lua模组、机关接口（使用Lua开发自定义模组或者机关)
+* 关卡预览器
+* 模组管理器
+
 ![image](/Assets/System/Textures/splash_app.bmp)
 
 ---
 
+* [Gitee 国内镜像](https://gitee.com/imengyu/Ballance)
+* [Guthub](https://github.com/imengyu/Ballance)
+
 ## 说明
 
 **为嘛没有小伙伴支持呢，或者给一些反馈呀，难道是大家真的不再玩 Ballance 了吗**，感觉没有动力做下去了，后续可能只有修复性更新了，更新时长将会在1-12月不等。
-
-## 特性
-
-* 原版游戏内容和玩法
-* 1-13 关游戏内容
-* 自制地图（以魔脓空间站为例）
-* 关卡预览器
-* 模组管理器
-* **使用Lua开发自定义模组或者机关**
 
 ## 系统需求
 
@@ -45,6 +59,26 @@
 2. 下载对应的 zip 安装包。
 3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
 
+### 项目源码的运行
+
+需要：
+
+* Unity 2021.2.3 以上版本.
+* 编辑器：VScode 或者 Visual Studio
+* 克隆或者下载本项目 `https://github.com/imengyu/Ballance` 至您的本地.
+
+步骤：
+
+1. 使用 Unity 打开项目。
+2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
+3. 打开 `Scenes/MainScene.unity` 场景。
+4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
+5. 点击运行，即可查看效果。
+
+## 从项目源码生成游戏程序
+
+请参考 [文档](/tree/main/docs/Help)。
+
 ## 开启调试模式
 
 在 UnityEditor 中运行时，永远是调试模式。
@@ -62,22 +96,6 @@
 ### 开启所有原版关卡
 
 进入调试模式后在控制台输入 highscore open-all 指令就可以开启全部关卡。
-
-### 项目源码的运行
-
-需要：
-
-* Unity 2021.2.3 以上版本.
-* 编辑器：VScode 或者 Visual Studio
-* 克隆或者下载本项目 `https://github.com/imengyu/Ballance` 至您的本地.
-
-步骤：
-
-1. 使用 Unity 打开项目。
-2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
-3. 打开 `Scenes/MainScene.unity` 场景。
-4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
-5. 点击运行，即可查看效果。
 
 ## 文档
 
