@@ -31,7 +31,7 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 ---
 
 * [Gitee 国内镜像](https://gitee.com/imengyu/Ballance)
-* [Guthub](https://github.com/imengyu/Ballance)
+* [Github](https://github.com/imengyu/Ballance)
 
 ## 说明
 
@@ -142,11 +142,7 @@ wechart: brave_imengyu
 ![Demo](docs/DemoImages/4.jpg)
 ![Demo](docs/DemoImages/5.jpg)
 
-关卡预览器查看13关
-
-![Demo](docs/DemoImages/8.jpg)
-
-用关卡预览器查看自制地图
+关卡预览器
 
 ![Demo](docs/DemoImages/1.jpg)
 ![Demo](docs/DemoImages/2.jpg)
