@@ -77,7 +77,7 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 
 ## 从项目源码生成游戏程序
 
-请参考 [文档](/tree/main/docs/Help)。
+请参考 [文档](/docs/Help/production.md)。
 
 ## 开启调试模式
 
