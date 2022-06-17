@@ -723,13 +723,6 @@ function BallManager:_InitKeyEvents()
   keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_LeftArrow_Key(key, down) end)
   keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_RightArrow_Key(key, down) end)
 
-  --是否反向控制  
-  if(self._private.reverseControl) then
-    keyListener:AddKeyListen(keySets.keyLeft, function (key, down) self:_RightArrow_Key(key, down) end)
-    keyListener:AddKeyListen(keySets.keyRight, function (key, down) self:_LeftArrow_Key(key, down) end)
-  else
-  end
-
   --测试按扭
   if self._DebugMode then
     self._private.keyListener:AddKeyListen(KeyCode.Alpha1, function (key, downed)
