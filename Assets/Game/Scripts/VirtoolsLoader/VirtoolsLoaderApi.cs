@@ -15,7 +15,9 @@ namespace Ballance2 {
     public static extern int Loader_Init(IntPtr hWnd, [MarshalAs(UnmanagedType.LPStr)] string ck2fullPath);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern int Loader_Destroy();
-    [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
+    [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
+    public static extern void Loader_Free(IntPtr ptr);
+    [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
     public static extern int Loader_GetLastError();
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
     public static extern void Loader_SolveNmoFileReset(IntPtr filePtr);
@@ -32,7 +34,7 @@ namespace Ballance2 {
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern int Loader_CK3dEntityGetMeshCount(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
-    public static extern IntPtr Loader_CKMeshyGetMaterialObj(IntPtr objPtr, int index);
+    public static extern IntPtr Loader_CKMeshGetMaterialObj(IntPtr objPtr, int index);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_CK3dEntityGetMeshObj(IntPtr objPtr, int index);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
@@ -42,7 +44,7 @@ namespace Ballance2 {
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_SolveNmoFile3dEntity(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
-    public static extern IntPtr Loader_SolveNmoFileMaterial(IntPtr objPtr);
+    public static extern IntPtr Loader_SolveNmoFileMaterial(IntPtr objPtr, IntPtr nmoFilePtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_SolveNmoFileTexture(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
@@ -55,14 +57,22 @@ namespace Ballance2 {
   public struct Loader_MaterialInfo
   {
     public float power;
-    [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    public float[] ambient;
-    [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    public float[] diffuse;
-    [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    public float[] specular;
-    [MarshalAs(UnmanagedType.R4, SizeConst=4)]
-    public float[] emissive;
+    public float ambientR;
+    public float ambientG;
+    public float ambientB;
+    public float ambientA;
+    public float diffuseR;
+    public float diffuseG;
+    public float diffuseB;
+    public float diffuseA;
+    public float specularR;
+    public float specularG;
+    public float specularB;
+    public float specularA;
+    public float emissiveR;
+    public float emissiveG;
+    public float emissiveB;
+    public float emissiveA;
     public IntPtr textureObject;
   }
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -84,12 +94,19 @@ namespace Ballance2 {
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
   public struct Loader_3dEntityInfo
   {
-    [MarshalAs(UnmanagedType.R4, SizeConst=3)]
-    public float[] position;
-    [MarshalAs(UnmanagedType.R4, SizeConst=3)]
-    public float[] quaternion;
-    [MarshalAs(UnmanagedType.R4, SizeConst=3)]
-    public float[] scale;
+    public float positionX;
+    public float positionY;
+    public float positionZ;
+    public float quaternionX;
+    public float quaternionY;
+    public float quaternionZ;
+    public float quaternionW;
+    public float eulerX;
+    public float eulerY;
+    public float eulerZ;
+    public float scaleX;
+    public float scaleY;
+    public float scaleZ;
 	  public int meshCount;
   }
 }

@@ -24,6 +24,7 @@ struct Loader_MeshInfo {
 struct Loader_3dEntityInfo {
 	float position[3];
 	float quaternion[4];
+	float euler[3];
 	float scale[3];
 	int meshCount;
 };
@@ -34,6 +35,7 @@ EXTERN_C {
   API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath);
   API_EXPORT int Loader_Destroy();
 	API_EXPORT int Loader_GetLastError();
+	API_EXPORT void Loader_Free(void* ptr);
 	API_EXPORT void Loader_SolveNmoFileReset(void* filePtr);
 	API_EXPORT void* Loader_SolveNmoFileGetNext(void* filePtr, int* classIdOut, char* nameOutBuffer);
 	API_EXPORT void Loader_SolveNmoFileDestroy(void* filePtr);
@@ -45,9 +47,9 @@ EXTERN_C {
 	API_EXPORT void* Loader_CKObjectGetName(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFileMesh(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr);
-	API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr);
+	API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr, void* nmoFilePtr);
 	API_EXPORT void* Loader_SolveNmoFileTexture(void* objPtr);
-	API_EXPORT void* Loader_CKMeshyGetMaterialObj(void* objPtr, int index);
+	API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index);
 	API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr, float* vertices, int* triangles, float* normals, float** uvs);
 	API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned char* dataBuffer);
 #ifdef __cplusplus

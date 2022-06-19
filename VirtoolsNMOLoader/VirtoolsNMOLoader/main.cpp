@@ -2,31 +2,51 @@
 #include "main.h"
 
 CKContext* VirtoolsContext = nullptr;
+CKRenderContext* m_RenderContext = nullptr;
+CKRenderManager* m_RenderManager = nullptr;
 int VirtoolsLastEror = 0;
+int Init = 0;
 
 //Base system
 
+int _InitRenderEngines(CKPluginManager& iPluginManager)
+{
+	// here we look for the render engine (ck2_3d)
+	int count = iPluginManager.GetPluginCount(CKPLUGIN_RENDERENGINE_DLL);
+	for (int i = 0; i < count; i++) {
+		CKPluginEntry* desc = iPluginManager.GetPluginInfo(CKPLUGIN_RENDERENGINE_DLL, i);
+		CKPluginDll* dll = iPluginManager.GetPluginDllInfo(desc->m_PluginDllIndex);
+		XDWORD pos = dll->m_DllFileName.RFind('\\');
+		if (pos == XString::NOTFOUND)
+			continue;
+		XString str = dll->m_DllFileName.Substring(pos + 1);
+		if (_strnicmp(str.CStr(), "ck2_3d", strlen("ck2_3d")) == 0)
+			return i;
+	}
+
+	return -1;
+}
 BOOL _InitPlugins(CKPluginManager& iPluginManager, char* currentPath)
 {
 	char PluginPath[_MAX_PATH];
 	char RenderPath[_MAX_PATH];
-	char BehaviorPath[_MAX_PATH];
 	char ManagerPath[_MAX_PATH];
 
 	sprintf(PluginPath, "%s%s", currentPath, "Plugins");
 	sprintf(RenderPath, "%s%s", currentPath, "RenderEngines");
 	sprintf(ManagerPath, "%s%s", currentPath, "Managers");
-	sprintf(BehaviorPath, "%s%s", currentPath, "BuildingBlocks");
 
 	// we initialize plugins by parsing directories
 	iPluginManager.ParsePlugins(RenderPath);
 	iPluginManager.ParsePlugins(ManagerPath);
-	iPluginManager.ParsePlugins(BehaviorPath);
 	iPluginManager.ParsePlugins(PluginPath);
 	return TRUE;
 }
 
 EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
+
+	if (Init)
+		return 0;
 
 	char dirPath[512];
 	strcpy(dirPath, ck2fullPath);
@@ -50,6 +70,13 @@ EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
 		MessageBoxA(NULL, "UNABLE_TO_INIT_PLUGINS", "Loader_Init", MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
+	
+	// ... and the render engine.
+	int renderEngine = _InitRenderEngines(*pluginManager);
+	if (renderEngine == -1) {
+		MessageBox(NULL, "UNABLE_TO_LOAD_RENDERENGINE", "Loader_Init", MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
 
 	err = CKCreateContext(&VirtoolsContext, hWnd, 0, 0);
   if (err != CK_OK)
@@ -58,14 +85,21 @@ EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
     return 1;
   }
 
+	m_RenderManager = VirtoolsContext->GetRenderManager();
+	m_RenderContext = m_RenderManager->CreateRenderContext(GetConsoleWindow(), 0, 0, FALSE);
+
+	Init = 1;
   return 0;
 }
 EXTERN_C API_EXPORT int Loader_Destroy() {
+	if (!Init)
+		return 0;
   CKERROR err = CKShutdown();
 	if (err != CK_OK) {
 		VirtoolsLastEror = err;
 		return 1;
 	}
+	Init = 0;
   return 0;
 }
 EXTERN_C API_EXPORT void Loader_Free(void* objPtr) {
@@ -81,6 +115,8 @@ EXTERN_C API_EXPORT int Loader_GetLastError() {
 
 struct Loader_NmoFile {
 	CKObjectArray* array;
+	CKFile* ckfile;
+	CKLevel* cklevel;
 };
 
 EXTERN_C API_EXPORT void Loader_SolveNmoFileReset(void* filePtr) {
@@ -114,23 +150,48 @@ EXTERN_C API_EXPORT void Loader_SolveNmoFileDestroy(void* filePtr) {
 	// Delete Array
 	DeleteCKObjectArray(file->array);
 
+	VirtoolsContext->DeleteCKFile(file->ckfile);
+	VirtoolsContext->ClearAll();
 	delete file;
 }
 EXTERN_C API_EXPORT void* Loader_SolveNmoFileRead(char* filePath, int *outErrCode) {
 
+	// create a ckfile
+	CKFile* f = VirtoolsContext->CreateCKFile();
+	DWORD res = CKERR_INVALIDFILE;
+	res = f->OpenFile(filePath, (CK_LOAD_FLAGS)(CK_LOAD_DEFAULT | CK_LOAD_CHECKDEPENDENCIES));
+	if (res != CK_OK) {
+		VirtoolsContext->DeleteCKFile(f);
+		VirtoolsLastEror = res;
+		if (outErrCode)
+			*outErrCode = res;
+		printf("Loader_SolveNmoFileRead: Error: %d\n", res);
+		return nullptr;
+	}
+
 	// Load the file
 	CKObjectArray* array = CreateCKObjectArray();
-	CKERROR error = VirtoolsContext->Load(filePath, array);
-	if (error != CK_OK) {
-		printf("Loader_SolveNmoFileRead: Error: %d\n", error);
-		VirtoolsLastEror = error;
+	res = f->LoadFileData(array);
+	if (res != CK_OK) {
+		VirtoolsContext->DeleteCKFile(f);
+		DeleteCKObjectArray(array);
+		printf("Loader_SolveNmoFileRead: Error: %d\n", res);
+		VirtoolsLastEror = res;
 		if (outErrCode)
-			* outErrCode = error;
+			*outErrCode = res;
 		return nullptr;
+	}
+
+	CKLevel* m_Level = VirtoolsContext->GetCurrentLevel();
+	if (!m_Level) {
+		m_Level->AddRenderContext(m_RenderContext, TRUE);
+		m_Level->LaunchScene(NULL);
 	}
 
 	Loader_NmoFile* file = new Loader_NmoFile();
 	file->array = array;
+	file->ckfile = f;
+	file->cklevel = m_Level;
   return file;
 }
 
@@ -158,26 +219,13 @@ EXTERN_C API_EXPORT int Loader_CK3dEntityGetMeshCount(void* objPtr) {
 EXTERN_C API_EXPORT void* Loader_CK3dEntityGetMeshObj(void* objPtr, int index) {
 	return ((CK3dEntity*)objPtr)->GetMesh(index);
 }
-EXTERN_C API_EXPORT void* Loader_CKMeshyGetMaterialObj(void* objPtr, int index) {
+EXTERN_C API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index) {
 	return ((CKMesh*)objPtr)->GetMaterial(index);
 }
 EXTERN_C API_EXPORT void* Loader_CKObjectGetName(void* objPtr) {
 	return ((CKObject*)objPtr)->GetName();
 }
 
-
-
-EXTERN_C API_EXPORT void* Loader_SolveNmoFileMesh(void* objPtr) {
-	CKMesh* obj = (CKMesh*)objPtr;
-	Loader_MeshInfo* info = new Loader_MeshInfo();
-	if (obj) {
-		info->vertexCount = obj->GetVertexCount();
-		info->faceCount = obj->GetFaceCount();
-		info->channelCount = obj->GetChannelCount();
-		info->materialCount = obj->GetMaterialCount();
-	}
-	return info;
-}
 EXTERN_C API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr) {
 	CK3dEntity* obj = (CK3dEntity*)objPtr;
 	Loader_3dEntityInfo* info = new Loader_3dEntityInfo();
@@ -193,6 +241,7 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr) {
 		info->quaternion[1] = quat.y;
 		info->quaternion[2] = quat.z;
 		info->quaternion[3] = quat.w;
+		quat.ToEulerAngles(&info->euler[0], &info->euler[1], &info->euler[2]);
 		obj->GetScale(&pos);
 		info->scale[0] = pos.x;
 		info->scale[1] = pos.y;
@@ -201,8 +250,20 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr) {
 	}
 	return info;
 }
-EXTERN_C API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr) {
+EXTERN_C API_EXPORT void* Loader_SolveNmoFileMesh(void* objPtr) {
+	CKMesh* obj = (CKMesh*)objPtr;
+	Loader_MeshInfo* info = new Loader_MeshInfo();
+	if (obj) {
+		info->vertexCount = obj->GetVertexCount();
+		info->faceCount = obj->GetFaceCount();
+		info->channelCount = obj->GetChannelCount();
+		info->materialCount = obj->GetMaterialCount();
+	}
+	return info;
+}
+EXTERN_C API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr , void* nmoFilePtr) {
 	CKMaterial* obj = (CKMaterial*)objPtr;
+	Loader_NmoFile* nmoFile = (Loader_NmoFile*)nmoFilePtr;
 	Loader_MaterialInfo* info = new Loader_MaterialInfo();
 	if (obj) {
 		auto color = obj->GetDiffuse();
@@ -226,7 +287,13 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr) {
 		info->emissive[2] = color.b;
 		info->emissive[3] = color.a;
 		info->power = obj->GetPower();
-		info->textureObject = obj->GetTexture();
+
+		CKTexture* texture = obj->GetTexture();
+		CKScene* scn = nmoFile->cklevel->GetScene(0);
+		CKStateChunk* chunk = scn->GetObjectInitialValue(texture);
+		if (chunk)
+			texture->Load(chunk, nmoFile->ckfile);
+		info->textureObject = texture;
 	}
 
 	return info;
@@ -238,7 +305,8 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileTexture(void* objPtr) {
 		info->width = obj->GetWidth();
 		info->height = obj->GetHeight();
 		info->videoPixelFormat = (int)obj->GetVideoPixelFormat();
-		switch (obj->GetVideoPixelFormat())
+		int videoPixelFormat = obj->GetVideoPixelFormat();
+		switch (videoPixelFormat)
 		{
 		case VX_PIXELFORMAT::_24_RGB888:
 		case VX_PIXELFORMAT::_24_BGR888:
@@ -273,8 +341,12 @@ EXTERN_C API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr, float* vertic
 			normals[i * 3 + 1] = pos.y;
 			normals[i * 3 + 2] = pos.z;
 
-			for (int j = 0; j < channelCount; j++)
-				obj->GetVertexTextureCoordinates(i, &uvs[j][i * 2], &uvs[j][i * 2 + 1], j); //uv
+			if (channelCount > 0)
+				for (int j = 0; j < channelCount; j++)
+					obj->GetVertexTextureCoordinates(i, &uvs[j][i * 2], &uvs[j][i * 2 + 1], j); //uv
+			else
+				obj->GetVertexTextureCoordinates(i, &uvs[0][i * 2], &uvs[0][i * 2 + 1]); //uv0
+			
 		}
 		for (int i = 0; i < faceCount; i++) {
 			int a, b, c;

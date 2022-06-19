@@ -195,6 +195,11 @@ bool stopServer()
 
 int main(int argc, char const* argv[])
 {
+  char recv_buf[15];
+  sprintf_s(recv_buf, "Test string");
+
+
+  return 0;
   //路径
   char fullPath[512];
   GetModuleFileName(0, fullPath, 512);
