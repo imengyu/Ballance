@@ -78,7 +78,7 @@ EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
 		return FALSE;
 	}
 
-	err = CKCreateContext(&VirtoolsContext, hWnd, 0, 0);
+	err = CKCreateContext(&VirtoolsContext, hWnd);
   if (err != CK_OK)
   {
     MessageBoxA(NULL, "CK Initialisation Problems", "Loader_Init", MB_OK);
@@ -183,7 +183,7 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileRead(char* filePath, int *outErrCod
 	}
 
 	CKLevel* m_Level = VirtoolsContext->GetCurrentLevel();
-	if (!m_Level) {
+	if (m_Level) {
 		m_Level->AddRenderContext(m_RenderContext, TRUE);
 		m_Level->LaunchScene(NULL);
 	}
@@ -289,10 +289,11 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr , void* nmoFi
 		info->power = obj->GetPower();
 
 		CKTexture* texture = obj->GetTexture();
-		CKScene* scn = nmoFile->cklevel->GetScene(0);
+		/*CKScene* scn = VirtoolsContext->GetCurrentScene();
 		CKStateChunk* chunk = scn->GetObjectInitialValue(texture);
 		if (chunk)
-			texture->Load(chunk, nmoFile->ckfile);
+			texture->Load(chunk, nmoFile->ckfile);*/
+		texture->SetAsCurrent(m_RenderContext);
 		info->textureObject = texture;
 	}
 
