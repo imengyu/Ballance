@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 
 namespace Ballance2
@@ -22,7 +23,7 @@ namespace Ballance2
     public static bool Init(string ck2DllPath)
     {
       if (!loaderInited)
-      {
+      { 
         if (VirtoolsLoaderApi.Loader_Init(IntPtr.Zero, ck2DllPath) == 0)
         {
           loaderInited = true;
@@ -114,6 +115,10 @@ namespace Ballance2
         Material materialDefault = new Material(Shader.Find("Diffuse"));
         Shader materialShader = Shader.Find("Diffuse");
 
+        //Cache texture and material for reuse 
+        Dictionary<string, Texture> texturePool = new Dictionary<string, Texture>();
+        Dictionary<string, Material> materialPool = new Dictionary<string, Material>();
+
         //File object loop
         int classId = 0;
         string objName = "";
@@ -156,6 +161,7 @@ namespace Ballance2
                 //================================
                 for (int i = 0; i < info.meshCount;)
                 {
+                  //Get mesh info
                   IntPtr meshPtr = VirtoolsLoaderApi.Loader_CK3dEntityGetMeshObj(objPtr, i);
                   IntPtr meshInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMesh(meshPtr);
                   Loader_MeshInfo meshInfo = (Loader_MeshInfo)Marshal.PtrToStructure(meshInfoPtr, typeof(Loader_MeshInfo));
@@ -164,7 +170,7 @@ namespace Ballance2
                   Mesh mesh = new Mesh();
 
                   /*Debug.Log(
-                    "vertexCount: " + meshInfo.vertexCount + "\nfaceCount: " + meshInfo.faceCount + 
+                    objName + ": vertexCount: " + meshInfo.vertexCount + "\nfaceCount: " + meshInfo.faceCount + 
                     "\nchannelCount: " + meshInfo.channelCount
                   );*/
 
@@ -248,146 +254,132 @@ namespace Ballance2
                     //Read Material
                     for (int j = 0; j < meshInfo.materialCount; j++)
                     {
-                      IntPtr matPtr = VirtoolsLoaderApi.Loader_CKMeshGetMaterialObj(meshPtr, i);
+                      //For MaterialFaces
+                      IntPtr outMaterialFacesCountPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
+                      IntPtr outMaterialFacesPtrPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
+
+                      //Read info
+                      IntPtr matPtr = VirtoolsLoaderApi.Loader_CKMeshGetMaterialObj(meshPtr, j, outMaterialFacesCountPtr, outMaterialFacesPtrPtr);
                       IntPtr matNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matPtr);
                       string matName = Marshal.PtrToStringAnsi(matNamePtr);
+
+                      int outMaterialFacesCount = Marshal.ReadInt32(outMaterialFacesCountPtr);
+                      IntPtr outMaterialFacesPtr = Marshal.ReadIntPtr(outMaterialFacesPtrPtr);
+
+                      Marshal.FreeHGlobal(outMaterialFacesCountPtr);
+                      Marshal.FreeHGlobal(outMaterialFacesPtrPtr);
+
+                      //Add submesh for different material
+                      //================================
+                      if (outMaterialFacesCount > 0)
+                      {
+                        int[] indices = new int[outMaterialFacesCount * 3];
+                        Marshal.Copy(outMaterialFacesPtr, indices, 0, outMaterialFacesCount * 3);
+                        mesh.subMeshCount += 1;
+                        mesh.SetIndices(indices, MeshTopology.Triangles, j);
+                      }
+                      VirtoolsLoaderApi.Loader_Free(outMaterialFacesPtr);
 
                       //If mat name is game internl materials, use our materials.
                       //================================
                       Material baseMat = matCallback(matName);
-                      if (baseMat == null) 
+                      if (baseMat == null)
                       {
-                        //Read material from virtools
-                        //================================
-                        IntPtr matInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMaterial(matPtr, nmoFile);
-                        Loader_MaterialInfo matInfo = (Loader_MaterialInfo)Marshal.PtrToStructure(matInfoPtr, typeof(Loader_MaterialInfo));
+                        //Try get from cache
+                        materialPool.TryGetValue(matName, out baseMat);
+                        if (baseMat == null) { 
 
-                        baseMat = new Material(materialShader);
-                        baseMat.color = new Color(matInfo.diffuseR, matInfo.diffuseG, matInfo.diffuseB, matInfo.ambientA);
+                          //Read material from virtools
+                          //================================
+                          IntPtr matInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMaterial(matPtr, nmoFile);
+                          Loader_MaterialInfo matInfo = (Loader_MaterialInfo)Marshal.PtrToStructure(matInfoPtr, typeof(Loader_MaterialInfo));
+                          VirtoolsLoaderApi.Loader_Free(matInfoPtr);
 
-                        //Read texture object
-                        if (matInfo.textureObject != IntPtr.Zero)
-                        {
-                          IntPtr texInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileTexture(matInfo.textureObject);
-                          IntPtr texNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matInfo.textureObject);
-                          string texName = Marshal.PtrToStringAnsi(texNamePtr);
+                          baseMat = new Material(materialShader);
+                          baseMat.color = new Color(matInfo.diffuseR, matInfo.diffuseG, matInfo.diffuseB, matInfo.ambientA);
 
-                          //Try find our texture
-                          Texture tex = texCallback(texName);
-                          if (tex == null)
+                          baseMat.name = matName;
+                          materialPool[matName] = baseMat;
+
+                          //Read texture object
+                          if (matInfo.textureObject != IntPtr.Zero)
                           {
-                            //Otherwise, read texture from virtools
-                            Loader_TextureInfo texInfo = (Loader_TextureInfo)Marshal.PtrToStructure(texInfoPtr, typeof(Loader_TextureInfo));
-                            if (texInfo.bufferSize > 0)
+                            IntPtr texNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matInfo.textureObject);
+                            string texName = Marshal.PtrToStringAnsi(texNamePtr);
+
+                            //Try find our texture
+                            Texture tex = texCallback(texName);
+                            if (tex == null)
                             {
-                              //Instance texture
-                              Texture2D texVt = new Texture2D(texInfo.width, texInfo.height);
-                              //Read buffer
-                              IntPtr dataBuffer = Marshal.AllocHGlobal(texInfo.bufferSize);
-                              long ptr = dataBuffer.ToInt64(), count = texInfo.width * texInfo.height;
-                              List<Color> colorArray = new List<Color>();
-
-                              Debug.Log(
-                                "Texture: " + texName + 
-                                "\n" + texInfo.width + "x" + texInfo.height + "\bufferSize: " + texInfo.bufferSize +
-                                "\videoPixelFormat: " + texInfo.videoPixelFormat
-                              );
-
-
-                              switch (texInfo.videoPixelFormat)
+                              //Try get from cache
+                              texturePool.TryGetValue(texName, out tex);
+                              if (tex == null)
                               {
-                                case 3: // _24_RGB888:
-                                  for (int k = 0; k < count; k++)
+                                //Otherwise, read texture from virtools
+                                IntPtr texInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileTexture(matInfo.textureObject);
+                                Loader_TextureInfo texInfo = (Loader_TextureInfo)Marshal.PtrToStructure(texInfoPtr, typeof(Loader_TextureInfo));
+                                
+
+                                Debug.Log(
+                                  "Texture: " + texName +
+                                  "\n" + texInfo.width + "x" + texInfo.height + "\nbufferSize: " + texInfo.bufferSize +
+                                  "\nvideoPixelFormat: " + texInfo.videoPixelFormat
+                                );
+
+                                if (texInfo.bufferSize > 0 && texInfo.width > 0 && texInfo.height > 0)
+                                {
+                                  //Instance texture
+                                  Texture2D texVt = new Texture2D(texInfo.width, texInfo.height, TextureFormat.ARGB32, false);
+                                  texVt.name = texName;
+                                  //Save to pool
+                                  texturePool[texName] = texVt;
+                                  //Read buffer
+                                  IntPtr dataBuffer = Marshal.AllocHGlobal(texInfo.bufferSize);
+                                  VirtoolsLoaderApi.Loader_DirectReadCKTextureData(matInfo.textureObject, texInfoPtr, dataBuffer);
+
+                                  //Read pixes
+                                  for (int x = 0; x < texInfo.width; x++)
                                   {
-                                    colorArray.Add(new Color32(
-                                      Marshal.ReadByte(new IntPtr(ptr)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 1)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 2)),
-                                      255
-                                    ));
-                                    ptr += 3;
+                                    for (int y = 0; y < texInfo.height; y++)
+                                    {
+                                      uint color = (uint)Marshal.ReadInt32(dataBuffer, (x + y * texInfo.width) * 4);
+                                      texVt.SetPixel(x, y, new Color32(
+                                        (byte)((color & 0x00ff0000) >> 16),
+                                        (byte)((color & 0x0000ff00) >> 8),
+                                        (byte)((color & 0x000000ff) >> 0),
+                                        (byte)((color & 0xff000000) >> 24)
+                                      ));
+                                    }
                                   }
-                                  break;
-                                case 14: // _24_BGR888:
-                                  for (int k = 0; k < count; k++)
-                                  {
-                                    colorArray.Add(new Color32(
-                                      Marshal.ReadByte(new IntPtr(ptr + 2)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 1)),
-                                      Marshal.ReadByte(new IntPtr(ptr)),
-                                      255
-                                    ));
-                                    ptr += 3;
-                                  }
-                                  break;
-                                case 10: // _32_ABGR8888:
-                                  for (int k = 0; k < count; k++)
-                                  {
-                                    colorArray.Add(new Color32(
-                                      Marshal.ReadByte(new IntPtr(ptr + 2)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 1)),
-                                      Marshal.ReadByte(new IntPtr(ptr)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 3))
-                                    ));
-                                    ptr += 4;
-                                  }
-                                  break;
-                                case 1: // _32_ARGB8888:
-                                  for (int k = 0; k < count; k++)
-                                  {
-                                    colorArray.Add(new Color32(
-                                      Marshal.ReadByte(new IntPtr(ptr)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 3)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 1)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 2))
-                                    ));
-                                    ptr += 4;
-                                  }
-                                  break;
-                                case 11: // _32_RGBA8888:
-                                  for (int k = 0; k < count; k++)
-                                  {
-                                    colorArray.Add(new Color32(
-                                      Marshal.ReadByte(new IntPtr(ptr)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 1)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 2)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 3))
-                                    ));
-                                    ptr += 4;
-                                  }
-                                  break;
-                                case 2: // _32_RGB888:
-                                  for (int k = 0; k < count; k++)
-                                  {
-                                    colorArray.Add(new Color32(
-                                      Marshal.ReadByte(new IntPtr(ptr)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 1)),
-                                      Marshal.ReadByte(new IntPtr(ptr + 2)),
-                                      255
-                                    ));
-                                    ptr += 4;
-                                  }
-                                  break;
+
+                                  //LoadRawTextureData has some problems, so do not use it
+                                  //byte[] dateBufferManaged = new byte[texInfo.bufferSize];
+                                  //Marshal.Copy(dataBuffer, dateBufferManaged, 0, texInfo.bufferSize);
+                                  //texVt.LoadRawTextureData(dateBufferManaged);
+
+                                  texVt.Apply();
+                                  tex = texVt;
+
+                                  Marshal.FreeHGlobal(dataBuffer);
+                                }
+
+                                VirtoolsLoaderApi.Loader_Free(texInfoPtr);
                               }
-
-                              texVt.SetPixels(colorArray.ToArray());
-                              colorArray.Clear();
-                              tex = texVt;
-
-                              Marshal.FreeHGlobal(dataBuffer);
                             }
+
+                            baseMat.mainTexture = tex;
                           }
 
-                          baseMat.mainTexture = tex;
                         }
-
-                        VirtoolsLoaderApi.Loader_Free(matInfoPtr);
                       }
+                      
                       matArr.Add(baseMat);
                     }
 
                     meshRenderer.materials = matArr.ToArray();
                   }
+
+
 
                   break;
                 }
@@ -424,6 +416,9 @@ namespace Ballance2
 
         Marshal.FreeHGlobal(objNamePtr);
         Marshal.FreeHGlobal(classIdPtr);
+
+        texturePool.Clear();
+        materialPool.Clear();
 
         return result;
       } finally {

@@ -8,6 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "netapi32.lib")
 
+
 #define DEFAULT_PORT 2566//默认端口号 
 #define BACKLOG 5/*最大监听数*/ 
 #define RECV_BUFFER_SIZE 512//接收发送缓冲区大小 
@@ -220,7 +221,7 @@ int main(int argc, char const* argv[])
 
   char filePath[512];
   strcpy(filePath, fullPath);
-  strcat(filePath, "\\Level_01.NMO");
+  strcat(filePath, "\\1.NMO");
 
   //读取文件
   void* nmoFile = Loader_SolveNmoFileRead(filePath, nullptr);
@@ -250,10 +251,10 @@ int main(int argc, char const* argv[])
       printf("  CKCID_MESH: %s\n", objName);
       break;
     case CKCID_MATERIAL:
-      Loader_SolveNmoFileMaterial(objPtr, nmoFile);
       printf("  CKCID_MATERIAL: %s\n", objName);
       break;
     case CKCID_TEXTURE: {
+      Loader_SolveNmoFileTexture(objPtr);
       printf("  CKCID_TEXTURE: %s\n", objName);
       break;
     }

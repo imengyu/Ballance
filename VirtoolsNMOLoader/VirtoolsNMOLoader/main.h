@@ -49,9 +49,9 @@ EXTERN_C {
 	API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr, void* nmoFilePtr);
 	API_EXPORT void* Loader_SolveNmoFileTexture(void* objPtr);
-	API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index);
+	API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index, int* outMaterialFacesCount, void** outMaterialFacesPtr);
 	API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr, float* vertices, int* triangles, float* normals, float** uvs);
-	API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned char* dataBuffer);
+	API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned int* dataBuffer);
 #ifdef __cplusplus
 }
 

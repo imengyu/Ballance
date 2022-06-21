@@ -34,7 +34,7 @@ namespace Ballance2 {
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern int Loader_CK3dEntityGetMeshCount(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
-    public static extern IntPtr Loader_CKMeshGetMaterialObj(IntPtr objPtr, int index);
+    public static extern IntPtr Loader_CKMeshGetMaterialObj(IntPtr objPtr, int index, IntPtr/* int* */ outMaterialFacesCount, IntPtr/* void** */ outMaterialFacesPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_CK3dEntityGetMeshObj(IntPtr objPtr, int index);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 

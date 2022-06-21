@@ -2,10 +2,18 @@
 #include "main.h"
 
 CKContext* VirtoolsContext = nullptr;
-CKRenderContext* m_RenderContext = nullptr;
-CKRenderManager* m_RenderManager = nullptr;
 int VirtoolsLastEror = 0;
 int Init = 0;
+
+extern "C" void MyInitCustomPlayerContextEx(int* arg0, DWORD arg1);
+extern "C" void MyCKInitCustomPlayer(BOOL arg0);
+
+extern "C" __declspec(dllexport) void InitCustomPlayerContextEx(int* arg0, DWORD arg1) {
+	MyInitCustomPlayerContextEx(arg0, arg1);
+}
+extern "C" __declspec(dllexport) void CKInitCustomPlayer(BOOL arg0) {
+	MyCKInitCustomPlayer(arg0);
+}
 
 //Base system
 
@@ -56,7 +64,7 @@ EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
 			break;
 		}
 
-  CKERROR err = CKStartUp();
+  CKERROR err = CKStartUp(GetModuleHandle("VirtoolsNMOLoader.dll"));
 	if (err != CK_OK) {
 		VirtoolsLastEror = err;
 		return 1;
@@ -85,9 +93,6 @@ EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
     return 1;
   }
 
-	m_RenderManager = VirtoolsContext->GetRenderManager();
-	m_RenderContext = m_RenderManager->CreateRenderContext(GetConsoleWindow(), 0, 0, FALSE);
-
 	Init = 1;
   return 0;
 }
@@ -109,7 +114,6 @@ EXTERN_C API_EXPORT void Loader_Free(void* objPtr) {
 EXTERN_C API_EXPORT int Loader_GetLastError() {
 	return VirtoolsLastEror;
 }
-
 
 //File reader
 
@@ -183,11 +187,6 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileRead(char* filePath, int *outErrCod
 	}
 
 	CKLevel* m_Level = VirtoolsContext->GetCurrentLevel();
-	if (m_Level) {
-		m_Level->AddRenderContext(m_RenderContext, TRUE);
-		m_Level->LaunchScene(NULL);
-	}
-
 	Loader_NmoFile* file = new Loader_NmoFile();
 	file->array = array;
 	file->ckfile = f;
@@ -219,8 +218,23 @@ EXTERN_C API_EXPORT int Loader_CK3dEntityGetMeshCount(void* objPtr) {
 EXTERN_C API_EXPORT void* Loader_CK3dEntityGetMeshObj(void* objPtr, int index) {
 	return ((CK3dEntity*)objPtr)->GetMesh(index);
 }
-EXTERN_C API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index) {
-	return ((CKMesh*)objPtr)->GetMaterial(index);
+EXTERN_C API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index, int* outMaterialFacesCount, void** outMaterialFacesPtr) {
+	auto mat = ((CKMesh*)objPtr)->GetMaterial(index);
+	if (mat) {
+		int count = 0;
+		auto indices = ((CKMesh*)objPtr)->GetMaterialFaces(index, count);
+		auto triangles = new int[count * 3];
+		for (int i = 0; i < count; i++) {
+			int a, b, c;
+			((CKMesh*)objPtr)->GetFaceVertexIndex(indices[i], a, b, c);
+			triangles[i * 3] = a;
+			triangles[i * 3 + 1] = b;
+			triangles[i * 3 + 2] = c;
+		}
+		*outMaterialFacesPtr = triangles;
+		*outMaterialFacesCount = count;
+	}
+	return mat;
 }
 EXTERN_C API_EXPORT void* Loader_CKObjectGetName(void* objPtr) {
 	return ((CKObject*)objPtr)->GetName();
@@ -289,11 +303,6 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr , void* nmoFi
 		info->power = obj->GetPower();
 
 		CKTexture* texture = obj->GetTexture();
-		/*CKScene* scn = VirtoolsContext->GetCurrentScene();
-		CKStateChunk* chunk = scn->GetObjectInitialValue(texture);
-		if (chunk)
-			texture->Load(chunk, nmoFile->ckfile);*/
-		texture->SetAsCurrent(m_RenderContext);
 		info->textureObject = texture;
 	}
 
@@ -305,22 +314,11 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileTexture(void* objPtr) {
 	if (obj) {
 		info->width = obj->GetWidth();
 		info->height = obj->GetHeight();
-		info->videoPixelFormat = (int)obj->GetVideoPixelFormat();
-		int videoPixelFormat = obj->GetVideoPixelFormat();
-		switch (videoPixelFormat)
-		{
-		case VX_PIXELFORMAT::_24_RGB888:
-		case VX_PIXELFORMAT::_24_BGR888:
-			info->bufferSize = info->width * info->height * 3;
-		case VX_PIXELFORMAT::_32_ABGR8888:
-		case VX_PIXELFORMAT::_32_ARGB8888:
-		case VX_PIXELFORMAT::_32_RGBA8888:
-		case VX_PIXELFORMAT::_32_RGB888:
-			info->bufferSize = info->width * info->height * 4;
-		default:
+		info->videoPixelFormat = obj->GetDesiredVideoFormat();
+		if (info->width > 0 && info->height > 0)
+			info->bufferSize = info->width * info->height * sizeof(unsigned int);
+		else
 			info->bufferSize = 0;
-			break;
-		}
 	}
 	return info;
 }
@@ -358,11 +356,17 @@ EXTERN_C API_EXPORT void Loader_DirectReadCKMeshData(void* objPtr, float* vertic
 		}
 	}
 }
-EXTERN_C API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned char* dataBuffer) {
+EXTERN_C API_EXPORT void Loader_DirectReadCKTextureData(void* objPtr, Loader_TextureInfo* info, unsigned int* dataBuffer) {
 	CKTexture* obj = (CKTexture*)objPtr;	
 	if (obj && info && info->bufferSize) {
-		auto ptr = obj->LockSurfacePtr();
+		/*auto ptr = obj->LockSurfacePtr();
 		memcpy(dataBuffer, ptr, info->bufferSize);
-		obj->ReleaseSurfacePtr();
+		obj->ReleaseSurfacePtr();*/
+		for (int x = 0; x < info->width; x++) {
+			for (int y = 0; y < info->height; y++) {
+				auto color = obj->GetPixel(x, y);
+				dataBuffer[(x + y * info->width)] = color;
+			}
+		}
 	}
 }
