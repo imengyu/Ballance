@@ -58,7 +58,6 @@ function LevelBuilder:new()
   self._CurrentLevelJson = {}
   self._CurrentLevelModuls = {} ---@type LevelBuilderModulStorage[]
   self._CurrentLevelFloors = {} ---@type GameObject[]
-  self._CurrentLevelPrefab = nil
   self._CurrentLevelObject = nil
   self._CurrentLevelAsset = nil ---@type LevelAssets
   self._IsLoading = false
@@ -195,10 +194,10 @@ function LevelBuilder:LoadLevel(name, preview)
   --由C#代码加载文件
   self._LevelLoaderNative:LoadLevel(name, 
     ---加载文件就绪回调
-    ---@param prefab GameObject
+    ---@param mainObj GameObject
     ---@param jsonString string
     ---@param level LevelAssets
-    function (prefab, jsonString, level)
+    function (mainObj, jsonString, level)
       self._CurrentLevelAsset = level
 
       --加载基础数据
@@ -211,7 +210,6 @@ function LevelBuilder:LoadLevel(name, preview)
       Log.D(TAG, 'Level asset loaded')
 
       self._CurrentLevelJson = res
-      self._CurrentLevelPrefab = prefab
       Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_JSON_LOADED', { self._CurrentLevelJson })
 
       --检查基础适配
@@ -232,7 +230,9 @@ function LevelBuilder:LoadLevel(name, preview)
       Log.D(TAG, 'Load level prefab')
 
       --载入Prefab
-      self._CurrentLevelObject = Game.Manager:InstancePrefab(self._CurrentLevelPrefab, self.gameObject.transform, 'GameLevelMain')
+      self._CurrentLevelObject = mainObj; 
+      mainObj.transform:SetParent(self.gameObject.transform);
+      mainObj.name = 'GameLevelMain';
       Game.Mediator:DispatchGlobalEvent('EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY', { self._CurrentLevelObject })
 
       --加载
@@ -760,18 +760,21 @@ function LevelBuilder:_LoadLevelInternal()
           end
           return arr
         end
+        
         local id = tonumber(customMusicTheme.id)
+        if id then
+          Log.D(TAG, 'Load customMusicTheme '..id)
 
-        Log.D(TAG, 'Load customMusicTheme '..id)
-
-        GamePlay.MusicManager.Musics[id] = {
-          atmos = loadCustomAudio(customMusicTheme.atmos),
-          musics = loadCustomAudio(customMusicTheme.musics),
-          baseInterval = customMusicTheme.baseInterval or 5,
-          maxInterval = customMusicTheme.baseInterval or 30,
-          atmoInterval = customMusicTheme.baseInterval or 6,
-          atmoMaxInterval = customMusicTheme.baseInterval or 15,
-        }
+          GamePlay.MusicManager.Musics[id] = {
+            atmos = loadCustomAudio(customMusicTheme.atmos),
+            musics = loadCustomAudio(customMusicTheme.musics),
+            baseInterval = customMusicTheme.baseInterval or 5,
+            maxInterval = customMusicTheme.baseInterval or 30,
+            atmoInterval = customMusicTheme.baseInterval or 6,
+            atmoMaxInterval = customMusicTheme.baseInterval or 15,
+          }
+            
+        end
       end
     end
     --设置音乐

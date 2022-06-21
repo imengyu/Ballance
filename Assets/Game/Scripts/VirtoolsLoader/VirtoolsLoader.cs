@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
@@ -13,17 +14,23 @@ namespace Ballance2
   /// </summary>
   public class VirtoolsLoader
   {
+#if UNITY_STANDALONE_WIN
     private static bool loaderInited = false;
 
     [DllImport("Kernel32", CallingConvention = CallingConvention.StdCall)]
-    public static extern int SetDllDirectoryA([MarshalAs(UnmanagedType.LPStr)] string path);
+    private static extern int SetDllDirectoryA([MarshalAs(UnmanagedType.LPStr)] string path);
     [DllImport("Kernel32", CallingConvention = CallingConvention.StdCall)]
-    public static extern int LoadLibraryA([MarshalAs(UnmanagedType.LPStr)] string dll);
+    private static extern int LoadLibraryA([MarshalAs(UnmanagedType.LPStr)] string dll);
 
     public static bool Init(string ck2DllPath)
     {
       if (!loaderInited)
       { 
+        string dllDir = Path.GetDirectoryName(ck2DllPath);
+
+        VirtoolsLoader.SetDllDirectoryA(dllDir);
+		    VirtoolsLoader.LoadLibraryA(dllDir + "\\VirtoolsNMOLoader.dll");
+		
         if (VirtoolsLoaderApi.Loader_Init(IntPtr.Zero, ck2DllPath) == 0)
         {
           loaderInited = true;
@@ -87,23 +94,22 @@ namespace Ballance2
     private const int CKCID_3DENTITY = 33;
     private const int CKCID_3DOBJECT = 41;
 
-    public delegate Material LoadNMOToScenseMaterialCallback(string matName);
-    public delegate Texture LoadNMOToScenseTextureCallback(string texName);
-
     /// <summary>
     /// load NMO 3d object and group info to scense
     /// </summary>
     /// <param name="fileFullPath"></param>
     public static VirtoolsLoaderLoadNMOResult LoadNMOToScense(string fileFullPath, 
       LoadNMOToScenseMaterialCallback matCallback,
-      LoadNMOToScenseTextureCallback texCallback)
+      LoadNMOToScenseTextureCallback texCallback, 
+      LoadNMOToScenseErrorCallback errorCallback,
+      Shader materialShader)
     {
 
       //Read file
       IntPtr nmoFile = VirtoolsLoaderApi.Loader_SolveNmoFileRead(fileFullPath, IntPtr.Zero);
       if (nmoFile == IntPtr.Zero)
       {
-        Debug.LogError("Load nmo " + fileFullPath + " failed: " + VirtoolsLoaderApi.Loader_GetLastError());
+        errorCallback("Load nmo " + fileFullPath + " failed: " + VirtoolsLoaderApi.Loader_GetLastError());
         return null;
       }
       Debug.Log("Load nmo " + fileFullPath + " success");
@@ -112,12 +118,15 @@ namespace Ballance2
         VirtoolsLoaderLoadNMOResult result = new VirtoolsLoaderLoadNMOResult();
 
         //Create default res
-        Material materialDefault = new Material(Shader.Find("Diffuse"));
-        Shader materialShader = Shader.Find("Diffuse");
+        Material materialDefault = new Material(Shader.Find("Standard"));
 
         //Cache texture and material for reuse 
         Dictionary<string, Texture> texturePool = new Dictionary<string, Texture>();
         Dictionary<string, Material> materialPool = new Dictionary<string, Material>();
+
+        //host object
+        GameObject main = new GameObject("NMO");
+        result.mainObj = main;
 
         //File object loop
         int classId = 0;
@@ -145,11 +154,13 @@ namespace Ballance2
 
                 //Create object 
                 //================================
-                GameObject go = new GameObject();
-                go.name = objName;
+                GameObject go = new GameObject(objName);
+                go.transform.SetParent(main.transform);
+                result.objectNameList[objName] = go;
                 go.transform.position = new Vector3(info.positionX, info.positionY, info.positionZ);
                 //go.transform.eulerAngles = new Vector3(info.eulerX * Mathf.Rad2Deg, info.eulerY * Mathf.Rad2Deg, info.eulerZ * Mathf.Rad2Deg);
                 go.transform.rotation = new Quaternion(info.quaternionX, info.quaternionY, info.quaternionZ, -info.quaternionW);
+
 
                 //if (objName == "A04_Floor_Wood_01")
                 //  Debug.Log("eulerAngles: " + info.eulerX + "," + info.eulerY + "," + info.eulerZ);
@@ -164,10 +175,13 @@ namespace Ballance2
                   //Get mesh info
                   IntPtr meshPtr = VirtoolsLoaderApi.Loader_CK3dEntityGetMeshObj(objPtr, i);
                   IntPtr meshInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMesh(meshPtr);
+                  IntPtr meshNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(meshPtr);
+                  string meshName = Marshal.PtrToStringAnsi(meshNamePtr);
                   Loader_MeshInfo meshInfo = (Loader_MeshInfo)Marshal.PtrToStructure(meshInfoPtr, typeof(Loader_MeshInfo));
                   VirtoolsLoaderApi.Loader_Free(meshInfoPtr);
 
                   Mesh mesh = new Mesh();
+                  mesh.name = meshName;
 
                   /*Debug.Log(
                     objName + ": vertexCount: " + meshInfo.vertexCount + "\nfaceCount: " + meshInfo.faceCount + 
@@ -204,6 +218,7 @@ namespace Ballance2
                   //Copy mesh info to Unity
                   //================================
 
+                  result.meshList[meshName] = mesh;
                   //== vertices
                   mesh.vertices = floatPtrToVec3Array(verticesPtr, meshInfo.vertexCount);
                   //== trangles
@@ -221,12 +236,12 @@ namespace Ballance2
                       {
                         case 0: mesh.uv = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
                         case 1: mesh.uv2 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
-                          //case 2: mesh.uv3 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
-                          //case 3: mesh.uv4 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
-                          //case 4: mesh.uv5 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
-                          //case 5: mesh.uv6 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
-                          //case 6: mesh.uv7 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
-                          //case 7: mesh.uv8 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
+                        case 2: mesh.uv3 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
+                        case 3: mesh.uv4 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
+                        case 4: mesh.uv5 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
+                        case 5: mesh.uv6 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
+                        case 6: mesh.uv7 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
+                        case 7: mesh.uv8 = floatPtrToVec2Array(uvsArr[k], meshInfo.vertexCount); break;
                       }
                     }
                   } 
@@ -296,10 +311,16 @@ namespace Ballance2
                           VirtoolsLoaderApi.Loader_Free(matInfoPtr);
 
                           baseMat = new Material(materialShader);
-                          baseMat.color = new Color(matInfo.diffuseR, matInfo.diffuseG, matInfo.diffuseB, matInfo.ambientA);
+                          baseMat.color = new Color(matInfo.diffuseR, matInfo.diffuseG, matInfo.diffuseB, matInfo.diffuseA);
+                          baseMat.SetColor("_AmbientColor", new Color(matInfo.ambientR, matInfo.ambientG, matInfo.ambientB, matInfo.ambientA));
+                          baseMat.SetColor("_Color", baseMat.color);
+                          baseMat.SetColor("_SpecColor", new Color(matInfo.specularR, matInfo.specularG, matInfo.specularB, matInfo.specularA));
+                          baseMat.SetFloat("_Gloss", matInfo.power);
+                          baseMat.SetColor("_Emission", new Color(matInfo.emissiveR, matInfo.emissiveG, matInfo.emissiveB, matInfo.emissiveA));
 
                           baseMat.name = matName;
                           materialPool[matName] = baseMat;
+                          result.materialList[matName] = baseMat;
 
                           //Read texture object
                           if (matInfo.textureObject != IntPtr.Zero)
@@ -319,12 +340,11 @@ namespace Ballance2
                                 IntPtr texInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileTexture(matInfo.textureObject);
                                 Loader_TextureInfo texInfo = (Loader_TextureInfo)Marshal.PtrToStructure(texInfoPtr, typeof(Loader_TextureInfo));
                                 
-
-                                Debug.Log(
+                                /*Debug.Log(
                                   "Texture: " + texName +
                                   "\n" + texInfo.width + "x" + texInfo.height + "\nbufferSize: " + texInfo.bufferSize +
                                   "\nvideoPixelFormat: " + texInfo.videoPixelFormat
-                                );
+                                );*/
 
                                 if (texInfo.bufferSize > 0 && texInfo.width > 0 && texInfo.height > 0)
                                 {
@@ -333,6 +353,7 @@ namespace Ballance2
                                   texVt.name = texName;
                                   //Save to pool
                                   texturePool[texName] = texVt;
+                                  result.textureList[texName] = texVt;
                                   //Read buffer
                                   IntPtr dataBuffer = Marshal.AllocHGlobal(texInfo.bufferSize);
                                   VirtoolsLoaderApi.Loader_DirectReadCKTextureData(matInfo.textureObject, texInfoPtr, dataBuffer);
@@ -368,26 +389,21 @@ namespace Ballance2
                             }
 
                             baseMat.mainTexture = tex;
+                            baseMat.SetTexture("_MainTex", tex);
                           }
-
                         }
                       }
-                      
                       matArr.Add(baseMat);
                     }
 
                     meshRenderer.materials = matArr.ToArray();
                   }
-
-
-
                   break;
                 }
                 break;
               }
             case CKCID_GROUP:
               {
-
                 //Build group info
                 if (!result.groupList.ContainsKey(objName))
                   result.groupList.Add(objName, new List<string>());
@@ -421,6 +437,9 @@ namespace Ballance2
         materialPool.Clear();
 
         return result;
+      } catch (Exception e) {
+        errorCallback(e.ToString());
+        return null;
       } finally {
 
         //Close file
@@ -430,9 +449,33 @@ namespace Ballance2
       }
     }
 
+#else 
+    public static bool Init(string ck2DllPath)
+    {
+      throw new System.Exception("Not implemented");
+    }
+    public static bool Destroy()
+    {
+      throw new System.Exception("Not implemented");
+    }
+    public static VirtoolsLoaderLoadNMOResult LoadNMOToScense(string fileFullPath, 
+      LoadNMOToScenseMaterialCallback matCallback,
+      LoadNMOToScenseTextureCallback texCallback, 
+      Shader materialShader)
+    {
+      throw new System.Exception("Not implemented");
+    }
+#endif
+
+    public delegate Material LoadNMOToScenseMaterialCallback(string matName);
+    public delegate Texture LoadNMOToScenseTextureCallback(string texName);
+    public delegate void LoadNMOToScenseErrorCallback(string err);
+
     public class VirtoolsLoaderLoadNMOResult
     {
+      public GameObject mainObj;
       public List<GameObject> objectList = new List<GameObject>();
+      public Dictionary<string, GameObject> objectNameList = new Dictionary<string, GameObject>();
       public Dictionary<string, Material> materialList = new Dictionary<string, Material>();
       public Dictionary<string, Mesh> meshList = new Dictionary<string, Mesh>();
       public Dictionary<string, Texture> textureList = new Dictionary<string, Texture>();
@@ -451,7 +494,6 @@ namespace Ballance2
       }
     }
   }
-
 
 
 }

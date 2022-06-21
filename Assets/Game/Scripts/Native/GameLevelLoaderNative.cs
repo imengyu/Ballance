@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using Ballance2.Res;
 using Ballance2.Utils;
+using static Ballance2.VirtoolsLoader;
+using Ballance2.Package;
 
 /*
  * Copyright (c) 2020  mengyu
@@ -25,7 +27,7 @@ namespace Ballance2.Game
 {
 
   [SLua.CustomLuaClass]
-  public delegate void GameLevelLoaderNativeCallback(GameObject prefab, string jsonString, LevelAssets level);
+  public delegate void GameLevelLoaderNativeCallback(GameObject mainObj, string jsonString, LevelAssets level);
   [SLua.CustomLuaClass]
   public delegate void GameLevelLoaderNativeErrCallback(string code, string err);
 
@@ -33,6 +35,7 @@ namespace Ballance2.Game
   [LuaApiNoDoc]
   public class LevelAssets
   {
+    [SLua.DoNotToLua]
     public AssetBundle AssetBundle;
     public bool LoadInEditor = false;
     public string Path;
@@ -46,23 +49,31 @@ namespace Ballance2.Game
 #endif
     }
 
-    public Texture GetTextureAsset(string name)
+    public virtual Texture GetTextureAsset(string name)
     {
       return GetLevelAsset<Texture>(name);
     }
-    public Texture2D GetTexture2DAsset(string name)
+    public virtual Mesh GetMeshAsset(string name)
+    {
+      return GetLevelAsset<Mesh>(name);
+    }
+    public virtual TextAsset GetTextAssetAsset(string name)
+    {
+      return GetLevelAsset<TextAsset>(name);
+    }
+    public virtual Texture2D GetTexture2DAsset(string name)
     {
       return GetLevelAsset<Texture2D>(name);
     }
-    public AudioClip GetAudioClipAsset(string name)
+    public virtual AudioClip GetAudioClipAsset(string name)
     {
       return GetLevelAsset<AudioClip>(name);
     }
-    public GameObject GetPrefabAsset(string name)
+    public virtual GameObject GetPrefabAsset(string name)
     {
       return GetLevelAsset<GameObject>(name);
     }
-    public Material GetMaterialAsset(string name)
+    public virtual Material GetMaterialAsset(string name)
     {
       return GetLevelAsset<Material>(name);
     }
@@ -92,8 +103,7 @@ namespace Ballance2.Game
       return null;
     }
 #endif
-    
-    public T GetLevelAsset<T>(string name) where T : Object
+    private T GetLevelAsset<T>(string name) where T : Object
     {
 #if UNITY_EDITOR
       if (LoadInEditor)
@@ -114,7 +124,9 @@ namespace Ballance2.Game
       }
       else
 #endif
-      return AssetBundle.LoadAsset<T>(name);
+      if (AssetBundle != null)
+        return AssetBundle.LoadAsset<T>(name);
+      return null;
     }
   }
 
@@ -152,6 +164,14 @@ namespace Ballance2.Game
           path = "file://" + path;
         #endif
 
+        //加载NMO
+#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
+        Log.D(TAG, "Load nmo file : {0}", path);
+        if (Path.GetExtension(path) == ".nmo" || Path.GetExtension(path) == ".cmo") {
+          StartCoroutine(LoaderNMO(new GameLevelLoaderNMO.LevelNMOAssets(path), callback, errCallback));
+          return;
+        }
+#endif
         Log.D(TAG, "Load package : {0}", path);
         //加载资源包
         StartCoroutine(Loader(new LevelAssets(path), callback, errCallback));
@@ -164,7 +184,7 @@ namespace Ballance2.Game
         level.AssetBundle = null;
       }
     }
-
+    
     private IEnumerator Loader(LevelAssets level, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {
       if (!level.LoadInEditor)
@@ -198,20 +218,20 @@ namespace Ballance2.Game
       
       Log.D(TAG, "Level package {0} loaded", level.Path);
 
-      TextAsset LevelJsonTextAsset = level.GetLevelAsset<TextAsset>("Level.json");
+      TextAsset LevelJsonTextAsset = level.GetTextAssetAsset("Level.json");
       if (LevelJsonTextAsset == null || string.IsNullOrEmpty(LevelJsonTextAsset.text))
       {
         errCallback("BAD_LEVEL_JSON", "Level.json is empty or invalid");
         yield break;
       }
-      GameObject LevelPrefab = level.GetLevelAsset<GameObject>("Level.prefab");
+      GameObject LevelPrefab = level.GetPrefabAsset("Level.prefab");
       if (LevelPrefab == null)
       {
         errCallback("BAD_LEVEL", "The level is invalid. Level.prefab cannot be found");
         yield break;
       }
-
-      callback(LevelPrefab, LevelJsonTextAsset.text, level);
+      GameObject LevelMainObj = CloneUtils.CloneNewObject(LevelPrefab, "");
+      callback(LevelMainObj, LevelJsonTextAsset.text, level);
     }
   }
 }
