@@ -29,6 +29,23 @@
 
 完整的调试命令帮助可以输入 help 查看。
 
+## 调试设置
+
+以下是一些内部设置开关，可以设置，以控制一些功能。
+
+你可以通过指令来设置开关，例如下面的指令设置 `debugDisableLoadUI` 属性为开/关状态：
+
+```
+s set core debugDisableLoadUI bool true
+s set core debugDisableIntro bool true
+s set core debugDisableLoadUI bool false
+```
+
+* debugDisableLoadUI [bool] 控制关卡加载器是否禁止显示遮罩UI
+* debugDisablePhysicsInfo [bool] 禁止显示物理输出信息UI
+* debugDisableBallInfo [bool] 禁止显示球输出信息UI
+* debugDisableIntro [bool] 是否关闭Intro动画
+
 ## 调试快捷键
 
 在开启调试模式后，你可以通过按下面的快捷键在游戏中调试关卡：

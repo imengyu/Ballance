@@ -172,10 +172,14 @@ function LevelBuilder:LoadLevel(name, preview)
   end
 
   ---设置UI为初始状态
-  self._LevelBuilderUI.gameObject:SetActive(true)
+  if not Game.Manager.GameSettings:GetBool('debugDisableLoadUI', false) then
+    self._LevelBuilderUI.gameObject:SetActive(true)
+    Game.UIManager:MaskBlackSet(true)
+  else
+    Game.UIManager:MaskBlackSet(false)
+  end
   self:UpdateLoadProgress(0)
   self:UpdateErrStatus(false, nil, nil)
-  Game.UIManager:MaskBlackSet(true)
 
   --加载内置模块
   InitBulitInModuls()

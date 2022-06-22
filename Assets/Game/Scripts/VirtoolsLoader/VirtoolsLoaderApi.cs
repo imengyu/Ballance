@@ -12,7 +12,7 @@ namespace Ballance2 {
     private const string DLL_NNAME = "VirtoolsNMOLoader";
 
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern int Loader_Init(IntPtr hWnd, [MarshalAs(UnmanagedType.LPStr)] string ck2fullPath);
+    public static extern int Loader_Init(IntPtr hWnd, IntPtr ck2fullPath);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern int Loader_Destroy();
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)]
@@ -26,7 +26,7 @@ namespace Ballance2 {
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern void Loader_SolveNmoFileDestroy(IntPtr filePtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
-    public static extern IntPtr Loader_SolveNmoFileRead([MarshalAs(UnmanagedType.LPStr)] string filePath, IntPtr /* int* */ outErrCode);
+    public static extern IntPtr Loader_SolveNmoFileRead(IntPtr filePath, IntPtr /* int* */ outErrCode);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern int Loader_CKGroupGetObjectCount(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 

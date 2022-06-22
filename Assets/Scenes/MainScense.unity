@@ -681,6 +681,8 @@ MonoBehaviour:
     Name: ModIconSuccess
   - Object: {fileID: -8640479623088261172, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
     Name: ModIconNotSupport
+  - Object: {fileID: 4800000, guid: 6e100b1f744cbca44ac87f9ca18e8ac2, type: 3}
+    Name: BlinnPhongSpeicalEmission
 --- !u!114 &876097598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,7 +700,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 0
   DebugLuaDebugger: 1
-  DebugType: 2
+  DebugType: 0
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds

@@ -312,14 +312,20 @@ end
         }
         else 
 #endif
-        if (firstScense != "") {
+        if (GameSettings.GetBool("debugDisableIntro", false)) {
+          //进入场景
+          if(!RequestEnterLogicScense("MenuLevel"))
+            GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
+          //隐藏初始加载中动画
+          HideGlobalStartLoading();
+        }
+        else if (firstScense != "") {
           //进入场景
           if(!RequestEnterLogicScense(firstScense))
             GameErrorChecker.ShowSystemErrorMessage("Enter firstScense failed");
           //隐藏初始加载中动画
           HideGlobalStartLoading();
         }
-
       }
       else
       {
@@ -473,11 +479,13 @@ end
         if (ver <= 0)
         {
           GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid Core package (2)");
+          StopAllCoroutines();
           yield break;
         }
         if (ver != GameConst.GameBulidVersion)
         {
           GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "主包版本与游戏内核版本不符（" + ver + "!=" + GameConst.GameBulidVersion + "）\n您可尝试重新安装游戏");
+          StopAllCoroutines();
           yield break;
         }
       
@@ -573,12 +581,12 @@ end
         {
           pm.NotifyAllPackageRun("*");
           
-          if (string.IsNullOrEmpty(sCustomDebugName)
+          if (
 #if UNITY_EDITOR
-          && (!DebugMode || !GameEntry.Instance.DebugSkipIntro)) 
+          string.IsNullOrEmpty(sCustomDebugName) && (!DebugMode || !GameEntry.Instance.DebugSkipIntro)) 
           //EDITOR 下才判断是否跳过intro DebugSkipIntro
 #else
-          )
+          !GameSettings.GetBool("debugDisableIntro", false))
 #endif
           {
             //在基础包加载完成时就进入Intro

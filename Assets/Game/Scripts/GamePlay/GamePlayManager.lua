@@ -103,7 +103,7 @@ function GamePlayManager:Awake()
     GamePlay.GamePlayManager.GamePhysicsWorld.TimeFactor = nx
     return true
   end, 1, 'set-physics-speed <speed:number> > 设置物理引擎模拟速率 speed：速率，默认是 1，可以设置 0.5 - 5.0'))
-  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('set-physics-speed', function (keyword, fullCmd, argsCount, args) 
+  table.insert(self._CommandIds, GameDebugCommandServer:RegisterCommand('set-ball-speed', function (keyword, fullCmd, argsCount, args) 
     local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
     if not ox then return false end
     if nx < 0.1 then nx = 0.1 end

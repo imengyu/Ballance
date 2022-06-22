@@ -569,35 +569,42 @@ function BallManager:_ActiveCurrentBall()
       end
       --每秒更新球位置调试显示数据
       self._private.debugFlushInfoTimer = LuaTimer.Add(500, 500, function ()
-        --球位置
-        Position:SetVector3Value(currentTransform.position)
-        Rotation:SetVector3Value(currentTransform.rotation)
-        --物理时间
-        PhysicsTime.Value = string.format("%.2f ms / %.3f s", GamePhysicsWorld.PhysicsTime * 1000, GamePhysicsWorld.PhysicsSimuateTime)
-        --物理对象信息
-        PhysicsObjects.Value = string.format("All/Active/Update %d/%d/%d\nFixed/FallCollect/Push %d/%d/%d", 
-          GamePhysicsWorld.PhysicsBodies, 
-          GamePhysicsWorld.PhysicsActiveBodies, 
-          GamePhysicsWorld.PhysicsUpdateBodies,
-          GamePhysicsWorld.PhysicsFixedBodies,
-          GamePhysicsWorld.PhysicsFallCollectBodies, 
-          GamePhysicsWorld.PhysicsConstantPushBodies
-        )
 
-        --球的速度和推动数据
-        if current.rigidbody.IsPhysicalized then
-          PhysicsState.Value = string.format("%.2f", current.speedMeter.NowAbsoluteSpeed)
-            .. ' ContractState: ' .. current.rigidbody.ContractCacheString
-            ..current.ball._SoundManagerDebugStrings
+        if not Game.Manager.GameSettings:GetBool('debugDisableBallInfo', false) then
+          --球位置
+          Position:SetVector3Value(currentTransform.position)
+          Rotation:SetVector3Value(currentTransform.rotation)
+        end
+        if not Game.Manager.GameSettings:GetBool('debugDisablePhysicsInfo', false) then
+          --物理时间
+          PhysicsTime.Value = string.format("%.2f ms / %.3f s", GamePhysicsWorld.PhysicsTime * 1000, GamePhysicsWorld.PhysicsSimuateTime)
+          --物理对象信息
+          PhysicsObjects.Value = string.format("All/Active/Update %d/%d/%d\nFixed/FallCollect/Push %d/%d/%d", 
+            GamePhysicsWorld.PhysicsBodies, 
+            GamePhysicsWorld.PhysicsActiveBodies, 
+            GamePhysicsWorld.PhysicsUpdateBodies,
+            GamePhysicsWorld.PhysicsFixedBodies,
+            GamePhysicsWorld.PhysicsFallCollectBodies, 
+            GamePhysicsWorld.PhysicsConstantPushBodies
+          )
+        end
 
-          Velocity:SetVector3Value(current.rigidbody.SpeedVector)
-          PushValue.Value = '('..string.format("%.2f", current.pushForceX.Force) 
-            ..', '..string.format("%.2f", current.pushForceY.Force)
-            ..', '..string.format("%.2f", current.pushForceZ.Force)..')'
-        else
-          PhysicsState.Value = ''
-          PushValue.Value = ''
-          Velocity.Value = ''
+        if not Game.Manager.GameSettings:GetBool('debugDisableBallInfo', false) then
+          --球的速度和推动数据
+          if current.rigidbody.IsPhysicalized then
+            PhysicsState.Value = string.format("%.2f", current.speedMeter.NowAbsoluteSpeed)
+              .. ' ContractState: ' .. current.rigidbody.ContractCacheString
+              ..current.ball._SoundManagerDebugStrings
+
+            Velocity:SetVector3Value(current.rigidbody.SpeedVector)
+            PushValue.Value = '('..string.format("%.2f", current.pushForceX.Force) 
+              ..', '..string.format("%.2f", current.pushForceY.Force)
+              ..', '..string.format("%.2f", current.pushForceZ.Force)..')'
+          else
+            PhysicsState.Value = ''
+            PushValue.Value = ''
+            Velocity.Value = ''
+          end
         end
       end)
     end

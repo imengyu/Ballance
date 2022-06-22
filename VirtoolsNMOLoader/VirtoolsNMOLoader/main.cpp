@@ -51,13 +51,25 @@ BOOL _InitPlugins(CKPluginManager& iPluginManager, char* currentPath)
 	return TRUE;
 }
 
-EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath) {
+char* UnicodeToAnsi(const wchar_t* szStr)
+{
+	int nLen = WideCharToMultiByte(CP_ACP, 0, szStr, -1, NULL, 0, NULL, NULL);
+	if (nLen == 0)
+		return NULL;
+	char* pResult = new char[nLen];
+	WideCharToMultiByte(CP_ACP, 0, szStr, -1, pResult, nLen, NULL, NULL);
+	return pResult;
+}
+
+EXTERN_C API_EXPORT int Loader_Init(HWND hWnd, wchar_t* ck2fullPath) {
 
 	if (Init)
 		return 0;
 
+	char* ck2fullPathAnsi = UnicodeToAnsi(ck2fullPath);
 	char dirPath[512];
-	strcpy(dirPath, ck2fullPath);
+	strcpy(dirPath, ck2fullPathAnsi);
+	delete ck2fullPathAnsi;
 	for (int i = strlen(dirPath) - 1; i >= 0; i--)
 		if (dirPath[i] == '\\') {
 			dirPath[i + 1] = '\0';
@@ -158,12 +170,14 @@ EXTERN_C API_EXPORT void Loader_SolveNmoFileDestroy(void* filePtr) {
 	VirtoolsContext->ClearAll();
 	delete file;
 }
-EXTERN_C API_EXPORT void* Loader_SolveNmoFileRead(char* filePath, int *outErrCode) {
+EXTERN_C API_EXPORT void* Loader_SolveNmoFileRead(wchar_t* filePath, int *outErrCode) {
 
 	// create a ckfile
 	CKFile* f = VirtoolsContext->CreateCKFile();
 	DWORD res = CKERR_INVALIDFILE;
-	res = f->OpenFile(filePath, (CK_LOAD_FLAGS)(CK_LOAD_DEFAULT | CK_LOAD_CHECKDEPENDENCIES));
+	char* filePathAnsi = UnicodeToAnsi(filePath);
+	res = f->OpenFile(filePathAnsi, (CK_LOAD_FLAGS)(CK_LOAD_DEFAULT | CK_LOAD_CHECKDEPENDENCIES));
+	delete filePathAnsi;
 	if (res != CK_OK) {
 		VirtoolsContext->DeleteCKFile(f);
 		VirtoolsLastEror = res;

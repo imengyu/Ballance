@@ -33,7 +33,8 @@
     <Text name="core.ui.MainMenuQuit">退出</Text>
     <Text name="core.ui.MainMenuQuitTitle">你想退出游戏吗？</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">你想重新开始这一关卡吗？</Text>
-    <Text name="core.ui.StartMenuCustom">自定义关卡</Text>
+    <Text name="core.ui.StartMenuCustom">开始自定义关卡</Text>
+    <Text name="core.ui.StartMenuNMO">加载原版 Ballance NMO 关卡</Text>
     <Text name="core.ui.SettingsMenuTilte">设置</Text>
     <Text name="core.ui.SettingsMenuVSync">垂直同步?</Text>
     <Text name="core.ui.SettingsMenuFullScreen">全屏?</Text>
@@ -264,6 +265,7 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     <Text name="core.ui.SettingsClickNTimeToDebugMode">Click {0} again to enter the developer mode</Text>
     <Text name="core.ui.SettingsVersion">Version: {0}</Text>
     <Text name="core.ui.StartThisLevel">Start this Level</Text>
+    <Text name="core.ui.StartMenuNMO">Load the ballance NMO level</Text>
     <Text name="core.ui.PreviewThisLevel">Preview this Level</Text>
     <Text name="core.ui.Refresh">Refresh</Text>
     <Text name="core.ui.FileNotExist">File not exist</Text>
@@ -436,6 +438,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.SettingsClickNTimeToDebugMode">再點擊 {0} 次進入開發者模式</Text>
     <Text name="core.ui.SettingsVersion">版本：{0}</Text>
     <Text name="core.ui.StartThisLevel">遊玩此關卡</Text>
+    <Text name="core.ui.StartMenuNMO">加載原版 Ballance NMO 關卡</Text>
     <Text name="core.ui.PreviewThisLevel">預覽此關卡</Text>
     <Text name="core.ui.Refresh">重繪</Text>
     <Text name="core.ui.FileNotExist">檔案不存在</Text>

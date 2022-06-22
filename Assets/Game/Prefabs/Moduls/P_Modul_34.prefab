@@ -27,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547696244558699939}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0.099995084, y: 2.296629, z: 7.70001}
+  m_LocalRotation: {x: -0.0000010207295, y: 0.7071068, z: 0.7071068, w: 0.0000010207295}
+  m_LocalPosition: {x: 7.7, y: 2.32, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3742572976002767231}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!33 &3370889170497664138
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -139,7 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb668054c1bb70428b8bba9f606dbfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HingeRef: {fileID: 3876340260299911004}
   Other: {fileID: 0}
   force_factor: 1
   damp_factor: 1
@@ -343,8 +342,6 @@ MonoBehaviour:
     componentClassVal: BallancePhysics.Wapper.PhysicsObject
   LuaPublicVars: []
   ExecuteOrder: 0
-  CreateStore: 0
-  CreateActionStore: 0
   DebugLoadScript: 0
   ManualInputScript: 0
   UpdateDelta: 0
@@ -375,14 +372,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9175142106070903127}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0.1, y: -2.48, z: 7.7}
+  m_LocalRotation: {x: -0.0000010207295, y: 0.7071068, z: 0.7071068, w: 0.0000010207295}
+  m_LocalPosition: {x: 7.69999, y: -2.456629, z: -0.020004539}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3742572976002767231}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!33 &64751018227865034
 MeshFilter:
   m_ObjectHideFlags: 0

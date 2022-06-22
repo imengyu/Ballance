@@ -29,7 +29,9 @@ namespace Ballance2.Services.LuaService.Lua
     public delegate object RequireDelegate(string n);
     private static RequireDelegate originalRequire = null;
     private static GamePackageManager pm = null;
+    #if UNITY_EDITOR
     private static string CurrentPath = "";
+    #endif
 
     internal static void SetRequire(LuaFunction fun)
     {

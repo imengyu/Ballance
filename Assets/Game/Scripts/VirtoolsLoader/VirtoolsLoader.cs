@@ -26,19 +26,23 @@ namespace Ballance2
     {
       if (!loaderInited)
       { 
-        string dllDir = Path.GetDirectoryName(ck2DllPath);
+        string dllDir = Path.GetDirectoryName(ck2DllPath).Replace('/', '\\');
 
         VirtoolsLoader.SetDllDirectoryA(dllDir);
 		    VirtoolsLoader.LoadLibraryA(dllDir + "\\VirtoolsNMOLoader.dll");
+
+        IntPtr stringPointer = Marshal.StringToHGlobalUni(ck2DllPath);
 		
-        if (VirtoolsLoaderApi.Loader_Init(IntPtr.Zero, ck2DllPath) == 0)
+        if (VirtoolsLoaderApi.Loader_Init(IntPtr.Zero, stringPointer) == 0)
         {
+          Marshal.FreeHGlobal(stringPointer);
           loaderInited = true;
           Debug.Log("Loader_Init success");
           return true;
         }
         else
         {
+          Marshal.FreeHGlobal(stringPointer);
           Debug.LogError("Loader_Init failed: " + VirtoolsLoaderApi.Loader_GetLastError());
         }
       }
@@ -86,6 +90,14 @@ namespace Ballance2
         ));
       return vertices.ToArray();
     }
+    private static string getObjNameOrPtrName(IntPtr stringPtr, IntPtr objPtr, bool addPtrString = false)
+    {
+      try {
+        return Marshal.PtrToStringAnsi(stringPtr) + (addPtrString ? objPtr.ToInt32() : "");
+      } catch {
+        return "Object" + objPtr.ToInt32();
+      }
+    }
 
     private const int CKCID_GROUP = 23;
     private const int CKCID_MATERIAL = 30;
@@ -106,12 +118,15 @@ namespace Ballance2
     {
 
       //Read file
-      IntPtr nmoFile = VirtoolsLoaderApi.Loader_SolveNmoFileRead(fileFullPath, IntPtr.Zero);
+      IntPtr stringPointer = Marshal.StringToHGlobalUni(fileFullPath.Replace('/', '\\'));
+      IntPtr nmoFile = VirtoolsLoaderApi.Loader_SolveNmoFileRead(stringPointer, IntPtr.Zero);
       if (nmoFile == IntPtr.Zero)
       {
+        Marshal.FreeHGlobal(stringPointer);
         errorCallback("Load nmo " + fileFullPath + " failed: " + VirtoolsLoaderApi.Loader_GetLastError());
         return null;
       }
+      Marshal.FreeHGlobal(stringPointer);
       Debug.Log("Load nmo " + fileFullPath + " success");
 
       try {
@@ -139,13 +154,14 @@ namespace Ballance2
           objPtr = VirtoolsLoaderApi.Loader_SolveNmoFileGetNext(nmoFile, classIdPtr, objNamePtr);
           if (objPtr == IntPtr.Zero)
             continue;
-          objName = Marshal.PtrToStringAnsi(objNamePtr);
           classId = Marshal.ReadInt32(classIdPtr);
 
           switch (classId)
           {
             case CKCID_3DOBJECT:
               {
+                objName = getObjNameOrPtrName(objNamePtr, objPtr, true);
+
                 //Read 3d Entity
                 //================================
                 IntPtr infoPtr = VirtoolsLoaderApi.Loader_SolveNmoFile3dEntity(objPtr);
@@ -176,7 +192,7 @@ namespace Ballance2
                   IntPtr meshPtr = VirtoolsLoaderApi.Loader_CK3dEntityGetMeshObj(objPtr, i);
                   IntPtr meshInfoPtr = VirtoolsLoaderApi.Loader_SolveNmoFileMesh(meshPtr);
                   IntPtr meshNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(meshPtr);
-                  string meshName = Marshal.PtrToStringAnsi(meshNamePtr);
+                  string meshName = getObjNameOrPtrName(meshNamePtr, meshPtr);
                   Loader_MeshInfo meshInfo = (Loader_MeshInfo)Marshal.PtrToStructure(meshInfoPtr, typeof(Loader_MeshInfo));
                   VirtoolsLoaderApi.Loader_Free(meshInfoPtr);
 
@@ -276,7 +292,7 @@ namespace Ballance2
                       //Read info
                       IntPtr matPtr = VirtoolsLoaderApi.Loader_CKMeshGetMaterialObj(meshPtr, j, outMaterialFacesCountPtr, outMaterialFacesPtrPtr);
                       IntPtr matNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matPtr);
-                      string matName = Marshal.PtrToStringAnsi(matNamePtr);
+                      string matName = getObjNameOrPtrName(matNamePtr, matPtr);
 
                       int outMaterialFacesCount = Marshal.ReadInt32(outMaterialFacesCountPtr);
                       IntPtr outMaterialFacesPtr = Marshal.ReadIntPtr(outMaterialFacesPtrPtr);
@@ -326,7 +342,7 @@ namespace Ballance2
                           if (matInfo.textureObject != IntPtr.Zero)
                           {
                             IntPtr texNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matInfo.textureObject);
-                            string texName = Marshal.PtrToStringAnsi(texNamePtr);
+                            string texName = getObjNameOrPtrName(texNamePtr, matInfo.textureObject);
 
                             //Try find our texture
                             Texture tex = texCallback(texName);
@@ -404,6 +420,8 @@ namespace Ballance2
               }
             case CKCID_GROUP:
               {
+                objName = getObjNameOrPtrName(objNamePtr, objPtr);
+
                 //Build group info
                 if (!result.groupList.ContainsKey(objName))
                   result.groupList.Add(objName, new List<string>());
@@ -419,7 +437,7 @@ namespace Ballance2
                   IntPtr objGroupPtr = VirtoolsLoaderApi.Loader_CKGroupGetObject(objPtr, i, groupObjClassIdPtr, groupObjNamePtr);
                   if (objGroupPtr != IntPtr.Zero && Marshal.ReadInt32(groupObjClassIdPtr) == CKCID_3DOBJECT)
                   {
-                    groupName.Add(Marshal.PtrToStringAnsi(groupObjNamePtr));//添加名称到组
+                    groupName.Add(getObjNameOrPtrName(groupObjNamePtr, objGroupPtr, true));//添加名称到组
                   }
                 }
                 Marshal.FreeHGlobal(groupObjNamePtr);

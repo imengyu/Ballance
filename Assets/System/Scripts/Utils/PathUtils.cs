@@ -36,7 +36,7 @@ namespace Ballance2.Utils
     {
 #if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN
       if (path.Length > 2)
-        return path[1] == ':' && ((path.Length > 3 && path[2] == '\\' && path[3] == '\\') || path[2] == '/');
+        return path[1] == ':' && (path[2] == '\\' || path[2] == '/');
       return false;
 #elif (UNITY_EDITOR && UNITY_EDITOR_OSX) || UNITY_ANDROID || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX
       return path.StartsWith("/");

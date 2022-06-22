@@ -32,14 +32,14 @@ struct Loader_3dEntityInfo {
 #ifdef __cplusplus
 EXTERN_C {
 #endif //  __cplusplus
-  API_EXPORT int Loader_Init(HWND hWnd, char* ck2fullPath);
+  API_EXPORT int Loader_Init(HWND hWnd, wchar_t* ck2fullPath);
   API_EXPORT int Loader_Destroy();
 	API_EXPORT int Loader_GetLastError();
 	API_EXPORT void Loader_Free(void* ptr);
 	API_EXPORT void Loader_SolveNmoFileReset(void* filePtr);
 	API_EXPORT void* Loader_SolveNmoFileGetNext(void* filePtr, int* classIdOut, char* nameOutBuffer);
 	API_EXPORT void Loader_SolveNmoFileDestroy(void* filePtr);
-	API_EXPORT void* Loader_SolveNmoFileRead(char* filePath, int* outErrCode);
+	API_EXPORT void* Loader_SolveNmoFileRead(wchar_t* filePath, int* outErrCode);
 	API_EXPORT int Loader_CKGroupGetObjectCount(void* objPtr);
 	API_EXPORT void* Loader_CKGroupGetObject(void* objPtr, int pos, int* classIdOut, char* nameOutBuffer);
 	API_EXPORT int Loader_CK3dEntityGetMeshCount(void* objPtr);

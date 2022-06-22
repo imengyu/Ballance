@@ -2,6 +2,7 @@ local GameManager = Ballance2.Services.GameManager
 local GameUIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
 local GamePackage = Ballance2.Package.GamePackage
 local GameSoundType = Ballance2.Services.GameSoundType
+local GameLevelLoaderNative = Ballance2.Game.GameLevelLoaderNative
 local I18N = Ballance2.Services.I18N.I18N
 local SystemPackage = GamePackage.GetCorePackage()
 local Application = UnityEngine.Application
@@ -50,6 +51,10 @@ function CreateMenuLevelUI(package)
         if i < 10 then name = name..'0'..i else name = name..i; end
         button.interactable = HighscoreManager.CheckLevelPassState(name)
       end
+      --非 windows 隐藏此按扭
+      if not UNITY_STANDALONE_WIN then
+        PageStart.Content:Find('ButtonNMO').gameObject:SetActive(false)
+      end
     end
 
     Yield(WaitForSeconds(0.1))
@@ -69,6 +74,17 @@ function CreateMenuLevelUI(package)
     MessageCenter:SubscribeEvent('BtnCustomLevelClick', function () 
       GameManager.GameMediator:NotifySingleEvent('PageStartCustomLevelLoad')
       GameUIManager:GoPage('PageStartCustomLevel') 
+    end )
+    MessageCenter:SubscribeEvent('BtnCustomNMOLevelClick', function () 
+      GameLevelLoaderNative.PickLevelFile('.nmo', function (path)
+        --播放加载声音
+        Game.SoundManager:PlayFastVoice('core.sounds:Menu_load.wav', GameSoundType.Normal)
+        Game.UIManager:MaskBlackFadeIn(1)
+        --加载
+        LuaTimer.Add(1000, function ()  
+          GameManager.GameMediator:NotifySingleEvent('CoreStartLoadLevel', { path })
+        end)
+      end)
     end )
     MessageCenter:SubscribeEvent('BtnAboutClick', function () GameUIManager:GoPage('PageAbout') end)
     MessageCenter:SubscribeEvent('BtnSettingsClick', function () GameUIManager:GoPage('PageSettings') end)

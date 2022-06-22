@@ -6,8 +6,7 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using Ballance2.Res;
 using Ballance2.Utils;
-using static Ballance2.VirtoolsLoader;
-using Ballance2.Package;
+using SimpleFileBrowser;
 
 /*
  * Copyright (c) 2020  mengyu
@@ -136,6 +135,12 @@ namespace Ballance2.Game
   {
     private readonly string TAG = "GameLevelLoaderNative";
 
+    /// <summary>
+    /// 加载关卡
+    /// </summary>
+    /// <param name="name">名称或者路径</param>
+    /// <param name="callback">成功回调</param>
+    /// <param name="errCallback">失败回调</param>
     public void LoadLevel(string name, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {
 #if UNITY_EDITOR
@@ -152,13 +157,20 @@ namespace Ballance2.Game
 #endif
       {
         //路径
-        string path = PathUtils.FixFilePathScheme(GamePathManager.GetLevelRealPath(name.ToLower(), false));
+        string path = name;
+        if (!PathUtils.IsAbsolutePath(path))
+          path = GamePathManager.GetLevelRealPath(name.ToLower(), false);
+
+        //去除file://前缀
+        path = PathUtils.FixFilePathScheme(path);
+        //jar特殊处理
         if(!path.Contains("jar:file://") && !File.Exists(path))
         {
           Log.E(TAG, "File not exist : {0}", path);
           errCallback("FILE_NOT_EXISTS", "File not exist: \"" + path + "\"");
           return;
         }
+        //osx前缀 file://
         #if UNITY_STANDALONE_OSX || UNITY_IOS
         if(!path.Contains("jar:file://"))
           path = "file://" + path;
@@ -166,9 +178,10 @@ namespace Ballance2.Game
 
         //加载NMO
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-        Log.D(TAG, "Load nmo file : {0}", path);
-        if (Path.GetExtension(path) == ".nmo" || Path.GetExtension(path) == ".cmo") {
-          StartCoroutine(LoaderNMO(new GameLevelLoaderNMO.LevelNMOAssets(path), callback, errCallback));
+        var ext = Path.GetExtension(path).ToLower();
+        Log.D(TAG, "Load nmo file : {0} ext: {1}", path, ext);
+        if (ext == ".nmo" || ext == ".cmo") {
+          StartCoroutine(GameLevelLoaderNMO.LoaderNMO(new LevelNMOAssets(path), callback, errCallback));
           return;
         }
 #endif
@@ -177,6 +190,10 @@ namespace Ballance2.Game
         StartCoroutine(Loader(new LevelAssets(path), callback, errCallback));
       }
     }
+    /// <summary>
+    /// 卸载关卡
+    /// </summary>
+    /// <param name="level">LoadLevel 返回的关卡实例</param>
     public void UnLoadLevel(LevelAssets level)
     {
       if (level != null && level.AssetBundle != null) {
@@ -184,7 +201,18 @@ namespace Ballance2.Game
         level.AssetBundle = null;
       }
     }
-    
+    /// <summary>
+    /// 打开文件选择器选择一个关卡文件
+    /// </summary>
+    /// <param name="ext">文件后缀名，包括点</param>
+    /// <param name="callback">成功回调</param>
+    public static void PickLevelFile(string ext, GameLevelLoaderNativeErrCallback callback) {
+      FileBrowser.SetFilters(false, ext);
+      FileBrowser.ShowLoadDialog((paths) => {
+        callback(paths[0], "");
+      }, () => {}, FileBrowser.PickMode.Files);
+    }
+
     private IEnumerator Loader(LevelAssets level, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {
       if (!level.LoadInEditor)
