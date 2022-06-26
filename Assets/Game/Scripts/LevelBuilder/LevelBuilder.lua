@@ -384,13 +384,13 @@ function LevelBuilder:_LoadLevelInternal()
       local flame = nil
 
       if i == 1 then
-        flame = self:ReplacePrefab(level.internalObjects.PS_LevelStart, self:FindRegisterModul('PS_LevelStart'))
+        flame = self:ReplacePrefab(level.internalObjects.PS_LevelStart, self:FindRegisterModul('PS_LevelStart'), level.internalObjects.PS_LevelStartRotationCorrecting)
         if flame == nil then
           self:UpdateErrStatus(true, 'OBJECT_MISSING', 'Object \'PS_LevelStart\' is missing')
           return
         end
       else
-        flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'))
+        flame = self:ReplacePrefab(level.internalObjects.PC_CheckPoints[tostring(i)], self:FindRegisterModul('PC_CheckPoints'), level.internalObjects.PC_CheckPointsRotationCorrecting)
         if flame == nil then
           self:UpdateErrStatus(true, 'OBJECT_MISSING', 'Object \'PC_CheckPoints.'..i..'\' is missing')
           return
@@ -419,7 +419,7 @@ function LevelBuilder:_LoadLevelInternal()
     end
     --加载结尾
     -----------------------------
-    SectorManager.CurrentLevelEndBalloon = self:ReplacePrefab(level.internalObjects.PE_LevelEnd, self:FindRegisterModul('PE_LevelEnd'))
+    SectorManager.CurrentLevelEndBalloon = self:ReplacePrefab(level.internalObjects.PE_LevelEnd, self:FindRegisterModul('PE_LevelEnd'), nil)
     if SectorManager.CurrentLevelEndBalloon == nil then
       self:UpdateErrStatus(true, 'OBJECT_MISSING', '\'level.internalObjects.PE_LevelEnd\' => \''..level.internalObjects.PE_LevelEnd..'\' not found')
       return
@@ -461,8 +461,16 @@ function LevelBuilder:_LoadLevelInternal()
               if meshFilter ~= nil and meshFilter.mesh  ~= nil then
                 go.transform:SetParent(floorStatic.transform)
                 go.tag = floor.name
-                go:AddComponent(MeshCollider)
-                local body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+                if go:GetComponent(MeshCollider) == nil then
+                  go:AddComponent(MeshCollider)
+                end
+                if go:GetComponent(MeshCollider) == nil then
+                  go:AddComponent(MeshCollider)
+                end
+                local body = go:GetComponent(PhysicsObject) ---@type PhysicsObject
+                if body == nil then
+                  body = go:AddComponent(PhysicsObject) ---@type PhysicsObject
+                end
                 body.DoNotAutoCreateAtAwake = true
                 body.Fixed = true
                 body.Concave:Add(meshFilter.mesh)
@@ -472,9 +480,6 @@ function LevelBuilder:_LoadLevelInternal()
                 body.Layer = physicsData.Layer
                 body.CollisionID = GamePlay.BallSoundManager:GetSoundCollIDByName(physicsData.CollisionLayerName)
                 body:Physicalize()
-                if go:GetComponent(MeshCollider) == nil then
-                  go:AddComponent(MeshCollider)
-                end
 
                 if physicsData.HitSound then
                   local hitSound = Game.SoundManager:RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, 'Floor_'..name..'_HitSound')
@@ -516,11 +521,19 @@ function LevelBuilder:_LoadLevelInternal()
 
       self:UpdateLoadProgress(0.3)
 
+      local lowerY = -1000; --最低y坐标
+
       --加载坠落检测区
       -----------------------------
       for _, name in ipairs(level.depthTestCubes) do
         local go = GameObject.Find(name)
         if go ~= nil then
+
+          --计算最低y坐标，用于坠落回收物体
+          local y = go.transform.position.y
+          if y < lowerY then
+            lowerY = y
+          end
 
           --禁用Renderer使物体隐藏
           local renderer = go:GetComponent(Renderer) ---@type Renderer
@@ -542,6 +555,9 @@ function LevelBuilder:_LoadLevelInternal()
           Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
         end
       end
+
+      --设置回收y坐标
+      Game.GamePlay.GamePlayManager.GamePhysicsWorld.DePhysicsFall = lowerY
         
     else
       --加载坠落检测区信息
@@ -583,6 +599,7 @@ function LevelBuilder:_LoadLevelInternal()
     local tickCount = 0
     for _, group in ipairs(level.groups) do
       local modul = self:FindRegisterModul(group.name)
+      local rotationCorrecting = group.rotationCorrecting;
       if modul ~= nil then
         
         local modulCount = 0
@@ -597,7 +614,7 @@ function LevelBuilder:_LoadLevelInternal()
             tickCount = 0
           end
 
-          local m = self:ReplacePrefab(name, modul)
+          local m = self:ReplacePrefab(name, modul, rotationCorrecting)
           if m ~= nil then
             tickCount = tickCount + 1
             modulCount = modulCount + 1
@@ -850,11 +867,18 @@ function LevelBuilder:_LoadLevelInternal()
   end
 end
 
+---@class LevelBuilderModulRotationCorrecting
+---@field x number
+---@field y number
+---@field z number
+LevelBuilderModulRotationCorrecting = {}
+
 ---替换占位符并生成机关
 ---@param objName string 占位符的名称
 ---@param modulPrefab LevelBuilderModulRegStorage 机关预制体
+---@param rotationCorrecting LevelBuilderModulRotationCorrecting 机关预制体
 ---@return ModulBase|nil 返回机关类，如果出现错误则返回nil
-function LevelBuilder:ReplacePrefab(objName, modulPrefab)
+function LevelBuilder:ReplacePrefab(objName, modulPrefab, rotationCorrecting)
   --检查同名机关
   if self._CurrentLevelModuls[objName] ~= nil then
     Log.E(TAG, 'Find modul with the same name \''..objName..'\'')
@@ -873,6 +897,22 @@ function LevelBuilder:ReplacePrefab(objName, modulPrefab)
   --同步机关位置
   modul.transform.position = obj.transform.position
   modul.transform.rotation = obj.transform.rotation
+
+  if type(rotationCorrecting) == 'table' then
+    --机关旋转修正
+    local eulerAngles = modul.transform.eulerAngles;
+    local pos = modul.transform.position;
+    if math.abs(rotationCorrecting.y) > 0 then
+      modul.transform:RotateAround(pos, eulerAngles.up, rotationCorrecting.y)
+    end
+    if math.abs(rotationCorrecting.x) > 0 then
+      modul.transform:RotateAround(pos,  eulerAngles.forward, rotationCorrecting.x)
+    end
+    if math.abs(rotationCorrecting.z) > 0 then
+      modul.transform:RotateAround(pos,  eulerAngles.right, rotationCorrecting.z)
+    end
+  end
+
   --获取类
   local modulClass = GameLuaObjectHost.GetLuaClassFromGameObject(modul) ---@type ModulBase 
   if not modulClass then

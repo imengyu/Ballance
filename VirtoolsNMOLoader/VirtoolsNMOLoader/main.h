@@ -45,6 +45,7 @@ EXTERN_C {
 	API_EXPORT int Loader_CK3dEntityGetMeshCount(void* objPtr);
 	API_EXPORT void* Loader_CK3dEntityGetMeshObj(void* objPtr, int index);
 	API_EXPORT void* Loader_CKObjectGetName(void* objPtr);
+	API_EXPORT int Loader_CKObjectIsHidden(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFileMesh(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr);
 	API_EXPORT void* Loader_SolveNmoFileMaterial(void* objPtr, void* nmoFilePtr);

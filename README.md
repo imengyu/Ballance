@@ -19,6 +19,7 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 
 本项目相对于原版增加了以下一些特性：
 
+* **直接加载 NMO 文件**（仅Windows版本）
 * Android 版本、Mac版本（你也可以尝试编译其他平台）
 * 无须兼容模式运行，调整窗口化、全屏、分辨率、帧率、物理速率、球速
 * 自制地图接口（以魔脓空间站为例）
@@ -55,7 +56,7 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 
 ## 安装
 
-1. 前往 [Releases](https://github.com/imengyu/Ballance/releases) 找到最新版本。
+1. 前往 Releases 找到最新版本。
 2. 下载对应的 zip 安装包。
 3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
 
@@ -74,6 +75,21 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 3. 打开 `Scenes/MainScene.unity` 场景。
 4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
 5. 点击运行，即可查看效果。
+
+## 直接加载 NMO 文件 【NEW】
+
+Ballance Unity Rebuild 0.9.8 版本支持了加载 Ballance 原版关卡文件的功能。
+
+你可以加载通过点击 “开始” > “加载原版 Ballance NMO 关卡” 来加载一个标准的原版关卡。
+
+核心使用 Virtools SDK 5.0 来处理 NMO 文件，因此只支持 Windows 32位 版本。
+
+大部分关卡可以加载成功并且游玩，但目前有少数限制：
+
+* 不能加载带有 Virtools 脚本的关卡。
+* 不支持 Virtools 的点、线网格。
+* 材质不支持 Virtools 的特殊效果，将使用默认材质代替。
+* 不支持设置关卡天空盒、关卡分数，没有背景音乐。
 
 ## 从项目源码生成游戏程序
 

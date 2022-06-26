@@ -4,20 +4,30 @@
 
 ## Introduction
 
-This is an open source unity remake version of ballance game.
+This is an open source unity remake of ballance game
+
+Ballance unity rebuild is a small dream of the author. I hope that ballance can run on more platforms, can make levels easier, make modules for expanding functions (the latter has been developed by [ballancemodloader](https://github.com/Gamepiaynmo/BallanceModLoader).
+
+This project is completely open source. You can compile, modify and expand the content of the game by yourself.
+
+The project has completed the features of the original version:
+
+* Original game content
+* Level 1-13 game content
+* Physical effect similarity 85%
+
+Compared with the original version, this project has added the following features:
+
+* **Load NMO files directly** (Windows version only)
+* Android version, Mac version (You can also try to compile other platforms)
+* Self made map interface
+* Lua module, modul interface (Use Lua to develop mod or custom modules)
+* Level previewer
+* Mod manager
 
 ![image](/Assets/System/Textures/splash_app.bmp)
 
 ---
-
-## Features
-
-* Original game content
-* Level 1-13
-* Custom level (魔脓空间站 as an example)
-* Level previewer
-* Mod manager
-* **Using Lua to make custom mod**
 
 ## Document
 
@@ -46,6 +56,20 @@ Minimum requirements
 1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version.
 2. Download the corresponding zip installation package.
 3. Unzip all files, then run `ballance.exe` to start the game.
+
+## Directly load NMO file [new]
+
+Ballance Unity Rebuild Version 0.9.8 supports the function of loading the original level file of ballance.
+
+You can load a standard original ballance NMO level by clicking start > Load original ballance NMO level.
+
+The core uses the Virtools SDK 5.0 to process NMO files, so only the windows 32-bit version is supported.
+
+Most levels can be loaded successfully and played, but there are a few restrictions:
+
+* Cannot load level with Virtools script.
+* Point and line mesh of Virtools are not supported.
+* The material does not support the special effect of Virtools. The default material will be used instead.
 
 ## Turn on debugging mode
 

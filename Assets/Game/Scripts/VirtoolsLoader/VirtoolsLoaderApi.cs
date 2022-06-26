@@ -40,6 +40,8 @@ namespace Ballance2 {
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_CKObjectGetName(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
+    public static extern int Loader_CKObjectIsHidden(IntPtr objPtr);
+    [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_SolveNmoFileMesh(IntPtr objPtr);
     [DllImport(DLL_NNAME, CallingConvention = CallingConvention.Cdecl)] 
     public static extern IntPtr Loader_SolveNmoFile3dEntity(IntPtr objPtr);

@@ -253,6 +253,9 @@ EXTERN_C API_EXPORT void* Loader_CKMeshGetMaterialObj(void* objPtr, int index, i
 EXTERN_C API_EXPORT void* Loader_CKObjectGetName(void* objPtr) {
 	return ((CKObject*)objPtr)->GetName();
 }
+EXTERN_C API_EXPORT int Loader_CKObjectIsHidden(void* objPtr) {
+	return ((CKObject*)objPtr)->IsVisible() == FALSE;
+}
 
 EXTERN_C API_EXPORT void* Loader_SolveNmoFile3dEntity(void* objPtr) {
 	CK3dEntity* obj = (CK3dEntity*)objPtr;

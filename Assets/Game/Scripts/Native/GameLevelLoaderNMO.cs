@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static Ballance2.VirtoolsLoader;
 using Ballance2.Package;
@@ -65,9 +66,32 @@ namespace Ballance2.Game
   //NMO 关卡加载器
   public class GameLevelLoaderNMO 
   {
+    private static Dictionary<string, float> modelRotationCorrecting = new Dictionary<string, float>();
+
+    private static void initAllModelRotationCorrecting() {
+      //从nmo导入的机关，旋转有问题，需要转一下
+      if (modelRotationCorrecting.Count == 0) {
+        modelRotationCorrecting.Add("PC_CheckPoints", 90);
+        modelRotationCorrecting.Add("PS_LevelStart", 90);
+        modelRotationCorrecting.Add("P_Modul_03", 90);
+        modelRotationCorrecting.Add("P_Modul_25", 90);
+        modelRotationCorrecting.Add("P_Modul_26", 90);
+        modelRotationCorrecting.Add("P_Modul_29", -180);
+        modelRotationCorrecting.Add("P_Modul_30", -180);
+        modelRotationCorrecting.Add("P_Modul_37", 90);
+        modelRotationCorrecting.Add("P_Modul_34", 180);
+      }
+    }
+    private static float getModelRotationCorrecting(string groupName) {
+      if (modelRotationCorrecting.TryGetValue(groupName, out var v))
+        return v;
+      return 0;
+    }
+
 #if UNITY_STANDALONE_WIN
     public static IEnumerator LoaderNMO(LevelAssets level, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback) 
     {
+      initAllModelRotationCorrecting();
       VirtoolsLoader.Init(Application.dataPath + "\\VirtoolsLoader\\CK2.dll");
       var result = VirtoolsLoader.LoadNMOToScense(level.Path, 
         MaterialCallback, 
@@ -104,12 +128,15 @@ namespace Ballance2.Game
       levelInfo.Add(new JProperty("autoGroup", false));
 
       //Sky layer
-      if (assets.result.objectNameList.ContainsKey("SkyLayer"))
-        levelInfo.Add(new JProperty("skyLayer", "SkyLayer"));
-      else if (assets.result.objectNameList.ContainsKey("SkyVoterx"))
-        levelInfo.Add(new JProperty("skyLayer", "SkyVoterx"));
-      else 
-        levelInfo.Add(new JProperty("skyLayer", ""));
+      foreach(var key in assets.result.objectNameList.Keys) {
+        if (key.StartsWith("SkyLayer")) {
+          levelInfo.Add(new JProperty("skyLayer", "SkyLayer"));
+          break;
+        } else {
+          levelInfo.Add(new JProperty("skyLayer", "SkyVoterx"));
+          break;
+        }
+      }
 
       //从组信息生成关卡信息
       var groupList = assets.result.groupList;
@@ -133,6 +160,11 @@ namespace Ballance2.Game
           //机关信息
           groups.Add(new JObject(
             new JProperty("name", key),
+            new JProperty("rotationCorrecting", new JObject(
+              new JProperty("x", 0),
+              new JProperty("y", getModelRotationCorrecting(key)),
+              new JProperty("z", 0)
+            )),
             new JProperty("objects", new JArray(groupList[key]))
           ));
 
@@ -144,14 +176,25 @@ namespace Ballance2.Game
           internalObjects.Add("PR_ResetPoints", objects);
         } else if (key == "PC_Checkpoints") {
           var array = groupList[key];
+          array.Sort();
           JObject objects = new JObject();
           for(int i = 0; i < array.Count; i++) 
             objects.Add((i + 2).ToString(), array[i]);
+          internalObjects.Add("PC_CheckPointsRotationCorrecting", new JObject(
+            new JProperty("x", 0),
+            new JProperty("y", getModelRotationCorrecting("PC_CheckPoints")),
+            new JProperty("z", 0)
+          ));
           internalObjects.Add("PC_CheckPoints", objects);
         } else if (key == "PS_Levelstart") {
           var array = groupList[key];
           if (array.Count > 0)
             internalObjects.Add("PS_LevelStart", array[0]);
+          internalObjects.Add("PS_LevelStartRotationCorrecting", new JObject(
+            new JProperty("x", 0),
+            new JProperty("y", getModelRotationCorrecting("PS_LevelStart")),
+            new JProperty("z", 0)
+          ));
         } else if (key == "PE_Levelende") {
           var array = groupList[key];
           if (array.Count > 0)
@@ -173,7 +216,7 @@ namespace Ballance2.Game
             new JProperty("name", "Phys_FloorWoods"),
             new JProperty("objects", new JArray(arrayWood))
           ));
-          //去掉路面组中的木制路面
+          //去掉路面组中的木制路面,防止重复添加
           arrayFloors.RemoveAll((v) => arrayWood.Contains(v));
         }
 
@@ -187,6 +230,13 @@ namespace Ballance2.Game
         floors.Add(new JObject(
           new JProperty("name", "Phys_FloorRails"),
           new JProperty("objects", new JArray(arrayRails))
+        ));
+      }
+      //挡板
+      if (groupList.TryGetValue("Phys_FloorStopper", out var stopperRails)) {
+        floors.Add(new JObject(
+          new JProperty("name", "Phys_FloorStopper"),
+          new JProperty("objects", new JArray(stopperRails))
         ));
       }
 

@@ -86,7 +86,7 @@ namespace Ballance2
       for (var j = 0; j < vec2Count; j++)
         vertices.Add(new Vector2(
           verticesPure[j * 2],
-          verticesPure[j * 2 + 1]
+          -verticesPure[j * 2 + 1]
         ));
       return vertices.ToArray();
     }
@@ -183,6 +183,12 @@ namespace Ballance2
                 go.transform.localScale = new Vector3(info.scaleX, info.scaleY, info.scaleZ);
                 MeshFilter meshFilter = go.AddComponent<MeshFilter>();
                 MeshRenderer meshRenderer = go.AddComponent<MeshRenderer>();
+
+                //Hidden object
+                if (VirtoolsLoaderApi.Loader_CKObjectIsHidden(objPtr) > 0) {
+                  meshRenderer.enabled = false;
+                  continue;
+                }
 
                 //Read Mesh
                 //================================
@@ -293,6 +299,9 @@ namespace Ballance2
                       IntPtr matPtr = VirtoolsLoaderApi.Loader_CKMeshGetMaterialObj(meshPtr, j, outMaterialFacesCountPtr, outMaterialFacesPtrPtr);
                       IntPtr matNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matPtr);
                       string matName = getObjNameOrPtrName(matNamePtr, matPtr);
+                      int copyIndex = matName.IndexOf(".Copy");
+                      if (copyIndex > 0)
+                        matName = matName.Substring(0, copyIndex);
 
                       int outMaterialFacesCount = Marshal.ReadInt32(outMaterialFacesCountPtr);
                       IntPtr outMaterialFacesPtr = Marshal.ReadIntPtr(outMaterialFacesPtrPtr);
@@ -343,6 +352,9 @@ namespace Ballance2
                           {
                             IntPtr texNamePtr = VirtoolsLoaderApi.Loader_CKObjectGetName(matInfo.textureObject);
                             string texName = getObjNameOrPtrName(texNamePtr, matInfo.textureObject);
+                            copyIndex = texName.IndexOf(".Copy");
+                            if (copyIndex > 0)
+                              texName = texName.Substring(0, copyIndex);
 
                             //Try find our texture
                             Texture tex = texCallback(texName);

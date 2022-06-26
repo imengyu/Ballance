@@ -5,18 +5,6 @@ local Quaternion = UnityEngine.Quaternion
 local Time = UnityEngine.Time
 local CamFollow = Ballance2.Game.CamFollow
 
----摄像机旋转方向
-CamRotateType = {
-  ---北。面向+X轴。
-  North = 0,
-  ---东。面向-Z轴。
-  East = 1,
-  ---南。面向-X轴。
-  South = 2,
-  ---西。面向+Z轴。
-  West = 3,
-}
-
 ---摄像机管理器，负责游戏中的摄像机运动。
 ---@class CamManager : GameLuaObjectHostClass
 ---@field _CamOrient GameObject
@@ -38,7 +26,7 @@ CamRotateType = {
 ---@field CamBackVector Vector3 获取摄像机向后向量 [R]
 ---@field CamFollowSpeed number 摄像机跟随速度 [RW]
 ---@field CamIsSpaced boolean 获取摄像机是否空格键升高了 [R]
----@field CamRotateValue number 获取当前摄像机方向（0-3, CamRotateType） [R] @see CamRotateType 设置请使用 RotateTo 方法
+---@field CamRotateValue number 获取当前摄像机方向 [R] 设置请使用 RotateTo 方法
 ---@field CamFollow CamFollow 获取摄像机跟随脚本 [R]
 CamManager = ClassicObject:extend()
 
@@ -57,7 +45,8 @@ function CamManager:new()
   self.CamFollowSpeed = 0.05
   self.CamIsSpaced = false
   self.Target = nil
-  self.CamRotateValue = CamRotateType.North
+  self.CamRotateValue = 0
+  self._CamRotateValueNow = 0
 
   self._CamIsRotateing = false
   self._CamRotateTick = 0
@@ -72,7 +61,6 @@ function CamManager:new()
     y = 0
   }
   self._CamOutSpeed = Vector3.zero
-  self._CamRotate = 0
   self._CamRotateStartDegree = 0
   self._CamRotateTargetDegree = 0
 
@@ -135,8 +123,13 @@ function CamManager:FixedUpdate()
     self._CamRotateTick = self._CamRotateTick + Time.deltaTime
 
     local v = self._CamRotateSpeedCurve:Evaluate(self._CamRotateTick / self._CameraRotateTime)
-    self._CamOrientTransform.localEulerAngles = Vector3(0, self._CamRotateStartDegree + v * self._CamRotateTargetDegree, 0)
+    
+    self._CamRotateValueNow = self._CamRotateStartDegree + v * self._CamRotateTargetDegree
+    self._CamOrientTransform.localEulerAngles = Vector3(0, self._CamRotateValueNow, 0)
+
     if v >= 1 then
+      self._CamRotateValueNow = self._CamRotateStartDegree + self._CamRotateTargetDegree
+      self._CamOrientTransform.localEulerAngles = Vector3(0, self._CamRotateValueNow, 0)
       self._CamIsRotateing = false
       self:ResetVector()
     end
@@ -167,28 +160,9 @@ function CamManager:ResetVector()
   self.CamForwerdVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.forward
   self.CamBackVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.back
 end
----通过旋转方向获取目标角度
----@param type number CamRotateType
-function CamManager:GetRotateDegreeByType(type)
-  if type == CamRotateType.North then return 90
-  elseif type == CamRotateType.East then return 180
-  elseif type == CamRotateType.South then return 270
-  elseif type == CamRotateType.West then return 0
-  end
-  return 0
-end
 function CamManager:_UpdateStateForDebugStats()
   if BALLANCE_DEBUG then 
-    if self.CamRotateValue == CamRotateType.North then 
-      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'North'
-    elseif self.CamRotateValue == CamRotateType.East then 
-      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'East'
-    elseif self.CamRotateValue == CamRotateType.South then 
-      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'South'
-    elseif self.CamRotateValue == CamRotateType.West then 
-      GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = 'West'
-    end
-
+    GameUI.GamePlayUI._DebugStatValues['CamDirection'].Value = tostring(self._CamOrientTransform.localEulerAngles.y)
     GameUI.GamePlayUI._DebugStatValues['CamState'].Value = 'IsSpaced: '..tostring(self.CamIsSpaced)
       ..' Follow: '..tostring(self.CamFollow.Follow)..' Look: '..tostring(self.CamFollow.Look)
   end
@@ -200,22 +174,16 @@ end
 ---@param go GameObject RestPoint占位符
 function CamManager:SetPosAndDirByRestPoint(go) 
   local rot = go.transform.eulerAngles.y
-  local type = 0
   rot = rot % 360
   if rot < 0 then rot = rot + 360 
   elseif rot > 315 then rot = rot - 360 
   end
 
-  if rot >= -45 and rot < 45 then type = CamRotateType.South
-  elseif rot >= 45 and rot < 135 then type = CamRotateType.West
-  elseif rot >= 135 and rot < 225 then type = CamRotateType.North
-  elseif rot >= 225 and rot < 315 then type = CamRotateType.East
-  end
-
-  self._CamOrientTransform.eulerAngles = Vector3(0, self:GetRotateDegreeByType(type), 0)
+  self._CamOrientTransform.localEulerAngles = Vector3(0, rot - 90, 0)
   self._CamTarget.position = go.transform.position
   self.transform.position = self._CamPosFrame.position
-  self.CamRotateValue = type
+  self.CamRotateValue = rot - 90
+  self._CamRotateValueNow = rot - 90
   self:ResetVector()
   self:_UpdateStateForDebugStats()
   return self
@@ -239,54 +207,23 @@ function CamManager:RotateUp(enable)
   self:_UpdateStateForDebugStats()
   return self
 end
----摄像机旋转指定角度
----@param val number 旋转方向 CamRotateValue
-function CamManager:RotateTo(val)
-  self.CamRotateValue = val
-  local target = self:GetRotateDegreeByType(self.CamRotateValue)
-
-  self._CamRotateStartDegree = self._CamOrientTransform.eulerAngles.y
-  if(target > self._CamRotateStartDegree) then
-    target = target - 360
-  end 
-
-  self._CamRotateTargetDegree = target - self._CamRotateStartDegree
-  self._CamRotateTick = 0
-  self._CamIsRotateing = true
-  self.EventRotateDirectionChanged:Emit(self._CamRotateTargetDegree)
-  self:_UpdateStateForDebugStats()
-  return self
-end
 ---摄像机向右旋转
 function CamManager:RotateRight()
-  self.CamRotateValue = self.CamRotateValue - 1
-  if(self.CamRotateValue < 0) then self.CamRotateValue = 3 end
-  local target = self:GetRotateDegreeByType(self.CamRotateValue)
-
-  self._CamRotateStartDegree = self._CamOrientTransform.eulerAngles.y
-  if(target > self._CamRotateStartDegree) then
-    target = target - 360
-  end 
-
-  self._CamRotateTargetDegree = target - self._CamRotateStartDegree
-  self._CamRotateTick = 0
-  self._CamIsRotateing = true
-  self.EventRotateDirectionChanged:Emit(self._CamRotateTargetDegree)
-  self:_UpdateStateForDebugStats()
+  self:RotateDregree(90)
   return self
 end
 ---摄像机向左旋转
 function CamManager:RotateLeft()
-  self.CamRotateValue = self.CamRotateValue + 1
-  if(self.CamRotateValue > 3) then self.CamRotateValue = 0 end
-  local target = self:GetRotateDegreeByType(self.CamRotateValue)
-
-  self._CamRotateStartDegree = self._CamOrientTransform.eulerAngles.y
-  if(target < self._CamRotateStartDegree) then
-    target = target + 360
-  end 
-
-  self._CamRotateTargetDegree = target - self._CamRotateStartDegree
+  self:RotateDregree(-90)
+  return self
+end
+---摄像机旋转指定度数
+---@param deg number 度数，正数往右，负数往左
+---@return CamManager
+function CamManager:RotateDregree(deg)
+  self.CamRotateValue = self.CamRotateValue + deg
+  self._CamRotateStartDegree = self._CamRotateValueNow
+  self._CamRotateTargetDegree = self.CamRotateValue - self._CamRotateStartDegree
   self._CamRotateTick = 0
   self._CamIsRotateing = true
   self.EventRotateDirectionChanged:Emit(self._CamRotateTargetDegree)

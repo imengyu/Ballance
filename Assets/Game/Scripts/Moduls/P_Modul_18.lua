@@ -58,6 +58,8 @@ function P_Modul_18:Deactive()
   self.P_Modul_18_Sound:Stop()
   self.P_Modul_18_Rotor:Play('P_Modul_18_Rotor_Stop_Animation')
   self.P_Modul_18_Kollisionsquader.gameObject:SetActive(false)
+  self.P_Modul_18_Particle:SetActive(false)
+  self.P_Modul_18_Particle_Small:SetActive(false) 
 end
 
 function P_Modul_18:ActiveForPreview()
