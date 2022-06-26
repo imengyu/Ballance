@@ -4,7 +4,7 @@ local GamePackage = Ballance2.Package.GamePackage
 local GameSoundType = Ballance2.Services.GameSoundType
 local GameLevelLoaderNative = Ballance2.Game.GameLevelLoaderNative
 local I18N = Ballance2.Services.I18N.I18N
-local SystemPackage = GamePackage.GetCorePackage()
+local KeyCode = UnityEngine.KeyCode
 local Application = UnityEngine.Application
 local Time = UnityEngine.Time
 local Text = UnityEngine.UI.Text
@@ -52,7 +52,7 @@ function CreateMenuLevelUI(package)
         button.interactable = HighscoreManager.CheckLevelPassState(name)
       end
       --非 windows 隐藏此按扭
-      if not UNITY_STANDALONE_WIN then
+      if not UNITY_STANDALONE_WIN or not Ballance2.Utils.FileUtils.DirectoryExists(Application.dataPath..'/VirtoolsLoader/') then
         PageStart.Content:Find('ButtonNMO').gameObject:SetActive(false)
       end
     end
@@ -63,16 +63,48 @@ function CreateMenuLevelUI(package)
     local BallanceLogo3DObjects = GameManager.Instance:InstancePrefab(package:GetPrefabAsset('BallanceLogo3DObjects.prefab'), 'BallanceLogo3DObjects')
     BallanceLogo3DObjects:SetActive(false)
 
+    --GRAVITY 彩蛋
+    local keyListenGRAVITY = 0
+    local startGRAVITYKey = function ()
+      local keysGRAVITYCurrentIndex = 1
+      local keysGRAVITY = { KeyCode.G, KeyCode.R, KeyCode.A, KeyCode.V, KeyCode.I, KeyCode.T, KeyCode.Y  }
+      local listenGRAVITYKey = nil
+      local handleGRAVITYKey = function ()
+        if keysGRAVITYCurrentIndex >= 7 then 
+          HighscoreManager.UnLockAllInternalLevel()
+          Game.SoundManager:PlayFastVoice('core.sounds:Menu_dong.wav', GameSoundType.UI)
+        else 
+          keysGRAVITYCurrentIndex = keysGRAVITYCurrentIndex + 1
+          listenGRAVITYKey()
+        end
+      end
+      listenGRAVITYKey = function ()
+        keyListenGRAVITY = Game.UIManager:WaitKey(keysGRAVITY[keysGRAVITYCurrentIndex], false, handleGRAVITYKey)
+      end
+      keysGRAVITYCurrentIndex = 1
+      listenGRAVITYKey();
+    end
+
+    --关于页面
     PageAbout.OnShow = function ()
       BallanceLogo3DObjects:SetActive(true)
+      startGRAVITYKey()
     end
     PageAbout.OnHide = function ()
       BallanceLogo3DObjects:SetActive(false)
+      Game.UIManager:DeleteKeyListen(keyListenGRAVITY)
+    end
+    --制作者页面启动GRAVITY 彩蛋
+    PageAboutCreators.OnShow = function ()
+      startGRAVITYKey()
+    end
+    PageAboutCreators.OnHide = function ()
+      Game.UIManager:DeleteKeyListen(keyListenGRAVITY)
     end
 
     MessageCenter:SubscribeEvent('BtnStartClick', function () GameUIManager:GoPage('PageStart') end)
     MessageCenter:SubscribeEvent('BtnCustomLevelClick', function () 
-      GameManager.GameMediator:NotifySingleEvent('PageStartCustomLevelLoad')
+      GameManager.GameMediator:NotifySingleEvent('PageStartCustomLevelLoad', nil)
       GameUIManager:GoPage('PageStartCustomLevel') 
     end )
     MessageCenter:SubscribeEvent('BtnCustomNMOLevelClick', function () 

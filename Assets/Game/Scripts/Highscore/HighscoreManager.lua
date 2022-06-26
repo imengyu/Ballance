@@ -64,6 +64,22 @@ end
 
 local HighscoreManagerCommand = nil
 
+---解锁全部内置关卡
+function HighscoreManager.UnLockAllInternalLevel()
+  HighscoreData.LevelPassStateData['level01'] = true
+  HighscoreData.LevelPassStateData['level02'] = true
+  HighscoreData.LevelPassStateData['level03'] = true
+  HighscoreData.LevelPassStateData['level04'] = true
+  HighscoreData.LevelPassStateData['level05'] = true
+  HighscoreData.LevelPassStateData['level06'] = true
+  HighscoreData.LevelPassStateData['level07'] = true
+  HighscoreData.LevelPassStateData['level08'] = true
+  HighscoreData.LevelPassStateData['level09'] = true
+  HighscoreData.LevelPassStateData['level10'] = true
+  HighscoreData.LevelPassStateData['level11'] = true
+  HighscoreData.LevelPassStateData['level12'] = true
+end
+
 function HighscoreManager.InitCommand()
   if HighscoreManagerCommand == nil then
     GameManager.Instance.GameDebugCommandServer:RegisterCommand('highscore', function (keyword, fullCmd, argsCount, args)
@@ -75,19 +91,8 @@ function HighscoreManager.InitCommand()
         Log.D('highscore', 'Reset to default')
         return true
       elseif type == 'open-all' then
-        HighscoreData.LevelPassStateData['level01'] = true
-        HighscoreData.LevelPassStateData['level02'] = true
-        HighscoreData.LevelPassStateData['level03'] = true
-        HighscoreData.LevelPassStateData['level04'] = true
-        HighscoreData.LevelPassStateData['level05'] = true
-        HighscoreData.LevelPassStateData['level06'] = true
-        HighscoreData.LevelPassStateData['level07'] = true
-        HighscoreData.LevelPassStateData['level08'] = true
-        HighscoreData.LevelPassStateData['level09'] = true
-        HighscoreData.LevelPassStateData['level10'] = true
-        HighscoreData.LevelPassStateData['level11'] = true
-        HighscoreData.LevelPassStateData['level12'] = true
         Log.D('highscore', 'Open level01-level12')
+        HighscoreManager.UnLockAllInternalLevel()
         return true
       elseif type == 'load' then 
         HighscoreManager.Load()
