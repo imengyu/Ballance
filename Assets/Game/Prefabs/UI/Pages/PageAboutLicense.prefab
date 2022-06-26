@@ -187,6 +187,50 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.0007099835
       objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[0]
+      value: slua
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[1]
+      value: Graphy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[2]
+      value: UnitySimpleFileBrowser
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[3]
+      value: UnityRuntimeInspector
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[4]
+      value: UnityRuntimeSceneGizmo
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[5]
+      value: UnityDynamicScrollView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[6]
+      value: UnityRecyclingListView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[7]
+      value: infinite-scroll-unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[8]
+      value: json
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
+      propertyPath: names.Array.data[9]
+      value: classic
+      objectReference: {fileID: 0}
     - target: {fileID: 6332297538632272784, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
       propertyPath: m_Name
       value: LicensesView
