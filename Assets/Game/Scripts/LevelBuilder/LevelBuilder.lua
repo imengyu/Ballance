@@ -522,6 +522,7 @@ function LevelBuilder:_LoadLevelInternal()
       self:UpdateLoadProgress(0.3)
 
       local lowerY = -1000; --最低y坐标
+      local depthTestCubesCount = 0
 
       --加载坠落检测区
       -----------------------------
@@ -551,10 +552,14 @@ function LevelBuilder:_LoadLevelInternal()
               GamePlayManager:Fall()
             end
           end
+
+          depthTestCubesCount = depthTestCubesCount + 1
         else
           Log.W(TAG, 'Not found object \''..name..'\' in depthTestCubes')
         end
       end
+
+      Log.D(TAG, 'Loaded depthTestCubes count: '..depthTestCubesCount..' lowerY: '..lowerY)
 
       --设置回收y坐标
       Game.GamePlay.GamePlayManager.GamePhysicsWorld.DePhysicsFall = lowerY

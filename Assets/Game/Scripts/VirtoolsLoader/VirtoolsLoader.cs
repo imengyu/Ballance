@@ -184,12 +184,6 @@ namespace Ballance2
                 MeshFilter meshFilter = go.AddComponent<MeshFilter>();
                 MeshRenderer meshRenderer = go.AddComponent<MeshRenderer>();
 
-                //Hidden object
-                if (VirtoolsLoaderApi.Loader_CKObjectIsHidden(objPtr) > 0) {
-                  meshRenderer.enabled = false;
-                  continue;
-                }
-
                 //Read Mesh
                 //================================
                 for (int i = 0; i < info.meshCount;)
@@ -428,6 +422,13 @@ namespace Ballance2
                   }
                   break;
                 }
+                
+                //Hidden object
+                if (VirtoolsLoaderApi.Loader_CKObjectIsHidden(objPtr) > 0) {
+                  meshRenderer.enabled = false;
+                  continue;
+                }
+
                 break;
               }
             case CKCID_GROUP:

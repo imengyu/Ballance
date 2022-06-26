@@ -170,6 +170,7 @@ namespace Ballance2.Game
 
         } else if (key == "PR_Resetpoints") {
           var array = groupList[key];
+          array.Sort();
           JObject objects = new JObject();
           for(int i = 0; i < array.Count; i++) 
             objects.Add((i + 1).ToString(), array[i]);
