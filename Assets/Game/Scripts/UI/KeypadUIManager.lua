@@ -24,6 +24,7 @@ function KeypadUIManager.AddKeypad(name, prefrab, image)
     prefrab = prefrab,
     image = image
   }
+  return true
 end 
 ---获取已注册键盘，如果没有找到则返回nil
 ---@param name string 名称

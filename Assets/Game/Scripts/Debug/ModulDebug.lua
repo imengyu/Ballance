@@ -115,42 +115,42 @@ function ModulCustomDebug()
       stateText.text = 'Modul state tools:\n'..Modul_Instace.name..' state: '..state
     end
 
-    button = ui.transform:Find('ButtonActive'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonActive'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Active()
       UpdateText('Active')
     end);
-    button = ui.transform:Find('ButtonDeactive'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonDeactive'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Deactive()
       UpdateText('Deactive')
     end);
-    button = ui.transform:Find('ButtonResetLevel'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonResetLevel'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Reset('levelRestart')
       UpdateText('Reset levelRestart')
     end);    
-    button = ui.transform:Find('ButtonResetSector'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonResetSector'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Reset('sectorRestart')
       UpdateText('Reset sectorRestart')
     end);
-    button = ui.transform:Find('ButtonQuit'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonQuit'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       ui.gameObject:SetActive(false)
       GameManager:QuitGame()
     end);
-    button = ui.transform:Find('ButtonBackup'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonBackup'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Backup()
       Game.UIManager:GlobalToast('Modul_Class:Backup() !')
     end);
-    button = ui.transform:Find('ButtonCustom1'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonCustom1'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Custom(1)
       Game.UIManager:GlobalToast('Modul_Class:Custom1() !')
     end);
-    button = ui.transform:Find('ButtonCustom2'):GetComponent(UnityEngine.UI.Button)
+    button = ui.transform:Find('ButtonCustom2'):GetComponent(UnityEngine.UI.Button) ---@type Button
     button.onClick:AddListener(function ()
       Modul_Class:Custom(2)
       Game.UIManager:GlobalToast('Modul_Class:Custom2() !')
@@ -179,7 +179,7 @@ function ModulCustomDebug()
 
       UpdateText('Active')
       --开始关卡
-      Game.Mediator:NotifySingleEvent("CoreGamePlayManagerInitAndStart")
+      Game.Mediator:NotifySingleEvent("CoreGamePlayManagerInitAndStart", nil)
     end)
   end)
 end

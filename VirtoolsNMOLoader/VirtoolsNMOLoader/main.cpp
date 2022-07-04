@@ -39,7 +39,9 @@ BOOL _InitPlugins(CKPluginManager& iPluginManager, char* currentPath)
 	char PluginPath[_MAX_PATH];
 	char RenderPath[_MAX_PATH];
 	char ManagerPath[_MAX_PATH];
+	char BuildingBlocksPath[_MAX_PATH];
 
+	sprintf(BuildingBlocksPath, "%s%s", currentPath, "BuildingBlocks");
 	sprintf(PluginPath, "%s%s", currentPath, "Plugins");
 	sprintf(RenderPath, "%s%s", currentPath, "RenderEngines");
 	sprintf(ManagerPath, "%s%s", currentPath, "Managers");
@@ -48,6 +50,7 @@ BOOL _InitPlugins(CKPluginManager& iPluginManager, char* currentPath)
 	iPluginManager.ParsePlugins(RenderPath);
 	iPluginManager.ParsePlugins(ManagerPath);
 	iPluginManager.ParsePlugins(PluginPath);
+	iPluginManager.ParsePlugins(BuildingBlocksPath);
 	return TRUE;
 }
 
@@ -176,7 +179,7 @@ EXTERN_C API_EXPORT void* Loader_SolveNmoFileRead(wchar_t* filePath, int *outErr
 	CKFile* f = VirtoolsContext->CreateCKFile();
 	DWORD res = CKERR_INVALIDFILE;
 	char* filePathAnsi = UnicodeToAnsi(filePath);
-	res = f->OpenFile(filePathAnsi, (CK_LOAD_FLAGS)(CK_LOAD_DEFAULT | CK_LOAD_CHECKDEPENDENCIES));
+	res = f->OpenFile(filePathAnsi, (CK_LOAD_FLAGS)(CK_LOAD_GEOMETRY | CK_LOAD_CHECKDEPENDENCIES));
 	delete filePathAnsi;
 	if (res != CK_OK) {
 		VirtoolsContext->DeleteCKFile(f);

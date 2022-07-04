@@ -28,7 +28,7 @@ P_Extra_Point = ModulBase:extend()
 function P_Extra_Point:new()
   P_Extra_Point.super.new(self)
   self._Actived = false
-  self._RotDegree = 6
+  self._RotDegree = 3
   self._Rotate = false
   self._FlyUpTime = 0.4
   self._FlyFollowTime = 0.3
@@ -178,7 +178,7 @@ function P_Extra_Point:StartFly()
     end
   end)
 end
-function P_Extra_Point:Update()
+function P_Extra_Point:FixedUpdate()
   --旋转小球
   if self._Rotate then
     self.P_Extra_Point_Ball1.transform:RotateAround(self._RotCenter, self._RotAxis1, self._RotDegree)

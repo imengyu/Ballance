@@ -80,7 +80,10 @@ namespace Ballance2.Services.Init
         //初始化物理引擎
         PhysicsApi.SecretKey = "666dccad4ae697b45aac145f18f49c5b";
         PhysicsSystemInit.DoInit();
+
   #endif
+        //if (GameEntry.Instance.DebugMode) 
+        //  PhysicsApi.OpenConsole();
       }
       else if (act == GameSystem.ACTION_DESTROY)
       {

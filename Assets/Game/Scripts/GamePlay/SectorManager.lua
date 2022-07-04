@@ -53,7 +53,7 @@ function SectorManager:Start()
 
       self:ResetCurrentSector(n)
     elseif type == 'reset-all' then
-      self:ResetAllSector()
+      self:ResetAllSector(true)
     else
       Log.W(TAG, 'Unknow option '..type)
       return false

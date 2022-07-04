@@ -24,17 +24,17 @@ namespace Ballance2.Config
     /// 游戏版本
     /// </summary>
     [LuaApiDescription("游戏版本")]
-    public const string GameVersion = "0.9.8";
+    public const string GameVersion = "0.9.9";
     /// <summary>
     /// 游戏编译版本
     /// </summary>
     [LuaApiDescription("游戏编译版本")]
-    public const int GameBulidVersion = 55;
+    public const int GameBulidVersion = 60;
     /// <summary>
     /// 游戏编译版本
     /// </summary>
     [LuaApiDescription("游戏编译版本")]
-    public const string GameBulidDate = "2022.06.22";
+    public const string GameBulidDate = "2022.07.05";
 
     #region Unity 环境静态常量
 

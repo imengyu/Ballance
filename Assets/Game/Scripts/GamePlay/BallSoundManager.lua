@@ -97,7 +97,6 @@ end
 ---添加球碰撞声音组
 ---@param colId number 自定义碰撞层ID，为防止重复，请使用 GetSoundCollIDByName 使用名称获取ID
 ---@param data BallSoundCollData 碰撞数据
----@return number BallSoundCollData 碰撞数据
 function BallSoundManager:AddSoundCollData(colId, data) 
   if self._SoundCollData[colId] ~= nil then
     Log.E(TAG, 'AddSoundCollData failed because SoundCollData id: '..colId..' already added')

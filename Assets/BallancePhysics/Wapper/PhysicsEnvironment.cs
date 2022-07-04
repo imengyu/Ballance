@@ -128,6 +128,11 @@ namespace BallancePhysics.Wapper
         PhysicsWorlds.Add(currentScenseIndex, this);
         Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks(), Marshal.GetFunctionPointerForDelegate(callback));
       
+        if(fixedUpdateTicket != null)
+        {
+          fixedUpdateTicket.Unregister();
+          fixedUpdateTicket = null;
+        }
         fixedUpdateTicket = GameManager.GameTimeMachine.RegisterFixedUpdate(_FixedUpdate, 15);
       }
     }

@@ -101,15 +101,18 @@ namespace BallancePhysics
       ballance_physics_entry(sFalse, IntPtr.Zero);
     }
 
-#if UNITY_EDITOR
-    [UnityEditor.MenuItem("Ballance/Physics/Open Console")]
     public static void OpenConsole() {
       ballance_physics_entry(3, IntPtr.Zero);
     }
-    [UnityEditor.MenuItem("Ballance/Physics/Close Console")]
     public static void CloseConsole() {
       ballance_physics_entry(2, IntPtr.Zero);
     }
+
+#if UNITY_EDITOR
+    [UnityEditor.MenuItem("Ballance/Physics/Open Console")]
+    public static void MOpenConsole() { OpenConsole(); }
+    [UnityEditor.MenuItem("Ballance/Physics/Close Console")]
+    public static void MCloseConsole() { CloseConsole(); }
 #endif
   }
 }
