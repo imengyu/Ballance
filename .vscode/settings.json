@@ -34,5 +34,10 @@
     "ProjectSettings/": true,
     "temp/": true,
     "Temp/": true
-  }
+  },
+  "Lua.diagnostics.disable": [
+    "param-type-mismatch",
+    "assign-type-mismatch",
+    "cast-local-type"
+  ]
 }

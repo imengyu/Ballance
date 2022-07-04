@@ -98,9 +98,9 @@ function Ball:_InitPeices()
       local child = parent.transform:GetChild(i)
       local body = nil ---@type PhysicsObject
       if self._PiecesPhysCallback then
-        body = self._PiecesPhysCallback(child.gameObject, self._PiecesPhysicsData)
+        body = self._PiecesPhysCallback(child.gameObject, self._PiecesPhysicsData) ---@type PhysicsObject
       else
-        body = child.gameObject:AddComponent(PhysicsObject)
+        body = child.gameObject:AddComponent(PhysicsObject) ---@type PhysicsObject
         if(self._PiecesPhysicsData) then
           --Mesh
           local meshFilter = child:GetComponent(MeshFilter) ---@type MeshFilter

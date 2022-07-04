@@ -45,7 +45,7 @@ function CreateClass:BallPiecesControll()
   ---@param pos Vector3 抛出的位置
   ---@param minForce number 推动最小力
   ---@param maxForce number 推动最大力
-  ---@param timeLive number 碎片存活时间（30个tick为单位）
+  ---@param timeLive number|nil 碎片存活时间（30个tick为单位）
   function BallPiecesControll:ThrowPieces(data, pos, minForce, maxForce, timeLive)
 
     local parent = data.parent
