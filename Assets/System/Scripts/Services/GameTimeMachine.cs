@@ -108,13 +108,13 @@ namespace Ballance2.Services
       [LuaApiDescription("取消注册当前更新函数。")]
       public void Unregister() {
         switch(type) {
-          case 0: 
+          case 1: 
             service.updates.Remove(this);
             break;
-          case 1: 
+          case 2: 
             service.lateUpdates.Remove(this);
             break;
-          case 2: 
+          case 3: 
             service.fixUpdates.Remove(this);
             break;
         }
