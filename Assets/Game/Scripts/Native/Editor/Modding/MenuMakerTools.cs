@@ -49,7 +49,7 @@ namespace Ballance2.Editor.Modding
           }
           else EditorUtility.DisplayDialog("错误", "Output文件夹不存在：\n" + debugFolder + "\n▼\n" + folder, "确定");
         }
-        else if (target == BuildTarget.Android || target == BuildTarget.iOS)
+        else if (target == BuildTarget.Android || target == BuildTarget.iOS || target == BuildTarget.WSAPlayer || target == BuildTarget.Switch)
         {
           //IOS/Android 则复制到 StreamAssets
           string folder = "Assets/StreamingAssets/BuiltInPackages";
@@ -104,8 +104,60 @@ namespace Ballance2.Editor.Modding
       Directory.Delete("Assets/StreamingAssets/BuiltInPackages", true);
       EditorUtility.DisplayDialog("提示", "清空成功", "确定");
     }
-    [@MenuItem("Ballance/工具/编译系统脚本到Reources目录", false, 103)]
-    public static void CopyScriptToReourcesFolder()
+    [@MenuItem("Ballance/工具/清空 SystemScrips 目录", false, 104)]
+    public static void DeleteSystemScrips() {
+      Directory.Delete("Assets/System/Resources/SystemScrips", true);
+      Directory.CreateDirectory("Assets/System/Resources/SystemScrips");
+      File.Create("Assets/System/Resources/SystemScrips/.gitkeep");
+      EditorUtility.DisplayDialog("提示", "清空成功", "确定");
+    }
+    [@MenuItem("Ballance/工具/复制系统脚本到 Reources SystemScrips 目录", false, 104)]
+    public static void CopyScriptToReourcesFolder() {
+      const string folderSrc = "Assets/System/Scripts/SystemScrips";
+      const string folderTarget = "Assets/System/Resources/SystemScrips";
+      int count = 0;
+      EditorUtility.DisplayProgressBar("正在复制", "请稍后", 0);
+
+      Dictionary<string, string> sEditorLuaPath = new Dictionary<string, string>();
+      DirectoryInfo direction = new DirectoryInfo(folderSrc);
+      FileInfo[] files = direction.GetFiles("*.lua", SearchOption.AllDirectories);
+      for (int i = 0; i < files.Length; i++)
+      {
+        var rel = StringUtils.RemoveStringByStringStart(files[i].FullName.Replace('\\', '/'), folderSrc);
+        var src = folderSrc + "/" + rel;
+        var dest = folderTarget + "/" + rel;
+        var dir = Path.GetDirectoryName(dest);
+        if (!Directory.Exists(dir))
+          Directory.CreateDirectory(dir);
+
+        var fileName = Path.GetFileName(rel);
+        var fileNameNoExt = Path.GetFileNameWithoutExtension(rel);
+        if (!sEditorLuaPath.ContainsKey(fileName))
+          sEditorLuaPath.Add(fileName, "SystemScrips" + rel);
+        if (!sEditorLuaPath.ContainsKey(fileNameNoExt))
+          sEditorLuaPath.Add(fileNameNoExt, "SystemScrips" + rel);
+
+        File.Copy(src, dest, true);
+        EditorUtility.DisplayProgressBar("正在复制", rel, count / (float)files.Length);
+        count++;
+      }
+      EditorUtility.ClearProgressBar();
+
+      StreamWriter sw = new StreamWriter("Assets/System/Scripts/Package/EditorInfo/GameSystemPackagePaths.cs", false);
+      sw.WriteLine("using System.Collections.Generic;");
+      sw.WriteLine("");
+      sw.WriteLine("public static class GameSystemPackagePaths {");
+      sw.WriteLine("  public static void AddName(Dictionary<string, string> arr) {");
+      foreach (var k in sEditorLuaPath)
+        sw.WriteLine("    arr.Add(\"" + k.Key + "\", \"" + k.Value.Substring(0, k.Value.Length - 4) + "\");");
+      sw.WriteLine("  }");
+      sw.WriteLine("}");
+      sw.Close();
+
+      EditorUtility.DisplayDialog("提示", "成功。复制 " + count + " 个文件", "确定");
+    }
+    [@MenuItem("Ballance/工具/编译系统脚本到 Reources SystemScrips 目录（x86）", false, 104)]
+    public static void CopyScriptToReourcesFolderX86()
     {
       const string folderSrc = "Assets/System/Scripts/SystemScrips";
       const string folderTarget = "Assets/System/Resources/SystemScrips";

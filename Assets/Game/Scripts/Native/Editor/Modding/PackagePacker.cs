@@ -94,7 +94,7 @@ namespace Ballance2.Editor.Modding
           EditorUtility.DisplayProgressBar("正在打包", "正在打包，请稍后...", 0.6f);
 
           //ballance 包处理
-          DoSolveBallancePack(dirTargetPath, dirTargetPath + "/" + name, targetPath);
+          DoSolveBallancePack(packTarget, dirTargetPath, dirTargetPath + "/" + name, targetPath);
 
           EditorUtility.ClearProgressBar();
         }
@@ -139,7 +139,7 @@ namespace Ballance2.Editor.Modding
         }
       }
     }
-    private static void DoSolveBallancePack(string dirTargetPath, string bundlePath, string targetPath)
+    private static void DoSolveBallancePack(BuildTarget target, string dirTargetPath, string bundlePath, string targetPath)
     {
       Crc32 crc = new Crc32();
       ZipOutputStream zipStream = ZipUtils.CreateZipFile(targetPath);
@@ -161,7 +161,7 @@ namespace Ballance2.Editor.Modding
       int i = 0, len = allLuaPath.Count;
       foreach (string path in allLuaPath)
       {
-        if (packShouldCompile)
+        if (packShouldCompile && (target != BuildTarget.Android || target != BuildTarget.iOS || target != BuildTarget.WSAPlayer || target != BuildTarget.Switch))
         { //编译为字节码
           var outPath = "";
           if (LuaCompiler.CompileLuaFile(path, true, out outPath))
