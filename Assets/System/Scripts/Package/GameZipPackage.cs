@@ -1,4 +1,5 @@
-﻿using Ballance2.Services.Debug;
+﻿using Ballance2.Services;
+using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
@@ -289,7 +290,12 @@ namespace Ballance2.Package
     {
       MemoryStream ms = ZipUtils.ReadZipFileToMemory(zip);
 
-      var codeAssetStorage = new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name, PackageFilePath + "/" + theEntry.Name);
+      var codeAssetStorage = new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name, 
+        PackageName == GamePackageManager.CORE_PACKAGE_NAME ? 
+          "Assets/Game/" + theEntry.Name.Substring(6) :
+          "Assets/Packages/" + PackageName + "/" + theEntry.Name.Substring(6) //Remove 'class/' prefix
+      );
+      
       var key = theEntry.Name;
       packageCodeAsset.Add(key, codeAssetStorage);
       key = Path.GetFileName(theEntry.Name);

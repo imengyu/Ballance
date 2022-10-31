@@ -37,7 +37,7 @@ namespace Ballance2.DebugTools {
       //创建输出窗口
       GameDebugStatsArea = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugStats"), "GameDebugStats", true);
       
-#if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS || UNITY_WSA
       //创建一个按扭方便手机上打开调试窗口
       GameDebugFloatButton = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugFloatButton"), "GameDebugFloatButton", true);
       GameDebugFloatButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {

@@ -34,7 +34,7 @@ namespace Ballance2.Utils
     [LuaApiParamDescription("path", "路径")]
     public static bool IsAbsolutePath(string path)
     {
-#if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN
+#if (UNITY_EDITOR && UNITY_EDITOR_WIN) || UNITY_STANDALONE_WIN || UNITY_WSA
       if (path.Length > 2)
         return path[1] == ':' && (path[2] == '\\' || path[2] == '/');
       return false;

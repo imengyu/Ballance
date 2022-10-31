@@ -17,6 +17,7 @@ using System.Xml;
 using Ballance2.Config;
 using Ballance2.Services;
 using Ballance2.Utils;
+using Ballance2;
 using UnityEngine;
 using Ballance2.Res;
 using System.Text;
@@ -112,6 +113,8 @@ namespace Ballance2.Package
       }
 #else
 
+      string realPath = pathorname;
+
       TextAsset asset = Resources.Load<TextAsset>("SystemScrips/" + pathorname);
       if(asset == null) {
         var fileName = Path.GetFileName(pathorname);
@@ -119,21 +122,32 @@ namespace Ballance2.Package
         if(sEditorLuaPath.ContainsKey(fileName)) {
           path2 = sEditorLuaPath[fileName];
           asset = Resources.Load<TextAsset>(path2);
-          if(asset != null) pathorname = path2;
+          if(asset != null) {
+            pathorname = path2;
+            realPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_PATH + path2;
+          }
+          else Log.W(TAG, "Probe code at path: \"" + path2 + "\" failed.");
         }
 
         var fileNameNoExt = Path.GetFileNameWithoutExtension(pathorname);
-        if(asset == null && sEditorLuaPath.ContainsKey(fileName)) {
-          path2 = sEditorLuaPath[fileName];
+        if(asset == null && sEditorLuaPath.ContainsKey(fileNameNoExt)) {
+          path2 = sEditorLuaPath[fileNameNoExt];
           asset = Resources.Load<TextAsset>(path2);
-          if(asset != null) pathorname = path2;
+          if(asset != null) {
+            pathorname = path2;
+            realPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_PATH + path2;
+          }
+          else Log.W(TAG, "Probe code at path: \"" + path2 + "\" failed.");
         }
+      }
+      else {
+        realPath = ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH + pathorname;
       }
       if(asset == null)
         throw new FileNotFoundException("Filed to load code file: \"" + pathorname + "\" !");
-        
+      
       var realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
-      return new CodeAsset(asset.bytes, pathorname, realtivePath, ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH + pathorname);
+      return new CodeAsset(asset.bytes, realPath, realtivePath, ConstStrings.EDITOR_SYSTEMPACKAGE_LOAD_ENV_SCRIPT_PATH + pathorname);
 #endif
     }
   

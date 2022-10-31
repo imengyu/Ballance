@@ -117,6 +117,7 @@ namespace SLua
     {
       "UIWidget.showHandles",
       "UIWidget.showHandlesWithMoveTool",
+      "UnityEngine.Security",
       "UnityEngine.QualitySettings.get_streamingMipmapsRenderersPerFrame",
       "UnityEngine.QualitySettings.set_streamingMipmapsRenderersPerFrame",
       "UnityEngine.QualitySettings.streamingMipmapsRenderersPerFrame",
@@ -153,6 +154,7 @@ namespace SLua
         "HideInInspector",
         "ExecuteInEditMode",
         "AddComponentMenu",
+        "UnityEngine.Security",
         "ContextMenu",
         "GamepadSpeakerOutputType",
         "GamepadSupportOutputType",

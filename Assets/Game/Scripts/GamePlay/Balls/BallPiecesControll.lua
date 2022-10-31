@@ -10,7 +10,7 @@ local WaitForSeconds = UnityEngine.WaitForSeconds
 ---@class BallPiecesControll : GameLuaObjectHostClass
 BallPiecesControll = {
   _CamMgr = nil, ---@type CamManager
-  _Rigidbody = nil, ---@type PhysicsObject,
+  _Rigidbody = nil, ---@type PhysicsObject
   _Force = 0,
   _UpForce = 0,
   _DownForce = 0,

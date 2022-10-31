@@ -161,7 +161,7 @@ namespace Ballance2.Editor.Modding
       int i = 0, len = allLuaPath.Count;
       foreach (string path in allLuaPath)
       {
-        if (packShouldCompile && (target != BuildTarget.Android || target != BuildTarget.iOS || target != BuildTarget.WSAPlayer || target != BuildTarget.Switch))
+        if (packShouldCompile && (target == BuildTarget.StandaloneOSX || target == BuildTarget.StandaloneLinux && target == BuildTarget.StandaloneWindows))
         { //编译为字节码
           var outPath = "";
           if (LuaCompiler.CompileLuaFile(path, true, out outPath))

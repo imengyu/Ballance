@@ -209,7 +209,7 @@ namespace Ballance2.Res
           pathbuf = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
           pathbuf= Application.dataPath + "/Packages/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
           if(CheckPackageInBuiltInPackage(pathbuf))
             pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Packages/" + pathbuf;
           else 
@@ -225,7 +225,7 @@ namespace Ballance2.Res
           result = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
           result = Application.dataPath + "/Packages/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
           if(CheckPackageInBuiltInPackage(pathbuf))
             result = Application.streamingAssetsPath + "/BuiltInPackages/Packages/" + pathbuf;
           else 
@@ -245,7 +245,7 @@ namespace Ballance2.Res
           pathbuf = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE
           pathbuf = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
           pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Core/" + pathbuf;
 #else
           GameErrorChecker.LastError = GameError.NotImplemented;
@@ -259,7 +259,7 @@ namespace Ballance2.Res
           result = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE
           result = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
           result = Application.streamingAssetsPath + "/BuiltInPackages/Core/" + pathbuf;
 #else
           GameErrorChecker.LastError = GameError.NotImplemented;
@@ -298,7 +298,7 @@ namespace Ballance2.Res
         pathbuf = DEBUG_LEVELS_PATH + pathbuf;
 #elif UNITY_STANDALONE
         pathbuf = Application.dataPath + "/Levels/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
         if(CheckPackageInBuiltInLevel(pathbuf))
           pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Levels/" + pathbuf;
         else
@@ -314,7 +314,7 @@ namespace Ballance2.Res
         result = DEBUG_LEVELS_PATH + pathorname;
 #elif UNITY_STANDALONE
         result = Application.dataPath + "/Levels/" + pathorname;
-#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
         if(CheckPackageInBuiltInLevel(pathorname))
           result = Application.streamingAssetsPath + "/BuiltInPackages/Levels/" + pathorname;
         else

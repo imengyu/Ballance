@@ -108,7 +108,7 @@ namespace SLua
       public int i_ci;  /* active function */
     };
 
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int LuaCSFunction(IntPtr luaState);
 #else

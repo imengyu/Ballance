@@ -86,7 +86,7 @@ namespace BallancePhysics.Wapper
         return a;
       return null;
     }
-
+    
     /// <summary>
     /// 获取当前物理环境的底层指针
     /// </summary>
@@ -94,7 +94,8 @@ namespace BallancePhysics.Wapper
     [LuaApiDescription("获取当前物理环境的底层指针")]
     public IntPtr Handle { get; private set; } = IntPtr.Zero;
 
-    private ErrorReportCallback callback = (int level, int len, IntPtr _msg) =>
+    [AOT.MonoPInvokeCallback(typeof(ErrorReportCallback))]
+    private static int NativeErrorCallback(int level, int len, IntPtr _msg)
     {
       string msg = Marshal.PtrToStringAnsi(_msg, len);
       if (level == sInfo)
@@ -106,7 +107,7 @@ namespace BallancePhysics.Wapper
       else 
         Debug.Log(msg);
       return 1;
-    };
+    }
 
     private GameTimeMachine.GameTimeMachineTimeTicket fixedUpdateTicket = null;
 
@@ -126,7 +127,12 @@ namespace BallancePhysics.Wapper
           throw new Exception("BallancePhysicsLayerNames not found. Click menu in Assets to create it.");
 
         PhysicsWorlds.Add(currentScenseIndex, this);
-        Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks(), Marshal.GetFunctionPointerForDelegate(callback));
+        Handle = PhysicsApi.API.create_environment(
+          Gravity, 1.0f / SimulationRate, 
+          -2147483647, 
+          layerNames.GetGroupFilterMasks(), 
+          Marshal.GetFunctionPointerForDelegate((ErrorReportCallback)NativeErrorCallback)
+        );
       
         if(fixedUpdateTicket != null)
         {
@@ -390,7 +396,8 @@ namespace BallancePhysics.Wapper
     }
 
     private Dictionary<string, int> dictSystemGroup = new Dictionary<string, int>();
-    private LinkedList<PhysicsObject> objects = new LinkedList<PhysicsObject>();
+    private LinkedList<PhysicsObject> objects = new LinkedList<PhysicsObject>();    /// <summary>
+    private static Dictionary<IntPtr, PhysicsObject> objectsHandleMap { get; } = new Dictionary<IntPtr, PhysicsObject>();
 
     /// <summary>
     /// [由PhysicsObject自动调用，请勿手动调用]
@@ -403,7 +410,10 @@ namespace BallancePhysics.Wapper
         Debug.Log("Bad state, not allow create PhysicsObject at destroy!");
         return;
       }
-
+      if (objectsHandleMap.ContainsKey(body.Handle))
+        objectsHandleMap[body.Handle] = body;
+      else
+        objectsHandleMap.Add(body.Handle, body);
       objects.AddLast(body);
     }
     /// <summary>
@@ -414,6 +424,8 @@ namespace BallancePhysics.Wapper
     {
       if(!destroyLock) 
         objects.Remove(body);
+      if (objectsHandleMap.ContainsKey(body.Handle))
+        objectsHandleMap.Remove(body.Handle);
     }
 
     /// <summary>
@@ -453,6 +465,19 @@ namespace BallancePhysics.Wapper
           return obj.Value;
         obj = obj.Next;
       }
+      return null;
+    }
+    /// <summary>
+    /// 通过本地指针查找世界中的物理物体
+    /// </summary>
+    /// <param name="handle">本地指针</param>
+    /// <returns>如果未找到则返回null</returns>
+    [LuaApiDescription("通过ID查找世界中的物理物体", "如果未找到则返回null")]
+    [LuaApiParamDescription("id", "ID")]
+    public static PhysicsObject GetObjectByHandle(IntPtr handle)
+    {
+      if (objectsHandleMap.TryGetValue(handle, out var v))
+        return v;
       return null;
     }
 

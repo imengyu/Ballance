@@ -14,7 +14,6 @@ local UnityGlobalNamespace={ }
 ---@field public monoBehaviour GameLuaObjectHost 获取当前GameLuaObjectHost
 ---@field public luaClass table 获取当前GameLuaObjectHost上绑定的lua类table
 ---@field public gameObject GameObject 获取GameObject
----@field public actionStore GameActionStore 访问ActionStore
 ---@field public package GamePackage 访问当前脚本所在模块包
 local GameLuaObjectHostClass={ }
 

@@ -125,7 +125,7 @@ namespace Ballance2.Editor.Modding
       {
         var rel = StringUtils.RemoveStringByStringStart(files[i].FullName.Replace('\\', '/'), folderSrc);
         var src = folderSrc + "/" + rel;
-        var dest = folderTarget + "/" + rel;
+        var dest = folderTarget + "/" + rel + ".txt";
         var dir = Path.GetDirectoryName(dest);
         if (!Directory.Exists(dir))
           Directory.CreateDirectory(dir);
@@ -149,7 +149,7 @@ namespace Ballance2.Editor.Modding
       sw.WriteLine("public static class GameSystemPackagePaths {");
       sw.WriteLine("  public static void AddName(Dictionary<string, string> arr) {");
       foreach (var k in sEditorLuaPath)
-        sw.WriteLine("    arr.Add(\"" + k.Key + "\", \"" + k.Value.Substring(0, k.Value.Length - 4) + "\");");
+        sw.WriteLine("    arr.Add(\"" + k.Key + "\", \"" + k.Value + "\");");
       sw.WriteLine("  }");
       sw.WriteLine("}");
       sw.Close();

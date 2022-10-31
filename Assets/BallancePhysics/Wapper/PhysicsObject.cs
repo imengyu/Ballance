@@ -554,11 +554,8 @@ namespace BallancePhysics.Wapper
       set {
         m_EnableCollisionEvent = value;
         if(IsPhysicalized) {
-          if(m_EnableCollisionEvent) {
-            collisionEventCallback = OnCollisionEvent;
-            frictionEventCallback = OnFrictionEvent;
+          if(m_EnableCollisionEvent)
             PhysicsApi.API.physics_set_collision_listener(Handle, collisionEventCallback, m_CollisionEventCallSleep, frictionEventCallback);
-          }
           else
             PhysicsApi.API.physics_remove_collision_listener(Handle);
         }
@@ -788,7 +785,6 @@ namespace BallancePhysics.Wapper
       if(IsPhantom()) 
         Debug.LogWarning("Object " + name + " is already phantom");
       else {
-        phantomEventCallback = OnPhantomEvent;
         PhysicsApi.API.physics_convert_to_phantom(Handle, m_ExtraRadius, phantomEventCallback);
       }
     }
@@ -917,10 +913,34 @@ namespace BallancePhysics.Wapper
 
     #region 碰撞处理
 
-    private PhantomEventCallback phantomEventCallback = null;
-    private CollisionEventCallback collisionEventCallback = null;
-    private FrictionEventCallback frictionEventCallback = null;
-    private ContractEventCallback contractEventCallback = null;
+    [AOT.MonoPInvokeCallback(typeof(ContractEventCallback))]
+    private static void frictionEventCallback(int create, IntPtr self, IntPtr other, IntPtr friction_handle, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal)
+    {
+      var obj = PhysicsEnvironment.GetObjectByHandle(self);
+      if (obj != null)
+        obj.OnFrictionEvent(create, self, other, friction_handle, contact_point_ws, speed, surf_normal);
+    }
+    [AOT.MonoPInvokeCallback(typeof(CollisionEventCallback))]
+    private static void collisionEventCallback(IntPtr self, IntPtr other, IntPtr contact_point_ws, IntPtr speed, IntPtr surf_normal)
+    {
+      var obj = PhysicsEnvironment.GetObjectByHandle(self);
+      if (obj != null)
+        obj.OnCollisionEvent(self, other, contact_point_ws, speed, surf_normal);
+    }
+    [AOT.MonoPInvokeCallback(typeof(PhantomEventCallback))]
+    private static void phantomEventCallback(int enter, IntPtr self, IntPtr other)
+    {
+      var obj = PhysicsEnvironment.GetObjectByHandle(self);
+      if (obj != null)
+        obj.OnPhantomEvent(enter, self, other);
+    }
+    [AOT.MonoPInvokeCallback(typeof(ContractEventCallback))]
+    private static void contractEventCallback(IntPtr self, int col_id, short type, float speed_precent, short isOn)
+    {
+      var obj = PhysicsEnvironment.GetObjectByHandle(self);
+      if (obj != null)
+        obj.OnContractEvent(self, col_id, type, speed_precent, isOn);
+    }
     
     private Dictionary<int, bool> contractStateCache = new Dictionary<int, bool>();
     private Dictionary<int, bool> contractStateCache2 = new Dictionary<int, bool>();
@@ -1018,8 +1038,10 @@ namespace BallancePhysics.Wapper
     /// </summary>
     [LuaApiDescription("启用当前物体上的接触工具事件发生器")]
     public void EnableContractEventCallback() {
-      contractEventCallback = OnContractEvent;
-      PhysicsApi.API.physics_set_contract_listener(Handle, Marshal.GetFunctionPointerForDelegate(contractEventCallback));
+      PhysicsApi.API.physics_set_contract_listener(
+        Handle,
+        Marshal.GetFunctionPointerForDelegate((ContractEventCallback)contractEventCallback)
+      );
     }
     /// <summary>
     /// 禁用当前物体上的接触工具事件发生器
@@ -1027,7 +1049,6 @@ namespace BallancePhysics.Wapper
     [LuaApiDescription("禁用当前物体上的接触工具事件发生器")]
     public void DisableContractEventCallback() {
       PhysicsApi.API.physics_disable_collision_detection(Handle);
-      contractEventCallback = null;
     }
 
     private Dictionary<int, IntPtr> onCollDetection = new Dictionary<int, IntPtr>();
