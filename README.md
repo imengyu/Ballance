@@ -173,33 +173,33 @@ Ballance Unity 是作者的一个小梦想，希望让 Ballance 可以运行在�
 
 原版关卡
 
-![Demo](docs/DemoImages/11.jpg)
-![Demo](docs/DemoImages/12.jpg)
-![Demo](docs/DemoImages/13.jpg)
-![Demo](docs/DemoImages/14.jpg)
-![Demo](docs/DemoImages/18.jpg)
-![Demo](docs/DemoImages/9.jpg)
-![Demo](docs/DemoImages/6.jpg)
-![Demo](docs/DemoImages/7.jpg)
-![Demo](docs/DemoImages/15.jpg)
-![Demo](docs/DemoImages/16.jpg)
-![Demo](docs/DemoImages/17.jpg)
+![Demo](./DemoImages/11.jpg)
+![Demo](./DemoImages/12.jpg)
+![Demo](./DemoImages/13.jpg)
+![Demo](./DemoImages/14.jpg)
+![Demo](./DemoImages/18.jpg)
+![Demo](./DemoImages/9.jpg)
+![Demo](./DemoImages/6.jpg)
+![Demo](./DemoImages/7.jpg)
+![Demo](./DemoImages/15.jpg)
+![Demo](./DemoImages/16.jpg)
+![Demo](./DemoImages/17.jpg)
 
 13关的大螺旋
 
-![Demo](docs/DemoImages/9.gif)
-![Demo](docs/DemoImages/10.png)
+![Demo](./DemoImages/9.gif)
+![Demo](./DemoImages/10.png)
 
 （转译版）自制地图（魔脓空间站）
 
-![Demo](docs/DemoImages/3.jpg)
-![Demo](docs/DemoImages/4.jpg)
-![Demo](docs/DemoImages/5.jpg)
+![Demo](./DemoImages/3.jpg)
+![Demo](./DemoImages/4.jpg)
+![Demo](./DemoImages/5.jpg)
 
 关卡预览器
 
-![Demo](docs/DemoImages/1.jpg)
-![Demo](docs/DemoImages/2.jpg)
+![Demo](./DemoImages/1.jpg)
+![Demo](./DemoImages/2.jpg)
 
 ## 项目所使用开源项目
 
