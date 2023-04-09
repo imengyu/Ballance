@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
-  [SLua.CustomLuaClass]
+  
   [AddComponentMenu("BallancePhysics/PhysicsFixedConstraint")]
-  [LuaApiDescription("固定约束，可将当前物体固定至另一个物体")]
+  
   public class PhysicsFixedConstraint : PhysicsConstraintBase
   {
     [Tooltip("连接到的另外一个物体，如果为空，则连接到世界")]
-    [LuaApiDescription("连接到的另外一个物体，如果为空，则连接到世界")]
+    
     /// <summary>
     /// 连接到的另外一个物体，如果为空，则连接到世界
     /// </summary>

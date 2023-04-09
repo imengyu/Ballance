@@ -24,23 +24,21 @@ namespace Ballance2.Res
   /// <summary>
   /// 路径管理器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("路径管理器")]
-  [LuaApiNotes("游戏外部资源文件的路径配置与路径转换工具类。")]
   public static class GamePathManager
   {
     /// <summary>
     /// 调试模组包存放路径
     /// </summary>
-    [LuaApiDescription("调试模组包存放路径")]
     public const string DEBUG_PACKAGE_FOLDER = "Assets/Packages";
+
+    
+
+    public const string DEBUG_CORE_FOLDER = "Assets/Game";
+    
     /// <summary>
     /// 调试关卡存放路径
     /// </summary>
-    [LuaApiDescription("调试关卡存放路径")]
-    public const string DEBUG_LEVEL_FOLDER = "Assets/Levels";
-
-    public const string DEBUG_CORE_FOLDER = "Assets/Game";
+    public const string DEBUG_LEVEL_FOLDER = "Assets/Game/Levels";
 
     private static string _DEBUG_PATH = "";
     private static string _DEBUG_OUTPUT_PATH = "";
@@ -65,7 +63,6 @@ namespace Ballance2.Res
     /// <summary>
     /// 调试路径（输出目录）<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
     /// </summary>
-    [LuaApiDescription("调试路径（输出目录）")]
     public static string DEBUG_PATH
     {
       get
@@ -89,7 +86,6 @@ namespace Ballance2.Res
     /// <summary>
     /// 输出目录<c>（您在调试时请点击菜单 "Ballance">"开发设置">"Debug Settings" 将其更改为自己调试输出存放目录）</c>
     /// </summary>
-    [LuaApiDescription("输出目录（您在调试时请点击菜单 \"Ballance\">\"开发设置\">\"Debug Settings\" 将其更改为自己调试输出存放目录）")]
     public static string DEBUG_OUTPUT_PATH
     {
       get
@@ -112,12 +108,10 @@ namespace Ballance2.Res
     /// <summary>
     /// 调试路径（模组目录）
     /// </summary>
-    [LuaApiDescription("调试路径（模组目录）")]
     public static string DEBUG_PACKAGES_PATH { get { return DEBUG_PATH + "/Packages/"; } }
     /// <summary>
     /// 调试路径（关卡目录）
     /// </summary>
-    [LuaApiDescription("调试路径（关卡目录）")]
     public static string DEBUG_LEVELS_PATH { get { return DEBUG_PATH + "/Levels/"; } }
 
     /// <summary>
@@ -172,10 +166,6 @@ namespace Ballance2.Res
     /// <param name="pathorname">相对路径或名称</param>
     /// <param name="replacePlatform">是否替换文件路径中的 [Platform] 字符串</param>
     /// <returns>返回资源真实路径</returns>
-    [LuaApiDescription("将资源的相对路径转为资源真实路径", "返回资源真实路径")]
-    [LuaApiParamDescription("type", "资源种类（gameinit、core: 核心文件、level：关卡、package：模块）")]
-    [LuaApiParamDescription("pathorname", "相对路径或名称")]
-    [LuaApiParamDescription("replacePlatform", "是否替换文件路径中的 [Platform] 字符串")]
     public static string GetResRealPath(string type, string pathorname, bool replacePlatform = true, bool withFileSheme = true)
     {
       string result = null;
@@ -209,7 +199,7 @@ namespace Ballance2.Res
           pathbuf = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
           pathbuf= Application.dataPath + "/Packages/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
+#elif UNITY_ANDROID || UNITY_IOS
           if(CheckPackageInBuiltInPackage(pathbuf))
             pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Packages/" + pathbuf;
           else 
@@ -225,7 +215,7 @@ namespace Ballance2.Res
           result = DEBUG_PACKAGES_PATH + pathbuf;
 #elif UNITY_STANDALONE
           result = Application.dataPath + "/Packages/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
+#elif UNITY_ANDROID || UNITY_IOS
           if(CheckPackageInBuiltInPackage(pathbuf))
             result = Application.streamingAssetsPath + "/BuiltInPackages/Packages/" + pathbuf;
           else 
@@ -245,7 +235,7 @@ namespace Ballance2.Res
           pathbuf = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE
           pathbuf = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
+#elif UNITY_ANDROID || UNITY_IOS
           pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Core/" + pathbuf;
 #else
           GameErrorChecker.LastError = GameError.NotImplemented;
@@ -259,7 +249,7 @@ namespace Ballance2.Res
           result = DEBUG_PATH + "/Core/" + pathbuf;
 #elif UNITY_STANDALONE
           result = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
+#elif UNITY_ANDROID || UNITY_IOS
           result = Application.streamingAssetsPath + "/BuiltInPackages/Core/" + pathbuf;
 #else
           GameErrorChecker.LastError = GameError.NotImplemented;
@@ -280,8 +270,6 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="pathorname">关卡的相对路径或名称</param>
     /// <returns>返回资源真实路径</returns>
-    [LuaApiDescription("将关卡资源的相对路径转为关卡资源真实路径", "返回资源真实路径")]
-    [LuaApiParamDescription("pathorname", "关卡的相对路径或名称")]
     public static string GetLevelRealPath(string pathorname, bool withFileSheme = true)
     {
       string result = "";
@@ -298,7 +286,7 @@ namespace Ballance2.Res
         pathbuf = DEBUG_LEVELS_PATH + pathbuf;
 #elif UNITY_STANDALONE
         pathbuf = Application.dataPath + "/Levels/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
+#elif UNITY_ANDROID || UNITY_IOS
         if(CheckPackageInBuiltInLevel(pathbuf))
           pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Levels/" + pathbuf;
         else
@@ -314,7 +302,7 @@ namespace Ballance2.Res
         result = DEBUG_LEVELS_PATH + pathorname;
 #elif UNITY_STANDALONE
         result = Application.dataPath + "/Levels/" + pathorname;
-#elif UNITY_ANDROID || UNITY_IOS || UNITY_WSA
+#elif UNITY_ANDROID || UNITY_IOS
         if(CheckPackageInBuiltInLevel(pathorname))
           result = Application.streamingAssetsPath + "/BuiltInPackages/Levels/" + pathorname;
         else
@@ -336,9 +324,6 @@ namespace Ballance2.Res
     /// <param name="newPath"></param>
     /// <param name="buf"></param>
     /// <returns></returns>
-    [LuaApiDescription("Replace Path In Resource Identifier (Identifier:Path:Arg0:Arg1)", "")]
-    [LuaApiParamDescription("oldIdentifier", "Identifier Want br replace")]
-    [LuaApiNotes("!> 这个函数没有用了。")]
     public static string ReplacePathInResourceIdentifier(string newPath, ref string[] buf)
     {
       if (buf.Length > 1)
@@ -357,10 +342,6 @@ namespace Ballance2.Res
     /// <param name="oldIdentifier">资源标识符</param>
     /// <param name="outPath">输出资源路径</param>
     /// <returns></returns>
-    [LuaApiDescription("分割资源标识符", "")]
-    [LuaApiParamDescription("oldIdentifier", "资源标识符")]
-    [LuaApiParamDescription("outPath", "输出资源路径")]
-    [LuaApiNotes("!> 这个函数没有用了。")]
     public static string[] SplitResourceIdentifier(string oldIdentifier, out string outPath)
     {
       string[] buf = oldIdentifier.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);

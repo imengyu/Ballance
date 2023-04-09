@@ -40,32 +40,22 @@ fadeObject.ResetTo(0.5f); //设置当前的渐变值为 0.5f
 namespace Ballance2.UI.Utils
 {
   /// <summary>
-  /// 渐变自管理类
+  /// 渐变工具，可以对多种物体进行渐变，显示/隐藏。目前支持Material，Material数组，Image，Text，AudioSource的淡出淡入效果。
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("渐变自管理类")]
-  [LuaApiNotes(@"负责渐变自动化脚本的管理与执行。
-
-该组件有绑定一个实例至 [GameUIManager](Ballance2.Services.GameUIManager) 上，可使用 `GameUIManager.UIFadeManager` 快速访问。", 
-@"渐变工具，可以对多种物体进行渐变，显示/隐藏。
-目前支持Material，Material数组，Image，Text，AudioSource的淡出淡入效果。
-
-注意，如果多个物体共享同一个材质，运行渐变后会导致全部使用此材质的物体都会改变效果，如果需要单独渐变，要在对象上用一个单独的材质。
-
-使用方法，可以调用
-
-```lua
---产生一个渐变，对象是当前物体，并且渐变完成后自动隐藏物体
---最后一个参数为null表示它会自动去当前物体的MeshRenderer上查找材质来进行渐变。
-local fadeObject = GameUIManager.UIFadeManager:AddFadeOut(self.gameObject, 1.0, true, null);
-
---创建的fadeObject随时可以停止，或者设置当前的渐变值。
-fadeObject:Delete(); --停止
-fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
-```")]
+  /// <remarks>
+  /// 该组件有绑定一个实例至 <see>Ballance2.Services.GameUIManager</see> 上，可使用 `GameUIManager.UIFadeManager` 快速访问。
+  /// 注意，如果多个物体共享同一个材质，运行渐变后会导致全部使用此材质的物体都会改变效果，如果需要单独渐变，要在对象上用一个单独的材质。
+  /// </remarks>
+  /// <example>
+  /// //产生一个渐变，对象是当前物体，并且渐变完成后自动隐藏物体
+  /// //最后一个参数为null表示它会自动去当前物体的MeshRenderer上查找材质来进行渐变。
+  /// var fadeObject = GameUIManager.UIFadeManager.AddFadeOut(this.gameObject, 1.0f, true, null);
+  /// //创建的fadeObject随时可以停止，或者设置当前的渐变值。
+  /// fadeObject.Delete(); //停止
+  /// fadeObject.ResetTo(0.5f); //设置当前的渐变值为 0.5f
+  /// </example>
   public class UIFadeManager : MonoBehaviour
   {
-    [LuaApiDescription("当前的渐变对象")]
     public List<FadeObject> fadeObjects = new List<FadeObject>();
 
     private void Update()
@@ -187,11 +177,6 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
     /// <param name="material">执行材质</param>
-    [LuaApiDescription("运行淡出动画")]
-    [LuaApiParamDescription("gameObject", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
-    [LuaApiParamDescription("material", "执行材质")]
-    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
     public FadeObject AddFadeOut(GameObject gameObject, float timeInSecond, bool hidden, Material material)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeOut);
@@ -227,16 +212,13 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       fadeObjects.Add(fadeObject);
       return fadeObject;
     }
+
     /// <summary>
     /// 运行淡入动画
     /// </summary>
     /// <param name="gameObject">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="material">执行材质</param>
-    [LuaApiDescription("运行淡入动画")]
-    [LuaApiParamDescription("gameObject", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
-    [LuaApiParamDescription("material", "执行材质")]
     public FadeObject AddFadeIn(GameObject gameObject, float timeInSecond, Material material)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeIn);
@@ -281,11 +263,6 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
     /// <param name="materials">执行材质数组</param>
-    [LuaApiDescription("运行淡出动画")]
-    [LuaApiParamDescription("gameObject", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
-    [LuaApiParamDescription("materials", "执行材质数组")]
-    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
     public FadeObject AddFadeOut2(GameObject gameObject, float timeInSecond, bool hidden, Material[] materials)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeOut);
@@ -310,16 +287,13 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       fadeObjects.Add(fadeObject);
       return fadeObject;
     }
+
     /// <summary>
     /// 运行淡入动画
     /// </summary>
     /// <param name="gameObject">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="material">执行材质</param>
-    [LuaApiDescription("运行淡入动画")]
-    [LuaApiParamDescription("gameObject", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
-    [LuaApiParamDescription("materials", "执行材质数组")]
     public FadeObject AddFadeIn2(GameObject gameObject, float timeInSecond, Material[] materials)
     {
       FadeObject fadeObject = FindFadeObjectByGameObject(gameObject, FadeType.FadeIn);
@@ -352,10 +326,6 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
     /// <param name="image">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
-    [LuaApiDescription("运行淡出动画")]
-    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
-    [LuaApiParamDescription("image", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddFadeOut(Image image, float timeInSecond, bool hidden)
     {
       if (image != null)
@@ -379,14 +349,12 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       }
       return null;
     }
+
     /// <summary>
     /// 运行淡入动画
     /// </summary>
     /// <param name="image">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
-    [LuaApiDescription("运行淡入动画")]
-    [LuaApiParamDescription("image", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddFadeIn(Image image, float timeInSecond)
     {
       if (image != null)
@@ -418,10 +386,6 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
     /// <param name="text">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
-    [LuaApiDescription("运行淡出动画")]
-    [LuaApiParamDescription("text", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
-    [LuaApiParamDescription("hidden", "执行完毕是否将对象设置为不激活")]
     public FadeObject AddFadeOut(Text text, float timeInSecond, bool hidden)
     {
       if (text != null)
@@ -445,14 +409,12 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       }
       return null;
     }
+
     /// <summary>
     /// 运行淡入动画
     /// </summary>
     /// <param name="text">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
-    [LuaApiDescription("运行淡入动画")]
-    [LuaApiParamDescription("text", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddFadeIn(Text text, float timeInSecond)
     {
       if (text != null)
@@ -483,9 +445,6 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
     /// </summary>
     /// <param name="audio">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
-    [LuaApiDescription("运行声音淡出")]
-    [LuaApiParamDescription("audio", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
     public FadeObject AddAudioFadeOut(AudioSource audio, float timeInSecond)
     {
       if (audio != null)
@@ -509,14 +468,12 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       }
       return null;
     }
+
     /// <summary>
     /// 运行声音淡入
     /// </summary>
     /// <param name="audio">执行对象</param>
-    /// <param name="timeInSecond">执行时间</param>
-    [LuaApiDescription("运行声音淡入")]
-    [LuaApiParamDescription("audio", "执行对象")]
-    [LuaApiParamDescription("timeInSecond", "执行时间")]
+    /// <param name="timeInSecond">执行时间</param>    
     public FadeObject AddAudioFadeIn(AudioSource audio, float timeInSecond)
     {
       if (audio != null)
@@ -542,64 +499,58 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       return null;
     }
 
-
   }
 
   /// <summary>
   /// 渐变类型
   /// </summary>
-  [LuaApiDescription("渐变类型")]
-  [SLua.CustomLuaClass]
   public enum FadeType
   {
     None,
     FadeIn,
     FadeOut,
   }
+
   /// <summary>
   /// 渐变管理对象信息
   /// </summary>
-  [LuaApiDescription("渐变管理对象信息")]
-  [SLua.CustomLuaClass]
   public class FadeObject
   {
     internal FadeObject(UIFadeManager fadeManager) {
       this.fadeManager = fadeManager;
     }
 
-    [LuaApiDescription("渐变所属管理器")]
+    
     public UIFadeManager fadeManager { get; }
-    [LuaApiDescription("渐变所属对象")]
+    
     public GameObject gameObject;
-    [LuaApiDescription("渐变控制材质")]
+    
     public Material material;
-    [LuaApiDescription("渐变控制材质数组")]
+    
     public Material[] materials;
-    [LuaApiDescription("渐变控制UI图像")]
+    
     public Image image;
-    [LuaApiDescription("渐变控制UI文字")]
+    
     public Text text;
-    [LuaApiDescription("渐变控制音量")]
+    
     public AudioSource audio;
-    [LuaApiDescription("当前透明度值")]
+    
     public float alpha;
-    [LuaApiDescription("渐变时长(秒)")]
+    
     public float timeInSecond;
-    [LuaApiDescription("结束后是否重新激活对象")]
+    
     public bool endReactive;
-    [LuaApiDescription("渐变是否已经结束")]
+    
     public bool runEnd = false;
-    [LuaApiDescription("渐变开始之前的材质渲染类型")]
+    
     public MaterialUtils.RenderingMode oldMatRenderMode = MaterialUtils.RenderingMode.Fade;
-    [LuaApiDescription("渐变类型")]
+    
     public FadeType fadeType;
 
     /// <summary>
     /// 强制重置当前渐变透明度至指定的值
     /// </summary>
     /// <param name="alpha">透明度值</param>
-    [LuaApiDescription("强制重置当前渐变透明度至指定的值")]
-    [LuaApiParamDescription("alpha", "透明度值")]
     public void ResetTo(float alpha) {
       this.alpha = alpha;
 
@@ -617,10 +568,10 @@ fadeObject:ResetTo(0.5f); --设置当前的渐变值为 0.5f
       else if (audio != null)
         audio.volume = alpha;
     }
+
     /// <summary>
     /// 移除当前渐变
     /// </summary>
-    [LuaApiDescription("移除当前渐变")]
     public void Delete() {
       fadeManager.fadeObjects.Remove(this);
     }

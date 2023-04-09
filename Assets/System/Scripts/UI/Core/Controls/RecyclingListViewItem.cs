@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Ballance2.UI.Core.Controls
@@ -8,8 +7,6 @@ namespace Ballance2.UI.Core.Controls
   /// this item on demand.
   /// </summary>
   [RequireComponent(typeof(RectTransform))]
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   public class RecyclingListViewItem : MonoBehaviour
   {
 
@@ -46,7 +43,5 @@ namespace Ballance2.UI.Core.Controls
       parentList = v;
       currentRow = row;
     }
-
-
   }
 }

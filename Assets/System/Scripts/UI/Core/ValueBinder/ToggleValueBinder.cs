@@ -15,20 +15,25 @@ using UnityEngine.UI;
 */
 
 namespace Ballance2.UI.Core.ValueBinder
-{ 
-    [AddComponentMenu("Ballance/UI/ValueBinder/ToggleValueBinder")]
-    [RequireComponent(typeof(Toggle))]
-    public class ToggleValueBinder : GameUIControlValueBinder
-    {
-        private Toggle toggle = null;
+{
+  [AddComponentMenu("Ballance/UI/ValueBinder/ToggleValueBinder")]
+  [RequireComponent(typeof(Toggle))]
+  public class ToggleValueBinder : GameUIControlValueBinder
+  {
+    private Toggle toggle = null;
 
-        protected override void BinderBegin() {
-            toggle = GetComponent<Toggle>();
-            BinderSupplierCallback = (value) => {
-                toggle.isOn = (bool)value;
-                return true;
-            };
-            toggle.onValueChanged.AddListener((on) => NotifyUserUpdate(on));
-        }
+    protected override void BinderBegin()
+    {
+      toggle = GetComponent<Toggle>();
+      BinderSupplierCallback = (value) =>
+      {
+        toggle.isOn = (bool)value;
+        return true;
+      };
+      toggle.onValueChanged.AddListener((on) =>
+      {
+        NotifyUserUpdate(on);
+      });
     }
+  }
 }

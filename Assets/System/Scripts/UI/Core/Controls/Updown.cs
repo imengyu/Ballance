@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using SubjectNerd.Utilities;
 using UnityEngine;
@@ -24,10 +23,7 @@ namespace Ballance2.UI.Core.Controls
   /// 一个上下数值组件
   /// </summary>
   [ExecuteInEditMode]
-  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/Updown")]
-  [LuaApiDescription("一个上下数值组件")]
-  [LuaApiNoDoc]
   public class Updown : UIBehaviour
   {
     public Button DownBtn;

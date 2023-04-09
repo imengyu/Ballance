@@ -17,8 +17,6 @@ namespace Ballance2.UI.Core.Controls
   ///     there is no support for grid view style layouts 
   /// </summary>
   [RequireComponent(typeof(ScrollRect))]
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   public class RecyclingListView : MonoBehaviour
   {
     [Tooltip("Prefab for all the child view objects in the list")]
@@ -27,7 +25,6 @@ namespace Ballance2.UI.Core.Controls
     public float RowPadding = 15f;
     [Tooltip("Minimum height to pre-allocate list items for. Use to prevent allocations on resizing.")]
     public float PreAllocHeight = 0;
-
 
     /// <summary>
     /// Set the vertical normalized scroll position. 0 is bottom, 1 is top (as with ScrollRect) 
@@ -67,7 +64,6 @@ namespace Ballance2.UI.Core.Controls
     /// </summary>
     /// <param name="item">The child item being populated. These are recycled as the list scrolls.</param>
     /// <param name="rowIndex">The overall row index of the list item being populated</param>
-    [SLua.CustomLuaClass]
     public delegate void ItemDelegate(RecyclingListViewItem item, int rowIndex);
 
     /// <summary>

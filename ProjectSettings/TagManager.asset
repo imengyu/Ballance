@@ -4,40 +4,29 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - DebugWindow
-  - Background
-  - Phys_Floors
-  - Phys_FloorRails
-  - Phys_FloorWoods
-  - Phys_FloorStopper
-  - Phys_FloorCustom1
-  - Phys_FloorCustom2
-  - Phys_FloorCustom3
-  - Phys_FloorCustom4
-  - Phys_FloorCustom5
-  - Phys_FloorCustom6
-  - Phys_FloorCustom7
-  - Phys_FloorCustom8
-  - Phys_FloorCustom9
-  - Phys_FloorCustom10
-  - Phys_FloorDome
+  - Phys_Dome
   - Ball
+  - Phys_Floors
+  - Phys_FloorWoods
+  - Phys_FloorRails
+  - Phys_FloorStopper
+  - Phys_FloorDome
   - Speical
   - Others
-  - Phys_Dome
+  - Background
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Background
+  - EmptyLayer
   - Water
   - UI
-  - CustomRenderer
-  - EmptyLayer
-  - Speical
+  - Ghost
   - Ball
-  - UI3DObjects
-  - CustomLayer11
+  - Modul
+  - Floor
+  - Speical
+  - CustomRenderer
   - CustomLayer12
   - CustomLayer13
   - CustomLayer14
@@ -46,18 +35,18 @@ TagManager:
   - CustomLayer17
   - CustomLayer18
   - CustomLayer19
-  - CustomLayer20
-  - CustomLayer21
-  - CustomLayer22
-  - CustomLayer23
-  - CustomLayer24
-  - CustomLayer25
-  - CustomLayer26
-  - PreservedLayer1
-  - PreservedLayer2
-  - PreservedLayer3
-  - PreservedLayer4
-  - PreservedLayer5
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0

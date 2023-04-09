@@ -20,9 +20,9 @@ namespace Ballance2.Services.I18N
   /// <summary>
   /// 国际化字符串提供类
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("国际化支持类")]
-  [LuaApiNotes("国际化支持类，用于加载并处理国际化字符串资源以及读取本地化字符串。")]
+  
+  
+  
   public static class I18NProvider
   {
     private const string TAG = "I18NProvider";
@@ -31,7 +31,7 @@ namespace Ballance2.Services.I18N
     private static Dictionary<string, string> LanguageValues = new Dictionary<string, string>();
 
     //由GameManager调用
-    [LuaApiDescription("由GameManager调用。不要调用")]
+    
     public static void ClearAllLanguageResources()
     {
       currentLanguage = SystemLanguage.ChineseSimplified;
@@ -43,8 +43,8 @@ namespace Ballance2.Services.I18N
     /// </summary>
     /// <param name="xmlAssets">语言定义XML字符串</param>
     /// <returns>加载是否成功</returns>
-    [LuaApiDescription("加载语言定义文件", "加载是否成功")]
-    [LuaApiParamDescription("xmlAssets", "语言定义XML字符串")]
+    
+    
     public static bool LoadLanguageResources(string xmlAssets)
     {
       try
@@ -87,8 +87,8 @@ namespace Ballance2.Services.I18N
     /// </summary>
     /// <param name="xmlAssets">语言定义XML字符串</param>
     /// <returns>加载是否成功</returns>
-    [LuaApiDescription("加载语言定义文件", "加载是否成功")]
-    [LuaApiParamDescription("xmlAssets", "语言定义XML字符串")]
+    
+    
     public static Dictionary<string, string> PreLoadLanguageResources(string xmlAssets)
     {
       Dictionary<string, string> LanguageValues = new Dictionary<string, string>();
@@ -133,8 +133,8 @@ namespace Ballance2.Services.I18N
     /// </summary>
     /// <param name="xmlAssets">语言定义XML资源文件</param>
     /// <returns>加载是否成功</returns>
-    [LuaApiDescription("加载语言定义文件", "加载是否成功")]
-    [LuaApiParamDescription("xmlAssets", "语言定义XML资源文件")]
+    
+    
     public static bool LoadLanguageResources(TextAsset xmlAssets)
     {
       return LoadLanguageResources(xmlAssets.text);
@@ -144,8 +144,8 @@ namespace Ballance2.Services.I18N
     /// 设置当前游戏语言。此函数只能设置语言至设置，无法立即生效，必须重启游戏才能生效。
     /// </summary>
     /// <param name="language">语言</param>
-    [LuaApiDescription("设置当前游戏语言。此函数只能设置语言至设置，无法立即生效，必须重启游戏才能生效。")]
-    [LuaApiParamDescription("language", "语言")]
+    
+    
     public static void SetCurrentLanguage(SystemLanguage language)
     {
       if (currentLanguage != language)
@@ -155,7 +155,7 @@ namespace Ballance2.Services.I18N
     /// 获取当前游戏语言
     /// </summary>
     /// <returns></returns>
-    [LuaApiDescription("获取当前游戏语言", "")]
+    
     public static SystemLanguage GetCurrentLanguage()
     {
       return currentLanguage;
@@ -166,8 +166,8 @@ namespace Ballance2.Services.I18N
     /// </summary>
     /// <param name="key">字符串键值</param>
     /// <returns>如果找到对应键值字符串，则返回字符串，否则返回null</returns>
-    [LuaApiDescription("获取语言字符串", "如果找到对应键值字符串，则返回字符串，否则返回null")]
-    [LuaApiParamDescription("key", "字符串键值")]
+    
+    
     public static string GetLanguageString(string key)
     {
       if(LanguageValues.TryGetValue(key, out var s1))

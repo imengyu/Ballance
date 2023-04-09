@@ -7,9 +7,7 @@ using Ballance2.Utils;
 using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Services.Debug;
-using Ballance2.Base.Handler;
 using Ballance2.Utils.ServiceUtils;
-using SLua;
 using UnityEngine.Profiling;
 
 /*
@@ -21,9 +19,13 @@ using UnityEngine.Profiling;
 * 用途：
 * 游戏中介者管理器，用于游戏中央事件的转发与处理。
 * 中介者提供了事件交互方法：
-
+*
 *   全局事件：发送整体全局事件，让多个接受方接受事件。
 *   单一事件：发送单向全局事件，让一个接受方接受事件。
+*   事件发射器：某个类发送一组事件，让许多接受方订阅事件。 
+*
+* **提示：** 单一事件与全局数据无须手动使用 `RegisterGlobalEvent`/`RegisterSingleEvent` 注册，你可以直接执行相关方法，例如 `DispatchGlobalEvent` 等等，
+* 如果事件没有注册，它会自动调用注册。
 *
 * 作者：
 * mengyu
@@ -35,21 +37,7 @@ namespace Ballance2.Services
   /// 游戏中介者
   /// </summary>
   [Serializable]
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("游戏中介者")]
-  [LuaApiNotes(@"游戏中介者管理器，用于游戏中央事件的转发与处理。
-
-中介者提供了事件交互方法：
-
-* 全局事件：发送整体全局事件，让多个接受方接受事件。
-* 单一事件：发送单向全局事件，让一个接受方接受事件。 
-* 事件发射器：某个类发送一组事件，让许多接受方订阅事件。 
-
-?> **提示：** 单一事件与全局数据无须手动使用 `RegisterGlobalEvent`/`RegisterSingleEvent` 注册，你可以直接执行相关方法，例如 `DispatchGlobalEvent` 等等，
-如果事件没有注册，它会自动调用注册。
-
-")]
-  public class GameMediator : GameService
+  public class GameMediator : GameService<GameMediator>
   {
     private readonly string TAG = "GameMediator";
     private GameObject go = null;
@@ -59,14 +47,13 @@ namespace Ballance2.Services
     {
 
     }
-    [DoNotToLua]
+
     public override void Destroy()
     {
       if (go != null)
         UnityEngine.Object.Destroy(go);
       UnLoadAllEvents();
     }
-    [DoNotToLua]
     public override bool Initialize()
     {
       InitAllEvents();
@@ -88,7 +75,7 @@ namespace Ballance2.Services
     [SerializeField, SetProperty("Events")]
     private Dictionary<string, GameEvent> events = new Dictionary<string, GameEvent>();
     private Dictionary<string, GameEventEmitter> eventEmitts = new Dictionary<string, GameEventEmitter>();
-    private Dictionary<string, GameHandler> singleEvents = new Dictionary<string, GameHandler>();
+    private Dictionary<string, GameEventHandler> singleEvents = new Dictionary<string, GameEventHandler>();
 
     public Dictionary<string, GameEvent> Events { get { return events; } }
 
@@ -99,8 +86,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">事件发射器名称</param>
     /// <returns></returns>
-    [LuaApiDescription("注册事件发射器")]
-    [LuaApiParamDescription("name", "事件发射器名称")]
     public GameEventEmitter RegisterEventEmitter(string name) {
       GameEventEmitter result = null;
       if(eventEmitts.TryGetValue(name, out result))
@@ -112,8 +97,6 @@ namespace Ballance2.Services
     /// 取消注册事件发射器
     /// </summary>
     /// <param name="name">事件发射器名称</param>
-    [LuaApiDescription("取消注册事件发射器")]
-    [LuaApiParamDescription("name", "事件发射器名称")]
     public void UnRegisterEventEmitter(string name) {
       eventEmitts.Remove(name);
     }
@@ -126,8 +109,6 @@ namespace Ballance2.Services
     /// 注册单一事件
     /// </summary>
     /// <param name="evtName">事件名称</param>
-    [LuaApiDescription("注册单一事件")]
-    [LuaApiParamDescription("evtName", "事件名称")]
     public bool RegisterSingleEvent(string evtName)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -144,8 +125,8 @@ namespace Ballance2.Services
     /// 取消注册单一事件
     /// </summary>
     /// <param name="evtName">事件名称</param>
-    [LuaApiDescription("取消注册单一事件")]
-    [LuaApiParamDescription("evtName", "事件名称")]
+    
+    
     public bool UnRegisterSingleEvent(string evtName)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -170,8 +151,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="evtName">事件名称</param>
     /// <returns>是否注册</returns>
-    [LuaApiDescription("获取单一事件是否注册", "是否注册")]
-    [LuaApiParamDescription("evtName", "事件名称")]
+    
+    
     public bool IsSingleEventRegistered(string evtName)
     {
       return singleEvents.ContainsKey(evtName);
@@ -181,8 +162,8 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="evtName">事件名称</param>
     /// <returns>返回是否附加</returns>
-    [LuaApiDescription("检测单一事件是否被接收者附加", "返回是否附加")]
-    [LuaApiParamDescription("evtName", "事件名称")]
+    
+    
     public bool CheckSingleEventAttatched(string evtName)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -191,7 +172,7 @@ namespace Ballance2.Services
         GameErrorChecker.LastError = GameError.ParamNotProvide;
         return false;
       }
-      if (singleEvents.TryGetValue(evtName, out GameHandler handler))
+      if (singleEvents.TryGetValue(evtName, out GameEventHandler handler))
       {
         return (handler != null);
       }
@@ -210,10 +191,6 @@ namespace Ballance2.Services
     /// <param name="delayeSecond">延时时长，单位秒</param>
     /// <param name="pararms">事件参数</param>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("延时通知单一事件", "返回是否成功")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("delayeSecond", "延时时长，单位秒")]
-    [LuaApiParamDescription("pararms", "事件参数")]
     public bool DelayedNotifySingleEvent(string evtName, float delayeSecond, params object[] pararms)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -222,7 +199,7 @@ namespace Ballance2.Services
         GameErrorChecker.LastError = GameError.ParamNotProvide;
         return false;
       }
-      DelayCaller.AddDelayCallSingle(evtName, delayeSecond, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
+      DelayCaller.AddDelayCallSingle(evtName, delayeSecond, pararms);
       return true;
     }
     /// <summary>
@@ -231,9 +208,6 @@ namespace Ballance2.Services
     /// <param name="evtName">事件名称</param>
     /// <param name="pararms">事件参数</param>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("通知单一事件", "返回是否成功")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("pararms", "事件参数")]
     public bool NotifySingleEvent(string evtName, params object[] pararms)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -242,12 +216,12 @@ namespace Ballance2.Services
         GameErrorChecker.LastError = GameError.ParamNotProvide;
         return false;
       }
-      if (singleEvents.TryGetValue(evtName, out GameHandler handler))
+      if (singleEvents.TryGetValue(evtName, out GameEventHandler handler))
       {
         Profiler.BeginSample("NotifySingleEvent" + evtName);
         
         if (handler != null)
-          handler.CallEventHandler(evtName, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
+          handler.CallEventHandler(evtName, pararms);
 
         Profiler.EndSample();
         return true;
@@ -268,13 +242,7 @@ namespace Ballance2.Services
     /// <param name="name">接收器名字</param>
     /// <param name="gameHandlerDelegate">回调</param>
     /// <returns>返回接收器实例，如果失败，则返回null，具体请查看LastError</returns>
-    [LuaApiDescription("订阅全局单一事件", "返回接收器实例，如果失败，则返回null，具体请查看LastError")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("name", "服务名称")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("name", "接收器名字")]
-    [LuaApiParamDescription("gameHandlerDelegate", "回调")]
-    public GameHandler SubscribeSingleEvent(GamePackage package, string evtName, string name, GameEventHandlerDelegate gameHandlerDelegate)
+    public GameEventHandler SubscribeSingleEvent(GamePackage package, string evtName, string name, GameEventHandlerDelegate gameHandlerDelegate)
     {
       if (string.IsNullOrEmpty(evtName) || string.IsNullOrEmpty(name) || gameHandlerDelegate == null)
       {
@@ -292,7 +260,9 @@ namespace Ballance2.Services
         return null;
       }
 
-      GameHandler gameHandler = GameHandler.CreateCsEventHandler(package, name, gameHandlerDelegate);
+      GameEventHandler gameHandler = new GameEventHandler(package, (handler) => {
+        UnsubscribeSingleEvent(package, evtName, handler);
+      }, name, gameHandlerDelegate);
       singleEvents[evtName] = gameHandler;
       return gameHandler;
     }
@@ -304,12 +274,7 @@ namespace Ballance2.Services
     /// <param name="name">接收器名字</param>
     /// <param name="gameHandler">注册的处理器实例</param>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("取消订阅全局单一事件", "返回是否成功")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("name", "接收器名字")]
-    [LuaApiParamDescription("gameHandler", "注册的处理器实例")]
-    public bool UnsubscribeSingleEvent(GamePackage package, string evtName, GameHandler gameHandler)
+    public bool UnsubscribeSingleEvent(GamePackage package, string evtName, GameEventHandler gameHandler)
     {
       if (string.IsNullOrEmpty(evtName) || gameHandler == null)
       {
@@ -343,9 +308,7 @@ namespace Ballance2.Services
     /// <summary>
     /// 注册事件
     /// </summary>
-    /// <param name="evtName">事件名称</param>
-    [LuaApiDescription("注册事件")]
-    [LuaApiParamDescription("evtName", "事件名称")]
+    /// <param name="evtName">事件名称</param>  
     public GameEvent RegisterGlobalEvent(string evtName)
     {
       GameEvent gameEvent;
@@ -367,8 +330,6 @@ namespace Ballance2.Services
     /// 取消注册事件
     /// </summary>
     /// <param name="evtName">事件名称</param>
-    [LuaApiDescription("取消注册事件")]
-    [LuaApiParamDescription("evtName", "事件名称")]
     public bool UnRegisterGlobalEvent(string evtName)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -394,8 +355,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="evtName">事件名称</param>
     /// <returns>是否注册</returns>
-    [LuaApiDescription("获取事件是否注册", "是否注册")]
-    [LuaApiParamDescription("evtName", "事件名称")]
     public bool IsGlobalEventRegistered(string evtName)
     {
       return events.ContainsKey(evtName);
@@ -406,9 +365,6 @@ namespace Ballance2.Services
     /// <param name="evtName">事件名称</param>
     /// <param name="e">返回的事件实例</param>
     /// <returns>是否注册</returns>
-    [LuaApiDescription("获取事件是否注册，如果已注册，则返回实例", "是否注册")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("e", "返回的事件实例")]
     public bool IsGlobalEventRegistered(string evtName, out GameEvent e)
     {
       if (events.TryGetValue(evtName, out e))
@@ -421,8 +377,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="evtName">事件名称</param>
     /// <returns>返回的事件实例</returns>
-    [LuaApiDescription("获取事件实例", "返回的事件实例")]
-    [LuaApiParamDescription("evtName", "事件名称")]
     public GameEvent GetRegisteredGlobalEvent(string evtName)
     {
       GameEvent gameEvent = null;
@@ -445,10 +399,6 @@ namespace Ballance2.Services
     /// <param name="delayeSecond">延时时长，单位秒</param>
     /// <param name="pararms">事件参数</param>
     /// <returns>返回已经发送的接收器个数</returns>
-    [LuaApiDescription("延时执行事件分发", "返回已经发送的接收器个数")]
-    [LuaApiParamDescription("gameEvent", "事件实例")]
-    [LuaApiParamDescription("delayeSecond", "延时时长，单位秒")]
-    [LuaApiParamDescription("pararms", "事件参数")]
     public bool DelayedDispatchGlobalEvent(string evtName, float delayeSecond, params object[] pararms)
     {
       if (string.IsNullOrEmpty(evtName))
@@ -462,7 +412,7 @@ namespace Ballance2.Services
         Log.W(TAG, "事件 {0} 未注册", evtName);
         GameErrorChecker.LastError = GameError.NotRegister;
       }
-      DelayCaller.AddDelayCallNormal(evtName, delayeSecond, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
+      DelayCaller.AddDelayCallNormal(evtName, delayeSecond, pararms);
       return true;
     }
 
@@ -472,9 +422,6 @@ namespace Ballance2.Services
     /// <param name="gameEvent">事件实例</param>
     /// <param name="pararms">事件参数</param>
     /// <returns>返回已经发送的接收器个数</returns>
-    [LuaApiDescription("执行事件分发", "返回已经发送的接收器个数")]
-    [LuaApiParamDescription("gameEvent", "事件实例")]
-    [LuaApiParamDescription("pararms", "事件参数")]
     public int DispatchGlobalEvent(GameEvent gameEvent, params object[] pararms)
     {
       Profiler.BeginSample("DispatchGlobalEvent_" + gameEvent.EventName);
@@ -488,14 +435,14 @@ namespace Ballance2.Services
       }
 
       //事件分发
-      GameHandler gameHandler;
+      GameEventHandler gameHandler;
       for (int i = gameEvent.EventHandlers.Count - 1; i >= 0; i--)
       {
         gameHandler = gameEvent.EventHandlers[i];
         if (gameHandler.Destroyed)
           gameEvent.EventHandlers.RemoveAt(i);
         handledCount++;
-        if (gameHandler.CallEventHandler(gameEvent.EventName, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms)))
+        if (gameHandler.CallEventHandler(gameEvent.EventName, pararms))
         {
           Log.D(TAG, "Event {0} was interrupted by : {1}", gameEvent.EventName, gameHandler.Name);
           break;
@@ -511,9 +458,6 @@ namespace Ballance2.Services
     /// <param name="evtName">事件名称</param>
     /// <param name="pararms">事件参数</param>
     /// <returns>返回已经发送的接收器个数</returns>
-    [LuaApiDescription("执行事件分发", "返回已经发送的接收器个数")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("pararms", "事件参数")]
     public int DispatchGlobalEvent(string evtName, params object[] pararms)
     {
       int handledCount = 0;
@@ -525,7 +469,7 @@ namespace Ballance2.Services
         return 0;
       }
       if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
-        return DispatchGlobalEvent(gameEvent, LuaUtils.AutoCheckParamIsLuaTableAndConver(pararms));
+        return DispatchGlobalEvent(gameEvent, pararms);
       else
         GameErrorChecker.LastError = GameError.NotRegister;
       return handledCount;
@@ -538,12 +482,7 @@ namespace Ballance2.Services
     /// <param name="name">接收器名字</param>
     /// <param name="gameHandlerDelegate">回调</param>
     /// <returns>返回注册的处理器，可使用这个处理器取消注册对应事件</returns>
-    [LuaApiDescription("游戏中注册全局事件接收器介者", "返回注册的处理器，可使用这个处理器取消注册对应事件")]
-    [LuaApiParamDescription("package", "所属包")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("name", "接收器名字")]
-    [LuaApiParamDescription("luaModulHandler", "模块接收器函数标识符")]
-    public GameHandler RegisterEventHandler(GamePackage package, string evtName, string name, GameEventHandlerDelegate gameHandlerDelegate)
+    public GameEventHandler RegisterEventHandler(GamePackage package, string evtName, string name, GameEventHandlerDelegate gameHandlerDelegate)
     {
       if (string.IsNullOrEmpty(evtName)
          || string.IsNullOrEmpty(name)
@@ -557,7 +496,9 @@ namespace Ballance2.Services
       if (!IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
         gameEvent = RegisterGlobalEvent(evtName);
 
-      GameHandler gameHandler = GameHandler.CreateCsEventHandler(package, name, gameHandlerDelegate);
+      GameEventHandler gameHandler = new GameEventHandler(package, (handler) => {
+        UnRegisterEventHandler(evtName, handler);
+      }, name, gameHandlerDelegate);
       gameEvent.EventHandlers.Add(gameHandler);
       return gameHandler;
     }
@@ -566,10 +507,7 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="evtName">事件名称</param>
     /// <param name="handler">接收器类</param>
-    [LuaApiDescription("取消注册全局事件接收器")]
-    [LuaApiParamDescription("evtName", "事件名称")]
-    [LuaApiParamDescription("handler", "注册的处理器实例")]
-    public void UnRegisterEventHandler(string evtName, GameHandler handler)
+    public void UnRegisterEventHandler(string evtName, GameEventHandler handler)
     {
       if (string.IsNullOrEmpty(evtName) || handler == null)
       {
@@ -581,9 +519,7 @@ namespace Ballance2.Services
       if (IsGlobalEventRegistered(evtName, out GameEvent gameEvent))
         gameEvent.EventHandlers.Remove(handler);
       else
-      {
         GameErrorChecker.LastError = GameError.NotRegister;
-      }
     }
 
     #endregion
@@ -595,8 +531,6 @@ namespace Ballance2.Services
         gameEvent.Value.Dispose();
       events.Clear();
       eventEmitts.Clear();
-      foreach (var gameEvent in singleEvents)
-        gameEvent.Value.Dispose();
       singleEvents.Clear();
     }
     private void InitAllEvents()

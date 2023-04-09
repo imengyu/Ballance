@@ -25,20 +25,13 @@ namespace Ballance2.Services
   /// <summary>
   /// 系统设置操作回调
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("系统设置操作回调")]
+  
+  
   public delegate bool GameSettingsCallback(string groupName, int action);
 
   /// <summary>
   /// 系统设置管理器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("系统设置管理器")]
-  [LuaApiNotes("游戏设置管理器，用于管理整个游戏的设置", @"使用方法：
-1. 通过 `GameSettingsManager.GetSettings('com.your.packagename')` 获取设置执行器。
-2. 设置执行器可调用 `RegisterSettingsUpdateCallback` 订阅用户将设置更改的信息，将设置保存至本地。
-3. UI可以通过 `NotifySettingsUpdate` 通知用户更改了设置信息。
-")]
   public static class GameSettingsManager
   {
     private static Dictionary<string, GameSettingsActuator> settingsActuators = null;
@@ -48,8 +41,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">设置执行器所使用包名</param>
     /// <returns>返回设置执行器实例</returns>
-    [LuaApiDescription("获取设置执行器", "返回设置执行器实例")]
-    [LuaApiParamDescription("packageName", "设置执行器所使用包名")]
     public static GameSettingsActuator GetSettings(string packageName)
     {
       GameSettingsActuator gameSettingsActuator = null;
@@ -63,7 +54,6 @@ namespace Ballance2.Services
     /// <summary>
     /// 还原默认设置
     /// </summary>
-    [LuaApiDescription("还原默认设置")]
     public static void ResetDefaultSettings()
     {
       PlayerPrefs.DeleteAll();
@@ -96,19 +86,15 @@ namespace Ballance2.Services
   /// <summary>
   /// 设置执行器，用于管理具体的设置条目
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("设置执行器，用于管理具体的设置条目")]
   public class GameSettingsActuator
   {
     /// <summary>
     /// 指示当前设置执行器执行更新操作
     /// </summary>
-    [LuaApiDescription("指示当前设置执行器执行更新操作")]
     public const int ACTION_UPDATE = 1;
     /// <summary>
     /// 指示当前设置执行器执行加载操作
     /// </summary>
-    [LuaApiDescription("指示当前设置执行器执行加载操作")]
     public const int ACTION_LOAD = 2;
 
     private string basePackName = "unknow";
@@ -117,8 +103,6 @@ namespace Ballance2.Services
     /// 创建设置执行器
     /// </summary>
     /// <param name="packageName">设置所在包名</param>
-    [LuaApiDescription("创建设置执行器")]
-    [LuaApiParamDescription("packageName", "设置所在包名")]
     public GameSettingsActuator(string packageName)
     {
       basePackName = packageName;
@@ -128,9 +112,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="key">设置键</param>
     /// <param name="value">设置值</param>
-    [LuaApiDescription("设置整型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("value", "设置值")]
     public virtual void SetInt(string key, int value)
     {
       PlayerPrefs.SetInt(basePackName + "." + key, value);
@@ -141,21 +122,25 @@ namespace Ballance2.Services
     /// <param name="key">设置键</param>
     /// <param name="defaultValue">未找到设置时返回的默认值</param>
     /// <returns></returns>
-    [LuaApiDescription("获取整型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("defaultValue", "未找到设置时返回的默认值")]
     public virtual int GetInt(string key, int defaultValue)
     {
       return PlayerPrefs.GetInt(basePackName + "." + key, defaultValue);
+    }
+    /// <summary>
+    /// 获取KeyCode型设置条目
+    /// </summary>
+    /// <param name="key">设置键</param>
+    /// <param name="defaultValue">未找到设置时返回的默认值</param>
+    /// <returns></returns>
+    public virtual KeyCode GetKeyCode(string key, KeyCode defaultValue)
+    {
+      return (KeyCode)PlayerPrefs.GetInt(basePackName + "." + key, (int)defaultValue);
     }
     /// <summary>
     /// 设置字符串型设置条目
     /// </summary>
     /// <param name="key">设置键</param>
     /// <param name="value">设置值</param>
-    [LuaApiDescription("设置字符串型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("value", "设置值")]
     public virtual void SetString(string key, string value)
     {
       PlayerPrefs.SetString(basePackName + "." + key, value);
@@ -166,9 +151,6 @@ namespace Ballance2.Services
     /// <param name="key">设置键</param>
     /// <param name="defaultValue">未找到设置时返回的默认值</param>
     /// <returns></returns>
-    [LuaApiDescription("获取字符串型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("defaultValue", "未找到设置时返回的默认值")]
     public virtual string GetString(string key, string defaultValue)
     {
       return PlayerPrefs.GetString(basePackName + "." + key, defaultValue);
@@ -178,9 +160,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="key">设置键</param>
     /// <param name="value">设置值</param>
-    [LuaApiDescription("设置浮点型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("value", "设置值")]
     public virtual void SetFloat(string key, float value)
     {
       PlayerPrefs.SetFloat(basePackName + "." + key, value);
@@ -191,9 +170,6 @@ namespace Ballance2.Services
     /// <param name="key">设置键</param>
     /// <param name="defaultValue">未找到设置时返回的默认值</param>
     /// <returns></returns>
-    [LuaApiDescription("获取浮点型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("defaultValue", "未找到设置时返回的默认值")]
     public virtual float GetFloat(string key, float defaultValue)
     {
       return PlayerPrefs.GetFloat(basePackName + "." + key, defaultValue);
@@ -203,9 +179,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="key">设置键</param>
     /// <param name="value">设置值</param>
-    [LuaApiDescription("设置布尔型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("value", "设置值")]
     public virtual void SetBool(string key, bool value)
     {
       PlayerPrefs.SetString(basePackName + "." + key, value.ToString());
@@ -216,9 +189,6 @@ namespace Ballance2.Services
     /// <param name="key">设置键</param>
     /// <param name="defaultValue">未找到设置时返回的默认值</param>
     /// <returns></returns>
-    [LuaApiDescription("获取布尔型设置条目")]
-    [LuaApiParamDescription("key", "设置键")]
-    [LuaApiParamDescription("defaultValue", "未找到设置时返回的默认值")]
     public virtual bool GetBool(string key, bool defaultValue = false)
     {
       return bool.Parse(PlayerPrefs.GetString(basePackName + "." + key, defaultValue.ToString()));
@@ -266,8 +236,6 @@ namespace Ballance2.Services
     /// 通知设置组加载更新
     /// </summary>
     /// <param name="groupName">组名称，为*表示所有</param>
-    [LuaApiDescription("通知设置组加载更新")]
-    [LuaApiParamDescription("groupName", "组名称，为*表示所有")]
     public void RequireSettingsLoad(string groupName)
     {
       if (groupName == "*")
@@ -283,8 +251,6 @@ namespace Ballance2.Services
     /// 通知设置组更新
     /// </summary>
     /// <param name="groupName">组名称，为*表示所有</param>
-    [LuaApiDescription("通知设置组更新")]
-    [LuaApiParamDescription("groupName", "组名称，为*表示所有")]
     public void NotifySettingsUpdate(string groupName)
     {
       if (groupName == "*")
@@ -301,9 +267,6 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="groupName">组名称</param>
     /// <param name="handler">回调</param>
-    [LuaApiDescription("注册设置组更新回调", "返回回调ID,可用于取消注册回调")]
-    [LuaApiParamDescription("groupName", "组名称")]
-    [LuaApiParamDescription("handler", "回调")]
     public int RegisterSettingsUpdateCallback(string groupName, GameSettingsCallback callback)
     {
       var v = new SettingUpdateCallbackData(groupName, callback);
@@ -314,8 +277,6 @@ namespace Ballance2.Services
     /// 取消注册设置组更新回调
     /// </summary>
     /// <param name="id">回调ID</param>
-    [LuaApiDescription("取消注册设置组更新回调")]
-    [LuaApiParamDescription("id", "回调ID")]
     public void UnRegisterSettingsUpdateCallback(int id)
     {
       for (var i = 0; i < settingUpdateCallbacks.Count; i++)

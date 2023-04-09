@@ -10,6 +10,20 @@ using UnityEngine.EventSystems;
 * 
 * 用途：
 * 键盘按键事件事件侦听器
+* 
+* 此类可以方便的侦听键盘按键事件。
+* 
+* 使用示例：
+* ```csharp
+* var lisnster = KeyListener.Get(this.gameObject);
+* lisnster.AddKeyListen(KeyCode.A, (key, downed) => { 
+*   if (downed) {
+*     //当 A 键按下时将会发出此事件
+*   }
+* });
+* ```
+*
+* 如果你只需要单次监听某个按键，无须单独使用此类，可以直接使用 GameUIManager 上的 WaitKey，具体参见 Ballance2.Services.GameUIManager 。
 *
 * 作者：
 * mengyu
@@ -21,38 +35,19 @@ namespace Ballance2.Services.InputManager
   /// <summary>
   /// 键盘按键事件事件侦听器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("键盘按键事件事件侦听器")]
-  [LuaApiNotes(@"此类可以方便的侦听键盘按键事件。
-
-```lua
-local lisnster = KeyListener.Get(self.gameObject)
-lisnster:AddKeyListen(KeyCode.A, function(key, downed) 
-  if downed then
-    ---当 A 键按下时将会发出此事件
-  end
-end)
-```
-
-如果你只需要单次监听某个按键，无须单独使用此类，可以直接使用 GameUIManager 上的 WaitKey，具体参见 [GameUIManager](Ballance2.Services.GameUIManager) 。
-")]
   public class KeyListener : MonoBehaviour
   {
     /// <summary>
     /// 键盘按键事件回调
     /// </summary>
     /// <param name="downed">是否按下</param>
-    [SLua.CustomLuaClass]
-    [LuaApiDescription("键盘按键事件回调")]
     public delegate void KeyDelegate(KeyCode key, bool downed);
 
     /// <summary>
     /// 从 指定 GameObject 创建键事件侦听器
     /// </summary>
     /// <param name="go">指定 GameObject</param>
-    /// <returns>返回事件侦听器实例</returns> 
-    [LuaApiDescription("从 指定 GameObject 创建键事件侦听器", "返回事件侦听器实例")]
-    [LuaApiParamDescription("go", "指定 GameObject")]
+    /// <returns>返回事件侦听器实例</returns>
     public static KeyListener Get(GameObject go)
     {
       KeyListener listener = go.GetComponent<KeyListener>();
@@ -80,25 +75,21 @@ end)
     /// <summary>
     /// 是否开启监听
     /// </summary>
-    [LuaApiDescription("是否开启监听")]
     public bool IsListenKey { get { return isListenKey; } set { isListenKey = value; } }
 
     /// <summary>
     /// 如果UI激活时是否禁用键盘事件
     /// </summary>
-    [LuaApiDescription("如果UI激活时是否禁用键盘事件")]
     public bool DisableWhenUIFocused = true;
 
     /// <summary>
     /// 指定是否允许同时发出1个以上的键盘事件，否则同时只能发送一个键盘事件。以后注册的先发送
     /// </summary>
-    [LuaApiDescription("指定是否允许同时发出1个以上的键盘事件，否则同时只能发送一个键盘事件。以后注册的先发送")]
     public bool AllowMultipleKey = false;
 
     /// <summary>
     /// 重新发送当前已按下的按键事件
     /// </summary>
-    [LuaApiDescription("重新发送当前已按下的按键事件")]
     public void ReSendPressingKey() {
       LinkedListNode<KeyListenerItem> cur = items.Last;
       while(cur != null) {
@@ -134,10 +125,6 @@ end)
     /// <param name="key2">键值2。</param>
     /// <param name="callBack">回调函数。</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    [LuaApiDescription("添加侦听器侦听键，可以一次监听两个键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
-    [LuaApiParamDescription("key", "键值")]
-    [LuaApiParamDescription("key2", "键值2")]
-    [LuaApiParamDescription("callBack", "回调函数")]
     public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
     {
       listenKeyId++;
@@ -162,22 +149,19 @@ end)
       items.AddLast(item);
       return listenKeyId;
     }
+
     /// <summary>
     /// 添加侦听器侦听键。
     /// </summary>
     /// <param name="key">键值。</param>
     /// <param name="callBack">回调函数。</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    [LuaApiDescription("添加侦听器侦听键。", "返回一个ID, 可使用 DeleteKeyListen 删除侦听器")]
-    [LuaApiParamDescription("key", "键值")]
-    [LuaApiParamDescription("callBack", "回调函数")]
     public int AddKeyListen(KeyCode key, KeyDelegate callBack) { return AddKeyListen(key, KeyCode.None, callBack); }
+
     /// <summary>
     /// 删除指定侦听器。
     /// </summary>
     /// <param name="id">AddKeyListen 返回的ID</param>
-    [LuaApiDescription("删除指定侦听器。")]
-    [LuaApiParamDescription("id", "AddKeyListen 返回的ID")]
     public void DeleteKeyListen(int id)
     {
       //链表移除
@@ -198,7 +182,6 @@ end)
     /// <summary>
     /// 清空事件侦听器所有侦听键。
     /// </summary>
-    [LuaApiDescription("清空事件侦听器所有侦听键。")]
     public void ClearKeyListen()
     {
       items.Clear();

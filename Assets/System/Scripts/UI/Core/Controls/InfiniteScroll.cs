@@ -17,8 +17,6 @@ namespace Ballance2.UI.Core.Controls
   /// <summary>
   /// Infinite scroller for long lists
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   public class InfiniteScroll : MonoBehaviour, IDropHandler
   {
     /// <summary>
@@ -50,7 +48,6 @@ namespace Ballance2.UI.Core.Controls
     /// <summary>
     /// Delegate for heights
     /// </summary>
-  	[SLua.CustomLuaClass]
     public delegate int HeightItem(int index);
 
     /// <summary>
@@ -61,7 +58,6 @@ namespace Ballance2.UI.Core.Controls
     /// <summary>
     /// Delegate for widths
     /// </summary>
-  	[SLua.CustomLuaClass]
     public delegate int WidthItem(int index);
 
     /// <summary>

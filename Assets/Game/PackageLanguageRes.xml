@@ -12,10 +12,10 @@
     <Text name="core.ui.Continue">继续</Text>
     <Text name="core.ui.QuitToMenu">返回主菜单</Text>
     <Text name="core.ui.AboutProject">关于此项目</Text>
-    <Text name="core.ui.AboutCreator">作者 imengyu</Text>
-    <Text name="core.ui.AboutOldCreators">原作关于页</Text>
+    <Text name="core.ui.AboutOldCreators">主创人员</Text>
     <Text name="core.ui.AbouOpenSourceLicense">开源许可</Text>
     <Text name="core.ui.GoGithub">前往项目 GitHub </Text>
+    <Text name="core.ui.NoLevelData">无数据</Text>
     <Text name="core.ui.WinUILevelBouns">关卡分数</Text>
     <Text name="core.ui.WinUITimePoints">剩余时间点</Text>
     <Text name="core.ui.WinUIExtraLife">额外的生命</Text>
@@ -33,8 +33,8 @@
     <Text name="core.ui.MainMenuQuit">退出</Text>
     <Text name="core.ui.MainMenuQuitTitle">你想退出游戏吗？</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">你想重新开始这一关卡吗？</Text>
-    <Text name="core.ui.StartMenuCustom">开始自定义关卡</Text>
-    <Text name="core.ui.StartMenuNMO">加载原版 Ballance NMO 关卡</Text>
+    <Text name="core.ui.StartMenuCustom">自定义</Text>
+    <Text name="core.ui.StartMenuNMO">NMO File</Text>
     <Text name="core.ui.SettingsMenuTilte">设置</Text>
     <Text name="core.ui.SettingsMenuVSync">垂直同步?</Text>
     <Text name="core.ui.SettingsMenuFullScreen">全屏?</Text>
@@ -188,6 +188,19 @@ Ballance 平衡球 是一款滚球游戏。
 
 按“回车”键退出教程...
     </Text>
+    <Text name="core.ui.ProjectAbout">
+Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐的梦鱼 制作。
+
+你可以游玩这个重制版，还可以根据此重制版制作自定义模组或者地图，分享给其他玩家游玩。
+
+项目的源代码存放在 https://github.com/imengyu/Ballance 。
+
+如果你遇到了BUG，或者有很棒的点子，建议，欢迎前往项目主页 https://github.com/imengyu/Ballance 提交你的 Issue，我们一起讨论呀。
+
+如果希望为Ballance开发自己的mod，关卡，欢迎前往 https://github.com/imengyu/Ballance/wiki 了解相关教程！
+
+也欢迎在 Ballance 吧讨论游戏。
+    </Text>
   </Language>
   <Language name="English">
     <Text name="core.ui.Back">Back</Text>
@@ -203,8 +216,7 @@ Ballance 平衡球 是一款滚球游戏。
     <Text name="core.ui.Continue">Continue</Text>
     <Text name="core.ui.QuitToMenu">Back To Menu</Text>
     <Text name="core.ui.AboutProject">About Project</Text>
-    <Text name="core.ui.AboutCreator">About author imengyu</Text>
-    <Text name="core.ui.AboutOldCreators">Original about page</Text>
+    <Text name="core.ui.AboutOldCreators">Creators</Text>
     <Text name="core.ui.AbouOpenSourceLicense">Open Source License</Text>
     <Text name="core.ui.GoGithub">Go project GitHub </Text>
     <Text name="core.ui.WinUILevelBouns">Level Bouns</Text>
@@ -212,19 +224,19 @@ Ballance 平衡球 是一款滚球游戏。
     <Text name="core.ui.WinUIExtraLife">Extra Life</Text>
     <Text name="core.ui.WinUIPoints">Points</Text>
     <Text name="core.ui.WinUIScore">Score</Text>
-    <Text name="core.ui.WinUINewHighScore">New HighScore!</Text>
+    <Text name="core.ui.WinUINewHighScore">New Highscore!</Text>
     <Text name="core.ui.WinUIEnterYourName">Enter Your Name</Text>
     <Text name="core.ui.WinUIWin">Win !</Text>
     <Text name="core.ui.WinUINext">Next Level</Text>
     <Text name="core.ui.ChangeLanageNotice">The changed language settings will take effect the next time you restart the game. Do you want to restart the game now?</Text>
     <Text name="core.ui.MainMenuStart">Start</Text>
-    <Text name="core.ui.MainMenuHighScore">HighScore</Text>
+    <Text name="core.ui.MainMenuHighScore">Highscore</Text>
     <Text name="core.ui.MainMenuSettings">Settings</Text>
     <Text name="core.ui.MainMenuAbout">About</Text>
     <Text name="core.ui.MainMenuQuit">Quit</Text>
     <Text name="core.ui.MainMenuQuitTitle">Do you want to quit the game?</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">Do you want to restart this level?</Text>
-    <Text name="core.ui.StartMenuCustom">Custem Level</Text>
+    <Text name="core.ui.StartMenuCustom">Custem</Text>
     <Text name="core.ui.SettingsMenuTilte">Settings</Text>
     <Text name="core.ui.SettingsMenuVSync">VSync?</Text>
     <Text name="core.ui.SettingsMenuFullScreen">FullScreen?</Text>
@@ -265,8 +277,9 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     <Text name="core.ui.SettingsClickNTimeToDebugMode">Click {0} again to enter the developer mode</Text>
     <Text name="core.ui.SettingsVersion">Version: {0}</Text>
     <Text name="core.ui.StartThisLevel">Start this Level</Text>
-    <Text name="core.ui.StartMenuNMO">Load the ballance NMO level</Text>
+    <Text name="core.ui.StartMenuNMO">NMO level</Text>
     <Text name="core.ui.PreviewThisLevel">Preview this Level</Text>
+    <Text name="core.ui.NoLevelData">NoLevelData</Text>
     <Text name="core.ui.Refresh">Refresh</Text>
     <Text name="core.ui.FileNotExist">File not exist</Text>
     <Text name="core.ui.Loading">Loading, please wait</Text>
@@ -361,6 +374,19 @@ In case you get stuck at some point or need some technical help, please take a l
 
 Quit the tutorial with "RETURN" ...
     </Text>
+    <Text name="core.ui.ProjectAbout">
+Ballance Rebuild is an open-source Unity remake of the Ball Ball game, produced by Happy Dreamfish.
+
+You can play this remastered version, and you can also create custom modules or maps based on this remastered version to share with other players.
+
+The source code of the project is stored in https://github.com/imengyu/Ballance 。
+
+If you encounter bugs or have great ideas, please feel free to visit the project homepage https://github.com/imengyu/Ballance Submit your issue and let's discuss it together.
+
+If you want to develop your own mod and level for Ballance, welcome to https://github.com/imengyu/Ballance/wiki Learn about related tutorials!
+
+Welcome to discuss the game at Ballance Discord.
+    </Text>
   </Language>
   <Language name="ChineseTraditional">
     <Text name="core.ui.Back">返回</Text>
@@ -374,10 +400,10 @@ Quit the tutorial with "RETURN" ...
     <Text name="core.ui.RestartLevel">重新開始關卡</Text>
     <Text name="core.ui.Quit">退出</Text>
     <Text name="core.ui.Tip">提示</Text>
+    <Text name="core.ui.NoLevelData">无数据</Text>
     <Text name="core.ui.QuitToMenu">返回主菜單</Text>
     <Text name="core.ui.AboutProject">關於此項目</Text>
-    <Text name="core.ui.AboutCreator">作者 imengyu</Text>
-    <Text name="core.ui.AboutOldCreators">原作關於頁</Text>
+    <Text name="core.ui.AboutOldCreators">主創人員</Text>
     <Text name="core.ui.AbouOpenSourceLicense">開源許可</Text>
     <Text name="core.ui.GoGithub">前往項目 GitHub </Text>
     <Text name="core.ui.WinUILevelBouns">關卡分數</Text>
@@ -397,7 +423,7 @@ Quit the tutorial with "RETURN" ...
     <Text name="core.ui.MainMenuQuit">退出</Text>
     <Text name="core.ui.MainMenuQuitTitle">你想退出遊戲嗎？</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">你想重新開始這一關卡嗎？</Text>
-    <Text name="core.ui.StartMenuCustom">自定義關卡</Text>
+    <Text name="core.ui.StartMenuCustom">自定義</Text>
     <Text name="core.ui.SettingsMenuTilte">設定</Text>
     <Text name="core.ui.SettingsMenuVSync">垂直同步?</Text>
     <Text name="core.ui.SettingsMenuFullScreen">全屏?</Text>
@@ -438,7 +464,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.SettingsClickNTimeToDebugMode">再點擊 {0} 次進入開發者模式</Text>
     <Text name="core.ui.SettingsVersion">版本：{0}</Text>
     <Text name="core.ui.StartThisLevel">遊玩此關卡</Text>
-    <Text name="core.ui.StartMenuNMO">加載原版 Ballance NMO 關卡</Text>
+    <Text name="core.ui.StartMenuNMO">NMO 關卡</Text>
     <Text name="core.ui.PreviewThisLevel">預覽此關卡</Text>
     <Text name="core.ui.Refresh">重繪</Text>
     <Text name="core.ui.FileNotExist">檔案不存在</Text>
@@ -547,6 +573,19 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
 歡迎前往Ballance吧討論遊戲！
 
 按“回車”鍵退出教程…
+    </Text>
+    <Text name="core.ui.ProjectAbout">
+Ballance Rebuild是滾球Ballance遊戲的開源Unity重製版，由快樂的夢魚製作。
+
+你可以遊玩這個重製版，還可以根據此重製版製作自定義模組或者地圖，分享給其他玩家遊玩。
+
+項目的原始程式碼存放在 https://github.com/imengyu/Ballance 。
+
+如果你遇到了BUG，或者有很棒的點子，建議，歡迎前往項目主頁 https://github.com/imengyu/Ballance 提交你的Issue，我們一起討論呀。
+
+如果希望為Ballance開發自己的mod，關卡，歡迎前往 https://github.com/imengyu/Ballance/wiki 瞭解相關教程！
+
+也歡迎在Ballance吧討論遊戲。
     </Text>
   </Language>
 </I18n>

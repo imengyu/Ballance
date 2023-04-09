@@ -8,9 +8,7 @@ namespace Ballance2.UI.Core.Controls
   /// <summary>
   /// 一个Tab组件
   /// </summary>
-  [SLua.CustomLuaClass]
   [Serializable]
-  [LuaApiNoDoc]
   public class TabContent : UIBehaviour
   {
     public RectTransform Tab;

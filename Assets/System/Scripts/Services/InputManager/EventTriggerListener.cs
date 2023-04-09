@@ -1,5 +1,4 @@
-﻿using SLua;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 /*
@@ -17,41 +16,33 @@ using UnityEngine.EventSystems;
 
 namespace Ballance2.Services.InputManager
 {
-  [CustomLuaClass]
   public delegate void GameObjectDelegate(GameObject go);
   
   /// <summary>
   /// UI 事件侦听器
   /// </summary>
-  [CustomLuaClass]
-  [LuaApiDescription("UI 事件侦听器")]
-  [LuaApiNotes("不再推荐使用。推荐使用UGUI的事件进行绑定。")]
   public class EventTriggerListener : EventTrigger
   {
     /// <summary>
     /// 鼠标点击事件
     /// </summary>
-    [LuaApiDescription("鼠标点击事件")]
     public GameObjectDelegate onClick;
     /// <summary>
     /// 鼠标按下事件
     /// </summary>
-    [LuaApiDescription("鼠标按下事件")]
     public GameObjectDelegate onDown;
     /// <summary>
     /// 鼠标进入事件
     /// </summary>
-    [LuaApiDescription("鼠标进入事件")]
     public GameObjectDelegate onEnter;
     /// <summary>
     /// 鼠标离开事件
     /// </summary>
-    [LuaApiDescription("鼠标离开事件")]
     public GameObjectDelegate onExit;
     /// <summary>
     /// 鼠标放开事件
     /// </summary>
-    [LuaApiDescription("鼠标离开事件")]
+    
     public GameObjectDelegate onUp;
     public GameObjectDelegate onSelect;
     public GameObjectDelegate onUpdateSelect;
@@ -61,8 +52,6 @@ namespace Ballance2.Services.InputManager
     /// </summary>
     /// <param name="go">指定 GameObject</param>
     /// <returns>返回事件侦听器实例</returns>
-    [LuaApiDescription("从 指定 GameObject 创建事件侦听器", "返回事件侦听器实例")]
-    [LuaApiParamDescription("go", "指定 GameObject")]
     static public EventTriggerListener Get(GameObject go)
     {
       EventTriggerListener listener = go.GetComponent<EventTriggerListener>();
@@ -70,43 +59,43 @@ namespace Ballance2.Services.InputManager
       return listener;
     }
 
-    [DoNotToLua]
+    
     public override void OnPointerClick(PointerEventData eventData)
     {
       if (onClick != null) onClick(gameObject);
       else base.OnPointerClick(eventData);
     }
-    [DoNotToLua]
+    
     public override void OnPointerDown(PointerEventData eventData)
     {
       if (onDown != null) onDown(gameObject);
       else base.OnPointerDown(eventData);
     }
-    [DoNotToLua]
+    
     public override void OnPointerEnter(PointerEventData eventData)
     {
       if (onEnter != null) onEnter(gameObject);
       else base.OnPointerEnter(eventData);
     }
-    [DoNotToLua]
+    
     public override void OnPointerExit(PointerEventData eventData)
     {
       if (onExit != null) onExit(gameObject);
       else base.OnPointerExit(eventData);
     }
-    [DoNotToLua]
+    
     public override void OnPointerUp(PointerEventData eventData)
     {
       if (onUp != null) onUp(gameObject);
       else base.OnPointerUp(eventData);
     }
-    [DoNotToLua]
+    
     public override void OnSelect(BaseEventData eventData)
     {
       if (onSelect != null) onSelect(gameObject);
       else base.OnSelect(eventData);
     }
-    [DoNotToLua]
+    
     public override void OnUpdateSelected(BaseEventData eventData)
     {
       if (onUpdateSelect != null) onUpdateSelect(gameObject);

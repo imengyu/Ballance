@@ -17,8 +17,8 @@ namespace Ballance2.Services.Pool
   /// <summary>
   /// 游戏对象池
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("游戏对象池")]
+  
+  
   public class GameObjectPool
   {
     private string TAG {
@@ -37,7 +37,7 @@ namespace Ballance2.Services.Pool
     /// <summary>
     /// 释放
     /// </summary>
-    [SLua.DoNotToLua]
+    
     public void Destroy() {
       availableObjStack.Clear();
       poolObjectPrefab = null;
@@ -51,7 +51,7 @@ namespace Ballance2.Services.Pool
     /// <param name="initCount">初始大小</param>
     /// <param name="maxSize">最大大小</param>
     /// <param name="pool">池物体挂载的根</param>
-    [SLua.DoNotToLua]
+    
     public GameObjectPool(string poolName, GameObject poolObjectPrefab, int initCount, int maxSize, Transform pool)
     {
       this.poolName = poolName;
@@ -84,7 +84,7 @@ namespace Ballance2.Services.Pool
     /// 获取一个可用的物体
     /// </summary>
     /// <returns>游戏物体实例，如果没有可用物体，则返回空</returns>
-    [LuaApiDescription("获取一个可用的物体", "游戏物体实例，如果没有可用物体，则返回空")]
+    
     public GameObject NextAvailableObject()
     {
       GameObject go = null;
@@ -105,8 +105,8 @@ namespace Ballance2.Services.Pool
     /// 回退当前池所控根的指定名称子物体至池中
     /// </summary>
     /// <param name="objName">对象名称</param>
-    [LuaApiDescription("回退当前池所控根的指定名称子物体至池中")]
-    [LuaApiParamDescription("objName", "对象名称")]
+    
+    
     public void ReturnObjectFromParent(string objName)
     {
       var obj = this.poolRoot.Find(objName);
@@ -119,8 +119,8 @@ namespace Ballance2.Services.Pool
     /// 获取当前池所控根的是否存在指定名称子物体
     /// </summary>
     /// <param name="objName">对象名称</param>
-    [LuaApiDescription("获取当前池所控根的是否存在指定名称子物体")]
-    [LuaApiParamDescription("objName", "对象名称")]
+    
+    
     public bool ContainsObjectInParent(string objName)
     {
       return this.poolRoot.Find(objName) != null;
@@ -128,7 +128,7 @@ namespace Ballance2.Services.Pool
     /// <summary>
     /// 清除当前池所控根的子物体
     /// </summary>
-    [LuaApiDescription("清除当前池所控根的子物体")]
+    
     public void Clear()
     {
       for(int i = this.poolRoot.childCount - 1; i >= 0; i--)
@@ -139,8 +139,8 @@ namespace Ballance2.Services.Pool
     /// 回退物体至池中，注意，只能回退当前池所控根的子物体
     /// </summary>
     /// <param name="po">物体</param>
-    [LuaApiDescription("回退物体至池中，注意，只能回退当前池所控根的子物体")]
-    [LuaApiParamDescription("po", "物体")]
+    
+    
     public void ReturnObjectToPool(GameObject po)
     {
       if(po.transform.parent == this.poolRoot)
@@ -155,9 +155,9 @@ namespace Ballance2.Services.Pool
     /// </summary>
     /// <param name="pool">池的名称</param>
     /// <param name="po">物体</param>
-    [LuaApiDescription("回退物体至池中")]
-    [LuaApiParamDescription("pool", "池的名称")]
-    [LuaApiParamDescription("po", "物体")]
+    
+    
+    
     public void ReturnObjectToPool(string pool, GameObject po)
     {
       if (poolName.Equals(pool))

@@ -1,6 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Copyright(c) 2022  mengyu
+*
+* 模块名：     
+* GameGlobalIngameLoading.cs
+* 
+* 用途：
+* 开始时的加载中对象脚本
+*
+* 作者：
+* mengyu
+*/
+
 namespace Ballance2.UI.Utils
 {
   public class GameGlobalIngameLoading : MonoBehaviour {

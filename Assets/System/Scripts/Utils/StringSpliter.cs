@@ -22,9 +22,6 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串分割器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("字符串分割器")]
-  [LuaApiNotes("可快速按要求分割字符串。")]
   public class StringSpliter
   {
     /// <summary>
@@ -32,9 +29,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="s">要分隔的字符串</param>
     /// <param name="sp">分隔依据</param>
-    [LuaApiDescription("创建字符串分割器")]
-    [LuaApiParamDescription("s", "要分隔的字符串")]
-    [LuaApiParamDescription("sp", "分隔依据")]
     public StringSpliter(string s, char sp)
     {
       if (s.Contains(sp.ToString()))
@@ -53,11 +47,7 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="s">要分隔的字符串</param>
     /// <param name="sp">分隔依据</param>
-    /// <param name="excludeQuotes">是否忽略英文引号（"）</param>
-    [LuaApiDescription("创建字符串分割器")]
-    [LuaApiParamDescription("s", "要分隔的字符串")]
-    [LuaApiParamDescription("sp", "分隔依据")]
-    [LuaApiParamDescription("excludeQuotes", "是否忽略英文引号（\"）")]
+    /// <param name="excludeQuotes">是否忽略英文引号（"）</param>    
     public StringSpliter(string s, char sp, bool excludeQuotes)
     {
       if (s.Contains(sp.ToString()))
@@ -120,10 +110,6 @@ namespace Ballance2.Utils
     /// <param name="s">要分隔的字符串</param>
     /// <param name="sp">分隔依据</param>
     /// <param name="sp2">分隔依据2</param>
-    [LuaApiDescription("创建字符串分割器")]
-    [LuaApiParamDescription("s", "要分隔的字符串")]
-    [LuaApiParamDescription("sp", "分隔依据")]
-    [LuaApiParamDescription("sp2", "分隔依据2")]
     public StringSpliter(string s, char sp, char sp2)
     {
       if (s.Contains(sp.ToString()))
@@ -144,12 +130,10 @@ namespace Ballance2.Utils
     /// <summary>
     /// 分割是否成功
     /// </summary>
-    [LuaApiDescription("分割是否成功")]
     public bool Success { get { return count != 0; } }
     /// <summary>
     /// 分割结果个数
     /// </summary>
-    [LuaApiDescription("分割结果个数")]
     public int Count
     {
       get
@@ -160,7 +144,6 @@ namespace Ballance2.Utils
     /// <summary>
     /// 分割结果
     /// </summary>
-    [LuaApiDescription("分割结果")]
     public string[] Result { get { return buf; } }
 
   }

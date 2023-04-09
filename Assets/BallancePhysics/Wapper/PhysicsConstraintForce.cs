@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
-  [SLua.CustomLuaClass]
+  
   [AddComponentMenu("BallancePhysics/PhysicsConstraintForce")]
   [RequireComponent(typeof(PhysicsObject))]
-  [LuaApiDescription("恒力组件，可以对一个一直物体施加一个力")]
+  
   public class PhysicsConstraintForce : MonoBehaviour
   {
     [Tooltip("设置恒力数值")]
@@ -40,7 +40,7 @@ namespace BallancePhysics.Wapper
     /// 设置恒力数值
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("设置恒力数值")]
+    
     public float Force
     {
       get => m_Force; 
@@ -55,7 +55,7 @@ namespace BallancePhysics.Wapper
     /// 设置恒力数值
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("设置恒力数值")]
+    
     public Vector3 ForcePosition
     {
       get => m_ForcePosition; 
@@ -70,7 +70,7 @@ namespace BallancePhysics.Wapper
     /// 设置恒力方向
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("设置恒力方向")]
+    
     public Vector3 ForceDirection
     {
       get => m_ForceDirection; 
@@ -85,7 +85,7 @@ namespace BallancePhysics.Wapper
     /// 施加在这个物体上的恒力位置参考
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("施加在这个物体上的恒力位置参考")]
+    
     public Transform ForcePositionRef
     {
       get => m_ForcePositionRef; 
@@ -100,7 +100,7 @@ namespace BallancePhysics.Wapper
     /// 施加在这个物体上的恒力方向参考
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("施加在这个物体上的恒力方向参考")]
+    
     public Transform ForceDirectionRef
     {
       get => m_ForceDirectionRef; 

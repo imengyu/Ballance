@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
-  [SLua.CustomLuaClass]
+  
   [RequireComponent(typeof(PhysicsObject))]
-  [LuaApiNoDoc]
+  
   public class PhysicsComponent : MonoBehaviour
   {
     /// <summary>
@@ -28,7 +28,7 @@ namespace BallancePhysics.Wapper
     /// <summary>
     /// 手动创建当前组件
     /// </summary>
-    [LuaApiDescription("手动创建当前组件")]
+    
     public void Create() {
       if(Handle == IntPtr.Zero) 
         DoCreate();
@@ -36,7 +36,7 @@ namespace BallancePhysics.Wapper
     /// <summary>
     /// 手动销毁当前组件
     /// </summary>
-    [LuaApiDescription("手动销毁当前组件")]
+    
     public void Destroy() {
       if(Handle != IntPtr.Zero) {
         DoDestroy(Handle);

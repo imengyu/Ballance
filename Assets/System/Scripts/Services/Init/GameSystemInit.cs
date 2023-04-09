@@ -57,12 +57,10 @@ namespace Ballance2.Services.Init
         newGameManager.name = "GameSystemInit";
         newGameManager.AddComponent<GameSystemInit>();
 
-        GamePackageManager.PreRegInternalPackage();
-
         //Init system services
         GameSystem.RegSystemService<GameMediator>();
 
-        GameManager.GameMediator = (GameMediator)GameSystem.GetSystemService("GameMediator");
+        GameManager.GameMediator = GameSystem.GetSystemService<GameMediator>();
         GameManager.GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_BASE_INIT_FINISHED, "DebuggerHandler", (evtName, param) => {
           GameSystem.StartRunDebugProvider();
           return false;
@@ -80,10 +78,7 @@ namespace Ballance2.Services.Init
         //初始化物理引擎
         PhysicsApi.SecretKey = "666dccad4ae697b45aac145f18f49c5b";
         PhysicsSystemInit.DoInit();
-
   #endif
-        //if (GameEntry.Instance.DebugMode) 
-        //  PhysicsApi.OpenConsole();
       }
       else if (act == GameSystem.ACTION_DESTROY)
       {
@@ -94,13 +89,10 @@ namespace Ballance2.Services.Init
         }
         
         GameManager.GameMediator = null;
-
-        GamePackageManager.ReleaseInternalPackage();
         //释放其他组件
         I18NProvider.ClearAllLanguageResources();
         GameSettingsManager.Destroy();
         GameStaticResourcesPool.ReleaseAll();
-        LuaService.Lua.LuaGlobalApi.Destroy();
 
 #if !UNITY_EDITOR
         //释放物理引擎

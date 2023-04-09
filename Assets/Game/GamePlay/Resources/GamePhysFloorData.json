@@ -1,0 +1,27 @@
+{
+  "Phys_Floors": {
+    "Friction": 0.7,
+    "Elasticity": 0.3,
+    "Layer": 11,
+    "CollisionLayerName": "Stone"
+  },
+  "Phys_FloorWoods": {
+    "Friction": 0.7,
+    "Elasticity": 0.3,
+    "Layer": 13,
+    "CollisionLayerName": "Wood"
+  },
+  "Phys_FloorRails": {
+    "Friction": 0.7,
+    "Elasticity": 0.3,
+    "Layer": 12,
+    "CollisionLayerName": "Metal"
+  },
+  "Phys_FloorStopper": {
+    "Friction": 0.7,
+    "Elasticity": 0.5,
+    "Layer": 14,
+    "CollisionLayerName": "Wood",
+    "HitSound": "core.sounds:Hit_WoodenFlap.wav"
+  }
+}

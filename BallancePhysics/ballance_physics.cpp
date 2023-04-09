@@ -754,10 +754,7 @@ void* ballance_physics_entry(sBool init, sInitStruct * options)
         ivp_set_message_callback(callback_ivp_message_callback);
 
         if (options->showConsole) init_console();
-        if (strcmp(options->key, "") != 0) {
-          //TODO: checck scret key
-        }
-
+        
         init_crash_handler();
         init_info();
         init_small_pool(options->smallPoolSize);

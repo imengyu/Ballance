@@ -1,25 +1,40 @@
-# Ballance
+# <center>Ballance 平衡球 C#/Unity 实现</center>
 
-⚠️ 说明：作者已经完成了复刻 Ballance 的梦想。
+<p align="center">
+  简体中文 | <a href="README.en.md">English</a>
+</p>
+<p align="center">
+  <a style="text-decoration:none">
+    <img src="https://img.shields.io/badge/unity-2021.3.X-blue?style=flat-square" alt="Unity Version" />
+  </a>
+  <a style="text-decoration:none" href="https://github.com/imengyu/ballance/releases">
+    <img src="https://img.shields.io/github/v/release/imengyu/ballance.svg?label=alpha&style=flat-square&color=yellow" alt="Releases" />
+  </a>
+  <a style="text-decoration:none">
+    <img src="https://img.shields.io/badge/platform-Win%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-orange?style=flat-square" alt="Platform" />
+  </a>
+  <a style="text-decoration:none">
+    <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square" alt="License" />
+  </a>
+  <a style="text-decoration:none">
+    <img src="https://img.shields.io/github/repo-size/imengyu/ballance?style=flat-square" alt="Size" />
+  </a>
+</p>
 
-这个项目没有多少人支持，因此本项目<font size="16" color="#ff0000">**不会再更新**</font>，做的再好也是白费，无用功。
+---
 
-你可以对源码做出任何改动，把它变成你想要的样子，或者以此为基础搞一个新的滚球游戏。
+![image](/Assets/System/Textures/splash_app.bmp)
 
-但本项目所用的ivp物理引擎，Ballance 原版模型、贴图资源的版权归原公司所有（havok、atari），如果要用于商业中，请去除ivp物理引擎，Ballance 原版模型、贴图资源。
-
-========================================
-
-[English readme](./README.en.md)
+* [Gitee 国内镜像](https://gitee.com/imengyu/Ballance)
+* [Github](https://github.com/imengyu/Ballance)
 
 ## 简介
 
-这是 Ballance 游戏的开源 Unity 重制版.
+这是  游戏的开源 Unity 重制版.
 
-Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以运行在更多的平台上，希望让 Ballance 可以
-方便的拓展功能开发关卡、模组（后者已经被 [BallanceModLoader](https://github.com/Gamepiaynmo/BallanceModLoader) 实现了），并不是为了取代原版游戏而制作的。
+这是一个使用C#/Unity重新实现的 Ballance 平衡球游戏 的开源项目（注意：不是移植，不是套壳打包，是重写）。实现原理是根据[反编译的游戏脚本](https://github.com/BearKidsTeam/BallanceModding)，在Unity引擎中依照相似原理重新实现。具体实现方法请阅读源代码。
 
-本项目完全开源，你可自行编译、修改、拓展游戏的固有内容。
+**注意：Ballance属于Cyparade作品，版权属于原作开发商Cyparade所有，本项目开发仅作为学习用途，不可用于任何商业用途。本项目遵循GPL-3.0协议，但仅限于此项目的代码，任何与Ballance有关的3D模型数据、物理引擎、图片，音视频，游戏数据均不在此范围，任何未经版权方许可的情况下使用这些游戏数据进行商业行为都是违法的。**
 
 本项目完成了原版的特性：
 
@@ -30,23 +45,12 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 本项目相对于原版增加了以下一些特性：
 
 * **直接加载 NMO 文件**（仅Windows版本）
-* Android 版本、Mac版本（你也可以尝试编译其他平台）
-* 无须兼容模式运行，调整窗口化、全屏、分辨率、帧率、物理速率、球速
-* 自制地图接口（以魔脓空间站为例）
-* Lua模组、机关接口（使用Lua开发自定义模组或者机关)
+* Android 版本、Mac版本
+* 调整窗口化、全屏、分辨率、帧率、物理速率、球速
+* 自制地图接口
+* 模组、机关接口（使用C#开发自定义模组或者机关)
 * 关卡预览器
 * 模组管理器
-
-![image](/Assets/System/Textures/splash_app.bmp)
-
----
-
-* [Gitee 国内镜像](https://gitee.com/imengyu/Ballance)
-* [Github](https://github.com/imengyu/Ballance)
-
-## 说明
-
-**为嘛没有小伙伴支持呢，或者给一些反馈呀，难道是大家真的不再玩 Ballance 了吗**，感觉没有动力做下去了，后续可能只有修复性更新了，更新时长将会在1-12月不等。
 
 ## 系统需求
 
@@ -66,25 +70,46 @@ Ballance Unity Rebuild 是作者的一个小梦想，希望让 Ballance 可以�
 
 ## 安装
 
+* Windows:
+
 1. 前往 Releases 找到最新版本。
 2. 下载对应的 zip 安装包。
 3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
 
-### 项目源码的运行
+* MacOS：
 
-需要：
+待完成
 
-* Unity 2021.2.3 以上版本.
-* 编辑器：VScode 或者 Visual Studio
-* 克隆或者下载本项目 `https://github.com/imengyu/Ballance` 至您的本地.
+* Android：
 
-步骤：
+待完成
 
-1. 使用 Unity 打开项目。
-2. 第一次运行的时候，你需要点击菜单“SLua”>“All”>“Make” 以生成Lua相关文件，生成之后就不需要再重复点击生成了。
-3. 打开 `Scenes/MainScene.unity` 场景。
-4. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
-5. 点击运行，即可查看效果。
+* iOS:
+
+待完成
+
+## 按键以及操作
+
+* PC版操作与原版游戏一直，并无改动。你可以在 设置>控制 菜单中修改按键。
+* 手机版增加了触摸键盘，你可以在 设置>控制 菜单中修改键盘样式。
+
+## 开启调试模式
+
+调试模式下球可以飞行，你可以用它来作弊或者测试关卡。
+
+### 开启
+
+1. 在关于页面，连续点击版本号8次，弹出调试模式提示，
+2. 然后重启游戏，就进入了调试模式。
+3. 按F12可以开启控制台。
+
+在调试模式中，可以按Q键上升球，E键下降球。
+
+在控制台输入 `quit-dev` 指令可以关闭调试模式。
+
+### 开启所有原版关卡
+
+进入调试模式后在控制台输入 highscore open-all 指令就可以开启全部关卡。
 
 ## 直接加载 NMO 文件 【NEW】
 
@@ -101,33 +126,24 @@ Ballance Unity Rebuild 0.9.8 版本支持了加载 Ballance 原版关卡文件�
 * 材质不支持 Virtools 的特殊效果，将使用默认材质代替。
 * 不支持设置关卡天空盒、关卡分数，没有背景音乐。
 
+### 项目源码的运行
+
+需要：
+
+* Unity 2021.3.2 以上版本.
+* 编辑器：VScode 或者 Visual Studio
+* 克隆或者下载本项目 `https://github.com/imengyu/Ballance` 至您的本地.
+
+步骤：
+
+1. 使用 Unity 打开项目。
+2. 打开 `Scenes/MainScene.unity` 场景。
+3. 选择 GameEntry 对象，设置“Debug Type”为“NoDebug”。
+4. 点击运行，即可查看效果。
+
 ## 从项目源码生成游戏程序
 
 请参考 [文档](/docs/Help/production.md)。
-
-## 开启调试模式
-
-在 UnityEditor 中运行时，永远是调试模式。
-
-### 如果你需要开启独立版的调试模式，可以
-
-1. 在关于页面，连续点击版本号8次，弹出调试模式提示，
-2. 然后重启游戏，就进入了调试模式。
-3. 按F12可以开启控制台。
-
-在调试模式中，可以按Q键上升球，E键下降球。
-
-在控制台输入 `quit-dev` 指令可以关闭调试模式。
-
-### 开启所有原版关卡
-
-进入调试模式后在控制台输入 highscore open-all 指令就可以开启全部关卡。
-
-## 文档
-
-[完整文档可以参考这里](https://imengyu.github.io/Ballance/#/readme)
-
-[API文档参考这里](https://imengyu.github.io/Ballance/#/LuaApi/readme)
 
 ## 物理引擎
 
@@ -137,9 +153,21 @@ Ballance Unity Rebuild 0.9.8 版本支持了加载 Ballance 原版关卡文件�
 
 物理引擎的包装DLL代码在项目下方 BallancePhysics 目录下，你需要使用 Visual Studio 2919 以上版本编译。
 
+## 项目进度以及路线图
+
+原版玩法以及关卡复刻已经全部完成，你可以完整的从头玩到尾体验一遍游戏，也可参照开发接口制作自定义关卡。下一步作者会根据大家的反馈继续开发下去，增加更多功能，例如好玩的机关、关卡编辑器等等。
+
+## 如何贡献？
+
+如果您有好的想法意见, 或者发现了Bug请欢迎提交issue或者加我的微信我讨论。
+
 ## 联系我
 
-wechart: brave_imengyu
+wechart: brave_imengyu （请备注讨论Ballance）
+
+## 为什么要做这个？
+
+Ballance Unity 是作者的一个小梦想，希望让 Ballance 可以运行在手机上，希望让 Ballance 可以方便的拓展功能开发关卡、模组（后者已经被 [BallanceModLoader](https://github.com/Gamepiaynmo/BallanceModLoader) 实现了）。同时，Ballance Unity 也是我学习 Unity 游戏开发的第一个作品，它对我的技术提升给了非常大的帮助。
 
 ## 游戏相册
 
@@ -172,3 +200,12 @@ wechart: brave_imengyu
 
 ![Demo](docs/DemoImages/1.jpg)
 ![Demo](docs/DemoImages/2.jpg)
+
+## 项目所使用开源项目
+
+* https://github.com/chrisnolet/QuickOutline
+* https://github.com/seedov/AsyncAwaitUtil/
+* https://github.com/Tayx94/graphy
+* https://github.com/yasirkula/UnityRuntimeSceneGizmo
+* https://github.com/yasirkula/UnityRuntimeInspector
+* https://github.com/yasirkula/UnitySimpleFileBrowser

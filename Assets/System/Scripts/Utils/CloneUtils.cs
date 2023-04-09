@@ -23,9 +23,6 @@ namespace Ballance2.Utils
   /// <summary>
   /// 克隆工具类
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("克隆工具类")]
-  [LuaApiNotes("提供了一些工具方法，可方便的克隆出空物体，或是使用已有Prefab克隆出新物体。")]
   public static class CloneUtils
   {
     /// <summary>
@@ -34,9 +31,6 @@ namespace Ballance2.Utils
     /// <param name="prefab">Prefab</param>
     /// <param name="name">新的对象的名字</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("使用 Prefab 克隆一个新的对象", "返回生成的新对象")]
-    [LuaApiParamDescription("prefab", "Prefab")]
-    [LuaApiParamDescription("name", "新的对象的名字")]
     public static GameObject CloneNewObject(GameObject prefab, string name)
     {
       if (prefab == null)
@@ -55,10 +49,6 @@ namespace Ballance2.Utils
     /// <param name="parent">父级对象</param>
     /// <param name="name">新的对象的名字</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("使用 Prefab 克隆一个新的对象，并添加至指定变换的子级", "返回生成的新对象")]
-    [LuaApiParamDescription("prefab", "Prefab")]
-    [LuaApiParamDescription("parent", "父级对象")]
-    [LuaApiParamDescription("name", "新的对象的名字")]
     public static GameObject CloneNewObjectWithParent(GameObject prefab, Transform parent, string name)
     {
       if (prefab == null)
@@ -76,9 +66,6 @@ namespace Ballance2.Utils
     /// <param name="prefab">Prefab</param>
     /// <param name="parent">父级对象</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("使用 Prefab 克隆一个新的对象，并添加至指定变换的子级", "返回生成的新对象")]
-    [LuaApiParamDescription("prefab", "Prefab")]
-    [LuaApiParamDescription("parent", "父级对象")]
     public static GameObject CloneNewObjectWithParent(GameObject prefab, Transform parent)
     {
       if (prefab == null)
@@ -96,11 +83,6 @@ namespace Ballance2.Utils
     /// <param name="name">新的对象的名字</param>
     /// <param name="active">是否激活该对象</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("使用 Prefab 克隆一个新的对象，并添加至指定变换的子级", "返回生成的新对象")]
-    [LuaApiParamDescription("prefab", "Prefab")]
-    [LuaApiParamDescription("parent", "父级对象")]
-    [LuaApiParamDescription("name", "新的对象的名字")]
-    [LuaApiParamDescription("active", "是否激活该对象")]
     public static GameObject CloneNewObjectWithParent(GameObject prefab, Transform parent, string name, bool active)
     {
       if (prefab == null)
@@ -119,8 +101,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="name">新的对象的名字</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("克隆一个新的空对象", "返回生成的新对象")]
-    [LuaApiParamDescription("name", "新的对象的名字")]
     public static GameObject CreateEmptyObject(string name)
     {
       GameObject go = Object.Instantiate(GameStaticResourcesPool.PrefabEmpty, GameManager.Instance != null ? GameManager.Instance.transform : GameEntry.Instance.transform);
@@ -133,9 +113,6 @@ namespace Ballance2.Utils
     /// <param name="parent">指定父级对象</param>
     /// <param name="name">新的对象的名字</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("克隆一个新的空对象，并添加至指定变换的子级", "返回生成的新对象")]
-    [LuaApiParamDescription("parent", "指定父级对象")]
-    [LuaApiParamDescription("name", "新的对象的名字")]
     public static GameObject CreateEmptyObjectWithParent(Transform parent, string name)
     {
       GameObject go = Object.Instantiate(GameStaticResourcesPool.PrefabEmpty, parent);
@@ -147,8 +124,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="parent">指定父级对象</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("克隆一个新的空对象，并添加至指定变换的子级", "指定父级对象")]
-    [LuaApiParamDescription("parent", "指定父级对象")]
     public static GameObject CreateEmptyObjectWithParent(Transform parent)
     {
       return Object.Instantiate(GameStaticResourcesPool.PrefabEmpty, parent);
@@ -159,8 +134,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="name">指定新对象的名称</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("生成一个空的UI对象", "返回生成的新对象")]
-    [LuaApiParamDescription("name", "指定新对象的名称")]
     public static GameObject CreateEmptyUIObject(string name)
     {
       GameObject go = Object.Instantiate(GameStaticResourcesPool.PrefabUIEmpty, GameManager.Instance.GameCanvas.transform);
@@ -173,9 +146,6 @@ namespace Ballance2.Utils
     /// <param name="parent">指定父级对象</param>
     /// <param name="name">指定新对象的名称</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("生成一个空的UI对象并添加至指定变换的子级", "返回生成的新对象")]
-    [LuaApiParamDescription("parent", "指定父级对象")]
-    [LuaApiParamDescription("name", "指定新对象的名称")]
     public static GameObject CreateEmptyUIObjectWithParent(Transform parent, string name)
     {
       GameObject go = Object.Instantiate(GameStaticResourcesPool.PrefabUIEmpty, parent);
@@ -187,8 +157,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="parent">指定父级对象</param>
     /// <returns>返回生成的新对象</returns>
-    [LuaApiDescription("生成一个空的UI对象并添加至指定变换的子级", "返回生成的新对象")]
-    [LuaApiParamDescription("parent", "指定父级对象")]
     public static GameObject CreateEmptyUIObjectWithParent(Transform parent)
     {
       return Object.Instantiate(GameStaticResourcesPool.PrefabUIEmpty, parent);

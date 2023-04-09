@@ -16,8 +16,6 @@ public class GameEntryEditor : Editor
     private SerializedProperty GameGlobalIngameLoading;
     private SerializedProperty GlobalGamePermissionTipDialog;
     private SerializedProperty GlobalGameUserAgreementTipDialog;
-    private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialog;
-    private SerializedProperty GlobalGameSysErrMessageDebuggerTipDialogText;
     private SerializedProperty GlobalGameScriptErrDialog;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
@@ -45,8 +43,6 @@ public class GameEntryEditor : Editor
         GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
         GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
         GlobalGameScriptErrDialog = serializedObject.FindProperty("GlobalGameScriptErrDialog");
-        GlobalGameSysErrMessageDebuggerTipDialog = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialog");
-        GlobalGameSysErrMessageDebuggerTipDialogText = serializedObject.FindProperty("GlobalGameSysErrMessageDebuggerTipDialogText");
         GameGlobalIngameLoading = serializedObject.FindProperty("GameGlobalIngameLoading");
 
         DebugMode = serializedObject.FindProperty("DebugMode");
@@ -140,8 +136,6 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GlobalGamePermissionTipDialog);
         EditorGUILayout.PropertyField(GlobalGameUserAgreementTipDialog);
         EditorGUILayout.PropertyField(GlobalGameScriptErrDialog);
-        EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialog);
-        EditorGUILayout.PropertyField(GlobalGameSysErrMessageDebuggerTipDialogText);
         EditorGUILayout.PropertyField(GameGlobalIngameLoading);
 
         EditorGUI.indentLevel--;

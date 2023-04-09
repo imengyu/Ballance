@@ -20,11 +20,9 @@ namespace Ballance2 {
   /// <summary>
   /// 关卡资源索引器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   public class GameLevelResourcesLinker : MonoBehaviour {
 
-    private static Dictionary<string, GameLevelResourcesLinker> allRes = new Dictionary<string, GameLevelResourcesLinker>();
+    internal static Dictionary<string, GameLevelResourcesLinker> allRes = new Dictionary<string, GameLevelResourcesLinker>();
 
     private void Start() {
       if(allRes.ContainsKey(Name))

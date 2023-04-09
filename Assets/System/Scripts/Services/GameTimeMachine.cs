@@ -20,22 +20,18 @@ namespace Ballance2.Services
   /// <summary>
   /// 时间更新状态管理器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("更新状态管理器")]
-  [LuaApiNotes("TimeMachine提供了另一种方式，实现类似MonoBehaviour中的Update之类的方法的功能。以便于我们在某些场合更方便的编写时间驱动的代码。")]
-  public class GameTimeMachine : GameService
+  public class GameTimeMachine : GameService<GameTimeMachine>
   {
     private const string TAG = "GameTimeMachine";
 
     public GameTimeMachine() : base(TAG) {}
 
-    [SLua.DoNotToLua]
     public override bool Initialize()
     {
       base.Initialize();
       return true;
     }
-    [SLua.DoNotToLua]
+    
     public override void Destroy()
     { 
       updates.Clear();
@@ -47,9 +43,6 @@ namespace Ballance2.Services
     /// <summary>
     /// 注册时的更新实例，使用此实例可以取消注册更新函数。
     /// </summary>
-    [SLua.CustomLuaClass]
-    [LuaApiDescription("注册时的更新实例，使用此实例可以取消注册更新函数。")]
-    [LuaApiNoDoc()]
     public class GameTimeMachineTimeTicket {
 
       private GameTimeMachine service = null;
@@ -57,7 +50,6 @@ namespace Ballance2.Services
       internal int sleepTick = 0;
       internal int errTickCount = 0;
 
-      [SLua.DoNotToLua]
       public GameTimeMachineTimeTicket(GameTimeMachine service, Action updateAction, int order, int interval, int type) {
         this.service = service;
         this.type = type;
@@ -69,43 +61,36 @@ namespace Ballance2.Services
       /// <summary>
       /// 获取当前实例的更新函数。
       /// </summary>
-      [LuaApiDescription("获取当前实例的更新函数。")]
       public Action updateAction { get; }
       /// <summary>
       /// 获取当前更新函数的更新顺序。顺序越小，越先被调用。
       /// </summary>
-      [LuaApiDescription("获取当前更新函数的更新顺序。顺序越小，越先被调用。")]
       public int order { get; }
       /// <summary>
       /// 获取或者设置当前更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。
-      /// </summary>
-      [LuaApiDescription("获取或者设置当前更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
+      /// </summary>     
       public int interval;
       /// <summary>
       /// 获取指定当前更新实例是否启用。可以动态改变此值。
-      /// </summary>
-      [LuaApiDescription("获取指定当前更新实例是否启用。可以动态改变此值。")]
+      /// </summary>     
       public bool enable { get; private set; } = true;
 
       /// <summary>
       /// 停用当前更新函数。
-      /// </summary>
-      [LuaApiDescription("停用当前更新函数。")]
+      /// </summary>      
       public void Disable() {
         enable = false;
       }
       /// <summary>
       /// 重新启用当前更新函数。
-      /// </summary>
-      [LuaApiDescription("重新启用当前更新函数。")]
+      /// </summary>      
       public void Enable() {
         errTickCount = 0;
         enable = true;
       }   
       /// <summary>
       /// 取消注册当前更新函数。
-      /// </summary>
-      [LuaApiDescription("取消注册当前更新函数。")]
+      /// </summary>      
       public void Unregister() {
         switch(type) {
           case 1: 
@@ -187,10 +172,6 @@ namespace Ballance2.Services
     /// <param name="order">函数的更新顺序。顺序越小，越先被调用。</param>
     /// <param name="interval">更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。</param>
     /// <returns>返回一个更新实例，使用此实例可以取消注册更新函数。</returns>
-    [LuaApiDescription("注册 Update 更新函数", "返回一个更新实例，使用此实例可以取消注册更新函数。")]
-    [LuaApiParamDescription("updateAction", "更新函数。")]
-    [LuaApiParamDescription("order", "函数的更新顺序。顺序越小，越先被调用。")]
-    [LuaApiParamDescription("interval", "更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
     public GameTimeMachineTimeTicket RegisterUpdate(Action updateAction, int order = 0, int interval = 0) {
       var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval, 1);
       InsertTimeMachineTimeTicketToList(ticket, updates);
@@ -200,8 +181,6 @@ namespace Ballance2.Services
     /// 取消注册 Update 更新函数
     /// </summary>
     /// <param name="updateAction">更新函数。</param>
-    [LuaApiDescription("取消注册 Update 更新函数")]
-    [LuaApiParamDescription("updateAction", "更新函数。")]
     public void UnRegisterUpdate(Action updateAction) {
       RemoveActionInList(updateAction, updates);
     }
@@ -213,10 +192,6 @@ namespace Ballance2.Services
     /// <param name="order">函数的更新顺序。顺序越小，越先被调用。</param>
     /// <param name="interval">更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。</param>
     /// <returns>返回一个更新实例，使用此实例可以取消注册更新函数。</returns>
-    [LuaApiDescription("注册 LateUpdate 更新函数", "返回一个更新实例，使用此实例可以取消注册更新函数。")]
-    [LuaApiParamDescription("updateAction", "更新函数。")]
-    [LuaApiParamDescription("order", "函数的更新顺序。顺序越小，越先被调用。")]
-    [LuaApiParamDescription("interval", "更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
     public GameTimeMachineTimeTicket RegisterLateUpdate(Action updateAction, int order = 0, int interval = 0) {
       var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval, 2);
       InsertTimeMachineTimeTicketToList(ticket, lateUpdates);
@@ -226,8 +201,6 @@ namespace Ballance2.Services
     /// 取消注册 LateUpdate 更新函数
     /// </summary>
     /// <param name="updateAction">更新函数。</param>
-    [LuaApiDescription("取消注册 LateUpdate 更新函数")]
-    [LuaApiParamDescription("updateAction", "更新函数。")]
     public void UnRegisterLateUpdate(Action updateAction) {
       RemoveActionInList(updateAction, lateUpdates);
     }
@@ -239,10 +212,6 @@ namespace Ballance2.Services
     /// <param name="order">函数的更新顺序。顺序越小，越先被调用。</param>
     /// <param name="interval">更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。</param>
     /// <returns>返回一个更新实例，使用此实例可以取消注册更新函数。</returns>    
-    [LuaApiDescription("注册 FixedUpdate 更新函数", "返回一个更新实例，使用此实例可以取消注册更新函数。")]
-    [LuaApiParamDescription("updateAction", "更新函数。")]
-    [LuaApiParamDescription("order", "函数的更新顺序。顺序越小，越先被调用。")]
-    [LuaApiParamDescription("interval", "更新函数的更新帧数。默认为1，表示1帧更新一次。设置为2就是2帧更新一次，以此类推。可以动态改变此值。")]
     public GameTimeMachineTimeTicket RegisterFixedUpdate(Action updateAction, int order = 0, int interval = 0) {
       var ticket = new GameTimeMachineTimeTicket(this, updateAction, order, interval, 3);
       InsertTimeMachineTimeTicketToList(ticket, fixUpdates);
@@ -252,8 +221,6 @@ namespace Ballance2.Services
     /// 取消注册 FixedUpdate 更新函数
     /// </summary>
     /// <param name="updateAction">更新函数。</param>
-    [LuaApiDescription("取消注册 FixedUpdate 更新函数")]
-    [LuaApiParamDescription("updateAction", "更新函数。")]
     public void UnRegisterFixedUpdate(Action updateAction) {
       RemoveActionInList(updateAction, fixUpdates);
     }
@@ -266,7 +233,7 @@ namespace Ballance2.Services
     private void LateUpdate() {
       DoFlushUpdateList("LateUpdate", lateUpdates);
     }
-    private void FixedUpdate() {
+    protected override void FixedUpdate() {
       if(FixedUpdateTick < 1024) FixedUpdateTick++;
       else FixedUpdateTick = 0;
 

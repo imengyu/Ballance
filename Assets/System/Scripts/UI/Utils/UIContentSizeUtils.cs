@@ -19,8 +19,6 @@ namespace Ballance2.UI.Utils
   /// <summary>
   /// UI 组件内容大小计算工具
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("UI 组件内容大小计算工具")]
   public static class UIContentSizeUtils
   {
     /// <summary>
@@ -29,9 +27,6 @@ namespace Ballance2.UI.Utils
     /// <param name="rect">RectTransform</param>
     /// <param name="contentSizeFitter">ContentSizeFitter</param>
     /// <returns>返回计算后的大小</returns>
-    [LuaApiDescription("计算一个ContentSizeFitter的合理大小", "返回计算后的大小")]
-    [LuaApiParamDescription("rect", "RectTransform")]
-    [LuaApiParamDescription("contentSizeFitter", "ContentSizeFitter")]
     public static Vector2 GetContentSizeFitterPreferredSize(this RectTransform rect, ContentSizeFitter contentSizeFitter)
     {
       LayoutRebuilder.ForceRebuildLayoutImmediate(rect);

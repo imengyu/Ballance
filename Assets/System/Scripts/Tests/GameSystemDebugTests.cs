@@ -44,11 +44,6 @@ namespace Ballance2.Tests
 
     private IEnumerator DebugLine()
     {
-      //yield return new WaitForSeconds(2.0f);
-      //gameUIManager.GlobalToast("GameManager.Instance.GetSystemService<GameUIManager");
-      //yield return new WaitForSeconds(3.0f);
-      //gameUIManager.GlobalAlertWindow("测试 GlobalAlertWindow： gameUIManager.GlobalAlertWindow(\"测试\"" +
-      //    "); 长文字", "提示文字");
       yield break;
     }
 

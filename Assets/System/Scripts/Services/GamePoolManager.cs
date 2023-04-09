@@ -24,21 +24,18 @@ namespace Ballance2.Services
   /// <summary>
   /// 对象池管理器，分普通类对象池+资源游戏对象池
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("对象池管理器，可以注册、管理对象池")]
-  public class GamePoolManager : GameService
+  public class GamePoolManager : GameService<GamePoolManager>
   {
     private const string TAG = "GamePoolManager";
 
     public GamePoolManager() : base(TAG) { }
 
-    [SLua.DoNotToLua]
     public override bool Initialize()
     {
       base.Initialize();
       return true;
     }
-    [SLua.DoNotToLua]
+    
     public override void Destroy()
     { 
       m_ObjectPools.Clear();
@@ -77,25 +74,18 @@ namespace Ballance2.Services
     /// <param name="maxSize">最大大小</param>
     /// <param name="pool">池物体挂载的根</param>
     /// <returns>返回游戏资源池</returns>
-    [LuaApiDescription("创建游戏对象池", "返回游戏资源池")]
-    [LuaApiParamDescription("poolName", "池名称")]
-    [LuaApiParamDescription("poolObjectPrefab", "池对象的预制体")]
-    [LuaApiParamDescription("initCount", "初始大小")]
-    [LuaApiParamDescription("maxSize", "最大大小")]
-    [LuaApiParamDescription("pool", "池物体挂载的根")]
     public GameObjectPool CreatePool(string poolName, int initSize, int maxSize, GameObject prefab)
     {
       var pool = new GameObjectPool(poolName, prefab, initSize, maxSize, PoolRootObject);
       m_GameObjectPools[poolName] = pool;
       return pool;
     }
+
     /// <summary>
     /// 获取指定名称游戏对象池
     /// </summary>
     /// <param name="poolName">池名称</param>
     /// <returns>返回游戏资源池，如果未找到，则返回null</returns>
-    [LuaApiDescription("获取指定名称游戏对象池", "返回游戏资源池，如果未找到，则返回null")]
-    [LuaApiParamDescription("poolName", "池名称")]
     public GameObjectPool GetPool(string poolName)
     {
       if (m_GameObjectPools.ContainsKey(poolName))
@@ -105,13 +95,12 @@ namespace Ballance2.Services
       GameErrorChecker.LastError = GameError.NotFound;
       return null;
     }
+
     /// <summary>
     /// 在指定名称游戏对象池中获取可用对象
     /// </summary>
     /// <param name="poolName">池名称</param>
     /// <returns>返回游戏资源，如果未找到，或者无可用实例，则返回null</returns>
-    [LuaApiDescription("在指定名称游戏对象池中获取可用对象", "返回游戏资源，如果未找到，或者无可用实例，则返回null")]
-    [LuaApiParamDescription("poolName", "池名称")]
     public GameObject Get(string poolName)
     {
       GameObject result = null;
@@ -132,14 +121,12 @@ namespace Ballance2.Services
       }
       return result;
     }
+
     /// <summary>
     /// 在指定名称游戏对象池中回退对象
     /// </summary>
     /// <param name="poolName">池名称</param>
     /// <param name="go">对象</param>
-    [LuaApiDescription("在指定名称游戏对象池中回退对象", "")]
-    [LuaApiParamDescription("poolName", "池名称")]
-    [LuaApiParamDescription("go", "对象")]
     public void Release(string poolName, GameObject go)
     {
       if (m_GameObjectPools.ContainsKey(poolName))
@@ -163,7 +150,6 @@ namespace Ballance2.Services
     /// <typeparam name="T">指定类型</typeparam>
     /// <param name="actionOnGet">获取回调</param>
     /// <param name="actionOnRelease">释放回调</param>
-    [SLua.DoNotToLua]
     public ObjectPool<T> CreatePool<T>(UnityAction<T> actionOnGet, UnityAction<T> actionOnRelease) where T : class
     {
       var type = typeof(T);
@@ -171,11 +157,11 @@ namespace Ballance2.Services
       m_ObjectPools[type.Name] = pool;
       return pool;
     }
+
     /// <summary>
     /// 获取指定类型的资源池。
     /// </summary>
     /// <typeparam name="T">指定类型</typeparam>
-    [SLua.DoNotToLua]
     public ObjectPool<T> GetPool<T>() where T : class
     {
       var type = typeof(T);
@@ -186,11 +172,11 @@ namespace Ballance2.Services
       }
       return pool;
     }
+
     /// <summary>
     /// 在指定类型的资源池中获取可用资源。
     /// </summary>
     /// <typeparam name="T">指定类型</typeparam>
-    [SLua.DoNotToLua]
     public T Get<T>() where T : class
     {
       var pool = GetPool<T>();
@@ -200,12 +186,12 @@ namespace Ballance2.Services
       }
       return default(T);
     }
+
     /// <summary>
     /// 释放指定类型的资源池中的指定对象。
     /// </summary>
     /// <param name="obj">指定对象</param>
     /// <typeparam name="T">指定类型</typeparam>
-    [SLua.DoNotToLua]
     public void Release<T>(T obj) where T : class
     {
       var pool = GetPool<T>();

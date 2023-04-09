@@ -5,7 +5,7 @@ using Ballance2.Services;
 * Copyright(c) 2021 imengyu
 *
 * 模块名：     
-* ObjectStateBackupUtils.cs
+* DyamicLoadAudioResource.cs
 * 
 * 用途：
 * 动态从 GameSoundManager 载入声音资源。
@@ -16,11 +16,12 @@ using Ballance2.Services;
 
 namespace Ballance2.Sys.Tools
 {
+  /// <summary>
+  /// 动态从 GameSoundManager 载入声音资源
+  /// </summary>
   [RequireComponent(typeof(AudioSource))]
-  [LuaApiNoDoc]
   public class DyamicLoadAudioResource : MonoBehaviour
   {
-
     [Tooltip("声音资源路径，与 GameSoundManager 约定的声音资源路径格式一致。")]
     public string AssetString = "";
     [Tooltip("指定声音所属类型")]
@@ -37,7 +38,7 @@ namespace Ballance2.Sys.Tools
         return;
       }
 
-      var SoundManager = GameManager.Instance.GetSystemService<GameSoundManager>();
+      var SoundManager = GameManager.GetSystemService<GameSoundManager>();
       AudioSource.clip = SoundManager.LoadAudioResource(AssetString);
       SoundManager.RegisterSoundPlayer(SoundType, AudioSource);
     }

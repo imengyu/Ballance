@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Ballance2.Services.InputManager;
 using Ballance2.UI.Utils;
 using Ballance2.Utils;
-using SubjectNerd.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,9 +25,7 @@ namespace Ballance2.UI.Core.Controls
   /// 一个Tab组件
   /// </summary>
   [ExecuteInEditMode]
-  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/Tab")]
-  [LuaApiNoDoc]
   public class Tab : UIBehaviour
   {   
     public Dictionary<string, TabContent> tabs = new Dictionary<string, TabContent>();

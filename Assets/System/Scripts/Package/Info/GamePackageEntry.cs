@@ -17,8 +17,6 @@ namespace Ballance2.Package
   /// 模块代码入口反馈体。
   /// 所有模块代码层的处理事件、回调都将在这里触发。
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   public class GamePackageEntry {
 
     //事件回调
@@ -48,6 +46,6 @@ namespace Ballance2.Package
   /// 模块入口回调
   /// </summary>
   /// <returns></returns>
-  [SLua.CustomLuaClass]
+  
   public delegate bool GamePackageEntryDelogate(GamePackage package);
 }

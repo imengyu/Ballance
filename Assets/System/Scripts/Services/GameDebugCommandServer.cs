@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
 
@@ -15,26 +16,29 @@ using Ballance2.Utils;
 * mengyu
 */
 
+/*
+
+在游戏中按 <kbd>F12</kbd> 呼出调试控制台，在调试控制台中可以输入调试命令执行。
+
+你可以使用 RegisterCommand 注册自定义调试命令，例如：
+```csharp
+GameDebugCommandServer.RegisterCommand("mycommand", (keyword, fullCmd, argsCount, args) => {
+  //这里使用了 DebugUtils 中的调试工具函数获取参数
+  var ox = DebugUtils.CheckIntDebugParam(0, args, out var nx, true, 0);
+  if (ox == null) 
+    return false;
+
+  //获取参数成功后就可以执行自定义方法了
+  return true;
+}, 1, "mycommand <count:number> > 测试调试命令");
+```
+*/
+
 namespace Ballance2.Services
 {
   /// <summary>
   /// 调试命令服务，使用此服务添加自定义调试命令。
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("调试命令服务，使用此服务添加自定义调试命令")]
-  [LuaApiNotes(@"在游戏中按 <kbd>F12</kbd> 呼出调试控制台，在调试控制台中可以输入调试命令执行。", @"
-你可以使用 RegisterCommand 注册自定义调试命令，例如：
-```lua
-GameDebugCommandServer:RegisterCommand('mycommand', function (keyword, fullCmd, argsCount, args) 
-  ---这里使用了 DebugUtils 中的调试工具函数获取参数
-  local ox, nx = DebugUtils.CheckIntDebugParam(0, args, Slua.out, true, 0)
-  if not ox then return false end
-
-  --获取参数成功后就可以执行自定义方法了
-  return true
-end, 1, 'mycommand <count:number> > 测试调试命令')
-```
-")]
   public class GameDebugCommandServer
   {   
     private const string TAG = "DebugCommand";
@@ -49,10 +53,42 @@ end, 1, 'mycommand <count:number> > 测试调试命令')
       public CommandDelegate Callback;
     }
 
-    [SLua.DoNotToLua]
     public GameDebugCommandServer()
     {
       RegisterSystemCommands();
+    }
+
+    /// <summary>
+    /// 获取指定文字的命令筛选帮助
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    public string GenCommandHelp(string text) {
+      StringBuilder sb = new StringBuilder();
+
+      if (string.IsNullOrEmpty(text)) {
+        for (var i = 0; i < commands.Count && i < 10; i++) {
+          CmdItem cmdItem = commands[i];
+          sb.Append(cmdItem.Keyword);
+          sb.Append(' ');
+          sb.AppendLine(cmdItem.HelpText);
+        }
+      } else {
+        var count = 0;
+        for (var i = 0; i < commands.Count && count < 10; i++) {
+          CmdItem cmdItem = commands[i];
+          if (cmdItem.Keyword.StartsWith(text)) {
+            sb.Append("<color=#fff>");
+            sb.Append(text);
+            sb.Append("</color><color=#ddd>");
+            sb.Append(cmdItem.Keyword.Substring(text.Length));
+            sb.Append("</color>");
+            sb.Append(' ');
+            sb.AppendLine(cmdItem.HelpText);
+          }
+        }
+      }
+      return sb.ToString();
     }
 
     /// <summary>
@@ -60,8 +96,6 @@ end, 1, 'mycommand <count:number> > 测试调试命令')
     /// </summary>
     /// <param name="cmd">命令字符串</param>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("解析并运行指定命令字符串", "返回是否成功")]
-    [LuaApiParamDescription("cmd", "命令字符串")]
     public bool ExecuteCommand(string cmd)
     {
       if (string.IsNullOrEmpty(cmd))
@@ -107,11 +141,6 @@ end, 1, 'mycommand <count:number> > 测试调试命令')
     /// <param name="limitArgCount">命令最低参数，默认 0 表示无参数或不限制</param>
     /// <param name="helpText">命令帮助文字</param>
     /// <returns>成功返回命令ID，不成功返回-1</returns>
-    [LuaApiDescription("注册调试命令", "成功返回命令ID，不成功返回-1")]
-    [LuaApiParamDescription("keyword", "命令单词，不能有空格")]
-    [LuaApiParamDescription("callback", "命令回调")]
-    [LuaApiParamDescription("limitArgCount", "命令最低参数，默认 0 表示无参数或不限制")]
-    [LuaApiParamDescription("helpText", "命令帮助文字")]
     public int RegisterCommand(string keyword, CommandDelegate callback, int limitArgCount, string helpText)
     {
       if (!IsCommandRegistered(keyword))
@@ -133,12 +162,11 @@ end, 1, 'mycommand <count:number> > 测试调试命令')
         return -1;
       }
     }
+
     /// <summary>
     /// 取消注册命令
     /// </summary>
     /// <param name="cmdId">命令ID</param>
-    [LuaApiDescription("取消注册命令")]
-    [LuaApiParamDescription("cmdId", "命令ID")]
     public void UnRegisterCommand(int cmdId)
     {
       CmdItem removeItem = null;
@@ -153,13 +181,12 @@ end, 1, 'mycommand <count:number> > 测试调试命令')
       if (removeItem != null)
         commands.Remove(removeItem);
     }
+
     /// <summary>
     /// 获取命令是否注册
     /// </summary>
     /// <param name="keyword">命令单词</param>
     /// <returns>返回命令是否注册</returns>
-    [LuaApiDescription("获取命令是否注册", "返回命令是否注册")]
-    [LuaApiParamDescription("keyword", "命令单词")]
     public bool IsCommandRegistered(string keyword)
     {
       foreach (CmdItem cmdItem in commands)
@@ -198,6 +225,5 @@ end, 1, 'mycommand <count:number> > 测试调试命令')
   /// <param name="fullCmd">完整命令</param>
   /// <param name="args">命令参数</param>
   /// <returns>须返回命令是否执行成功</returns>
-  [SLua.CustomLuaClass]
   public delegate bool CommandDelegate(string keyword, string fullCmd, int argsCount, string[] args);
 }

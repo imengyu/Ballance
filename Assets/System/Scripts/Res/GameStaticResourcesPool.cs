@@ -21,9 +21,9 @@ namespace Ballance2.Res
   /// <summary>
   /// 游戏静态资源池
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("游戏静态资源池")]
-  [LuaApiNotes(@"可在 GameEntry 中配置静态引用资源，打包后无需加载，可使用本工具类直接获取。但太多静态引用资源会导致游戏启动变慢。")]
+  
+  
+  
   public class GameStaticResourcesPool
   {
     public static GameObject PrefabUIEmpty { get; private set; }
@@ -34,8 +34,8 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns>如果找到指定预制体资源，则返回预制体实例，否则返回null</returns>
-    [LuaApiDescription("在静态引入资源中查找指定名称的预制体资源", "如果找到指定预制体资源，则返回预制体实例，否则返回null")]
-    [LuaApiParamDescription("name", "资源名称")]
+    
+    
     public static GameObject FindStaticPrefabs(string name)
     {
       if (GamePrefab == null)
@@ -68,8 +68,8 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns>如果找到指定资源，则返回资源实例，否则返回null</returns>
-    [LuaApiDescription("在静态引入资源中查找指定名称的资源", "如果找到指定资源，则返回资源实例，否则返回null")]
-    [LuaApiParamDescription("name", "资源名称")]
+    
+    
     public static Object FindStaticAssets(string name)
     {
       if (GameAssets == null)
@@ -101,12 +101,12 @@ namespace Ballance2.Res
     /// <summary>
     /// 静态引入 Prefab
     /// </summary>
-    [LuaApiDescription("静态引入 Prefab")]
+    
     public static List<GameObjectInfo> GamePrefab { get; private set; }
     /// <summary>
     /// 静态引入资源
     /// </summary>
-    [LuaApiDescription("静态引入资源")]
+    
     public static List<GameAssetsInfo> GameAssets { get; private set; }
   }
 }

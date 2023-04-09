@@ -14,7 +14,7 @@ using UnityEngine;
 * 因此设计了此对象变换状态保存器。
 * 目前可保存物体的旋转与位置信息，可选保存单个物体，或是对象和他的一级子对象，
 * 可满足大部分使用需求。
-*
+* 
 * 作者：
 * mengyu
 */
@@ -24,20 +24,12 @@ namespace Ballance2.Utils
   /// <summary>
   /// 对象变换状态保存器
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("对象变换状态保存器")]
-  [LuaApiNotes(@"Virtools 中有一个叫做IC的功能，可以保存物体的初始状态，设置了IC，可以很方便的恢复物体的初始状态，Ballance中很多模块需要IC的功能以重复恢复初始状态，因此设计了此对象变换状态保存器。
-
-目前可保存物体的旋转与位置信息，可选保存单个物体，或是对象和他的一级子对象，可满足大部分使用需求。
-  ", @"例如，在初始化的时候使用 `BackUpObject` 保存当前物体状态：
-```lua
-BackUpObject(self.gameObject)
-```
-然后，在需要恢复当前物体状态时可以调用 `RestoreObject` 恢复：
-```lua
-RestoreObject(self.gameObject)
-```
-")]
+  /// <example>
+  /// //如，在初始化的时候使用 `BackUpObject` 保存当前物体状态：
+  /// BackUpObject(self.gameObject)
+  /// //然后，在需要恢复当前物体状态时可以调用 `RestoreObject` 恢复：
+  /// RestoreObject(self.gameObject)
+  /// </example>
   public static class ObjectStateBackupUtils
   {
     private struct ObjectStateBackup
@@ -48,7 +40,7 @@ RestoreObject(self.gameObject)
     private static Dictionary<int, ObjectStateBackup> objectBackup = new Dictionary<int, ObjectStateBackup>();
 
     // 由 GameManager 调用。
-    [LuaApiDescription("由 `GameManager` 调用。手动调用将清空所有信息。")]
+    
     public static void ClearAll()
     {
       objectBackup.Clear();
@@ -58,8 +50,6 @@ RestoreObject(self.gameObject)
     /// 清除对象的备份
     /// </summary>
     /// <param name="gameObject">要操作的游戏对象</param>
-    [LuaApiDescription("清除对象的备份")]
-    [LuaApiParamDescription("gameObject", "要操作的游戏对象")]
     public static void ClearObjectBackUp(GameObject gameObject)
     {
       objectBackup.Remove(gameObject.GetInstanceID());
@@ -69,8 +59,6 @@ RestoreObject(self.gameObject)
     /// 备份对象的变换状态
     /// </summary>
     /// <param name="gameObject">要备份的游戏对象</param>
-    [LuaApiDescription("备份对象的变换状态")]
-    [LuaApiParamDescription("gameObject", "要备份的游戏对象")]
     public static void BackUpObject(GameObject gameObject)
     {
       var key = gameObject.GetInstanceID();
@@ -87,8 +75,6 @@ RestoreObject(self.gameObject)
     /// 备份对象和他的一级子对象的变换状态
     /// </summary>
     /// <param name="gameObject">要备份的游戏对象</param>
-    [LuaApiDescription("备份对象和他的一级子对象的变换状态")]
-    [LuaApiParamDescription("gameObject", "要备份的游戏对象")]
     public static void BackUpObjectAndChilds(GameObject gameObject)
     {
       BackUpObject(gameObject);
@@ -100,8 +86,6 @@ RestoreObject(self.gameObject)
     /// 从备份还原对象的变换状态
     /// </summary>
     /// <param name="gameObject">要还原的游戏对象</param>
-    [LuaApiDescription("从备份还原对象的变换状态")]
-    [LuaApiParamDescription("gameObject", "要还原的游戏对象")]
     public static void RestoreObject(GameObject gameObject)
     {
       var key = gameObject.GetInstanceID();
@@ -116,8 +100,6 @@ RestoreObject(self.gameObject)
     /// 从备份还原对象和他的一级子对象的变换状态
     /// </summary>
     /// <param name="gameObject">要还原的游戏对象</param>
-    [LuaApiDescription("从备份还原对象和他的一级子对象的变换状态")]
-    [LuaApiParamDescription("gameObject", "要还原的游戏对象")]
     public static void RestoreObjectAndChilds(GameObject gameObject)
     {
       RestoreObject(gameObject);

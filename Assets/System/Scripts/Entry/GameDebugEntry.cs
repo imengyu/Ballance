@@ -1,14 +1,4 @@
-﻿using Ballance2.Config;
-using Ballance2.Services.Debug;
-using Ballance2.Services.Init;
-using Ballance2.Services.InputManager;
-using Ballance2.Tests;
-using Ballance2.UI.CoreUI;
-using SubjectNerd.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * Copyright(c) 2022 mengyu
@@ -25,13 +15,10 @@ using UnityEngine;
 
 namespace Ballance2.Entry
 {
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   public class GameDebugEntry : MonoBehaviour
   {
     public static GameDebugEntry Instance { get; private set; }
 
-    [SLua.DoNotToLua]
     public GameDebugEntry() {
       Instance = this;
     }

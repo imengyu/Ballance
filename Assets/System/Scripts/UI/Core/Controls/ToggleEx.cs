@@ -17,13 +17,10 @@ using UnityEngine.UI;
 
 namespace Ballance2.UI.Core.Controls
 {
-
   /// <summary>
   /// 一个开关组件
   /// </summary>
   [ExecuteInEditMode]
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc]
   [AddComponentMenu("Ballance/UI/Controls/ToggleEx")]
   public class ToggleEx : MonoBehaviour
   {

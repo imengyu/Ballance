@@ -19,8 +19,6 @@ namespace Ballance2.Utils
   /// <summary>
   /// 字符串转换类
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiNoDoc()]
   public static class ConverUtils
   {
     private static readonly string TAG = "ConverUtils";

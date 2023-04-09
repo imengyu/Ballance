@@ -31,16 +31,6 @@ namespace Ballance2.UI.Utils
   /// <summary>
   /// UI 组件锚点位置工具
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("UI 组件锚点位置工具")]
-  [LuaApiNotes(@"UI 组件锚点位置工具可以方便的为您设置 
-RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
-这几个令人头疼的变量了，在代码里也可以像编辑器里一样的参数来设置RectTransform了。
-
-具体分为：Pivot（枢轴）、Anchor（锚点）、Left/Right/Top/Bottom. 与编辑器里显示的一致。
-
-具体可参考每个函数的注释。
-")]
   public static class UIAnchorPosUtils
   {
     /// <summary>
@@ -49,10 +39,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// <param name="rectTransform">UI 组件</param>
     /// <param name="x">X 轴锚点</param>
     /// <param name="y">Y 轴锚点</param>
-    [LuaApiDescription("设置 UI 组件锚点", "aaa")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
-    [LuaApiParamDescription("x", "X 轴锚点")]
-    [LuaApiParamDescription("y", "Y 轴锚点")]
     public static void SetUIAnchor(RectTransform rectTransform, UIAnchor x, UIAnchor y)
     {
       float x1 = 0.5f, x2 = 0.5f, y1 = 0.5f, y2 = 0.5f;
@@ -103,8 +89,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// 获取 UI 组件锚点
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
-    [LuaApiDescription("获取 UI 组件锚点", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static UIAnchor[] GetUIAnchor(RectTransform rectTransform)
     {
       UIAnchor x = UIAnchor.None, y = UIAnchor.None;
@@ -128,9 +112,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
     /// <param name="axis">要获取的轴</param>
-    [LuaApiDescription("获取 UI 组件锚点", "aaa")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
-    [LuaApiParamDescription("axis", "要获取的轴")]
     public static UIAnchor GetUIAnchor(RectTransform rectTransform, RectTransform.Axis axis)
     {
       UIAnchor anchor = UIAnchor.None;
@@ -159,7 +140,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// <param name="rectTransform"></param>
     /// <param name="right"></param>
     /// <param name="top"></param>
-    [LuaApiDescription("设置 UI 组件 上 右 坐标", "")]
     public static void SetUIRightTop(RectTransform rectTransform, float right, float top)
     {
       rectTransform.offsetMax = new Vector2(-right, -top);
@@ -170,7 +150,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// <param name="rectTransform"></param>
     /// <param name="left"></param>
     /// <param name="bottom"></param>
-    [LuaApiDescription("设置 UI 组件 左 下坐标", "")]
     public static void SetUILeftBottom(RectTransform rectTransform, float left, float bottom)
     {
       rectTransform.offsetMin = new Vector2(left, bottom);
@@ -183,7 +162,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// <param name="top"></param>
     /// <param name="right"></param>
     /// <param name="bottom"></param>
-    [LuaApiDescription("设置 UI 组件 左 上 右 下坐标", "")]
     public static void SetUIPos(RectTransform rectTransform, float left, float top, float right, float bottom)
     {
       rectTransform.offsetMin = new Vector2(left, bottom);
@@ -195,7 +173,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform"></param>
     /// <param name="top"></param>
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static void SetUIRight(RectTransform rectTransform, float right)
     {
       rectTransform.offsetMax = new Vector2(-right, rectTransform.offsetMax.y);
@@ -206,8 +183,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform"></param>
     /// <param name="top"></param>
-    [LuaApiDescription("设置 UI 组件 上 坐标", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static void SetUITop(RectTransform rectTransform, float top)
     {
       rectTransform.offsetMax = new Vector2(rectTransform.offsetMax.x, -top);
@@ -217,8 +192,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform"></param>
     /// <param name="left"></param>
-    [LuaApiDescription("设置 UI 组件左坐标", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static void SetUILeft(RectTransform rectTransform, float left)
     {
       rectTransform.offsetMin = new Vector2(left, rectTransform.offsetMin.y);
@@ -228,8 +201,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform"></param>
     /// <param name="bottom"></param>
-    [LuaApiDescription("设置 UI 组件下坐标", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static void SetUIBottom(RectTransform rectTransform, float bottom)
     {
       rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, bottom);
@@ -240,8 +211,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
     /// <returns></returns>
-    [LuaApiDescription("获取组件的Right", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static float GetUIRight(RectTransform rectTransform)
     {
       return -rectTransform.offsetMax.x;
@@ -251,8 +220,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
     /// <returns></returns>
-    [LuaApiDescription("获取组件的Top", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static float GetUITop(RectTransform rectTransform)
     {
       return -rectTransform.offsetMax.y;
@@ -262,8 +229,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
     /// <returns></returns>
-    [LuaApiDescription("获取组件的Left", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static float GetUILeft(RectTransform rectTransform)
     {
       return rectTransform.offsetMin.x;
@@ -273,8 +238,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
     /// <returns></returns>
-    [LuaApiDescription("获取组件的Bottom", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static float GetUIBottom(RectTransform rectTransform)
     {
       return rectTransform.offsetMin.y;
@@ -285,9 +248,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
     /// <param name="pivot">轴锚点</param>
-    [LuaApiDescription("设置 UI 组件枢轴")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
-    [LuaApiParamDescription("pivot", "轴锚点")]
     public static void SetUIPivot(RectTransform rectTransform, UIPivot pivot)
     {
       float x = 0.5f, y = 0.5f;
@@ -338,8 +298,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// 设置 UI 组件枢轴
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
-    [LuaApiDescription("设置 UI 组件枢轴")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static void SetUIPivot(RectTransform rectTransform, UIPivot pivot, RectTransform.Axis axis)
     {
       float x = rectTransform.pivot.x, y = rectTransform.pivot.y;
@@ -369,8 +327,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// 获取 UI 组件枢轴
     /// </summary>
     /// <param name="rectTransform">UI 组件</param>
-    [LuaApiDescription("获取 UI 组件枢轴", "")]
-    [LuaApiParamDescription("rectTransform", "UI 组件")]
     public static UIPivot GetUIPivot(RectTransform rectTransform)
     {
       UIPivot uIPivot = UIPivot.None;
@@ -395,7 +351,6 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
     /// <param name="value"></param>
     /// <param name="axis"></param>
     /// <returns></returns>
-    [LuaApiDescription("计算 UI 坐标值枢轴的偏移", "")]
     public static float GetUIPivotLocationOffest(RectTransform rectTransform, float value, RectTransform.Axis axis)
     {
       if (axis == RectTransform.Axis.Horizontal)
@@ -406,13 +361,11 @@ RectTransform 的 anchorMin、anchorMax、offsetMax、offsetMin
       return value;
     }
 
-
   }
 
   /// <summary>
   /// UI 组件枢轴
   /// </summary>
-  [LuaApiDescription("UI 组件枢轴")]
   public enum UIPivot
   {
     None,

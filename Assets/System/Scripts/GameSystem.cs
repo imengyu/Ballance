@@ -88,7 +88,7 @@ namespace Ballance2
     #region 系统服务
 
     //系统服务容器
-    private static Dictionary<string, GameService> systemService = new Dictionary<string, GameService>();
+    private static Dictionary<string, object> systemService = new Dictionary<string, object>();
 
     /// <summary>
     /// 注册系统服务
@@ -96,7 +96,7 @@ namespace Ballance2
     /// <param name="name">服务名称</param>
     /// <param name="classObject">服务对象</param>
     /// <returns></returns>
-    public static bool RegSystemService<T>() where T : GameService
+    public static bool RegSystemService<T>() where T : GameService<T>
     {
       GameObject newManager = CloneUtils.CreateEmptyObject("NewManagerObject");
       T manager = newManager.AddComponent<T>();
@@ -133,7 +133,7 @@ namespace Ballance2
       }
 
       //释放
-      GameService gameService = systemService[name];
+      var gameService = systemService[name] as GameService<System.Object>;
       gameService.Destroy();
 
       return systemService.Remove(name);
@@ -143,20 +143,11 @@ namespace Ballance2
     /// </summary>
     /// <param name="name">服务名称</param>
     /// <returns></returns>
-    public static GameService GetSystemService(string name)
+    public static T GetSystemService<T>() where T : GameService<T>
     {
-      if (!systemService.TryGetValue(name, out GameService o))
+      if (!systemService.TryGetValue(typeof(T).Name, out var o))
         GameErrorChecker.LastError = GameError.ClassNotFound;
-      return o;
-    }
-    /// <summary>
-    /// 获取系统服务
-    /// </summary>
-    /// <param name="name">服务名称</param>
-    /// <returns></returns>
-    public static T GetSystemService<T>() where T : GameService
-    {
-      return (T)GameSystem.GetSystemService(typeof(T).Name);
+      return o as T;
     }
     
 
@@ -220,9 +211,6 @@ namespace Ballance2
     /// </summary>
     public static void PreInit()
     {
-      if(!IsRestart)
-        GameErrorChecker.Init();
-
       //Call game init
       if (sysHandler == null)
       {
@@ -286,7 +274,9 @@ namespace Ballance2
         {
           try
           {
-            systemService[serviceNames[i]].Destroy();
+            var service = (systemService[serviceNames[i]] as GameService<System.Object>);
+            if (service != null)
+              service.Destroy();
           }
           catch (System.Exception e)
           {
@@ -296,9 +286,8 @@ namespace Ballance2
         serviceNames.Clear();
         systemService.Clear();
 
-        Ballance2.Utils.UnityLogCatcher.Destroy();
-        GameErrorChecker.Destroy();
-
+        UnityLogCatcher.Destroy();
+        
         if (IsRestart)
         {
           //Restart game

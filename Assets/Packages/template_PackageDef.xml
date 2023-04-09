@@ -68,8 +68,4 @@
     因此推荐使用 Lua（游戏API基本支持）
   -->
   <ContainCSharp>False</ContainCSharp>
-  <!--
-    是否使用luac编译lua代码为字节码，可保护代码
-  -->
-  <CompileLuaCode>True</CompileLuaCode>
 </Package>

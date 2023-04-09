@@ -3,18 +3,15 @@
   <BaseInfo>
     <Name>Ballance Core</Name>
     <Author>Ballance</Author>
+    <Logo>PackageLogo.png</Logo>
     <Introduction>{core.package.Introduction}</Introduction>
     <Description>{core.package.Description}</Description>
     <Link>https://imengyu.top/ballanceProject</Link>
     <AuthorLink>https://imengyu.top/</AuthorLink>
     <DocLink>https://imengyu.top/ballanceProject/doc</DocLink>
     <VersionName>{internal.core.versionName}</VersionName>
-    <Dependencies>
-      <Package name="system" minVer="55" mustLoad="true"></Package>
-    </Dependencies>
   </BaseInfo>
   <EntryCode>PackageEntry</EntryCode>
   <Type>Module</Type>
   <ContainCSharp>False</ContainCSharp>
-  <CompileLuaCode>True</CompileLuaCode>
 </Package>

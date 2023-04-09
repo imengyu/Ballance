@@ -1,0 +1,66 @@
+{
+  "BallWood": {
+    "Force": 0.43,
+    "Friction": 0.8,
+    "Elasticity": 0.2,
+    "Mass": 1.9,
+    "LinearDamp": 0.9,
+    "RotDamp": 0.1,
+    "PiecesPhysicsData": {
+      "Friction": 2,
+      "Elasticity": 1,
+      "Mass": 0.2,
+      "LinearDamp": 0.3,
+      "RotDamp": 0.2
+    },
+    "PiecesMinForce": 1.5,
+    "PiecesMaxForce": 3.0,
+    "UpForce": 0.6,
+    "DownForce": 0.3,
+    "BallRadius": 2,
+    "TiggerBallRadius": 2,
+    "Layer": 1
+  },
+  "BallStone": {
+    "Force": 0.92,
+    "Friction": 0.5,
+    "Elasticity": 0.1,
+    "Mass": 10,
+    "LinearDamp": 0.3,
+    "RotDamp": 0.1,
+    "PiecesPhysicsData": {
+      "Friction": 0.8,
+      "Elasticity": 1,
+      "Mass": 0.8,
+      "LinearDamp": 0.3,
+      "RotDamp": 0.2
+    },
+    "PiecesMinForce": 8,
+    "PiecesMaxForce": 16,
+    "UpForce": 3,
+    "DownForce": 0.05,
+    "BallRadius": 2,
+    "TiggerBallRadius": 2,
+    "Layer": 1
+  },
+  "BallPaper": {
+    "Force": 0.065,
+    "Friction": 0.5,
+    "Elasticity": 0.4,
+    "Mass": 0.2,
+    "LinearDamp": 1.3,
+    "RotDamp": 0.1,
+    "PiecesPhysicsData": {
+      "Elasticity": 1,
+      "LinearDamp": 6,
+      "RotDamp": 0.5
+    },
+    "PiecesMinForce": 0.3,
+    "PiecesMaxForce": 1.3,
+    "UpForce": 0.08,
+    "DownForce": 0.01,
+    "BallRadius": 0,
+    "TiggerBallRadius": 2,
+    "Layer": 1
+  }
+}

@@ -85,9 +85,7 @@ namespace Ballance2.Entry
     public GameObject GlobalGamePermissionTipDialog = null;
     public GameObject GlobalGameUserAgreementTipDialog = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
-    public GameObject GlobalGameSysErrMessageDebuggerTipDialog = null;
     public GameObject GameGlobalIngameLoading = null;
-    public Text GlobalGameSysErrMessageDebuggerTipDialogText = null;
 
 
     #endregion

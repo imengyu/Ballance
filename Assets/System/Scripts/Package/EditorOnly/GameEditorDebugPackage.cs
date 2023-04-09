@@ -1,4 +1,5 @@
 ﻿using Ballance2.Res;
+using Ballance2.Services;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using System;
@@ -127,52 +128,6 @@ namespace Ballance2.Package
         Log.E(TAG, "在加载模块的 Logo {0} 失败\n错误信息：{1}", path, e.ToString());
       }
     }
-  
-    public override CodeAsset GetCodeAsset(string pathorname)
-    {
-      string realtivePath = "";
-      if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
-      {
-        if (File.Exists(pathorname)) {
-          realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(pathorname);
-          return new CodeAsset(FileUtils.ReadAllToBytes(pathorname), pathorname, realtivePath, pathorname);
-        }
-      }
-      else
-      {
-        string path = PackageFilePath + "/" + pathorname;
-        if (File.Exists(path)) {
-          realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(path);
-          return new CodeAsset(FileUtils.ReadAllToBytes(path), path, realtivePath, path);
-        }
-        else
-        {
-          string fullPath = GetFullPathByName(pathorname);
-          if (fullPath != null && File.Exists(fullPath)) {
-            realtivePath = PathUtils.ReplaceAbsolutePathToRelativePath(fullPath);
-            return new CodeAsset(FileUtils.ReadAllToBytes(fullPath), fullPath, realtivePath, fullPath);
-          }
-        }
-      }
-
-      GameErrorChecker.LastError = GameError.FileNotFound;
-      return null;
-    }
-    public override Assembly LoadCodeCSharp(string pathorname)
-    {
-      if (PathUtils.IsAbsolutePath(pathorname) || pathorname.StartsWith("Assets/"))
-      {
-        if (File.Exists(pathorname))
-          return Assembly.LoadFile(pathorname);
-      }
-      else
-      {
-        string path = PackageFilePath + "/" + pathorname;
-        if (File.Exists(path))
-          return Assembly.LoadFile(path);
-      }
-      return base.LoadCodeCSharp(pathorname);
-    }
 
     protected virtual string DebugFolder => GamePathManager.DEBUG_PACKAGE_FOLDER;
 
@@ -184,7 +139,8 @@ namespace Ballance2.Package
       else
       {
 
-        var path = DebugFolder + "/" + PackageName + "/" + pathorname;
+
+        var path = (PackageName == GamePackageManager.SYSTEM_PACKAGE_NAME ? DebugFolder : (DebugFolder + "/" + PackageName)) + "/" + pathorname;
         var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
         if (asset == null && pathorname.Contains("."))
           asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(Path.GetFileNameWithoutExtension(path));

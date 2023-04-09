@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace BallancePhysics.Wapper
 {
-  [SLua.CustomLuaClass]
+  
   [RequireComponent(typeof(PhysicsObject))]
-  [LuaApiNoDoc]
+  
   public class PhysicsConstraintBase : PhysicsComponent
   {
     protected virtual void DoCreateConstraint() {

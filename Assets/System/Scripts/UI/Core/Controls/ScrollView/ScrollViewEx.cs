@@ -10,9 +10,6 @@ namespace Ballance2.UI.Core.Controls
 {
   [RequireComponent(typeof(RectTransform))]
   [DisallowMultipleComponent]
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("滚动列表Ex, 适用于多条数据")]
-  [LuaApiNoDoc]
   public class ScrollViewEx : ScrollView
   {
     protected override void Awake()
@@ -25,7 +22,6 @@ namespace Ballance2.UI.Core.Controls
     [Tooltip("分页大小")]
     private int m_pageSize = 50;
 
-    [LuaApiDescription("分页大小")]
     public int pageSize => m_pageSize;
 
     private int startOffset = 0;

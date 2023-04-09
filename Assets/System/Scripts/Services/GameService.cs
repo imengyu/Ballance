@@ -11,6 +11,7 @@
 * mengyu
 */
 
+using Ballance2.Base;
 using UnityEngine;
 
 namespace Ballance2.Services
@@ -18,11 +19,9 @@ namespace Ballance2.Services
   /// <summary>
   /// 系统服务基类
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("系统服务基类")]
-  public class GameService : MonoBehaviour 
+  public class GameService<T> : GameSingletonBehavior<T> where T : class   
   {
-    [SLua.DoNotToLua]
+    
     public GameService(string name)
     {
       Name = name;
@@ -31,14 +30,12 @@ namespace Ballance2.Services
     /// <summary>
     /// 服务名称
     /// </summary>
-    [LuaApiDescription("服务名称")]
     public string Name { get; private set; }
 
     /// <summary>
     /// 初始化时被调用。
     /// </summary>
     /// <returns>返回初始化是否成功</returns>
-    [SLua.DoNotToLua]
     public virtual bool Initialize()
     {
       return false;
@@ -46,13 +43,21 @@ namespace Ballance2.Services
     /// <summary>
     /// 释放时被调用。
     /// </summary>
-    [SLua.DoNotToLua]
     public virtual void Destroy()
     {
       Object.Destroy(this);
     }
 
+    /// <summary>
+    /// 更新函数
+    /// </summary>
     protected virtual void Update() {
+
+    }
+    /// <summary>
+    /// 更新函数
+    /// </summary>
+    protected virtual void FixedUpdate() {
 
     }
   }

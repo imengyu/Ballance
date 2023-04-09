@@ -24,9 +24,7 @@ namespace Ballance2.UI.Core.Controls
   /// 一个自动加载I18N字符串的文字组件。
   /// </summary>
   [ExecuteInEditMode]
-  [SLua.CustomLuaClass]
   [AddComponentMenu("Ballance/UI/Controls/I18NText")]
-  [LuaApiNoDoc]
   public class I18NText : Text
   {
     [SerializeField]

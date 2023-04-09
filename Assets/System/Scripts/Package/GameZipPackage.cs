@@ -1,12 +1,9 @@
-﻿using Ballance2.Services;
-using Ballance2.Services.Debug;
+﻿using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
@@ -29,11 +26,6 @@ namespace Ballance2.Package
 {
   public class GameZipPackage : GamePackage
   {
-    public override void Destroy()
-    {
-      packageCodeAsset.Clear();
-      base.Destroy();
-    }
     public override async Task<bool> LoadInfo(string filePath)
     {
       PackageFilePath = PathUtils.FixFilePathScheme(filePath);
@@ -109,21 +101,6 @@ namespace Ballance2.Package
       }
       return false;
     }
-
-    private struct CodeAssetStorage
-    {
-      public byte[] asset;
-      public string innerPath;
-      public string fullPath;
-      public CodeAssetStorage(byte[] asset, string innerPath, string fullPath)
-      {
-        this.asset = asset;
-        this.innerPath = innerPath;
-        this.fullPath = fullPath;
-      }
-    }
-    private Dictionary<string, CodeAssetStorage> packageCodeAsset = new Dictionary<string, CodeAssetStorage>();
-
     public override async Task<bool> LoadPackage()
     {
       ZipInputStream zip = null;
@@ -165,13 +142,7 @@ namespace Ballance2.Package
             if (await LoadAssetBundleToMemoryInZipAsync(zip, theEntry))
               assetbundleFound = true;
           }
-          else if (theEntry.Name.StartsWith("class/"))
-          {
-            LoadCodeAsset(zip, theEntry);
-          }
         }
-
-        Log.D(TAG, "Load {0} code asset", packageCodeAsset.Count);
 
         if(assetbundleFound) 
           result = await base.LoadPackage();
@@ -286,42 +257,7 @@ namespace Ballance2.Package
       Log.D(TAG, "AssetBundle {0} loaded", theEntry.Name);
       return true;
     }
-    private void LoadCodeAsset(ZipInputStream zip, ZipEntry theEntry)
-    {
-      MemoryStream ms = ZipUtils.ReadZipFileToMemory(zip);
-
-      var codeAssetStorage = new CodeAssetStorage(StringUtils.FixUtf8BOM(ms.ToArray()), theEntry.Name, 
-        PackageName == GamePackageManager.CORE_PACKAGE_NAME ? 
-          "Assets/Game/" + theEntry.Name.Substring(6) :
-          "Assets/Packages/" + PackageName + "/" + theEntry.Name.Substring(6) //Remove 'class/' prefix
-      );
-      
-      var key = theEntry.Name;
-      packageCodeAsset.Add(key, codeAssetStorage);
-      key = Path.GetFileName(theEntry.Name);
-      if(!packageCodeAsset.ContainsKey(key))
-        packageCodeAsset.Add(key, codeAssetStorage);
-      key = Path.GetFileNameWithoutExtension(theEntry.Name);
-      if(!packageCodeAsset.ContainsKey(key))
-        packageCodeAsset.Add(key, codeAssetStorage);
-
-      ms.Close();
-      ms.Dispose();
-    }
-
-    public override CodeAsset GetCodeAsset(string pathorname)
-    {
-      if (packageCodeAsset.TryGetValue(pathorname, out var k))
-        return new CodeAsset(k.asset, k.fullPath, k.innerPath, k.fullPath);
-      if (packageCodeAsset.TryGetValue(Path.GetFileName(pathorname), out k))
-        return new CodeAsset(k.asset, k.fullPath, k.innerPath, k.fullPath);
-      if (packageCodeAsset.TryGetValue(Path.GetFileNameWithoutExtension(pathorname), out k))
-        return new CodeAsset(k.asset, k.fullPath, k.innerPath, k.fullPath);
-
-      GameErrorChecker.LastError = GameError.FileNotFound;
-      return null;
-    }
-    public override Assembly LoadCodeCSharp(string pathorname)
+    protected override Assembly LoadCodeCSharp(string pathorname)
     {
 #if ENABLE_MONO || ENABLE_DOTNET
 
@@ -357,17 +293,6 @@ namespace Ballance2.Package
       Log.E(TAG, "模组包 {0} 加载代码错误：当前使用 IL2CPP 模式，因此 C# DLL 不能加载", PackageName);
 #endif
       return null;
-    }
-  
-    public override string ListResource() {
-      StringBuilder sb = new StringBuilder();
-      sb.Append("[Zip package]");
-      var list = AssetBundle.GetAllAssetNames();
-      sb.Append("[Lua Code assets count: " + packageCodeAsset.Count + " ]");
-      foreach(var item in packageCodeAsset) 
-        sb.AppendLine(item.Key + ": " + item.Value.fullPath);
-      sb.AppendLine(base.ListResource());
-      return sb.ToString();
     }
   }
 }

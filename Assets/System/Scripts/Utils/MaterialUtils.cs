@@ -18,14 +18,13 @@ namespace Ballance2.Utils
   /// <summary>
   /// 材质工具类。材质相关的一些工具方法。
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("材质工具类。材质相关的一些工具方法。")]
+  
+  
   public static class MaterialUtils
   {
     /// <summary>
     /// 材质渲染模式，对应Unity编辑器中的4个渲染模式。
     /// </summary>
-    [LuaApiDescription("材质渲染模式，对应Unity编辑器中的4个渲染模式。")]
     public enum RenderingMode
     {
       Opaque,
@@ -39,9 +38,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="material">要设置模式的材质</param>
     /// <param name="renderingMode">渲染模式</param>
-    [LuaApiDescription("设置材质的渲染模式")]
-    [LuaApiParamDescription("material", "要设置模式的材质")]
-    [LuaApiParamDescription("renderingMode", "渲染模式")]
     public static void SetMaterialRenderingMode(Material material, RenderingMode renderingMode)
     {
       switch (renderingMode)
@@ -89,8 +85,6 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="material">要获取模式的材质</param>
     /// <returns>返回材质的渲染模式</returns>
-    [LuaApiDescription("获取材质的渲染模式")]
-    [LuaApiParamDescription("material", "要获取模式的材质")]
     public static RenderingMode GetMaterialRenderingMode(Material material) {
       if(material.renderQueue == -1) return RenderingMode.Opaque;
       else if(material.renderQueue == 2450) return RenderingMode.Cutout;

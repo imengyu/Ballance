@@ -16,102 +16,97 @@ namespace Ballance2.Services.Debug
   /// <summary>
   /// 游戏发生错误的枚举
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("游戏发生错误的枚举")]
   public enum GameError
   {
     /// <summary>
     /// 无错误
     /// </summary>
-    [LuaApiDescription("无错误")]
     None,
-    [LuaApiDescription("未知错误")]
+    
     UnKnow,
-    [LuaApiDescription("事件、资源等受控对象重复注册了")]
+    
     AlreadyRegistered,
-    [LuaApiDescription("事件、资源等受控对象没有注册")]
+    
     NotRegister,
-    [LuaApiDescription("模块，或者代码资源没有加载")]
+    
     NotLoad,
-    [LuaApiDescription("未找到指定资源")]
+    
     NotFound,
-    [LuaApiDescription("游戏的配置不正确")]
+    
     ConfigueNotRight,
-    [LuaApiDescription("这个功能未实现")]
+    
     NotImplemented,
-    [LuaApiDescription("上下文无权限")]
+    
     ContextMismatch,
-    [LuaApiDescription("参数未提供")]
+    
     ParamNotProvide,
-    [LuaApiDescription("未找到参数")]
+    
     ParamNotFound,
-    [LuaApiDescription("参数只读")]
+    
     ParamReadOnly,
-    [LuaApiDescription("表示没有错误")]
+    
     Empty,
-    [LuaApiDescription("找不到属性")]
+    
     MissingAttribute,
-    [LuaApiDescription("指定的模块包不能运行")]
+    
     PackageCanNotRun,
-    [LuaApiDescription("指定的模块包与当前版本游戏不兼容")]
+    
     PackageIncompatible,
-    [LuaApiDescription("指定的类未找到")]
+    
     ClassNotFound,
-    [LuaApiDescription("指定的文件不存在")]
+    
     FileNotFound,
-    [LuaApiDescription("指定的函数不存在")]
+    
     FunctionNotFound,
-    [LuaApiDescription("指定的模块包未加载或者不存在")]
+    
     PackageDefNotFound,
-    [LuaApiDescription("指定的 AssetBundle 未加载或者不存在")]
+    
     AssetBundleNotFound,
-    [LuaApiDescription("指定的 AssetBundle 未加载或者不存在")]
+    
     AssetNotFound,
-    [LuaApiDescription("指定的 AssetBundle 未加载或者不存在")]
+    
     FileReadFailed,
-    [LuaApiDescription("函数未返回参数")]
+    
     NotReturn,
-    [LuaApiDescription("无效的包名")]
+    
     InvalidPackageName,
-    [LuaApiDescription("注册包失败。")]
+    
     RegisterPackageFailed,
-    [LuaApiDescription("不支持的文件格式。")]
+    
     NotSupportFileType,
-    [LuaApiDescription("网络错误。")]
+    
     NetworkError,
-    [LuaApiDescription("执行代码失败。")]
+    
     ExecutionFailed,
-    [LuaApiDescription("无法执行此操作。")]
+    
     AccessDenined,
-    [LuaApiDescription("正在加载，请稍后。")]
+    
     IsLoading,
-    [LuaApiDescription("系统包未加载。")]
+    
     SystemPackageNotLoad,
-    [LuaApiDescription("系统包加载失败，这可能是当前版本存在非正式的修改，尝试下载最新版本解决问题。")]
+    
     SystemPackageLoadFailed,
-    [LuaApiDescription("系统未初始化。")]
+    
     SystemNotInit,
-    [LuaApiDescription("未知类型")]
+    
     UnKnowType,
-    [LuaApiDescription("Lua环境绑定检查失败，通常是配置不正确造成的")]
+    
     EnvBindCheckFailed,
-    [LuaApiDescription("表示功能只能在编辑器中使用")]
+    
     OnlyCanUseInEditor,
-    [LuaApiDescription("未找到预制体")]
+    
     PrefabNotFound,
-    [LuaApiDescription("未找到模块")]
+    
     PackageNotFound,
-    [LuaApiDescription("不可用")]
+    
     NotAvailable,
-    [LuaApiDescription("请求失败")]
+    
     RequestFailed,
   }
 
   /// <summary>
   /// 错误信息
   /// </summary>
-  [SLua.CustomLuaClass]
-  [LuaApiDescription("错误信息")]
   public static class GameErrorInfo
   {
     /// <summary>
@@ -119,8 +114,6 @@ namespace Ballance2.Services.Debug
     /// </summary>
     /// <param name="err">错误代码</param>
     /// <returns>错误代码的说明信息</returns>
-    [LuaApiDescription("获取错误代码的说明信息", "错误代码的说明信息")]
-    [LuaApiParamDescription("err", "错误代码")]
     public static string GetErrorMessage(GameError err)
     {
       switch (err)

@@ -13,9 +13,7 @@ using Ballance2.Entry;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
-using Ballance2.Services.LuaService;
 using Ballance2.Utils;
-using SLua;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -39,76 +37,41 @@ namespace Ballance2.Services
   /// <summary>
   /// 游戏管理器
   /// </summary>
-  [SLua.CustomLuaClass] 
-  [LuaApiDescription("游戏管理器")]
-  [LuaApiNotes(@"
-游戏管理器是整个游戏框架最基础的管理组件，负责游戏的启动、初始化、退出功能。当然，它也提供了很多方便的API供游戏脚本调用。
-
-要获取游戏管理器实例，可以使用
-```lua
-GameManager.Instance
-```
-")]
-  public class GameManager : GameService
+  public class GameManager : GameService<GameManager>
   {
     public GameManager() : base("GameManager") {}
 
     #region 全局关键组件变量
 
     /// <summary>
-    /// 获取当前 GameManager 实例
-    /// </summary>
-    [LuaApiDescription("获取当前 GameManager 实例")]
-    [LuaApiNotes("使用 `GameManager.Instance` 可以快速获取 GameManager 的实例，这是一个非常有用的方法。")]
-    public static GameManager Instance { get; private set; }
-    /// <summary>
     /// 获取中介者 GameMediator 实例
     /// </summary>
-    [LuaApiDescription("获取中介者 GameMediator 实例")]
     public static GameMediator GameMediator { get; internal set; }
     /// <summary>
     /// 获取系统设置实例
     /// </summary>
-    [LuaApiDescription("获取系统设置实例。这是 core 模块的设置实例，与 `GameSettingsManager.GetSettings(\"core\")` 获取的是相同的。")]
     public GameSettingsActuator GameSettings { get; private set; }
     /// <summary>
     /// 获取基础摄像机
     /// </summary>
-    [LuaApiDescription("获取基础摄像机。基础摄像机是游戏摄像机还未加载时激活的摄像机，当游戏摄像机加载完成需要切换时，本摄像机应该禁用。")]
     public Camera GameBaseCamera { get; private set; }
     /// <summary>
     /// 获取根Canvas
     /// </summary>
-    [LuaApiDescription("获取根Canvas")]
     public RectTransform GameCanvas { get; internal set; }
-    /// <summary>
-    /// 获取主虚拟机
-    /// </summary>
-    [LuaApiDescription("获取主虚拟机")]
-    [LuaApiNotes("此对象不公开，在 Lua 无法使用。")]
-    public LuaSvr GameMainEnv { get; internal set; }
-    /// <summary>
-    /// 获取游戏全局Lua虚拟机
-    /// </summary>
-    [LuaApiDescription("获取游戏全局Lua虚拟机")]
-    [LuaApiNotes("此对象不公开，在 Lua 无法使用。")]
-    public LuaSvr.MainState GameMainLuaState { get; private set; }
     /// <summary>
     /// 获取调试命令控制器
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("获取调试命令控制器。可以获取全局 GameDebugCommandServer 单例，你可以通过它来注册你的调试命令。")]
     public GameDebugCommandServer GameDebugCommandServer { get; private set; }
     /// <summary>
     /// 获取全局灯光实例
     /// </summary>
-    [LuaApiDescription("获取全局灯光实例。这是一个全局照亮的环境光, 与游戏内的主光源是同一个。")]
     public static Light GameLight { get; private set; }
     /// <summary>
     /// GameTimeMachine 的一个实例. 
     /// </summary>
     /// <value></value>
-    [LuaApiDescription("GameTimeMachine 的一个实例。")]
     public static GameTimeMachine GameTimeMachine { 
       get {
         if(_GameTimeMachine == null)
@@ -123,20 +86,10 @@ GameManager.Instance
     /// <summary>
     /// 获取或者设置当前是否处于开发者模式
     /// </summary>
+    /// <remark>
+    /// 设置调试模式后需要重启才能生效。
+    /// </remark>
     /// <value></value>
-    [LuaApiDescription("获取或者设置当前是否处于开发者模式")]
-    [LuaApiNotes(@"设置调试模式后需要重启才能生效。
-    
-如果是调试模式，在 lua 中 会设置 `BALLANCE_DEBUG` 全局变量为 `true`，为了方便你可以通过判断这个变量来获取是不是调试模式：
-```lua
----这两个功能是一样的
-if GameManager.DebugMode then
-  --是调试模式，执行某些功能
-end
-if BALLANCE_DEBUG then
-  --是调试模式，执行某些功能
-end
-```")]
     public static bool DebugMode { 
       get {
         return _DebugMode;
@@ -187,7 +140,7 @@ end
 
       Application.wantsToQuit += Application_wantsToQuit;
 
-      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.CORE_PACKAGE_NAME);
+      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
 
       InitDebugConfig(gameEntryInstance);
       InitCommands();
@@ -195,26 +148,17 @@ end
 
       Profiler.BeginSample("BindLua");
       
-      GameMainEnv = new LuaSvr();      
-      GameMainEnv.init(null, () =>
-      {
-        GameMainLuaState = LuaSvr.mainState;
-        GameMainLuaState.errorDelegate += (err) => GameErrorChecker.LuaStateErrReport(GameMainLuaState, err);
-
-        GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
-        GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
-          finish.Invoke();
-          return false;
-        });
-        GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
-          //Init Debug
-          if (DebugMode)
-            DebugInit.InitSystemDebug();
-          return false;
-        });
+      GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
+      GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
+        finish.Invoke();
+        return false;
       });
-      
-      Profiler.EndSample();
+      GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
+        //Init Debug
+        if (DebugMode)
+          DebugManager.Init();
+        return false;
+      });
     }
 
     private bool sLoadUserPackages = true;
@@ -251,34 +195,6 @@ end
     /// <returns></returns>
     private IEnumerator InitAsysc()
     {
-      //检测lua绑定状态
-      object o = GameMainLuaState.doString(@"return Ballance2.Services.GameManager.EnvBindingCheckCallback()", "GameManagerSystemInit");
-      if (o != null &&  (
-              (o.GetType() == typeof(int) && (int)o == GameConst.GameBulidVersion)
-              || (o.GetType() == typeof(double) && (double)o == GameConst.GameBulidVersion)
-          ))
-          Log.D(TAG, "Game Lua bind check ok.");
-      else
-      {
-          Log.E(TAG, "Game Lua bind check failed, did you bind lua functions?");
-          GameErrorChecker.LastError = GameError.EnvBindCheckFailed;
-#if UNITY_EDITOR // 编辑器中
-          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "Lua接口没有绑定。请点击“SLua”>“All”>“Make”生成 Lua 接口绑定。");
-#else
-          GameErrorChecker.ThrowGameError(GameError.EnvBindCheckFailed, "错误的发行配置，请检查。");  
-#endif
-          yield break;
-      }
-
-      SecurityUtils.FixLuaSecure(GameMainLuaState);
-
-      //初始化宏定义
-      LuaUtils.InitMacros(GameMainLuaState);
-
-      GameMainLuaState["BALLANCE_DEBUG"] = DebugMode;
-
-      GameErrorChecker.EnterStrictMode();
-
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BASE_INIT_FINISHED);
       
       //加载系统 packages
@@ -370,7 +286,6 @@ end
       yield return 1;
 
       var pm = GetSystemService<GamePackageManager>();
-      var corePackageName = GamePackageManager.CORE_PACKAGE_NAME;
       var systemPackage = GamePackage.GetSystemPackage();
 
       yield return 1;
@@ -399,6 +314,41 @@ end
 
       #endregion
 
+      #region Load system core package
+
+#if UNITY_EDITOR
+      Task<bool> task = systemPackage.LoadInfo(GamePathManager.DEBUG_CORE_FOLDER);
+#else
+      Task<bool> task = systemPackage.LoadInfo(GamePathManager.GetResRealPath("core", "core.ballance"));
+#endif
+
+      yield return task.AsIEnumerator();
+      if (!task.Result) 
+      {
+        GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Failed to load system package info");
+        StopAllCoroutines();
+        yield break;
+      }
+
+      task = systemPackage.LoadPackage();
+      yield return task.AsIEnumerator();
+
+      if (!task.Result) 
+      {
+        GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Failed to load system package");
+        StopAllCoroutines();
+        yield break;
+      }
+
+      if (!systemPackage.RunPackageExecutionCode()) 
+      {
+        GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Failed to run system package");
+        StopAllCoroutines();
+        yield break;
+      }
+
+      #endregion
+
       #region 系统逻辑场景配置
 
       XmlNode SystemScenses = systemInit.SelectSingleNode("System/SystemScenses");
@@ -415,81 +365,9 @@ end
         firstScense = FirstEnterScense.InnerText; 
       if (!logicScenses.Contains(firstScense))
       {
-        GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "FirstEnterScense 配置不正确");
+        GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "FirstEnterScense Configue not right");
         StopAllCoroutines();
         yield break;
-      }
-
-      #endregion
-
-      #region 加载系统内核包
-      
-      {
-
-        Task<bool> task = systemPackage.LoadPackage();
-        yield return task.AsIEnumerator();
-
-        try {
-          Profiler.BeginSample("ExecuteSystemCore");
-
-          systemPackage.RunPackageExecutionCode();
-          systemPackage.RequireLuaFile("SystemInternal.lua");
-          systemPackage.RequireLuaFile("GameCoreLib/GameCoreLibInit.lua");
-
-          Profiler.EndSample();
-
-        } catch(Exception e) {
-          GameErrorChecker.ThrowGameError(GameError.ConfigueNotRight, "未能成功初始化内部脚本，可能是当前版本配置不正确，请尝试重新下载。\n" + e.ToString());
-          StopAllCoroutines();
-          yield break;
-        }
-
-        Log.D(TAG, "ExecuteSystemCore ok");
-      }
-
-      //初始化lua调试器
-      if(GameEntry.Instance.DebugEnableLuaDebugger)
-      {
-        Profiler.BeginSample("GameManagerStartDebugger");
-        GameMainLuaState.doString(@"
-            local SystemPackage = Ballance2.Package.GamePackage.GetSystemPackage()
-            SystemPackage:RequireLuaFile('debugger')
-            InternalStart('" + GameEntry.Instance.DebugLuaDebugger + "')", "GameManagerStartDebugger");
-        Profiler.EndSample();
-      }
-      
-      {
-        //加载游戏主内核包
-        Task<bool> task = pm.LoadPackage(corePackageName);
-        yield return task.AsIEnumerator();
-
-        if (!task.Result)
-        {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "系统包 “" + corePackageName + "” 加载失败：" + GameErrorChecker.LastError + "\n您可尝试重新安装游戏");
-          yield break;
-        }
-
-        Log.D(TAG, "Load system core ok");
-      }
-
-      {
-        //检查系统包版本是否与内核版本一致
-        var corePackage = pm.FindPackage(corePackageName);
-        var ver = corePackage.PackageEntry.Version;
-        if (ver <= 0)
-        {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "Invalid Core package (2)");
-          StopAllCoroutines();
-          yield break;
-        }
-        if (ver != GameConst.GameBulidVersion)
-        {
-          GameErrorChecker.ThrowGameError(GameError.SystemPackageLoadFailed, "主包版本与游戏内核版本不符（" + ver + "!=" + GameConst.GameBulidVersion + "）\n您可尝试重新安装游戏");
-          StopAllCoroutines();
-          yield break;
-        }
-      
-        Log.D(TAG, "Check core version ok");
       }
 
       #endregion
@@ -891,19 +769,6 @@ end
       }, 0, "lc <show/go>\n" +
               "  show             ▶ 获取当前所在虚拟场景\n" +
               "  go <name:string> ▶ 进入指定虚拟场景");
-      srv.RegisterCommand("eval", (keyword, fullCmd, argsCount, args) =>
-      {
-        var cmd = fullCmd.Substring(4);
-        object ret = null;
-        try {
-          ret = GameMainLuaState.doString(cmd, "GameManagerLuaConsole");
-        } catch(Exception e) {
-          Log.W(TAG, "doString failed \n\n" + e.ToString() + "\n\nCheck Code:\n" + DebugUtils.PrintCodeWithLine(cmd));
-          return true;
-        }
-        Log.V(TAG, "doString return " + DebugUtils.PrintLuaVarAuto(ret, 10));
-        return true;
-      }, 1, "eval <code:string> ▶ 运行 Lua 命令");
       srv.RegisterCommand("le", (keyword, fullCmd, argsCount, args) =>
       {
         Log.V(TAG, "LastError is {0}", GameErrorChecker.LastError.ToString());
@@ -997,28 +862,19 @@ end
           go.SetActive(false);
       }
       GameBaseCamera.gameObject.SetActive(true);
-    }
-    
+    }   
     /// <summary>
     /// 释放
     /// </summary>
-    [DoNotToLua]
     public override void Destroy()
     {
       Log.D(TAG, "Destroy");
-
       Instance = null;
-
-      if (GameMainEnv != null) {
-        GameMainEnv = null;
-      }
     }
 
     /// <summary>
     /// 请求开始退出游戏流程
     /// </summary>
-    [LuaApiDescription("请求开始退出游戏流程")]
-    [LuaApiNotes("调用此 API 将立即开始退出游戏流程，无法取消。")]
     public void QuitGame()
     {
       Log.D(TAG, "QuitGame");
@@ -1032,8 +888,6 @@ end
     /// <summary>
     /// 重启游戏
     /// </summary>
-    [LuaApiDescription("重启游戏")]
-    [LuaApiNotes("**不推荐**使用，本重启函数只能关闭框架然后重新运行一次，会出现很多不可预料的问题，应该退出游戏让用户手动重启。")]
     public void RestartGame()
     {
       QuitGame();
@@ -1067,7 +921,7 @@ end
       ObjectStateBackupUtils.ClearAll();
 
       if (DebugMode)
-        DebugInit.UnInitSystemDebug();
+        DebugManager.Destroy();
       
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_BEFORE_GAME_QUIT);
       ReqGameQuit();
@@ -1077,16 +931,9 @@ end
 
     #region Update
 
-    [CustomLuaClass]
     public delegate void VoidDelegate();
 
     private int nextGameQuitTick = -1;
-    private class DelayItem
-    {
-      public float Time;
-      public VoidDelegate Callback;
-    }
-    private List<DelayItem> delayItems = new List<DelayItem>();
 
     /// <summary>
     /// 请求游戏退出。
@@ -1097,6 +944,37 @@ end
     }
     protected override void Update()
     {
+      //延时函数管理运行
+      if (delayItems.Count > 0)
+      {
+        LinkedListNode<DelayItem> item = delayItems.First;
+        while(item != null) {
+          item.Value.Time -= Time.deltaTime;
+          if (item.Value.Time <= 0)
+          {
+            delayItems.Remove(item);
+            item.Value.Callback.Invoke();
+            item = item.Next;
+            continue;
+          }
+          item = item.Next;
+        }
+      }
+      //定时器函数运行
+      if (timerItems.Count > 0)
+      {
+        LinkedListNode<TimerItem> item = timerItems.First;
+        while(item != null) {
+          var timeItem = item.Value;
+          timeItem.Time -= Time.deltaTime;
+          if (timeItem.Time <= 0) {
+            timeItem.Time = timeItem.LoopTime;
+            item.Value.Callback.Invoke();
+          }
+          item = item.Next;
+        }
+      }
+      //退出延时
       if (nextGameQuitTick >= 0)
       {
         nextGameQuitTick--;
@@ -1106,19 +984,6 @@ end
           nextGameQuitTick = -1;
           gameIsQuitEmitByGameManager = false;
           GameSystem.Destroy();
-        }
-      }
-      if (delayItems.Count > 0)
-      {
-        for (int i = delayItems.Count - 1; i >= 0; i--)
-        {
-          var item = delayItems[i];
-          item.Time -= Time.deltaTime;
-          if (item.Time <= 0)
-          {
-            item.Callback.Invoke();
-            delayItems.RemoveAt(i);
-          }
         }
       }
     }
@@ -1132,29 +997,9 @@ end
     /// </summary>
     /// <typeparam name="T">继承于GameService的服务类型</typeparam>
     /// <returns>返回服务实例，如果没有找到，则返回null</returns>
-    [DoNotToLua]
-    public T GetSystemService<T>() where T : GameService
+    public static T GetSystemService<T>() where T : GameService<T>
     {
-      return (T)GameSystem.GetSystemService(typeof(T).Name);
-    }
-    /// <summary>
-    /// 获取系统服务
-    /// </summary>
-    /// <param name="name">服务名称</param>
-    /// <returns>返回服务实例，如果没有找到，则返回null</returns>
-    [LuaApiDescription("获取系统服务", "返回服务实例，如果没有找到，则返回null")]
-    [LuaApiParamDescription("name", "服务名称")]
-    [LuaApiNotes("使用 `GameManager.GetSystemService(name)` 来获取其他游戏基础服务组件的实例。", @"
-下面的示例演示了如何获取一些系统服务。
-```lua
-local PackageManager = GameManager.GetSystemService('GamePackageManager') ---@type GamePackageManager
-local UIManager = GameManager.GetSystemService('GameUIManager') ---@type GameUIManager
-local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type GameSoundManager
-```
-")]
-    public static GameService GetSystemService(string name)
-    {
-      return GameSystem.GetSystemService(name);
+      return GameSystem.GetSystemService<T>();
     }
 
     #endregion
@@ -1166,8 +1011,6 @@ local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type G
     /// <summary>
     /// 进行截图
     /// </summary>
-    [LuaApiDescription("进行截图", "返回截图保存的路径")]
-    [LuaApiNotes("截图默认保存至 `{Application.persistentDataPath}/Screenshot/` 目录下。")]
     public string CaptureScreenshot() {
       //创建目录
       string saveDir = Application.persistentDataPath + "/Screenshot/";
@@ -1182,14 +1025,10 @@ local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type G
       Delay(1.0f, () => GetSystemService<GameUIManager>().GlobalToast(I18N.I18N.TrF("global.CaptureScreenshotSuccess", "", savePath)));
       return savePath;
     }
-
     /// <summary>
     /// 设置基础摄像机状态
     /// </summary>
     /// <param name="visible">是否显示</param>
-    [LuaApiDescription("设置基础摄像机状态")]
-    [LuaApiParamDescription("visible", "是否显示")]
-    [LuaApiNotes("基础摄像机是游戏摄像机还未加载时激活的摄像机，当游戏摄像机加载完成需要切换时，应该调用此API禁用本摄像机。")]
     public void SetGameBaseCameraVisible(bool visible)
     {
       if (visible)
@@ -1209,26 +1048,16 @@ local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type G
         lastActiveCam = null;
       }
     }
-
-    /// <summary>
-    /// Lua绑定检查回调
-    /// </summary>
-    /// <returns></returns>
-    [LuaApiDescription("Lua绑定检查回调")]
-    public static int EnvBindingCheckCallback()
-    {
-      return GameConst.GameBulidVersion;
-    }
     /// <summary>
     /// 隐藏全局初始Loading动画
     /// </summary>
-    [LuaApiDescription("隐藏全局初始Loading动画")]
     public void HideGlobalStartLoading() { GameEntry.Instance.GameGlobalIngameLoading.SetActive(false); }
     /// <summary>
     /// 显示全局初始Loading动画
     /// </summary>
-    [LuaApiDescription("显示全局初始Loading动画")]
     public void ShowGlobalStartLoading() { GameEntry.Instance.GameGlobalIngameLoading.SetActive(true); }
+
+    #region Prefab methods
 
     // Prefab 预制体实例化相关方法。
     // 这里提供一些快速方法方便直接使用。这些方法与 CloneUtils 提供的方法功能一致。
@@ -1239,13 +1068,11 @@ local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type G
     /// <param name="prefab">预制体</param>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
-    [LuaApiDescription("实例化预制体", "返回新对象")]
-    [LuaApiParamDescription("prefab", "预制体")]
-    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstancePrefab(GameObject prefab, string name)
     {
       return InstancePrefab(prefab, transform, name);
     }
+
     /// <summary>
     /// 实例化预制体 ，并设置父级与名称
     /// </summary>
@@ -1253,42 +1080,39 @@ local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type G
     /// <param name="parent">父级</param>
     /// <param name="name">父级</param>
     /// <returns>返回新对象</returns>
-    [LuaApiDescription("实例化预制体", "返回新对象")]
-    [LuaApiParamDescription("prefab", "预制体")]
-    [LuaApiParamDescription("parent", "父级")]
-    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstancePrefab(GameObject prefab, Transform parent, string name)
     {
       return CloneUtils.CloneNewObjectWithParent(prefab, parent, name);
     }
+
     /// <summary>
     /// 新建一个新的 GameObject ，并设置父级与名称
     /// </summary>
     /// <param name="parent">父级</param>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
-    [LuaApiDescription("新建一个新的 GameObject ", "返回新对象")]
-    [LuaApiParamDescription("parent", "父级")]
-    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstanceNewGameObject(Transform parent, string name)
     {
       GameObject go = new GameObject(name);
       go.transform.SetParent(parent);
       return go;
     }
+    
     /// <summary>
     /// 新建一个新的 GameObject 
     /// </summary>
     /// <param name="name">新对象名称</param>
     /// <returns>返回新对象</returns>
-    [LuaApiDescription("新建一个新的空 GameObject ", "返回新对象")]
-    [LuaApiParamDescription("name", "新对象名称")]
     public GameObject InstanceNewGameObject(string name)
     {
       GameObject go = new GameObject(name);
       go.transform.SetParent(transform);
       return go;
     }
+
+    #endregion
+
+    #region FileUtils
 
     // 此处提供了一些方法来允许Lua读写本地配置文件,操作或删除本地目录等。
     // 这里提供一些快速方法方便直接使用。等同于FileUtils中的相关函数。 
@@ -1299,86 +1123,159 @@ local SoundManager = GameManager.GetSystemService('GameSoundManager') ---@type G
     /// <param name="path">文件路径</param>
     /// <param name="append">是否追加写入文件，否则为覆盖写入</param>
     /// <param name="path">要写入的文件</param>
-    [LuaApiDescription("写入字符串至指定文件")]
-    [LuaApiParamDescription("path", "要写入的文件路径")]
-    [LuaApiParamDescription("append", "是否追加写入文件，否则为覆盖写入")]
-    [LuaApiParamDescription("data", "要写入的文件数据")]
-    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public void WriteFile(string path, bool append, string data) { FileUtils.WriteFile(path, append, data); }
     /// <summary>
     /// 检查文件是否存在
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <returns>返回文件是否存在</returns>
-    [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
-    [LuaApiParamDescription("path", "要检查的文件路径")]
-    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public bool FileExists(string path) { return FileUtils.FileExists(path); }
     /// <summary>
     /// 检查目录是否存在
     /// </summary>
     /// <param name="path">目录路径</param>
     /// <returns>返回是否存在</returns>
-    [LuaApiDescription("检查文件是否存在", "返回文件是否存在")]
-    [LuaApiParamDescription("path", "要读取的文件路径")]
-    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public bool DirectoryExists(string path) { return FileUtils.DirectoryExists(path); }
     /// <summary>
     /// 创建目录
     /// </summary>
     /// <param name="path">目录路径</param>
-    [LuaApiDescription("创建目录")]
-    [LuaApiParamDescription("path", "创建目录的路径")]
-    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public void CreateDirectory(string path) { FileUtils.CreateDirectory(path); }
     /// <summary>
     /// 读取文件至字符串
     /// </summary>
     /// <param name="path">文件</param>
     /// <returns>返回文件男人</returns>
-    [LuaApiDescription("读取文件至字符串", "返回文件路径")]
-    [LuaApiParamDescription("path", "要读取的文件路径")]
-    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public string ReadFile(string path) { return FileUtils.ReadFile(path); }
     /// <summary>
     /// 删除指定的文件或目录
     /// </summary>
     /// <param name="path">文件</param>
-    [LuaApiDescription("删除指定的文件或目录")]
-    [LuaApiParamDescription("path", "要删除文件的路径")]
     public void RemoveFile(string path) { FileUtils.RemoveFile(path); }
     /// <summary>
     /// 删除指定的目录
     /// </summary>
     /// <param name="path">文件</param>
-    [LuaApiDescription("删除指定的目录")]
-    [LuaApiParamDescription("path", "要删除目录的路径")]
-    [LuaApiNotes("注意：此 API 不能读取用户个人的本地文件。你只能读取游戏目录、游戏数据目录下的文件。")]
     public void RemoveDirectory(string path) { FileUtils.RemoveDirectory(path); }
 
+    #endregion
+
+    #region 定时器与延时
+
+    private int timerId = -1;
+    private class DelayItem
+    {
+      public int Id;
+      public float Time;
+      public VoidDelegate Callback;
+    }
+    private class TimerItem
+    {
+      public int Id;
+      public float DelayTime;
+      public float LoopTime;
+
+      public float Time;
+      public VoidDelegate Callback;
+    }
+    private LinkedList<DelayItem> delayItems = new LinkedList<DelayItem>();
+    private LinkedList<TimerItem> timerItems = new LinkedList<TimerItem>();
+
+    private int GetNextTimerId() { 
+      if (timerId > 0xffffffe)
+        timerId = 0;
+      return timerId++;
+    }
+
     /// <summary>
-    /// 延时执行回调
+    /// 设置一个延时执行回调
     /// </summary>
     /// <param name="sec">延时时长，秒</param>
     /// <param name="callback">回调</param>
-    [LuaApiDescription("延时执行回调")]
-    [LuaApiParamDescription("sec", "延时时长，秒")]
-    [LuaApiParamDescription("callback", "回调")]
-    [LuaApiNotes("Lua中不推荐使用这个函数，请使用 LuaTimer ", @"
-下面的示例演示了演示的使用：
-```lua
-GameManager.Instance:Delay(1.5, function() 
-  --此回调将在1.5秒后被调用。
-end)
-```
-")]
-    public void Delay(float sec, VoidDelegate callback)
+    public int Delay(float sec, VoidDelegate callback)
     {
       var d = new DelayItem();
       d.Time = sec;
+      d.Id = GetNextTimerId();
       d.Callback = callback;
-      delayItems.Add(d);
+      delayItems.AddFirst(d);
+      return d.Id;
     }
+
+    /// <summary>
+    /// 通过ID删除指定的延时执行回调
+    /// </summary>
+    /// <param name="timerId">Delay 函数返回的 ID </param>
+    /// <returns>返回是否删除成功</returns>
+    public bool DeleteDelay(int timerId)
+    {
+      LinkedListNode<DelayItem> item = delayItems.First;
+      while(item != null) {
+        if (item.Value.Id == timerId)
+        {
+          delayItems.Remove(item);
+          return true;
+        }
+        item = item.Next;
+      }
+      return false;
+    }
+
+    /// <summary>
+    /// 设置一个定时器
+    /// </summary>
+    /// <param name="loopSec">定时器循环时间</param>
+    /// <param name="callback">回调</param>
+    /// <returns>返回ID, 可以使用 DeleteTimer 来删除定时器</returns>
+    public int Timer(float loopSec, VoidDelegate callback)
+    {
+      var d = new TimerItem();
+      d.Id = GetNextTimerId();
+      d.LoopTime = loopSec;
+      d.DelayTime = loopSec;
+      d.Callback = callback;
+      timerItems.AddLast(d);
+      return d.Id;
+    }
+
+    /// <summary>
+    /// 设置一个定时器
+    /// </summary>
+    /// <param name="delaySec">定时器第一次启动延迟时间</param>
+    /// <param name="loopSec">定时器循环时间</param>
+    /// <param name="callback">回调</param>
+    /// <returns>返回ID, 可以使用 DeleteTimer 来删除定时器</returns>
+    public int Timer(float loopSec, float delaySec, VoidDelegate callback)
+    {
+      var d = new TimerItem();
+      d.Id = GetNextTimerId();
+      d.LoopTime = loopSec;
+      d.DelayTime = delaySec;
+      d.Callback = callback;
+      timerItems.AddLast(d);
+      return d.Id;
+    }
+       
+    /// <summary>
+    /// 通过ID删除指定的定时器
+    /// </summary>
+    /// <param name="timerId">Timer 函数返回的 ID </param>
+    /// <returns>返回是否删除成功</returns>
+    public bool DeleteTimer(int timerId)
+    {
+      LinkedListNode<TimerItem> item = timerItems.First;
+      while(item != null) {
+        if (item.Value.Id == timerId)
+        {
+          timerItems.Remove(item);
+          return true;
+        }
+        item = item.Next;
+      }
+      return false;
+    }
+    
+    #endregion
 
     #endregion
 
@@ -1389,6 +1286,26 @@ end)
     // 切换逻辑场景将发出 EVENT_LOGIC_SECNSE_QUIT 与 EVENT_LOGIC_SECNSE_ENTER 全局事件，
     // 子模块根据这两个事件来隐藏或显示自己的东西，从而达到切换场景的效果。
 
+    /*
+    下面的示例演示了如何监听进入离开逻辑场景，并显示或隐藏自己的内容：
+    ```csharp
+    GameManager.GameMediator.RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, "Intro", (evtName, params) => {
+      var scense = params[1];
+      if (scense == "Intro") { 
+        //进入场景时显示自己的东西
+      }
+      return false;
+    });
+    GameManager.GameMediator.RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, "Intro", (evtName, params) => {
+      var scense = params[1];
+      if (scense == "Intro") { 
+        //离开场景时隐藏自己的东西
+      }
+      return false;
+    });
+    ```
+    */
+
     private List<string> logicScenses = new List<string>();
     private int currentScense = -1;
     private string firstScense = "";
@@ -1398,31 +1315,6 @@ end)
     /// </summary>
     /// <param name="name">场景名字</param>
     /// <returns>返回是否成功</returns>
-    [LuaApiDescription("进入指定逻辑场景", "返回是否成功")]
-    [LuaApiParamDescription("name", "场景名字")]    
-    [LuaApiNotes(@"
-逻辑场景是类似于 Unity 场景的功能，但是它无需频繁加载卸载。切换逻辑场景实际上是在同一个 Unity 场景中操作，因此速度快。
-
-切换逻辑场景将发出 EVENT_LOGIC_SECNSE_QUIT 与 EVENT_LOGIC_SECNSE_ENTER 全局事件，子模块根据这两个事件来隐藏或显示自己的东西，从而达到切换场景的效果。
-", @"
-下面的示例演示了如何监听进入离开逻辑场景，并显示或隐藏自己的内容：
-```lua
-GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, 'Intro', function (evtName, params)
-  local scense = params[1]
-  if(scense == 'Intro') then 
-    --进入场景时显示自己的东西
-  end
-  return false
-end)    
-GameManager.GameMediator:RegisterEventHandler(thisGamePackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, 'Intro', function (evtName, params)
-  local scense = params[1]
-  if(scense == 'Intro') then 
-    --离开场景时隐藏自己的东西
-  end
-  return false
-end)
-```
-")]
     public bool RequestEnterLogicScense(string name)
     {
       int curIndex = logicScenses.IndexOf(name);
@@ -1445,7 +1337,6 @@ end)
     /// <summary>
     /// 获取所有逻辑场景
     /// </summary>
-    [LuaApiDescription("获取所有逻辑场景")]
     public string[] GetLogicScenses() { return logicScenses.ToArray(); }
 
     #endregion
