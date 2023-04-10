@@ -42,7 +42,7 @@ Compared with the original version, this project has added the following feature
 * **Load NMO files directly** (Windows version only)
 * Android version, Mac version (You can also try to compile other platforms)
 * Self made map interface
-* Lua module, modul interface (Use Lua to develop mod or custom modules)
+* Modul interface (Use C# to develop mod or custom modules)
 * Level previewer
 * Mod manager
 
@@ -67,8 +67,8 @@ Minimum requirements
 * Windows:
 
 1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version.
-2. Download the corresponding zip installation package.
-3. Unzip all files, then run `ballance.exe` to start the game.
+2. Download the zip installation package in assets.
+3. Unzip all files, then run `Ballance.exe` to start the game.
 
 * MacOS：
 
@@ -84,7 +84,7 @@ Minimum requirements
 
 ## Keys and gameplay
 
-* The PC version operation remains unchanged from the original game. You can modify the buttons in the Settings>Control menu.
+* The PC version operation remains unchanged from the original game. You can modify the key mapping in the Settings>Control menu.
 * The mobile version has added a touch keyboard, and you can modify the keyboard style in the Settings>Control menu.
 
 ## Turn on debugging mode
@@ -107,7 +107,7 @@ After entering the debugging mode, you can enter `highscore open-all` command in
 
 Ballance Unity Rebuild Version 0.9.8 supports the function of loading the original level file of ballance.
 
-You can load a standard original ballance NMO level by clicking start > Load original ballance NMO level.
+You can load a standard original ballance NMO level by clicking start > NMO level.
 
 The core uses the Virtools SDK 5.0 to process NMO files, so only the windows 32-bit version is supported.
 
@@ -121,17 +121,16 @@ Most levels can be loaded successfully and played, but there are a few restricti
 
 You need:
 
-* Install Unity 2021.2.3+
+* Install Unity 2021.3.2+
 * Install a code editor (VScode or Visual Studio)
 * Clone or download this project `https://github.com/imengyu/Ballance` to your computer.
 
 Steps:
 
 1. Open the project with unity.
-2. When running for the first time, you need to click the menu "Slua > All > Make" to generate Lua interface files. After generation, you don't need generate again.
-3. Open `Scenes/MainScene.unity` scene.
-4. Select the `GameEntry` object, set `Debug Type` to `NoDebug` in the inspector.
-5. Click Run and you can see the game.
+2. Open `Scenes/MainScene.unity` scene.
+3. Select the `GameEntry` object, set `Debug Type` to `NoDebug` in the inspector.
+4. Click Run and you can see the game.
 
 ## Generate game programs from project source code
 
@@ -139,7 +138,7 @@ Please refer [production document](wiki/production.md)。
 
 ## Physics Engine
 
-The C++source code for the physics engine can be found [here](https://github.com/nillerusr/source-physics) View (this is not the author's own warehouse).
+The C++source code for the physics engine can be found [here](https://github.com/nillerusr/source-physics) (this is not the author's own repo).
 
 The wrapper DLL code for the physics engine is located in the BallancePhysics directory below the project, and you need to compile it using Visual Studio 2919 or higher.
 

@@ -115,7 +115,7 @@
 
 Ballance Unity Rebuild 0.9.8 版本支持了加载 Ballance 原版关卡文件的功能。
 
-你可以加载通过点击 “开始” > “加载原版 Ballance NMO 关卡” 来加载一个标准的原版关卡。
+你可以加载通过点击 “开始” > “NMO 关卡” 来加载一个标准的原版关卡。
 
 核心使用 Virtools SDK 5.0 来处理 NMO 文件，因此只支持 Windows 32位 版本。
 
