@@ -150,9 +150,9 @@ The original gameplay and level reproduction have all been completed, and you ca
 
 If you have any good modifications or problem solvers, welcome PR. If you have any good ideas or comments, or if you find a bug, please feel free to submit an issue.
 
-## Why did you do this?
+## Why did i do this?
 
-Ballance Unity is a small dream of the author, hoping to enable Ballance to run on mobile phones and facilitate the development of functional levels and modules (the latter has been [BallanceModLoader](https://github.com/Gamepiaynmo/BallanceModLoader) Implemented). Meanwhile, Ballance Unity was also my first work to learn about Unity game development, which greatly helped me improve my skills.
+Ballance Unity is a small dream of the me, I hoping to enable Ballance to run on mobile phones and easier make the levels and mods (the latter has been [BallanceModLoader](https://github.com/Gamepiaynmo/BallanceModLoader) Implemented). Also, Ballance Unity was my first project to learn about Unity game development, which greatly helped me improve my skills.
 
 ## Game album
 
