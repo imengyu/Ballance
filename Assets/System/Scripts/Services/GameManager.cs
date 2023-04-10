@@ -145,8 +145,6 @@ namespace Ballance2.Services
       InitDebugConfig(gameEntryInstance);
       InitCommands();
       InitVideoSettings();
-
-      Profiler.BeginSample("BindLua");
       
       GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
       GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
@@ -1114,7 +1112,6 @@ namespace Ballance2.Services
 
     #region FileUtils
 
-    // 此处提供了一些方法来允许Lua读写本地配置文件,操作或删除本地目录等。
     // 这里提供一些快速方法方便直接使用。等同于FileUtils中的相关函数。 
 
     /// <summary>

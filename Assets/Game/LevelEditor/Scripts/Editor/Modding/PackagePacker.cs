@@ -6,7 +6,7 @@ using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Xml;
 using System.Collections.Generic;
-using Ballance2.Editor.Lua;
+using Ballance2.Editor.CS;
 
 namespace Ballance2.Editor.Modding
 {
@@ -17,10 +17,8 @@ namespace Ballance2.Editor.Modding
     private static string projModDirPath = "";
     private static string projLogoFile = "";
     private static string packPackageName = "";
-    private static bool packContainCSharp = false;
 
     private static List<string> allAssetsPath = new List<string>();
-    private static List<string> allLuaPath = new List<string>();
     private static List<string> allCsPath = new List<string>();
 
     public static string DoPackPackage(BuildTarget packTarget, TextAsset packDefFile, string sourceName, string targetDir)
@@ -28,7 +26,6 @@ namespace Ballance2.Editor.Modding
       string targetPath = targetDir + "/" + sourceName + ".ballance";
       if (!string.IsNullOrEmpty(targetPath))
       {
-        packContainCSharp = false;
 
         DoSolvePackageDef(packDefFile);
 
@@ -36,7 +33,6 @@ namespace Ballance2.Editor.Modding
           return "PackageDef.xml 必须填写包名 packageName";
 
         allAssetsPath.Clear();
-        allLuaPath.Clear();
         allCsPath.Clear();
 
         bool isCore = packPackageName == "core";
@@ -64,12 +60,6 @@ namespace Ballance2.Editor.Modding
               //将cs代码取出来，等待后续编译
               if (filesPath.EndsWith(".cs")) {
                 allCsPath.Add(filesPath.Replace(projPath, ""));
-                continue;
-              }
-              //将lua代码取出来，打包到zip中
-              if (filesPath.EndsWith(".lua"))
-              {
-                allLuaPath.Add(filesPath.Replace(projPath, ""));
                 continue;
               }
 
@@ -128,10 +118,6 @@ namespace Ballance2.Editor.Modding
           }
           break;
         }
-        else if (node.Name == "ContainCSharp")
-        {
-          bool.TryParse(node.InnerText, out packContainCSharp);
-        }
       }
     }
     private static void DoSolveBallancePack(BuildTarget target, string dirTargetPath, string bundlePath, string targetPath)
@@ -153,7 +139,7 @@ namespace Ballance2.Editor.Modding
       if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, ref crc);
       
       //编译C#代码
-      if(packContainCSharp && allCsPath.Count > 0) {
+      if(allCsPath.Count > 0) {
         EditorUtility.DisplayProgressBar("请稍后", "正在编译C#代码", 0.5F);
 
         if(CSharpCompiler.CompileToCsharpDll(packPackageName, projModDirPath + Path.DirectorySeparatorChar + "/Native", true)) {

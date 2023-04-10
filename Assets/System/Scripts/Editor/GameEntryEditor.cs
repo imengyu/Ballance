@@ -20,8 +20,6 @@ public class GameEntryEditor : Editor
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
     private SerializedProperty DebugSetFrameRate;
-    private SerializedProperty DebugEnableLuaDebugger;
-    private SerializedProperty DebugLuaDebugger;
     private SerializedProperty DebugType;
     private SerializedProperty DebugInitPackages;
     private SerializedProperty DebugCustomEntryEvent;
@@ -48,8 +46,6 @@ public class GameEntryEditor : Editor
         DebugMode = serializedObject.FindProperty("DebugMode");
         DebugTargetFrameRate = serializedObject.FindProperty("DebugTargetFrameRate");
         DebugSetFrameRate = serializedObject.FindProperty("DebugSetFrameRate");
-        DebugEnableLuaDebugger = serializedObject.FindProperty("DebugEnableLuaDebugger");
-        DebugLuaDebugger = serializedObject.FindProperty("DebugLuaDebugger");
         DebugType = serializedObject.FindProperty("DebugType");
         DebugInitPackages = serializedObject.FindProperty("DebugInitPackages");
         DebugCustomEntryEvent = serializedObject.FindProperty("DebugCustomEntryEvent");
@@ -101,8 +97,6 @@ public class GameEntryEditor : Editor
         EditorGUI.BeginDisabledGroup(!DebugSetFrameRate.boolValue);
         EditorGUILayout.PropertyField(DebugTargetFrameRate);
         EditorGUI.EndDisabledGroup();
-        EditorGUILayout.PropertyField(DebugEnableLuaDebugger);
-        EditorGUILayout.PropertyField(DebugLuaDebugger);
         EditorGUILayout.PropertyField(DebugType);
         EditorGUILayout.PropertyField(DebugSkipIntro);
         

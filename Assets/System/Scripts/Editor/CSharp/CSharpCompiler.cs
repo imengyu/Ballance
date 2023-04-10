@@ -1,10 +1,7 @@
 using System.Text;
-using System.IO;
-using Ballance2.Utils;
-using UnityEditor;
 using UnityEngine;
 
-namespace Ballance2.Editor.Lua
+namespace Ballance2.Editor.CS
 {
   public static class CSharpCompiler
   {

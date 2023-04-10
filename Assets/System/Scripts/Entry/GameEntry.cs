@@ -43,10 +43,6 @@ namespace Ballance2.Entry
     public int DebugTargetFrameRate = 60;
     [Tooltip("是否设置固定帧率（仅Editor中有效）")]
     public bool DebugSetFrameRate = true;
-    [Tooltip("是否启用Lua调试器")]
-    public bool DebugEnableLuaDebugger = true;
-    [Tooltip("Lua调试器类型")]
-    public GameLuaDebuggerType DebugLuaDebugger = GameLuaDebuggerType.VscodeDebuggee;
     [Tooltip("调试类型")]
     public GameDebugType DebugType = GameDebugType.NoDebug;
     [Tooltip("当前调试中需要初始化的包名")]
@@ -258,20 +254,6 @@ namespace Ballance2.Entry
 
       yield break;
     }
-  }
-  /// <summary>
-  /// Lua调试器类型
-  /// </summary>
-  public enum GameLuaDebuggerType
-  {
-    /// <summary>
-    /// mobdebug
-    /// </summary>
-    Mobdebug,
-    /// <summary>
-    /// vscode-debuggee
-    /// </summary>
-    VscodeDebuggee,
   }
   /// <summary>
   /// 调试类型

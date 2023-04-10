@@ -1268,7 +1268,7 @@ MonoBehaviour:
   ModulInstance: {fileID: 0}
   ModulTestFloor: {fileID: 0}
   ModulTestUI: {fileID: 0}
-  LevelName: level01
+  LevelName: "\u6D4B\u8BD5\u5173\u5361"
 --- !u!114 &1269806397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1286,7 +1286,7 @@ MonoBehaviour:
   DebugSetFrameRate: 1
   DebugEnableLuaDebugger: 1
   DebugLuaDebugger: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds

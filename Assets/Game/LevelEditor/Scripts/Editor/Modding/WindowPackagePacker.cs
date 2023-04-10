@@ -123,9 +123,6 @@ namespace Ballance2.Editor.Modding
                 GUILayout.Label(packPackageName + " 包内所有资源:");
                 foreach(string s in allAssetsPath)
                     GUILayout.Label(s);
-                GUILayout.Label("包内所有lua代码:");
-                foreach (string s in allLuaPath)
-                    GUILayout.Label(s);
                 EditorGUILayout.EndScrollView();
 
                 EditorGUILayout.BeginHorizontal();
@@ -141,7 +138,6 @@ namespace Ballance2.Editor.Modding
         }
 
         private List<string> allAssetsPath = new List<string>();
-        private List<string> allLuaPath = new List<string>();
 
         private List<string> packsPath = new List<string>();
         private string[] packsPathArr = null;

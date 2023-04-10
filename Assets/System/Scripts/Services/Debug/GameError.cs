@@ -120,7 +120,6 @@ namespace Ballance2.Services.Debug
       {
         case GameError.None: return "无错误。";
         case GameError.InvalidPackageName: return "无效的包名。";
-        case GameError.EnvBindCheckFailed: return "Lua绑定检测失败。";
         case GameError.OnlyCanUseInEditor: return "这个功能只能在Unity编辑器中使用。";
         case GameError.PrefabNotFound: return "未找到预制体。";
         case GameError.FileReadFailed: return "读取文件失败。";

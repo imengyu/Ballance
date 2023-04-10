@@ -23,7 +23,6 @@ namespace Ballance2.Editor.Modding
         private string modUserVersion = "1.0";
         private int modVersion = 1;
         private GamePackageType PackageType = GamePackageType.Module;
-        private bool ContainCSharp = true;
 
         private SerializedObject serializedObject;
 
@@ -133,15 +132,13 @@ namespace Ballance2.Editor.Modding
             MinVersion.InnerText = GameConst.GameBulidVersion.ToString();
             TargetVersion.InnerText = GameConst.GameBulidVersion.ToString();
 
-            XmlNode ContainCSharp = xml.SelectSingleNode("Package/ContainCSharp");
             XmlNode PackageType = xml.SelectSingleNode("Package/Type");
 
-            ContainCSharp.InnerText = this.ContainCSharp.ToString();
             PackageType.InnerText = this.PackageType.ToString();
 
             xml.Save(folderPath + "/PackageDef.xml");
 
-            if(this.PackageType == GamePackageType.Module && this.ContainCSharp)
+            if(this.PackageType == GamePackageType.Module)
               File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.cs", folderPath + "/PackageEntry.cs");
             File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageLogo.png", folderPath + "/PackageLogo.png");
 

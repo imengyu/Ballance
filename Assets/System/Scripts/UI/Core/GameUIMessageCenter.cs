@@ -9,7 +9,7 @@ using static Ballance2.Services.GameManager;
 * GameUIMessageUtils.cs
 * 
 * 用途：
-* UI 消息中心，方便Lua层处理UI事件。
+* UI 消息中心，方便处理UI事件。
 *
 * 此类提供了简单事件的绑定、数值同步绑定两个功能。
 *
