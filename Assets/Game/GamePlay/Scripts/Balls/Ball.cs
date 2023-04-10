@@ -51,8 +51,11 @@ namespace Ballance2.Game.GamePlay.Balls
       [JsonProperty]
       public bool HasRollSound = true;
       /// <summary>
-      /// 指定当前球是否存在滚动声音
-      /// </summary> 
+      /// 设置滚动声音的速度曲线计算参考值。此值一般填写球可以到达的最大速度。
+      /// </summary>
+      [JsonProperty]
+      public float RollSoundSpeedReference = 0;
+
       [JsonIgnore]
       public StringBuilder _SoundManagerDebugString = new StringBuilder();
     }
@@ -262,11 +265,6 @@ namespace Ballance2.Game.GamePlay.Balls
     /// </summary>
     [JsonProperty]
     public float VolumeBase = 0f;
-    /// <summary>
-    /// 滚动声音音量乘数
-    /// </summary>
-    [JsonProperty]
-    public float VolumeFactor = 0.05f;
   }  
   [JsonObject]
   public class BallHitSoundConfigHit : BallHitSoundConfigBase {

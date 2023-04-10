@@ -21,7 +21,7 @@ namespace Ballance2.Game.GamePlay.Balls
       this._SoundConfig.RollSound.Names.Add("Metal", "core.sounds:Roll_Stone_Metal.wav");
       this._SoundConfig.RollSound.Names.Add("Stone", "core.sounds:Roll_Stone_Stone.wav");
       this._SoundConfig.RollSound.Names.Add("Wood", "core.sounds:Roll_Stone_Wood.wav");
-      this._SoundConfig.RollSound.VolumeFactor = 0.11f;
+      this._SoundConfig.RollSoundSpeedReference = 15f;
     }
   }
 }

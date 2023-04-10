@@ -22,10 +22,8 @@ namespace Ballance2.Editor.Modding
         private string modIntroduction = "";
         private string modUserVersion = "1.0";
         private int modVersion = 1;
-        private bool GenEntryCodeTemplate = true;
         private GamePackageType PackageType = GamePackageType.Module;
-        private bool ContainCSharp = false;
-        private string EntryCode = "Entry.lua";
+        private bool ContainCSharp = true;
 
         private SerializedObject serializedObject;
 
@@ -79,22 +77,7 @@ namespace Ballance2.Editor.Modding
             modIntroduction = EditorGUILayout.TextField("模组简介文字", modIntroduction, GUILayout.Height(60));
             modVersion = EditorGUILayout.IntField("模组版本（默认1）", modVersion);
             modUserVersion = EditorGUILayout.TextField("模组版本（显示用户看）", modUserVersion);
-
             PackageType = (GamePackageType)EditorGUILayout.EnumPopup("模组类型", PackageType);
-            if (PackageType == GamePackageType.Module)
-            {
-                GenEntryCodeTemplate = EditorGUILayout.Toggle("生成模组入口代码模板", GenEntryCodeTemplate);
-                if (GenEntryCodeTemplate)
-                {
-                    EntryCode = EditorGUILayout.TextField("入口代码名称", EntryCode);
-                    if (StringUtils.isNullOrEmpty(EntryCode))
-                    {
-                        EditorGUILayout.HelpBox("必须填写入口代码名称， xxx(.lua)", MessageType.Error);
-                        error = true;
-                    }
-                }
-            }
-            ContainCSharp = EditorGUILayout.Toggle("指示模组是否要加载CSharp代码", ContainCSharp);
 
             EditorGUILayout.Space(20);
 
@@ -150,34 +133,16 @@ namespace Ballance2.Editor.Modding
             MinVersion.InnerText = GameConst.GameBulidVersion.ToString();
             TargetVersion.InnerText = GameConst.GameBulidVersion.ToString();
 
-            XmlNode EntryCode = xml.SelectSingleNode("Package/EntryCode");
             XmlNode ContainCSharp = xml.SelectSingleNode("Package/ContainCSharp");
             XmlNode PackageType = xml.SelectSingleNode("Package/Type");
 
-            EntryCode.InnerText = this.EntryCode;
             ContainCSharp.InnerText = this.ContainCSharp.ToString();
             PackageType.InnerText = this.PackageType.ToString();
 
             xml.Save(folderPath + "/PackageDef.xml");
 
-            if(this.PackageType == GamePackageType.Module &&  GenEntryCodeTemplate) {
-              File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.lua", folderPath + "/" + this.EntryCode);
-              if (this.ContainCSharp) {
-                Directory.CreateDirectory(folderPath + "/Native");
-                File.WriteAllText(folderPath + "/Native/PackageEntry.cs", string.Format(@"
-namespace {0}
-{
-  public class PackageEntry
-  {
-    public bool Main() {
-      //Your mod logic
-      return true;
-    }
-  }
-}", modPackageName));
-              }
-            }
-
+            if(this.PackageType == GamePackageType.Module && this.ContainCSharp)
+              File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.cs", folderPath + "/PackageEntry.cs");
             File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageLogo.png", folderPath + "/PackageLogo.png");
 
             AssetDatabase.Refresh();

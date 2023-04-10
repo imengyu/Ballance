@@ -293,6 +293,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dd4098c96825849be1e1f12a606227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BallRollSpeedVolumeCruve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.1865976
+      outSlope: 3.1865976
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.64768565
+    - serializedVersion: 3
+      time: 0.06357212
+      value: 0.13754588
+      inSlope: 0.8178784
+      outSlope: 0.8178784
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2838798
+    - serializedVersion: 3
+      time: 0.41648078
+      value: 0.40999997
+      inSlope: 1.1629121
+      outSlope: 1.1629121
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.35958326
+      outWeight: 0.22526924
+    - serializedVersion: 3
+      time: 0.9
+      value: 0.8
+      inSlope: 0.41206756
+      outSlope: 0.41206756
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.10414498
+    - serializedVersion: 3
+      time: 2
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &482231672407214574
 GameObject:
   m_ObjectHideFlags: 0

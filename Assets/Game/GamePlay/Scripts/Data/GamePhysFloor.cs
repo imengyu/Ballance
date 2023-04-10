@@ -46,12 +46,12 @@ namespace Ballance2.Game.GamePlay
     [JsonProperty]
     public int Layer; 
     /// <summary>
-    /// 路面的碰撞层
+    /// 路面的碰撞层声音名称
     /// </summary>
     [JsonProperty]
     public string HitSound; 
     /// <summary>
-    /// 路面的碰撞层声音名称
+    /// 路面的碰撞层
     /// </summary>
     [JsonProperty]
     public string CollisionLayerName;

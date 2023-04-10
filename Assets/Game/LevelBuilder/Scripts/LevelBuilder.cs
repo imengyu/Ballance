@@ -594,9 +594,9 @@ namespace Ballance2.Game.LevelBuilder {
                     
                     body.EnableContractEventCallback();
                     body.EnableCollisionEvent = true;
-                    body.AddCollDetection(BallSoundManager.GetSoundCollIDByName("WoodenFlap"), 0.2f, 20, 0.2f, 0.1f);
-                    body.AddCollDetection(BallSoundManager.GetSoundCollIDByName("Wood"), 0.2f, 28, 0.2f, 0.1f);
-                    body.AddCollDetection(BallSoundManager.GetSoundCollIDByName("WoodOnlyHit"), 0.2f, 20, 0.2f, 0.1f);
+                    body.AddCollDetection(BallSoundManager.GetSoundCollIDByName("WoodenFlap"), 0.02f, 10, 0.2f, 0.1f);
+                    body.AddCollDetection(BallSoundManager.GetSoundCollIDByName("Wood"), 0.02f, 12, 0.2f, 0.1f);
+                    body.AddCollDetection(BallSoundManager.GetSoundCollIDByName("WoodOnlyHit"), 0.02f, 10, 0.2f, 0.1f);
                     //撞击处理回调
                     body.OnPhysicsCollDetection = (_, col_id, speed_precent) => {
                       hitSound.volume = speed_precent;

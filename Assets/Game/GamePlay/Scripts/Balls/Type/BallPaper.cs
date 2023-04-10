@@ -16,7 +16,7 @@ namespace Ballance2.Game.GamePlay.Balls
       this._PiecesSoundName = "core.sounds:Pieces_Wood.wav";
       this._SoundConfig.HitSound.Names.Add("All", "core.sounds:Hit_Paper.wav");
       this._SoundConfig.RollSound.Names.Add("All", "core.sounds:Roll_Paper.wav");
-      this._SoundConfig.RollSound.VolumeFactor = 0.1f;
+      this._SoundConfig.RollSoundSpeedReference = 12f;
       this._SoundConfig.RollSound.TimeDelayStart = 0.8f;
       this._SoundConfig.RollSound.TimeDelayEnd = 0.1f;
       //自定义物理化碎片

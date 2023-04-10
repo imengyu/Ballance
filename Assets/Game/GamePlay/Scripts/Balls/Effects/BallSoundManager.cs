@@ -15,6 +15,8 @@ namespace Ballance2.Game.GamePlay.Balls
   {
     private const string TAG = "BallSoundManager";
 
+    public AnimationCurve BallRollSpeedVolumeCruve = null;
+
     [JsonObject]
     public class BallSoundCollData {
       /// <summary>
@@ -247,8 +249,6 @@ namespace Ballance2.Game.GamePlay.Balls
     /// </summary>
     public void AddSoundableBall(PhysicsObject rigidbody, Ball.BallSoundConfig _SoundConfig) 
     {
-      Log.D(TAG, "AddSoundableBall: " + rigidbody.name);
-
       //添加或者获取已有碰撞数据
       SoundableBallWorkData soundableBallWorkData = InitSoundableBallWorkData(rigidbody.gameObject.GetInstanceID(), _SoundConfig);
 
@@ -350,8 +350,6 @@ namespace Ballance2.Game.GamePlay.Balls
     /// </summary>
     public void RemoveSoundableBall(PhysicsObject rigidbody, Ball.BallSoundConfig _SoundConfig) 
     {
-      Log.D(TAG, "RemoveSoundableBall: " + rigidbody.name);
-
       SoundableBallWorkData soundableBallWorkData = InitSoundableBallWorkData(rigidbody.gameObject.GetInstanceID(), _SoundConfig);
 
       //移除回调
@@ -401,7 +399,7 @@ namespace Ballance2.Game.GamePlay.Balls
     /// </summary>
     private void HandlerBallRollSpeedChange(float speed, Ball.BallSoundConfig _SoundConfig, SoundableBallWorkData soundableBallWorkData)
     {
-      float vol = Mathf.Min(1, _SoundConfig.RollSound.VolumeBase + (speed * _SoundConfig.RollSound.VolumeFactor));
+      float vol = Mathf.Min(1, _SoundConfig.RollSound.VolumeBase + BallRollSpeedVolumeCruve.Evaluate(speed / _SoundConfig.RollSoundSpeedReference));
       float pit = Mathf.Min(1, _SoundConfig.RollSound.PitchBase + (speed * _SoundConfig.RollSound.PitchFactor));
 
       if (GameManager.DebugMode)
