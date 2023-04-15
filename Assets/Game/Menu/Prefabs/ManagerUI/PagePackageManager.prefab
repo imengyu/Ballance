@@ -358,6 +358,14 @@ MonoBehaviour:
   ButtonEnableAll: {fileID: 1751775922819366940}
   ButtonDisableAll: {fileID: 7582945472259083488}
   TextStatus: {fileID: 8227219157078585503}
+  PrefabButton: {fileID: 5643832775722251947, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
+  PrefabKeyChoose: {fileID: 2418910925883428494, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
+  PrefabToogle: {fileID: 3020327682727877677, guid: f97307d9f747d494182e650eca2e3312, type: 3}
+  PrefabUpdown: {fileID: 8225218334745135490, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+  PrefabInput: {fileID: 3080357253436928746, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+  PrefabSlider: {fileID: 6848956318651197643, guid: 19d3d986208bb8a4e95277a417788f36, type: 3}
+  PrefabSubTitle: {fileID: 426226645691481104, guid: 344d38b8f55ef8842a7f4119a0f9be1f, type: 3}
+  PrefabText: {fileID: 2091860146520579659, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
 --- !u!114 &8529125979133682980
 MonoBehaviour:
   m_ObjectHideFlags: 0

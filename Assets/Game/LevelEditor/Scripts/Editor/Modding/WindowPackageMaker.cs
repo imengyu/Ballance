@@ -138,8 +138,11 @@ namespace Ballance2.Editor.Modding
 
             xml.Save(folderPath + "/PackageDef.xml");
 
-            if(this.PackageType == GamePackageType.Module)
-              File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.cs", folderPath + "/PackageEntry.cs");
+            if(this.PackageType == GamePackageType.Module) {
+              string str = File.ReadAllText(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageEntry.cs");
+              str = str.Replace("ModNamespace", modPackageName);
+              File.WriteAllText(folderPath + "/PackageEntry.cs", str);
+            }
             File.Copy(GamePathManager.DEBUG_PACKAGE_FOLDER + "/template_PackageLogo.png", folderPath + "/PackageLogo.png");
 
             AssetDatabase.Refresh();

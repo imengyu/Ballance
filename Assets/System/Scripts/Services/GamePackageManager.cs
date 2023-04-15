@@ -86,6 +86,12 @@ namespace Ballance2.Services
           return false;
         });
       GameManager.GameMediator.DelayedNotifySingleEvent("GameManagerWaitPackageManagerReady", 0.5f);
+      GameManager.GameMediator.SubscribeSingleEvent(systemPackage, "DoSendAllPackageUILoad", TAG, (evtName, param) => {
+        foreach (var package in loadedPackages)
+          package.Value.PackageEntry.OnLoadUI?.Invoke(package.Value);
+        return true;
+      });
+      
 
       systemPackage._Status = GamePackageStatus.LoadSuccess;
       registeredPackages.Add(SYSTEM_PACKAGE_NAME, new GamePackageRegisterInfo(systemPackage));

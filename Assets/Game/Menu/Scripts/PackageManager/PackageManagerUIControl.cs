@@ -5,9 +5,11 @@ using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services;
+using Ballance2.Services.Debug;
 using Ballance2.Services.I18N;
 using Ballance2.UI.Core;
 using Ballance2.UI.Core.Controls;
+using Ballance2.UI.Core.ValueBinder;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,10 +28,12 @@ using UnityEngine.UI;
 
 
 namespace Ballance2.Menu
-  {
-  public class PackageManagerUIControl : MonoBehaviour {
+{
+  public class PackageManagerUIControl : GameSingletonBehavior<PackageManagerUIControl> {
     
     private const string TAG = "PackageManagerUIControl";
+    private const string PagePackageSettingUIPagePrefixName = "PackageManagerUIControl";
+    private const string PagePackageSettingUIPageDefaultContent = "PagePackageSettingUI";
 
     public ScrollView ScrollView;
     public Button ButtonSave;
@@ -37,6 +41,15 @@ namespace Ballance2.Menu
     public Button ButtonEnableAll;
     public Button ButtonDisableAll;
     public Text TextStatus;
+
+    public GameObject PrefabButton;
+    public GameObject PrefabKeyChoose;
+    public GameObject PrefabToogle;
+    public GameObject PrefabUpdown;
+    public GameObject PrefabInput;
+    public GameObject PrefabSlider;
+    public GameObject PrefabSubTitle;
+    public GameObject PrefabText;
 
     private GamePackageManager gamePackageManager;
     private GameUIManager gameUIManager;
@@ -65,6 +78,8 @@ namespace Ballance2.Menu
         if(options.ContainsKey("LocatePackage")) 
           SelectPackage(options["LocatePackage"]);
       };
+
+      GameManager.GameMediator.DelayedNotifySingleEvent("DoSendAllPackageUILoad", 0.5f);
     }
 
     private class PackageStateChange {
@@ -80,6 +95,7 @@ namespace Ballance2.Menu
       public bool enableLoad;
       public bool notUnLoadable;
       public bool systemPackage;
+      public bool hasSettingsUI;
       public string name;
       public string introduction;
       public Sprite logo;
@@ -99,6 +115,7 @@ namespace Ballance2.Menu
       var TextNotUnloadableText = item.Find("TextNotUnloadableText").GetComponent<Text>();
       var ToggleEnable = item.Find("ToggleEnable").GetComponent<ToggleEx>();
       var ButtonUnload = item.Find("ButtonUnload").GetComponent<Button>();
+      var ButtonSettings = item.Find("ButtonSettings").GetComponent<Button>();
 
       Button.onClick.RemoveAllListeners();
       Button.onClick.AddListener(() => {
@@ -110,6 +127,20 @@ namespace Ballance2.Menu
       TextTitle.text = data.name;
       TextIntrod.text = data.introduction;
       ImageLogo.sprite = data.logo;
+
+      //跳转设置按扭
+      if(data.hasSettingsUI) {
+        ButtonSettings.gameObject.SetActive(true);
+        ButtonSettings.onClick.RemoveAllListeners();
+        ButtonSettings.onClick.AddListener(() => {
+          if (data.packageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
+            gameUIManager.GoPage("PageSettings");
+          else
+            gameUIManager.GoPage(PagePackageSettingUIPagePrefixName + data.packageName);
+        });
+      } else {
+        ButtonSettings.gameObject.SetActive(false);
+      }
 
       if(!data.systemPackage) {
         TextNotUnloadableText.gameObject.SetActive(false);
@@ -124,7 +155,6 @@ namespace Ballance2.Menu
             UnloadPackage(data.packageName);
           });
         }
-
 
         if(packageStateChanges.TryGetValue(name, out var pack))
           ToggleEnable.isOn = pack.newState;//缓存中的状态
@@ -157,7 +187,7 @@ namespace Ballance2.Menu
       if(pack != null) {
         Dictionary<string, string> options = new Dictionary<string, string>();
         options.Add("PackageName", name);
-        gameUIManager.GoPageWithOptions("PagePackageManagerInfo", options);
+        gameUIManager.GoPageWithOptions("PagePackageSettings", options);
       }
     }
 
@@ -190,6 +220,7 @@ namespace Ballance2.Menu
         newItem.introduction = package.BaseInfo.Introduction;
         newItem.notUnLoadable = package.IsNotUnLoadable() || package.IsSystemPackage();
         newItem.systemPackage = package.IsSystemPackage();
+        newItem.hasSettingsUI = packageSettingsUIs.ContainsKey(info.packageName);
 
         packageItems.Add(newItem);
       }
@@ -305,6 +336,227 @@ namespace Ballance2.Menu
       } else {
         gameUIManager.BackPreviusPage();
       }
+    }
+  
+    //模块设置UI控制器
+    public class PackageSettingsUIControlInfo<T> {
+      public PackageSettingsUIControlInfo(GameUIControlValueBinderSupplierCallback valueBinderSupplierCallback, T control) {
+        ValueBinderSupplierCallback = valueBinderSupplierCallback;
+        Control = control;
+      }
+      public GameUIControlValueBinderSupplierCallback ValueBinderSupplierCallback { private set; get; }
+      public T Control { private set; get; }
+    }
+    public class PackageSettingsUI {
+      private GamePackage package;
+      private PackageManagerUIControl control;
+      private GameUIMessageCenter MessageCenter;
+      private RectTransform PageContent;
+      private bool isCustomControl;
+
+      /// <summary>
+      /// 获取当前设置界面所属UI页
+      /// </summary>
+      /// <value></value>
+      public GameUIPage Page { get; private set; }
+
+      internal PackageSettingsUI(GamePackage package, PackageManagerUIControl control, string customPagePrefab, string customPageTemplatePrefab) {
+        this.control = control;
+        this.package = package;
+        isCustomControl = customPagePrefab != null;
+        MessageCenter = MenuManager.MessageCenter;
+        Page = GameUIManager.Instance.RegisterPage(
+          PagePackageSettingUIPagePrefixName + package.PackageName, 
+          customPageTemplatePrefab == null ? "PageCommon" : customPageTemplatePrefab
+        );
+        if (customPagePrefab != null) 
+          Page.CreateContent(package, customPagePrefab);
+        else {
+          Page.CreateContent(GamePackage.GetSystemPackage(), PagePackageSettingUIPageDefaultContent);
+          PageContent = Page.Content.Find("ScrollView/Viewport/Content").GetComponent<RectTransform>();
+        }
+      } 
+      internal void Delete() {
+        GameUIManager.Instance.UnRegisterPage(Page.PageName);
+      } 
+
+      private bool CheckIsCustomControl() {
+        if (isCustomControl) {
+          GameErrorChecker.SetLastErrorAndLog(GameError.NotImplemented, TAG, "PackageSettingsUI fail: can not use auto make ui when set customPagePrefab!");
+          return true;
+        }
+        return false;
+      }
+
+      /// <summary>
+      /// 向设置UI添加一个按扭条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">按扭文字</param>
+      /// <param name="onClick">按扭点击回调</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<Button> AddButton(string name, string title, GameManager.VoidDelegate onClick) {
+        if (CheckIsCustomControl())
+          return null;
+        var item = GameManager.Instance.InstancePrefab(control.PrefabButton, PageContent, name);
+        var cls = item.GetComponent<Button>();
+        cls.onClick.AddListener(() => onClick());
+        var text = item.transform.Find("Text").GetComponent<Text>();
+        if (text != null)
+          text.text = title;
+        return new PackageSettingsUIControlInfo<Button>(null, cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个副标题条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">副标题文字</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<Text> AddSubTitle(string name, string title) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabSubTitle, PageContent, name);
+        var cls = item.GetComponent<Text>();
+        cls.text = title;
+        return new PackageSettingsUIControlInfo<Text>(null, cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个文字条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">文字内容</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<Text> AddText(string name, string title) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabText, PageContent, name);
+        var cls = item.GetComponent<Text>();
+        cls.text = title;
+        return new PackageSettingsUIControlInfo<Text>(null, cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个按键选择器条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">标题文字</param>
+      /// <param name="valueUpdateCallback">参数更改回调</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<KeyChoose> AddKeyChoose(string name, string title, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabKeyChoose, PageContent, name);
+        var valueBinder = item.GetComponent<KeyChooseValueBinder>();
+        var cls = item.GetComponent<KeyChoose>();
+        cls.Text.text = title;
+        valueBinder.MessageCenter = MessageCenter;
+        return new PackageSettingsUIControlInfo<KeyChoose>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个选择器条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">标题文字</param>
+      /// <param name="valueUpdateCallback">参数更改回调</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<Updown> AddUpdown(string name, string title, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabUpdown, PageContent, name);
+        var cls = item.GetComponent<Updown>();
+        var valueBinder = item.GetComponent<UpdownValueBinder>();
+        valueBinder.MessageCenter = MessageCenter;
+        cls.TextTitle.text = title;
+        return new PackageSettingsUIControlInfo<Updown>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个开关条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">标题文字</param>
+      /// <param name="valueUpdateCallback">参数更改回调</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<ToggleEx> AddToggle(string name, string title, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabToogle, PageContent, name);
+        var cls = item.GetComponent<ToggleEx>();
+        var valueBinder = item.GetComponent<UpdownValueBinder>();
+        valueBinder.MessageCenter = MessageCenter;
+        cls.Text.text = title;
+        return new PackageSettingsUIControlInfo<ToggleEx>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个输入框条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">标题文字</param>
+      /// <param name="valueUpdateCallback">参数更改回调</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<InputField> AddInput(string name, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabInput, PageContent, name);
+        var cls = item.GetComponent<InputField>();
+        var valueBinder = item.GetComponent<InputFieldValueBinder>();
+        valueBinder.MessageCenter = MessageCenter;
+        return new PackageSettingsUIControlInfo<InputField>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+      }
+      /// <summary>
+      /// 向设置UI添加一个滑块条目
+      /// </summary>
+      /// <param name="name">条目名称</param>
+      /// <param name="title">标题文字</param>
+      /// <param name="valueUpdateCallback">参数更改回调</param>
+      /// <returns></returns>
+      public PackageSettingsUIControlInfo<Slider> AddSlider(string name, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+        if (CheckIsCustomControl())
+          return null;
+
+        var item = GameManager.Instance.InstancePrefab(control.PrefabInput, PageContent, name);
+        var cls = item.GetComponent<Slider>();
+        var valueBinder = item.GetComponent<SliderValueBinder>();
+        valueBinder.MessageCenter = MessageCenter;
+        return new PackageSettingsUIControlInfo<Slider>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+      }
+    }
+    private Dictionary<string, PackageSettingsUI> packageSettingsUIs = new Dictionary<string, PackageSettingsUI>();
+
+    /// <summary>
+    /// 注册模块的设置界面
+    /// </summary>
+    /// <param name="package">模块</param>
+    /// <param name="customPagePrefab">自定义页面内容预制体名称，如果不为空，则会在当前模组包中寻找对应页面预制体。使用这个选项后无法再使用 PackageSettingsUI 的相关自动生成控件方法。</param>
+    /// <param name="customPageTemplatePrefab">自定义页面模板，如果为空，泽使用默认的 PageCommon 模板</param>
+    /// <returns>返回设置页面控制器，你可以通过控制器自定义模块的设置页面</returns>
+    public PackageSettingsUI RegisterPackageSettingsUI(GamePackage package, string customPagePrefab = null, string customPageTemplatePrefab = null) {
+      if (packageSettingsUIs.ContainsKey(package.PackageName)) 
+        return packageSettingsUIs[package.PackageName];
+      var ui = new PackageSettingsUI(package, this, customPagePrefab, customPageTemplatePrefab);
+      packageSettingsUIs.Add(package.PackageName, ui);
+      var packageInfo = packageItems.Find((k) => k.packageName == package.PackageName);
+      if (packageInfo != null)
+        packageInfo.hasSettingsUI = true;
+      return ui;
+    }
+    /// <summary>
+    /// 删除模块的设置界面
+    /// </summary>
+    /// <param name="package">模块</param>
+    public bool DeletePackageSettingsUI(GamePackage package) {
+      if (!packageSettingsUIs.ContainsKey(package.PackageName)) {
+        GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, "DeletePackageSettingsUI " + package.PackageName + "  fail: not register");
+        return false;
+      }
+      var ui = packageSettingsUIs[package.PackageName];
+      ui.Delete();
+      packageSettingsUIs.Remove(package.PackageName);
+      return true;
     }
   }
 }

@@ -39,11 +39,13 @@ namespace Ballance2.UI.Core
 
     private void Start()
     {
-      MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
-      if (MessageCenter != null)
-        MessageCenter.RegisterValueBinder(this);
-      else
-        Log.W("GameUIControlValueBinder:" + Name, "Failed to find GameUIMessageCenter {0}", MessageCenterName);
+      if (!string.IsNullOrEmpty(MessageCenterName)) {
+        MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
+        if (MessageCenter != null)
+          MessageCenter.RegisterValueBinder(this);
+        else
+          Log.W("GameUIControlValueBinder:" + Name, "Failed to find GameUIMessageCenter {0}", MessageCenterName);
+      }
       BinderBegin();
     }
     private void Awake()

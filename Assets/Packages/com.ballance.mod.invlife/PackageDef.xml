@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="com.ballance.mod.invlife" version="1">
+  <BaseInfo>
+    <Name>无限生命</Name>
+    <Author>ballance</Author>
+    <Introduction>此模组为你的关卡设置了无限生命</Introduction>
+    <Description><![CDATA[此模组为你的关卡设置了无限生命，你可以在一个关卡尝试无限次]]></Description>
+    <Link>https://imengyu.top/ballanceProject</Link>
+    <AuthorLink>https://imengyu.top/</AuthorLink>
+    <DocLink>https://imengyu.top/ballanceProject/doc</DocLink>
+    <VersionName>1.0</VersionName>
+    <Dependencies>
+      <Package name="core" minVer="1" mustLoad="true">
+      </Package>
+    </Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>155</MinVersion>
+    <TargetVersion>155</TargetVersion>
+  </Compatibility>
+  <Type>Module</Type>
+</Package>
