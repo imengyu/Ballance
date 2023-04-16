@@ -185,9 +185,9 @@ namespace Ballance2.Services
         packageEnableStatusListXml.LoadXml(ConstStrings.DEFAULT_PACKAGE_STATUS_XML);
 
       Dictionary<string, GamePackageRegisterInfo> lastRegisteredPackages = new Dictionary<string, GamePackageRegisterInfo>();
-      XmlNode nodeNoPackagePackagee = packageEnableStatusListXml.SelectSingleNode("PackageConfig/NoPackagePackagee");
-      if (nodeNoPackagePackagee != null)
-        NoPackageMode = bool.Parse(nodeNoPackagePackagee.InnerText);
+      XmlNode nodeNoPackageMode = packageEnableStatusListXml.SelectSingleNode("PackageConfig/NoPackageMode");
+      if (nodeNoPackageMode != null)
+        NoPackageMode = bool.Parse(nodeNoPackageMode.InnerText);
       XmlNode nodePackageList = packageEnableStatusListXml.SelectSingleNode("PackageConfig/PackageList");
       if (nodePackageList != null)
       {
@@ -213,14 +213,14 @@ namespace Ballance2.Services
       XmlDocument xml = new XmlDocument();
       XmlNode nodePackageConfig = xml.CreateElement("PackageConfig");
       XmlNode nodePackageList = xml.CreateElement("PackageList");
-      XmlNode nodeNoPackagePackagee = xml.CreateElement("NoPackagePackagee");
+      XmlNode nodeNoPackageMode = xml.CreateElement("NoPackageMode");
 
       xml.AppendChild(xml.CreateXmlDeclaration("1.0", "utf-8", null));
       xml.AppendChild(nodePackageConfig);
       nodePackageConfig.AppendChild(nodePackageList);
-      nodePackageConfig.AppendChild(nodeNoPackagePackagee);
+      nodePackageConfig.AppendChild(nodeNoPackageMode);
 
-      nodeNoPackagePackagee.InnerText = NoPackageMode.ToString();
+      nodeNoPackageMode.InnerText = NoPackageMode.ToString();
       foreach (var s in registeredPackages.Values)
       {
         if(s.package.IsSystemPackage())

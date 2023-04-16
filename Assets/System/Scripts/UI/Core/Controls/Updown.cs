@@ -29,7 +29,7 @@ namespace Ballance2.UI.Core.Controls
     public Button DownBtn;
     public Button UpBtn;
     public Text TextValue;
-    public Text TextTitle;
+    public I18NText TextTitle;
     public float MinValue = 0;
     public float MaxValue = 100;
     public float StepValue = 10;
@@ -72,11 +72,18 @@ namespace Ballance2.UI.Core.Controls
       options.RemoveAt(index);
       SetMaxMinByOptions();
     }
+    public void SetOptions(List<string> options)
+    {
+      this.options = options;
+      UseOptions = true;
+      SetMaxMinByOptions();
+    }
 
     private void SetMaxMinByOptions()
     {
       if (UseOptions)
       {
+        StepValue = 1;
         MinValue = 0;
         MaxValue = options.Count - 1;
       }

@@ -34,8 +34,12 @@ namespace Ballance2.UI.Core
     public string Name = "";
 
     public List<GameUIControlValueBinderUserUpdateCallback> UserUpdateCallbacks = new List<GameUIControlValueBinderUserUpdateCallback>();
-    public GameUIControlValueBinderSupplierCallback BinderSupplierCallback = null;
+    public GameUIControlValueBinderSupplierCallback BinderSupplierCallback => OnBinderSupplierHandle;
     public GameUIMessageCenter MessageCenter = null;
+
+    protected virtual bool OnBinderSupplierHandle(object value) {
+      return false;
+    }
 
     private void Start()
     {
@@ -50,7 +54,8 @@ namespace Ballance2.UI.Core
     }
     private void Awake()
     {
-      MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
+      if (!string.IsNullOrEmpty(MessageCenterName))
+        MessageCenter = GameUIMessageCenter.FindGameUIMessageCenter(MessageCenterName);
     }
     private void OnDestroy()
     {

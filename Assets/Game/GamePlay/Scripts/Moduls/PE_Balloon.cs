@@ -73,7 +73,7 @@ namespace Ballance2.Game.GamePlay.Moduls
 
         //PE_Balloon 过关触发器
         PE_Balloon_BallTigger.onTriggerEnter = (body, other) => {
-          if (other && other.gameObject.tag == "Ball" && !BallTiggerActived) {
+          if (IsActive && other && other.gameObject.tag == "Ball" && !BallTiggerActived) {
 
             Log.D("PE_Balloon", "Break bridge!") ;
 

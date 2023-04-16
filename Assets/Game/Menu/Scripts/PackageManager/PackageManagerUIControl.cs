@@ -32,8 +32,8 @@ namespace Ballance2.Menu
   public class PackageManagerUIControl : GameSingletonBehavior<PackageManagerUIControl> {
     
     private const string TAG = "PackageManagerUIControl";
-    private const string PagePackageSettingUIPagePrefixName = "PackageManagerUIControl";
-    private const string PagePackageSettingUIPageDefaultContent = "PagePackageSettingUI";
+    private const string PagePackageSettingUIPagePrefixName = "PackageManagerUIControl:";
+    private const string PagePackageSettingUIPageDefaultContent = "PagePackageSettingUI.prefab";
 
     public ScrollView ScrollView;
     public Button ButtonSave;
@@ -78,8 +78,6 @@ namespace Ballance2.Menu
         if(options.ContainsKey("LocatePackage")) 
           SelectPackage(options["LocatePackage"]);
       };
-
-      GameManager.GameMediator.DelayedNotifySingleEvent("DoSendAllPackageUILoad", 0.5f);
     }
 
     private class PackageStateChange {
@@ -133,10 +131,7 @@ namespace Ballance2.Menu
         ButtonSettings.gameObject.SetActive(true);
         ButtonSettings.onClick.RemoveAllListeners();
         ButtonSettings.onClick.AddListener(() => {
-          if (data.packageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
-            gameUIManager.GoPage("PageSettings");
-          else
-            gameUIManager.GoPage(PagePackageSettingUIPagePrefixName + data.packageName);
+          gameUIManager.GoPage(PagePackageSettingUIPagePrefixName + data.packageName);
         });
       } else {
         ButtonSettings.gameObject.SetActive(false);
@@ -221,6 +216,7 @@ namespace Ballance2.Menu
         newItem.notUnLoadable = package.IsNotUnLoadable() || package.IsSystemPackage();
         newItem.systemPackage = package.IsSystemPackage();
         newItem.hasSettingsUI = packageSettingsUIs.ContainsKey(info.packageName);
+        newItem.enableLoad = info.enableLoad;
 
         packageItems.Add(newItem);
       }
@@ -374,6 +370,7 @@ namespace Ballance2.Menu
         else {
           Page.CreateContent(GamePackage.GetSystemPackage(), PagePackageSettingUIPageDefaultContent);
           PageContent = Page.Content.Find("ScrollView/Viewport/Content").GetComponent<RectTransform>();
+          Page.Content.Find("Title").GetComponent<Text>().text = I18N.TrF("core.ui.PackageManagerSettingUITitle", "{0}", package.BaseInfo.Name);
         }
       } 
       internal void Delete() {
@@ -401,6 +398,7 @@ namespace Ballance2.Menu
         var item = GameManager.Instance.InstancePrefab(control.PrefabButton, PageContent, name);
         var cls = item.GetComponent<Button>();
         cls.onClick.AddListener(() => onClick());
+        item.transform.SetAsFirstSibling();
         var text = item.transform.Find("Text").GetComponent<Text>();
         if (text != null)
           text.text = title;
@@ -418,6 +416,7 @@ namespace Ballance2.Menu
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabSubTitle, PageContent, name);
         var cls = item.GetComponent<Text>();
+        item.transform.SetAsFirstSibling();
         cls.text = title;
         return new PackageSettingsUIControlInfo<Text>(null, cls);
       }
@@ -434,6 +433,7 @@ namespace Ballance2.Menu
         var item = GameManager.Instance.InstancePrefab(control.PrefabText, PageContent, name);
         var cls = item.GetComponent<Text>();
         cls.text = title;
+        item.transform.SetAsFirstSibling();
         return new PackageSettingsUIControlInfo<Text>(null, cls);
       }
       /// <summary>
@@ -448,11 +448,13 @@ namespace Ballance2.Menu
           return null;
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabKeyChoose, PageContent, name);
-        var valueBinder = item.GetComponent<KeyChooseValueBinder>();
+        var valueBinder = item.AddComponent<KeyChooseValueBinder>();
         var cls = item.GetComponent<KeyChoose>();
-        cls.Text.text = title;
+        cls.Text.defaultString = title;
         valueBinder.MessageCenter = MessageCenter;
-        return new PackageSettingsUIControlInfo<KeyChoose>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+        valueBinder.Name = name; 
+        item.transform.SetAsFirstSibling();
+        return new PackageSettingsUIControlInfo<KeyChoose>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
       /// 向设置UI添加一个选择器条目
@@ -467,10 +469,12 @@ namespace Ballance2.Menu
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabUpdown, PageContent, name);
         var cls = item.GetComponent<Updown>();
-        var valueBinder = item.GetComponent<UpdownValueBinder>();
+        var valueBinder = item.AddComponent<UpdownValueBinder>();
+        item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
-        cls.TextTitle.text = title;
-        return new PackageSettingsUIControlInfo<Updown>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+        valueBinder.Name = name; 
+        cls.TextTitle.defaultString = title;
+        return new PackageSettingsUIControlInfo<Updown>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
       /// 向设置UI添加一个开关条目
@@ -485,10 +489,12 @@ namespace Ballance2.Menu
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabToogle, PageContent, name);
         var cls = item.GetComponent<ToggleEx>();
-        var valueBinder = item.GetComponent<UpdownValueBinder>();
+        var valueBinder = item.AddComponent<ToggleExValueBinder>();
+        item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
-        cls.Text.text = title;
-        return new PackageSettingsUIControlInfo<ToggleEx>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+        valueBinder.Name = name; 
+        cls.Text.defaultString = title;
+        return new PackageSettingsUIControlInfo<ToggleEx>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
       /// 向设置UI添加一个输入框条目
@@ -503,9 +509,11 @@ namespace Ballance2.Menu
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabInput, PageContent, name);
         var cls = item.GetComponent<InputField>();
-        var valueBinder = item.GetComponent<InputFieldValueBinder>();
+        var valueBinder = item.AddComponent<InputFieldValueBinder>();
+        item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
-        return new PackageSettingsUIControlInfo<InputField>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+        valueBinder.Name = name; 
+        return new PackageSettingsUIControlInfo<InputField>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
       /// 向设置UI添加一个滑块条目
@@ -520,9 +528,11 @@ namespace Ballance2.Menu
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabInput, PageContent, name);
         var cls = item.GetComponent<Slider>();
-        var valueBinder = item.GetComponent<SliderValueBinder>();
+        var valueBinder = item.AddComponent<SliderValueBinder>();
+        item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
-        return new PackageSettingsUIControlInfo<Slider>(MessageCenter.SubscribeValueBinder(name, valueUpdateCallback), cls);
+        valueBinder.Name = name; 
+        return new PackageSettingsUIControlInfo<Slider>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
     }
     private Dictionary<string, PackageSettingsUI> packageSettingsUIs = new Dictionary<string, PackageSettingsUI>();

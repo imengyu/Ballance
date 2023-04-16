@@ -89,6 +89,13 @@ namespace Ballance2.UI.Core
       }
       return null;
     }
+    public GameUIControlValueBinderSupplierCallback SubscribeValueBinder(GameUIControlValueBinder binder, GameUIControlValueBinderUserUpdateCallback callbackFun)
+    {
+      if (!valueBinders.ContainsKey(binder.Name))
+        valueBinders[binder.Name] = binder;
+      binder.UserUpdateCallbacks.Add(callbackFun);
+      return binder.BinderSupplierCallback;
+    }
 
     /// <summary>
     /// 使用数据更新器获取控件实例

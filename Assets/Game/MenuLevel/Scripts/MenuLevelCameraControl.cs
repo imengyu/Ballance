@@ -133,7 +133,7 @@ namespace Ballance2.Game
           GameUIManager.MaskBlackFadeOut(1);
         }
         GameManager.GameLight.color = new Color(1,1,1);
-        RenderSettings.ambientLight = new Color32(115, 115, 115, 255);
+        RenderSettings.ambientLight = new Color32(90, 90, 90, 255);
         this.I_Zone.SetActive(false);
         this.skyBox.material = this.skyBoxDay;
         this.isInLightZone = false;

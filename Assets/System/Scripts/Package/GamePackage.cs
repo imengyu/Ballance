@@ -185,44 +185,60 @@ namespace Ballance2.Package
         Log.E(TAG, "不能重复初始化");
         return false;
       }
-      if (PackageEntry != null)
+      if (IsSystemPackage())
         return true;
+
+      Type type = null;
+
+      #if UNITY_EDITOR
+
+      CSharpAssembly = Assembly.GetAssembly(typeof(GamePackage));
+      type = CSharpAssembly.GetType(PackageName + ".PackageEntry");
+
+      #else
 
       //加载C#程序集
       CSharpAssembly = LoadCodeCSharp(PackageName + ".dll");
       if (CSharpAssembly == null) {
-        Log.E(TAG, "[C#] 无法加载DLL：" + PackageName + ".dll");
+        Log.E(TAG, "无法加载DLL：" + PackageName + ".dll");
         return false;
       }
+      type = CSharpAssembly.GetType("PackageEntry");
+
+      #endif
       
-      Type type = CSharpAssembly.GetType("PackageEntry");
       if (type == null)
       {
-        Log.W(TAG, "[C#] 未找到 PackageEntry ");
+        Log.W(TAG, "未找到 PackageEntry ");
         GameErrorChecker.LastError = GameError.ClassNotFound;
         return false;
       }
       else
       {
-        object CSharpPackageEntry = Activator.CreateInstance(type);
-        MethodInfo methodInfo = type.GetMethod("Main");  //根据方法名获取MethodInfo对象
-        if (type == null)
-        {
-          Log.W(TAG, "[C#] 未找到 PackageEntry.Main()");
-          GameErrorChecker.LastError = GameError.FunctionNotFound;
-        } 
-        else  
-        {
-          object b = methodInfo.Invoke(CSharpPackageEntry, new object[] { this });
-          if (b.GetType() == typeof(GamePackageEntry)) 
+        try {
+          object CSharpPackageEntry = Activator.CreateInstance(type);
+          MethodInfo methodInfo = type.GetMethod("Main");  //根据方法名获取MethodInfo对象
+          if (type == null)
           {
-            PackageEntry = b as GamePackageEntry;
+            Log.W(TAG, "未找到 PackageEntry.Main()");
+            GameErrorChecker.LastError = GameError.FunctionNotFound;
           } 
-          else
+          else  
           {
-            Log.W(TAG, "[C#] 模块 PackageEntry.Main 返回了未知类型");
-            return false;
+            object b = methodInfo.Invoke(null, new object[0]);
+            if (b.GetType() == typeof(GamePackageEntry)) 
+            {
+              PackageEntry = b as GamePackageEntry;
+            } 
+            else
+            {
+              Log.W(TAG, "模块 PackageEntry.Main 返回了未知类型");
+              return false;
+            }
           }
+        } catch (System.Exception e) {
+          Log.W(TAG, "模块 PackageEntry.Main 执行失败: " + e.ToString());
+          return false;
         }
       }
       flag |= FLAG_CODE_BASE_LOADED;

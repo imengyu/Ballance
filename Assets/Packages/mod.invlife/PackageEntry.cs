@@ -3,8 +3,9 @@ using Ballance2.Menu;
 using Ballance2.Services;
 using Ballance2.Base;
 using Ballance2.Game.GamePlay;
+using Ballance2.Services.I18N;
 
-namespace com.ballance.mod.invlife {
+namespace mod.invlife {
 
   public class PackageEntry {
     private static bool enable = false;
@@ -15,16 +16,21 @@ namespace com.ballance.mod.invlife {
       entry.OnLoad = (package) => {
         /*
         此处功能是监听GamePlayManager上的EventBeforeStart事件，在关卡开始之前设置生命为-1（无限）
-        */
+        */ 
+        GameEventEmitterHandler eventHandler = null; 
         GameManager.GameMediator.RegisterEventHandler(package, GameEventNames.EVENT_LEVEL_BUILDER_START, TAG, (evtName, param) => {
           var GamePlayManagerInstance = GamePlayManager.Instance;
-          GamePlayManagerInstance.EventBeforeStart.On((param) => {
+          eventHandler = GamePlayManagerInstance.EventBeforeStart.On((param) => {
             if (enable) {
               GamePlayManagerInstance.StartLife = -1;
               GamePlayManagerInstance.CurrentLife = -1;
               GamePlayUIControl.Instance.SetLifeBallCount(-1);
             }
           });
+          return false;
+        });
+        GameManager.GameMediator.RegisterEventHandler(package, GameEventNames.EVENT_LEVEL_BUILDER_UNLOAD_START, TAG, (evtName, param) => {
+          eventHandler.Off();
           return false;
         });
         return true;
@@ -36,18 +42,20 @@ namespace com.ballance.mod.invlife {
         */
         var setting = GameSettingsManager.GetSettings(package.PackageName);
         var settingsUI = PackageManagerUIControl.Instance.RegisterPackageSettingsUI(package);
-        var contol = settingsUI.AddToggle("Enable", "Enable infinite life ball", (val) => {
+        //添加一个开关
+        var contol = settingsUI.AddToggle("Enable", I18N.Tr("mod.invlife.ui.EnableTitle"), (val) => {
+          //开关参数更改时保存设置
           enable = (bool)val;
           setting.SetBool("enable", enable);
         });
-
-        enable = setting.GetBool("enable");
-        contol.ValueBinderSupplierCallback(enable);
+        //页面进入时加载设置
+        settingsUI.Page.OnShow += (o) => {
+          enable = setting.GetBool("enable");
+          contol.ValueBinderSupplierCallback(enable);
+        };
         return true;
       };
       entry.OnBeforeUnLoad = (package) => {
-
-
         return true;
       };
       entry.Version = 1;

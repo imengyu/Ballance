@@ -16,21 +16,24 @@ using UnityEngine.UI;
 
 namespace Ballance2.UI.Core.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/InputFieldValueBinder")]
-    [RequireComponent(typeof(InputField))]
-    public class InputFieldValueBinder : GameUIControlValueBinder
-    {
-        private InputField input = null;
+  [AddComponentMenu("Ballance/UI/ValueBinder/InputFieldValueBinder")]
+  [RequireComponent(typeof(InputField))]
+  public class InputFieldValueBinder : GameUIControlValueBinder
+  {
+    private InputField input = null;
 
-        protected override void BinderBegin() {
-            input = GetComponent<InputField>();
-            BinderSupplierCallback = (value) => {
-                input.text = (string)value;
-                return true;
-            };
-            input.onValueChanged.AddListener((v) => {
-                NotifyUserUpdate(v);
-            });
-        }
+    protected override bool OnBinderSupplierHandle(object value)
+    {
+      input.text = (string)value;
+      return true;
     }
+    protected override void BinderBegin()
+    {
+      input = GetComponent<InputField>();
+      input.onValueChanged.AddListener((v) =>
+      {
+        NotifyUserUpdate(v);
+      });
+    }
+  }
 }

@@ -23,7 +23,7 @@ namespace Ballance2.Game.GamePlay.Moduls
       if (!IsPreviewMode) {
         P_Extra_Life_Tigger.onTriggerEnter = (body, otherBody) => 
         {
-          if (!_Actived && otherBody.tag == "Ball") {
+          if (IsActive && !_Actived && otherBody.tag == "Ball") {
             _Actived = true;
             P_Extra_Life_Sphere.SetActive(false);
             P_Extra_Life_Shadow.SetActive(false);

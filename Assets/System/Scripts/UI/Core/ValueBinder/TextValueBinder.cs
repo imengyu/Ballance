@@ -16,18 +16,19 @@ using UnityEngine.UI;
 
 namespace Ballance2.UI.Core.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/TextValueBinder")]
-    [RequireComponent(typeof(Text))]
-    public class TextValueBinder : GameUIControlValueBinder
+  [AddComponentMenu("Ballance/UI/ValueBinder/TextValueBinder")]
+  [RequireComponent(typeof(Text))]
+  public class TextValueBinder : GameUIControlValueBinder
+  {
+    private Text text = null;
+    protected override bool OnBinderSupplierHandle(object value)
     {
-        private Text text = null;
-
-        protected override void BinderBegin() {
-            text = GetComponent<Text>();
-            BinderSupplierCallback = (value) => {
-                text.text = (string)value;
-                return true;
-            };
-        }
+      text.text = (string)value;
+      return true;
     }
+    protected override void BinderBegin()
+    {
+      text = GetComponent<Text>();
+    }
+  }
 }

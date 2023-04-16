@@ -6,7 +6,6 @@ using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Xml;
 using System.Collections.Generic;
-using Ballance2.Editor.CS;
 
 namespace Ballance2.Editor.Modding
 {
@@ -19,7 +18,6 @@ namespace Ballance2.Editor.Modding
     private static string packPackageName = "";
 
     private static List<string> allAssetsPath = new List<string>();
-    private static List<string> allCsPath = new List<string>();
 
     public static string DoPackPackage(BuildTarget packTarget, TextAsset packDefFile, string sourceName, string targetDir)
     {
@@ -33,7 +31,6 @@ namespace Ballance2.Editor.Modding
           return "PackageDef.xml 必须填写包名 packageName";
 
         allAssetsPath.Clear();
-        allCsPath.Clear();
 
         bool isCore = packPackageName == "core";
         string dirTargetPath = Path.GetDirectoryName(targetPath);
@@ -54,14 +51,9 @@ namespace Ballance2.Editor.Modding
               if (filesPath.EndsWith(".cginc")) continue;
               if (filesPath.EndsWith(".md")) continue;
               if (filesPath.Contains("NoPackage")) continue;
+              if (filesPath.EndsWith(".cs")) continue;
               if (isCore && filesPath.Contains("Levels")) continue;
               if (isCore && filesPath.Contains("Scripts/Native")) continue;
-
-              //将cs代码取出来，等待后续编译
-              if (filesPath.EndsWith(".cs")) {
-                allCsPath.Add(filesPath.Replace(projPath, ""));
-                continue;
-              }
 
               allAssetsPath.Add(filesPath.Replace(projPath, ""));
             }
@@ -137,20 +129,11 @@ namespace Ballance2.Editor.Modding
 
       //添加logo图片
       if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, ref crc);
-      
-      //编译C#代码
-      if(allCsPath.Count > 0) {
-        EditorUtility.DisplayProgressBar("请稍后", "正在编译C#代码", 0.5F);
 
-        if(CSharpCompiler.CompileToCsharpDll(packPackageName, projModDirPath + Path.DirectorySeparatorChar + "/Native", true)) {
-          var dll = projModDirPath + Path.DirectorySeparatorChar + "Native.dll"; 
-          if (File.Exists(dll)) ZipUtils.AddFileToZip(zipStream, dll, projModDirPath.Length, ref crc);
-        } else {
-          Debug.LogError("编译 DLL 失败。");
-        }
-
-        EditorUtility.ClearProgressBar();
-      }
+      //添加DLL
+      string projDllFile = projModDirPath + Path.DirectorySeparatorChar + ".dll" + Path.DirectorySeparatorChar + packPackageName + ".dll";
+      if (File.Exists(projDllFile)) 
+        ZipUtils.AddFileToZip(zipStream, projDllFile, projModDirPath.Length, ref crc);
 
       zipStream.Finish();
       zipStream.Close();

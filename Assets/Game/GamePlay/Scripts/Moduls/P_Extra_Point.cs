@@ -89,7 +89,7 @@ namespace Ballance2.Game.GamePlay.Moduls
         }
 
         P_Extra_Point_Tigger.onTriggerEnter = (_, otherBody) => {
-          if (! _Actived && otherBody.tag == "Ball") {
+          if (IsActive && ! _Actived && otherBody.tag == "Ball") {
             _Actived = true;
             StartFly();
             GamePlayManager.Instance.AddPoint(100); //大球是100分

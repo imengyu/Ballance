@@ -15,20 +15,21 @@ using Ballance2.UI.Core.Controls;
 */
 
 namespace Ballance2.UI.Core.ValueBinder
-{ 
-    [AddComponentMenu("Ballance/UI/ValueBinder/ToggleExValueBinder")]
-    [RequireComponent(typeof(ToggleEx))]
-    public class ToggleExValueBinder : GameUIControlValueBinder
+{
+  [AddComponentMenu("Ballance/UI/ValueBinder/ToggleExValueBinder")]
+  [RequireComponent(typeof(ToggleEx))]
+  public class ToggleExValueBinder : GameUIControlValueBinder
+  {
+    private ToggleEx toggle = null;
+    protected override bool OnBinderSupplierHandle(object value)
     {
-        private ToggleEx toggle = null;
-
-        protected override void BinderBegin() {
-            toggle = GetComponent<ToggleEx>();
-            BinderSupplierCallback = (value) => {
-                toggle.isOn = (bool)value;
-                return true;
-            };
-            toggle.onValueChanged.AddListener((on) => NotifyUserUpdate(on));
-        }
+      toggle.isOn = (bool)value;
+      return true;
     }
+    protected override void BinderBegin()
+    {
+      toggle = GetComponent<ToggleEx>();
+      toggle.onValueChanged.AddListener((on) => NotifyUserUpdate(on));
+    }
+  }
 }

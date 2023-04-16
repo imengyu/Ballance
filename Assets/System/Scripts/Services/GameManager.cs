@@ -209,6 +209,7 @@ namespace Ballance2.Services
 
       //通知初始化完成
       GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
+      GameMediator.NotifySingleEvent("DoSendAllPackageUILoad");
 
       //如果调试配置中设置了CustomDebugName，则进入自定义调试场景，否则进入默认场景
       if (string.IsNullOrEmpty(sCustomDebugName))

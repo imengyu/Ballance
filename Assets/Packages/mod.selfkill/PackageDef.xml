@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package name="mod.selfkill" version="1">
+  <BaseInfo>
+    <Name>自杀器</Name>
+    <Author>ballance</Author>
+    <Introduction>欲死不能时使用此工具使球快速死亡，可以在设置中修改按键</Introduction>
+    <Description><![CDATA[欲死不能时使用此工具使球快速死亡，可以在设置中修改按键。默认绑定按键R]]></Description>
+    <Link>https://imengyu.top/ballanceProject</Link>
+    <AuthorLink>https://imengyu.top/</AuthorLink>
+    <DocLink>https://imengyu.top/ballanceProject/doc</DocLink>
+    <VersionName>1.0</VersionName>
+    <Dependencies>
+      <Package name="core" minVer="1" mustLoad="true">
+      </Package>
+    </Dependencies>
+  </BaseInfo>
+  <Compatibility>
+    <MinVersion>155</MinVersion>
+    <TargetVersion>155</TargetVersion>
+  </Compatibility>
+  <Type>Module</Type>
+</Package>

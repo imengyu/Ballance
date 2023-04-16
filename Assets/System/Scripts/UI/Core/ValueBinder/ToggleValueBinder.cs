@@ -21,15 +21,15 @@ namespace Ballance2.UI.Core.ValueBinder
   public class ToggleValueBinder : GameUIControlValueBinder
   {
     private Toggle toggle = null;
+    
+    protected override bool OnBinderSupplierHandle(object value) {
+      toggle.isOn = (bool)value;
+      return true;
+    }
 
     protected override void BinderBegin()
     {
       toggle = GetComponent<Toggle>();
-      BinderSupplierCallback = (value) =>
-      {
-        toggle.isOn = (bool)value;
-        return true;
-      };
       toggle.onValueChanged.AddListener((on) =>
       {
         NotifyUserUpdate(on);

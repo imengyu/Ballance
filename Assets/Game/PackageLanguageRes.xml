@@ -93,6 +93,7 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.PackageManagerDisableAll">禁用所有模组</Text>
     <Text name="core.ui.PackageManagerSave">保存修改</Text>
     <Text name="core.ui.PackageManagerUnLoad">卸载</Text>
+    <Text name="core.ui.PackageManagerSetting">设置</Text>
     <Text name="core.ui.PackageManagerTip">模组修改提示</Text>
     <Text name="core.ui.PackageManagerChangeTip"> 改动了 {0} 个模组</Text>
     <Text name="core.ui.PackageManagerStatus"> 共有 {0} 个模组，已启用 {1} 个</Text>
@@ -120,6 +121,7 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.PackageSystemPackage">核心模组无法卸载或禁用</Text>
     <Text name="core.ui.PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸载模组提示</Text>
+    <Text name="core.ui.PackageManagerSettingUITitle">模组 {0} 的自定义配置</Text>
     <Text name="core.ui.TutorialText1">欢迎来到 Ballance！
 Ballance 平衡球 是一款滚球游戏。
 你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。
@@ -296,6 +298,7 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     <Text name="core.ui.PackageManagerDisableAll">Disable all modules</Text>
     <Text name="core.ui.PackageManagerSave">Save changes</Text>
     <Text name="core.ui.PackageManagerUnLoad">UnLoad</Text>
+    <Text name="core.ui.PackageManagerSetting">Setting</Text>
     <Text name="core.ui.PackageManagerTip">Tip</Text>
     <Text name="core.ui.PackageManagerChangeTip"> {0} modules state changed</Text>
     <Text name="core.ui.PackageManagerStatus">There are {0} modules in total, and {1} have been enabled</Text>
@@ -322,6 +325,7 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     <Text name="core.ui.PackageSystemPackage">Core module cannot be uninstalled or disabled</Text>
     <Text name="core.ui.PackageWantUnaload">Do you want to uninstall the module? It will be uninstalled from the game immediately. The module file will be deleted and cannot be recovered!</Text>
     <Text name="core.ui.PackageUnaloadTip">Uninstall module tip</Text>
+    <Text name="core.ui.PackageManagerSettingUITitle">Settings of mod {0}</Text>
     <Text name="core.ui.TutorialText1">Game Tutorial:
 You may halt or quit the game any time using the "ESC" key.
 You may continue the game tutorial with the "RETURN" key or quit the tutorial by pressing "Q".
@@ -482,6 +486,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.PackageManagerDisableAll">禁用所有模組</Text>
     <Text name="core.ui.PackageManagerSave">保存修改</Text>
     <Text name="core.ui.PackageManagerUnLoad">卸載</Text>
+    <Text name="core.ui.PackageManagerSetting">設定</Text>
     <Text name="core.ui.PackageManagerTip">模組修改提示</Text>
     <Text name="core.ui.PackageManagerChangeTip"> 改動了 {0} 個模組</Text>
     <Text name="core.ui.PackageManagerStatus"> 共有 {0} 個模組，已啟用 {1} 個</Text>
@@ -508,6 +513,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.PackageSystemPackage">覈心模組無法卸載或禁用</Text>
     <Text name="core.ui.PackageWantUnaload">你希望卸載模組嗎？ 它將立即從遊戲中卸載。 模組檔案將被删除，無法恢復！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸載模組提示</Text>
+    <Text name="core.ui.PackageManagerSettingUITitle">模組 {0} 的自定义設定</Text>
     <Text name="core.ui.TutorialText1">歡迎來到 Ballance！
 遊戲教程：
 您可以隨時使用“ESC”鍵停止或退出遊戲。

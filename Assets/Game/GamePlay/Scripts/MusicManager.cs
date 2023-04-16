@@ -19,7 +19,6 @@ namespace Ballance2.Game.GamePlay {
     public float _LastMusicIndex = 0;
     private int _LastDisablerTimer = 0;
     private bool _CurrentAudioIsAtmo = false;
-    private int _CurrebtDelayTimerId = 0;
 
     public bool CurrentAudioEnabled { get; private set; }
     public AudioSource CurrentAudioSource { get; private set; }

@@ -16,21 +16,24 @@ using UnityEngine.UI;
 
 namespace Ballance2.UI.Core.ValueBinder
 {
-    [AddComponentMenu("Ballance/UI/ValueBinder/DropdownValueBinder")]
-    [RequireComponent(typeof(Dropdown))]
-    public class DropdownValueBinder : GameUIControlValueBinder
-    {
-        private Dropdown dropdown = null;
+  [AddComponentMenu("Ballance/UI/ValueBinder/DropdownValueBinder")]
+  [RequireComponent(typeof(Dropdown))]
+  public class DropdownValueBinder : GameUIControlValueBinder
+  {
+    private Dropdown dropdown = null;
 
-        protected override void BinderBegin() {
-            dropdown = GetComponent<Dropdown>();
-            BinderSupplierCallback = (value) => {
-                dropdown.value = (int)value;
-                return true;
-            };
-            dropdown.onValueChanged.AddListener((v) => {
-                NotifyUserUpdate(v);
-            });
-        }
+    protected override bool OnBinderSupplierHandle(object value) {
+      dropdown.value = (int)value;
+      return true;
     }
+
+    protected override void BinderBegin()
+    {
+      dropdown = GetComponent<Dropdown>();
+      dropdown.onValueChanged.AddListener((v) =>
+      {
+        NotifyUserUpdate(v);
+      });
+    }
+  }
 }

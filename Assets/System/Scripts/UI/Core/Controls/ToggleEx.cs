@@ -31,7 +31,7 @@ namespace Ballance2.UI.Core.Controls
     public Sprite DeactiveImage;
     public Image CheckedButton;
     public Image UnCheckedButton;
-    public Text Text;
+    public I18NText Text;
 
     public Toggle.ToggleEvent onValueChanged;
     public bool UseButtonStyle = false;

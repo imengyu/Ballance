@@ -15,29 +15,34 @@ using Ballance2.UI.Core.Controls;
 */
 
 namespace Ballance2.UI.Core.ValueBinder
-{ 
-    [AddComponentMenu("Ballance/UI/ValueBinder/KeyChooseValueBinder")]
-    [RequireComponent(typeof(KeyChoose))]
-    public class KeyChooseValueBinder : GameUIControlValueBinder
-    {
-        private KeyChoose keyChoose = null;
+{
+  [AddComponentMenu("Ballance/UI/ValueBinder/KeyChooseValueBinder")]
+  [RequireComponent(typeof(KeyChoose))]
+  public class KeyChooseValueBinder : GameUIControlValueBinder
+  {
+    private KeyChoose keyChoose = null;
 
-        protected override void BinderBegin() {
-            keyChoose = gameObject.GetComponent<KeyChoose>();
-            BinderSupplierCallback = (value) => {
-                if(value.GetType() == typeof(int))
-                    keyChoose.value = (KeyCode)(int)value;
-                else if(value.GetType() == typeof(float)) 
-                    keyChoose.value = (KeyCode)(int)value;
-                else if(value.GetType() == typeof(double)) 
-                    keyChoose.value = (KeyCode)(int)(double)value;
-                else
-                    UnityEngine.Debug.Log("Unknow type:  " + value.GetType().Name + " " + value);
-                return true;
-            };
-            keyChoose.onValueChanged.AddListener((v) => {
-                NotifyUserUpdate(v);
-            });
-        }
+    protected override bool OnBinderSupplierHandle(object value)
+    {
+      if (value.GetType() == typeof(int))
+        keyChoose.value = (KeyCode)(int)value;
+      else if (value.GetType() == typeof(float))
+        keyChoose.value = (KeyCode)(int)value;
+      else if (value.GetType() == typeof(double))
+        keyChoose.value = (KeyCode)(int)(double)value;
+      else if (value.GetType() == typeof(KeyCode))
+        keyChoose.value = (KeyCode)value;
+      else
+        UnityEngine.Debug.Log("Unknow type:  " + value.GetType().Name + " " + value);
+      return true;
     }
+    protected override void BinderBegin()
+    {
+      keyChoose = gameObject.GetComponent<KeyChoose>();
+      keyChoose.onValueChanged.AddListener((v) =>
+      {
+        NotifyUserUpdate(v);
+      });
+    }
+  }
 }
