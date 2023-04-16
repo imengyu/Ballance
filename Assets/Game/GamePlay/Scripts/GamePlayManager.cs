@@ -652,12 +652,14 @@ namespace Ballance2.Game.GamePlay
 
       this.CurrentLevelPass = true;
       this._SoundLastSector.Stop(); //停止最后一小节的音乐
-      this._Stop(BallControlStatus.UnleashingMode);
+      this._Stop(BallControlStatus.FreeMode);
+
+      GameTimer.Delay(0.6f, () => BallManager.SetControllingStatus(BallControlStatus.UnleashingMode));
 
       //禁用键盘摄像机控制
       BallManager.CanControllCamera = false;
 
-      //过关后马上渐变淡出云层，因为摄像机要看到边界的地方了
+      //过关后马上渐变淡出云层，因为摄像机要放平看到边界的地方了
       if (LevelBuilderRef.CurrentLevelSkyLayer && LevelBuilderRef.CurrentLevelSkyLayer.activeSelf)
         GameUIManager.Instance.UIFadeManager.AddFadeOut(LevelBuilderRef.CurrentLevelSkyLayer, 5, true, null);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -129,7 +130,7 @@ namespace Ballance2.Utils
     /// <br/>* clear ： Color.clear
     /// <br/>* cyan ： Color.cyan
     /// <br/>* gray ： Color.gray
-    /// v* green ： Color.green
+    /// <br/>* green ： Color.green
     /// <br/>* magenta ： Color.magenta
     /// <br/>* red ： Color.red
     /// <br/>* white ： Color.white
@@ -287,6 +288,28 @@ namespace Ballance2.Utils
       }
       return rs;
     }
+    /// <summary>
+    /// 比较Bytes (指定长度)
+    /// </summary>
+    /// <param name="inV">bytes数组1</param>
+    /// <param name="outV">bytes数组2</param>
+    /// <returns>返回两个Bytes是否相等</returns>
+    public static bool TestBytesMatchN(byte[] inV, byte[] outV, int len)
+    {
+      bool rs = true;
+      if (inV != null && outV != null)
+      {
+        for (int i = 0, c = outV.Length; i < c && i < len; i++)
+        {
+          if (inV[i] != outV[i])
+          {
+            rs = false;
+            break;
+          }
+        }
+      }
+      return rs;
+    }
 
     /// <summary>
     /// 修复UTF8的BOM头
@@ -296,15 +319,11 @@ namespace Ballance2.Utils
     public static byte[] FixUtf8BOM(byte[] buffer)
     {
       byte[] bomBuffer = new byte[] { 0xef, 0xbb, 0xbf };
-      if (buffer.Length > 3 && buffer[0] == bomBuffer[0]
-          && buffer[1] == bomBuffer[1]
-          && buffer[2] == bomBuffer[2])
-      {
-        byte[] bomBufferFixed = new byte[bomBuffer.Length - 3];
-        for (int i = 0; i < buffer.Length - 3; i++)
-          bomBufferFixed[i] = buffer[i + 3];
-        return bomBufferFixed;
-      }
+      if (
+        buffer.Length > 3
+        && TestBytesMatchN(buffer, bomBuffer, 3)
+      )
+        return buffer.Skip(3).ToArray();
       return buffer;
     }
 

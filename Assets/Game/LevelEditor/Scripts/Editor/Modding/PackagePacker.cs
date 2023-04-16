@@ -52,6 +52,7 @@ namespace Ballance2.Editor.Modding
               if (filesPath.EndsWith(".md")) continue;
               if (filesPath.Contains("NoPackage")) continue;
               if (filesPath.EndsWith(".cs")) continue;
+              if (filesPath.EndsWith(".csproj")) continue;
               if (isCore && filesPath.Contains("Levels")) continue;
               if (isCore && filesPath.Contains("Scripts/Native")) continue;
 
@@ -133,7 +134,7 @@ namespace Ballance2.Editor.Modding
       //添加DLL
       string projDllFile = projModDirPath + Path.DirectorySeparatorChar + ".dll" + Path.DirectorySeparatorChar + packPackageName + ".dll";
       if (File.Exists(projDllFile)) 
-        ZipUtils.AddFileToZip(zipStream, projDllFile, projModDirPath.Length, ref crc);
+        ZipUtils.AddFileToZip(zipStream, projDllFile, "csharp/" + packPackageName + ".dll", ref crc);
 
       zipStream.Finish();
       zipStream.Close();

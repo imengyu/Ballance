@@ -52,10 +52,11 @@ namespace Ballance2.Menu
         }
         //非 windows 隐藏此按扭
         #if !UNITY_STANDALONE_WIN
-          PageStart.Content.Find("ButtonNMO").gameObject.SetActive(false)
-        #endif
+          PageStart.Content.Find("ButtonNMO").gameObject.SetActive(false);
+        #else
         if (!FileUtils.DirectoryExists(Application.dataPath + "/VirtoolsLoader/"))
           PageStart.Content.Find("ButtonNMO").gameObject.SetActive(false);
+        #endif
       };
       PageGlobalConfirm.OnShow = (options) => {
         var ButtonConfirmText = PageStart.Content.Find("Panel/ButtonConfirm/Text").GetComponent<Text>();

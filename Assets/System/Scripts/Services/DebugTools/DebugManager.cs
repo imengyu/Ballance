@@ -2,6 +2,7 @@
 using Ballance2.Res;
 using Ballance2.Services;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
 * Copyright(c) 2022  mengyu
@@ -58,6 +59,7 @@ namespace Ballance2.DebugTools
       GameManager.Instance.GameDebugCommandServer.RegisterCommand("quit-dev", (keyword, fullCmd, argsCount, args) => {
         Destroy();
         GameManager.Instance.GameSettings.SetBool("DebugMode", false);
+        GameManager.Instance.RestartGame();
         return true;
       }, 0, "quit-dev > 退出开发者模式");
 

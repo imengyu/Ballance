@@ -35,7 +35,7 @@ namespace Ballance2.Menu
     public bool ThisTimeHasNewHighscore { get; private set; }
 
     private void Start() {
-      GameTimer.Delay(1.4f, () => {
+      GameTimer.Delay(2.4f, () => {
         var SoundManager = GameSoundManager.Instance;
         this._SwitchSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_dong.wav", false, true, "WinScoreUISwitch");
         this._HighscoreSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds.music:Music_Highscore.wav", false, true, "WinScoreUISwitch");

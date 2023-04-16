@@ -67,9 +67,9 @@ namespace Ballance2.Menu
     /// <summary>
     /// 获取所有已注册键盘
     /// </summary>
-    public static Dictionary<string, KeypadUIInfo>.ValueCollection GetAllKeypad()
+    public static Dictionary<string, KeypadUIInfo> GetAllKeypad()
     {
-      return keypadData.Values;
+      return keypadData;
     } 
     /// <summary>
     /// 取消键盘

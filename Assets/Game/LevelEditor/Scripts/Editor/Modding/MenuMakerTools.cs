@@ -95,6 +95,10 @@ namespace Ballance2.Editor.Modding
       };
       choosePlatformWindow.Show();
     }
+    [@MenuItem("Ballance/工具/清空 BuiltInPackages 目录", false, 103)]
+    static void ClearBuiltInPackages() {
+      Directory.Delete("Assets/StreamingAssets/BuiltInPackages");
+    }
 
     private static void CopyDebugFolder(string name, string debugFolder, string folder)
     {

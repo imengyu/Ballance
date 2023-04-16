@@ -164,6 +164,7 @@ namespace Ballance2.Editor.Modding
 
       foreach(XmlNode node in xml.DocumentElement.ChildNodes) {
         if (node.Name == "PropertyGroup") {
+          bool isRoot = false;
           foreach(XmlNode node1 in node.ChildNodes) {
             if (node1.Name == "ProjectGuid") {
               node1.InnerText = GUID.Generate().ToString();
@@ -171,7 +172,15 @@ namespace Ballance2.Editor.Modding
               node1.InnerText = modPackageName;
             } else if (node1.Name == "OutputPath") {
               node1.InnerText = ".dll";
+            } else if (node1.Name == "RootNamespace") {
+              isRoot = true;
             }
+          }
+
+          if (isRoot) {
+            var biNode = xml.CreateElement("BaseIntermediateOutputPath");
+            biNode.InnerText = "..\\..\\..\\obj\\";
+            node.AppendChild(biNode);
           }
         } else if (node.Name == "ItemGroup") {
           for (var i = node.ChildNodes.Count - 1; i >= 0; i--)

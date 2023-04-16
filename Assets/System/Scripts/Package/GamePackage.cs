@@ -203,7 +203,7 @@ namespace Ballance2.Package
         Log.E(TAG, "无法加载DLL：" + PackageName + ".dll");
         return false;
       }
-      type = CSharpAssembly.GetType("PackageEntry");
+      type = CSharpAssembly.GetType(PackageName + ".PackageEntry");
 
       #endif
       

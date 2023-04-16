@@ -38,8 +38,8 @@ namespace Ballance2.Menu
 
       //手机端还需要创建键盘
       #if (UNITY_ANDROID || UNITY_IOS)
+      _CurrentMobileKeyPadShow = true;
       ReBuildMobileKeyPad();
-      _CurrentMobileKeyPadShow = false;
       GamePlayManager.Instance.EventBeforeStart.On((evt) => {
         _CurrentMobileKeyPadShow = true;
         if (_CurrentMobileKeyPad != null)
@@ -98,7 +98,7 @@ namespace Ballance2.Menu
         _CurrentMobileKeyPad = null;
       }
     }
-    private void ReBuildMobileKeyPad() {
+    internal void ReBuildMobileKeyPad() {
       //销毁键盘
       DestroyMobileKeyPad();
       //读取键盘设置
