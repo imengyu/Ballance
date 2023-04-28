@@ -46,6 +46,7 @@ namespace Ballance2.Editor.Modding
         private void OnEnable()
         {
             serializedObject = new SerializedObject(this);
+            packTarget = (BuildTarget)EditorPrefs.GetInt("WindowPackageMakerAllDialogPackTarget", (int)BuildTarget.NoTarget);
             pPackTarget = serializedObject.FindProperty("packTarget");
 
             LoadDefConfig();
@@ -53,6 +54,7 @@ namespace Ballance2.Editor.Modding
         }
         private void OnDisable()
         {
+            EditorPrefs.SetInt("WindowPackageMakerAllDialogPackTarget", (int)packTarget);
             EditorUtility.ClearProgressBar();
             SaveDefConfig();
         }

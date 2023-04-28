@@ -16,6 +16,7 @@ namespace Ballance2.Menu
 
     private class MobileControlItem {
       public string name;
+      public string explain;
       public Sprite image;
     }
     private List<MobileControlItem> items = new List<MobileControlItem>();
@@ -29,6 +30,7 @@ namespace Ballance2.Menu
         var data = items[index];
         var Listener = item.GetComponent<EventTriggerListener>();
         var ImageBg = item.Find("ImageBg");
+        var text = item.Find("Text").GetComponent<Text>();
         var ImageBgActive = item.Find("ImageBgActive");
         var image = item.Find("Image").GetComponent<Image>();
 
@@ -40,6 +42,7 @@ namespace Ballance2.Menu
           ImageBgActive.gameObject.SetActive(false);
         }
 
+        text.text = data.explain;
         image.sprite = data.image;
 
         Listener.onClick = (o) => {
@@ -71,6 +74,7 @@ namespace Ballance2.Menu
         items.Add(new MobileControlItem() {
           name = item.Key,
           image = item.Value.image,
+          explain = item.Value.explain,
         });
       }
     }

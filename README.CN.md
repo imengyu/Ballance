@@ -23,7 +23,7 @@
 
 ---
 
-![image](/Assets/System/Textures/splash_app.bmp)
+![image](/Assets/Game/Common/Textures/UI/LogoPicture.jpg)
 
 * [Gitee 国内镜像](https://gitee.com/imengyu/Ballance)
 * [Github](https://github.com/imengyu/Ballance)

@@ -15,6 +15,7 @@ MonoBehaviour:
   DebugFolder: ./Debug
   OutputFolder: ./Output/Ballance_Data
   OutputAppMac: ./Output.app
+  OutputAppLinux: ./Output/Linux64
   EnableSystemDebugTests: 1
   SystemInitLoadWay: 1
   PackageLoadWay: 1

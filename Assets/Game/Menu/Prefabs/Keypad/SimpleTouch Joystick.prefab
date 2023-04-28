@@ -193,6 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9721520fd6c27c642b0fbfaf0309d9fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  JoystickImage: {fileID: 114000013339736736}
+  Joystick: {fileID: 114000012236799208}
   SpaceSize: 0.2
 --- !u!1 &1000011217410404
 GameObject:

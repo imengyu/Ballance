@@ -31,6 +31,8 @@ namespace Ballance2.Config.Settings
     public string OutputFolder = "";
     [Tooltip("设置 Ballance 在 Mac 打包生成的文件夹路径")]
     public string OutputAppMac = "";
+    [Tooltip("设置 Ballance 在 Linux 打包生成的文件夹路径")]
+    public string OutputAppLinux = "";
     [Tooltip("设置是否启用System调试测试")]
     public bool EnableSystemDebugTests = true;
     [Tooltip("设置系统初始化文件加载方式")]

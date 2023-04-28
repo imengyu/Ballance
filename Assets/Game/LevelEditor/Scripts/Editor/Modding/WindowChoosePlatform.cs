@@ -39,10 +39,12 @@ namespace Ballance2.Editor.Modding
     private void OnEnable()
     {
       serializedObject = new SerializedObject(this);
+      packTarget = (BuildTarget)EditorPrefs.GetInt("WindowChoosePlatformDialogPackTarget", (int)BuildTarget.NoTarget);
       pPackTarget = serializedObject.FindProperty("packTarget");
     }
     private void OnDisable()
     {
+      EditorPrefs.SetInt("WindowChoosePlatformDialogPackTarget", (int)packTarget);
       EditorUtility.ClearProgressBar();
     }
     private void OnGUI()

@@ -11,12 +11,14 @@ namespace Ballance2.Menu
   public class KeypadUIManager
   {
     public struct KeypadUIInfo {
-      public KeypadUIInfo(GameObject prefab, Sprite image) {
+      public KeypadUIInfo(GameObject prefab, Sprite image, string explain) {
         this.prefab = prefab;
         this.image = image;
+        this.explain = explain;
       }
       public GameObject prefab;
       public Sprite image;
+      public string explain;
     }
 
     private const string TAG = "KeypadUIManager";
@@ -29,7 +31,7 @@ namespace Ballance2.Menu
     /// <param name="prefab">键盘对象预制体</param>
     /// <param name="image">这个键盘的菜单图片，用于菜单显示</param>
     /// <returns>返回true注册成功，返回false失败，可能是已经注册过同名键盘</returns>
-    public static bool AddKeypad(string name, GameObject prefab, Sprite image)
+    public static bool AddKeypad(string name, GameObject prefab, Sprite image, string explain)
     {
       if (keypadData.ContainsKey(name)) {
         GameErrorChecker.SetLastErrorAndLog(GameError.AlreadyRegistered, TAG, $"Keypad {name} already registered!");
@@ -41,7 +43,7 @@ namespace Ballance2.Menu
         return false;
       }
 
-      keypadData.Add(name, new KeypadUIInfo(prefab, image));  
+      keypadData.Add(name, new KeypadUIInfo(prefab, image, explain));  
       return true;
     }
     /// <summary>

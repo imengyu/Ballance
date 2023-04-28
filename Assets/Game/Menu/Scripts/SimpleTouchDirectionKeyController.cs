@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Ballance2.UI.Utils;
+using Ballance2.Services;
 
 namespace Ballance2.Menu
 {
@@ -100,6 +101,8 @@ namespace Ballance2.Menu
     private bool state = false;
     private Rect rect = new Rect();
     private Canvas Canvas;
+    private int settingsUpdateCallbackId = 0;
+    private float keySize = 80;
 
     private void InitRect() {
       rect = (transform as RectTransform).rect;
@@ -108,15 +111,57 @@ namespace Ballance2.Menu
       rect.width = rect.width * Canvas.scaleFactor;
       rect.height = rect.height * Canvas.scaleFactor;
     }
+    private void InitKeys() {
+      var GameSettings = GameManager.Instance.GameSettings;
+      settingsUpdateCallbackId = GameSettings.RegisterSettingsUpdateCallback("control", (groupName, action) => {
+        SetKeysSize(GameSettings.GetFloat("control.key.size", keySize));
+        InitRect();
+        return false;
+      });
+      SetKeysSize(GameSettings.GetFloat("control.key.size", keySize));
+    }
+    private void SetKeysSize(float newKeySize) {
+      if (keySize != newKeySize) {
+        keySize = newKeySize;
+        (transform as RectTransform).sizeDelta = new Vector2(keySize * 3.5f, keySize * 3.5f);
+
+        var keySizeVec = new Vector2(keySize, keySize);
+        var keyPadding = keySize * 0.5f;
+        
+        ImageForwardLeft.rectTransform.anchoredPosition = new Vector2(keyPadding, 0);
+        ImageForwardLeft.rectTransform.sizeDelta = keySizeVec;
+        ImageForward.rectTransform.anchoredPosition = new Vector2(keyPadding + keySize, 0);
+        ImageForward.rectTransform.sizeDelta = keySizeVec;
+        ImageForwardRight.rectTransform.anchoredPosition = new Vector2(keyPadding + keySize * 2, 0);
+        ImageForwardRight.rectTransform.sizeDelta = keySizeVec;
+        ImageLeft.rectTransform.anchoredPosition = new Vector2(keyPadding, -keySize);
+        ImageLeft.rectTransform.sizeDelta = keySizeVec;
+        ImageRight.rectTransform.anchoredPosition = new Vector2(keyPadding + keySize * 2, -keySize);
+        ImageRight.rectTransform.sizeDelta = keySizeVec;
+        ImageBackLeft.rectTransform.anchoredPosition = new Vector2(keyPadding, -keySize * 2);
+        ImageBackLeft.rectTransform.sizeDelta = keySizeVec;
+        ImageBack.rectTransform.anchoredPosition = new Vector2(keyPadding + keySize, -keySize * 2);
+        ImageBack.rectTransform.sizeDelta = keySizeVec;
+        ImageBackRight.rectTransform.anchoredPosition = new Vector2(keyPadding + keySize * 2, -keySize * 2);
+        ImageBackRight.rectTransform.sizeDelta = keySizeVec;
+      }
+    }
 
     protected override void Start()
     {
       currentState = KeyPadJoystickDirection.None;
       Canvas = GetComponentInParent<Canvas>().rootCanvas;
       InitRect();
+      InitKeys();
+      base.Start();
     }
     protected override void OnRectTransformDimensionsChange() {
       InitRect();
+    }
+    protected override void OnDestroy()
+    {
+      base.OnDestroy();
+      GameManager.Instance.GameSettings.UnRegisterSettingsUpdateCallback(settingsUpdateCallbackId);
     }
 
     private void Update()

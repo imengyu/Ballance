@@ -14,6 +14,7 @@ namespace Ballance2.Menu
     private void Start() {
       //自动扫描开头为Button的对象作为按钮，最多扫描2级
       for (int i = 0; i < transform.childCount; i++) {
+
         var child = transform.GetChild(i);
         if(
           child.gameObject.name.StartsWith("Button") 

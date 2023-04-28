@@ -1,6 +1,7 @@
 using Ballance2.Game.GamePlay;
 using Ballance2.Package;
 using Ballance2.Services;
+using Ballance2.Services.I18N;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -92,10 +93,10 @@ namespace Ballance2.Menu
         }
       });
 
-      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l.png"));
-      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r.png"));
-      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l.png"));
-      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r.png"));
+      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseLeft"));
+      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseRight"));
+      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyLeft"));
+      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyRight"));
     }
   }
 }

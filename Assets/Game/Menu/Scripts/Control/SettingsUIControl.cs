@@ -103,6 +103,10 @@ namespace Ballance2.Menu
       var updateControlReverse = MessageCenter.SubscribeValueBinder("ControlReverse", (val) => {
         GameSettings.SetBool("control.reverse", (bool)val);
       });
+      var updateControlUISize = MessageCenter.SubscribeValueBinder("ControlUISize", (val) => {
+        GameSettings.SetFloat("control.key.size", (float)val);
+        GameSettings.NotifySettingsUpdate("control");
+      });
 
       Resolution[] resolutions = null;
       QualitiesItemData[] qualities = null;
@@ -172,6 +176,8 @@ namespace Ballance2.Menu
           updateControlKeyRoateCam.Invoke(GameSettings.GetInt("control.key.roate", (int)KeyCode.LeftShift));
         if (updateControlReverse != null) 
           updateControlReverse.Invoke(GameSettings.GetBool("control.reverse", false));
+        if (updateControlUISize != null) 
+          updateControlUISize.Invoke(GameSettings.GetFloat("control.key.size", 80));
         
         #if UNITY_IOS || UNITY_ANDROID
           GameUIManager.GoPage("PageSettingsControlsMobile");

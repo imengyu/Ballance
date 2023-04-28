@@ -1,4 +1,6 @@
+using Ballance2.Services;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ballance2.Menu
 {
@@ -24,6 +26,8 @@ namespace Ballance2.Menu
   public class KeyPadJoystickController : MonoBehaviour
   {
     public KeyPadJoystickValueChanged ValueChanged;
+    public Image JoystickImage;
+    public Image Joystick;
 
     public float SpaceSize = 0.2f;
 
@@ -31,8 +35,9 @@ namespace Ballance2.Menu
     private KeyPadJoystickDirection currentState;
     private bool state = false;
 
-    void Start()
+    private void Start()
     {
+      InitKeys();
       controller = GetComponent<SimpleTouchController>();
       controller.TouchEvent += (value) => {
         if(state)
@@ -43,5 +48,29 @@ namespace Ballance2.Menu
         ValueChanged?.Invoke(0, 0);
       };
     }
+    private void OnDestroy()
+    {
+      GameManager.Instance.GameSettings.UnRegisterSettingsUpdateCallback(settingsUpdateCallbackId);
+    }
+
+    private int settingsUpdateCallbackId = 0;
+    private float keySize = 80;
+
+    private void InitKeys() {
+      var GameSettings = GameManager.Instance.GameSettings;
+      settingsUpdateCallbackId = GameSettings.RegisterSettingsUpdateCallback("control", (groupName, action) => {
+        SetKeysSize(GameSettings.GetFloat("control.key.size", keySize));
+        return false;
+      });
+      SetKeysSize(GameSettings.GetFloat("control.key.size", keySize));
+    }
+    private void SetKeysSize(float newKeySize) {
+      if (keySize != newKeySize) {
+        keySize = newKeySize;
+        Joystick.rectTransform.sizeDelta = new Vector2(keySize * 2.5f, keySize * 2.5f);
+        JoystickImage.rectTransform.sizeDelta = new Vector2(keySize, keySize);
+      }
+    }
+
   }
 }

@@ -23,7 +23,7 @@
 
 ---
 
-![image](/Assets/System/Textures/splash_app.bmp)
+![image](/Assets/Game/Common/Textures/UI/LogoPicture.jpg)
 
 ## Introduction
 
