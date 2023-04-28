@@ -164,7 +164,7 @@ namespace Ballance2.Game.LevelBuilder
           return;
         }
         //osx前缀 file://
-        #if UNITY_STANDALONE_OSX || UNITY_IOS
+        #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX || UNITY_IOS
         if(!path.Contains("jar:file://"))
           path = "file://" + path;
         #endif

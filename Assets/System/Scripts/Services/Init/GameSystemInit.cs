@@ -66,6 +66,12 @@ namespace Ballance2.Services.Init
           return false;
         });
 
+  #if !UNITY_EDITOR
+        //初始化物理引擎
+        PhysicsApi.SecretKey = "666dccad4ae697b45aac145f18f49c5b";
+        PhysicsSystemInit.DoInit();
+  #endif
+
         //Init base services
         GameSystem.RegSystemService<GameManager>();
         GameSystem.RegSystemService<GamePackageManager>();
@@ -73,12 +79,6 @@ namespace Ballance2.Services.Init
         GameSystem.RegSystemService<GameTimeMachine>();
         GameSystem.RegSystemService<GamePoolManager>();
         GameSystem.RegSystemService<GameSoundManager>();
-
-  #if !UNITY_EDITOR
-        //初始化物理引擎
-        PhysicsApi.SecretKey = "666dccad4ae697b45aac145f18f49c5b";
-        PhysicsSystemInit.DoInit();
-  #endif
       }
       else if (act == GameSystem.ACTION_DESTROY)
       {
