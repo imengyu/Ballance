@@ -113,7 +113,7 @@ namespace Ballance2.Services.Init
         //初始化设置
         GameSettingsManager.Init();
         //初始化I18N 和系统字符串资源
-        I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings("core").GetInt("language", (int)Application.systemLanguage));
+        I18NProvider.SetCurrentLanguage((SystemLanguage)GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME).GetInt("language", (int)Application.systemLanguage));
         I18NProvider.LoadLanguageResources(Resources.Load<TextAsset>("StaticLangResource").text);
       }
     }

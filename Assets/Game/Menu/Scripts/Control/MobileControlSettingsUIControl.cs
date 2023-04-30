@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Ballance2.Game;
 using Ballance2.Game.GamePlay;
 using Ballance2.Package;
 using Ballance2.Services;
@@ -22,7 +23,7 @@ namespace Ballance2.Menu
     private List<MobileControlItem> items = new List<MobileControlItem>();
 
     private void Start() {
-      var settings = GameSettingsManager.GetSettings("core");
+      var settings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       var page = GameUIManager.Instance.FindPage("PageSettingsControlsMobile");
       var controlKeypadSettting = "";
 
@@ -47,7 +48,7 @@ namespace Ballance2.Menu
 
         Listener.onClick = (o) => {
           controlKeypadSettting = data.name;
-          settings.SetString("control.keypad", data.name);
+          settings.SetString(SettingConstants.SettingsControlKeypad, data.name);
 
           //更新列表
           ScrollView.UpdateData(false);
@@ -62,7 +63,7 @@ namespace Ballance2.Menu
       };
 
       page.OnShow = (o) => {
-        controlKeypadSettting = settings.GetString("control.keypad", "BaseLeft");
+        controlKeypadSettting = settings.GetString("control.keypad", "BaseCenter");
         LoadList();
         ScrollView.UpdateData(false);
       };

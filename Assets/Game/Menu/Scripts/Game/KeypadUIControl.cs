@@ -1,3 +1,5 @@
+using Ballance2.Game;
+using Ballance2.Menu.Touch;
 using Ballance2.Services;
 using Ballance2.Services.InputManager;
 using UnityEngine;
@@ -11,19 +13,45 @@ namespace Ballance2.Menu
     //private bool shiftPressOne = false;
     private bool lastCameraSpaceByShift = false;
 
+    public KeypadGridLayout[] KeypadActionButtons;
+    private int settingsUpdateCallbackId = 0;
+
     private void Start() {
-      //自动扫描开头为Button的对象作为按钮，最多扫描2级
+      InitKeys();
+      InitKeySize();
+    }
+    private void OnDestroy() {
+     GameManager.Instance.GameSettings.UnRegisterSettingsUpdateCallback(settingsUpdateCallbackId);
+    }
+    
+    //键盘大小设置控制
+    private void InitKeySize() {
+      var GameSettings = GameManager.Instance.GameSettings;
+      settingsUpdateCallbackId = GameSettings.RegisterSettingsUpdateCallback(SettingConstants.SettingsControl, (groupName, action) => {
+        SetKeysSize(GameSettings.GetFloat(SettingConstants.SettingsControlKeySize));
+        return false;
+      });
+      SetKeysSize(GameSettings.GetFloat(SettingConstants.SettingsControlKeySize));
+    }
+    private void SetKeysSize(float newKeySize) {
+      if (KeypadActionButtons != null)
+        foreach(var layout in KeypadActionButtons)
+          layout.DoLayout(newKeySize);
+    }
+   
+    //自动扫描开头为Button的对象作为按钮，最多扫描2级
+    private void InitKeys() {
       for (int i = 0; i < transform.childCount; i++) {
 
         var child = transform.GetChild(i);
         if(
           child.gameObject.name.StartsWith("Button") 
-          || child.gameObject.name == "Joystick"
-          || child.gameObject.name == "DirectionKey"
+          || child.gameObject.name.StartsWith("Joystick")
+          || child.gameObject.name.StartsWith("DirectionKey")
         ) {
           AddButton(child.gameObject);
         }
-        else if (child.childCount > 0) {
+        if (child.childCount > 0) {
           for (int j = 0; j < child.childCount; j++) {
             var child2 = child.GetChild(j).gameObject;
             if(child2.name.StartsWith("Button"))
@@ -31,8 +59,9 @@ namespace Ballance2.Menu
           }
         }
       }
+      
     }
-
+    
     //添加按钮
     private void AddButton(GameObject go) {
       var name = go.name;
@@ -40,13 +69,13 @@ namespace Ballance2.Menu
       var CamManager = GamePlayManager.CamManager;
       var BallManager = GamePlayManager.BallManager;
 
-      if (name == "Joystick") {
+      if (name.StartsWith("Joystick")) {
 
         var Joystick = go.GetComponent<KeyPadJoystickController>();
         Joystick.ValueChanged = (x, y) => BallManager.SetBallPushValue(x, y);
 
       }
-      else if (name == "DirectionKey") {
+      else if (name.StartsWith("DirectionKey")) {
 
         var DirectionKey = go.GetComponent<SimpleTouchDirectionKeyController>();
         DirectionKey.DirectionChanged = (state, dir) => {
@@ -138,7 +167,7 @@ namespace Ballance2.Menu
         }
         else if (name == "ButtonShift") {
 
-          //hift键
+          //shift键
           //listener.onDown = (_) => shiftPressOne = true;
           //listener.onUp = (_) => shiftPressOne = false;
 

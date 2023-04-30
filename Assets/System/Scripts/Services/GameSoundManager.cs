@@ -1,5 +1,6 @@
 ﻿using Ballance2.Base;
 using Ballance2.Config;
+using Ballance2.Game;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
@@ -56,9 +57,9 @@ namespace Ballance2.Services
       );
 
       //设置更新事件
-      GameSettings = GameSettingsManager.GetSettings("core");
-      GameSettings.RegisterSettingsUpdateCallback("voice", OnVoiceSettingsUpdated);
-      GameSettings.RequireSettingsLoad("voice");
+      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      GameSettings.RegisterSettingsUpdateCallback(SettingConstants.SettingsVoice, OnVoiceSettingsUpdated);
+      GameSettings.RequireSettingsLoad(SettingConstants.SettingsVoice);
       return true;
     }
     
@@ -338,9 +339,9 @@ namespace Ballance2.Services
     //加载声音设置
     private bool OnVoiceSettingsUpdated(string groupName, int action)
     {
-      float volBackground = GameSettings.GetFloat("voice.background", 20);
-      float volUI = GameSettings.GetFloat("voice.ui", 80);
-      float volMain = GameSettings.GetFloat("voice.main", 100);
+      float volBackground = GameSettings.GetFloat(SettingConstants.SettingsVoiceBackground);
+      float volUI = GameSettings.GetFloat(SettingConstants.SettingsVoiceUI);
+      float volMain = GameSettings.GetFloat(SettingConstants.SettingsVoiceMain);
 
       GameUIAudioMixer.SetFloat("UIMasterVolume", volUI <= 1 ? -60 : (20.0f * Mathf.Log10(volUI / 100.0f)));
       GameMainAudioMixer.SetFloat("MasterVolume", volMain <= 1 ? -60 : (20.0f * Mathf.Log10(volMain / 100.0f)));

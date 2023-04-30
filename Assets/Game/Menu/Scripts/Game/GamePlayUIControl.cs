@@ -102,14 +102,14 @@ namespace Ballance2.Menu
       //销毁键盘
       DestroyMobileKeyPad();
       //读取键盘设置
-      var settings = GameSettingsManager.GetSettings("core");
-      var controlKeypadSettting = settings.GetString("control.keypad", "BaseLeft");
+      var settings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      var controlKeypadSettting = settings.GetString(SettingConstants.SettingsControlKeypad);
 
       KeypadUIManager.KeypadUIInfo keyPad;
       if (!KeypadUIManager.GetKeypadRegistered(controlKeypadSettting)) 
       {
         Log.E("GamePlayUIControl", "Keypad in setting \"" + controlKeypadSettting + "\" not found, use default keypad insted.");
-        keyPad = KeypadUIManager.GetKeypad("BaseLeft");
+        keyPad = KeypadUIManager.GetKeypad("BaseCenter");
       } 
       else 
       {

@@ -844,8 +844,8 @@ namespace Ballance2.Game.LevelBuilder {
         Log.D(TAG, "No SkyLayer");
 
       //如果设置禁用了云层，则隐藏
-      var GameSettings = GameSettingsManager.GetSettings("core");
-      if (!GameSettings.GetBool("video.cloud", true))
+      var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      if (!GameSettings.GetBool(SettingConstants.SettingsVideoCloud))
         CurrentLevelSkyLayer.SetActive(false);
 
       Log.D(TAG, "Load music");

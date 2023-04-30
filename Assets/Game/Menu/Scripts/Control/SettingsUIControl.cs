@@ -1,3 +1,4 @@
+using Ballance2.Game;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
@@ -37,6 +38,13 @@ namespace Ballance2.Menu
       PagePackageManagerInfo.CreateContent(package);
       PagePackageManagerTrust.CreateContent(package);
 
+      PageSettingsControls.OnShow += (options) => {
+        if (!GameManager.DebugMode) {
+          PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/ButtonKeyChooseControlKeyUp").gameObject.SetActive(false);
+          PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/ButtonKeyChooseControlKeyDown").gameObject.SetActive(false);
+        }
+      };
+
       GameTimer.Delay(1.0f, () => {
         BindSettingsUI(MessageCenter);
       });
@@ -48,64 +56,73 @@ namespace Ballance2.Menu
     }
 
     private static void BindSettingsUI(GameUIMessageCenter MessageCenter) {
-      var GameSettings = GameSettingsManager.GetSettings("core");
+      var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       var GameUIManager = Ballance2.Services.GameUIManager.Instance;
 
       //设置数据绑定
       //声音
       var updateVoiceMain = MessageCenter.SubscribeValueBinder("VoiceMain", (val) => {
-        GameSettings.SetFloat("voice.main", (float)val);
-        GameSettings.NotifySettingsUpdate("voice");
+        GameSettings.SetFloat(SettingConstants.SettingsVoiceMain, (float)val);
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsVoice);
       });
       var updateVoiceUI = MessageCenter.SubscribeValueBinder("VoiceUI", (val) => {
-        GameSettings.SetFloat("voice.ui", (float)val);
-        GameSettings.NotifySettingsUpdate("voice");
+        GameSettings.SetFloat(SettingConstants.SettingsVoiceUI, (float)val);
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsVoice);
       });
       var updateVioceBackground = MessageCenter.SubscribeValueBinder("VioceBackground", (val) => {
-        GameSettings.SetFloat("voice.background", (float)val);
-        GameSettings.NotifySettingsUpdate("voice");
+        GameSettings.SetFloat(SettingConstants.SettingsVoiceBackground, (float)val);
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsVoice);
       });
       //视频
       var updateGrResolution = MessageCenter.SubscribeValueBinder("GrResolution", (val) => {
-        GameSettings.SetInt("video.resolution", (int)(float)val);
+        GameSettings.SetInt(SettingConstants.SettingsVideoResolution, (int)(float)val);
       });
       var updateGrQuality = MessageCenter.SubscribeValueBinder("GrQuality", (val) => {
-        GameSettings.SetInt("video.quality", (int)(float)val);
+        GameSettings.SetInt(SettingConstants.SettingsVideoQuality, (int)(float)val);
       });
       var updateGrFullScreen = MessageCenter.SubscribeValueBinder("GrFullScreen", (val) => {
-        GameSettings.SetBool("video.fullScreen", (bool)val);
+        GameSettings.SetBool(SettingConstants.SettingsVideoFullScreen, (bool)val);
       });
       var updateGrCloud = MessageCenter.SubscribeValueBinder("GrCloud", (val) => {
-        GameSettings.SetBool("video.cloud", (bool)val);
+        GameSettings.SetBool(SettingConstants.SettingsVideoCloud, (bool)val);
       });
       var updateGrVSync = MessageCenter.SubscribeValueBinder("GrVSync", (val) => {
-        GameSettings.SetInt("video.vsync", (bool)val ? 1 : 0 );
+        GameSettings.SetInt(SettingConstants.SettingsVideoVsync, (bool)val ? 1 : 0 );
       });
       //控制
+      var updateControlKeyForward = MessageCenter.SubscribeValueBinder("ControlKeyForward", (val) => {
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyFront, (int)val);
+      });
+      var updateControlKeyBack = MessageCenter.SubscribeValueBinder("ControlKeyBack", (val) => {
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyBack, (int)val);
+      });
       var updateControlKeyUp = MessageCenter.SubscribeValueBinder("ControlKeyUp", (val) => {
-        GameSettings.SetInt("control.key.front", (int)val);
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyUp, (int)val);
       });
       var updateControlKeyDown = MessageCenter.SubscribeValueBinder("ControlKeyDown", (val) => {
-        GameSettings.SetInt("control.key.back", (int)val);
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyDown, (int)val);
       });
       var updateControlKeyLeft = MessageCenter.SubscribeValueBinder("ControlKeyLeft", (val) => {
-        GameSettings.SetInt("control.key.left", (int)val);
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyLeft, (int)val);
       });
       var updateControlKeyRight = MessageCenter.SubscribeValueBinder("ControlKeyRight", (val) => {
-        GameSettings.SetInt("control.key.right", (int)val);
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyRight, (int)val);
       });
       var updateControlKeyOverlookCam = MessageCenter.SubscribeValueBinder("ControlKeyOverlookCam", (val) => {
-        GameSettings.SetInt("control.key.up_cam", (int)val);
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyUpCam, (int)val);
       });
       var updateControlKeyRoateCam = MessageCenter.SubscribeValueBinder("ControlKeyRoateCam", (val) => {
-        GameSettings.SetInt("control.key.roate", (int)val);
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyRoate, (int)val);
+      });
+      var updateControlKeyRoateCam2 = MessageCenter.SubscribeValueBinder("ControlKeyRoateCam2", (val) => {
+        GameSettings.SetInt(SettingConstants.SettingsControlKeyRoate2, (int)val);
       });
       var updateControlReverse = MessageCenter.SubscribeValueBinder("ControlReverse", (val) => {
-        GameSettings.SetBool("control.reverse", (bool)val);
+        GameSettings.SetBool(SettingConstants.SettingsControlKeyReverse, (bool)val);
       });
       var updateControlUISize = MessageCenter.SubscribeValueBinder("ControlUISize", (val) => {
-        GameSettings.SetFloat("control.key.size", (float)val);
-        GameSettings.NotifySettingsUpdate("control");
+        GameSettings.SetFloat(SettingConstants.SettingsControlKeySize, (float)val);
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsControl);
       });
 
       Resolution[] resolutions = null;
@@ -113,12 +130,9 @@ namespace Ballance2.Menu
 
       //设置数据加载
       MessageCenter.SubscribeEvent("BtnSettingsGraphicsClick", () => {
-        if (updateGrFullScreen != null)
-          updateGrFullScreen.Invoke(GameSettings.GetBool("video.fullScreen", Screen.fullScreen));
-        if (updateGrCloud != null)
-          updateGrCloud.Invoke(GameSettings.GetBool("video.cloud", true));
-        if (updateGrVSync != null)
-          updateGrVSync.Invoke(GameSettings.GetInt("video.vsync", QualitySettings.vSyncCount) >= 1 ? true : false);
+        if (updateGrFullScreen != null) updateGrFullScreen.Invoke(GameSettings.GetBool(SettingConstants.SettingsVideoFullScreen, Screen.fullScreen));
+        if (updateGrCloud != null) updateGrCloud.Invoke(GameSettings.GetBool(SettingConstants.SettingsVideoCloud));
+        if (updateGrVSync != null) updateGrVSync.Invoke(GameSettings.GetInt(SettingConstants.SettingsVideoVsync, QualitySettings.vSyncCount) >= 1 ? true : false);
         
         GameUIManager.GoPage("PageSettingsGraphics");
 
@@ -162,22 +176,17 @@ namespace Ballance2.Menu
         }
       });
       MessageCenter.SubscribeEvent("BtnSettingsControlsClick", () => {
-        if (updateControlKeyUp != null)
-          updateControlKeyUp.Invoke(GameSettings.GetInt("control.key.front", (int)KeyCode.UpArrow));
-        if (updateControlKeyDown != null)
-          updateControlKeyDown.Invoke(GameSettings.GetInt("control.key.back", (int)KeyCode.DownArrow));
-        if (updateControlKeyLeft != null)
-          updateControlKeyLeft.Invoke(GameSettings.GetInt("control.key.left", (int)KeyCode.LeftArrow));
-        if (updateControlKeyRight != null)
-          updateControlKeyRight.Invoke(GameSettings.GetInt("control.key.right", (int)KeyCode.RightArrow));
-        if (updateControlKeyOverlookCam != null)
-          updateControlKeyOverlookCam.Invoke(GameSettings.GetInt("control.key.up_cam", (int)KeyCode.Space));
-        if (updateControlKeyRoateCam != null)
-          updateControlKeyRoateCam.Invoke(GameSettings.GetInt("control.key.roate", (int)KeyCode.LeftShift));
-        if (updateControlReverse != null) 
-          updateControlReverse.Invoke(GameSettings.GetBool("control.reverse", false));
-        if (updateControlUISize != null) 
-          updateControlUISize.Invoke(GameSettings.GetFloat("control.key.size", 80));
+        if (updateControlKeyForward != null) updateControlKeyForward.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyFront));
+        if (updateControlKeyBack != null) updateControlKeyBack.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyBack));
+        if (updateControlKeyUp != null) updateControlKeyUp.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyUp));
+        if (updateControlKeyDown != null) updateControlKeyDown.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyDown));
+        if (updateControlKeyLeft != null) updateControlKeyLeft.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyLeft));
+        if (updateControlKeyRight != null) updateControlKeyRight.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyRight));
+        if (updateControlKeyOverlookCam != null) updateControlKeyOverlookCam.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyUpCam));
+        if (updateControlKeyRoateCam != null) updateControlKeyRoateCam2.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyRoate));
+        if (updateControlKeyRoateCam2 != null) updateControlKeyRoateCam2.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyRoate2));
+        if (updateControlReverse != null) updateControlReverse.Invoke(GameSettings.GetBool(SettingConstants.SettingsControlKeyReverse));
+        if (updateControlUISize != null) updateControlUISize.Invoke(GameSettings.GetFloat(SettingConstants.SettingsControlKeySize));
         
         #if UNITY_IOS || UNITY_ANDROID
           GameUIManager.GoPage("PageSettingsControlsMobile");
@@ -186,12 +195,9 @@ namespace Ballance2.Menu
         #endif
       });
       MessageCenter.SubscribeEvent("BtnSettingsAudioClick", () => {
-        if (updateVioceBackground != null)
-          updateVioceBackground.Invoke(GameSettings.GetFloat("voice.background", 20));
-        if (updateVoiceUI != null)
-          updateVoiceUI.Invoke(GameSettings.GetFloat("voice.ui", 80));
-        if (updateVoiceMain != null)
-          updateVoiceMain.Invoke(GameSettings.GetFloat("voice.main", 100));
+        if (updateVioceBackground != null) updateVioceBackground.Invoke(GameSettings.GetFloat(SettingConstants.SettingsVoiceBackground));
+        if (updateVoiceUI != null) updateVoiceUI.Invoke(GameSettings.GetFloat(SettingConstants.SettingsVoiceUI));
+        if (updateVoiceMain != null) updateVoiceMain.Invoke(GameSettings.GetFloat(SettingConstants.SettingsVoiceMain));
         GameUIManager.GoPage("PageSettingsAudio");
       });
       MessageCenter.SubscribeEvent("BtnSettingsPackageClick", () => {
@@ -211,15 +217,15 @@ namespace Ballance2.Menu
 
       //设置保存
       MessageCenter.SubscribeEvent("BtnSettingsGraphicsBackClick", () => {
-        GameSettings.NotifySettingsUpdate("video");
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsVideo);
         GameUIManager.BackPreviusPage();
       });
       MessageCenter.SubscribeEvent("BtnSettingsControlsBackClick", () => {
-        GameSettings.NotifySettingsUpdate("control");
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsControl);
         GameUIManager.BackPreviusPage();
       });
       MessageCenter.SubscribeEvent("BtnSettingsAudioBackClick", () => {
-        GameSettings.NotifySettingsUpdate("voice");
+        GameSettings.NotifySettingsUpdate(SettingConstants.SettingsVoice);
         GameUIManager.BackPreviusPage();
       });
 
@@ -228,7 +234,7 @@ namespace Ballance2.Menu
     }
 
     private static void ApplyLanguage(SystemLanguage language) {
-      GameSettingsManager.GetSettings("core").SetInt("language", (int)language);
+      GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME).SetInt("language", (int)language);
       if (I18NProvider.GetCurrentLanguage() != language)
         GameUIManager.Instance.GoPage("PageApplyLangDialog");
       else

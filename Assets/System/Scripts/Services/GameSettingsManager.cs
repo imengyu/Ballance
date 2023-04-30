@@ -41,11 +41,15 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="packageName">设置执行器所使用包名</param>
     /// <returns>返回设置执行器实例</returns>
-    public static GameSettingsActuator GetSettings(string packageName)
+    public static GameSettingsActuator GetSettings(string packageName, GameSettingsActuator customActuator = null)
     {
       GameSettingsActuator gameSettingsActuator = null;
       if (!settingsActuators.TryGetValue(packageName, out gameSettingsActuator))
       {
+         if (customActuator != null) {
+          settingsActuators.Add(packageName, gameSettingsActuator);
+          return customActuator;
+        }
         gameSettingsActuator = new GameSettingsActuator(packageName);
         settingsActuators.Add(packageName, gameSettingsActuator);
       }
@@ -192,6 +196,27 @@ namespace Ballance2.Services
     public virtual bool GetBool(string key, bool defaultValue = false)
     {
       return bool.Parse(PlayerPrefs.GetString(basePackName + "." + key, defaultValue.ToString()));
+    }
+
+    public virtual string GetString(string key)
+    {
+      return PlayerPrefs.GetString(basePackName + "." + key, "");
+    }
+    public virtual float GetFloat(string key)
+    {
+      return PlayerPrefs.GetFloat(basePackName + "." + key, 0);
+    }    
+    public virtual bool GetBool(string key)
+    {
+      return bool.Parse(PlayerPrefs.GetString(basePackName + "." + key, "False"));
+    }
+    public virtual int GetInt(string key)
+    {
+      return PlayerPrefs.GetInt(basePackName + "." + key, 0);
+    }
+    public virtual KeyCode GetKeyCode(string key)
+    {
+      return (KeyCode)GetInt(key);
     }
 
     private static int settingUpdateCallbackID = 0;

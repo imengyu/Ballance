@@ -295,11 +295,11 @@ namespace Ballance2.Game.GamePlay
     }
     private void _InitSettings() 
     {
-      var GameSettings = GameSettingsManager.GetSettings("core");
+      var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       var GameLevelBuilder = LevelBuilderRef;
-      GameSettings.RegisterSettingsUpdateCallback("video", (groupName, action) => {
+      GameSettings.RegisterSettingsUpdateCallback(SettingConstants.SettingsVideoCloud, (groupName, action) => {
         if (GameLevelBuilder.CurrentLevelSkyLayer != null) { 
-          if (GameSettings.GetBool("video.cloud", true))
+          if (GameSettings.GetBool(SettingConstants.SettingsVideoCloud))
             GameLevelBuilder.CurrentLevelSkyLayer.SetActive(true);
           else
             GameLevelBuilder.CurrentLevelSkyLayer.SetActive(false);
@@ -534,7 +534,7 @@ namespace Ballance2.Game.GamePlay
       //发出事件
       LevelBuilderRef.CallLevelCustomModEvent("beforeStart");
       //显示云层 (用于过关之后重新开始，因为之前过关的时候隐藏了云层)
-      if (GameManager.Instance.GameSettings.GetBool("video.cloud", true))
+      if (GameManager.Instance.GameSettings.GetBool(SettingConstants.SettingsVideoCloud))
       {
         if (LevelBuilderRef.CurrentLevelSkyLayer && !LevelBuilderRef.CurrentLevelSkyLayer.activeSelf)
           GameUIManager.Instance.UIFadeManager.AddFadeIn(LevelBuilderRef.CurrentLevelSkyLayer, 1, null);

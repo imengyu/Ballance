@@ -692,7 +692,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 963194227}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1284,7 +1284,7 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -1405,7 +1405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -915.3372, y: -14.2301}
+  m_AnchoredPosition: {x: -915.3372, y: -14.230103}
   m_SizeDelta: {x: 206.2261, y: 18.0645}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1666437231

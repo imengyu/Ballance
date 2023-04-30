@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ballance2.Services;
+using UnityEngine;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -361,6 +362,18 @@ namespace Ballance2.UI.Utils
       return value;
     }
 
+    /// <summary>
+    /// 获取UI的UI坐标
+    /// </summary>
+    /// <param name="targetWordPos"></param>
+    /// <returns></returns>
+    public static Vector2 GetUIForScreenPos(Vector3 targetWordPos)
+    {
+      Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, targetWordPos);
+      Vector2 localPoint;
+      RectTransformUtility.ScreenPointToLocalPointInRectangle(GameManager.Instance.GameCanvas, screenPoint, Camera.main, out localPoint);
+      return localPoint;
+    }
   }
 
   /// <summary>

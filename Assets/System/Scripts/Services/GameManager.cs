@@ -10,6 +10,7 @@ using Ballance2.Config;
 using Ballance2.Config.Settings;
 using Ballance2.DebugTools;
 using Ballance2.Entry;
+using Ballance2.Game;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
@@ -140,7 +141,7 @@ namespace Ballance2.Services
 
       Application.wantsToQuit += Application_wantsToQuit;
 
-      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME, new GameCoreSettingsActuator());
 
       InitDebugConfig(gameEntryInstance);
       InitCommands();
@@ -797,17 +798,17 @@ namespace Ballance2.Services
         }
 
       //设置更新事件
-      GameSettings.RegisterSettingsUpdateCallback("video", OnVideoSettingsUpdated);
-      GameSettings.RequireSettingsLoad("video");
+      GameSettings.RegisterSettingsUpdateCallback(SettingConstants.SettingsVideo, OnVideoSettingsUpdated);
+      GameSettings.RequireSettingsLoad(SettingConstants.SettingsVideo);
     }
 
     //视频设置更新器，更新视频设置至引擎
     private bool OnVideoSettingsUpdated(string groupName, int action)
     {
-      int resolutionsSet = GameSettings.GetInt("video.resolution", -1);
-      bool fullScreen = GameSettings.GetBool("video.fullScreen", Screen.fullScreen);
-      int quality = GameSettings.GetInt("video.quality", -1);
-      int vSync = GameSettings.GetInt("video.vsync", -1);
+      int resolutionsSet = GameSettings.GetInt(SettingConstants.SettingsVideoResolution, -1);
+      bool fullScreen = GameSettings.GetBool(SettingConstants.SettingsVideoFullScreen, Screen.fullScreen);
+      int quality = GameSettings.GetInt(SettingConstants.SettingsVideoQuality, -1);
+      int vSync = GameSettings.GetInt(SettingConstants.SettingsVideoVsync, -1);
 
       Log.V(TAG, "OnVideoSettingsUpdated:\nresolutionsSet: {0}\nfullScreen: {1}\nquality: {2}\nvSync : {3}", resolutionsSet, fullScreen, quality, vSync);
 

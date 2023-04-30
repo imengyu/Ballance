@@ -81,7 +81,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 8.1}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 105.3, y: 0.2}
+  m_AnchoredPosition: {x: 119.7, y: 0.8}
   m_SizeDelta: {x: 40, y: 17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &80321819181541475
@@ -1374,6 +1374,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Text '
       objectReference: {fileID: 0}
+    - target: {fileID: 4594081324457637471, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
+      propertyPath: m_Text
+      value: Unity Rebuild Version by
+      objectReference: {fileID: 0}
     - target: {fileID: 8809727200390547912, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1404,7 +1408,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8809727200390547912, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 289.7
       objectReference: {fileID: 0}
     - target: {fileID: 8809727200390547912, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1440,7 +1444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8809727200390547912, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -5.15
       objectReference: {fileID: 0}
     - target: {fileID: 8809727200390547912, guid: 042c9f8202fdedd4280b61d845616382, type: 3}
       propertyPath: m_AnchoredPosition.y

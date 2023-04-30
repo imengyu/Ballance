@@ -136,36 +136,37 @@ namespace Ballance2.Game.GamePlay
 
     private void _InitSettings() {
       //初始化控制设置
-      var GameSettings = GameSettingsManager.GetSettings("core");
-      settingsCallbackId = GameSettings.RegisterSettingsUpdateCallback("control", (groupName, action) => {
+      var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      settingsCallbackId = GameSettings.RegisterSettingsUpdateCallback(SettingConstants.SettingsControl, (groupName, action) => {
         _OnControlSettingsChanged();
         return false;
       });
       //请求触发设置更新函数
-      GameSettings.RequireSettingsLoad("control");
+      GameSettings.RequireSettingsLoad(SettingConstants.SettingsControl);
     }
     private void _UnInitSettings() {
-      var GameSettings = GameSettingsManager.GetSettings("core");
+      var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       GameSettings.UnRegisterSettingsUpdateCallback(settingsCallbackId);
     }
     private void _OnControlSettingsChanged() {
       //当设置更改时或加载时，更新设置到当前变量
-      var GameSettings = GameSettingsManager.GetSettings("core");
-      keyFront = GameSettings.GetKeyCode("control.key.front", KeyCode.UpArrow);
-      keyUp = GameSettings.GetKeyCode("control.key.up", KeyCode.Q);
-      keyDown = GameSettings.GetKeyCode("control.key.down", KeyCode.E);
-      keyBack = GameSettings.GetKeyCode("control.key.back", KeyCode.DownArrow);
-      keyLeft = GameSettings.GetKeyCode("control.key.left", KeyCode.LeftArrow);
-      keyRight = GameSettings.GetKeyCode("control.key.right", KeyCode.RightArrow);
-      keyRoateCamera = GameSettings.GetKeyCode("control.key.roate", KeyCode.LeftShift);
-      keyRoateCamera2 = GameSettings.GetKeyCode("control.key.roate2", KeyCode.RightShift);
-      keyUpCamera = GameSettings.GetKeyCode("control.key.up_cam", KeyCode.Space);
-      reverseRotation = GameSettings.GetBool("control.reverse", false);
+      var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      keyFront = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyFront);
+      keyUp = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyUp);
+      keyDown = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyDown);
+      keyBack = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyBack);
+      keyLeft = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyLeft);
+      keyRight = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyRight);
+      keyRoateCamera = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyRoate);
+      keyRoateCamera2 = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyRoate2);
+      keyUpCamera = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyUpCam);
+      reverseRotation = GameSettings.GetBool(SettingConstants.SettingsControlKeyReverse);
       _InitKeys();
     }
     private void _InitKeys() {
       //初始化键盘侦听
       keyListener = KeyListener.Get(gameObject);
+      keyListener.DisableWhenUIFocused = false;
       keyListener.ClearKeyListen();
       keyListener.AddKeyListen(keyFront, _UpArrow_Key);
       keyListener.AddKeyListen(keyBack, _DownArrow_Key);
@@ -1022,7 +1023,7 @@ namespace Ballance2.Game.GamePlay
       }
     }
     private void _Up_Key(KeyCode key, bool down)
-    {      
+    {
       if (GameManager.DebugMode) {
         KeyStateUp = down;
         FlushBallPush();

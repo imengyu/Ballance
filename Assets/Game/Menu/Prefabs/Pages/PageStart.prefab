@@ -1496,7 +1496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: 
+      value: core.ui.StartMenuNMO
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
@@ -1504,7 +1504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: 
+      value: core.ui.StartMenuNMO
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
