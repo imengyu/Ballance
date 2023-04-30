@@ -70,13 +70,17 @@ Minimum requirements
 2. Download the zip installation package in assets.
 3. Unzip all files, then run `Ballance.exe` to start the game.
 
+* Linux:
+
+  To be completed
+
 * MacOS：
 
   To be completed
 
 * Android：
 
-  To be completed
+  Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version for Android (1.x.x-android.apk) and download it.
 
 * iOS:
 

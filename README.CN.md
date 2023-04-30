@@ -76,13 +76,17 @@
 2. 下载对应的 zip 安装包。
 3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
 
+* Linux:
+
+  To be completed
+
 * MacOS：
 
   待完成
 
 * Android：
 
-  待完成
+  前往 [Releases](https://github.com/imengyu/Ballance/releases) 下载对应的 Android 安装包 (1.x.x-android.apk) 安装到你的手机上.
 
 * iOS:
 
