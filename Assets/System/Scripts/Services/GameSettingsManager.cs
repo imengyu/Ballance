@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Ballance2.Game;
 using Ballance2.Utils;
 using UnityEngine;
 
@@ -50,6 +51,8 @@ namespace Ballance2.Services
           settingsActuators.Add(packageName, gameSettingsActuator);
           return customActuator;
         }
+        if (customActuator == null && packageName == GamePackageManager.SYSTEM_PACKAGE_NAME)
+          throw new System.Exception("操！谁提前拿这个了？");
         gameSettingsActuator = new GameSettingsActuator(packageName);
         settingsActuators.Add(packageName, gameSettingsActuator);
       }
@@ -73,8 +76,10 @@ namespace Ballance2.Services
     }
     internal static void Init()
     {
-      if(settingsActuators == null)
+      if (settingsActuators == null)
         settingsActuators = new Dictionary<string, GameSettingsActuator>();
+      if (!settingsActuators.ContainsKey(GamePackageManager.SYSTEM_PACKAGE_NAME))
+        settingsActuators.Add(GamePackageManager.SYSTEM_PACKAGE_NAME, new GameCoreSettingsActuator());
     }
     internal static void Destroy()
     {

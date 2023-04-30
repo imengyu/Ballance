@@ -115,6 +115,7 @@ namespace Ballance2.Services
       Log.D(TAG, "Initialize");
 
       GameEntry gameEntryInstance = GameEntry.Instance;
+      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       GameBaseCamera = gameEntryInstance.GameBaseCamera;
       GameCanvas = gameEntryInstance.GameCanvas;
       DebugMode = gameEntryInstance.DebugMode;
@@ -140,8 +141,6 @@ namespace Ballance2.Services
       Instance = this;
 
       Application.wantsToQuit += Application_wantsToQuit;
-
-      GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME, new GameCoreSettingsActuator());
 
       InitDebugConfig(gameEntryInstance);
       InitCommands();
