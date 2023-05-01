@@ -132,7 +132,12 @@ namespace Ballance2.Editor.Modding
       if (File.Exists(projLogoFile)) ZipUtils.AddFileToZip(zipStream, projLogoFile, projModDirPath.Length, ref crc);
 
       //添加DLL
-      string projDllFile = projModDirPath + Path.DirectorySeparatorChar + ".dll" + Path.DirectorySeparatorChar + packPackageName + ".dll";
+      string projDllFileSrc = projModDirPath + Path.DirectorySeparatorChar + ".dll" + Path.DirectorySeparatorChar + packPackageName + ".dll";
+      string projDllFile = projModDirPath + Path.DirectorySeparatorChar + "dll" + Path.DirectorySeparatorChar + packPackageName + ".dll";
+      if (File.Exists(projDllFileSrc)) 
+        File.Copy(projDllFileSrc, projDllFile, true);
+
+      //添加DLL
       if (File.Exists(projDllFile)) 
         ZipUtils.AddFileToZip(zipStream, projDllFile, "csharp/" + packPackageName + ".dll", ref crc);
 
