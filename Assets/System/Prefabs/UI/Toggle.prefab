@@ -55,8 +55,8 @@ MonoBehaviour:
   Drag: {fileID: 532992993991134656}
   Background: {fileID: 532992993961497598}
   DragImage: {fileID: 532992993991134655}
-  ActiveImage: {fileID: 21300000, guid: c8952e5abc4081f4da33f30d3c02e307, type: 3}
-  DeactiveImage: {fileID: 21300000, guid: 7b144ceb2c843f348b8835273292027d, type: 3}
+  ActiveImage: {fileID: -1797216058, guid: 690733426d49da745a68a92355ee6070, type: 3}
+  DeactiveImage: {fileID: -194631971, guid: 690733426d49da745a68a92355ee6070, type: 3}
   CheckedButton: {fileID: 0}
   UnCheckedButton: {fileID: 0}
   Text: {fileID: 0}
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 08bd0b1bb3938eb4a86b6995f5413173, type: 3}
+  m_Sprite: {fileID: 595134576, guid: 690733426d49da745a68a92355ee6070, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -347,8 +347,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7b144ceb2c843f348b8835273292027d, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: -194631971, guid: 690733426d49da745a68a92355ee6070, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
