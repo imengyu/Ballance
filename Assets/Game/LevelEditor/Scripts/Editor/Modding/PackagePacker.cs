@@ -50,6 +50,7 @@ namespace Ballance2.Editor.Modding
               if (filesPath.EndsWith(".shadergraph")) continue;
               if (filesPath.EndsWith(".cginc")) continue;
               if (filesPath.EndsWith(".md")) continue;
+              if (filesPath.EndsWith(".dll")) continue;
               if (filesPath.Contains("NoPackage")) continue;
               if (filesPath.EndsWith(".cs")) continue;
               if (filesPath.EndsWith(".csproj")) continue;
