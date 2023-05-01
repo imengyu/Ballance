@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/github/v/release/imengyu/ballance.svg?label=alpha&style=flat-square&color=yellow" alt="Releases" />
   </a>
   <a style="text-decoration:none">
-    <img src="https://img.shields.io/badge/platform-Win%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-orange?style=flat-square" alt="Platform" />
+    <img src="https://img.shields.io/badge/platform-Win%20%7C%20Linux%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-orange?style=flat-square" alt="Platform" />
   </a>
   <a style="text-decoration:none">
     <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square" alt="License" />
@@ -66,17 +66,34 @@ Minimum requirements
 
 * Windows:
 
-1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version.
-2. Download the zip installation package in assets.
-3. Unzip all files, then run `Ballance.exe` to start the game.
+  1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version.
+  2. Download the zip installation package in assets (1.x.x-windows-x86.zip).
+  3. Unzip all files, then run `Ballance.exe` to start the game.
 
 * Linux:
 
-  To be completed
+  1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version of Linux64 (1.x.x-linux64.zip).
+  2. Unzip all files.
+  3. Set permissions for the main executable:
+
+      ```shell
+      chmod a+x ./Ballance.x86_64
+      ```
+
+  4. Start play
+
+      ```shell
+      ./Ballance.x86_64
+      ```
 
 * MacOS：
 
-  To be completed
+  1. Goto [Releases](https://github.com/imengyu/Ballance/releases) find the latest version of MacOS
+
+      * If you are using an Apple computer with M1 or M2 chips, download the `-AppleSilicon.dmg` version installation package.
+      * If you are using an Intel Apple PC, download the `-Intel64.dmg` version installation package.
+
+  2. After downloading and installing, find Ballance in the "launchpad/Game" and open it to start playing.
 
 * Android：
 

@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/github/v/release/imengyu/ballance.svg?label=alpha&style=flat-square&color=yellow" alt="Releases" />
   </a>
   <a style="text-decoration:none">
-    <img src="https://img.shields.io/badge/platform-Win%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-orange?style=flat-square" alt="Platform" />
+    <img src="https://img.shields.io/badge/platform-Win%20%7C%20Linux%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-orange?style=flat-square" alt="Platform" />
   </a>
   <a style="text-decoration:none">
     <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square" alt="License" />
@@ -72,21 +72,38 @@
 
 * Windows:
 
-1. 前往 Releases 找到最新版本。
-2. 下载对应的 zip 安装包。
-3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
+  1. 前往 [Releases](https://gitee.com/imengyu/Ballance/releases) 找到最新版本。
+  2. 下载对应的 zip 安装包 (1.x.x-windows-x86.zip) 。
+  3. 解压后，运行其中的 `Ballance.exe` 即可开始游戏。
 
 * Linux:
 
-  To be completed
+  1. 前往 [Releases](https://gitee.com/imengyu/Ballance/releases) 下载 Linux64 安装包 (1.x.x-linux64.zip) 。
+  2. 解压 zip 安装包。
+  3. 设置主程序的可执行权限：
+
+      ```shell
+      chmod a+x ./Ballance.x86_64
+      ```
+
+  4. 开始玩
+
+      ```shell
+      ./Ballance.x86_64
+      ```
 
 * MacOS：
 
-  待完成
+  1. 前往 [Releases](https://gitee.com/imengyu/Ballance/releases) 下载 MacOS 安装包
+
+      * 如果你使用的是M1、M2芯片的苹果电脑，就下载 `-AppleSilicon.dmg` 版本安装包
+      * 如果你使用的是Intel芯片的苹果电脑，就下载 `-Intel64.dmg` 版本安装包
+
+  2. 下载安装完成后在 “启动台/游戏” 中找到 Ballance 打开就可以开始玩了。
 
 * Android：
 
-  前往 [Releases](https://github.com/imengyu/Ballance/releases) 下载对应的 Android 安装包 (1.x.x-android.apk) 安装到你的手机上.
+  前往 [Releases](https://gitee.com/imengyu/Ballance/releases) 下载 Android 安装包 (1.x.x-android.apk) 安装到你的手机上就可以开始玩了。
 
 * iOS:
 
@@ -94,7 +111,7 @@
 
 ## 按键以及操作
 
-* PC版操作与原版游戏一直，并无改动。你可以在 设置>控制 菜单中修改按键。
+* PC版操作与原版游戏一致，并无改动。你可以在 设置>控制 菜单中修改按键。
 * 手机版增加了触摸键盘，你可以在 设置>控制 菜单中修改键盘样式。
 
 ## 开启调试模式
