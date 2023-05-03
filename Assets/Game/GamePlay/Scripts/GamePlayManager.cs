@@ -776,8 +776,8 @@ namespace Ballance2.Game.GamePlay
         return;
       }
 
-      //快速回收目标球碎片
-      BallManager.ResetPeices(targetType);
+      //快速回收当前类型球碎片
+      BallManager.ResetPeices(BallManager.CurrentBallName);
       BallManager.SetNextRecoverPos(targetPos);
       //快速将球锁定并移动至目标位置
       BallManager.FastMoveTo(targetPos, 0.1f, (_) => {
@@ -869,6 +869,9 @@ namespace Ballance2.Game.GamePlay
       this._Stop(BallControlStatus.NoControl);
 
       this.EventRestart.Emit();
+
+      //重置球管理器
+      BallManager.ResetAllPeices();
 
       GameTimer.Delay(0.8f, () => {
         //重置所有节

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 * Copyright(c) 2021  mengyu
 *
 * 模块名：     
-* Progress.cs
+* KeyChoose.cs
 * 
 * 用途：
 * 一个键盘按键选择组件。

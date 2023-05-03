@@ -186,6 +186,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -326,6 +327,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -467,6 +469,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -623,6 +626,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -788,6 +792,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -832,6 +837,7 @@ GameObject:
   - component: {fileID: 1725117998913392031}
   - component: {fileID: 3368745932583408540}
   - component: {fileID: 4366482094980822261}
+  - component: {fileID: 3892004164191995642}
   m_Layer: 0
   m_Name: P_Modul_29_Platte06
   m_TagString: Untagged
@@ -928,6 +934,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -959,6 +966,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HingeRef: {fileID: 6447382632083736213}
   Other: {fileID: 4551029262522626547}
+--- !u!114 &3892004164191995642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6161002987506172945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da01f917c0a99684facd39f526aabe86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Object1: {fileID: 2220000172929702839}
+  Object2: {fileID: 0}
+  Diatance: 4
+  CheckEnabled: 0
+  CheckTickMin: 5
+  CheckTickMax: 60
 --- !u!1 &6450528011212008914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,6 +1093,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -1208,6 +1234,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -1348,6 +1375,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1

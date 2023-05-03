@@ -98,9 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Mass: 10
-  m_Friction: 0.85
+  m_Friction: 0.8
   m_Elasticity: 0.1
-  m_LinearSpeedDamping: 0.22
+  m_LinearSpeedDamping: 0.2
   m_RotSpeedDamping: 0.1
   m_BallRadius: 2
   m_UseBall: 1
@@ -109,6 +109,7 @@ MonoBehaviour:
   m_StartFrozen: 0
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -139,5 +140,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPreviewMode: 0
+  IsDebugMode: 0
   PhysicsObject: {fileID: 0}
   PhysicsObjectCollIDName: StoneOnlyHit

@@ -424,7 +424,6 @@ namespace Ballance2.Game.GamePlay
       body.OnFallCallback = (body) => {
         if (!GamePlayManager.Instance.Fall()) {
           body.UnPhysicalize(true);
-          body.transform.position = Vector3.zero;
           body.gameObject.SetActive(false);
         }
       };
@@ -639,6 +638,13 @@ namespace Ballance2.Game.GamePlay
     {
       if (GamePlayManager.Instance.CamManager.Target == null)
         GamePlayManager.Instance.CamManager.SetTarget(null, false);
+    }
+    /// <summary>
+    /// 重置所有碎片状态
+    /// </summary>
+    public void ResetAllPeices() {
+      foreach (var item in registerBalls)
+        item.Value.ball.ResetPieces();
     }
 
     #region 球状态工作方法

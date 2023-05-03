@@ -1,6 +1,7 @@
 using Ballance2.Services;
 using Ballance2.Utils;
 using BallancePhysics.Wapper;
+using UnityEngine;
 
 namespace Ballance2.Game.GamePlay.Moduls
 {
@@ -8,6 +9,7 @@ namespace Ballance2.Game.GamePlay.Moduls
   {
     public PhysicsHinge _P_Modul_29_Platte05_HingeConstraint;
     public TiggerTester _P_Modul_29_Platte05_Tigger;
+    public DistanceChecker _P_Modul_29_Platte06_DistanceChecker;
     public PhysicsObject[] _P_Modul_29_Plattes = new PhysicsObject[9];
 
     public P_Modul_29() {
@@ -22,19 +24,28 @@ namespace Ballance2.Game.GamePlay.Moduls
       base.Start();
  
       //石球断开木桥
-      _P_Modul_29_Platte05_Tigger.onTriggerEnter = (_, other) => {
-        if (!_BrigeBreaked && other.tag == "Ball" && other.name == "BallStone") {
-          _BrigeBreaked = true;
-          _P_Modul_29_Platte05_HingeConstraint.Destroy();
-          GameSoundManager.Instance.PlayFastVoice("core.sounds:Misc_RopeTears.wav", GameSoundType.Normal);
-        }
+      _P_Modul_29_Platte06_DistanceChecker.OnEnterRange = (other) => {
+        OnBallEnterRange(other);
       };
+      _P_Modul_29_Platte05_Tigger.onTriggerEnter = (_, other) => {
+        OnBallEnterRange(other);
+      };
+    }
+
+    private void OnBallEnterRange(GameObject other) {
+      if (!_BrigeBreaked && other.tag == "Ball" && other.name == "BallStone") {
+        _BrigeBreaked = true;
+        _P_Modul_29_Platte05_HingeConstraint.Destroy();
+        GameSoundManager.Instance.PlayFastVoice("core.sounds:Misc_RopeTears.wav", GameSoundType.Normal);
+      }
     }
 
     public override void Active()
     {
       base.Active();
       
+      _P_Modul_29_Platte06_DistanceChecker.CheckEnabled = true;
+
       foreach (var Platte in _P_Modul_29_Plattes)
       {
         Platte.Physicalize();
@@ -44,6 +55,8 @@ namespace Ballance2.Game.GamePlay.Moduls
 
     public override void Deactive()
     {
+      _P_Modul_29_Platte06_DistanceChecker.CheckEnabled = false;
+
       foreach (var Platte in _P_Modul_29_Plattes)
       {
         Platte.UnPhysicalize(true);

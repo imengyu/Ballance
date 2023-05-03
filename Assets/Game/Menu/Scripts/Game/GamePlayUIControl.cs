@@ -198,7 +198,7 @@ namespace Ballance2.Menu
         else {
           if (_LifeBalls.childCount > count) {
             //显示数量大于目标，删除多余的
-            for (var i = _LifeBalls.childCount - 1; i >= 0; i--)
+            for (var i = _LifeBalls.childCount - 1; i >= count; i--)
               UnityEngine.Object.Destroy(_LifeBalls.GetChild(i).gameObject);
             _MoveLifeLeftBaffle();
           }

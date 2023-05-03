@@ -221,6 +221,7 @@ namespace Ballance2.Game.GamePlay.Moduls
     {
       if (type == ModulBaseResetType.LevelRestart) {
         _Actived = false;
+        P_Extra_Point_Ball[0].SetActive(true);
         for (int i = 1; i <= 6; i++) {
           _P_Extra_Point_Ball_Fly[i].Fly = false;
           ObjectStateBackupUtils.RestoreObject(P_Extra_Point_Ball[i]);
