@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPreviewMode: 0
+  IsDebugMode: 0
   P_Modul_37_Bridge: {fileID: 6362523778513650073}
 --- !u!1 &5169076336936455540
 GameObject:
@@ -185,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Mass: 3
   m_Friction: 0.7
-  m_Elasticity: 1
+  m_Elasticity: 0.5
   m_LinearSpeedDamping: 1
   m_RotSpeedDamping: 0.1
   m_BallRadius: 1
@@ -195,6 +196,7 @@ MonoBehaviour:
   m_StartFrozen: 1
   m_Fixed: 0
   m_ShiftMassCenter: {x: 5, y: 0.5, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
