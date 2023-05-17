@@ -812,9 +812,12 @@ namespace Ballance2.Services
       Log.V(TAG, "OnVideoSettingsUpdated:\nresolutionsSet: {0}\nfullScreen: {1}\nquality: {2}\nvSync : {3}", resolutionsSet, fullScreen, quality, vSync);
 
       if(resolutionsSet >= 0) {
-        Screen.SetResolution(resolutions[resolutionsSet].width, resolutions[resolutionsSet].height, fullScreen);
-        //发出屏幕大小更改事件
-        GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, resolutions[resolutionsSet].width, resolutions[resolutionsSet].height);
+        if (resolutionsSet < resolutions.Length) {
+          var resolution = resolutions[resolutionsSet];
+          Screen.SetResolution(resolution.width, resolution.height, fullScreen);
+          //发出屏幕大小更改事件
+          GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, resolution.width, resolution.height);
+        }
       }
       if(fullScreen != Screen.fullScreen)
         Screen.fullScreen = fullScreen;
