@@ -32,213 +32,271 @@ using UnityEngine.EventSystems;
 
 namespace Ballance2.Services.InputManager
 {
-  /// <summary>
-  /// 键盘按键事件事件侦听器
-  /// </summary>
-  public class KeyListener : MonoBehaviour
-  {
     /// <summary>
-    /// 键盘按键事件回调
+    /// 键盘按键事件事件侦听器
     /// </summary>
-    /// <param name="downed">是否按下</param>
-    public delegate void KeyDelegate(KeyCode key, bool downed);
-
-    /// <summary>
-    /// 从 指定 GameObject 创建键事件侦听器
-    /// </summary>
-    /// <param name="go">指定 GameObject</param>
-    /// <returns>返回事件侦听器实例</returns>
-    public static KeyListener Get(GameObject go)
+    public class KeyListener : MonoBehaviour
     {
-      KeyListener listener = go.GetComponent<KeyListener>();
-      if (listener == null) listener = go.AddComponent<KeyListener>();
-      return listener;
-    }
+        /// <summary>
+        /// 键盘按键事件回调
+        /// </summary>
+        /// <param name="downed">是否按下</param>
+        public delegate void KeyDelegate(KeyCode key, bool downed);
+        /// <summary>
+        /// 虚拟轴事件回调
+        /// </summary>
+        /// <param name="x">轴名称</param>
+        /// <param name="y">轴值</param>
+        public delegate void AxisDelegate(string asisName,float value);
 
-    private class KeyListenerItem
-    {
-      public KeyCode key2;
-      public KeyCode key;
-      public bool downed = false;
-      public bool downed2 = false;
-      public bool has2key = false;
-      public KeyDelegate callBack;
-      public int id;
-    }
-
-    private LinkedList<KeyListenerItem> items = new LinkedList<KeyListenerItem>();
-    [SerializeField]
-    private bool isListenKey = true;
-    private int listenKeyId = 0;
-
-
-    /// <summary>
-    /// 是否开启监听
-    /// </summary>
-    public bool IsListenKey { get { return isListenKey; } set { isListenKey = value; } }
-
-    /// <summary>
-    /// 如果UI激活时是否禁用键盘事件
-    /// </summary>
-    public bool DisableWhenUIFocused = true;
-
-    /// <summary>
-    /// 指定是否允许同时发出1个以上的键盘事件，否则同时只能发送一个键盘事件。以后注册的先发送
-    /// </summary>
-    public bool AllowMultipleKey = false;
-
-    /// <summary>
-    /// 重新发送当前已按下的按键事件
-    /// </summary>
-    public void ReSendPressingKey() {
-      LinkedListNode<KeyListenerItem> cur = items.Last;
-      while(cur != null) {
-        var item = cur.Value;
-        if (item.has2key) {
-          if(item.downed2) {
-            if(Input.GetKey(item.key2)) item.callBack(item.key2, true);
-            else {
-              item.downed2 = false;
-              item.callBack(item.key2, false);
-            }
-          }
-          else
-            item.callBack(item.key2, false);
-        } 
-        if(item.downed) {
-          if(Input.GetKey(item.key)) item.callBack(item.key, true);
-          else {
-            item.downed = false;
-            item.callBack(item.key, false);
-          }
+        /// <summary>
+        /// 从 指定 GameObject 创建键事件侦听器
+        /// </summary>
+        /// <param name="go">指定 GameObject</param>
+        /// <returns>返回事件侦听器实例</returns>
+        public static KeyListener Get(GameObject go)
+        {
+            KeyListener listener = go.GetComponent<KeyListener>();
+            if (listener == null) listener = go.AddComponent<KeyListener>();
+            return listener;
         }
-        else
-          item.callBack(item.key, false);
-        cur = cur.Previous;
-      }
-    }
 
-    /// <summary>
-    /// 添加侦听器侦听键，可以一次监听两个键。
-    /// </summary>
-    /// <param name="key">键值。</param>
-    /// <param name="key2">键值2。</param>
-    /// <param name="callBack">回调函数。</param>
-    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
-    {
-      listenKeyId++;
-
-      KeyListenerItem item = new KeyListenerItem();
-      item.callBack = callBack;
-      item.key = key;
-      item.key2 = key2;
-      item.has2key = key2 != KeyCode.None;
-      item.id = listenKeyId;
-
-      //逆序遍历链表。添加按键至相同按键位置
-      LinkedListNode<KeyListenerItem> cur = items.Last;
-      while(cur != null) {
-        if(cur.Value.key == key) {
-          items.AddAfter(cur, item);
-          return listenKeyId;
+        private class KeyListenerItem
+        {
+            public KeyCode key2;
+            public KeyCode key;
+            public bool downed = false;
+            public bool downed2 = false;
+            public bool has2key = false;
+            public KeyDelegate callBack;
+            public int id;
         }
-        cur = cur.Previous;
-      }
-      //没有找到相同按键，则添加到末尾
-      items.AddLast(item);
-      return listenKeyId;
-    }
 
-    /// <summary>
-    /// 添加侦听器侦听键。
-    /// </summary>
-    /// <param name="key">键值。</param>
-    /// <param name="callBack">回调函数。</param>
-    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-    public int AddKeyListen(KeyCode key, KeyDelegate callBack) { return AddKeyListen(key, KeyCode.None, callBack); }
-
-    /// <summary>
-    /// 删除指定侦听器。
-    /// </summary>
-    /// <param name="id">AddKeyListen 返回的ID</param>
-    public void DeleteKeyListen(int id)
-    {
-      //链表移除
-      int count = 0;
-      LinkedListNode<KeyListenerItem> cur = items.First;
-      while(cur != null) {
-        if(cur.Value.id == id) {
-          items.Remove(cur);
-          return;
+        public enum MovementType
+        {
+            Keyboard,
+            LeftStick,
+            DPad
         }
-        cur = cur.Next;
-        count++;
 
-        if(count > items.Count)
-          break;
-      }
-    }
-    /// <summary>
-    /// 清空事件侦听器所有侦听键。
-    /// </summary>
-    public void ClearKeyListen()
-    {
-      items.Clear();
-    }
+        public const string AxisName_Horizontal = "Horizontal";
+        public const string AxisName_Vertical = "Vertical";
+        public const string AxisName_LeftStickHorizontal = "LeftStickHorizontal";
+        public const string AxisName_LeftStickVertical = "LeftStickVertical";
+        public const string AxisName_RightStickHorizontal = "RightStickHorizontal";
+        public const string AxisName_RightStickVertical = "RightStickVertical";
+        private AxisDelegate axisDelegate = null;
+        private string[] axisNames = new string[]
+        {
+            AxisName_Horizontal,
+            AxisName_Vertical,
+            AxisName_LeftStickHorizontal,
+            AxisName_LeftStickVertical,
+            AxisName_RightStickHorizontal,
+            AxisName_RightStickVertical
+        };        
 
-    private void Update()
-    {
-      if (isListenKey)
-      {
-        //排除GUI激活
-        if (DisableWhenUIFocused && (EventSystem.current.IsPointerOverGameObject() || GUIUtility.hotControl != 0))
-          return;
+        private LinkedList<KeyListenerItem> items = new LinkedList<KeyListenerItem>();
+        [SerializeField]
+        private bool isListenKey = true;
+        private int listenKeyId = 0;
 
-        //逆序遍历链表。后添加的按键事件最先处理
-        LinkedListNode<KeyListenerItem> cur = items.Last;
-        KeyCode lastPressedKey = KeyCode.None;
-        while(cur != null) {
-          var item = cur.Value;
 
-          if (item.has2key)
-          {
-            if (Input.GetKeyDown(item.key2) && !item.downed)
+        /// <summary>
+        /// 是否开启监听
+        /// </summary>
+        public bool IsListenKey { get { return isListenKey; } set { isListenKey = value; } }
+
+        /// <summary>
+        /// 如果UI激活时是否禁用键盘事件
+        /// </summary>
+        public bool DisableWhenUIFocused = true;
+
+        /// <summary>
+        /// 指定是否允许同时发出1个以上的键盘事件，否则同时只能发送一个键盘事件。以后注册的先发送
+        /// </summary>
+        public bool AllowMultipleKey = false;
+
+        /// <summary>
+        /// 重新发送当前已按下的按键事件
+        /// </summary>
+        public void ReSendPressingKey()
+        {
+            LinkedListNode<KeyListenerItem> cur = items.Last;
+            while (cur != null)
             {
-              item.downed2 = true;
-              item.callBack(item.key2, true);
+                var item = cur.Value;
+                if (item.has2key)
+                {
+                    if (item.downed2)
+                    {
+                        if (Input.GetKey(item.key2)) item.callBack(item.key2, true);
+                        else
+                        {
+                            item.downed2 = false;
+                            item.callBack(item.key2, false);
+                        }
+                    }
+                    else
+                        item.callBack(item.key2, false);
+                }
+                if (item.downed)
+                {
+                    if (Input.GetKey(item.key)) item.callBack(item.key, true);
+                    else
+                    {
+                        item.downed = false;
+                        item.callBack(item.key, false);
+                    }
+                }
+                else
+                    item.callBack(item.key, false);
+                cur = cur.Previous;
             }
-            if (Input.GetKeyUp(item.key2) && item.downed)
-            {
-              item.downed2 = false;
-              item.callBack(item.key2, false);
-            }
-          }
-
-          if (Input.GetKeyDown(item.key) && !item.downed)
-          {
-            if(!AllowMultipleKey && lastPressedKey == item.key) {
-              //相同的按键，并且不允许发送相同按键，则不发送按键
-              if(item.downed) {
-                item.downed = false;
-                item.callBack(item.key, false);
-              }
-            } else {
-              item.downed = true;
-              item.callBack(item.key, true);
-
-              if(!AllowMultipleKey)
-                lastPressedKey = item.key;
-            }
-          }
-          if (Input.GetKeyUp(item.key) && item.downed)
-          {
-            item.downed = false;
-            item.callBack(item.key, false);
-          }
-          cur = cur.Previous;
         }
-      }
+
+        /// <summary>
+        /// 添加侦听器侦听键，可以一次监听两个键。
+        /// </summary>
+        /// <param name="key">键值。</param>
+        /// <param name="key2">键值2。</param>
+        /// <param name="callBack">回调函数。</param>
+        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+        public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
+        {
+            listenKeyId++;
+
+            KeyListenerItem item = new KeyListenerItem();
+            item.callBack = callBack;
+            item.key = key;
+            item.key2 = key2;
+            item.has2key = key2 != KeyCode.None;
+            item.id = listenKeyId;
+
+            //逆序遍历链表。添加按键至相同按键位置
+            LinkedListNode<KeyListenerItem> cur = items.Last;
+            while (cur != null)
+            {
+                if (cur.Value.key == key)
+                {
+                    items.AddAfter(cur, item);
+                    return listenKeyId;
+                }
+                cur = cur.Previous;
+            }
+            //没有找到相同按键，则添加到末尾
+            items.AddLast(item);
+            return listenKeyId;
+        }
+
+        /// <summary>
+        /// 设置侦听器侦听虚拟轴的值变化
+        /// </summary>
+        /// <param name="axisDelegate"></param>
+        public void SetAxisListen(AxisDelegate axisDelegate)
+        {
+            this.axisDelegate = axisDelegate;
+        }
+
+        /// <summary>
+        /// 添加侦听器侦听键。
+        /// </summary>
+        /// <param name="key">键值。</param>
+        /// <param name="callBack">回调函数。</param>
+        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
+        public int AddKeyListen(KeyCode key, KeyDelegate callBack) { return AddKeyListen(key, KeyCode.None, callBack); }
+
+        /// <summary>
+        /// 删除指定侦听器。
+        /// </summary>
+        /// <param name="id">AddKeyListen 返回的ID</param>
+        public void DeleteKeyListen(int id)
+        {
+            //链表移除
+            int count = 0;
+            LinkedListNode<KeyListenerItem> cur = items.First;
+            while (cur != null)
+            {
+                if (cur.Value.id == id)
+                {
+                    items.Remove(cur);
+                    return;
+                }
+                cur = cur.Next;
+                count++;
+
+                if (count > items.Count)
+                    break;
+            }
+        }
+        /// <summary>
+        /// 清空事件侦听器所有侦听键。
+        /// </summary>
+        public void ClearKeyListen()
+        {
+            items.Clear();
+        }
+        
+        private void Update()
+        {
+            if (isListenKey)
+            {
+                //排除GUI激活
+                if (DisableWhenUIFocused && (EventSystem.current.IsPointerOverGameObject() || GUIUtility.hotControl != 0))
+                    return;
+                if (axisDelegate != null)
+                {
+                    foreach (var asixName in axisNames)
+                        axisDelegate(asixName, Input.GetAxisRaw(asixName));
+                }
+                //逆序遍历链表。后添加的按键事件最先处理
+                LinkedListNode<KeyListenerItem> cur = items.Last;
+                KeyCode lastPressedKey = KeyCode.None;
+                while (cur != null)
+                {
+                    var item = cur.Value;
+                    if (item.has2key)
+                    {
+                        if (Input.GetKeyDown(item.key2) && !item.downed)
+                        {
+                            item.downed2 = true;
+                            item.callBack(item.key2, true);
+                        }
+                        if (Input.GetKeyUp(item.key2) && item.downed)
+                        {
+                            item.downed2 = false;
+                            item.callBack(item.key2, false);
+                        }
+                    }
+
+                    if (Input.GetKeyDown(item.key) && !item.downed)
+                    {
+                        if (!AllowMultipleKey && lastPressedKey == item.key)
+                        {
+                            //相同的按键，并且不允许发送相同按键，则不发送按键
+                            if (item.downed)
+                            {
+                                item.downed = false;
+                                item.callBack(item.key, false);
+                            }
+                        }
+                        else
+                        {
+                            item.downed = true;
+                            item.callBack(item.key, true);
+
+                            if (!AllowMultipleKey)
+                                lastPressedKey = item.key;
+                        }
+                    }
+                    if (Input.GetKeyUp(item.key) && item.downed)
+                    {
+                        item.downed = false;
+                        item.callBack(item.key, false);
+                    }
+                    cur = cur.Previous;
+                }
+            }
+        }
     }
-  }
 }
