@@ -21,8 +21,8 @@ namespace Ballance2.Game.GamePlay
     public class BallManager : MonoBehaviour
     {
         private const string TAG = "BallManager";
-        //上次视角切换时间
-        private DateTime lastCamRotateTime = DateTime.MinValue;
+        //视角切换锁
+        private bool camRotateLock = false;
         //上次移动球的类型
         private KeyListener.MovementType lastMovementType = KeyListener.MovementType.Keyboard;
         public BallLightningSphere _BallLightningSphere;
@@ -197,7 +197,7 @@ namespace Ballance2.Game.GamePlay
                 //控制左右
                 case KeyListener.AxisName_Horizontal:
                 case KeyListener.AxisName_LeftStickHorizontal:
-                    if (Math.Abs(value) < 0.4)
+                    if (Math.Abs(value) < 0.3)
                     {
                         if (lastMovementType == currentMovementType)
                         {
@@ -233,7 +233,7 @@ namespace Ballance2.Game.GamePlay
                 //控制前后
                 case KeyListener.AxisName_Vertical:
                 case KeyListener.AxisName_LeftStickVertical:
-                    if (Math.Abs(value) < 0.4)
+                    if (Math.Abs(value) < 0.3)
                     {
                         if (lastMovementType == currentMovementType)
                         {
@@ -271,9 +271,11 @@ namespace Ballance2.Game.GamePlay
 
                     if (Math.Abs(value) < 0.5)
                         return;
-                    if ((DateTime.Now - lastCamRotateTime).TotalSeconds < 0.5)
+                    if (camRotateLock)
                         return;
-                    lastCamRotateTime = DateTime.Now;
+                    camRotateLock = true;
+                    GameTimer.Delay(0.5F, () => camRotateLock = false);
+                    
                     if (value > 0)
                     {
                         if (CanControllCamera)
@@ -299,9 +301,10 @@ namespace Ballance2.Game.GamePlay
                 case KeyListener.AxisName_RightStickVertical:
                     if (Math.Abs(value) < 0.5)
                         return;
-                    if ((DateTime.Now - lastCamRotateTime).TotalSeconds < 0.5)
+                    if (camRotateLock)
                         return;
-                    lastCamRotateTime = DateTime.Now;
+                    camRotateLock = true;
+                    GameTimer.Delay(0.5F, () => camRotateLock = false);
                     if (CanControllCamera)
                     {
                         GamePlayManager.Instance.CamManager.RotateUp(!GamePlayManager.Instance.CamManager.CamIsSpaced);
