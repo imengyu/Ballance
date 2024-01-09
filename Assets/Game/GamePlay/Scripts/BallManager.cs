@@ -190,7 +190,8 @@ namespace Ballance2.Game.GamePlay
                     currentMovementType = KeyListener.MovementType.LeftStick;
                     break;
             }
-
+            //检测到手柄操作，销毁屏幕键盘
+            GamePlayUIControl.Instance.DestroyMobileKeyPad();
             switch (asixName)
             {
                 //控制左右
