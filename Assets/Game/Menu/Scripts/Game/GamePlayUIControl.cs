@@ -90,8 +90,8 @@ namespace Ballance2.Menu
       base.OnDestroy();
       this.DestroyMobileKeyPad();
     }
-    
-    private void DestroyMobileKeyPad() {
+
+    internal void DestroyMobileKeyPad() {
       //销毁键盘
       if (_CurrentMobileKeyPad != null) {
         Destroy(_CurrentMobileKeyPad.gameObject);
