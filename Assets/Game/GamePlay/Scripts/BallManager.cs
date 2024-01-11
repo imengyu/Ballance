@@ -327,11 +327,8 @@ namespace Ballance2.Game.GamePlay
             keyListener.AddKeyListen(keyRoateCamera, keyRoateCamera2, _Shift_Key);            
             keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
             keyListener.AddKeyListen(keyRight, _RightArrow_Key);
-            //当检测到手柄时，则注册手柄相关按键 
-            if (Input.GetJoystickNames().Length > 0)
-            {
-                keyListener.SetAxisListen(_AxisListen);
-            }
+            keyListener.SetAxisListen(_AxisListen);
+
             //测试按扭
             if (GameManager.DebugMode)
             {

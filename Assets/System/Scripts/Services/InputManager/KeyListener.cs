@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -37,6 +40,13 @@ namespace Ballance2.Services.InputManager
     /// </summary>
     public class KeyListener : MonoBehaviour
     {
+        private Gamepad currentGamepad;
+        private Joystick currentJoystick;
+        private DpadControl currentJoystickDpad;
+        private ButtonControl currentJoystickRightStickButton2;
+        private ButtonControl currentJoystickRightStickButton4;
+        private AxisControl currentJoystickRightStickAxisY;
+
         /// <summary>
         /// 键盘按键事件回调
         /// </summary>
@@ -47,7 +57,7 @@ namespace Ballance2.Services.InputManager
         /// </summary>
         /// <param name="x">轴名称</param>
         /// <param name="y">轴值</param>
-        public delegate void AxisDelegate(string asisName,float value);
+        public delegate void AxisDelegate(string asisName, float value);
 
         /// <summary>
         /// 从 指定 GameObject 创建键事件侦听器
@@ -86,15 +96,6 @@ namespace Ballance2.Services.InputManager
         public const string AxisName_RightStickHorizontal = "RightStickHorizontal";
         public const string AxisName_RightStickVertical = "RightStickVertical";
         private AxisDelegate axisDelegate = null;
-        private string[] axisNames = new string[]
-        {
-            AxisName_Horizontal,
-            AxisName_Vertical,
-            AxisName_LeftStickHorizontal,
-            AxisName_LeftStickVertical,
-            AxisName_RightStickHorizontal,
-            AxisName_RightStickVertical
-        };        
 
         private LinkedList<KeyListenerItem> items = new LinkedList<KeyListenerItem>();
         [SerializeField]
@@ -117,6 +118,19 @@ namespace Ballance2.Services.InputManager
         /// </summary>
         public bool AllowMultipleKey = false;
 
+        public KeyListener()
+        {
+            currentGamepad = Gamepad.current;
+            currentJoystick = Joystick.current;
+            if (currentJoystick != null)
+            {
+                currentJoystickDpad = currentJoystick.children.FirstOrDefault(t => t is DpadControl) as DpadControl;
+                currentJoystickRightStickAxisY = currentJoystick.children.FirstOrDefault(t => t.path.EndsWith("rz")) as AxisControl;
+                var buttonControls = currentJoystick.children.Where(t => t is ButtonControl).Cast<ButtonControl>().ToArray();
+                currentJoystickRightStickButton2 = buttonControls.Skip(1).FirstOrDefault();
+                currentJoystickRightStickButton4 = buttonControls.Skip(3).FirstOrDefault();
+            }
+        }
         /// <summary>
         /// 重新发送当前已按下的按键事件
         /// </summary>
@@ -236,7 +250,7 @@ namespace Ballance2.Services.InputManager
         {
             items.Clear();
         }
-        
+
         private void Update()
         {
             if (isListenKey)
@@ -246,8 +260,31 @@ namespace Ballance2.Services.InputManager
                     return;
                 if (axisDelegate != null)
                 {
-                    foreach (var asixName in axisNames)
-                        axisDelegate(asixName, Input.GetAxisRaw(asixName));
+                    if (currentGamepad != null)
+                    {
+                        axisDelegate(AxisName_Horizontal, currentGamepad.dpad.x.value);
+                        axisDelegate(AxisName_Vertical, currentGamepad.dpad.y.value);
+                        axisDelegate(AxisName_LeftStickHorizontal, currentGamepad.leftStick.x.value);
+                        axisDelegate(AxisName_LeftStickVertical, currentGamepad.leftStick.y.value);
+                        axisDelegate(AxisName_RightStickHorizontal, currentGamepad.rightStick.x.value);
+                        axisDelegate(AxisName_RightStickVertical, currentGamepad.rightStick.y.value);
+                    }
+                    else if (currentJoystick != null)
+                    {
+                        axisDelegate(AxisName_LeftStickHorizontal, currentJoystick.stick.x.value);
+                        axisDelegate(AxisName_LeftStickVertical, currentJoystick.stick.y.value);
+                        if (currentJoystickDpad != null)
+                        {
+                            axisDelegate(AxisName_Horizontal, currentJoystickDpad.x.value);
+                            axisDelegate(AxisName_Vertical, currentJoystickDpad.y.value);
+                        }
+                        if (currentJoystickRightStickButton2 != null)
+                            axisDelegate(AxisName_RightStickHorizontal, currentJoystickRightStickButton2.isPressed ? 1 : 0);
+                        if (currentJoystickRightStickButton4 != null)
+                            axisDelegate(AxisName_RightStickHorizontal, currentJoystickRightStickButton4.isPressed ? -1 : 0);
+                        if (currentJoystickRightStickAxisY != null)
+                            axisDelegate(AxisName_RightStickVertical, currentJoystickRightStickAxisY.value);
+                    }
                 }
                 //逆序遍历链表。后添加的按键事件最先处理
                 LinkedListNode<KeyListenerItem> cur = items.Last;
