@@ -75,9 +75,6 @@ namespace Ballance2.Entry
 #if UNITY_ANDROID
     private bool GlobalGamePermissionTipDialogClosed = false;
 #endif
-#if UNITY_ANDROID || UNITY_IOS
-    private bool GlobalGameUserAgreementTipDialogClosed = false;
-#endif
     public GameObject GlobalGamePermissionTipDialog = null;
     public GameObject GlobalGameUserAgreementTipDialog = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
@@ -111,25 +108,6 @@ namespace Ballance2.Entry
     }
 
     #region 用户许可相关
-
-
-#if UNITY_ANDROID || UNITY_IOS
-    /// <summary>
-    /// 显示许可对话框
-    /// </summary>
-    /// <returns></returns>
-    private bool ShowUserArgeement()
-    {
-      if (PlayerPrefs.GetInt("UserAgreementAgreed", 0) == 0)
-      {
-        GlobalGameUserAgreementTipDialog.SetActive(true);
-        return true;
-      } else {
-        GlobalGameUserAgreementTipDialogClosed = true;
-        return false;
-      }
-    }
-#endif
     /// <summary>
     /// 检查android权限是否申请
     /// </summary>
@@ -143,17 +121,6 @@ namespace Ballance2.Entry
       return false;
     }
 
-    /// <summary>
-    /// 用户同意许可
-    /// </summary>
-    public void ArgeedUserArgeement()
-    {
-      PlayerPrefs.SetInt("UserAgreementAgreed", 1);
-      
-#if UNITY_ANDROID || UNITY_IOS
-      GlobalGameUserAgreementTipDialogClosed = true;
-#endif
-    }
     /// <summary>
     /// 请求安卓权限
     /// </summary>
@@ -181,9 +148,7 @@ namespace Ballance2.Entry
     /// </summary>
     public void DisallowAndroidPermission()
     {
-#if UNITY_ANDROID
-      GlobalGameUserAgreementTipDialogClosed = true;
-#endif
+
     }
 
     #endregion
@@ -233,15 +198,6 @@ namespace Ballance2.Entry
         GameGlobalIngameLoading.SetActive(true);
       }
 #endif
-#if UNITY_ANDROID || UNITY_IOS
-      if (ShowUserArgeement())
-      {
-        GameGlobalIngameLoading.SetActive(false);
-        yield return new WaitUntil(() => GlobalGameUserAgreementTipDialogClosed);
-        GameGlobalIngameLoading.SetActive(true);
-      }
-#endif
-
       GameErrorChecker.SetGameErrorUI(GameGlobalErrorUI);
       GameSystemInit.FillStartParameters(this);
 
