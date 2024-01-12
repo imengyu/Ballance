@@ -8,6 +8,7 @@ using Ballance2.Services.Debug;
 using Ballance2.UI.Utils;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -101,7 +102,7 @@ namespace Ballance2.UI.Core
         escBackId = uIManager.WaitKey(KeyCode.Escape, false, () =>
         {
           uIManager.BackPreviusPage();
-        });
+        },GamepadButton.B);
       }
     }
 

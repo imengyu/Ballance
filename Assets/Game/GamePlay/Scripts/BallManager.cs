@@ -11,6 +11,7 @@ using Ballance2.Utils;
 using BallancePhysics.Wapper;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem.LowLevel;
 using static Ballance2.Services.GameManager;
 
 namespace Ballance2.Game.GamePlay
@@ -273,7 +274,7 @@ namespace Ballance2.Game.GamePlay
                         return;
                     camRotateLock = true;
                     GameTimer.Delay(0.5F, () => camRotateLock = false);
-                    
+
                     if (value > 0)
                     {
                         if (CanControllCamera)
@@ -317,15 +318,15 @@ namespace Ballance2.Game.GamePlay
             keyListener = KeyListener.Get(gameObject);
             keyListener.DisableWhenUIFocused = false;
             keyListener.ClearKeyListen();
-            keyListener.AddKeyListen(keyFront, _UpArrow_Key);
-            keyListener.AddKeyListen(keyBack, _DownArrow_Key);
+            keyListener.AddKeyListen(keyFront, _UpArrow_Key, GamepadButton.DpadUp);
+            keyListener.AddKeyListen(keyBack, _DownArrow_Key, GamepadButton.DpadDown);
             keyListener.AddKeyListen(keyUp, _Up_Key);
             keyListener.AddKeyListen(keyDown, _Down_Key);
-            keyListener.AddKeyListen(keyUpCamera, _Space_Key);            
+            keyListener.AddKeyListen(keyUpCamera, _Space_Key);
             keyListener.AddKeyListen(keyRoateCamera, _Shift_Key);
             keyListener.AddKeyListen(keyRoateCamera2, _Shift_Key);
-            keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
-            keyListener.AddKeyListen(keyRight, _RightArrow_Key);
+            keyListener.AddKeyListen(keyLeft, _LeftArrow_Key, GamepadButton.DpadLeft);
+            keyListener.AddKeyListen(keyRight, _RightArrow_Key, GamepadButton.DpadRight);
             keyListener.SetAxisListen(_AxisListen);
 
             //测试按扭

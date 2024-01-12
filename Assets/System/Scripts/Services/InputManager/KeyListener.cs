@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -43,8 +44,7 @@ namespace Ballance2.Services.InputManager
         private Gamepad currentGamepad;
         private Joystick currentJoystick;
         private DpadControl currentJoystickDpad;
-        private ButtonControl currentJoystickRightStickButton2;
-        private ButtonControl currentJoystickRightStickButton4;
+        private ButtonControl[] currentJoystickButtonControls;
         private AxisControl currentJoystickRightStickAxisY;
 
         /// <summary>
@@ -77,6 +77,7 @@ namespace Ballance2.Services.InputManager
             public bool downed = false;
             public KeyDelegate callBack;
             public int id;
+            public GamepadButton[] gamepadButtons;
         }
 
         public enum MovementType
@@ -121,13 +122,15 @@ namespace Ballance2.Services.InputManager
             currentJoystick = Joystick.current;
             if (currentJoystick != null)
             {
-                currentJoystickDpad = currentJoystick.children.FirstOrDefault(t => t is DpadControl) as DpadControl;
-                currentJoystickRightStickAxisY = currentJoystick.children.FirstOrDefault(t => t.path.EndsWith("rz")) as AxisControl;
-                var buttonControls = currentJoystick.children.Where(t => t is ButtonControl).Cast<ButtonControl>().ToArray();
-                currentJoystickRightStickButton2 = buttonControls.Skip(1).FirstOrDefault();
-                currentJoystickRightStickButton4 = buttonControls.Skip(3).FirstOrDefault();
+                var joystickChildren = currentJoystick.children;
+                currentJoystickDpad = joystickChildren.FirstOrDefault(t => t is DpadControl) as DpadControl;
+                currentJoystickRightStickAxisY = joystickChildren.FirstOrDefault(t => t.path.EndsWith("rz")) as AxisControl;
+                currentJoystickButtonControls = joystickChildren.Where(t => t is ButtonControl).Cast<ButtonControl>().ToArray();
+                if (currentJoystickButtonControls.Length < 15)
+                    currentJoystickButtonControls = currentJoystickButtonControls.Concat(new ButtonControl[15 - currentJoystickButtonControls.Length]).ToArray();
             }
         }
+
         /// <summary>
         /// 重新发送当前已按下的按键事件
         /// </summary>
@@ -139,7 +142,20 @@ namespace Ballance2.Services.InputManager
                 var item = cur.Value;
                 if (item.downed)
                 {
-                    if (Input.GetKey(item.key)) item.callBack(item.key, true);
+                    var isKeydown = Input.GetKeyDown(item.key);
+                    if (!isKeydown && item.gamepadButtons != null && item.gamepadButtons.Length > 0)
+                    {
+                        foreach (var button in item.gamepadButtons)
+                        {
+                            isKeydown = IsGamepadButtonPressed(button);
+                            if (isKeydown)
+                                break;
+                        }
+                    }
+                    if (isKeydown)
+                    {
+                        item.callBack(item.key, true);
+                    }
                     else
                     {
                         item.downed = false;
@@ -158,13 +174,14 @@ namespace Ballance2.Services.InputManager
         /// <param name="key">键值。</param>
         /// <param name="callBack">回调函数。</param>
         /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-        public int AddKeyListen(KeyCode key, KeyDelegate callBack)
+        public int AddKeyListen(KeyCode key, KeyDelegate callBack, params GamepadButton[] gamepadButtons)
         {
             listenKeyId++;
 
             KeyListenerItem item = new KeyListenerItem();
             item.callBack = callBack;
             item.key = key;
+            item.gamepadButtons = gamepadButtons;
             item.id = listenKeyId;
 
             //逆序遍历链表。添加按键至相同按键位置
@@ -223,6 +240,98 @@ namespace Ballance2.Services.InputManager
             items.Clear();
         }
 
+        private ButtonControl GetGamepadButtonControl(GamepadButton button)
+        {
+            if (currentGamepad != null)
+            {
+                switch (button)
+                {
+                    case GamepadButton.LeftStick:
+                        return currentGamepad.leftStickButton;
+                    case GamepadButton.RightStick:
+                        return currentGamepad.rightStickButton;
+                    case GamepadButton.LeftShoulder:
+                        return currentGamepad.leftShoulder;
+                    case GamepadButton.RightShoulder:
+                        return currentGamepad.leftShoulder;
+                    case GamepadButton.LeftTrigger:
+                        return currentGamepad.leftTrigger;
+                    case GamepadButton.RightTrigger:
+                        return currentGamepad.rightTrigger;
+                    case GamepadButton.DpadUp:
+                        return currentGamepad.dpad.up;
+                    case GamepadButton.DpadDown:
+                        return currentGamepad.dpad.down;
+                    case GamepadButton.DpadLeft:
+                        return currentGamepad.dpad.left;
+                    case GamepadButton.DpadRight:
+                        return currentGamepad.dpad.right;
+                    case GamepadButton.North:
+                        return currentGamepad.yButton;
+                    case GamepadButton.South:
+                        return currentGamepad.aButton;
+                    case GamepadButton.West:
+                        return currentGamepad.xButton;
+                    case GamepadButton.East:
+                        return currentGamepad.bButton;
+                    case GamepadButton.Select:
+                        return currentGamepad.selectButton;
+                    case GamepadButton.Start:
+                        return currentGamepad.startButton;
+                }
+            }
+            else if (currentJoystick != null)
+            {
+                if (currentJoystickButtonControls == null)
+                    return null;
+                switch (button)
+                {
+                    case GamepadButton.LeftStick:
+                        return currentJoystickButtonControls[13];
+                    case GamepadButton.RightStick:
+                        return currentJoystickButtonControls[14];
+                    case GamepadButton.LeftShoulder:
+                        return currentJoystickButtonControls[6];
+                    case GamepadButton.RightShoulder:
+                        return currentJoystickButtonControls[7];
+                    case GamepadButton.LeftTrigger:
+                        return currentJoystickButtonControls[8];
+                    case GamepadButton.RightTrigger:
+                        return currentJoystickButtonControls[9];
+                    case GamepadButton.DpadUp:
+                        return currentJoystickDpad?.up;
+                    case GamepadButton.DpadDown:
+                        return currentJoystickDpad?.down;
+                    case GamepadButton.DpadLeft:
+                        return currentJoystickDpad?.left;
+                    case GamepadButton.DpadRight:
+                        return currentJoystickDpad?.right;
+                    case GamepadButton.North:
+                        return currentJoystickButtonControls[5];
+                    case GamepadButton.South:
+                        return currentJoystickButtonControls[0];
+                    case GamepadButton.West:
+                        return currentJoystickButtonControls[3];
+                    case GamepadButton.East:
+                        return currentJoystickButtonControls[1];
+                    case GamepadButton.Select:
+                        return currentJoystickButtonControls[10];
+                    case GamepadButton.Start:
+                        return currentJoystickButtonControls[11];
+                }
+            }
+            return null;
+        }
+
+        private bool IsGamepadButtonPressed(GamepadButton button)
+        {
+            var buttonControl = GetGamepadButtonControl(button);
+            if (buttonControl == null)
+                return false;
+            Log.D(tag,buttonControl.displayName + ":" + buttonControl.isPressed);
+            return buttonControl.isPressed;
+        }
+
         private void Update()
         {
             if (isListenKey)
@@ -234,8 +343,6 @@ namespace Ballance2.Services.InputManager
                 {
                     if (currentGamepad != null)
                     {
-                        axisDelegate(AxisName_Horizontal, currentGamepad.dpad.x.value);
-                        axisDelegate(AxisName_Vertical, currentGamepad.dpad.y.value);
                         axisDelegate(AxisName_LeftStickHorizontal, currentGamepad.leftStick.x.value);
                         axisDelegate(AxisName_LeftStickVertical, currentGamepad.leftStick.y.value);
                         axisDelegate(AxisName_RightStickHorizontal, currentGamepad.rightStick.x.value);
@@ -245,15 +352,6 @@ namespace Ballance2.Services.InputManager
                     {
                         axisDelegate(AxisName_LeftStickHorizontal, currentJoystick.stick.x.value);
                         axisDelegate(AxisName_LeftStickVertical, currentJoystick.stick.y.value);
-                        if (currentJoystickDpad != null)
-                        {
-                            axisDelegate(AxisName_Horizontal, currentJoystickDpad.x.value);
-                            axisDelegate(AxisName_Vertical, currentJoystickDpad.y.value);
-                        }
-                        if (currentJoystickRightStickButton2 != null)
-                            axisDelegate(AxisName_RightStickHorizontal, currentJoystickRightStickButton2.isPressed ? 1 : 0);
-                        if (currentJoystickRightStickButton4 != null)
-                            axisDelegate(AxisName_RightStickHorizontal, currentJoystickRightStickButton4.isPressed ? -1 : 0);
                         if (currentJoystickRightStickAxisY != null)
                             axisDelegate(AxisName_RightStickVertical, currentJoystickRightStickAxisY.value);
                     }
@@ -264,7 +362,29 @@ namespace Ballance2.Services.InputManager
                 while (cur != null)
                 {
                     var item = cur.Value;
-                    if (Input.GetKeyDown(item.key) && !item.downed)
+                    var isKeydown = Input.GetKeyDown(item.key);
+                    var isKeyup = !isKeydown;
+
+                    if (!isKeydown && item.gamepadButtons != null && item.gamepadButtons.Length > 0)
+                    {
+                        foreach (var button in item.gamepadButtons)
+                        {
+                            isKeydown = IsGamepadButtonPressed(button);
+                            if (isKeydown)
+                                break;
+                        }
+                    }
+                    if (isKeyup && item.gamepadButtons != null && item.gamepadButtons.Length > 0)
+                    {
+                        foreach (var button in item.gamepadButtons)
+                        {
+                            isKeyup = !IsGamepadButtonPressed(button);
+                            if (!isKeyup)
+                                break;
+                        }
+                    }
+
+                    if (isKeydown && !item.downed)
                     {
                         if (!AllowMultipleKey && lastPressedKey == item.key)
                         {
@@ -284,7 +404,7 @@ namespace Ballance2.Services.InputManager
                                 lastPressedKey = item.key;
                         }
                     }
-                    if (Input.GetKeyUp(item.key) && item.downed)
+                    if (isKeyup && item.downed)
                     {
                         item.downed = false;
                         item.callBack(item.key, false);

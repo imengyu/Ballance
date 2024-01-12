@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Ballance2.Base;
 using Ballance2.Game.GamePlay.Balls;
 using Ballance2.Game.GamePlay.Other;
 using Ballance2.Game.GamePlay.Tranfo;
-using Ballance2.Game.LevelBuilder;
 using Ballance2.Game.Utils;
 using Ballance2.Menu;
 using Ballance2.Package;
@@ -13,6 +11,7 @@ using Ballance2.Utils;
 using BallancePhysics.Wapper;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Ballance2.Game.GamePlay
 {
@@ -110,7 +109,7 @@ namespace Ballance2.Game.GamePlay
         private int _HideBalloonEndTimerID = 0;
         //Used by Tutorial
         internal bool _ShouldStartByCustom = false;
-        private int[] _EscKeyIds = new int[0];
+        private int _EscKeyIds = 0;
 
         private void Awake()
         {
@@ -136,8 +135,7 @@ namespace Ballance2.Game.GamePlay
         {
             Log.D(TAG, "Destroy");
             if (GameUIManager.Instance != null)
-                foreach (var id in _EscKeyIds)
-                    GameUIManager.Instance.DeleteKeyListen(id);
+                GameUIManager.Instance.DeleteKeyListen(_EscKeyIds);
             GameManager.GameMediator?.UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart"); //取消注册全局事件
             this._DeleteEvents();
             this._DeleteCommands(); //删除指令
@@ -301,9 +299,8 @@ namespace Ballance2.Game.GamePlay
         }
         private void _InitKeyEvents()
         {
-            _EscKeyIds = new int[2];
             //ESC键
-            _EscKeyIds[0] = GameUIManager.Instance.ListenKey(KeyCode.Escape, (key, down) =>
+            _EscKeyIds = GameUIManager.Instance.ListenKey(KeyCode.Escape, (key, down) =>
             {
                 if (down
                   && this.CanEscPause
@@ -315,21 +312,7 @@ namespace Ballance2.Game.GamePlay
                     else
                         this.ResumeLevel();
                 }
-            });
-            //手柄菜单键
-            _EscKeyIds[1] = GameUIManager.Instance.ListenKey(KeyCode.Joystick1Button7, (key, down) =>
-            {
-                if (down
-                  && this.CanEscPause
-                  && this._BallBirthed
-                  && !this.CurrentLevelPass)
-                {
-                    if (this._IsGamePlaying)
-                        this.PauseLevel(true);
-                    else
-                        this.ResumeLevel();
-                }
-            });
+            }, GamepadButton.Start);
         }
         private void _InitSettings()
         {

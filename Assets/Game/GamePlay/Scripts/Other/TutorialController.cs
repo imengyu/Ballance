@@ -4,6 +4,7 @@ using Ballance2.Services;
 using Ballance2.Services.I18N;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 namespace Ballance2.Game.GamePlay.Other
@@ -45,7 +46,7 @@ namespace Ballance2.Game.GamePlay.Other
         private bool _TutorialShouldDisablePointDown = false;
         private bool _TutorialBallFinded = false;
         private bool _TutorialCamFinded = false;
-        private int[] _TutorialCurrWaitkey;
+        private int _TutorialCurrWaitkey;
         private RectTransform _TutorialUI = null;
         private Text _TutorialUIText = null;
         private Image _TutorialUIBg = null;
@@ -132,11 +133,10 @@ namespace Ballance2.Game.GamePlay.Other
                 GameTimer.Delay(1, () =>
                 {
                     //删除按键
-                    foreach (var item in _TutorialCurrWaitkey)
-                        if (item > 0)
-                        {
-                            GameUIManager.DeleteKeyListen(item);
-                        }
+                    if (_TutorialCurrWaitkey > 0)
+                    {
+                        GameUIManager.DeleteKeyListen(_TutorialCurrWaitkey);
+                    }
 
                     //重置恢复
                     GamePlayManager._ShouldStartByCustom = false;
@@ -190,8 +190,8 @@ namespace Ballance2.Game.GamePlay.Other
             if (!_Tutorial)
                 return;
 
-            int[] step1KeyReturn = new int[0];
-            int[] step1KeyQ = new int[0];
+            int step1KeyReturn = 0;
+            int step1KeyQ = 0;
 
             var funStepLock = false;
             var funQuitLock = false;
@@ -202,8 +202,7 @@ namespace Ballance2.Game.GamePlay.Other
                     funQuitLock = true;
                     GameSoundManager.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.Normal);
                     //按 q 退出
-                    foreach (var item in step1KeyReturn)
-                        GameUIManager.DeleteKeyListen(item);
+                    GameUIManager.DeleteKeyListen(step1KeyReturn);
                     HideTutorial();
                     //恢复球推动键
                     GamePlayManager.BallManager.KeyListener.IsListenKey = true;
@@ -332,17 +331,14 @@ namespace Ballance2.Game.GamePlay.Other
                     ShowTutorialText();
                 });
 
-                _TutorialCurrWaitkey = new int[2];
-                _TutorialCurrWaitkey[0] = GameUIManager.WaitKey(KeyCode.Return, true, funStep2);
-                _TutorialCurrWaitkey[1] = GameUIManager.WaitKey(KeyCode.JoystickButton0, true, funStep2);
+                _TutorialCurrWaitkey = GameUIManager.WaitKey(KeyCode.Return, true, funStep2, GamepadButton.A);
             };
             GameManager.VoidDelegate commonTurHide = null;
             GameManager.VoidDelegate funSeq = () =>
             {
                 GameSoundManager.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.Normal);
                 _TutorialUIButtonQuit.gameObject.SetActive(false);
-                foreach (var item in step1KeyQ)
-                    GameUIManager.DeleteKeyListen(item);
+                GameUIManager.DeleteKeyListen(step1KeyQ);
                 //恢复球推动键
                 GamePlayManager.BallManager.KeyListener.IsListenKey = true;
 
@@ -363,9 +359,7 @@ namespace Ballance2.Game.GamePlay.Other
                     _TutorialStep = 2;
                     ShowTutorialText();
 
-                    _TutorialCurrWaitkey = new int[2];
-                    _TutorialCurrWaitkey[0] = GameUIManager.WaitKey(KeyCode.Return, true, funStep1);
-                    _TutorialCurrWaitkey[1] = GameUIManager.WaitKey(KeyCode.JoystickButton0, true, funStep1);
+                    _TutorialCurrWaitkey = GameUIManager.WaitKey(KeyCode.Return, true, funStep1,GamepadButton.A);
                 });
 
                 //-移动箭头至指定位置
@@ -378,9 +372,7 @@ namespace Ballance2.Game.GamePlay.Other
                 GameManager.VoidDelegate commonTurReturn = () =>
                 {
                     GamePlayManager.PauseLevel(false);
-                    _TutorialCurrWaitkey = new int[2];
-                    _TutorialCurrWaitkey[0] = GameUIManager.WaitKey(KeyCode.Return, true, commonTurHide);
-                    _TutorialCurrWaitkey[1] = GameUIManager.WaitKey(KeyCode.JoystickButton0, true, commonTurHide);
+                    _TutorialCurrWaitkey = GameUIManager.WaitKey(KeyCode.Return, true, commonTurHide, GamepadButton.A);
                 };
                 GameManager.VoidDelegate commonTurTipSound = () =>
                 {
@@ -488,12 +480,8 @@ namespace Ballance2.Game.GamePlay.Other
             {
                 ShowTutorialText();
                 //步骤1，按 q 退出，按回车继续
-                step1KeyReturn = new int[2];
-                step1KeyReturn[0] = GameUIManager.WaitKey(KeyCode.Return, true, () => funSeq());
-                step1KeyReturn[1] = GameUIManager.WaitKey(KeyCode.JoystickButton0, true, () => funSeq());
-                step1KeyQ = new int[2];
-                step1KeyQ[0] = GameUIManager.WaitKey(KeyCode.Q, true, () => funQuit());
-                step1KeyQ[1] = GameUIManager.WaitKey(KeyCode.JoystickButton1, true, () => funQuit());
+                step1KeyReturn = GameUIManager.WaitKey(KeyCode.Return, true, () => funSeq(), GamepadButton.A);
+                step1KeyQ = GameUIManager.WaitKey(KeyCode.Q, true, () => funQuit(), GamepadButton.B);
             });
         }
 
