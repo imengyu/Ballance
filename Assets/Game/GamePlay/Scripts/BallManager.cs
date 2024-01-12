@@ -326,9 +326,7 @@ namespace Ballance2.Game.GamePlay
             keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
             keyListener.AddKeyListen(keyRight, _RightArrow_Key);
             keyListener.SetAxisListen(_AxisListen);
-            //检测到不支持触屏操作时，销毁屏幕键盘
-            if (!Input.touchSupported)
-                GamePlayUIControl.Instance.DestroyMobileKeyPad();
+
             //测试按扭
             if (GameManager.DebugMode)
             {

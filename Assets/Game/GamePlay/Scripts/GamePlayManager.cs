@@ -138,7 +138,7 @@ namespace Ballance2.Game.GamePlay
             if (GameUIManager.Instance != null)
                 foreach (var id in _EscKeyIds)
                     GameUIManager.Instance.DeleteKeyListen(id);
-            GameManager.GameMediator.UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart"); //取消注册全局事件
+            GameManager.GameMediator?.UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart"); //取消注册全局事件
             this._DeleteEvents();
             this._DeleteCommands(); //删除指令
         }
