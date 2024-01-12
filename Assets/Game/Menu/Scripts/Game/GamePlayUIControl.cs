@@ -91,7 +91,7 @@ namespace Ballance2.Menu
       this.DestroyMobileKeyPad();
     }
 
-    internal void DestroyMobileKeyPad() {
+    private void DestroyMobileKeyPad() {
       //销毁键盘
       if (_CurrentMobileKeyPad != null) {
         Destroy(_CurrentMobileKeyPad.gameObject);
@@ -118,8 +118,8 @@ namespace Ballance2.Menu
 
       //创建键盘
       _CurrentMobileKeyPad = GameUIManager.Instance.InitViewToCanvas(keyPad.prefab, "GameMobileKeypad", false);
-
-      if (!_CurrentMobileKeyPadShow)
+      //当屏幕键盘不显示，或者当前设备不支持触摸操作时。取消激活屏幕键盘
+      if (!_CurrentMobileKeyPadShow || !Input.touchSupported)
         _CurrentMobileKeyPad.gameObject.SetActive(false);
     }
 

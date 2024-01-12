@@ -4,6 +4,7 @@ using Ballance2.Services;
 using Ballance2.Services.I18N;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
@@ -115,8 +116,8 @@ namespace Ballance2.Menu
 
       Panel.SetActive(true);
     
-      EscKeyID = GameUIManager.Instance.WaitKey(KeyCode.Escape, false, Skip);
-      ReturnKeyID = GameUIManager.Instance.WaitKey(KeyCode.Return, false, Skip);
+      EscKeyID = GameUIManager.Instance.WaitKey(KeyCode.Escape, false, Skip, GamepadButton.B);
+      ReturnKeyID = GameUIManager.Instance.WaitKey(KeyCode.Return, false, Skip, GamepadButton.A);
 
       yield return new WaitForSeconds(1.7f);
       if (_Skip) 

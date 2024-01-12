@@ -5,6 +5,7 @@ using Ballance2.Package;
 using Ballance2.Services;
 using BallancePhysics.Wapper;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Ballance2.Game.GamePlay
 {
@@ -65,7 +66,7 @@ namespace Ballance2.Game.GamePlay
             else
               ResumeLevel();
           }
-        });
+        },GamepadButton.Start);
         return false;
       });
     }

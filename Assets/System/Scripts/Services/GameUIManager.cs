@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using static Ballance2.Services.GameManager;
 
@@ -245,7 +246,7 @@ namespace Ballance2.Services
     /// <param name="pressedOrReleased">如果为true，则侦听按下事件，否则侦听松开事件</param>
     /// <param name="callback">回调</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听</returns>
-    public int WaitKey(KeyCode code, bool pressedOrReleased, VoidDelegate callback)
+    public int WaitKey(KeyCode code, bool pressedOrReleased, VoidDelegate callback,params GamepadButton[] gamepadButtons)
     {
       int id = 0;
       id = keyListener.AddKeyListen(code, (key, down) =>
@@ -256,7 +257,7 @@ namespace Ballance2.Services
           if(callback != null) 
             callback();
         }
-      });
+      }, gamepadButtons);
       return id;
     }
 
@@ -266,9 +267,9 @@ namespace Ballance2.Services
     /// <param name="key">键值</param>
     /// <param name="callBack">回调函数</param>
     /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听</returns>
-    public int ListenKey(KeyCode key, KeyListener.KeyDelegate callBack)
+    public int ListenKey(KeyCode key, KeyListener.KeyDelegate callBack, params GamepadButton[] gamepadButtons)
     {
-      return keyListener.AddKeyListen(key, callBack);
+      return keyListener.AddKeyListen(key, callBack, gamepadButtons);
     }
 
     /// <summary>

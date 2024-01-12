@@ -8,6 +8,7 @@ using Ballance2.Services.Debug;
 using Ballance2.UI.Utils;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -84,7 +85,6 @@ namespace Ballance2.UI.Core
       gameObject.SetActive(true);
       OnShow?.Invoke(LastOptions);
 
-#if UNITY_EDITOR || UNITY_STANDALONE
       //选择默认按扭
       if(defaultSelection != null) {
         //默认选择的时候不要播放声音
@@ -95,13 +95,13 @@ namespace Ballance2.UI.Core
         if(sound != null)
           sound.enabled = true;
       }
-#endif
+
       if (CanEscBack)
       {
         escBackId = uIManager.WaitKey(KeyCode.Escape, false, () =>
         {
           uIManager.BackPreviusPage();
-        });
+        }, GamepadButton.B);
       }
     }
 

@@ -11,6 +11,8 @@ using Ballance2.Utils;
 using BallancePhysics.Wapper;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using static Ballance2.Services.GameManager;
 
 namespace Ballance2.Game.GamePlay
@@ -21,10 +23,7 @@ namespace Ballance2.Game.GamePlay
     public class BallManager : MonoBehaviour
     {
         private const string TAG = "BallManager";
-        //视角切换锁
-        private bool camRotateLock = false;
         //上次移动球的类型
-        private KeyListener.MovementType lastMovementType = KeyListener.MovementType.Keyboard;
         public BallLightningSphere _BallLightningSphere;
         public GameObject _BallWood;
         public GameObject _BallStone;
@@ -176,158 +175,41 @@ namespace Ballance2.Game.GamePlay
             _InitKeys();
         }
 
-        private void _AxisListen(string asixName, float value)
-        {
-            KeyListener.MovementType currentMovementType = KeyListener.MovementType.Keyboard;
-            switch (asixName)
-            {
-                case KeyListener.AxisName_Horizontal:
-                case KeyListener.AxisName_Vertical:
-                    currentMovementType = KeyListener.MovementType.DPad;
-                    break;
-                case KeyListener.AxisName_LeftStickHorizontal:
-                case KeyListener.AxisName_LeftStickVertical:
-                    currentMovementType = KeyListener.MovementType.LeftStick;
-                    break;
-            }
-            //检测到手柄操作，销毁屏幕键盘
-            GamePlayUIControl.Instance.DestroyMobileKeyPad();
-            switch (asixName)
-            {
-                //控制左右
-                case KeyListener.AxisName_Horizontal:
-                case KeyListener.AxisName_LeftStickHorizontal:
-                    if (Math.Abs(value) < 0.3)
-                    {
-                        if (lastMovementType == currentMovementType)
-                        {
-                            if (KeyStateLeft || KeyStateRight)
-                            {
-                                KeyStateLeft = false;
-                                KeyStateRight = false;
-                                FlushBallPush();
-                            }
-                        }
-                        return;
-                    }
-                    lastMovementType = currentMovementType;
-                    if (value > 0)
-                    {
-                        if (KeyStateLeft || !KeyStateRight)
-                        {
-                            KeyStateLeft = false;
-                            KeyStateRight = true;
-                            FlushBallPush();
-                        }
-                    }
-                    else
-                    {
-                        if (!KeyStateLeft || KeyStateRight)
-                        {
-                            KeyStateLeft = true;
-                            KeyStateRight = false;
-                            FlushBallPush();
-                        }
-                    }
-                    break;
-                //控制前后
-                case KeyListener.AxisName_Vertical:
-                case KeyListener.AxisName_LeftStickVertical:
-                    if (Math.Abs(value) < 0.3)
-                    {
-                        if (lastMovementType == currentMovementType)
-                        {
-                            if (KeyStateForward || KeyStateBack)
-                            {
-                                KeyStateForward = false;
-                                KeyStateBack = false;
-                                FlushBallPush();
-                            }
-                        }
-                        return;
-                    }
-                    lastMovementType = currentMovementType;
-                    if (value > 0)
-                    {
-                        if (!KeyStateForward || KeyStateBack)
-                        {
-                            KeyStateForward = true;
-                            KeyStateBack = false;
-                            FlushBallPush();
-                        }
-                    }
-                    else
-                    {
-                        if (KeyStateForward || !KeyStateBack)
-                        {
-                            KeyStateForward = false;
-                            KeyStateBack = true;
-                            FlushBallPush();
-                        }
-                    }
-                    break;
-                //右摇杆左右切换摄像机视角
-                case KeyListener.AxisName_RightStickHorizontal:
-
-                    if (Math.Abs(value) < 0.5)
-                        return;
-                    if (camRotateLock)
-                        return;
-                    camRotateLock = true;
-                    GameTimer.Delay(0.5F, () => camRotateLock = false);
-                    
-                    if (value > 0)
-                    {
-                        if (CanControllCamera)
-                        {
-                            if (reverseRotation)
-                                GamePlayManager.Instance.CamManager.RotateRight();
-                            else
-                                GamePlayManager.Instance.CamManager.RotateLeft();
-                        }
-                    }
-                    else
-                    {
-                        if (CanControllCamera)
-                        {
-                            if (reverseRotation)
-                                GamePlayManager.Instance.CamManager.RotateLeft();
-                            else
-                                GamePlayManager.Instance.CamManager.RotateRight();
-                        }
-                    }
-                    break;
-                //右摇杆上下切换俯瞰视角
-                case KeyListener.AxisName_RightStickVertical:
-                    if (Math.Abs(value) < 0.5)
-                        return;
-                    if (camRotateLock)
-                        return;
-                    camRotateLock = true;
-                    GameTimer.Delay(0.5F, () => camRotateLock = false);
-                    if (CanControllCamera)
-                    {
-                        GamePlayManager.Instance.CamManager.RotateUp(!GamePlayManager.Instance.CamManager.CamIsSpaced);
-                    }
-                    break;
-            }
-        }
-
         private void _InitKeys()
         {
             //初始化键盘侦听
             keyListener = KeyListener.Get(gameObject);
             keyListener.DisableWhenUIFocused = false;
             keyListener.ClearKeyListen();
-            keyListener.AddKeyListen(keyFront, _UpArrow_Key);
-            keyListener.AddKeyListen(keyBack, _DownArrow_Key);
-            keyListener.AddKeyListen(keyUp, _Up_Key);
-            keyListener.AddKeyListen(keyDown, _Down_Key);
-            keyListener.AddKeyListen(keyUpCamera, _Space_Key);            
-            keyListener.AddKeyListen(keyRoateCamera, keyRoateCamera2, _Shift_Key);            
-            keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
-            keyListener.AddKeyListen(keyRight, _RightArrow_Key);
-            keyListener.SetAxisListen(_AxisListen);
+            keyListener.AddKeyListen(keyFront, _UpArrow_Key, GamepadButton.DpadUp);
+            keyListener.AddKeyListen(keyBack, _DownArrow_Key, GamepadButton.DpadDown);
+            keyListener.AddKeyListen(keyUp, _Up_Key, GamepadButton.LeftTrigger);
+            keyListener.AddKeyListen(keyDown, _Down_Key, GamepadButton.RightTrigger);
+            keyListener.AddKeyListen(keyUpCamera, _Space_Key, GamepadButton.Y);
+            keyListener.AddKeyListen(keyRoateCamera, _Shift_Key);
+            keyListener.AddKeyListen(keyRoateCamera2, _Shift_Key);
+            keyListener.AddKeyListen(KeyCode.PageUp, (key, down) =>
+            {
+                if (down && CanControllCamera)
+                {
+                    if (reverseRotation)
+                        GamePlayManager.Instance.CamManager.RotateLeft();
+                    else
+                        GamePlayManager.Instance.CamManager.RotateRight();
+                }
+            }, GamepadButton.LeftShoulder);
+            keyListener.AddKeyListen(KeyCode.PageDown, (key, down) =>
+            {
+                if (down && CanControllCamera)
+                {
+                    if (reverseRotation)
+                        GamePlayManager.Instance.CamManager.RotateRight();
+                    else
+                        GamePlayManager.Instance.CamManager.RotateLeft();
+                }
+            }, GamepadButton.RightShoulder);
+            keyListener.AddKeyListen(keyLeft, _LeftArrow_Key, GamepadButton.DpadLeft);
+            keyListener.AddKeyListen(keyRight, _RightArrow_Key, GamepadButton.DpadRight);
 
             //测试按扭
             if (GameManager.DebugMode)
@@ -1175,19 +1057,16 @@ namespace Ballance2.Game.GamePlay
 
         private void _UpArrow_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             KeyStateForward = down;
             FlushBallPush();
         }
         private void _DownArrow_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             KeyStateBack = down;
             FlushBallPush();
         }
         private void _RightArrow_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             _RightPressed = down;
             if (down)
             {
@@ -1213,7 +1092,6 @@ namespace Ballance2.Game.GamePlay
         }
         private void _LeftArrow_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             _LeftPressed = down;
             if (down)
             {
@@ -1239,7 +1117,6 @@ namespace Ballance2.Game.GamePlay
         }
         private void _Down_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             if (GameManager.DebugMode)
             {
                 KeyStateDown = down;
@@ -1248,7 +1125,6 @@ namespace Ballance2.Game.GamePlay
         }
         private void _Up_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             if (GameManager.DebugMode)
             {
                 KeyStateUp = down;
@@ -1257,7 +1133,6 @@ namespace Ballance2.Game.GamePlay
         }
         private void _Space_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             if (CanControllCamera)
             {
                 GamePlayManager.Instance.CamManager.RotateUp(down);
@@ -1265,7 +1140,6 @@ namespace Ballance2.Game.GamePlay
         }
         private void _Shift_Key(KeyCode key, bool down)
         {
-            lastMovementType = KeyListener.MovementType.Keyboard;
             ShiftPressed = down;
             if (_LeftPressed)
             {
