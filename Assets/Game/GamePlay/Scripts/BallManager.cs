@@ -190,8 +190,6 @@ namespace Ballance2.Game.GamePlay
                     currentMovementType = KeyListener.MovementType.LeftStick;
                     break;
             }
-            //检测到手柄操作，销毁屏幕键盘
-            GamePlayUIControl.Instance.DestroyMobileKeyPad();
             switch (asixName)
             {
                 //控制左右
@@ -328,7 +326,9 @@ namespace Ballance2.Game.GamePlay
             keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
             keyListener.AddKeyListen(keyRight, _RightArrow_Key);
             keyListener.SetAxisListen(_AxisListen);
-
+            //检测到不支持触屏操作时，销毁屏幕键盘
+            if (!Input.touchSupported)
+                GamePlayUIControl.Instance.DestroyMobileKeyPad();
             //测试按扭
             if (GameManager.DebugMode)
             {
