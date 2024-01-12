@@ -73,11 +73,8 @@ namespace Ballance2.Services.InputManager
 
         private class KeyListenerItem
         {
-            public KeyCode key2;
             public KeyCode key;
             public bool downed = false;
-            public bool downed2 = false;
-            public bool has2key = false;
             public KeyDelegate callBack;
             public int id;
         }
@@ -140,20 +137,6 @@ namespace Ballance2.Services.InputManager
             while (cur != null)
             {
                 var item = cur.Value;
-                if (item.has2key)
-                {
-                    if (item.downed2)
-                    {
-                        if (Input.GetKey(item.key2)) item.callBack(item.key2, true);
-                        else
-                        {
-                            item.downed2 = false;
-                            item.callBack(item.key2, false);
-                        }
-                    }
-                    else
-                        item.callBack(item.key2, false);
-                }
                 if (item.downed)
                 {
                     if (Input.GetKey(item.key)) item.callBack(item.key, true);
@@ -170,21 +153,18 @@ namespace Ballance2.Services.InputManager
         }
 
         /// <summary>
-        /// 添加侦听器侦听键，可以一次监听两个键。
+        /// 添加侦听器侦听键
         /// </summary>
         /// <param name="key">键值。</param>
-        /// <param name="key2">键值2。</param>
         /// <param name="callBack">回调函数。</param>
         /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-        public int AddKeyListen(KeyCode key, KeyCode key2, KeyDelegate callBack)
+        public int AddKeyListen(KeyCode key, KeyDelegate callBack)
         {
             listenKeyId++;
 
             KeyListenerItem item = new KeyListenerItem();
             item.callBack = callBack;
             item.key = key;
-            item.key2 = key2;
-            item.has2key = key2 != KeyCode.None;
             item.id = listenKeyId;
 
             //逆序遍历链表。添加按键至相同按键位置
@@ -211,14 +191,6 @@ namespace Ballance2.Services.InputManager
         {
             this.axisDelegate = axisDelegate;
         }
-
-        /// <summary>
-        /// 添加侦听器侦听键。
-        /// </summary>
-        /// <param name="key">键值。</param>
-        /// <param name="callBack">回调函数。</param>
-        /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听器</returns>
-        public int AddKeyListen(KeyCode key, KeyDelegate callBack) { return AddKeyListen(key, KeyCode.None, callBack); }
 
         /// <summary>
         /// 删除指定侦听器。
@@ -292,20 +264,6 @@ namespace Ballance2.Services.InputManager
                 while (cur != null)
                 {
                     var item = cur.Value;
-                    if (item.has2key)
-                    {
-                        if (Input.GetKeyDown(item.key2) && !item.downed)
-                        {
-                            item.downed2 = true;
-                            item.callBack(item.key2, true);
-                        }
-                        if (Input.GetKeyUp(item.key2) && item.downed)
-                        {
-                            item.downed2 = false;
-                            item.callBack(item.key2, false);
-                        }
-                    }
-
                     if (Input.GetKeyDown(item.key) && !item.downed)
                     {
                         if (!AllowMultipleKey && lastPressedKey == item.key)

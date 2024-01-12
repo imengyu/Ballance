@@ -461,7 +461,7 @@ namespace Ballance2.Game.GamePlay
         }
         private void _DeleteEvents()
         {
-            GameManager.GameMediator.UnRegisterEventEmitter("GamePlay");
+            GameManager.GameMediator?.UnRegisterEventEmitter("GamePlay");
         }
 
         #endregion

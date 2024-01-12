@@ -322,7 +322,8 @@ namespace Ballance2.Game.GamePlay
             keyListener.AddKeyListen(keyUp, _Up_Key);
             keyListener.AddKeyListen(keyDown, _Down_Key);
             keyListener.AddKeyListen(keyUpCamera, _Space_Key);            
-            keyListener.AddKeyListen(keyRoateCamera, keyRoateCamera2, _Shift_Key);            
+            keyListener.AddKeyListen(keyRoateCamera, _Shift_Key);
+            keyListener.AddKeyListen(keyRoateCamera2, _Shift_Key);
             keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
             keyListener.AddKeyListen(keyRight, _RightArrow_Key);
             keyListener.SetAxisListen(_AxisListen);
