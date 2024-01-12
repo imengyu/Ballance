@@ -72,11 +72,6 @@ namespace Ballance2.Entry
     public GameGlobalErrorUI GameGlobalErrorUI = null;
     public Text GameDebugBeginStats;
 
-#if UNITY_ANDROID
-    private bool GlobalGamePermissionTipDialogClosed = false;
-#endif
-    public GameObject GlobalGamePermissionTipDialog = null;
-    public GameObject GlobalGameUserAgreementTipDialog = null;
     public GlobalGameScriptErrDialog GlobalGameScriptErrDialog = null;
     public GameObject GameGlobalIngameLoading = null;
 
@@ -107,30 +102,6 @@ namespace Ballance2.Entry
       UnityEngine.Object.Destroy(Instance.gameObject);
     }
 
-    #region 用户许可相关
-    /// <summary>
-    /// 检查android权限是否申请
-    /// </summary>
-    /// <returns></returns>
-    private bool TestAndroidPermission()
-    {
-#if UNITY_ANDROID
-      //if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
-      //  return true;
-#endif
-      return false;
-    }
-
-    /// <summary>
-    /// 请求安卓权限
-    /// </summary>
-    public void RequestAndroidPermission()
-    {
-#if UNITY_ANDROID
-      //Permission.RequestUserPermission(Permission.ExternalStorageWrite);
-      GlobalGamePermissionTipDialogClosed = true;
-#endif
-    }
     /// <summary>
     /// 退出游戏
     /// </summary>
@@ -143,15 +114,6 @@ namespace Ballance2.Entry
       Application.Quit();
 #endif
     }
-    /// <summary>
-    /// 不同意Android权限
-    /// </summary>
-    public void DisallowAndroidPermission()
-    {
-
-    }
-
-    #endregion
 
     private void InitCommandLine()
     {
@@ -188,16 +150,6 @@ namespace Ballance2.Entry
       GameSystem.RegSysHandler(GameSystemInit.GetSysHandler());
       GameSystem.PreInit();
 
-#if UNITY_ANDROID
-      if (TestAndroidPermission())
-      {
-        GlobalGamePermissionTipDialog.SetActive(true);
-
-        GameGlobalIngameLoading.SetActive(false);
-        yield return new WaitUntil(() => GlobalGamePermissionTipDialogClosed);
-        GameGlobalIngameLoading.SetActive(true);
-      }
-#endif
       GameErrorChecker.SetGameErrorUI(GameGlobalErrorUI);
       GameSystemInit.FillStartParameters(this);
 

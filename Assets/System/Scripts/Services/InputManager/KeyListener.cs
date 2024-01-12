@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
-using static UnityEditor.Progress;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -224,7 +223,7 @@ namespace Ballance2.Services.InputManager
                     case GamepadButton.LeftShoulder:
                         return currentGamepad.leftShoulder;
                     case GamepadButton.RightShoulder:
-                        return currentGamepad.leftShoulder;
+                        return currentGamepad.rightShoulder;
                     case GamepadButton.LeftTrigger:
                         return currentGamepad.leftTrigger;
                     case GamepadButton.RightTrigger:
@@ -317,7 +316,7 @@ namespace Ballance2.Services.InputManager
             Vector2 leftStickValue = default;
             if (currentGamepad != null)
             {
-                leftStickValue = currentJoystick.stick.value;
+                leftStickValue = currentGamepad.leftStick.value;
             }
             else if (currentJoystick != null)
             {

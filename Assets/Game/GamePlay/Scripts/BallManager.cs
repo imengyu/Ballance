@@ -197,7 +197,7 @@ namespace Ballance2.Game.GamePlay
                     else
                         GamePlayManager.Instance.CamManager.RotateRight();
                 }
-            }, GamepadButton.X);
+            }, GamepadButton.LeftShoulder);
             keyListener.AddKeyListen(KeyCode.PageDown, (key, down) =>
             {
                 if (down && CanControllCamera)
@@ -207,7 +207,7 @@ namespace Ballance2.Game.GamePlay
                     else
                         GamePlayManager.Instance.CamManager.RotateLeft();
                 }
-            }, GamepadButton.B);
+            }, GamepadButton.RightShoulder);
             keyListener.AddKeyListen(keyLeft, _LeftArrow_Key, GamepadButton.DpadLeft);
             keyListener.AddKeyListen(keyRight, _RightArrow_Key, GamepadButton.DpadRight);
 
