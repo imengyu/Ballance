@@ -101,7 +101,7 @@ namespace Ballance2.UI.Core
         escBackId = uIManager.WaitKey(KeyCode.Escape, false, () =>
         {
           uIManager.BackPreviusPage();
-        },GamepadButton.B);
+        }, GamepadButton.B);
       }
     }
 
