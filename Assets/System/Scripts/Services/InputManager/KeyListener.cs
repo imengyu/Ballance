@@ -121,16 +121,7 @@ namespace Ballance2.Services.InputManager
                 var item = cur.Value;
                 if (item.downed)
                 {
-                    var isKeydown = Input.GetKeyDown(item.key);
-                    if (!isKeydown && item.gamepadButtons != null && item.gamepadButtons.Length > 0)
-                    {
-                        foreach (var button in item.gamepadButtons)
-                        {
-                            isKeydown = IsGamepadButtonPressed(button);
-                            if (isKeydown)
-                                break;
-                        }
-                    }
+                    var isKeydown = IsKeyOrGamepadButtonsDown(item);
                     if (isKeydown)
                     {
                         item.callBack(item.key, true);
@@ -297,7 +288,7 @@ namespace Ballance2.Services.InputManager
         {
             var isKeydown = false;
             //先判断键盘
-            isKeydown = Input.GetKeyDown(item.key);
+            isKeydown = Input.GetKey(item.key);
             if (isKeydown)
                 return isKeydown;
             //再判断手柄按键
@@ -366,6 +357,7 @@ namespace Ballance2.Services.InputManager
 
                     if (isKeydown && !item.downed)
                     {
+                        Log.D(tag, item.key + " down");
                         if (!AllowMultipleKey && lastPressedKey == item.key)
                         {
                             //相同的按键，并且不允许发送相同按键，则不发送按键
@@ -386,6 +378,7 @@ namespace Ballance2.Services.InputManager
                     }
                     if (!isKeydown && item.downed)
                     {
+                        Log.D(tag, item.key + " up");
                         item.downed = false;
                         item.callBack(item.key, false);
                     }
