@@ -66,7 +66,7 @@ namespace Ballance2.Game.GamePlay
             else
               ResumeLevel();
           }
-        },GamepadButton.Start);
+        },GamepadButton.Select,GamepadButton.Start);
         return false;
       });
     }

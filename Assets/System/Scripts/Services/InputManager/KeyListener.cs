@@ -357,7 +357,6 @@ namespace Ballance2.Services.InputManager
 
                     if (isKeydown && !item.downed)
                     {
-                        Log.D(tag, item.key + " down");
                         if (!AllowMultipleKey && lastPressedKey == item.key)
                         {
                             //相同的按键，并且不允许发送相同按键，则不发送按键
@@ -378,7 +377,6 @@ namespace Ballance2.Services.InputManager
                     }
                     if (!isKeydown && item.downed)
                     {
-                        Log.D(tag, item.key + " up");
                         item.downed = false;
                         item.callBack(item.key, false);
                     }
