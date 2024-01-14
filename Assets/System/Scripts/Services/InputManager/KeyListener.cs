@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -73,6 +74,11 @@ namespace Ballance2.Services.InputManager
             public KeyDelegate callBack;
             public int id;
             public GamepadButton[] gamepadButtons;
+
+            public bool ContainsGamepadButton(GamepadButton gamepadButton)
+            {
+                return Array.IndexOf(gamepadButtons, gamepadButton) >= 0;
+            }
         }
 
         private LinkedList<KeyListenerItem> items = new LinkedList<KeyListenerItem>();
@@ -313,21 +319,14 @@ namespace Ballance2.Services.InputManager
             {
                 leftStickValue = currentJoystick.stick.value;
             }
-            switch (item.key)
-            {
-                case KeyCode.LeftArrow:
-                    isKeydown = leftStickValue.x < -0.4;
-                    break;
-                case KeyCode.RightArrow:
-                    isKeydown = leftStickValue.x > 0.4;
-                    break;
-                case KeyCode.UpArrow:
-                    isKeydown = leftStickValue.y > 0.4;
-                    break;
-                case KeyCode.DownArrow:
-                    isKeydown = leftStickValue.y < -0.4;                    
-                    break;
-            }
+            if (item.ContainsGamepadButton(GamepadButton.DpadLeft))
+                isKeydown = leftStickValue.x < -0.4;
+            else if (item.ContainsGamepadButton(GamepadButton.DpadRight))
+                isKeydown = leftStickValue.x > 0.4;
+            else if (item.ContainsGamepadButton(GamepadButton.DpadUp))
+                isKeydown = leftStickValue.y > 0.4;
+            else if (item.ContainsGamepadButton(GamepadButton.DpadDown))
+                isKeydown = leftStickValue.y < -0.4;
             return isKeydown;
         }
 
