@@ -36,20 +36,26 @@ namespace Ballance2.Menu
     private void Start() {
       _ScoreBoardActive.gameObject.SetActive(false);
 
-      //手机端还需要创建键盘
-      #if (UNITY_ANDROID || UNITY_IOS)
-      _CurrentMobileKeyPadShow = true;
-      ReBuildMobileKeyPad();
-      GamePlayManager.Instance.EventBeforeStart.On((evt) => {
-        _CurrentMobileKeyPadShow = true;
-        if (_CurrentMobileKeyPad != null)
-          _CurrentMobileKeyPad.gameObject.SetActive(true);
-      });
-      GamePlayManager.Instance.EventQuit.On((evt) => {
-        _CurrentMobileKeyPadShow = false;
-        if (_CurrentMobileKeyPad != null)
-          _CurrentMobileKeyPad.gameObject.SetActive(false);
-      });
+        //手机端还需要创建键盘
+        #if (UNITY_ANDROID || UNITY_IOS)
+        //当前设备存在触摸屏时，才允许显示屏幕键盘
+        if (UnityEngine.InputSystem.Touchscreen.current != null)
+        {
+            _CurrentMobileKeyPadShow = true;
+            ReBuildMobileKeyPad();
+            GamePlayManager.Instance.EventBeforeStart.On((evt) =>
+            {
+                _CurrentMobileKeyPadShow = true;
+                if (_CurrentMobileKeyPad != null)
+                    _CurrentMobileKeyPad.gameObject.SetActive(true);
+            });
+            GamePlayManager.Instance.EventQuit.On((evt) =>
+            {
+                _CurrentMobileKeyPadShow = false;
+                if (_CurrentMobileKeyPad != null)
+                    _CurrentMobileKeyPad.gameObject.SetActive(false);
+            });
+        }
       #endif
 
       //创建调试信息
@@ -118,8 +124,8 @@ namespace Ballance2.Menu
 
       //创建键盘
       _CurrentMobileKeyPad = GameUIManager.Instance.InitViewToCanvas(keyPad.prefab, "GameMobileKeypad", false);
-      //当屏幕键盘不显示，或者当前设备不支持触摸操作时。取消激活屏幕键盘
-      if (!_CurrentMobileKeyPadShow || !Input.touchSupported)
+      //当屏幕键盘不显示
+      if (!_CurrentMobileKeyPadShow)
         _CurrentMobileKeyPad.gameObject.SetActive(false);
     }
 
