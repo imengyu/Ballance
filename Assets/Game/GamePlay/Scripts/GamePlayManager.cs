@@ -312,7 +312,7 @@ namespace Ballance2.Game.GamePlay
                     else
                         this.ResumeLevel();
                 }
-            }, GamepadButton.Start);
+            }, GamepadButton.Select, GamepadButton.Start);
         }
         private void _InitSettings()
         {
