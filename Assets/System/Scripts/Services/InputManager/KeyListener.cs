@@ -46,6 +46,7 @@ namespace Ballance2.Services.InputManager
         private Joystick currentJoystick;
         private DpadControl currentJoystickDpad;
         private ButtonControl[] currentJoystickButtonControls;
+        private AxisControl currentJoystickRightStickAxisX;
         private AxisControl currentJoystickRightStickAxisY;
 
         /// <summary>
@@ -107,9 +108,12 @@ namespace Ballance2.Services.InputManager
             currentJoystick = Joystick.current;
             if (currentJoystick != null)
             {
-                var joystickChildren = currentJoystick.children;
+                var joystickChildren = currentJoystick.children.ToArray();
                 currentJoystickDpad = joystickChildren.FirstOrDefault(t => t is DpadControl) as DpadControl;
-                currentJoystickRightStickAxisY = joystickChildren.FirstOrDefault(t => t.path.EndsWith("rz")) as AxisControl;
+
+                currentJoystickRightStickAxisX = joystickChildren.FirstOrDefault(t => t.path.EndsWith("/z")) as AxisControl;
+                currentJoystickRightStickAxisY = joystickChildren.FirstOrDefault(t => t.path.EndsWith("/rz")) as AxisControl;
+
                 currentJoystickButtonControls = joystickChildren.Where(t => t is ButtonControl).Cast<ButtonControl>().ToArray();
                 if (currentJoystickButtonControls.Length < 15)
                     currentJoystickButtonControls = currentJoystickButtonControls.Concat(new ButtonControl[15 - currentJoystickButtonControls.Length]).ToArray();
@@ -290,6 +294,42 @@ namespace Ballance2.Services.InputManager
             return null;
         }
 
+        private float GetLeftStickXValue()
+        {
+            if (currentGamepad != null)
+                return currentGamepad.leftStick.x.value;
+            else if (currentJoystick != null)
+                return currentJoystick.stick.x.value;
+            return 0;
+        }
+
+        private float GetLeftStickYValue()
+        {
+            if (currentGamepad != null)
+                return currentGamepad.leftStick.y.value;
+            else if (currentJoystick != null)
+                return currentJoystick.stick.y.value;
+            return 0;
+        }
+
+        private float GetRightStickXValue()
+        {
+            if (currentGamepad != null)
+                return currentGamepad.rightStick.x.value;
+            else if (currentJoystick != null)
+                return currentJoystickRightStickAxisX.value;
+            return 0;
+        }
+
+        private float GetRightStickYValue()
+        {
+            if (currentGamepad != null)
+                return currentGamepad.rightStick.y.value;
+            else if (currentJoystick != null)
+                return currentJoystickRightStickAxisY.value;
+            return 0;
+        }
+
         private bool IsKeyOrGamepadButtonsDown(KeyListenerItem item)
         {
             var isKeydown = false;
@@ -309,24 +349,21 @@ namespace Ballance2.Services.InputManager
             }
             if (isKeydown)
                 return isKeydown;
-            //最后再判断左摇杆操作
-            Vector2 leftStickValue = default;
-            if (currentGamepad != null)
-            {
-                leftStickValue = currentGamepad.leftStick.value;
-            }
-            else if (currentJoystick != null)
-            {
-                leftStickValue = currentJoystick.stick.value;
-            }
+            //最后再判断摇杆操作
             if (item.ContainsGamepadButton(GamepadButton.DpadLeft))
-                isKeydown = leftStickValue.x < -0.4;
+                isKeydown = GetLeftStickXValue() < -0.4;
             else if (item.ContainsGamepadButton(GamepadButton.DpadRight))
-                isKeydown = leftStickValue.x > 0.4;
+                isKeydown = GetLeftStickXValue() > 0.4;
             else if (item.ContainsGamepadButton(GamepadButton.DpadUp))
-                isKeydown = leftStickValue.y > 0.4;
+                isKeydown = GetLeftStickYValue() > 0.4;
             else if (item.ContainsGamepadButton(GamepadButton.DpadDown))
-                isKeydown = leftStickValue.y < -0.4;
+                isKeydown = GetLeftStickYValue() < -0.4;
+            else if (item.ContainsGamepadButton(GamepadButton.Y))
+                isKeydown = Math.Abs(GetRightStickYValue()) >= 0.4;
+            else if (item.ContainsGamepadButton(GamepadButton.LeftShoulder))
+                isKeydown = GetRightStickXValue() < -0.4;
+            else if (item.ContainsGamepadButton(GamepadButton.RightShoulder))
+                isKeydown = GetRightStickXValue() > 0.4;
             return isKeydown;
         }
 
@@ -345,7 +382,7 @@ namespace Ballance2.Services.InputManager
                 //排除GUI激活
                 if (DisableWhenUIFocused && (EventSystem.current.IsPointerOverGameObject() || GUIUtility.hotControl != 0))
                     return;
-
+                
                 //逆序遍历链表。后添加的按键事件最先处理
                 LinkedListNode<KeyListenerItem> cur = items.Last;
                 KeyCode lastPressedKey = KeyCode.None;
