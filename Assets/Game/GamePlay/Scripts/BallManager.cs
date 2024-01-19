@@ -180,8 +180,8 @@ namespace Ballance2.Game.GamePlay
             keyListener = KeyListener.Get(gameObject);
             keyListener.DisableWhenUIFocused = false;
             keyListener.ClearKeyListen();
-            keyListener.AddKeyListen(keyFront, _UpArrow_Key, GamepadButton.DpadUp);
-            keyListener.AddKeyListen(keyBack, _DownArrow_Key, GamepadButton.DpadDown);
+            keyListener.AddKeyListen(keyFront, _UpArrow_Key, GamepadButton.DpadUp, GamepadButton.A);
+            keyListener.AddKeyListen(keyBack, _DownArrow_Key, GamepadButton.DpadDown, GamepadButton.B);
             keyListener.AddKeyListen(keyUp, _Up_Key, GamepadButton.LeftTrigger);
             keyListener.AddKeyListen(keyDown, _Down_Key, GamepadButton.RightTrigger);
             keyListener.AddKeyListen(keyUpCamera, _Space_Key, GamepadButton.Y);
