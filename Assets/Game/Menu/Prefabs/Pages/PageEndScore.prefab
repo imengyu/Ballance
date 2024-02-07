@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScoreTotal: {fileID: 9069283135860543851}
   ScoreExtraLives: {fileID: 4902611807937743503}
-  ScoreBouns: {fileID: 363385645329760179}
+  ScoreBonus: {fileID: 363385645329760179}
   ScoreTimePoints: {fileID: 7139322698825293023}
   HighlightBar1: {fileID: 9139554450704986543}
   HighlightBar2: {fileID: 702453560216175800}
@@ -354,7 +354,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Level Bonus:'
-  m_ResourceKey: core.ui.WinUILevelBouns
+  m_ResourceKey: core.ui.WinUILevelBonus
   m_DefaultString: 'Level Bonus:'
   m_I18N: 1
 --- !u!1 &2953127676529770024
@@ -1173,7 +1173,7 @@ GameObject:
   - component: {fileID: 363385645329760179}
   - component: {fileID: 6386556400578139184}
   m_Layer: 5
-  m_Name: ScoreBouns
+  m_Name: ScoreBonus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

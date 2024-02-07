@@ -12,7 +12,7 @@ namespace Ballance2.Menu
   public class WinScoreUIControl : GameSingletonBehavior<WinScoreUIControl> {
     public Text ScoreTotal;
     public Text ScoreExtraLives;
-    public Text ScoreBouns;
+    public Text ScoreBonus;
     public Text ScoreTimePoints;
     public GameObject HighlightBar1;
     public GameObject HighlightBar2;
@@ -126,7 +126,7 @@ namespace Ballance2.Menu
       //关卡分数
       _SwitchSound.Play();
       HighlightBar1.SetActive(true);
-      ScoreBouns.text = _GamePlayManager.LevelScore.ToString();
+      ScoreBonus.text = _GamePlayManager.LevelScore.ToString();
       _ScoreNTotal = _GamePlayManager.LevelScore;
       ScoreTotal.text = _ScoreNTotal.ToString();
 
@@ -210,7 +210,7 @@ namespace Ballance2.Menu
       GamePlayUIControl.Instance.SetLifeBallCount(0);
       
       ScoreTimePoints.text = _ScoreNTimePoints.ToString();
-      ScoreBouns.text = _GamePlayManager.LevelScore.ToString();
+      ScoreBonus.text = _GamePlayManager.LevelScore.ToString();
       ScoreExtraLives.text = _ScoreNExtraLives.ToString();
       ScoreTotal.text = _ScoreNTotal.ToString();
 
@@ -244,7 +244,7 @@ namespace Ballance2.Menu
 
       //重置文字为0
       ScoreTimePoints.text = "0";
-      ScoreBouns.text = "0";
+      ScoreBonus.text = "0";
       ScoreExtraLives.text = "0";
       ScoreTotal.text = "0";
 
