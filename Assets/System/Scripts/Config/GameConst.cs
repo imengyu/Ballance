@@ -21,15 +21,15 @@ namespace Ballance2.Config
     /// <summary>
     /// 游戏版本
     /// </summary>
-    public const string GameVersion = "1.0.5";
+    public const string GameVersion = "1.0.6";
     /// <summary>
     /// 游戏编译版本
     /// </summary>
-    public const int GameBulidVersion = 164;
+    public const int GameBulidVersion = 165;
     /// <summary>
     /// 游戏编译版本
     /// </summary>
-    public const string GameBulidDate = "2024.01.19";
+    public const string GameBulidDate = "2024.02.07";
 
     #region Unity 环境静态常量
 
