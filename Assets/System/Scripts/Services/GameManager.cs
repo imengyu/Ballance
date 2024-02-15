@@ -835,18 +835,26 @@ namespace Ballance2.Services
                     var resolution = resolutions[resolutionsSet];
                     var resolutionWidth = resolution.width;
                     var resolutionHeight = resolution.height;
-                    switch (Screen.orientation)
+
+                    var currentResolution = Screen.currentResolution;
+
+
+                    //宽高比
+                    var currentResolutionAspectRatio = currentResolution.width * 1F / currentResolution.height;
+                    var resolutionAspectRatio = resolution.width * 1F / resolution.height;
+
+                    var isCurrentResolutionLandspace = currentResolutionAspectRatio > 1;
+                    var isResolutionLandspace = resolutionAspectRatio > 1;
+
+                    if (isCurrentResolutionLandspace ^ isResolutionLandspace)
                     {
-                        case ScreenOrientation.LandscapeLeft:
-                        case ScreenOrientation.LandscapeRight:
-                            var tmpInt = resolutionWidth;
-                            resolutionWidth = resolutionHeight;
-                            resolutionHeight = tmpInt;
-                            break;
+                        var tmpInt = resolutionWidth;
+                        resolutionWidth = resolutionHeight;
+                        resolutionHeight = tmpInt;
                     }
-                    Screen.SetResolution(resolutionWidth, resolutionHeight, fullScreen);
+                    Screen.SetResolution(resolutionWidth, resolutionHeight, fullScreen, resolution.refreshRate);
                     //发出屏幕大小更改事件
-                    GameManager.GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, resolution.width, resolution.height);
+                    GameMediator.DispatchGlobalEvent(GameEventNames.EVENT_SCREEN_SIZE_CHANGED, resolutionWidth, resolutionHeight);
                 }
             }
             if (fullScreen != Screen.fullScreen)

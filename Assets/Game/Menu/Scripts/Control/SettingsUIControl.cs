@@ -171,28 +171,26 @@ namespace Ballance2.Menu
                     resolutions = Screen.resolutions;
                     var GrResolution = MessageCenter.GetComponentInstance("GrResolution").GetComponent<Updown>();
                     var currentResolution = Screen.currentResolution;
-                    var resolutionWidth = currentResolution.width;
-                    var resolutionHeight = currentResolution.height;
-                    switch (Screen.orientation)
-                    {
-                        case ScreenOrientation.LandscapeLeft:
-                        case ScreenOrientation.LandscapeRight:
-                            var tmpInt = resolutionWidth;
-                            resolutionWidth = resolutionHeight;
-                            resolutionHeight = tmpInt;
-                            break;
-                    }
+                    var isMathed = false;
                     for (int i = 0; i < resolutions.Length; i++)
                     {
                         var resolution = resolutions[i];
                         GrResolution.AddOption($"{resolution.width}x{resolution.height}@{resolution.refreshRate}");
                         if (
                           updateGrResolution != null
-                          && resolutionWidth == resolution.width
-                          && resolutionHeight == resolution.height
-                          && currentResolution.refreshRate == resolution.refreshRate
+                          && ((currentResolution.width == resolution.width && currentResolution.height == resolution.height)
+                          || (currentResolution.width == resolution.height && currentResolution.height == resolution.width))
+                          && Math.Abs(currentResolution.refreshRate - resolution.refreshRate) < 2
                         )
+                        {
+                            isMathed = true;
                             updateGrResolution.Invoke(i);
+                        }
+                    }
+                    GrResolution.AddOption("Default");
+                    if (!isMathed)
+                    {
+                        updateGrResolution.Invoke(resolutions.Length);
                     }
                 }
                 if (qualities == null)
