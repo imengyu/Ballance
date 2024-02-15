@@ -296,36 +296,36 @@ namespace Ballance2.Services.InputManager
 
         private float GetLeftStickXValue()
         {
-            if (currentGamepad != null)
+            if (currentGamepad?.leftStick?.x != null)
                 return currentGamepad.leftStick.x.value;
-            else if (currentJoystick != null)
+            else if (currentJoystick?.stick?.x != null)
                 return currentJoystick.stick.x.value;
             return 0;
         }
 
         private float GetLeftStickYValue()
         {
-            if (currentGamepad != null)
+            if (currentGamepad?.leftStick?.y != null)
                 return currentGamepad.leftStick.y.value;
-            else if (currentJoystick != null)
+            else if (currentJoystick?.stick?.y != null)
                 return currentJoystick.stick.y.value;
             return 0;
         }
 
         private float GetRightStickXValue()
         {
-            if (currentGamepad != null)
+            if (currentGamepad?.rightStick?.x != null)
                 return currentGamepad.rightStick.x.value;
-            else if (currentJoystick != null)
+            else if (currentJoystick != null && currentJoystickRightStickAxisX != null)
                 return currentJoystickRightStickAxisX.value;
             return 0;
         }
 
         private float GetRightStickYValue()
         {
-            if (currentGamepad != null)
+            if (currentGamepad?.rightStick?.y != null)
                 return currentGamepad.rightStick.y.value;
-            else if (currentJoystick != null)
+            else if (currentJoystick != null && currentJoystickRightStickAxisY != null)
                 return currentJoystickRightStickAxisY.value;
             return 0;
         }
