@@ -791,7 +791,7 @@ namespace AssetUsageDetectorNamespace
 						}
 					}
 
-					if( Type == GroupType.Scene && !EditorApplication.isPlaying && EditorSceneManager.loadedSceneCount > 1 )
+					if( Type == GroupType.Scene && !EditorApplication.isPlaying && SceneManager.loadedSceneCount > 1 )
 					{
 						// Show context menu when SearchResultGroup's header is right clicked
 						Scene scene = EditorSceneManager.GetSceneByPath( ScenePath );
