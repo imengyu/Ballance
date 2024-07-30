@@ -3,16 +3,17 @@ using Ballance2.Game.GamePlay;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
 {
   public class WinScoreUIControl : GameSingletonBehavior<WinScoreUIControl> {
-    public Text ScoreTotal;
-    public Text ScoreExtraLives;
-    public Text ScoreBouns;
-    public Text ScoreTimePoints;
+    public TMP_Text ScoreTotal;
+    public TMP_Text ScoreExtraLives;
+    public TMP_Text ScoreBouns;
+    public TMP_Text ScoreTimePoints;
     public GameObject HighlightBar1;
     public GameObject HighlightBar2;
     public GameObject HighlightBar3;
@@ -249,7 +250,7 @@ namespace Ballance2.Menu
 
       //检查是不是新的高分
       var PageHighscoreEntry = GameUIManager.Instance.GetCurrentPage();
-      var HighscoreEntryNameTextScore = PageHighscoreEntry.Content.Find("TextScore").GetComponent<Text>();
+      var HighscoreEntryNameTextScore = PageHighscoreEntry.Content.Find("TextScore").GetComponent<TMP_Text>();
       
       HighscoreEntryNameTextScore.text = $"{_ScoreNTotal} <size=20>{I18N.Tr("core.ui.WinUIPoints")}</size>";
       

@@ -5,6 +5,7 @@ using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,15 +60,15 @@ namespace Ballance2.Menu
         #endif
       };
       PageGlobalConfirm.OnShow = (options) => {
-        var ButtonConfirmText = PageStart.Content.Find("Panel/ButtonConfirm/Text").GetComponent<Text>();
-        var ButtonCancelText = PageStart.Content.Find("Panel/ButtonCancel/Text").GetComponent<Text>();
-        var Text = PageStart.Content.Find("Text").GetComponent<Text>();
+        var ButtonConfirmText = PageStart.Content.Find("Panel/ButtonConfirm/Text").GetComponent<TMP_Text>();
+        var ButtonCancelText = PageStart.Content.Find("Panel/ButtonCancel/Text").GetComponent<TMP_Text>();
+        var Text = PageStart.Content.Find("Text").GetComponent<TMP_Text>();
         if (ButtonConfirmText != null)
-          ButtonConfirmText.text = options["okText"] as string;
+          ButtonConfirmText.text = options["okText"];
         if (ButtonCancelText != null)
-          ButtonCancelText.text = options["cancelText"] as string;
+          ButtonCancelText.text = options["cancelText"];
         if (Text != null)
-          Text.text = options["text"] as string;
+          Text.text = options["text"];
       };
 
       MessageCenter.SubscribeEvent("BtnConfirmConfirmClick", () =>  {
@@ -197,8 +198,8 @@ namespace Ballance2.Menu
       });
 
       //加载版本完整信息
-      var ButtonVersionText = PageAbout.Content.transform.Find("ButtonVersion/Text").GetComponent<Text>();
-      ButtonVersionText.text = I18N.TrF("core.ui.SettingsVersion", "Version: {0}", Ballance2.Config.GameConst.GameVersion.ToString());
+      var ButtonVersionText = PageAbout.Content.transform.Find("ButtonVersion/Text").GetComponent<TMP_Text>();
+      ButtonVersionText.text = I18N.TrF("core.ui.SettingsVersion", "Version: {0}", Config.GameConst.GameVersion.ToString());
     }
 
     private static void LoadInternalLevel(string id) {

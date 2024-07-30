@@ -7,6 +7,7 @@ using Ballance2.Services.I18N;
 using Ballance2.Services.InputManager;
 using Ballance2.UI.Core;
 using Ballance2.UI.Core.Controls;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +32,7 @@ namespace Ballance2.Menu
         var data = items[index];
         var Listener = item.GetComponent<EventTriggerListener>();
         var ImageBg = item.Find("ImageBg");
-        var text = item.Find("Text").GetComponent<Text>();
+        var text = item.Find("Text").GetComponent<TMP_Text>();
         var ImageBgActive = item.Find("ImageBgActive");
         var image = item.Find("Image").GetComponent<Image>();
 

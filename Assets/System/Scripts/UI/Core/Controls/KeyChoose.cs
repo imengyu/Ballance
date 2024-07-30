@@ -24,8 +24,8 @@ namespace Ballance2.UI.Core.Controls
   [AddComponentMenu("Ballance/UI/Controls/KeyChoose")]
   public class KeyChoose : MonoBehaviour
   {
-    public I18NText Text;
-    public Text TextValue;
+    public UIText Text;
+    public UIText TextValue;
 
     [SerializeField, SetProperty("value")]
     private KeyCode _value = KeyCode.None;

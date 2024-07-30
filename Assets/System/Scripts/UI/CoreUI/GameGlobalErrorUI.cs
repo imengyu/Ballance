@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ballance2.UI.Core.Controls;
+using UnityEngine;
 using UnityEngine.UI;
 
 /*
@@ -18,9 +19,9 @@ namespace Ballance2.UI.CoreUI
 {
   public class GameGlobalErrorUI : MonoBehaviour
   {
-    public Text TextGameErrorTitle = null;
-    public Text TextGameErrorHelp = null;
-    public Text TextGameErrorText = null;
+    public UIText TextGameErrorTitle = null;
+    public UIText TextGameErrorHelp = null;
+    public UIText TextGameErrorText = null;
     public Button ButtonShowErrorContent = null;
     public Button ButtonHideErrorContent = null;
     public GameObject ScrollViewErrorContent = null;

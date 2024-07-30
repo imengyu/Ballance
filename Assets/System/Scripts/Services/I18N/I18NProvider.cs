@@ -20,9 +20,6 @@ namespace Ballance2.Services.I18N
   /// <summary>
   /// 国际化字符串提供类
   /// </summary>
-  
-  
-  
   public static class I18NProvider
   {
     private const string TAG = "I18NProvider";
@@ -38,14 +35,7 @@ namespace Ballance2.Services.I18N
       LanguageValues.Clear();
     }
 
-    /// <summary>
-    /// 加载语言定义文件
-    /// </summary>
-    /// <param name="xmlAssets">语言定义XML字符串</param>
-    /// <returns>加载是否成功</returns>
-    
-    
-    public static bool LoadLanguageResources(string xmlAssets)
+    public static bool DirectLoadLanguageResources(Dictionary<string, string> dict, string xmlAssets)
     {
       try
       {
@@ -67,7 +57,7 @@ namespace Ballance2.Services.I18N
                 if (nodeText.Name == "Text" && nodeTextName != null
                     && !string.IsNullOrEmpty(nodeTextName.Value) && !string.IsNullOrEmpty(nodeText.InnerXml))
                 {
-                  LanguageValues[nodeTextName.Value] = nodeText.InnerXml;
+                  dict[nodeTextName.Value] = nodeText.InnerXml;
                 }
               }
               break;
@@ -82,13 +72,21 @@ namespace Ballance2.Services.I18N
       }
       return false;
     }
+
+    /// <summary>
+    /// 加载语言定义文件
+    /// </summary>
+    /// <param name="xmlAssets">语言定义XML字符串</param>
+    /// <returns>加载是否成功</returns>
+    public static bool LoadLanguageResources(string xmlAssets)
+    {
+      return DirectLoadLanguageResources(LanguageValues, xmlAssets);
+    }
     /// <summary>
     /// 预加载语言定义文件
     /// </summary>
     /// <param name="xmlAssets">语言定义XML字符串</param>
     /// <returns>加载是否成功</returns>
-    
-    
     public static Dictionary<string, string> PreLoadLanguageResources(string xmlAssets)
     {
       Dictionary<string, string> LanguageValues = new Dictionary<string, string>();
@@ -133,8 +131,6 @@ namespace Ballance2.Services.I18N
     /// </summary>
     /// <param name="xmlAssets">语言定义XML资源文件</param>
     /// <returns>加载是否成功</returns>
-    
-    
     public static bool LoadLanguageResources(TextAsset xmlAssets)
     {
       return LoadLanguageResources(xmlAssets.text);
@@ -144,8 +140,6 @@ namespace Ballance2.Services.I18N
     /// 设置当前游戏语言。此函数只能设置语言至设置，无法立即生效，必须重启游戏才能生效。
     /// </summary>
     /// <param name="language">语言</param>
-    
-    
     public static void SetCurrentLanguage(SystemLanguage language)
     {
       if (currentLanguage != language)
@@ -154,20 +148,16 @@ namespace Ballance2.Services.I18N
     /// <summary>
     /// 获取当前游戏语言
     /// </summary>
-    /// <returns></returns>
-    
+    /// <returns></returns>  
     public static SystemLanguage GetCurrentLanguage()
     {
       return currentLanguage;
     }
-
     /// <summary>
     /// 获取语言字符串
     /// </summary>
     /// <param name="key">字符串键值</param>
     /// <returns>如果找到对应键值字符串，则返回字符串，否则返回null</returns>
-    
-    
     public static string GetLanguageString(string key)
     {
       if(LanguageValues.TryGetValue(key, out var s1))

@@ -3,6 +3,7 @@ using Ballance2.Game;
 using Ballance2.Game.GamePlay;
 using Ballance2.Game.LevelBuilder;
 using RuntimeSceneGizmo;
+using TMPro;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
@@ -12,8 +13,8 @@ namespace Ballance2.Menu
   /// </summary>
   public class GamePlayPreviewUIControl : GameSingletonBehavior<GamePlayPreviewUIControl> 
   {
-    public Text _TextLevelInfo;
-    public Text _TextCameraSpeed;
+    public TMP_Text _TextLevelInfo;
+    public TMP_Text _TextCameraSpeed;
     public Toggle _CheckBoxSkyBox;
     public Toggle _CheckBoxWireFrame;
     public Toggle _CheckBoxAudio;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ballance2.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -151,7 +152,7 @@ namespace Ballance2.UI.Utils
       }
       return null;
     }
-    private FadeObject FindFadeObjectByText(Text text, FadeType fadeType)
+    private FadeObject FindFadeObjectByText(TMP_Text text, FadeType fadeType)
     {
       foreach (FadeObject o in fadeObjects)
       {
@@ -386,7 +387,7 @@ namespace Ballance2.UI.Utils
     /// <param name="text">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
     /// <param name="hidden">执行完毕是否将对象设置为不激活</param>
-    public FadeObject AddFadeOut(Text text, float timeInSecond, bool hidden)
+    public FadeObject AddFadeOut(TMP_Text text, float timeInSecond, bool hidden)
     {
       if (text != null)
       {
@@ -415,7 +416,7 @@ namespace Ballance2.UI.Utils
     /// </summary>
     /// <param name="text">执行对象</param>
     /// <param name="timeInSecond">执行时间</param>
-    public FadeObject AddFadeIn(Text text, float timeInSecond)
+    public FadeObject AddFadeIn(TMP_Text text, float timeInSecond)
     {
       if (text != null)
       {
@@ -531,7 +532,7 @@ namespace Ballance2.UI.Utils
     
     public Image image;
     
-    public Text text;
+    public TMP_Text text;
     
     public AudioSource audio;
     

@@ -1,4 +1,6 @@
 using Ballance2;
+using Ballance2.UI.Core.Controls;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +19,7 @@ using UnityEngine.UI;
 
 public class GlobalGameScriptErrDialog : MonoBehaviour
 {
-  public Text GlobalGameScriptErrContent;
+  public TMP_Text GlobalGameScriptErrContent;
   public Button GlobalGameScriptErrQuitButton;
   public Button GlobalGameScriptErrContinueButton;
 

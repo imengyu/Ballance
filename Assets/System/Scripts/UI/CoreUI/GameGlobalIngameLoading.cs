@@ -1,3 +1,4 @@
+using Ballance2.UI.Core.Controls;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ using UnityEngine.UI;
 namespace Ballance2.UI.Utils
 {
   public class GameGlobalIngameLoading : MonoBehaviour {
-    public Text TextStatus;
+    public UIText TextStatus;
 
     /* private int currentLogObserver = 0;
 

@@ -4,6 +4,7 @@ using Ballance2.Res;
 using Ballance2.Services.Debug;
 using Ballance2.Services.InputManager;
 using Ballance2.UI.Core;
+using Ballance2.UI.Core.Controls;
 using Ballance2.UI.Utils;
 using Ballance2.Utils;
 using System.Collections;
@@ -227,7 +228,7 @@ namespace Ballance2.Services
 
       UIToast = CloneUtils.CloneNewObjectWithParent(GameStaticResourcesPool.FindStaticPrefabs("PrefabToast"), UIRoot.transform, "GlobalUIToast").GetComponent<RectTransform>();
       UIToastImage = UIToast.GetComponent<Image>();
-      UIToastText = UIToast.Find("Text").GetComponent<Text>();
+      UIToastText = UIToast.Find("Text").GetComponent<UIText>();
       UIToast.gameObject.SetActive(false);
       UIToast.SetAsLastSibling();
       EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
@@ -543,7 +544,7 @@ namespace Ballance2.Services
 
     private RectTransform UIToast;
     private Image UIToastImage;
-    private Text UIToastText;
+    private UIText UIToastText;
     private FadeObject UIToastImageFadeObject;
     private FadeObject UIToastTextFadeObject;
 
@@ -572,7 +573,7 @@ namespace Ballance2.Services
     private void ShowToast(string text, float time)
     {
       UIToastText.text = text;
-      float h = UIToastText.preferredHeight;
+      float h = UIToastText.tmp.Get().preferredHeight;
       UIToast.sizeDelta = new Vector2(UIToast.sizeDelta.x, h > 50 ? h : 50);
       UIToast.gameObject.SetActive(true);
       UIToast.SetAsLastSibling();
@@ -583,7 +584,7 @@ namespace Ballance2.Services
         UIToastTextFadeObject.Delete();
         UIToastTextFadeObject = null;
       } else {
-        UIToastTextFadeObject = UIFadeManager.AddFadeIn(UIToastText, 0.26f);
+        UIToastTextFadeObject = UIFadeManager.AddFadeIn(UIToastText.tmp.Get(), 0.26f);
       }
       if(UIToastImageFadeObject != null) {
         UIToastImageFadeObject.ResetTo(1);
@@ -605,7 +606,7 @@ namespace Ballance2.Services
             UIToastTextFadeObject.Delete();
             UIToastTextFadeObject = null;
           } else {
-            UIToastTextFadeObject = UIFadeManager.AddFadeOut(UIToastText, 0.4f, false);
+            UIToastTextFadeObject = UIFadeManager.AddFadeOut(UIToastText.tmp.Get(), 0.4f, false);
           }
           if(UIToastImageFadeObject != null) {
             UIToastImageFadeObject.ResetTo(0);

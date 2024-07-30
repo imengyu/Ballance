@@ -10,6 +10,7 @@ using Ballance2.Services.I18N;
 using Ballance2.UI.Core;
 using Ballance2.UI.Core.Controls;
 using Ballance2.UI.Core.ValueBinder;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +41,7 @@ namespace Ballance2.Menu
     public Button ButtonCancel;
     public Button ButtonEnableAll;
     public Button ButtonDisableAll;
-    public Text TextStatus;
+    public TMP_Text TextStatus;
 
     public GameObject PrefabButton;
     public GameObject PrefabKeyChoose;
@@ -108,9 +109,9 @@ namespace Ballance2.Menu
 
       var Button = item.gameObject.GetComponent<Button>();
       var ImageLogo = item.Find("ImageLogo").GetComponent<Image>();
-      var TextTitle = item.Find("TextTitle").GetComponent<Text>();
-      var TextIntrod = item.Find("TextIntrod").GetComponent<Text>();
-      var TextNotUnloadableText = item.Find("TextNotUnloadableText").GetComponent<Text>();
+      var TextTitle = item.Find("TextTitle").GetComponent<UIText>();
+      var TextIntrod = item.Find("TextIntrod").GetComponent<UIText>();
+      var TextNotUnloadableText = item.Find("TextNotUnloadableText").GetComponent<UIText>();
       var ToggleEnable = item.Find("ToggleEnable").GetComponent<ToggleEx>();
       var ButtonUnload = item.Find("ButtonUnload").GetComponent<Button>();
       var ButtonSettings = item.Find("ButtonSettings").GetComponent<Button>();
@@ -370,7 +371,7 @@ namespace Ballance2.Menu
         else {
           Page.CreateContent(GamePackage.GetSystemPackage(), PagePackageSettingUIPageDefaultContent);
           PageContent = Page.Content.Find("ScrollView/Viewport/Content").GetComponent<RectTransform>();
-          Page.Content.Find("Title").GetComponent<Text>().text = I18N.TrF("core.ui.PackageManagerSettingUITitle", "{0}", package.BaseInfo.Name);
+          Page.Content.Find("Title").GetComponent<TMP_Text>().text = I18N.TrF("core.ui.PackageManagerSettingUITitle", "{0}", package.BaseInfo.Name);
         }
       } 
       internal void Delete() {
@@ -399,7 +400,7 @@ namespace Ballance2.Menu
         var cls = item.GetComponent<Button>();
         cls.onClick.AddListener(() => onClick());
         item.transform.SetAsFirstSibling();
-        var text = item.transform.Find("Text").GetComponent<Text>();
+        var text = item.transform.Find("Text").GetComponent<UIText>();
         if (text != null)
           text.text = title;
         return new PackageSettingsUIControlInfo<Button>(null, cls);
@@ -410,15 +411,15 @@ namespace Ballance2.Menu
       /// <param name="name">条目名称</param>
       /// <param name="title">副标题文字</param>
       /// <returns></returns>
-      public PackageSettingsUIControlInfo<Text> AddSubTitle(string name, string title) {
+      public PackageSettingsUIControlInfo<UIText> AddSubTitle(string name, string title) {
         if (CheckIsCustomControl())
           return null;
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabSubTitle, PageContent, name);
-        var cls = item.GetComponent<Text>();
+        var cls = item.GetComponent<UIText>();
         item.transform.SetAsFirstSibling();
         cls.text = title;
-        return new PackageSettingsUIControlInfo<Text>(null, cls);
+        return new PackageSettingsUIControlInfo<UIText>(null, cls);
       }
       /// <summary>
       /// 向设置UI添加一个文字条目
@@ -426,15 +427,15 @@ namespace Ballance2.Menu
       /// <param name="name">条目名称</param>
       /// <param name="title">文字内容</param>
       /// <returns></returns>
-      public PackageSettingsUIControlInfo<Text> AddText(string name, string title) {
+      public PackageSettingsUIControlInfo<UIText> AddText(string name, string title) {
         if (CheckIsCustomControl())
           return null;
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabText, PageContent, name);
-        var cls = item.GetComponent<Text>();
+        var cls = item.GetComponent<UIText>();
         cls.text = title;
         item.transform.SetAsFirstSibling();
-        return new PackageSettingsUIControlInfo<Text>(null, cls);
+        return new PackageSettingsUIControlInfo<UIText>(null, cls);
       }
       /// <summary>
       /// 向设置UI添加一个按键选择器条目
@@ -450,7 +451,7 @@ namespace Ballance2.Menu
         var item = GameManager.Instance.InstancePrefab(control.PrefabKeyChoose, PageContent, name);
         var valueBinder = item.AddComponent<KeyChooseValueBinder>();
         var cls = item.GetComponent<KeyChoose>();
-        cls.Text.defaultString = title;
+        //cls.Text.defaultString = title;
         valueBinder.MessageCenter = MessageCenter;
         valueBinder.Name = name; 
         item.transform.SetAsFirstSibling();
@@ -473,7 +474,7 @@ namespace Ballance2.Menu
         item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
         valueBinder.Name = name; 
-        cls.TextTitle.defaultString = title;
+        //cls.TextTitle.defaultString = title;
         return new PackageSettingsUIControlInfo<Updown>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
@@ -493,7 +494,7 @@ namespace Ballance2.Menu
         item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
         valueBinder.Name = name; 
-        cls.Text.defaultString = title;
+        //cls.Text.defaultString = title;
         return new PackageSettingsUIControlInfo<ToggleEx>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
@@ -503,17 +504,17 @@ namespace Ballance2.Menu
       /// <param name="title">标题文字</param>
       /// <param name="valueUpdateCallback">参数更改回调</param>
       /// <returns></returns>
-      public PackageSettingsUIControlInfo<InputField> AddInput(string name, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+      public PackageSettingsUIControlInfo<TMP_InputField> AddInput(string name, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
         if (CheckIsCustomControl())
           return null;
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabInput, PageContent, name);
-        var cls = item.GetComponent<InputField>();
+        var cls = item.GetComponent<TMP_InputField>();
         var valueBinder = item.AddComponent<InputFieldValueBinder>();
         item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
         valueBinder.Name = name; 
-        return new PackageSettingsUIControlInfo<InputField>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
+        return new PackageSettingsUIControlInfo<TMP_InputField>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
       /// 向设置UI添加一个滑块条目

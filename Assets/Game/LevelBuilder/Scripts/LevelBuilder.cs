@@ -15,6 +15,7 @@ using BallancePhysics.Wapper;
 using Ballance2.Game.Utils;
 using Ballance2.Utils;
 using System.Collections.ObjectModel;
+using TMPro;
 
 namespace Ballance2.Game.LevelBuilder {
 
@@ -58,7 +59,7 @@ namespace Ballance2.Game.LevelBuilder {
 
     private RectTransform LevelBuilderUI;
     private Progress LevelBuilderUIProgress;
-    private Text LevelBuilderUITextErrorContent;
+    private TMP_Text LevelBuilderUITextErrorContent;
     private GameObject LevelBuilderUIPanelFailed;
     private Button LevelBuilderUIButtonBack;
     private Button LevelBuilderUIButtonSubmitBug;
@@ -81,7 +82,7 @@ namespace Ballance2.Game.LevelBuilder {
 
           LevelBuilderUI = GameUIManager.Instance.InitViewToCanvas(GamePackage.GetSystemPackage().GetPrefabAsset("LevelBuilderUI.prefab"), "GameLevelBuilderUI", true);
           LevelBuilderUIProgress = LevelBuilderUI.Find("Progress").GetComponent<Progress>();
-          LevelBuilderUITextErrorContent = LevelBuilderUI.Find("PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent").GetComponent<Text>();
+          LevelBuilderUITextErrorContent = LevelBuilderUI.Find("PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent").GetComponent<TMP_Text>();
           LevelBuilderUIPanelFailed = LevelBuilderUI.Find("PanelFailed").gameObject;
           LevelBuilderUIButtonBack = LevelBuilderUI.Find("PanelFailed/ButtonBack").GetComponent<Button>();
           LevelBuilderUIButtonSubmitBug = LevelBuilderUI.Find("PanelFailed/ButtonSubmitBug").GetComponent<Button>();

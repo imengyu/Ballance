@@ -7,6 +7,7 @@ using Ballance2.Services.InputManager;
 using Ballance2.Services.Pool;
 using Ballance2.UI.Core;
 using Ballance2.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,24 +28,24 @@ namespace Ballance2.Menu
 {
   public class PackageManagerContentUIControl : MonoBehaviour
   {
-    public Text TextPackageName;
-    public Text TextPackageVersion;
-    public Text TextPackageMoreInfos;
+    public TMP_Text TextPackageName;
+    public TMP_Text TextPackageVersion;
+    public TMP_Text TextPackageMoreInfos;
     public GameObject LinkVisitSite;
     public GameObject LinkVisitDoc;
     public GameObject LinkVisiAuthor;
     public Image ImagePackageLogo;
-    public InputField InputPackageName;
-    public InputField InputFieldVersion;
-    public InputField InputFieldAuthor;
-    public InputField InputFieldUpdateTime;
-    public Text TextExplain;
+    public TMP_InputField InputPackageName;
+    public TMP_InputField InputFieldVersion;
+    public TMP_InputField InputFieldAuthor;
+    public TMP_InputField InputFieldUpdateTime;
+    public TMP_Text TextExplain;
     public RectTransform PanelDepends;
     public GameObject ItemDependsPrefab;
 
     public RectTransform ScrollView;
     public RectTransform ContentNotFound;
-    public Text TextContentNotFound; 
+    public TMP_Text TextContentNotFound; 
     public Button ButtonBack; 
 
     private GameObjectPool itemDependsPrefabPool;
@@ -111,7 +112,7 @@ namespace Ballance2.Menu
         if(package.BaseInfo.Dependencies.Count > 0) {
           foreach(var p in package.BaseInfo.Dependencies) {
             var go = itemDependsPrefabPool.NextAvailableObject();
-            var text = go.transform.Find("Text").GetComponent<Text>();
+            var text = go.transform.Find("Text").GetComponent<TMP_Text>();
             var button = go.transform.Find("Button").GetComponent<Button>();
 
             var pack = gamePackageManager.FindRegisteredPackage(p.Name);
@@ -158,7 +159,7 @@ namespace Ballance2.Menu
           }
         } else {
           var go = itemDependsPrefabPool.NextAvailableObject();
-          var text = go.transform.Find("Text").GetComponent<Text>();
+          var text = go.transform.Find("Text").GetComponent<TMP_Text>();
           var button = go.transform.Find("Button").GetComponent<Button>();
           text.text = I18N.Tr("core.ui.PackageManagerNoDepends");
           button.gameObject.SetActive(false);

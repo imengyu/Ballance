@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.UI.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ namespace Ballance2.Menu
     public Button ButtonDisallow;
     public Button ButtonCheckInfo;
     public Button ButtonDisallowAndDelete;
-    public Text TextTitle;
+    public TMP_Text TextTitle;
 
     private GamePackageManager gamePackageManager;
     private GameUIManager gameUIManager;

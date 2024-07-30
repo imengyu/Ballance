@@ -145,12 +145,12 @@ namespace Ballance2.Menu
           for (int i = 0; i < resolutions.Length; i++)
           {
             var resolution = resolutions[i];
-            GrResolution.AddOption($"{resolution.width}x{resolution.height}@{resolution.refreshRate}");
+            GrResolution.AddOption($"{resolution.width}x{resolution.height}@{resolution.refreshRateRatio.value}");
             if (
               updateGrResolution != null
               && currentResolution.width == resolution.width 
               && currentResolution.height == resolution.height
-              && currentResolution.refreshRate == resolution.refreshRate
+              && currentResolution.refreshRateRatio.value == resolution.refreshRateRatio.value
             ) 
               updateGrResolution.Invoke(i - 1);
           }

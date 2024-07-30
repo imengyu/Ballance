@@ -8,6 +8,7 @@ using Ballance2.UI.Core;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ namespace Ballance2.DebugTools
   {
     public static DebugStat Instance { get; private set; }
 
-    public Text StatText = null;
+    public TMP_Text StatText = null;
 
     private StringBuilder sb = new StringBuilder();
 
@@ -48,7 +49,7 @@ namespace Ballance2.DebugTools
     private void Start()
     {
       Instance = this;
-      this.logForceDisable = false;
+      logForceDisable = false;
 
       var SystemPackage = GamePackage.GetSystemPackage();
       GameUIManager = GameManager.GetSystemService<GameUIManager>();
@@ -64,7 +65,7 @@ namespace Ballance2.DebugTools
     }
     private void OnDestroy()
     {
-      this.logForceDisable = true;
+      logForceDisable = true;
       if (logObserver > 0) {
         Log.UnRegisterLogObserver(logObserver);
         logObserver = 0;
@@ -93,7 +94,7 @@ namespace Ballance2.DebugTools
       StatText.text = sb.ToString();
     }
     private void AppendLoadToStat(LogLevel level, string tag, string message) {
-      if (this.logForceDisable)
+      if (logForceDisable)
         return;
       if(logStatItems.Count >= 10) 
         logStatItems.RemoveAt(0);

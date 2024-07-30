@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +32,7 @@ namespace Ballance2
     void LoadStrings()
     {
       StringBuilder sb = new StringBuilder();
-      Text text = GetComponent<Text>();
+      TMP_Text text = GetComponent<TMP_Text>();
       foreach (string name in names)
       {
         var con = Resources.Load<TextAsset>("ThirdPartAllLincnse/" + name + ".LICENSE");

@@ -14,8 +14,6 @@ public class GameEntryEditor : Editor
     private SerializedProperty GameCanvas;
     private SerializedProperty GameGlobalErrorUI;
     private SerializedProperty GameGlobalIngameLoading;
-    private SerializedProperty GlobalGamePermissionTipDialog;
-    private SerializedProperty GlobalGameUserAgreementTipDialog;
     private SerializedProperty GlobalGameScriptErrDialog;
     private SerializedProperty DebugMode;
     private SerializedProperty DebugTargetFrameRate;
@@ -38,8 +36,6 @@ public class GameEntryEditor : Editor
         GameBaseCamera = serializedObject.FindProperty("GameBaseCamera");
         GameCanvas = serializedObject.FindProperty("GameCanvas");
         GameGlobalErrorUI = serializedObject.FindProperty("GameGlobalErrorUI");
-        GlobalGamePermissionTipDialog = serializedObject.FindProperty("GlobalGamePermissionTipDialog");
-        GlobalGameUserAgreementTipDialog = serializedObject.FindProperty("GlobalGameUserAgreementTipDialog");
         GlobalGameScriptErrDialog = serializedObject.FindProperty("GlobalGameScriptErrDialog");
         GameGlobalIngameLoading = serializedObject.FindProperty("GameGlobalIngameLoading");
 
@@ -127,8 +123,6 @@ public class GameEntryEditor : Editor
         EditorGUILayout.PropertyField(GameBaseCamera);
         EditorGUILayout.PropertyField(GameCanvas);
         EditorGUILayout.PropertyField(GameGlobalErrorUI);
-        EditorGUILayout.PropertyField(GlobalGamePermissionTipDialog);
-        EditorGUILayout.PropertyField(GlobalGameUserAgreementTipDialog);
         EditorGUILayout.PropertyField(GlobalGameScriptErrDialog);
         EditorGUILayout.PropertyField(GameGlobalIngameLoading);
 

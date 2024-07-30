@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +26,7 @@ namespace Ballance2.Game
     private LinkedList<GuiStatsValue> stats = new LinkedList<GuiStatsValue>();
 
     [Tooltip("如果使用Text模式，请设置要设置数据文字的目标Text")]
-    public Text text;
+    public TMP_Text text;
     [Tooltip("是否使用Text模式，否则使用GUI模式，Text模式会将最终数据文字设置到Text上，而GUI模式是直接调用GUI显示在屏幕上")]
     public bool SetToText = false;
 

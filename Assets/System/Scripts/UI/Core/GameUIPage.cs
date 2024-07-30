@@ -78,7 +78,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 显示页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。
     /// </summary>
-    public void Show()
+    internal void Show()
     {
       uIManager = GameManager.GetSystemService<GameUIManager>();
       gameObject.SetActive(true);
@@ -108,7 +108,7 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 隐藏页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。
     /// </summary>
-    public void Hide()
+    internal void Hide()
     {
       gameObject.SetActive(false);
       OnHide?.Invoke();

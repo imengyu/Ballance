@@ -4,6 +4,7 @@ using Ballance2.Game;
 using Ballance2.Game.GamePlay;
 using Ballance2.Services;
 using Ballance2.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ namespace Ballance2.Menu
   public class GamePlayUIControl : GameSingletonBehavior<GamePlayUIControl> 
   {
     public Image _ScoreBoardActive ;
-    public Text _ScoreText;
+    public TMP_Text _ScoreText;
     public Image _LifeBoardLeftBaffle;
     public GameObject _LifeBoardBallPrefab;
     public GameObject _LifeBoardBallInfPrefab;

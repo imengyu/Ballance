@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,10 @@ using UnityEngine.UI;
 namespace Ballance2.UI.Core.ValueBinder
 {
   [AddComponentMenu("Ballance/UI/ValueBinder/InputFieldValueBinder")]
-  [RequireComponent(typeof(InputField))]
+  [RequireComponent(typeof(TMP_InputField))]
   public class InputFieldValueBinder : GameUIControlValueBinder
   {
-    private InputField input = null;
+    private TMP_InputField input = null;
 
     protected override bool OnBinderSupplierHandle(object value)
     {
@@ -29,7 +30,7 @@ namespace Ballance2.UI.Core.ValueBinder
     }
     protected override void BinderBegin()
     {
-      input = GetComponent<InputField>();
+      input = GetComponent<TMP_InputField>();
       input.onValueChanged.AddListener((v) =>
       {
         NotifyUserUpdate(v);

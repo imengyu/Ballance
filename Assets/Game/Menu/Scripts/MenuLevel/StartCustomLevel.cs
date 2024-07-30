@@ -13,6 +13,7 @@ using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Services.InputManager;
 using Ballance2.Services.Pool;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -20,11 +21,8 @@ using UnityEngine.UI;
 /**
   自定义关卡管理菜单的控制脚本
 */
-
-
 namespace Ballance2.Menu
 {
-
   public class StartCustomLevel : MonoBehaviour
   {
     public RectTransform PanelListContentView;
@@ -36,23 +34,23 @@ namespace Ballance2.Menu
     public RectTransform PanelNoLevel;
     public Button ButtonBack;
     public Button ButtonStart;
-    public Button TextRefresh;
-    public Text TextErrorContent;
+    public Button ButtonRefresh;
+    public TMP_Text TextErrorContent;
     public Image ImageLogo;
-    public Text TextName;
-    public Text TextAuthor;
-    public Text TextVersion;
-    public Text TextUrl;
-    public Text TextIntroduction;
-    public Text TextPreview;
-    public Text TextDepends;
+    public TMP_Text TextName;
+    public TMP_Text TextAuthor;
+    public TMP_Text TextVersion;
+    public TMP_Text TextUrl;
+    public TMP_Text TextIntroduction;
+    public TMP_Text TextPreview;
+    public TMP_Text TextDepends;
     public Image ImageDepends;
     public Image ImageBigImage;
     public Sprite NoPreviewImage;
     public Sprite IconSuccess;
     public Sprite IconError;
 
-    public Text TextPanelDependsTitle;
+    public TMP_Text TextPanelDependsTitle;
     public GameObject PanelDependsListPrefab;
     public RectTransform PanelDependsListContentView;
     public Button ButtonDependsBack;
@@ -160,7 +158,7 @@ namespace Ballance2.Menu
       ButtonBack.onClick.AddListener(Back);
       ButtonDependsBack.onClick.AddListener(HideDependsInfo);
       ButtonEnableAllDepends.onClick.AddListener(EnableAllDepends);
-      TextRefresh.onClick.AddListener(() => LoadLevelList(true));
+      ButtonRefresh.onClick.AddListener(() => LoadLevelList(true));
       EventTriggerListener.Get(TextPreview.gameObject).onClick = (go) => PreviewLevel();
       EventTriggerListener.Get(TextDepends.gameObject).onClick = (go) => ShowDependsInfo();
 
@@ -207,7 +205,7 @@ namespace Ballance2.Menu
         TextPanelDependsTitle.text = I18N.TrF("core.ui.LevelAllDependsTile", "", selectedItem.name, selectedItem.requiredPackages.Count);
         selectedItem.requiredPackages.ForEach((p) => {
           var go = itemDependsPrefabPool.NextAvailableObject();
-          var text = go.transform.Find("Text").GetComponent<Text>();
+          var text = go.transform.Find("Text").GetComponent<TMP_Text>();
           var button = go.transform.Find("Button").GetComponent<Button>();
           if(p.loaded == "true")
             text.text = "";
@@ -218,9 +216,10 @@ namespace Ballance2.Menu
 
           button.onClick.RemoveAllListeners();
           button.onClick.AddListener(() => {
-            Dictionary<string, string> options = new Dictionary<string, string>();
-            options.Add("LocatePackage", p.name);
-            gameUIManager.GoPageWithOptions("PackageManageWindow", options);
+            gameUIManager.GoPageWithOptions("PackageManageWindow", new Dictionary<string, string>
+            {
+              { "LocatePackage", p.name }
+            });
           });
         });
       }
@@ -239,7 +238,7 @@ namespace Ballance2.Menu
 
       var go = itemPrefabPool.NextAvailableObject();
       var Button = go.GetComponent<Button>();
-      var Text = go.transform.Find("Text").GetComponent<Text>();
+      var Text = go.transform.Find("Text").GetComponent<TMP_Text>();
 
       Text.text = info.name;
       Button.onClick.RemoveAllListeners();

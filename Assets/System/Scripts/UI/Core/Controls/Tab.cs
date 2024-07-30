@@ -94,7 +94,7 @@ namespace Ballance2.UI.Core.Controls
 
       var text = tab.Tab.Find("Text");
       if(text != null)
-        text.GetComponent<Text>().text = title;
+        text.GetComponent<UIText>().text = title;
 
       tab.TabContentArea = CloneUtils.CloneNewObjectWithParent(PanelPrefab.gameObject, PanelArea, "TabPanel_" + tabName).transform as RectTransform;
       tab.TabContentRect = content;

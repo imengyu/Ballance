@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,10 @@ using UnityEngine.UI;
 namespace Ballance2.UI.Core.ValueBinder
 {
   [AddComponentMenu("Ballance/UI/ValueBinder/TextValueBinder")]
-  [RequireComponent(typeof(Text))]
+  [RequireComponent(typeof(TMP_Text))]
   public class TextValueBinder : GameUIControlValueBinder
   {
-    private Text text = null;
+    private TMP_Text text = null;
     protected override bool OnBinderSupplierHandle(object value)
     {
       text.text = (string)value;
@@ -28,7 +29,7 @@ namespace Ballance2.UI.Core.ValueBinder
     }
     protected override void BinderBegin()
     {
-      text = GetComponent<Text>();
+      text = GetComponent<TMP_Text>();
     }
   }
 }

@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using Ballance2.Base;
 using Ballance2.Game.GamePlay;
+using TMPro;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
 {
   public class HighscoreUIControl : GameSingletonBehavior<HighscoreUIControl>  {
-    public Text TextLevelName;
+    public TMP_Text TextLevelName;
 
     private int _CurrentIndex = 0;
     private List<TextItemData> _TextItem = new List<TextItemData>();
     private List<string> LevelNames;
 
     private class TextItemData {
-      public Text textName;
-      public Text testScore;
+      public TMP_Text textName;
+      public TMP_Text testScore;
     }
 
     private void Start() {
@@ -23,8 +24,8 @@ namespace Ballance2.Menu
       for (int i = 1; i <= 10; i++)
       {
          _TextItem.Add(new TextItemData {
-          textName = transform.Find($"ItemHighscore{i}/TextValue").GetComponent<Text>(),
-          testScore = transform.Find($"ItemHighscore{i}/TextScoreValue").GetComponent<Text>()
+          textName = transform.Find($"ItemHighscore{i}/TextValue").GetComponent<TMP_Text>(),
+          testScore = transform.Find($"ItemHighscore{i}/TextScoreValue").GetComponent<TMP_Text>()
         });
       }
     }

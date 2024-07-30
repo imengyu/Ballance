@@ -4,6 +4,7 @@ using Ballance2.Services;
 using Ballance2.Services.InputManager;
 using Ballance2.UI.Utils;
 using Ballance2.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,13 +29,13 @@ namespace Ballance2.DebugTools
     public ScrollRect ConsoleScrollView;
     public RectTransform ConsoleContainerContent;
     public Button ExecButton;
-    public InputField CommandInputField;
+    public TMP_InputField CommandInputField;
     public GameObject DebugLogItemPrefab;
     public Toggle CheckBoxAutoScroll;
     public Toggle CheckBoxWarningAndErr;
     public Toggle CheckBoxMessages;
-    public InputField FilterLogInputField;
-    public Text CommandHelpText;
+    public TMP_InputField FilterLogInputField;
+    public TMP_Text CommandHelpText;
 
     private struct LogItem
     {
@@ -61,19 +62,19 @@ namespace Ballance2.DebugTools
 
     private void Start()
     {
-      this.GameUIManager = GameManager.GetSystemService<GameUIManager>();
+      GameUIManager = GameManager.GetSystemService<GameUIManager>();
 
       // 注册日志观察者
-      this.logObserver = Log.RegisterLogObserver((level, tag, message, stackTrace) =>
+      logObserver = Log.RegisterLogObserver((level, tag, message, stackTrace) =>
       {
-        if (this.logForceDisable)
+        if (logForceDisable)
           return;
 
-        if (this.logItems.Count > this.logMaxCount)
+        if (logItems.Count > logMaxCount)
         {
           var nitem = logItems[0];
-          this.logItems.RemoveAt(0);
-          UnityEngine.Object.Destroy(nitem.go);
+          logItems.RemoveAt(0);
+          Destroy(nitem.go);
         }
 
         if (message.Length > 8192)
@@ -88,32 +89,34 @@ namespace Ballance2.DebugTools
           level >= LogLevel.Warning ? $"\n{stackTrace}" : ""
         );
 
-        var newEle = CloneUtils.CloneNewObjectWithParent(DebugLogItemPrefab, this.ConsoleContainerContent);
-        var text = newEle.GetComponent<Text>();
+        var newEle = CloneUtils.CloneNewObjectWithParent(DebugLogItemPrefab, ConsoleContainerContent);
+        var text = newEle.GetComponent<TMP_Text>();
         text.text = t;
         UIAnchorPosUtils.SetUIAnchor((RectTransform)newEle.transform, UIAnchor.Left, UIAnchor.Top);
         UIAnchorPosUtils.SetUIPivot((RectTransform)newEle.transform, UIPivot.TopLeft);
 
-        var item = new LogItem();
-        item.go = newEle;
-        item.message = message;
-        item.level = level;
-        item.stackTrace = stackTrace;
-        this.logItems.Add(item);
+        var item = new LogItem
+        {
+          go = newEle,
+          message = message,
+          level = level,
+          stackTrace = stackTrace
+        };
+        logItems.Add(item);
 
         //重新布局
-        this.RelayoutLogContent();
+        RelayoutLogContent();
 
         text.gameObject.SetActive(true);
         //滚动到末尾
-        if (this.logAutoScroll)
-          this.ConsoleScrollView.normalizedPosition = Vector2.zero;
+        if (logAutoScroll)
+          ConsoleScrollView.normalizedPosition = Vector2.zero;
       }, LogLevel.All);
 
-      this.logForceDisable = false;
+      logForceDisable = false;
 
       //命令服务的准备
-      this.commandServer = GameManager.Instance.GameDebugCommandServer;
+      commandServer = GameManager.Instance.GameDebugCommandServer;
       commandServer.RegisterCommand("clear", (keyword, fullCmd, argsCount, args) => {
         ClearCommand();
         commandHistory.Clear();
@@ -125,10 +128,10 @@ namespace Ballance2.DebugTools
       Log.SendLogsInTemporary();
 
       commandHistory.Add("");
-      commandInputListenKey1 = this.GameUIManager.ListenKey(KeyCode.UpArrow, (KeyCode key, bool downed) => {
+      commandInputListenKey1 = GameUIManager.ListenKey(KeyCode.UpArrow, (KeyCode key, bool downed) => {
         if(downed && CommandInputField.isFocused) UpCommandHistory();
       });
-      commandInputListenKey2 = this.GameUIManager.ListenKey(KeyCode.DownArrow, (KeyCode key, bool downed) => {
+      commandInputListenKey2 = GameUIManager.ListenKey(KeyCode.DownArrow, (KeyCode key, bool downed) => {
         if(downed && CommandInputField.isFocused) DownCommandHistory();
       });
     }
@@ -136,9 +139,9 @@ namespace Ballance2.DebugTools
     {
       logForceDisable = true;
       Log.UnRegisterLogObserver(logObserver);
-      if(this.GameUIManager != null) {
-        this.GameUIManager.DeleteKeyListen(commandInputListenKey1);
-        this.GameUIManager.DeleteKeyListen(commandInputListenKey2);
+      if(GameUIManager != null) {
+        GameUIManager.DeleteKeyListen(commandInputListenKey1);
+        GameUIManager.DeleteKeyListen(commandInputListenKey2);
       }
     }
 
@@ -177,7 +180,7 @@ namespace Ballance2.DebugTools
       var transform = ConsoleContainerContent;
       var c = transform.childCount;
       for (var i = c - 1; i >= 0; i--)
-        UnityEngine.Object.Destroy(transform.GetChild(i).gameObject);
+        Destroy(transform.GetChild(i).gameObject);
       transform.sizeDelta = new Vector2(transform.sizeDelta.x, 300);
     }
     

@@ -2,6 +2,7 @@ using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.UI;
@@ -46,7 +47,7 @@ namespace Ballance2.Game.GamePlay.Other
     private bool _TutorialCamFinded = false;
     private int _TutorialCurrWaitkey = 0;
     private RectTransform _TutorialUI = null;
-    private Text _TutorialUIText = null;
+    private TMP_Text _TutorialUIText = null;
     private Image _TutorialUIBg = null;
     private Button _TutorialUIButtonContinue = null;
     private Button _TutorialUIButtonQuit = null;
@@ -84,7 +85,7 @@ namespace Ballance2.Game.GamePlay.Other
           var view = _TutorialUI.transform.GetChild(0);
           var buttonView = _TutorialUI.transform.GetChild(1);
           _TutorialUIBg = view.GetComponent<Image>();
-          _TutorialUIText = view.GetChild(0).GetComponent<Text>();
+          _TutorialUIText = view.GetChild(0).GetComponent<TMP_Text>();
           _TutorialUIButtonContinue = buttonView.GetChild(0).GetComponent<Button>();
           _TutorialUIButtonQuit = buttonView.GetChild(1).GetComponent<Button>();
           _TutorialUI.gameObject.SetActive(false);
@@ -217,9 +218,11 @@ namespace Ballance2.Game.GamePlay.Other
         _TutorialShouldDisablePointDown = false;
 
         //绑定当前球
-        var ballWoodConstraintSource = new ConstraintSource();
-        ballWoodConstraintSource.sourceTransform = BallManager.CurrentBall.transform;
-        ballWoodConstraintSource.weight = 1;
+        var ballWoodConstraintSource = new ConstraintSource
+        {
+          sourceTransform = BallManager.CurrentBall.transform,
+          weight = 1
+        };
         if (_TutorialBallFinded)
           Tut_Richt_Pfeil.SetSource(0, ballWoodConstraintSource);
         else

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,7 @@ namespace Ballance2.UI.Core.ValueBinder
   [RequireComponent(typeof(Dropdown))]
   public class DropdownValueBinder : GameUIControlValueBinder
   {
-    private Dropdown dropdown = null;
+    private TMP_Dropdown dropdown = null;
 
     protected override bool OnBinderSupplierHandle(object value) {
       dropdown.value = (int)value;
@@ -29,7 +30,7 @@ namespace Ballance2.UI.Core.ValueBinder
 
     protected override void BinderBegin()
     {
-      dropdown = GetComponent<Dropdown>();
+      dropdown = GetComponent<TMP_Dropdown>();
       dropdown.onValueChanged.AddListener((v) =>
       {
         NotifyUserUpdate(v);

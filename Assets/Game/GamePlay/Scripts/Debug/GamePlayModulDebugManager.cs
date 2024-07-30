@@ -5,6 +5,7 @@ using Ballance2.Services;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using BallancePhysics.Wapper;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ namespace Ballance2.Game.GamePlay.Debug
   /// </summary>
   public static class GamePlayModulDebugManager
   {
-    private static Text stateText;
+    private static TMP_Text stateText;
     private static GameObject Modul_Instace;
 
     public static void Init() {
@@ -119,7 +120,7 @@ namespace Ballance2.Game.GamePlay.Debug
         
         //克隆UI
         var ui = GameManager.Instance.InstancePrefab(GameDebugEntry.ModulTestUI, GameManager.Instance.GameCanvas, "ModulTestUI");
-        stateText = ui.transform.Find("Text").GetComponent<Text>();
+        stateText = ui.transform.Find("Text").GetComponent<TMP_Text>();
         var button = ui.transform.Find("Text").GetComponent<Button>();
 
         var GameUIManager = Ballance2.Services.GameUIManager.Instance;

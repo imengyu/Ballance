@@ -2,6 +2,7 @@ using Ballance2.Game.GamePlay;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -69,7 +70,7 @@ namespace Ballance2.Menu
       });
 
       //高分默认数据
-      var HighscoreEntryName = PageHighscoreEntry.Content.Find("InputField").GetComponent<InputField>();
+      var HighscoreEntryName = PageHighscoreEntry.Content.Find("InputField").GetComponent<TMP_InputField>();
       HighscoreEntryName.text = PlayerPrefs.GetString("LastEnterHighscoreEntry", "NAME");
 
       //过关之后的下一关按扭

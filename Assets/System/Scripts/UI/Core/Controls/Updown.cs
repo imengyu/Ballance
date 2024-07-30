@@ -28,8 +28,8 @@ namespace Ballance2.UI.Core.Controls
   {
     public Button DownBtn;
     public Button UpBtn;
-    public Text TextValue;
-    public I18NText TextTitle;
+    public UIText TextValue;
+    public UIText TextTitle;
     public float MinValue = 0;
     public float MaxValue = 100;
     public float StepValue = 10;

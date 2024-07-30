@@ -1,19 +1,20 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Ballance2.DebugTools 
 {
   public class DebugFps : MonoBehaviour
   {
     public float showTime = 0.4f;
-    public Text text;
+    public TMP_Text text;
 
     private int count = 0;
     private float deltaTime = 0f;
 
     public static DebugFps Instance;
 
-    private void Start() {
+    private void Start() 
+    {
       Instance = this;
     }
     private void Update()

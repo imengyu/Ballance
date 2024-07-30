@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ballance2.UI.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,9 +22,8 @@ namespace Ballance2.Game.Small
 {
   public class ScrollCaption : MonoBehaviour
   {
-
-    public Text TextHeader;
-    public Text TextContent;
+    public TMP_Text TextHeader;
+    public TMP_Text TextContent;
     public UIFadeManager FadeManager;
     public GameObject PanelImages;
 
