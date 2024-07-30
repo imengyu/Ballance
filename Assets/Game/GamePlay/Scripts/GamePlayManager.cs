@@ -135,7 +135,7 @@ namespace Ballance2.Game.GamePlay
       Log.D(TAG, "Destroy");
       if (GameUIManager.Instance != null)
         GameUIManager.Instance.DeleteKeyListen(this._EscKeyId);
-      GameManager.GameMediator.UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart"); //取消注册全局事件
+      GameManager.GameMediator?.UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart"); //取消注册全局事件
       this._DeleteEvents();
       this._DeleteCommands(); //删除指令
     }
@@ -418,7 +418,7 @@ namespace Ballance2.Game.GamePlay
     }
     private void _DeleteEvents() 
     {
-      GameManager.GameMediator.UnRegisterEventEmitter("GamePlay");
+      GameManager.GameMediator?.UnRegisterEventEmitter("GamePlay");
     }
 
     #endregion

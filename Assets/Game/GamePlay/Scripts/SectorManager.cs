@@ -102,7 +102,7 @@ namespace Ballance2.Game.GamePlay
       this.EventResetAllSector = events.RegisterEvent("ResetAllSector");
     }
     private void DestroyEvent() {
-      GameMediator.Instance.UnRegisterEventEmitter("SectorManager");
+      GameMediator.Instance?.UnRegisterEventEmitter("SectorManager");
     }
 
     #endregion
@@ -133,7 +133,7 @@ namespace Ballance2.Game.GamePlay
       );
     }
     private void DestroyCommand() {
-      GameManager.Instance.GameDebugCommandServer.UnRegisterCommand(this._CommandId);
+      GameManager.Instance?.GameDebugCommandServer.UnRegisterCommand(this._CommandId);
     }
   
     #endregion

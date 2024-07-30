@@ -185,7 +185,7 @@ namespace Ballance2.Game.GamePlay
       this.EventCamFollowTargetChanged = events.RegisterEvent("CamFollowTargetChanged");
     }
     private void DestroyEvent() {
-      GameMediator.Instance.UnRegisterEventEmitter("CamManager");
+      GameMediator.Instance?.UnRegisterEventEmitter("CamManager");
     }
 
     #endregion
@@ -225,7 +225,7 @@ namespace Ballance2.Game.GamePlay
       );
     }
     private void DestroyCommand() {
-      GameManager.Instance.GameDebugCommandServer.UnRegisterCommand(this._CommandId);
+      GameManager.Instance?.GameDebugCommandServer.UnRegisterCommand(this._CommandId);
     }
   
     #endregion

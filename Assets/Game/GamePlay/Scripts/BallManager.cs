@@ -271,7 +271,7 @@ namespace Ballance2.Game.GamePlay
     }
     private void _DeleteCommands() 
     {
-      GameManager.Instance.GameDebugCommandServer.UnRegisterCommand(_CommandId);
+      GameManager.Instance?.GameDebugCommandServer.UnRegisterCommand(_CommandId);
     }
 
     #endregion
@@ -345,7 +345,7 @@ namespace Ballance2.Game.GamePlay
     }
     private void _DeleteEvents() 
     {
-      GameManager.GameMediator.UnRegisterEventEmitter("BallManager");
+      GameManager.GameMediator?.UnRegisterEventEmitter("BallManager");
     }
 
     #endregion

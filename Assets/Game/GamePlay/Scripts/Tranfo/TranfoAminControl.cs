@@ -80,7 +80,7 @@ namespace Ballance2.Game.GamePlay.Tranfo
     }
     protected override void OnDestroy() {
       if (_Misc_Trafo != null) {
-        GameSoundManager.Instance.DestroySoundPlayer(_Misc_Trafo);
+        GameSoundManager.Instance?.DestroySoundPlayer(_Misc_Trafo);
         _Misc_Trafo = null;
       }
     }

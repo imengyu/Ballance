@@ -81,7 +81,7 @@ namespace Ballance2.Game.GamePlay.Balls
       }));
     }
     private void OnDestroy() {
-      GameMediator.Instance.UnRegisterEventHandler(GameEventNames.EVENT_LEVEL_BUILDER_BEFORE_START, _MyEventHandlers[0]);
+      GameMediator.Instance?.UnRegisterEventHandler(GameEventNames.EVENT_LEVEL_BUILDER_BEFORE_START, _MyEventHandlers[0]);
     }
 
     #region 碰撞数据控制
