@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Ballance2.Game.GamePlay.Balls;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
@@ -9,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ballance2.Game.GamePlay.Debug
+namespace Ballance2.Game.GamePlay.DebugTools
 {
   /// <summary>
   /// 迷你机关调试环境

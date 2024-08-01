@@ -13,6 +13,7 @@ using Ballance2.Utils;
 using BallancePhysics.Wapper;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Ballance2.Game.GamePlay
 {
@@ -109,7 +110,8 @@ namespace Ballance2.Game.GamePlay
     private int _HideBalloonEndTimerID = 0;
     //Used by Tutorial
     internal bool _ShouldStartByCustom = false;
-    private int _EscKeyId = 0;
+    [SerializeField]
+    private InputAction ActionPause;
 
     private void Awake() 
     {
@@ -123,31 +125,30 @@ namespace Ballance2.Game.GamePlay
 
       //注册全局事件
       Mediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "CoreGamePlayManagerInitAndStart", "GamePlayManager",(evtName, param) => {
-        this._InitAndStart();
+        _InitAndStart();
         return false;
       });
 
       //注册控制台指令
-      this._AddCommands();
+      _AddCommands();
     }
     protected override void OnDestroy() 
     {
       Log.D(TAG, "Destroy");
-      if (GameUIManager.Instance != null)
-        GameUIManager.Instance.DeleteKeyListen(this._EscKeyId);
+      ActionPause.Disable();
       GameManager.GameMediator?.UnRegisterSingleEvent("CoreGamePlayManagerInitAndStart"); //取消注册全局事件
-      this._DeleteEvents();
-      this._DeleteCommands(); //删除指令
+      _DeleteEvents();
+      _DeleteCommands(); //删除指令
     }
     private void Update() {
-      this._UpdateTick = this._UpdateTick + Time.deltaTime;
-      if (this._UpdateTick >= 0.5) {
+      _UpdateTick = _UpdateTick + Time.deltaTime;
+      if (_UpdateTick >= 0.5) {
         //计数清零
-        this._UpdateTick = 0;
+        _UpdateTick = 0;
         //分数每半秒减一
-        if (this._IsCountDownPoint && this.CurrentPoint > 0) {
-          this.CurrentPoint = this.CurrentPoint - 1;
-          GamePlayUIControl.Instance.SetPointText(this.CurrentPoint);
+        if (_IsCountDownPoint && CurrentPoint > 0) {
+          CurrentPoint = CurrentPoint - 1;
+          GamePlayUIControl.Instance.SetPointText(CurrentPoint);
         }
       }
     }
@@ -159,73 +160,73 @@ namespace Ballance2.Game.GamePlay
       var GameDebugCommandServer = GameManager.Instance.GameDebugCommandServer;
       //注册控制台指令
 
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("pass", (keyword, fullCmd, argsCount, args) => {
-        this.Pass();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("pass", (keyword, fullCmd, argsCount, args) => {
+        Pass();
         return true;
       }, 0, "win > 直接过关"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("debug0", (keyword, fullCmd, argsCount, args) => {
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("debug0", (keyword, fullCmd, argsCount, args) => {
         HighscoreManager.Instance.AddItem(CurrentLevelName, "debug0", 5000);
         return true;
       }, 0, "debug0 > Add highscroll"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("fall", (keyword, fullCmd, argsCount, args) => {
-        this.Fall();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("fall", (keyword, fullCmd, argsCount, args) => {
+        Fall();
         return true;
       }, 0, "fall > 触发球掉落死亡"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("restart", (keyword, fullCmd, argsCount, args) => {
-        this.RestartLevel();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("restart", (keyword, fullCmd, argsCount, args) => {
+        RestartLevel();
         return true;
       }, 0, "restart > 重新开始关卡"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("pause", (keyword, fullCmd, argsCount, args) => {
-        this.PauseLevel(false); 
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("pause", (keyword, fullCmd, argsCount, args) => {
+        PauseLevel(false); 
         return true;
          }, 0, "pause > 暂停"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("resume", (keyword, fullCmd, argsCount, args) => {
-        this.ResumeLevel();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("resume", (keyword, fullCmd, argsCount, args) => {
+        ResumeLevel();
         return true;
          }, 0, "resume > 恢复"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("unload", (keyword, fullCmd, argsCount, args) => {
-        this.QuitLevel();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("unload", (keyword, fullCmd, argsCount, args) => {
+        QuitLevel();
         return true;
          }, 0, "unload > 卸载关卡"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("nextlev", (keyword, fullCmd, argsCount, args) => {
-        this.Fall();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("nextlev", (keyword, fullCmd, argsCount, args) => {
+        Fall();
         return true;
       }, 0, "nextlev > 加载下一关"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("gos", (keyword, fullCmd, argsCount, args) => {
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("gos", (keyword, fullCmd, argsCount, args) => {
         var ox = DebugUtils.CheckIntDebugParam(0, args, out var nx, true, 0);
         if (!ox) 
           return false;
         BallManager.SetControllingStatus(BallControlStatus.NoControl);
         SectorManager.SetCurrentSector(nx);
-        this._SetCamPos();
-        this._Start(true, null);
+        _SetCamPos();
+        _Start(true, null);
         return true;
       }, 1, "gos <count:number> > 跳转到指定的小节"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("rebirth", (keyword, fullCmd, argsCount, args) => {
-        this._Rebirth();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("rebirth", (keyword, fullCmd, argsCount, args) => {
+        _Rebirth();
         return true;
       }, 0, "rebirth > 重新出生（不消耗生命球）"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("addlife", (keyword, fullCmd, argsCount, args) => {
-        this.AddLife();
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("addlife", (keyword, fullCmd, argsCount, args) => {
+        AddLife();
         return true;
       }, 0, "addlife > 添加一个生命球"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("addtime", (keyword, fullCmd, argsCount, args) => {
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("addtime", (keyword, fullCmd, argsCount, args) => {
         var ox = DebugUtils.CheckIntDebugParam(0, args, out var nx, true, 0);
         if (!ox) 
           return false;
-        this.AddPoint(nx);
+        AddPoint(nx);
         return true;
       }, 1, "addtime <count:number> > 添加时间点 count：要添加数量"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("settime", (keyword, fullCmd, argsCount, args) => {
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("settime", (keyword, fullCmd, argsCount, args) => {
         var ox = DebugUtils.CheckIntDebugParam(0, args, out var nx, true, 0);
         if (!ox) 
           return false;
         if (nx < 0) nx = 0;
-        this.CurrentPoint = nx;
+        CurrentPoint = nx;
         GamePlayUIControl.Instance.SetPointText(nx);
         return true;
       }, 1, "settime <count:number> > 设置当前时间点数量 count：数量"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("set-physics-speed", (keyword, fullCmd, argsCount, args) => {
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("set-physics-speed", (keyword, fullCmd, argsCount, args) => {
         var ox = DebugUtils.CheckFloatDebugParam(0, args, out var nx, true, 0);
         if (!ox) 
           return false;
@@ -234,7 +235,7 @@ namespace Ballance2.Game.GamePlay
         GamePhysicsWorld.TimeFactor = nx;
         return true;
       }, 1, "set-physics-speed <speed:number> > 设置物理引擎模拟速率 speed：速率，默认是 1，可以设置 0.5 - 5.0"));
-      this._CommandIds.Add(GameDebugCommandServer.RegisterCommand("set-ball-speed", (keyword, fullCmd, argsCount, args) => {
+      _CommandIds.Add(GameDebugCommandServer.RegisterCommand("set-ball-speed", (keyword, fullCmd, argsCount, args) => {
         var ox = DebugUtils.CheckFloatDebugParam(0, args, out var nx, true, 0);
         if (!ox) 
           return false;
@@ -247,8 +248,9 @@ namespace Ballance2.Game.GamePlay
     }
     private void _DeleteCommands() 
     {
-      var GameDebugCommandServer = GameManager.Instance.GameDebugCommandServer;
-      _CommandIds.ForEach((id) => GameDebugCommandServer.UnRegisterCommand(id));
+      var GameDebugCommandServer = GameManager.Instance?.GameDebugCommandServer;
+      if (GameDebugCommandServer != null)
+        _CommandIds.ForEach((id) => GameDebugCommandServer.UnRegisterCommand(id));
       _CommandIds.Clear();
     }
 
@@ -267,31 +269,32 @@ namespace Ballance2.Game.GamePlay
     private void _InitSounds() 
     {
       var SoundManager = GameSoundManager.Instance;
-      this._SoundBallFall = SoundManager.RegisterSoundPlayer(GameSoundType.Normal, SoundManager.LoadAudioResource("core.sounds:Misc_Fall.wav"), false, true, "Misc_Fall");
-      this._SoundAddLife = SoundManager.RegisterSoundPlayer(GameSoundType.UI, SoundManager.LoadAudioResource("core.sounds:Misc_extraball.wav"), false, true, "Misc_extraball");
-      this._SoundLastSector = SoundManager.RegisterSoundPlayer(GameSoundType.Background, SoundManager.LoadAudioResource("core.sounds.music:Music_EndCheckpoint.wav"), false, true, "Music_EndCheckpoint");
-      this._SoundFinnal = SoundManager.RegisterSoundPlayer(GameSoundType.Normal, SoundManager.LoadAudioResource("core.sounds.music:Music_Final.wav"), false, true, "Music_Final");
-      this._SoundLastFinnal = SoundManager.RegisterSoundPlayer(GameSoundType.Normal, SoundManager.LoadAudioResource("core.sounds.music:Music_LastFinal.wav"), false, true, "Music_LastFinal");
-      this._SoundLastSector.loop = true;
-      this._SoundLastSector.dopplerLevel = 0;
-      this._SoundLastSector.rolloffMode = AudioRolloffMode.Linear;
-      this._SoundLastSector.minDistance = 95;
-      this._SoundLastSector.maxDistance = 160;
+      _SoundBallFall = SoundManager.RegisterSoundPlayer(GameSoundType.Normal, SoundManager.LoadAudioResource("core.sounds:Misc_Fall.wav"), false, true, "Misc_Fall");
+      _SoundAddLife = SoundManager.RegisterSoundPlayer(GameSoundType.UI, SoundManager.LoadAudioResource("core.sounds:Misc_extraball.wav"), false, true, "Misc_extraball");
+      _SoundLastSector = SoundManager.RegisterSoundPlayer(GameSoundType.Background, SoundManager.LoadAudioResource("core.sounds.music:Music_EndCheckpoint.wav"), false, true, "Music_EndCheckpoint");
+      _SoundFinnal = SoundManager.RegisterSoundPlayer(GameSoundType.Normal, SoundManager.LoadAudioResource("core.sounds.music:Music_Final.wav"), false, true, "Music_Final");
+      _SoundLastFinnal = SoundManager.RegisterSoundPlayer(GameSoundType.Normal, SoundManager.LoadAudioResource("core.sounds.music:Music_LastFinal.wav"), false, true, "Music_LastFinal");
+      _SoundLastSector.loop = true;
+      _SoundLastSector.dopplerLevel = 0;
+      _SoundLastSector.rolloffMode = AudioRolloffMode.Linear;
+      _SoundLastSector.minDistance = 95;
+      _SoundLastSector.maxDistance = 160;
     }
     private void _InitKeyEvents() 
     {
-      //ESC键
-      this._EscKeyId = GameUIManager.Instance.ListenKey(KeyCode.Escape, (key, down) => {
-        if (down 
-          && this.CanEscPause 
-          && this._BallBirthed 
-          && !this.CurrentLevelPass) {
-          if (this._IsGamePlaying)
-            this.PauseLevel(true);
+      ActionPause.Enable();
+      ActionPause.performed += (context) => {
+        if (
+          context.ReadValueAsButton()
+          && CanEscPause 
+          && _BallBirthed 
+          && !CurrentLevelPass) {
+          if (_IsGamePlaying)
+            PauseLevel(true);
           else
-            this.ResumeLevel();
-        }
-      });
+            ResumeLevel();
+          }
+      };
     }
     private void _InitSettings() 
     {
@@ -402,19 +405,19 @@ namespace Ballance2.Game.GamePlay
     private void _InitEvents()  
     {
       var events = GameManager.GameMediator.RegisterEventEmitter("GamePlay");
-      this.EventBeforeStart = events.RegisterEvent("BeforeStart") ;
-      this.EventStart = events.RegisterEvent("Start");
-      this.EventQuit = events.RegisterEvent("Quit");
-      this.EventFall = events.RegisterEvent("Fall");
-      this.EventDeath = events.RegisterEvent("Death");
-      this.EventResume = events.RegisterEvent("Resume");
-      this.EventPause = events.RegisterEvent("Pause");
-      this.EventRestart = events.RegisterEvent("Restart");
-      this.EventUfoAnimFinish = events.RegisterEvent("UfoAnimFinish");
-      this.EventPass = events.RegisterEvent("Pass");
-      this.EventHideBalloonEnd = events.RegisterEvent("HideBalloonEnd");
-      this.EventAddLife = events.RegisterEvent("AddLife");
-      this.EventAddPoint = events.RegisterEvent("AddPoint");
+      EventBeforeStart = events.RegisterEvent("BeforeStart") ;
+      EventStart = events.RegisterEvent("Start");
+      EventQuit = events.RegisterEvent("Quit");
+      EventFall = events.RegisterEvent("Fall");
+      EventDeath = events.RegisterEvent("Death");
+      EventResume = events.RegisterEvent("Resume");
+      EventPause = events.RegisterEvent("Pause");
+      EventRestart = events.RegisterEvent("Restart");
+      EventUfoAnimFinish = events.RegisterEvent("UfoAnimFinish");
+      EventPass = events.RegisterEvent("Pass");
+      EventHideBalloonEnd = events.RegisterEvent("HideBalloonEnd");
+      EventAddLife = events.RegisterEvent("AddLife");
+      EventAddPoint = events.RegisterEvent("AddPoint");
     }
     private void _DeleteEvents() 
     {
@@ -428,8 +431,8 @@ namespace Ballance2.Game.GamePlay
     //停止
     internal void _Stop(BallControlStatus controlStatus) 
     {
-      this._IsGamePlaying = false;
-      this._IsCountDownPoint = false;
+      _IsGamePlaying = false;
+      _IsCountDownPoint = false;
       //禁用控制
       BallManager.SetControllingStatus(controlStatus);
       //禁用音乐
@@ -438,24 +441,24 @@ namespace Ballance2.Game.GamePlay
     //开始
     internal void _Start(bool isStartBySector, GameManager.VoidDelegate customerFn) 
     {
-      this._IsGamePlaying = true;
+      _IsGamePlaying = true;
 
-      if (this.CurrentDisableStart) 
+      if (CurrentDisableStart) 
         return;
 
       //开始音乐
       MusicManager.EnableBackgroundMusic();
 
-      if (!this._BallBirthed)
-        this._BallBirthed = true;
+      if (!_BallBirthed)
+        _BallBirthed = true;
 
       if (isStartBySector)
       {
         var startPos = Vector3.zero;
-        if (this.CurrentSector > 0)
+        if (CurrentSector > 0)
         {
           //初始位置
-          var startRestPoint = SectorManager.CurrentLevelRestPoints[this.CurrentSector].point;
+          var startRestPoint = SectorManager.CurrentLevelRestPoints[CurrentSector].point;
           startPos = startRestPoint.transform.position;
         }
         BallManager.SetCanControlCameraWhenStart();
@@ -464,32 +467,32 @@ namespace Ballance2.Game.GamePlay
           //开始控制
           BallManager.SetNextRecoverPos(startPos);
           //发送事件
-          this.EventStart.Emit(this._FirstStart);
+          EventStart.Emit(_FirstStart);
           //设置标志
-          if (this._FirstStart)
-            this._FirstStart = false;
+          if (_FirstStart)
+            _FirstStart = false;
 
           if (customerFn != null)
             customerFn();
           else
           {
             BallManager.SetControllingStatus(BallControlStatus.Control);
-            this._IsCountDownPoint = true;
+            _IsCountDownPoint = true;
           }
         });
       }
       else
       {
-        this._IsCountDownPoint = true;
+        _IsCountDownPoint = true;
         BallManager.SetControllingStatus(BallControlStatus.Control);
       }
     }
     //设置相机位置
     internal void _SetCamPos()
     {
-      if (this.CurrentSector > 0)
+      if (CurrentSector > 0)
       {
-        var startRestPoint = SectorManager.CurrentLevelRestPoints[this.CurrentSector].point;
+        var startRestPoint = SectorManager.CurrentLevelRestPoints[CurrentSector].point;
         CamManager.SetPosAndDirByRestPoint(startRestPoint);
         CamManager.SetTarget(startRestPoint.transform, false);
         CamManager.SetCamLook(true);
@@ -499,33 +502,33 @@ namespace Ballance2.Game.GamePlay
     internal void _Rebirth() 
     {
       BallManager.SetControllingStatus(BallControlStatus.NoControl);
-      this._SetCamPos();
-      this._Start(true, null);
+      _SetCamPos();
+      _Start(true, null);
     }
     //LevelBuilder 就绪，现在GamePlayManager进行初始化
     internal void _InitAndStart() 
     {
-      this.CurrentLevelPass = false;
-      this.CurrentDisableStart = false;
-      this._IsGamePlaying = false;
-      this._IsCountDownPoint = false;
+      CurrentLevelPass = false;
+      CurrentDisableStart = false;
+      _IsGamePlaying = false;
+      _IsCountDownPoint = false;
 
       //UI
       GameUIManager.Instance.CloseAllPage();
       GamePlayUIControl.Instance.gameObject.SetActive(true);
       //设置初始分数\生命球
-      this.CurrentLife = this.StartLife;
-      this.CurrentPoint = this.StartPoint;
-      this._BallBirthed = false;
-      GamePlayUIControl.Instance.SetLifeBallCount(this.CurrentLife);
-      GamePlayUIControl.Instance.SetPointText(this.CurrentPoint);
+      CurrentLife = StartLife;
+      CurrentPoint = StartPoint;
+      _BallBirthed = false;
+      GamePlayUIControl.Instance.SetLifeBallCount(CurrentLife);
+      GamePlayUIControl.Instance.SetPointText(CurrentPoint);
       //进入第一小节
       SectorManager.SetCurrentSector(1);
       //设置初始球
-      BallManager.SetCurrentBall(this.StartBall);
+      BallManager.SetCurrentBall(StartBall);
       BallManager.CanControllCamera = true;
       CamManager.gameObject.SetActive(true);
-      this._SetCamPos();
+      _SetCamPos();
       GameUIManager.Instance.MaskBlackFadeOut(1);
       //播放开始音乐
       GameSoundManager.Instance.PlayFastVoice("core.sounds:Misc_StartLevel.wav", GameSoundType.Normal);
@@ -540,19 +543,19 @@ namespace Ballance2.Game.GamePlay
           GameUIManager.Instance.UIFadeManager.AddFadeIn(LevelBuilderRef.CurrentLevelSkyLayer, 1, null);
       }
 
-      this._FirstStart = true;
+      _FirstStart = true;
 
       Log.D(TAG, "Start");
 
-      this.EventBeforeStart.Emit();
+      EventBeforeStart.Emit();
 
-      if (!this._ShouldStartByCustom)
+      if (!_ShouldStartByCustom)
       {
         GameTimer.Delay(0.7f, () => {
           //模拟
-          this.GamePhysicsWorld.Simulate = true;
+          GamePhysicsWorld.Simulate = true;
           //开始
-          this._Start(true, null);
+          _Start(true, null);
         });
       }
       else
@@ -566,54 +569,54 @@ namespace Ballance2.Game.GamePlay
     /// </summary>
     public bool Fall() 
     {
-      if (this.CurrentLevelPass)
+      if (CurrentLevelPass)
         return false;
-      if (this.BallManager.GetControllingStatus() != BallControlStatus.Control)
+      if (BallManager.GetControllingStatus() != BallControlStatus.Control)
         return false;
-      if (this._DethLock)
+      if (_DethLock)
         return false;
-      this._DethLock = true;
+      _DethLock = true;
 
-      Log.D(TAG, "Fall . CurrentLife: " + this.CurrentLife);
+      Log.D(TAG, "Fall . CurrentLife: " + CurrentLife);
 
       //下落音乐
-      this._SoundBallFall.volume = 1;
-      this._SoundBallFall.Play();
+      _SoundBallFall.volume = 1;
+      _SoundBallFall.Play();
 
       //禁用键盘摄像机控制
       BallManager.CanControllCamera = false;
 
-      if (this.CurrentLife > 0 || this.CurrentLife <= -1)
+      if (CurrentLife > 0 || CurrentLife <= -1)
       {
         //禁用控制
-        this._Stop(BallControlStatus.FreeMode);
+        _Stop(BallControlStatus.FreeMode);
 
-        if (this.CurrentLife > 0)
-          this.CurrentLife = this.CurrentLife - 1;
+        if (CurrentLife > 0)
+          CurrentLife = CurrentLife - 1;
 
         GameUIManager.Instance.MaskWhiteFadeIn(1);
 
-        this.EventFall.Emit();
+        EventFall.Emit();
 
         GameTimer.Delay(1, () => {
           //禁用机关
           SectorManager.DeactiveCurrentSector();
           //禁用控制
-          this._Stop(BallControlStatus.NoControl);
+          _Stop(BallControlStatus.NoControl);
 
           GameTimer.Delay(1, () => {
-            GameUIManager.Instance.UIFadeManager.AddAudioFadeOut(this._SoundBallFall, 1);
+            GameUIManager.Instance.UIFadeManager.AddAudioFadeOut(_SoundBallFall, 1);
 
             ///重置机关和摄像机
             SectorManager.ActiveCurrentSector(false);
-            this._SetCamPos();
-            this._Start(true, null);
+            _SetCamPos();
+            _Start(true, null);
             GameUIManager.Instance.MaskWhiteFadeOut(1);
 
             //延时移除生命球
             GameTimer.Delay(1, () => {
               GamePlayUIControl.Instance.RemoveLifeBall();
-              this._DethLock = false;
+              _DethLock = false;
             });
           });
         });
@@ -623,18 +626,18 @@ namespace Ballance2.Game.GamePlay
         Log.D(TAG, "Death");
 
         //禁用控制
-        this._Stop(BallControlStatus.FreeMode);
+        _Stop(BallControlStatus.FreeMode);
 
-        this.EventDeath.Emit();
+        EventDeath.Emit();
 
         GameTimer.Delay(1.5f, () => {
-          this._Stop(BallControlStatus.UnleashingMode);
+          _Stop(BallControlStatus.UnleashingMode);
           MusicManager.DisableBackgroundMusicWithoutAtmo();
 
           //延时显示失败菜单
           GameTimer.Delay(1, () => {
             GameUIManager.Instance.GoPage("PageGameFail");
-            this._DethLock = false;
+            _DethLock = false;
           });
         });
       }
@@ -645,14 +648,14 @@ namespace Ballance2.Game.GamePlay
     /// </summary>
     public void Pass() 
     {
-      if (this.CurrentLevelPass) 
+      if (CurrentLevelPass) 
         return;
 
       Log.D(TAG, "Pass");
 
-      this.CurrentLevelPass = true;
-      this._SoundLastSector.Stop(); //停止最后一小节的音乐
-      this._Stop(BallControlStatus.FreeMode);
+      CurrentLevelPass = true;
+      _SoundLastSector.Stop(); //停止最后一小节的音乐
+      _Stop(BallControlStatus.FreeMode);
 
       GameTimer.Delay(0.6f, () => BallManager.SetControllingStatus(BallControlStatus.UnleashingMode));
 
@@ -666,21 +669,21 @@ namespace Ballance2.Game.GamePlay
       //停止背景音乐
       MusicManager.DisableBackgroundMusicWithoutAtmo();
 
-      if (this.CurrentEndWithUFO) 
+      if (CurrentEndWithUFO) 
       {
         //播放结尾的UFO动画
-        this._SoundLastFinnal.Play(); //播放音乐
+        _SoundLastFinnal.Play(); //播放音乐
         UFOAnimController.Instance.StartSeq();
       }
       else
       {
-        this._SoundFinnal.Play(); //播放音乐
-        this._HideBalloonEnd(false); //开始隐藏飞船
+        _SoundFinnal.Play(); //播放音乐
+        _HideBalloonEnd(false); //开始隐藏飞船
         GameTimer.Delay(6, () => {
           WinScoreUIControl.Instance.StartSeq();
         });
       }
-      this.EventPass.Emit();
+      EventPass.Emit();
     }
     /// <summary>
     /// 暂停关卡
@@ -688,12 +691,12 @@ namespace Ballance2.Game.GamePlay
     /// <param name="showPauseUI">是否显示暂停界面</param>
     public void PauseLevel(bool showPauseUI) 
     {
-      this._Stop(BallControlStatus.FreeMode);
+      _Stop(BallControlStatus.FreeMode);
 
       Log.D(TAG, "Pause");
 
       //停止模拟
-      this.GamePhysicsWorld.Simulate = false;
+      GamePhysicsWorld.Simulate = false;
       //停止摄像机跟随(防止暂停而带来的摄像机抖动)
       BallManager.StopCamMove();
 
@@ -704,7 +707,7 @@ namespace Ballance2.Game.GamePlay
         GameUIManager.Instance.GoPage("PageGamePause");
       }
 
-      this.EventPause.Emit();
+      EventPause.Emit();
     }
     /// <summary>
     /// 继续关卡
@@ -721,36 +724,36 @@ namespace Ballance2.Game.GamePlay
       //重新开始摄像机跟随
       BallManager.StartCamMove();
       //停止继续
-      this.GamePhysicsWorld.Simulate = true;
-      this._Start(forceRestart, null);
+      GamePhysicsWorld.Simulate = true;
+      _Start(forceRestart, null);
 
-      this.EventResume.Emit();
+      EventResume.Emit();
     }
 
     //过关后隐藏飞船
     private void _HideBalloonEnd(bool fromUfo) 
     {
-      if (this._HideBalloonEndTimerID > 0)
+      if (_HideBalloonEndTimerID > 0)
       {
-        GameTimer.DeleteDelay(this._HideBalloonEndTimerID);
-        this._HideBalloonEndTimerID = 0;
+        GameTimer.DeleteDelay(_HideBalloonEndTimerID);
+        _HideBalloonEndTimerID = 0;
       }
       //60秒后隐藏飞船
-      this._HideBalloonEndTimerID = GameTimer.Delay(fromUfo ? 40 : 60, () => {
-        this._HideBalloonEndTimerID = 0;
+      _HideBalloonEndTimerID = GameTimer.Delay(fromUfo ? 40 : 60, () => {
+        _HideBalloonEndTimerID = 0;
         BallManager.SetControllingStatus(BallControlStatus.NoControl);
         SectorManager.CurrentLevelEndBalloon.Deactive();
-        this.EventHideBalloonEnd.Emit();
+        EventHideBalloonEnd.Emit();
       });
     }
     //UFO 动画完成回调
     internal void UfoAnimFinish() 
     {
-      this._SoundFinnal.Play();
-      this._HideBalloonEnd(true); //开始隐藏飞船
+      _SoundFinnal.Play();
+      _HideBalloonEnd(true); //开始隐藏飞船
       BallManager.SetControllingStatus(BallControlStatus.NoControl);
       WinScoreUIControl.Instance.StartSeq();
-      this.EventUfoAnimFinish.Emit();
+      EventUfoAnimFinish.Emit();
     }
 
     private bool _IsTranfoIn = false;
@@ -762,10 +765,10 @@ namespace Ballance2.Game.GamePlay
     /// <param name="targetType">要变成的目标球类型</param>
     public void ActiveTranfo(ITranfoBase tranfo, string targetType) 
     {
-      if (this._IsTranfoIn)
+      if (_IsTranfoIn)
         return;
 
-      this._IsTranfoIn = true;
+      _IsTranfoIn = true;
 
       var targetPos = tranfo.GetTransform().TransformPoint(new Vector3(0, 2, 0));
       var oldBallType = BallManager.CurrentBallName;
@@ -801,7 +804,7 @@ namespace Ballance2.Game.GamePlay
 
           //重置状态
           tranfo.ResetTranfo();
-          this._IsTranfoIn = false;
+          _IsTranfoIn = false;
         });
       });
     }
@@ -817,18 +820,18 @@ namespace Ballance2.Game.GamePlay
       GameManager.VoidDelegate callBack = null;
       if (loadNext)
       {
-        callBack = () => LevelBuilder.LevelBuilder.Instance.LoadLevel(this.NextLevelName);
+        callBack = () => LevelBuilder.LevelBuilder.Instance.LoadLevel(NextLevelName);
       }
 
       //停止隐藏飞船定时
-      if (this._HideBalloonEndTimerID > 0)
+      if (_HideBalloonEndTimerID > 0)
       {
-        GameTimer.DeleteDelay(this._HideBalloonEndTimerID);
-        this._HideBalloonEndTimerID = 0;
+        GameTimer.DeleteDelay(_HideBalloonEndTimerID);
+        _HideBalloonEndTimerID = 0;
       }
 
       //发送事件
-      this.EventQuit.Emit();
+      EventQuit.Emit();
 
       //停止背景音乐
       MusicManager.DisableBackgroundMusic(true);
@@ -839,10 +842,10 @@ namespace Ballance2.Game.GamePlay
 
       GameTimer.Delay(0.5f, () => {
         //停止模拟
-        this.GamePhysicsWorld.Simulate = false;
+        GamePhysicsWorld.Simulate = false;
         //关闭球
-        this._Stop(BallControlStatus.NoControl);
-        this.CurrentSector = 0;
+        _Stop(BallControlStatus.NoControl);
+        CurrentSector = 0;
         //隐藏UI
         GamePlayUIControl.Instance.gameObject.SetActive(false);
         //发出事件
@@ -854,9 +857,9 @@ namespace Ballance2.Game.GamePlay
     //-加载下一关
     public void NextLevel() 
     {
-      if (this.NextLevelName == "") 
+      if (NextLevelName == "") 
         return;
-      this._QuitOrLoadNextLevel(true);
+      _QuitOrLoadNextLevel(true);
     }
     //-重新开始关卡
     public void RestartLevel()
@@ -866,9 +869,9 @@ namespace Ballance2.Game.GamePlay
 
       Log.D(TAG, "Restart Level");
 
-      this._Stop(BallControlStatus.NoControl);
+      _Stop(BallControlStatus.NoControl);
 
-      this.EventRestart.Emit();
+      EventRestart.Emit();
 
       //重置球管理器
       BallManager.ResetAllPeices();
@@ -876,17 +879,17 @@ namespace Ballance2.Game.GamePlay
       GameTimer.Delay(0.8f, () => {
         //重置所有节
         SectorManager.ResetAllSector(false);
-        this.CurrentSector = 0;
+        CurrentSector = 0;
         GameTimer.Delay(0.5f, () => {
           //开始
-          this._InitAndStart();
+          _InitAndStart();
         });
       });
     }
     //-退出关卡
     public void QuitLevel()
     {
-      this._QuitOrLoadNextLevel(false);
+      _QuitOrLoadNextLevel(false);
     }
 
     #endregion
@@ -899,14 +902,14 @@ namespace Ballance2.Game.GamePlay
     /// <returns></returns>
     public void AddLife() 
     {
-      this.CurrentLife = this.CurrentLife + 1;
+      CurrentLife = CurrentLife + 1;
 
       GameTimer.Delay(0.317f, () => {
-        this._SoundAddLife.Play();
+        _SoundAddLife.Play();
         GamePlayUIControl.Instance.AddLifeBall();
       });
 
-      this.EventAddLife.Emit();
+      EventAddLife.Emit();
     }
     /// <summary>
     /// 添加时间点数
@@ -919,10 +922,10 @@ namespace Ballance2.Game.GamePlay
         Log.E(TAG, "AddPoint count can not be negative!");
         return;
       }
-      this.CurrentPoint = this.CurrentPoint + count;
-      GamePlayUIControl.Instance.SetPointText(this.CurrentPoint);
+      CurrentPoint = CurrentPoint + count;
+      GamePlayUIControl.Instance.SetPointText(CurrentPoint);
       GamePlayUIControl.Instance.TwinklePoint();
-      this.EventAddPoint.Emit(count);
+      EventAddPoint.Emit(count);
     }
 
     #endregion

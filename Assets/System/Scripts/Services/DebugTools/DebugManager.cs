@@ -1,8 +1,9 @@
-﻿using Ballance2.Package;
+﻿using Ballance2.Game.GamePlay;
+using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services;
 using UnityEngine;
-using UnityEngine.UI;
+using static InputSystemUtil;
 
 /*
 * Copyright(c) 2022  mengyu
@@ -23,29 +24,26 @@ namespace Ballance2.DebugTools
   {
     public static DebugManager Instance { get; private set; }
 
-    internal static GameObject GameGraphy = null;
     private static RectTransform GlobalDebugConsole = null;
     private static DebugConsole DebugConsole = null;
     private static RectTransform GameDebugStatsArea = null;
     private static RectTransform GameDebugFloatButton = null;
-    private static int F12KeyListen = 0;
-    private static int ESCKeyListen = 0;
+    private static BindInputActionButtonHolder F12KeyListen;
 
     public static void Init() 
     {
       var SystemPackage = GamePackage.GetSystemPackage();
       var GameUIManager = GameManager.GetSystemService<GameUIManager>();
-
-      //创建Graphy
-      GameGraphy = GameObject.Instantiate(GameStaticResourcesPool.FindStaticPrefabs("PrefabGraphy"));
-      GameGraphy.name = "GameGraphy";
-
+      
       //创建控制台
       GlobalDebugConsole = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugConsole"), "GameDebugConsole", true);
       DebugConsole = GlobalDebugConsole.GetComponent<DebugConsole>();
       //创建输出窗口
       GameDebugStatsArea = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugStats"), "GameDebugStats", true);
-      
+      //显示FPS
+      var GameFpsStat = GameUIManager.Instance.UIRoot.transform.Find("GameFpsStat");
+      GameFpsStat.gameObject.SetActive(true);
+
 #if UNITY_ANDROID || UNITY_IOS
       //创建一个按扭方便手机上打开调试窗口
       GameDebugFloatButton = GameUIManager.InitViewToCanvas(GameStaticResourcesPool.FindStaticPrefabs("GameDebugFloatButton"), "GameDebugFloatButton", true);
@@ -64,13 +62,8 @@ namespace Ballance2.DebugTools
       }, 0, "quit-dev > 退出开发者模式");
 
       //F12 打开调试窗口
-      F12KeyListen = GameUIManager.ListenKey(KeyCode.F12, (key, down) => {
+      F12KeyListen = ControlManager.Instance.KeyBoardTestConsole.BindInputActionButton((down) => {
         if(down) SwitchConsoleVisible();
-      });
-      //Esc 关闭调试窗口
-      ESCKeyListen = GameUIManager.ListenKey(KeyCode.Escape, (key, down) => {
-        if(down && GlobalDebugConsole.gameObject.activeSelf) 
-          SwitchConsoleVisible();
       });
     }
 
@@ -87,19 +80,21 @@ namespace Ballance2.DebugTools
 
     public static void Destroy() 
     {
-      var GameUIManager = GameManager.GetSystemService<GameUIManager>();
-      GameUIManager.DeleteKeyListen(F12KeyListen);
-
+      if (F12KeyListen != null)
+      {
+        F12KeyListen.Delete();
+        F12KeyListen = null;
+      }
       if (GlobalDebugConsole != null) {
-        UnityEngine.Object.Destroy(GlobalDebugConsole.gameObject);
+        Destroy(GlobalDebugConsole.gameObject);
         GlobalDebugConsole = null;
       }
       if (GameDebugFloatButton != null) {
-        UnityEngine.Object.Destroy(GameDebugFloatButton.gameObject);
+        Destroy(GameDebugFloatButton.gameObject);
         GameDebugFloatButton = null;
       }
       if (GameDebugStatsArea != null) {
-        UnityEngine.Object.Destroy(GameDebugStatsArea.gameObject);
+        Destroy(GameDebugStatsArea.gameObject);
         GameDebugStatsArea = null;
       }
     }

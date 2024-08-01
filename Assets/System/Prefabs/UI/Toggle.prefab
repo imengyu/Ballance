@@ -58,6 +58,7 @@ MonoBehaviour:
   DeactiveImage: {fileID: -194631971, guid: 690733426d49da745a68a92355ee6070, type: 3}
   CheckedButton: {fileID: 0}
   UnCheckedButton: {fileID: 0}
+  Text: {fileID: 8243802199793089896}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -391,3 +392,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4980394928004744558, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
   m_PrefabInstance: {fileID: 5962843099429799870}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8243802199793089896 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2353016836425464534, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
+  m_PrefabInstance: {fileID: 5962843099429799870}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e039b3ed640b5cb41a236049c92dfd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

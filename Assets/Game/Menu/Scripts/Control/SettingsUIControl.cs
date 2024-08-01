@@ -1,4 +1,5 @@
 using Ballance2.Game;
+using Ballance2.Game.GamePlay;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
@@ -10,7 +11,7 @@ namespace Ballance2.Menu
 {
   public class SettingsUIControl {
     public static void Create() {
-      var GameUIManager = Ballance2.Services.GameUIManager.Instance;
+      var GameUIManager = Services.GameUIManager.Instance;
       var MessageCenter = MenuManager.MessageCenter;
       var package = GamePackage.GetSystemPackage();
 
@@ -18,18 +19,17 @@ namespace Ballance2.Menu
       var PageSettingsInGame = GameUIManager.RegisterPage("PageSettingsInGame", "PageCommon");
       var PageSettingsAudio = GameUIManager.RegisterPage("PageSettingsAudio", "PageCommon");
       var PageSettingsControls = GameUIManager.RegisterPage("PageSettingsControls", "PageCommon");
-      var PageSettingsControlsMobile = GameUIManager.RegisterPage("PageSettingsControlsMobile", "PageCommon");
       var PageSettingsGraphics = GameUIManager.RegisterPage("PageSettingsGraphics", "PageCommon");
       var PageLanguage = GameUIManager.RegisterPage("PageLanguage", "PageCommon");
       var PageApplyLangDialog = GameUIManager.RegisterPage("PageApplyLangDialog", "PageCommon");
       var PagePackageManager = GameUIManager.RegisterPage("PagePackageManager", "PageFull");
       var PagePackageManagerInfo = GameUIManager.RegisterPage("PagePackageManagerInfo", "PageFull");
       var PagePackageManagerTrust = GameUIManager.RegisterPage("PagePackageManagerTrust", "PageFull");
+      var PageBindKey = GameUIManager.RegisterPage("PageBindKey", "PageCommon");
 
       PageSettings.CreateContent(package);
       PageSettingsAudio.CreateContent(package);
       PageSettingsControls.CreateContent(package);
-      PageSettingsControlsMobile.CreateContent(package);
       PageSettingsGraphics.CreateContent(package);
       PageSettingsInGame.CreateContent(package);
       PageLanguage.CreateContent(package);
@@ -37,12 +37,75 @@ namespace Ballance2.Menu
       PagePackageManager.CreateContent(package);
       PagePackageManagerInfo.CreateContent(package);
       PagePackageManagerTrust.CreateContent(package);
+      PageBindKey.CreateContent(package);
+      PageBindKey.ForceShowDisplayAction = true;
 
       PageSettingsControls.OnShow += (options) => {
-        if (!GameManager.DebugMode) {
-          PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/ButtonKeyChooseControlKeyUp").gameObject.SetActive(false);
-          PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/ButtonKeyChooseControlKeyDown").gameObject.SetActive(false);
-        }
+        var control = ControlManager.Instance;
+        var PanelKeyboard = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelKeyboard");
+        var PanelController = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelController");
+        var PanelOthers = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelOthers");
+        var ButtonKeyChooseControlKeyForward = PanelKeyboard.Find("ButtonKeyChooseControlKeyForward").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyBack = PanelKeyboard.Find("ButtonKeyChooseControlKeyBack").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyUp = PanelKeyboard.Find("ButtonKeyChooseControlKeyUp").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyDown = PanelKeyboard.Find("ButtonKeyChooseControlKeyDown").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyLeft = PanelKeyboard.Find("ButtonKeyChooseControlKeyLeft").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyRight = PanelKeyboard.Find("ButtonKeyChooseControlKeyRight").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyOverlookCam = PanelKeyboard.Find("ButtonKeyChooseControlKeyOverlookCam").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyRoateCam = PanelKeyboard.Find("ButtonKeyChooseControlKeyRoateCam").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlKeyRoateCam2 = PanelKeyboard.Find("ButtonKeyChooseControlKeyRoateCam2").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerForward = PanelController.Find("ButtonKeyChooseControlControllerForward").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerBack = PanelController.Find("ButtonKeyChooseControlControllerBack").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerUp = PanelController.Find("ButtonKeyChooseControlControllerUp").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerDown = PanelController.Find("ButtonKeyChooseControlControllerDown").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerLeft = PanelController.Find("ButtonKeyChooseControlControllerLeft").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerRight = PanelController.Find("ButtonKeyChooseControlControllerRight").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerOverlookCam = PanelController.Find("ButtonKeyChooseControlControllerOverlookCam").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerRoateCamLeft = PanelController.Find("ButtonKeyChooseControlControllerRoateCamLeft").GetComponent<KeyChoose>();
+        var ButtonKeyChooseControlControllerRoateCamRight = PanelController.Find("ButtonKeyChooseControlControllerRoateCamRight").GetComponent<KeyChoose>();
+        var ButtonKeyChooseScreenShort = PanelOthers.Find("ButtonKeyChooseScreenShort").GetComponent<KeyChoose>();
+        var ButtonKeyChooseToggleFPS = PanelOthers.Find("ButtonKeyChooseToggleFPS").GetComponent<KeyChoose>();
+        var ButtonKeyChooseToggleView = PanelOthers.Find("ButtonKeyChooseToggleView").GetComponent<KeyChoose>();
+
+        control.LoadActionSettings(false);
+
+        ButtonKeyChooseControlKeyForward.BindAction = control.KeyBoardActionForward;
+        ButtonKeyChooseControlKeyBack.BindAction = control.KeyBoardActionBack;
+        ButtonKeyChooseControlKeyUp.BindAction = control.KeyBoardActionUp;
+        ButtonKeyChooseControlKeyDown.BindAction = control.KeyBoardActionDown;
+        ButtonKeyChooseControlKeyLeft.BindAction = control.KeyBoardActionLeft;
+        ButtonKeyChooseControlKeyRight.BindAction = control.KeyBoardActionRight;
+        ButtonKeyChooseControlKeyOverlookCam.BindAction = control.KeyBoardActionOverlook;
+        ButtonKeyChooseControlKeyRoateCam.BindAction = control.KeyBoardActionRotateCam;
+        ButtonKeyChooseControlKeyRoateCam.BindingIndex = 0;
+        ButtonKeyChooseControlKeyRoateCam2.BindAction = control.KeyBoardActionRotateCam;
+        ButtonKeyChooseControlKeyRoateCam2.BindingIndex = 1;
+
+        ButtonKeyChooseControlControllerForward.BindAction = control.ControllerActionMove;
+        ButtonKeyChooseControlControllerForward.BindingIndex = 0;
+        ButtonKeyChooseControlControllerBack.BindAction = control.ControllerActionMove;
+        ButtonKeyChooseControlControllerBack.BindingIndex = 1;
+        ButtonKeyChooseControlControllerLeft.BindAction = control.ControllerActionMove;
+        ButtonKeyChooseControlControllerLeft.BindingIndex = 2;
+        ButtonKeyChooseControlControllerRight.BindAction = control.ControllerActionMove;
+        ButtonKeyChooseControlControllerRight.BindingIndex = 3;
+        ButtonKeyChooseControlControllerDown.BindAction = control.ControllerActionFly;
+        ButtonKeyChooseControlControllerDown.BindingIndex = 0;
+        ButtonKeyChooseControlControllerUp.BindAction = control.ControllerActionFly;
+        ButtonKeyChooseControlControllerUp.BindingIndex = 1;
+        ButtonKeyChooseControlControllerOverlookCam.BindAction = control.ControllerActionOverlook;
+        ButtonKeyChooseControlControllerRoateCamLeft.BindAction = control.ControllerActionRotateCamLeft;
+        ButtonKeyChooseControlControllerRoateCamRight.BindAction = control.ControllerActionRotateCamRight;
+
+        ButtonKeyChooseScreenShort.BindAction = control.ScreenShort;
+        ButtonKeyChooseToggleFPS.BindAction = control.ToggleFPS;
+        ButtonKeyChooseToggleView.BindAction = control.ToggleView;
+      };
+      PageBindKey.OnShow += (options) => {
+        var keyName = options["keyName"];
+        var keyCurrent = options["keyCurrent"];
+        var Text = PageBindKey.Content.Find("Text").GetComponent<UIText>();
+        Text.text = I18N.TrF("core.ui.ControllerBind", keyName, keyCurrent);
       };
 
       GameTimer.Delay(1.0f, () => {
@@ -57,7 +120,7 @@ namespace Ballance2.Menu
 
     private static void BindSettingsUI(GameUIMessageCenter MessageCenter) {
       var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-      var GameUIManager = Ballance2.Services.GameUIManager.Instance;
+      var GameUIManager = Services.GameUIManager.Instance;
 
       //设置数据绑定
       //声音
@@ -90,33 +153,6 @@ namespace Ballance2.Menu
         GameSettings.SetInt(SettingConstants.SettingsVideoVsync, (bool)val ? 1 : 0 );
       });
       //控制
-      var updateControlKeyForward = MessageCenter.SubscribeValueBinder("ControlKeyForward", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyFront, (int)val);
-      });
-      var updateControlKeyBack = MessageCenter.SubscribeValueBinder("ControlKeyBack", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyBack, (int)val);
-      });
-      var updateControlKeyUp = MessageCenter.SubscribeValueBinder("ControlKeyUp", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyUp, (int)val);
-      });
-      var updateControlKeyDown = MessageCenter.SubscribeValueBinder("ControlKeyDown", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyDown, (int)val);
-      });
-      var updateControlKeyLeft = MessageCenter.SubscribeValueBinder("ControlKeyLeft", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyLeft, (int)val);
-      });
-      var updateControlKeyRight = MessageCenter.SubscribeValueBinder("ControlKeyRight", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyRight, (int)val);
-      });
-      var updateControlKeyOverlookCam = MessageCenter.SubscribeValueBinder("ControlKeyOverlookCam", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyUpCam, (int)val);
-      });
-      var updateControlKeyRoateCam = MessageCenter.SubscribeValueBinder("ControlKeyRoateCam", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyRoate, (int)val);
-      });
-      var updateControlKeyRoateCam2 = MessageCenter.SubscribeValueBinder("ControlKeyRoateCam2", (val) => {
-        GameSettings.SetInt(SettingConstants.SettingsControlKeyRoate2, (int)val);
-      });
       var updateControlReverse = MessageCenter.SubscribeValueBinder("ControlReverse", (val) => {
         GameSettings.SetBool(SettingConstants.SettingsControlKeyReverse, (bool)val);
       });
@@ -176,23 +212,9 @@ namespace Ballance2.Menu
         }
       });
       MessageCenter.SubscribeEvent("BtnSettingsControlsClick", () => {
-        if (updateControlKeyForward != null) updateControlKeyForward.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyFront));
-        if (updateControlKeyBack != null) updateControlKeyBack.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyBack));
-        if (updateControlKeyUp != null) updateControlKeyUp.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyUp));
-        if (updateControlKeyDown != null) updateControlKeyDown.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyDown));
-        if (updateControlKeyLeft != null) updateControlKeyLeft.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyLeft));
-        if (updateControlKeyRight != null) updateControlKeyRight.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyRight));
-        if (updateControlKeyOverlookCam != null) updateControlKeyOverlookCam.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyUpCam));
-        if (updateControlKeyRoateCam != null) updateControlKeyRoateCam2.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyRoate));
-        if (updateControlKeyRoateCam2 != null) updateControlKeyRoateCam2.Invoke(GameSettings.GetInt(SettingConstants.SettingsControlKeyRoate2));
         if (updateControlReverse != null) updateControlReverse.Invoke(GameSettings.GetBool(SettingConstants.SettingsControlKeyReverse));
         if (updateControlUISize != null) updateControlUISize.Invoke(GameSettings.GetFloat(SettingConstants.SettingsControlKeySize));
-        
-        #if UNITY_IOS || UNITY_ANDROID
-          GameUIManager.GoPage("PageSettingsControlsMobile");
-        #else
-          GameUIManager.GoPage("PageSettingsControls") ;
-        #endif
+        GameUIManager.GoPage("PageSettingsControls");
       });
       MessageCenter.SubscribeEvent("BtnSettingsAudioClick", () => {
         if (updateVioceBackground != null) updateVioceBackground.Invoke(GameSettings.GetFloat(SettingConstants.SettingsVoiceBackground));
@@ -221,6 +243,8 @@ namespace Ballance2.Menu
         GameUIManager.BackPreviusPage();
       });
       MessageCenter.SubscribeEvent("BtnSettingsControlsBackClick", () => {
+        var control = ControlManager.Instance;
+        control.SaveActionSettings();
         GameSettings.NotifySettingsUpdate(SettingConstants.SettingsControl);
         GameUIManager.BackPreviusPage();
       });

@@ -104,10 +104,10 @@ namespace Ballance2.Game.GamePlay
       InitCommand();
       InitEvents();
           
-      this._CamPosFrame.localPosition = new Vector3(0, this._CameraNormalY, -this._CameraNormalZ);
-      this.transform.position = this._CamPosFrame.position;
-      this.transform.LookAt(this._CamTarget);
-      this.CamDirectionRef = this._CamOrient.transform;
+      _CamPosFrame.localPosition = new Vector3(0, _CameraNormalY, -_CameraNormalZ);
+      transform.position = _CamPosFrame.position;
+      transform.LookAt(_CamTarget);
+      CamDirectionRef = _CamOrient.transform;
     }
     private void OnDestroy() {
       DestroyCommand();
@@ -115,34 +115,34 @@ namespace Ballance2.Game.GamePlay
     }
     private void Update() {
       //摄像机水平旋转
-      if (this._CamIsRotateing) {
-        this._CamRotateTick += Time.deltaTime;
+      if (_CamIsRotateing) {
+        _CamRotateTick += Time.deltaTime;
 
-        var v = this._CamRotateSpeedCurve.Evaluate(this._CamRotateTick / this._CameraRotateTime);
+        var v = _CamRotateSpeedCurve.Evaluate(_CamRotateTick / _CameraRotateTime);
         
-        this._CamRotateValueNow = this._CamRotateStartDegree + v * this._CamRotateTargetDegree;
-        this._CamOrientTransform.localEulerAngles = new Vector3(0, this._CamRotateValueNow, 0);
+        _CamRotateValueNow = _CamRotateStartDegree + v * _CamRotateTargetDegree;
+        _CamOrientTransform.localEulerAngles = new Vector3(0, _CamRotateValueNow, 0);
 
         if (v >= 1) {
-          this._CamRotateValueNow = this._CamRotateStartDegree + this._CamRotateTargetDegree;
-          this._CamOrientTransform.localEulerAngles = new Vector3(0, this._CamRotateValueNow, 0);
-          this._CamIsRotateing = false;
-          this.ResetVector();
+          _CamRotateValueNow = _CamRotateStartDegree + _CamRotateTargetDegree;
+          _CamOrientTransform.localEulerAngles = new Vector3(0, _CamRotateValueNow, 0);
+          _CamIsRotateing = false;
+          ResetVector();
         }
       }
       //摄像机垂直向上
-      if (this._CamIsRotateingUp) {
-        this._CamRotateUpTick += Time.deltaTime;
+      if (_CamIsRotateingUp) {
+        _CamRotateUpTick += Time.deltaTime;
         
         float v = 0;
-        if (this.CamIsSpaced)
-          v = this._CamUpSpeedCurve.Evaluate(this._CamRotateUpTick / this._CameraRotateUpTime);
+        if (CamIsSpaced)
+          v = _CamUpSpeedCurve.Evaluate(_CamRotateUpTick / _CameraRotateUpTime);
         else
-          v = this._CamDownSpeedCurve.Evaluate(this._CamRotateUpTick / this._CameraRotateDownTime);
+          v = _CamDownSpeedCurve.Evaluate(_CamRotateUpTick / _CameraRotateDownTime);
 
-        this._CamPosFrame.localPosition = new Vector3(0, this._CamRotateUpStart.y + v * this._CamRotateUpTarget.y, this._CamRotateUpStart.z + v * this._CamRotateUpTarget.z);
+        _CamPosFrame.localPosition = new Vector3(0, _CamRotateUpStart.y + v * _CamRotateUpTarget.y, _CamRotateUpStart.z + v * _CamRotateUpTarget.z);
         if (v >= 1)
-          this._CamIsRotateingUp = false;
+          _CamIsRotateingUp = false;
       }
     }
 
@@ -178,11 +178,11 @@ namespace Ballance2.Game.GamePlay
 
     private void InitEvents() {
       var events = GameMediator.Instance.RegisterEventEmitter("CamManager");
-      this.EventRotateUpStateChanged = events.RegisterEvent("RotateUpStateChanged");
-      this.EventRotateDirectionChanged = events.RegisterEvent("RotateDirectionChanged");
-      this.EventCamFollowChanged = events.RegisterEvent("CamFollowChanged");
-      this.EventCamLookChanged = events.RegisterEvent("CamLookChanged");
-      this.EventCamFollowTargetChanged = events.RegisterEvent("CamFollowTargetChanged");
+      EventRotateUpStateChanged = events.RegisterEvent("RotateUpStateChanged");
+      EventRotateDirectionChanged = events.RegisterEvent("RotateDirectionChanged");
+      EventCamFollowChanged = events.RegisterEvent("CamFollowChanged");
+      EventCamLookChanged = events.RegisterEvent("CamLookChanged");
+      EventCamFollowTargetChanged = events.RegisterEvent("CamFollowTargetChanged");
     }
     private void DestroyEvent() {
       GameMediator.Instance?.UnRegisterEventEmitter("CamManager");
@@ -194,24 +194,24 @@ namespace Ballance2.Game.GamePlay
 
     private int _CommandId = 0;
     private void InitCommand() {
-      this._CommandId = GameManager.Instance.GameDebugCommandServer.RegisterCommand("cam", (eyword, fullCmd, argsCount, args) => {
+      _CommandId = GameManager.Instance.GameDebugCommandServer.RegisterCommand("cam", (eyword, fullCmd, argsCount, args) => {
         var type = args[0];
         if (type == "left")
-          this.RotateLeft();
+          RotateLeft();
         else if (type == "right")
-          this.RotateLeft();
+          RotateLeft();
         else if (type == "up")
-          this.RotateUp(true);
+          RotateUp(true);
         else if (type == "down")
-          this.RotateUp(false);
+          RotateUp(false);
         else if (type == "follow")
-          this.SetCamFollow(true);
+          SetCamFollow(true);
         else if (type == "no-follow")
-          this.SetCamFollow(false);
+          SetCamFollow(false);
         else if( type == "look")
-          this.SetCamLook(true);
+          SetCamLook(true);
         else if (type == "no-look")
-          this.SetCamLook(false);
+          SetCamLook(false);
         return true;
       }, 1, "cam <left/right/up/down> 摄像机管理器命令" +
               "  left      ▶ 向左旋转摄像机" + 
@@ -225,7 +225,7 @@ namespace Ballance2.Game.GamePlay
       );
     }
     private void DestroyCommand() {
-      GameManager.Instance?.GameDebugCommandServer.UnRegisterCommand(this._CommandId);
+      GameManager.Instance?.GameDebugCommandServer.UnRegisterCommand(_CommandId);
     }
   
     #endregion
@@ -239,17 +239,17 @@ namespace Ballance2.Game.GamePlay
     public void ResetVector()
     {
       //根据摄像机朝向重置几个球推动的方向向量
-      var y = -this._CamOrientTransform.localEulerAngles.y - 90;
-      this.CamRightVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.right;
-      this.CamLeftVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.left;
-      this.CamForwerdVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.forward;
-      this.CamBackVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.back;
+      var y = -_CamOrientTransform.localEulerAngles.y - 90;
+      CamRightVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.right;
+      CamLeftVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.left;
+      CamForwerdVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.forward;
+      CamBackVector = Quaternion.AngleAxis(-y, Vector3.up) * Vector3.back;
     }
     private void _UpdateStateForDebugStats()
     {
       if (GameManager.DebugMode && GamePlayUIControl.Instance.DebugStatValues.ContainsKey("CamDirection")) {
-        GamePlayUIControl.Instance.DebugStatValues["CamDirection"].Value = this._CamOrientTransform.localEulerAngles.y.ToString("F2");
-        GamePlayUIControl.Instance.DebugStatValues["CamState"].Value = $"IsSpaced: {this.CamIsSpaced} Follow: {this.CamFollow.Follow} Look: {this.CamFollow.Look}";
+        GamePlayUIControl.Instance.DebugStatValues["CamDirection"].Value = _CamOrientTransform.localEulerAngles.y.ToString("F2");
+        GamePlayUIControl.Instance.DebugStatValues["CamState"].Value = $"IsSpaced: {CamIsSpaced} Follow: {CamFollow.Follow} Look: {CamFollow.Look}";
       }
     }
 
@@ -264,13 +264,13 @@ namespace Ballance2.Game.GamePlay
       if (rot < 0) rot += 360;
       else if (rot > 315) rot -= 360;
 
-      this._CamOrientTransform.localEulerAngles = new Vector3(0, rot - 90, 0);
-      this._CamTarget.position = go.transform.position;
-      this.transform.position = this._CamPosFrame.position;
-      this.CamRotateValue = rot - 90;
-      this._CamRotateValueNow = rot - 90;
-      this.ResetVector();
-      this._UpdateStateForDebugStats();
+      _CamOrientTransform.localEulerAngles = new Vector3(0, rot - 90, 0);
+      _CamTarget.position = go.transform.position;
+      transform.position = _CamPosFrame.position;
+      CamRotateValue = rot - 90;
+      _CamRotateValueNow = rot - 90;
+      ResetVector();
+      _UpdateStateForDebugStats();
     }
     /// <summary>
     /// 空格键向上旋转
@@ -278,37 +278,40 @@ namespace Ballance2.Game.GamePlay
     /// <param name="enable">状态</param>
     public void RotateUp(bool enable)
     {
-      this.CamIsSpaced = enable;
-      this._CamRotateUpStart.y = this._CamPosFrame.localPosition.y;
-      this._CamRotateUpStart.z = this._CamPosFrame.localPosition.z;
-      if (enable) 
+      if (CamIsSpaced != enable)
       {
-        this._CamRotateUpTarget.y = this._CameraSpaceY - this._CamRotateUpStart.y;
-        this._CamRotateUpTarget.z = -this._CameraSpaceZ - this._CamRotateUpStart.z;
+        CamIsSpaced = enable;
+        _CamRotateUpStart.y = _CamPosFrame.localPosition.y;
+        _CamRotateUpStart.z = _CamPosFrame.localPosition.z;
+        if (enable) 
+        {
+          _CamRotateUpTarget.y = _CameraSpaceY - _CamRotateUpStart.y;
+          _CamRotateUpTarget.z = -_CameraSpaceZ - _CamRotateUpStart.z;
+        }
+        else
+        {
+          _CamRotateUpTarget.y = _CameraNormalY - _CamRotateUpStart.y;
+          _CamRotateUpTarget.z = -_CameraNormalZ - _CamRotateUpStart.z;
+        }
+        _CamRotateUpTick = 0;
+        _CamIsRotateingUp = true;
+        EventRotateUpStateChanged.Emit(enable);
+        _UpdateStateForDebugStats();
       }
-      else
-      {
-        this._CamRotateUpTarget.y = this._CameraNormalY - this._CamRotateUpStart.y;
-        this._CamRotateUpTarget.z = -this._CameraNormalZ - this._CamRotateUpStart.z;
-      }
-      this._CamRotateUpTick = 0;
-      this._CamIsRotateingUp = true;
-      this.EventRotateUpStateChanged.Emit(enable);
-      this._UpdateStateForDebugStats();
     }
     /// <summary>
     /// 摄像机向右旋转
     /// </summary>
     public void RotateRight()
     {
-      this.RotateDregree(-90);
+      RotateDregree(-90);
     }
     /// <summary>
     /// 摄像机向左旋转
     /// </summary>
     public void RotateLeft()
     {
-      this.RotateDregree(90);
+      RotateDregree(90);
     }
     /// <summary>
     /// 摄像机旋转指定度数
@@ -316,13 +319,13 @@ namespace Ballance2.Game.GamePlay
     /// <param name="deg">度数，正数往右，负数往左</param>
     public void RotateDregree(float deg)
     {
-      this.CamRotateValue = this.CamRotateValue + deg;
-      this._CamRotateStartDegree = this._CamRotateValueNow;
-      this._CamRotateTargetDegree = this.CamRotateValue - this._CamRotateStartDegree;
-      this._CamRotateTick = 0;
-      this._CamIsRotateing = true;
-      this.EventRotateDirectionChanged.Emit(this._CamRotateTargetDegree);
-      this._UpdateStateForDebugStats();
+      CamRotateValue = CamRotateValue + deg;
+      _CamRotateStartDegree = _CamRotateValueNow;
+      _CamRotateTargetDegree = CamRotateValue - _CamRotateStartDegree;
+      _CamRotateTick = 0;
+      _CamIsRotateing = true;
+      EventRotateDirectionChanged.Emit(_CamRotateTargetDegree);
+      _UpdateStateForDebugStats();
     }
     /// <summary>
     /// 设置主摄像机天空盒材质
@@ -330,7 +333,7 @@ namespace Ballance2.Game.GamePlay
     /// <param name="mat"></param>
     public void SetSkyBox(Material mat)
     {
-      this._SkyBox.material = mat;
+      _SkyBox.material = mat;
     }
     /// <summary>
     /// 指定摄像机是否开启跟随球
@@ -338,9 +341,9 @@ namespace Ballance2.Game.GamePlay
     /// <param name="enable"></param>
     public void SetCamFollow(bool enable)
     {
-      this.CamFollow.Follow = enable;
-      this.EventCamFollowChanged.Emit(enable);
-      this._UpdateStateForDebugStats();
+      CamFollow.Follow = enable;
+      EventCamFollowChanged.Emit(enable);
+      _UpdateStateForDebugStats();
     }
     /// <summary>
     /// 指定摄像机是否开启看着球
@@ -348,9 +351,9 @@ namespace Ballance2.Game.GamePlay
     /// <param name="enable"></param>
     public void SetCamLook(bool enable)
     {
-      this.CamFollow.Look = enable;
-      this.EventCamLookChanged.Emit(enable);
-      this._UpdateStateForDebugStats();
+      CamFollow.Look = enable;
+      EventCamLookChanged.Emit(enable);
+      _UpdateStateForDebugStats();
     }
     /// <summary>
     /// 指定当前摄像机跟踪的目标
@@ -360,10 +363,10 @@ namespace Ballance2.Game.GamePlay
     public void SetTarget(Transform target, bool noUpdatePos)
     {
       if (noUpdatePos)
-        this.CamFollow.SetTargetWithoutUpdatePos(target);
+        CamFollow.SetTargetWithoutUpdatePos(target);
       else
-        this.CamFollow.Target = target;
-      this.EventCamFollowTargetChanged.Emit(target);
+        CamFollow.Target = target;
+      EventCamFollowTargetChanged.Emit(target);
     }
 
     /// <summary>
@@ -371,7 +374,7 @@ namespace Ballance2.Game.GamePlay
     /// </summary>
     /// <value></value>
     public Transform Target {
-      get { return this.CamFollow.Target; }
+      get { return CamFollow.Target; }
     }
 
     /// <summary>
@@ -379,13 +382,13 @@ namespace Ballance2.Game.GamePlay
     /// </summary>
     public void DisbleAll()
     {
-      this.CamFollow.Follow = false;
-      this.CamFollow.Look = false;
-      this.CamFollow.Target = null;
-      this.EventCamFollowChanged.Emit(false);
-      this.EventCamLookChanged.Emit(false);
-      this.EventCamFollowTargetChanged.Emit(null);
-      this._UpdateStateForDebugStats();
+      CamFollow.Follow = false;
+      CamFollow.Look = false;
+      CamFollow.Target = null;
+      EventCamFollowChanged.Emit(false);
+      EventCamLookChanged.Emit(false);
+      EventCamFollowTargetChanged.Emit(null);
+      _UpdateStateForDebugStats();
     }
 
     #endregion

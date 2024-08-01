@@ -50,8 +50,10 @@
     <Text name="core.ui.SettingsControlMenuRight">向右</Text>
     <Text name="core.ui.SettingsControlMenuUp">升高</Text>
     <Text name="core.ui.SettingsControlMenuDown">下降</Text>
-    <Text name="core.ui.SettingsControlMenuRotateCam">旋转</Text>
-    <Text name="core.ui.SettingsControlMenuRotateCam2">旋转2</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCam">旋转辅助按键</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCam2">旋转辅助按键2</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCamLeft">向左旋转视角</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCamRight">向右旋转视角</Text>
     <Text name="core.ui.SettingsControlMenuOverlook">俯视</Text>
     <Text name="core.ui.SettingsControlUISize">键盘大小</Text>
     <Text name="core.ui.SettingsControlKeypadBaseLeft">按键式左</Text>
@@ -59,6 +61,11 @@
     <Text name="core.ui.SettingsControlKeypadBaseCenter">按键式两侧</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyLeft">摇杆式左（不能走单轨）</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyRight">摇杆式右（不能走单轨）</Text>
+    <Text name="core.ui.SettingsControlTitleMobile">手机</Text>
+    <Text name="core.ui.SettingsControlTitleOthers">其他按键</Text>
+    <Text name="core.ui.SettingsControlScreenshot">截图</Text>
+    <Text name="core.ui.SettingsControlToggleFPS">切换帧率显示</Text>
+    <Text name="core.ui.SettingsControlToggleView">切换界面显示</Text>
     <Text name="core.ui.SettingsAudioTilte">声音</Text>
     <Text name="core.ui.SettingsAudioBackground">背景音乐音量</Text>
     <Text name="core.ui.SettingsAudioMain">主音量</Text>
@@ -72,6 +79,8 @@
     <Text name="core.ui.SettingsQualityHigh">高</Text>
     <Text name="core.ui.SettingsQualityVeryHigh">极高</Text>
     <Text name="core.ui.SettingsQualityUltra">最高</Text>
+    <Text name="core.ui.controller.HelpNav">选择</Text>
+    <Text name="core.ui.controller.HelpSubmit">确定</Text>
     <Text name="core.ui.LevelLoaderErrorUITitle">加载关卡失败</Text>
     <Text name="core.ui.LevelLoaderErrorUIMessage">关卡开发者：您可以按 F12 进入控制台查看更多错误信息。
 玩家：如果这是第三方玩家制作的关卡，您可以向制作者反馈错误信息。
@@ -132,6 +141,9 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸载模组提示</Text>
     <Text name="core.ui.PackageManagerSettingUITitle">模组 {0} 的自定义配置</Text>
+    <Text name="core.ui.Type.Keyboard">键盘</Text>
+    <Text name="core.ui.Type.Controller">控制器</Text>
+    <Text name="core.ui.ControllerBind">请按下你想要绑定到 {0} 的按键（目前：{1}）</Text>
     <Text name="core.ui.TutorialText1">欢迎来到 Ballance！
 Ballance 平衡球 是一款滚球游戏。
 你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。
@@ -266,6 +278,8 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     <Text name="core.ui.SettingsControlMenuDown">Dwon</Text>
     <Text name="core.ui.SettingsControlMenuRotateCam">Rotate Camera</Text>
     <Text name="core.ui.SettingsControlMenuRotateCam2">Rotate Camera 2nd</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCamLeft">Rotate Camera left</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCamRight">Rotate Camera right</Text>
     <Text name="core.ui.SettingsControlMenuOverlook">Overlook</Text>
     <Text name="core.ui.SettingsControlUISize">Keyboard size</Text>
     <Text name="core.ui.SettingsControlKeypadBaseLeft">Action keys in left</Text>
@@ -273,6 +287,11 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     <Text name="core.ui.SettingsControlKeypadBaseCenter">Action keys two side</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyLeft">Joystick in left (Cannot walk on a monorail)</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyRight">Joystick in right (Cannot walk on a monorail)</Text>
+    <Text name="core.ui.SettingsControlTitleMobile">Mobile</Text>
+    <Text name="core.ui.SettingsControlTitleOthers">Oters</Text>
+    <Text name="core.ui.SettingsControlScreenshot">Screenshot</Text>
+    <Text name="core.ui.SettingsControlToggleFPS">Toggle FPS</Text>
+    <Text name="core.ui.SettingsControlToggleView">Toggle ui</Text>
     <Text name="core.ui.SettingsAudioTilte">Audio</Text>
     <Text name="core.ui.SettingsAudioBackground">Background music volume</Text>
     <Text name="core.ui.SettingsAudioMain">Main volume</Text>
@@ -286,6 +305,8 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     <Text name="core.ui.SettingsQualityHigh">High</Text>
     <Text name="core.ui.SettingsQualityVeryHigh">VeryHigh</Text>
     <Text name="core.ui.SettingsQualityUltra">Ultra</Text>
+    <Text name="core.ui.controller.HelpNav">Navigation</Text>
+    <Text name="core.ui.controller.HelpSubmit">Submit</Text>
     <Text name="core.ui.LevelLoaderErrorUITitle">Level load failed</Text>
     <Text name="core.ui.LevelLoaderErrorUIMessage">Level developer: you can press F12 to open console to view more error information.
 Player: if this is a level made by a third party player, you can feed back error information to the producer.
@@ -346,6 +367,9 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     <Text name="core.ui.PackageWantUnaload">Do you want to uninstall the module? It will be uninstalled from the game immediately. The module file will be deleted and cannot be recovered!</Text>
     <Text name="core.ui.PackageUnaloadTip">Uninstall module tip</Text>
     <Text name="core.ui.PackageManagerSettingUITitle">Settings of mod {0}</Text>
+    <Text name="core.ui.Type.Keyboard">Keyboard</Text>
+    <Text name="core.ui.Type.Controller">Controller</Text>
+    <Text name="core.ui.ControllerBind">Press any button you want to bind to {0} (Current: {1})</Text>
     <Text name="core.ui.TutorialText1">Game Tutorial:
 You may halt or quit the game any time using the "ESC" key.
 You may continue the game tutorial with the "RETURN" key or quit the tutorial by pressing "Q".
@@ -464,7 +488,9 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.SettingsControlMenuUp">升高</Text>
     <Text name="core.ui.SettingsControlMenuDown">下降</Text>
     <Text name="core.ui.SettingsControlMenuRotateCam">旋轉</Text>
-    <Text name="core.ui.SettingsControlMenuRotateCam">旋轉2</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCam2">旋轉2</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCamLeft">向左旋轉视角</Text>
+    <Text name="core.ui.SettingsControlMenuRotateCamRight">向右旋轉视角</Text>
     <Text name="core.ui.SettingsControlMenuOverlook">俯視</Text>
     <Text name="core.ui.SettingsControlUISize">鍵盤大小</Text>
     <Text name="core.ui.SettingsControlKeypadBaseLeft">按鍵式左</Text>
@@ -472,6 +498,11 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.SettingsControlKeypadBaseCenter">按鍵式两侧</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyLeft">搖杆式左（不能走單軌）</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyRight">搖杆式右（不能走單軌）</Text>
+    <Text name="core.ui.SettingsControlTitleMobile">手机</Text>
+    <Text name="core.ui.SettingsControlTitleOthers">其他按键</Text>
+    <Text name="core.ui.SettingsControlScreenshot">截图</Text>
+    <Text name="core.ui.SettingsControlToggleFPS">切换帧率显示</Text>
+    <Text name="core.ui.SettingsControlToggleView">切换界面显示</Text>
     <Text name="core.ui.SettingsAudioTilte">聲音</Text>
     <Text name="core.ui.SettingsAudioBackground">背景音樂音量</Text>
     <Text name="core.ui.SettingsAudioMain">主音量</Text>
@@ -485,6 +516,8 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.SettingsQualityHigh">高</Text>
     <Text name="core.ui.SettingsQualityVeryHigh">極高</Text>
     <Text name="core.ui.SettingsQualityUltra">最高</Text>
+    <Text name="core.ui.controller.HelpNav">导航</Text>
+    <Text name="core.ui.controller.HelpSubmit">确定</Text>
     <Text name="core.ui.LevelLoaderErrorUITitle">加載關卡失敗</Text>
     <Text name="core.ui.LevelLoaderErrorUIMessage">關卡開發者：您可以按F12進入控制台查看更多錯誤資訊。
 玩家：如果這是協力廠商玩家製作的關卡，您可以向製作者迴響錯誤資訊。
@@ -544,6 +577,9 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.PackageWantUnaload">你希望卸載模組嗎？ 它將立即從遊戲中卸載。 模組檔案將被删除，無法恢復！</Text>
     <Text name="core.ui.PackageUnaloadTip">卸載模組提示</Text>
     <Text name="core.ui.PackageManagerSettingUITitle">模組 {0} 的自定义設定</Text>
+    <Text name="core.ui.Type.Keyboard">键盘</Text>
+    <Text name="core.ui.Type.Controller">控制器</Text>
+    <Text name="core.ui.ControllerBind">請按下你想要綁定到 {0} 的按鍵（目前：{1}）</Text>
     <Text name="core.ui.TutorialText1">歡迎來到 Ballance！
 遊戲教程：
 您可以隨時使用“ESC”鍵停止或退出遊戲。

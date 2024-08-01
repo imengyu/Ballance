@@ -56,14 +56,9 @@ namespace Ballance2.DebugTools
     private int commandHistoryIndex = 0;
     private List<string> commandHistory = new List<string>();
     private GameDebugCommandServer commandServer = null;
-    private int commandInputListenKey1;
-    private int commandInputListenKey2;
-    private GameUIManager GameUIManager;
 
     private void Start()
     {
-      GameUIManager = GameManager.GetSystemService<GameUIManager>();
-
       // 注册日志观察者
       logObserver = Log.RegisterLogObserver((level, tag, message, stackTrace) =>
       {
@@ -128,21 +123,21 @@ namespace Ballance2.DebugTools
       Log.SendLogsInTemporary();
 
       commandHistory.Add("");
-      commandInputListenKey1 = GameUIManager.ListenKey(KeyCode.UpArrow, (KeyCode key, bool downed) => {
+      /*TODO: commandInputListenKey1 = GameUIManager.ListenKey(KeyCode.UpArrow, (KeyCode key, bool downed) => {
         if(downed && CommandInputField.isFocused) UpCommandHistory();
       });
       commandInputListenKey2 = GameUIManager.ListenKey(KeyCode.DownArrow, (KeyCode key, bool downed) => {
         if(downed && CommandInputField.isFocused) DownCommandHistory();
-      });
+      });*/
     }
     private void OnDestroy()
     {
       logForceDisable = true;
       Log.UnRegisterLogObserver(logObserver);
-      if(GameUIManager != null) {
+      /*if(GameUIManager != null) {
         GameUIManager.DeleteKeyListen(commandInputListenKey1);
         GameUIManager.DeleteKeyListen(commandInputListenKey2);
-      }
+      }*/
     }
 
     //布局日志界面

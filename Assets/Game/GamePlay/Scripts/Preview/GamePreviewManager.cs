@@ -5,6 +5,7 @@ using Ballance2.Package;
 using Ballance2.Services;
 using BallancePhysics.Wapper;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Ballance2.Game.GamePlay
 {
@@ -22,16 +23,21 @@ namespace Ballance2.Game.GamePlay
     public Camera GamePreviewMinimapCamera;
     public FreeCamera GamePreviewFreeCamera;
     public Skybox GamePreviewCameraSkyBox;
+    [HideInInspector]
     public GameObject[] GameDepthTestCubes;
+    [HideInInspector]
     public MusicManager MusicManager;
+    [HideInInspector]
     public CamManager CamManager;
+    [HideInInspector]
     public SectorManager SectorManager;
 
-    private int escKeyId = 0;
     private GameMediator Mediator;
     private GameUIManager UIManager;
     private GameSoundManager SoundManager;
     private GamePlayPreviewUIControl GamePreviewUI;
+    [SerializeField]
+    private InputAction ActionPause;
 
     private void Awake() {
       Mediator = GameMediator.Instance;
@@ -57,23 +63,20 @@ namespace Ballance2.Game.GamePlay
         UIManager.MaskBlackFadeOut(1);
         _IsLoaded = true;
 
-        //ESC键
-        escKeyId = UIManager.ListenKey(KeyCode.Escape, (key, down) => {
-          if (down) {
+        ActionPause.Enable();
+        ActionPause.performed += (context) => {
+          if (context.ReadValueAsButton()) {
             if (_IsGamePlaying)
               PauseLevel();
             else
               ResumeLevel();
           }
-        });
+        };
         return false;
       });
     }
     protected override void OnDestroy() {
-      if (escKeyId > 0) {
-        GameUIManager.Instance.DeleteKeyListen(escKeyId);
-        escKeyId = 0;
-      }
+      ActionPause.Disable();
       //取消注册全局事件
       Mediator.UnRegisterSingleEvent("CoreGamePreviewManagerInitAndStart");
     }

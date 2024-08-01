@@ -5,7 +5,7 @@ using Ballance2.Services.I18N;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 namespace Ballance2.Menu
 {
@@ -30,17 +30,22 @@ namespace Ballance2.Menu
     private int _ScoreNTimePoints = 0;
     private int _ScoreNExtraLives = 0;
     private GamePlayManager _GamePlayManager;
-    private int EscKeyID = 0;
-    private int ReturnKeyID = 0;
+
+    public InputAction Next;
 
     public bool ThisTimeHasNewHighscore { get; private set; }
 
     private void Start() {
+      Next.Disable();
+      Next.performed += (context) => {
+        if (context.ReadValueAsButton())
+          Skip();
+      };
       GameTimer.Delay(2.4f, () => {
         var SoundManager = GameSoundManager.Instance;
-        this._SwitchSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_dong.wav", false, true, "WinScoreUISwitch");
-        this._HighscoreSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds.music:Music_Highscore.wav", false, true, "WinScoreUISwitch");
-        this._CountSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_counter.wav", false, true, "WinScoreUICount");
+        _SwitchSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_dong.wav", false, true, "WinScoreUISwitch");
+        _HighscoreSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds.music:Music_Highscore.wav", false, true, "WinScoreUISwitch");
+        _CountSound = SoundManager.RegisterSoundPlayer(GameSoundType.UI, "core.sounds:Menu_counter.wav", false, true, "WinScoreUICount");
       });
     }
     private void Update() {
@@ -86,9 +91,9 @@ namespace Ballance2.Menu
     }
     protected override void OnDestroy() 
     {
-      Destroy(this._SwitchSound);
-      Destroy(this._HighscoreSound);
-      Destroy(this._CountSound);
+      Destroy(_SwitchSound);
+      Destroy(_HighscoreSound);
+      Destroy(_CountSound);
     }
 
     /// <summary>
@@ -115,9 +120,7 @@ namespace Ballance2.Menu
       yield return new WaitForSeconds(5);
 
       Panel.SetActive(true);
-    
-      EscKeyID = GameUIManager.Instance.WaitKey(KeyCode.Escape, false, Skip);
-      ReturnKeyID = GameUIManager.Instance.WaitKey(KeyCode.Return, false, Skip);
+      Next.Enable();
 
       yield return new WaitForSeconds(1.7f);
       if (_Skip) 
@@ -230,15 +233,7 @@ namespace Ballance2.Menu
 
     //按ESC键直接进入高分界面
     private void _ShowHighscore() {
-      if (EscKeyID != 0) 
-      {
-        GameUIManager.Instance.DeleteKeyListen(EscKeyID);
-        EscKeyID = 0;
-      }
-      if (ReturnKeyID != 0) {
-        GameUIManager.Instance.DeleteKeyListen(ReturnKeyID);
-        ReturnKeyID = 0;
-      }
+      Next.Disable();
 
       GameUIManager.Instance.GoPage("PageHighscoreEntry");
 

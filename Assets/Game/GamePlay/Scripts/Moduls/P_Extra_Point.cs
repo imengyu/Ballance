@@ -25,7 +25,7 @@ namespace Ballance2.Game.GamePlay.Moduls
     public bool _Rotate = false;
     public bool _FlyUp = false;
     public bool _FlyFollow = false;
-    public float _RotDegree = 3f;
+    public float _RotDegree = 6f;
     public float _FlyUpTime = 0.4f;
     public float _FlyFollowTime = 0.3f;
     public float _FlyTargetUpTime = 0.3f;

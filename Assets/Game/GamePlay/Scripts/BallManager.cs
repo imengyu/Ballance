@@ -5,12 +5,10 @@ using Ballance2.Game.Utils;
 using Ballance2.Menu;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
-using Ballance2.Services.InputManager;
 using Ballance2.Utils;
 using BallancePhysics.Wapper;
 using UnityEngine;
 using UnityEngine.Animations;
-using static Ballance2.Services.GameManager;
 
 namespace Ballance2.Game.GamePlay 
 {
@@ -101,7 +99,6 @@ namespace Ballance2.Game.GamePlay
       RegisterBall("BallWood", _BallWood);
       RegisterBall("BallStone", _BallStone);
       RegisterBall("BallPaper", _BallPaper);
-
     }
     private void OnDestroy() {
       _DeleteCommands();
@@ -111,29 +108,12 @@ namespace Ballance2.Game.GamePlay
       _CollectRegisterBalls();
     }
 
-    #region 键盘
+    #region 设置初始化
 
     private int settingsCallbackId = 0;
-    private KeyListener keyListener = null;
-    private KeyCode keyFront = KeyCode.None;
-    private KeyCode keyBack = KeyCode.None;
-    private KeyCode keyUp = KeyCode.None;
-    private KeyCode keyUpCamera = KeyCode.None;
-    private KeyCode keyDown = KeyCode.None;
-    private KeyCode keyRoateCamera = KeyCode.None;
-    private KeyCode keyRoateCamera2 = KeyCode.None;
-    private KeyCode keyLeft = KeyCode.None;
-    private KeyCode keyRight = KeyCode.None;
     private bool reverseRotation = false;
     private bool _LeftPressed = false;
     private bool _RightPressed = false;
-
-    /// <summary>
-    /// 获取主按键监听器
-    /// </summary>
-    /// <value></value>
-    public KeyListener KeyListener { get => keyListener; }
-
     private void _InitSettings() {
       //初始化控制设置
       var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
@@ -141,84 +121,112 @@ namespace Ballance2.Game.GamePlay
         _OnControlSettingsChanged();
         return false;
       });
-      //请求触发设置更新函数
-      GameSettings.RequireSettingsLoad(SettingConstants.SettingsControl);
     }
     private void _UnInitSettings() {
       var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-      GameSettings.UnRegisterSettingsUpdateCallback(settingsCallbackId);
+      GameSettings?.UnRegisterSettingsUpdateCallback(settingsCallbackId);
     }
     private void _OnControlSettingsChanged() {
       //当设置更改时或加载时，更新设置到当前变量
       var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-      keyFront = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyFront);
-      keyUp = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyUp);
-      keyDown = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyDown);
-      keyBack = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyBack);
-      keyLeft = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyLeft);
-      keyRight = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyRight);
-      keyRoateCamera = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyRoate);
-      keyRoateCamera2 = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyRoate2);
-      keyUpCamera = GameSettings.GetKeyCode(SettingConstants.SettingsControlKeyUpCam);
       reverseRotation = GameSettings.GetBool(SettingConstants.SettingsControlKeyReverse);
-      _InitKeys();
     }
-    private void _InitKeys() {
-      //初始化键盘侦听
-      keyListener = KeyListener.Get(gameObject);
-      keyListener.DisableWhenUIFocused = false;
-      keyListener.ClearKeyListen();
-      keyListener.AddKeyListen(keyFront, _UpArrow_Key);
-      keyListener.AddKeyListen(keyBack, _DownArrow_Key);
-      keyListener.AddKeyListen(keyUp, _Up_Key);
-      keyListener.AddKeyListen(keyDown, _Down_Key);
-      keyListener.AddKeyListen(keyUpCamera, _Space_Key);
-      keyListener.AddKeyListen(keyRoateCamera, keyRoateCamera2, _Shift_Key);
-      keyListener.AddKeyListen(keyLeft, _LeftArrow_Key);
-      keyListener.AddKeyListen(keyRight, _RightArrow_Key);
+    
+    #endregion
 
-      //测试按扭
-      if (GameManager.DebugMode) {
-        keyListener.AddKeyListen(KeyCode.Alpha1, (key, downed) => {
-          if(downed) {
-            SetNextRecoverPosToNowPos();
-            SetCurrentBall("BallWood", BallControlStatus.Control);
+    #region 键盘
+
+    private List<InputSystemUtil.BindInputActionHolder> bindInputActionHolders = new List<InputSystemUtil.BindInputActionHolder>();
+    private void _InitKeys() {
+      //初始化控制器
+      var controller = ControlManager.Instance;
+
+      bindInputActionHolders.Add(controller.ControllerActionMove.BindInputAction(
+        (context) => {
+          var val = context.ReadValue<Vector2>();
+          SetBallPushValue(val.x, val.y);
+        }, (context) => {
+          SetBallPushValue(0, 0);
+        })
+      );
+      bindInputActionHolders.Add(controller.ControllerActionFly.BindInputAction(
+        (context) => {
+          if (GameManager.DebugMode)
+          {
+            var val = context.ReadValue<float>();
+            KeyStateUp = val > 0.3f;
+            KeyStateDown = val < 0.3f;
+            FlushBallPush();
           }
-        });
-        keyListener.AddKeyListen(KeyCode.Alpha2, (key, downed) => {
-          if(downed) {
-            SetNextRecoverPosToNowPos();
-            SetCurrentBall("BallStone", BallControlStatus.Control);
+        }, (context) => {
+          if (GameManager.DebugMode)
+          {
+            KeyStateUp = false;
+            KeyStateDown = false;
+            FlushBallPush();
           }
-        });
-        keyListener.AddKeyListen(KeyCode.Alpha3, (key, downed) => {
-          if(downed) {
-            SetNextRecoverPosToNowPos();
-            SetCurrentBall("BallPaper", BallControlStatus.Control);
-          }
-        });
-        keyListener.AddKeyListen(KeyCode.Alpha5, (key, downed) => {
-          if(downed) {
-            GamePlayManager.Instance.AddLife();
-          }
-        });
-        keyListener.AddKeyListen(KeyCode.Alpha6, (key, downed) => {
-          if(downed) {
-            GamePlayManager.Instance.Fall();
-          }
-        });
-        keyListener.AddKeyListen(KeyCode.Alpha7, (key, downed) => {
-          if(downed) {
-            if(downed) {
-              SetControllingStatus(BallControlStatus.NoControl);
-              SetNextRecoverPos(Vector3.zero);
-            }
-          }
-        });
+        })
+      );
+      bindInputActionHolders.Add(controller.ControllerActionOverlook.BindInputActionButton((v) => _CamOverlook(v)));
+      bindInputActionHolders.Add(controller.ControllerActionRotateCamLeft.BindInputActionButton((v) => {
+        if (v) _CamRotateLeft();
+      }, false));
+      bindInputActionHolders.Add(controller.ControllerActionRotateCamRight.BindInputActionButton((v) => {
+        if (v) _CamRotateRight();
+      }, false));
+      
+      bindInputActionHolders.Add(controller.KeyBoardActionForward.BindInputActionButton((v) => _UpArrow_Key(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionBack.BindInputActionButton((v) => _DownArrow_Key(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionLeft.BindInputActionButton((v) => _LeftArrow_Key(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionRight.BindInputActionButton((v) => _RightArrow_Key(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionOverlook.BindInputActionButton((v) => _CamOverlook(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionDown.BindInputActionButton((v) => _Up_Key(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionUp.BindInputActionButton((v) => _Down_Key(v)));
+      bindInputActionHolders.Add(controller.KeyBoardActionRotateCam.BindInputActionButton((v) => _Shift_Key(v)));
+
+      bindInputActionHolders.Add(controller.KeyBoardTestBallWood.BindInputActionButton((v) => {
+        if (v && GameManager.DebugMode) {
+          SetNextRecoverPosToNowPos();
+          SetCurrentBall("BallWood", BallControlStatus.Control);
+        }
+      }));
+      bindInputActionHolders.Add(controller.KeyBoardTestBallStone.BindInputActionButton((v) => {
+        if (v && GameManager.DebugMode) {
+          SetNextRecoverPosToNowPos();
+          SetCurrentBall("BallStone", BallControlStatus.Control);
+        }
+      }));
+      bindInputActionHolders.Add(controller.KeyBoardTestBallPaper.BindInputActionButton((v) => {
+        if (v && GameManager.DebugMode) {
+          SetNextRecoverPosToNowPos();
+          SetCurrentBall("BallPaper", BallControlStatus.Control);
+        }
+      }));
+      bindInputActionHolders.Add(controller.KeyBoardTestReset.BindInputActionButton((v) => {
+        if (v && GameManager.DebugMode) {
+          SetControllingStatus(BallControlStatus.NoControl);
+          SetNextRecoverPos(Vector3.zero);
+        }
+      }));
+
+      controller.EnableControl();
+    }
+    private void _UnInitKeys() 
+    {
+      var controller = ControlManager.Instance;
+      if (controller != null)
+      {
+        foreach(var v in bindInputActionHolders)
+          v.Delete();
+        bindInputActionHolders.Clear();
+
+        controller.DisableControl();
       }
     }
-    private void _UnInitKeys() {
-      keyListener.ClearKeyListen();
+    private void _ReSendPressingKey() 
+    {
+      foreach(var v in bindInputActionHolders)
+        v.ResendIfPressing();
     }
 
     #endregion
@@ -871,7 +879,7 @@ namespace Ballance2.Game.GamePlay
           //取消推动
           RemoveAllBallPush();
           //需要重新发送按键状态，因为可能在变球时还是按住按键，而此时球已经切换了，球的恒力需要重新设置
-          keyListener.ReSendPressingKey();
+          _ReSendPressingKey();
         }
         if (!physics) {
           //取消推动
@@ -925,7 +933,7 @@ namespace Ballance2.Game.GamePlay
     /// <param name="smallToBig">是否由小到大</param>
     /// <param name="lightAnim">是否同时播放灯光效果</param>
     /// <param name="callback">播放完成后，会调用这个完成回调</param>
-    public void PlayLighting(Vector3 pos, bool smallToBig, bool lightAnim, VoidDelegate callback) 
+    public void PlayLighting(Vector3 pos, bool smallToBig, bool lightAnim, GameManager.VoidDelegate callback) 
     {
       EventPlayLighting.Emit(null);
       _BallLightningSphere.PlayLighting(pos, smallToBig, callback, lightAnim);
@@ -964,17 +972,17 @@ namespace Ballance2.Game.GamePlay
 
     #region 键盘事件处理
 
-    private void _UpArrow_Key(KeyCode key, bool down)
+    private void _UpArrow_Key(bool down)
     {
       KeyStateForward = down;
       FlushBallPush();
     }
-    private void _DownArrow_Key(KeyCode key, bool down)
+    private void _DownArrow_Key(bool down)
     {
       KeyStateBack = down;
       FlushBallPush();
     }
-    private void _RightArrow_Key(KeyCode key, bool down)
+    private void _RightArrow_Key(bool down)
     {
       _RightPressed = down;
       if (down) {
@@ -997,7 +1005,7 @@ namespace Ballance2.Game.GamePlay
         FlushBallPush();
       }
     }
-    private void _LeftArrow_Key(KeyCode key, bool down)
+    private void _LeftArrow_Key(bool down)
     {
       _LeftPressed = down;
       if (down) {
@@ -1021,39 +1029,30 @@ namespace Ballance2.Game.GamePlay
         FlushBallPush();
       }
     }
-    private void _Down_Key(KeyCode key, bool down)
+    private void _Down_Key(bool down)
     {
       if (GameManager.DebugMode) {
         KeyStateDown = down;
         FlushBallPush();
       }
     }
-    private void _Up_Key(KeyCode key, bool down)
+    private void _Up_Key(bool down)
     {
       if (GameManager.DebugMode) {
         KeyStateUp = down;
         FlushBallPush();
       }
     }
-    private void _Space_Key(KeyCode key, bool down)
-    {
-      if (CanControllCamera) {
-        GamePlayManager.Instance.CamManager.RotateUp(down) ;
-      }
-    }
-    private void _Shift_Key(KeyCode key, bool down)
+    private void _Shift_Key(bool down)
     {
       ShiftPressed = down;
       if (_LeftPressed) 
       {
         //旋转摄像机
         if (down && CanControllCamera) {
-          if(reverseRotation)
-            GamePlayManager.Instance.CamManager.RotateRight();
-          else
-            GamePlayManager.Instance.CamManager.RotateLeft();
           //禁用左推动
           KeyStateLeft = false;
+          _CamRotateLeft();
         }
         else
         {
@@ -1067,10 +1066,7 @@ namespace Ballance2.Game.GamePlay
         //旋转摄像机
         if (down && CanControllCamera) 
         {
-          if(reverseRotation)
-            GamePlayManager.Instance.CamManager.RotateLeft();
-          else
-            GamePlayManager.Instance.CamManager.RotateRight();
+          _CamRotateRight();
           //禁用右推动
           KeyStateRight = false;
         }
@@ -1081,6 +1077,26 @@ namespace Ballance2.Game.GamePlay
         }
         FlushBallPush();
       }
+    }
+
+    private void _CamOverlook(bool enable)
+    {
+      if (CanControllCamera)
+        GamePlayManager.Instance.CamManager.RotateUp(enable) ;
+    }
+    private void _CamRotateLeft()
+    {
+      if(reverseRotation)
+        GamePlayManager.Instance.CamManager.RotateRight();
+      else
+        GamePlayManager.Instance.CamManager.RotateLeft();
+    }
+    private void _CamRotateRight()
+    {
+      if(reverseRotation)
+        GamePlayManager.Instance.CamManager.RotateLeft();
+      else
+        GamePlayManager.Instance.CamManager.RotateRight();
     }
 
     #endregion

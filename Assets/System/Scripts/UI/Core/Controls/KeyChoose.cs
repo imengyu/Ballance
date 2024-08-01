@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
+using Ballance2.Services;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 /*
@@ -27,55 +31,61 @@ namespace Ballance2.UI.Core.Controls
     public UIText Text;
     public UIText TextValue;
 
-    [SerializeField, SetProperty("value")]
-    private KeyCode _value = KeyCode.None;
-
-    public class KeyChooseEvent : UnityEvent<KeyCode>
-    {
-      public KeyChooseEvent() { }
-    }
-
-    public KeyChooseEvent onValueChanged = new KeyChooseEvent();
-
-    /// <summary>
-    /// 获取或设置按钮选中的键
-    /// </summary>
-    public KeyCode value
-    {
-      get { return _value; }
-      set
-      {
-        _value = value;
-        UpdateValue();
-        if (onValueChanged != null)
-          onValueChanged.Invoke(value);
-      }
-    }
-    public void UpdateValue()
-    {
-      TextValue.text = _value.ToString();
-    }
-
-    private bool waitForKey = false;
-
-    public void StartWaitKey() {
-      waitForKey = true;
-    }
-
-    void Start()
+    private InputAction bindAction; // Reference to an action to rebind.
+    private void Start()
     {
       UpdateValue();
     }
-    void OnGUI()
+
+    public InputAction BindAction 
     {
-      if (Input.anyKeyDown && waitForKey)
-      {
-        Event e = Event.current;
-        if (e.isKey) {
-          value = e.keyCode;
-          waitForKey = false;
-        }
+      get => bindAction;
+      set {
+        bindAction = value;
+        UpdateValue();
       }
     }
+    public int BindingIndex = 0;
+    public string ActionName = "";
+    public bool OnlyGamepad = false;
+    public bool OnlyKeyboard = false;
+
+    public void UpdateValue()
+    {
+      if (bindAction != null)
+        TextValue.text = bindAction.GetBindingDisplayString(BindingIndex);
+      else
+        TextValue.text = "";
+    }
+    public void StartWaitKey() 
+    {
+      if (bindAction != null)
+      {
+        var uIManager = GameUIManager.Instance;
+        uIManager.GoPageWithOptions("PageBindKey", new Dictionary<string, string>() {
+          { "keyName", ActionName == "" ? Text.text : ActionName },
+          { "keyCurrent", bindAction.GetBindingDisplayString(BindingIndex) },
+        });
+
+        var rebindOperation = bindAction.PerformInteractiveRebinding()
+          .WithTargetBinding(BindingIndex)
+          .WithCancelingThrough("*/{Cancel}");
+
+        if (OnlyGamepad)
+          rebindOperation = rebindOperation.WithControlsHavingToMatchPath("<Gamepad>");
+        else if (OnlyKeyboard)
+          rebindOperation = rebindOperation.WithControlsHavingToMatchPath("<Keyboard>");
+          
+        rebindOperation.OnComplete(_ => {
+          UpdateValue();
+          onSelect.Invoke(bindAction.GetBindingDisplayString(BindingIndex));
+          uIManager.BackPreviusPage();
+          rebindOperation.Dispose();
+        })
+          .Start();
+      }
+    }
+
+    public Action<string> onSelect;
   }
 }

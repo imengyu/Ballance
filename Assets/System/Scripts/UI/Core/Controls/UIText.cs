@@ -44,7 +44,7 @@ namespace Ballance2.UI.Core.Controls
         else 
         {
           tmp.Get().text = value;
-          i18N.NoLocalization();
+          i18N?.NoLocalization();
         }
       }
     } 

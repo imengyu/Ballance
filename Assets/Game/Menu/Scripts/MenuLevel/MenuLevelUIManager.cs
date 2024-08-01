@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Ballance2.Game;
 using Ballance2.Game.GamePlay;
 using Ballance2.Game.LevelBuilder;
@@ -7,6 +9,7 @@ using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
@@ -31,7 +34,7 @@ namespace Ballance2.Menu
 
       PageGlobalConfirm.CreateContent(package);
       PageMain.CreateContent(package);
-      PageMain.CanEscBack = false;
+      PageMain.CanBack = false;
       PageAbout.CreateContent(package);
       PageHighscore.CreateContent(package);
       PageQuit.CreateContent(package);
@@ -94,14 +97,14 @@ namespace Ballance2.Menu
       };
       PageAbout.OnHide = () => {
         BallanceLogo3DObjects.SetActive(false);
-        GameUIManager.DeleteKeyListen(keyListenGRAVITY);
+        EndGRAVITYKey();
       };
       //制作者页面启动GRAVITY 彩蛋
       PageAboutCreators.OnShow = (p) => {
         StartGRAVITYKey();
       };
       PageAboutCreators.OnHide = () => {
-        GameUIManager.DeleteKeyListen(keyListenGRAVITY);
+        EndGRAVITYKey();
       };
 
       MessageCenter.SubscribeEvent("BtnStartClick", () => GameUIManager.GoPage("PageStart"));
@@ -210,26 +213,65 @@ namespace Ballance2.Menu
     }
 
     //GRAVITY 菜单控制
-    private static int keyListenGRAVITY = 0;
+    private static List<InputAction> GRAVITYKeys = new List<InputAction>();
+    private static int keysGRAVITYCurrentIndex = 0;
+
+    private static void EndGRAVITYKey() {
+      foreach(var action in GRAVITYKeys)
+        action.Disable();
+    }
     private static void StartGRAVITYKey() {
-      var keysGRAVITYCurrentIndex = 0;
-      var keysGRAVITY = new KeyCode[] { KeyCode.G, KeyCode.R, KeyCode.A, KeyCode.V, KeyCode.I, KeyCode.T, KeyCode.Y  };
-      GameManager.VoidDelegate listenGRAVITYKey = null;
-      GameManager.VoidDelegate handleGRAVITYKey = () => {
-        if (keysGRAVITYCurrentIndex >= 6) { 
-          HighscoreManager.Instance.UnLockAllInternalLevel();
-          GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_dong.wav", GameSoundType.UI);
-        }
-        else {
-          keysGRAVITYCurrentIndex++;
-          listenGRAVITYKey();
+
+      Action<InputAction.CallbackContext> listenGRAVITYKey = (context) => {
+        if (context.ReadValueAsButton()) {
+          if (keysGRAVITYCurrentIndex >= 6) { 
+            HighscoreManager.Instance.UnLockAllInternalLevel();
+            GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_dong.wav", GameSoundType.UI);
+            StartGRAVITYKey();
+          }
+          else {
+            keysGRAVITYCurrentIndex++;
+            GRAVITYKeys[keysGRAVITYCurrentIndex].Enable();
+          }
         }
       };
-      listenGRAVITYKey = () => {
-        keyListenGRAVITY = GameUIManager.Instance.WaitKey(keysGRAVITY[keysGRAVITYCurrentIndex], false, handleGRAVITYKey);
-      };
+
+      if (GRAVITYKeys.Count == 0)
+      {
+        var action = new InputAction("G", InputActionType.Button);
+        action.AddBinding("<keyboard>/g");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+        action = new InputAction("R", InputActionType.Button);
+        action.AddBinding("<keyboard>/r");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+        action = new InputAction("A", InputActionType.Button);
+        action.AddBinding("<keyboard>/a");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+        action = new InputAction("V", InputActionType.Button);
+        action.AddBinding("<keyboard>/v");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+        action = new InputAction("I", InputActionType.Button);
+        action.AddBinding("<keyboard>/i");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+        action = new InputAction("T", InputActionType.Button);
+        action.AddBinding("<keyboard>/t");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+        action = new InputAction("Y", InputActionType.Button);
+        action.AddBinding("<keyboard>/y");
+        action.performed += listenGRAVITYKey;
+        GRAVITYKeys.Add(action);
+      }
+
+      foreach(var action in GRAVITYKeys)
+        action.Disable();
+      GRAVITYKeys[0].Enable();
       keysGRAVITYCurrentIndex = 0;
-      listenGRAVITYKey();
     }
   }
 }

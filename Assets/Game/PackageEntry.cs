@@ -6,7 +6,7 @@ using Ballance2.Game.GamePlay;
 using Ballance2.Services;
 using Ballance2.Base;
 using Ballance2.Services.Debug;
-using Ballance2.Game.GamePlay.Debug;
+using Ballance2.Game.GamePlay.DebugTools;
 
 namespace Ballance2.Game {
   //游戏模块主入口

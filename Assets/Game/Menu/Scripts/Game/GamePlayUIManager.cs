@@ -29,17 +29,17 @@ namespace Ballance2.Menu
       PageGameQuitAsk.CreateContent(package);
       PageGameRestartAsk.CreateContent(package);
       PageGamePause.CreateContent(package);
-      PageGamePause.CanEscBack = false;
+      PageGamePause.CanBack = false;
       PageGameWin.CreateContent(package);
       PageGameWinRestartAsk.CreateContent(package);
-      PageGameWin.CanEscBack = false;
+      PageGameWin.CanBack = false;
       PageEndScore.CreateContent(package);
-      PageEndScore.CanEscBack = false;
+      PageEndScore.CanBack = false;
       PageHighscoreEntry.CreateContent(package);
-      PageHighscoreEntry.CanEscBack = false;
+      PageHighscoreEntry.CanBack = false;
       PageGameFail.CreateContent(package);
-      PageGameFail.CanEscBack = false;
-      PageGamePreviewPause.CanEscBack = false;
+      PageGameFail.CanBack = false;
+      PageGamePreviewPause.CanBack = false;
       PageGamePreviewPause.CreateContent(package);
       PageGamePreviewQuitAsk.CreateContent(package);
 

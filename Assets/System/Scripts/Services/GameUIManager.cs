@@ -1,4 +1,5 @@
 ﻿using Ballance2.Base;
+using Ballance2.Game.GamePlay;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
@@ -133,7 +134,7 @@ namespace Ballance2.Services
       if(GameFpsStat != null) {
         GameFpsStat.SetAsLastSibling();
         if(!DebugMode) {
-          ListenKey(KeyCode.F10, (k, d) => {
+          ControlManager.Instance.ToggleFPS.BindInputActionButton((d) => {
             if(d)
               GameFpsStat.gameObject.SetActive(!GameFpsStat.gameObject.activeSelf);
           });
@@ -142,12 +143,16 @@ namespace Ballance2.Services
     }
     //F9截屏
     private void InitF9CaptureScreenshot() {
-      ListenKey(KeyCode.F9, (k, d) => { if(d) GameManager.Instance.CaptureScreenshot(); });
+      ControlManager.Instance.ScreenShort.BindInputActionButton((d) => {
+        if(d)
+          GameManager.Instance.CaptureScreenshot();
+      });
     }
     //F8切换顶层视图的显示
     private void InitF8SwitchViews() {
-      ListenKey(KeyCode.F8, (k, d) => {
-        if(d) SetUIOverlayVisible(!TopViewsRectTransform.gameObject.activeSelf);
+      ControlManager.Instance.ToggleView.BindInputActionButton((d) => {
+        if(d)
+        SetUIOverlayVisible(!TopViewsRectTransform.gameObject.activeSelf);
       });
     }
 
@@ -232,53 +237,6 @@ namespace Ballance2.Services
       UIToast.gameObject.SetActive(false);
       UIToast.SetAsLastSibling();
       EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
-
-      keyListener = KeyListener.Get(UIRoot.gameObject);
-      keyListener.DisableWhenUIFocused = false;
-    }
-
-    private KeyListener keyListener = null;
-
-    /// <summary>
-    /// 侦听某个键盘按键一次
-    /// </summary>
-    /// <param name="code">按键值</param>
-    /// <param name="pressedOrReleased">如果为true，则侦听按下事件，否则侦听松开事件</param>
-    /// <param name="callback">回调</param>
-    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听</returns>
-    public int WaitKey(KeyCode code, bool pressedOrReleased, VoidDelegate callback)
-    {
-      int id = 0;
-      id = keyListener.AddKeyListen(code, (key, down) =>
-      {
-        if (down == pressedOrReleased)
-        {
-          keyListener.DeleteKeyListen(id);
-          if(callback != null) 
-            callback();
-        }
-      });
-      return id;
-    }
-
-    /// <summary>
-    /// 添加键盘按键侦听
-    /// </summary>
-    /// <param name="key">键值</param>
-    /// <param name="callBack">回调函数</param>
-    /// <returns>返回一个ID, 可使用 DeleteKeyListen 删除侦听</returns>
-    public int ListenKey(KeyCode key, KeyListener.KeyDelegate callBack)
-    {
-      return keyListener.AddKeyListen(key, callBack);
-    }
-
-    /// <summary>
-    /// 删除侦听按键
-    /// </summary>
-    /// <param name="id">AddKeyListen 返回的ID</param>
-    public void DeleteKeyListen(int id)
-    {
-      keyListener.DeleteKeyListen(id);
     }
 
     /// <summary>
@@ -443,7 +401,7 @@ namespace Ballance2.Services
       }
 
       //Hide old
-      if (pageStack.Count > 0) pageStack[pageStack.Count - 1].Hide();
+      if (pageStack.Count > 0 && !page.NoPopPreviousPage) pageStack[pageStack.Count - 1].Hide();
       if (!pageStack.Contains(page)) pageStack.Add(page);
 
       page.LastOptions = options;

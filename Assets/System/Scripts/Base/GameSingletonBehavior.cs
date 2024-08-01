@@ -22,7 +22,12 @@ namespace Ballance2.Base
   {
     public static T Instance;
 
-    public GameSingletonBehavior() {
+    public GameSingletonBehavior() 
+    {
+/*#if UNITY_EDITOR
+      if (Instance != null)
+        Debug.LogWarning("You re try to create two GameSingletonBehavior instance, this may be a mistake.");
+#endif*/
       Instance = this as T;
     }
 

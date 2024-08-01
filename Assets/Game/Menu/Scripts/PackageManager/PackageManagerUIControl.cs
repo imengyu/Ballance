@@ -444,18 +444,15 @@ namespace Ballance2.Menu
       /// <param name="title">标题文字</param>
       /// <param name="valueUpdateCallback">参数更改回调</param>
       /// <returns></returns>
-      public PackageSettingsUIControlInfo<KeyChoose> AddKeyChoose(string name, string title, GameUIControlValueBinderUserUpdateCallback valueUpdateCallback) {
+      public KeyChoose AddKeyChoose(string name, string title) {
         if (CheckIsCustomControl())
           return null;
 
         var item = GameManager.Instance.InstancePrefab(control.PrefabKeyChoose, PageContent, name);
-        var valueBinder = item.AddComponent<KeyChooseValueBinder>();
         var cls = item.GetComponent<KeyChoose>();
-        //cls.Text.defaultString = title;
-        valueBinder.MessageCenter = MessageCenter;
-        valueBinder.Name = name; 
+        cls.Text.text = title;
         item.transform.SetAsFirstSibling();
-        return new PackageSettingsUIControlInfo<KeyChoose>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
+        return cls;
       }
       /// <summary>
       /// 向设置UI添加一个选择器条目
@@ -474,7 +471,7 @@ namespace Ballance2.Menu
         item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
         valueBinder.Name = name; 
-        //cls.TextTitle.defaultString = title;
+        cls.TextTitle.text = title;
         return new PackageSettingsUIControlInfo<Updown>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>
@@ -494,7 +491,7 @@ namespace Ballance2.Menu
         item.transform.SetAsFirstSibling();
         valueBinder.MessageCenter = MessageCenter;
         valueBinder.Name = name; 
-        //cls.Text.defaultString = title;
+        cls.Text.text = title;
         return new PackageSettingsUIControlInfo<ToggleEx>(MessageCenter.SubscribeValueBinder(valueBinder, valueUpdateCallback), cls);
       }
       /// <summary>

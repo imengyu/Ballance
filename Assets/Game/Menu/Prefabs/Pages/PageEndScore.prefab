@@ -157,6 +157,23 @@ MonoBehaviour:
   HighlightBar3: {fileID: 6291105653376414872}
   HighlightBar4: {fileID: 5650118585463997694}
   Panel: {fileID: 2953127676529770024}
+  Next:
+    m_Name: Next
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 66fb0ccd-a97e-4afa-80c7-20d0dd2cd555
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: d2509272-59a5-40f7-9d90-d933b870b2bb
+      m_Path: '*/{Submit}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Next
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1 &2889718997724708642
 GameObject:
   m_ObjectHideFlags: 0

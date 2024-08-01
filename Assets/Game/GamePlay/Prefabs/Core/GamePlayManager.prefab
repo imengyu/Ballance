@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8552188668334999636}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +32,6 @@ Transform:
   m_Children:
   - {fileID: 161361580902317797}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7990333148222851071
 MonoBehaviour:
@@ -62,13 +62,51 @@ MonoBehaviour:
   CurrentDisableStart: 0
   CurrentEndWithUFO: 0
   CanEscPause: 1
+  ActionPause:
+    m_Name: Action Pause
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 88ddc9a9-aee0-4c17-b160-f71d41c9bc9f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3ae06923-5133-44c0-9477-61467121ba74
+      m_Path: '*/{Back}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Pause
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &7098747051123720127
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1816943364496087611}
     m_Modifications:
+    - target: {fileID: 1189335423409825893, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
+      propertyPath: ActionPause.m_Name
+      value: Action Pause
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189335423409825893, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
+      propertyPath: ActionPause.m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189335423409825893, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
+      propertyPath: ActionPause.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 6f7ca586-d470-40f8-bb4f-68a519e28f2b
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189335423409825893, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
+      propertyPath: ActionPause.m_SingletonActionBindings.Array.data[0].m_Path
+      value: '*/{Cancel}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1189335423409825893, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
+      propertyPath: ActionPause.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Action Pause
+      objectReference: {fileID: 0}
     - target: {fileID: 3249955159281272501, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
       propertyPath: m_Name
       value: GamePreviewManager
@@ -122,6 +160,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95743c77bf57cbd44b821b40db31a048, type: 3}
 --- !u!4 &161361580902317797 stripped
 Transform:

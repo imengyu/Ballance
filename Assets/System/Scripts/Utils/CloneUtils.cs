@@ -95,6 +95,19 @@ namespace Ballance2.Utils
       go.SetActive(active);
       return go;
     }
+    /// <summary>
+    /// 使用 Prefab 克隆一个新的对象添加至指定变换的子级，并获取其上的组件类
+    /// </summary>
+    /// <typeparam name="T">组件类</typeparam>
+    /// <param name="prefab">Prefab</param>
+    /// <param name="parent">父级对象</param>
+    /// <param name="name">新的对象的名字</param>
+    /// <returns>返回生成的新对象</returns>
+    public static T CloneNewObjectWithParentAndGetGetComponent<T>(GameObject prefab, Transform parent, string name = "NewObject", bool active = true)
+    {
+      var go = CloneNewObjectWithParent(prefab, parent, name, active);
+      return go.GetComponent<T>();
+    }
 
     /// <summary>
     /// 克隆一个新的空对象

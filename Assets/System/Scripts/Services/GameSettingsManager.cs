@@ -45,7 +45,7 @@ namespace Ballance2.Services
     public static GameSettingsActuator GetSettings(string packageName, GameSettingsActuator customActuator = null)
     {
       GameSettingsActuator gameSettingsActuator = null;
-      if (!settingsActuators.TryGetValue(packageName, out gameSettingsActuator))
+      if (settingsActuators != null && !settingsActuators.TryGetValue(packageName, out gameSettingsActuator))
       {
          if (customActuator != null) {
           settingsActuators.Add(packageName, gameSettingsActuator);

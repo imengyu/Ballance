@@ -1,3 +1,4 @@
+using System;
 using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Services;
@@ -5,6 +6,7 @@ using Ballance2.Services.I18N;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Ballance2.Game.GamePlay.Other
@@ -38,6 +40,9 @@ namespace Ballance2.Game.GamePlay.Other
     public GameObject Tut_ExtraPointEnd;
     public GameObject Tut_CheckpointEnd;
 
+    public InputAction ActionQuit;
+    public InputAction ActionNext;
+
     private const string TAG = "TutorialController";
 
     private bool _Tutorial = false;
@@ -45,7 +50,6 @@ namespace Ballance2.Game.GamePlay.Other
     private bool _TutorialShouldDisablePointDown = false;
     private bool _TutorialBallFinded = false;
     private bool _TutorialCamFinded = false;
-    private int _TutorialCurrWaitkey = 0;
     private RectTransform _TutorialUI = null;
     private TMP_Text _TutorialUIText = null;
     private Image _TutorialUIBg = null;
@@ -57,10 +61,33 @@ namespace Ballance2.Game.GamePlay.Other
     private GamePlayManager GamePlayManager;
     private GameEventHandler _EventEntery = null;
 
+    private Action nextCallback = null;
+    private Action quitCallback = null;
+
+    private void OnNext(InputAction.CallbackContext context)
+    {
+      if (context.ReadValueAsButton()) {
+        nextCallback?.Invoke();
+        nextCallback = null;
+      }
+    }
+    private void OnQuit(InputAction.CallbackContext context)
+    {
+      if (context.ReadValueAsButton()) {
+        quitCallback?.Invoke();
+        quitCallback = null;
+      }
+    }
+
     private void Start() {
-      GameSoundManager = Services.GameSoundManager.Instance;
-      GameUIManager = Services.GameUIManager.Instance;
-      GamePlayManager = GamePlay.GamePlayManager.Instance;
+      ActionQuit.Disable();
+      ActionNext.Disable();
+      ActionQuit.performed += OnQuit;
+      ActionNext.performed += OnNext;
+
+      GameSoundManager = GameSoundManager.Instance;
+      GameUIManager = GameUIManager.Instance;
+      GamePlayManager = GamePlayManager.Instance;
 
         GameEventEmitterDelegate startFun = (_) => {
           Log.D(TAG, "Init Tutorial");
@@ -94,9 +121,11 @@ namespace Ballance2.Game.GamePlay.Other
           //移动到球出生位置
           Pfeil_HochHost.transform.position = GamePlayManager.SectorManager.CurrentLevelRestPoints[1].point.transform.position;
           //设置箭头跟随摄像机旋转角度
-          var constraintSource = new ConstraintSource();
-          constraintSource.sourceTransform = GamePlayManager.CamManager._CamOrientTransform;
-          constraintSource.weight = 1;
+          var constraintSource = new ConstraintSource
+          {
+            sourceTransform = GamePlayManager.CamManager._CamOrientTransform,
+            weight = 1
+          };
 
           if (_TutorialCamFinded)
             Pfeil_Runter.SetSource(0, constraintSource);
@@ -127,17 +156,15 @@ namespace Ballance2.Game.GamePlay.Other
           _Tutorial = false;
           GameTimer.Delay(1, () => {
             //删除按键
-            if (_TutorialCurrWaitkey > 0) {
-              GameUIManager.DeleteKeyListen(_TutorialCurrWaitkey);
-              _TutorialCurrWaitkey = 0;
-            }
+            ActionQuit.Disable();
+            ActionNext.Disable();
             
             //重置恢复
             GamePlayManager._ShouldStartByCustom = false;
             
             //删除UI
             if (_TutorialUI != null) {
-              UnityEngine.Object.Destroy(_TutorialUI.gameObject);
+              Destroy(_TutorialUI.gameObject);
               _TutorialUI = null;
             }
           });
@@ -179,20 +206,16 @@ namespace Ballance2.Game.GamePlay.Other
       if (!_Tutorial)
         return;
 
-      var step1KeyReturn = 0;
-      var step1KeyQ = 0;
-
       var funStepLock = false;
       var funQuitLock = false;
       GameManager.VoidDelegate funQuit = () => {
         if (!funQuitLock) {
           funQuitLock = true;
           GameSoundManager.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.Normal);
-          //按 q 退出
-          GameUIManager.DeleteKeyListen(step1KeyReturn);
           HideTutorial();
           //恢复球推动键
-          GamePlayManager.BallManager.KeyListener.IsListenKey = true;
+          ControlManager.Instance.EnableControl();
+
           //继续游戏运行
           GamePlayManager._ShouldStartByCustom = false;
           GamePlayManager.CanEscPause = true;
@@ -309,15 +332,15 @@ namespace Ballance2.Game.GamePlay.Other
           ShowTutorialText();
         });
         
-        _TutorialCurrWaitkey = GameUIManager.WaitKey(KeyCode.Return, true, funStep2);
+        nextCallback = () => funStep2();
       };
       GameManager.VoidDelegate commonTurHide = null;
       GameManager.VoidDelegate funSeq = () => {
         GameSoundManager.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.Normal);
         _TutorialUIButtonQuit.gameObject.SetActive(false);
-        GameUIManager.DeleteKeyListen(step1KeyQ);
+        ActionQuit.Disable();
         //恢复球推动键
-        GamePlayManager.BallManager.KeyListener.IsListenKey = true;
+        ControlManager.Instance.EnableControl();
 
         //进行下一步
         HideTutorial();
@@ -335,7 +358,7 @@ namespace Ballance2.Game.GamePlay.Other
           _TutorialStep = 2;
           ShowTutorialText();
 
-          _TutorialCurrWaitkey = GameUIManager.WaitKey(KeyCode.Return, true, funStep1);
+          nextCallback = () => funStep1();
         });
 
         //-移动箭头至指定位置
@@ -346,7 +369,7 @@ namespace Ballance2.Game.GamePlay.Other
         };
         GameManager.VoidDelegate commonTurReturn = () => {
           GamePlayManager.PauseLevel(false);
-          _TutorialCurrWaitkey = GameUIManager.WaitKey(KeyCode.Return, true, commonTurHide);
+          nextCallback = () => commonTurHide();
         };
         GameManager.VoidDelegate commonTurTipSound = () => {
           GameSoundManager.PlayFastVoice("core.sounds:Hit_Stone_Kuppel.wav", GameSoundType.Normal);
@@ -433,13 +456,15 @@ namespace Ballance2.Game.GamePlay.Other
       _TutorialUIButtonQuit.onClick.AddListener(() => funQuit());
 
       //先暂停球推动键
-      GamePlayManager.BallManager.KeyListener.IsListenKey = false;
+      ControlManager.Instance.DisableControl();
 
       GameTimer.Delay(0.5f, () => {
         ShowTutorialText();
         //步骤1，按 q 退出，按回车继续
-        step1KeyReturn = GameUIManager.WaitKey(KeyCode.Return, true, () => funSeq());
-        step1KeyQ = GameUIManager.WaitKey(KeyCode.Q, true, () => funQuit());
+        ActionQuit.Enable();
+        ActionNext.Enable();
+        quitCallback = () => funQuit();
+        nextCallback = () => funSeq();
       });
     }
     
@@ -479,6 +504,9 @@ namespace Ballance2.Game.GamePlay.Other
     public void HideTutorial() {
       GameUIManager.UIFadeManager.AddFadeOut(_TutorialUIText, 0.6f, true);
       GameUIManager.UIFadeManager.AddFadeOut(_TutorialUIBg, 0.6f, true);
+
+      ActionNext.Disable();
+      ActionQuit.Disable();
 
       GameTimer.Delay(0.6f, () => {
         _TutorialUI.gameObject.SetActive(false);

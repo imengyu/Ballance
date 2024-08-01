@@ -43,7 +43,14 @@ namespace Ballance2.Game
     public static string SettingsControlKeyRight = "control.key.right";
     public static string SettingsControlKeyUpCam = "control.key.up_cam";
     public static string SettingsControlKeyRoate = "control.key.roate";
-    public static string SettingsControlKeyRoate2 = "control.key.roate2";
+    public static string SettingsControlKeyScreenShort = "control.key.screen_short";
+    public static string SettingsControlKeyToggleView = "control.key.toggle_view";
+    public static string SettingsControlKeyToggleFPS = "control.key.toggle_fps";
+    public static string SettingsControllerActionMove = "controller.action.move";
+    public static string SettingsControllerActionFly = "controller.action.fly";
+    public static string SettingsControllerActionOverlook = "controller.action.overlook";
+    public static string SettingsControllerActionRotateCamLeft = "controller.action.camleft";
+    public static string SettingsControllerActionRotateCamRight = "controller.action.camright";
     public static string SettingsControlKeyReverse = "control.key.reverse";
     public static string SettingsControlKeypad = "control.keypad";
 
@@ -59,15 +66,6 @@ namespace Ballance2.Game
       { SettingsVoiceMain, 100.0f },
       { SettingsControlKeypad, "BaseCenter" },
       { SettingsControlKeyReverse, false },
-      { SettingsControlKeyUp, (int)KeyCode.Q },
-      { SettingsControlKeyDown, (int)KeyCode.E },
-      { SettingsControlKeyRoate, (int)KeyCode.LeftShift },
-      { SettingsControlKeyRoate2, (int)KeyCode.RightShift },
-      { SettingsControlKeyUpCam, (int)KeyCode.Space },
-      { SettingsControlKeyRight, (int)KeyCode.RightArrow },
-      { SettingsControlKeyLeft, (int)KeyCode.LeftArrow },
-      { SettingsControlKeyBack, (int)KeyCode.DownArrow },
-      { SettingsControlKeyFront, (int)KeyCode.UpArrow },
       { SettingsVideoCloud, true },
       { SettingsControlKeySize, 90.0f },
     };

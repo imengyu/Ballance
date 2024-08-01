@@ -25,7 +25,7 @@ namespace Ballance2.Menu
 
     private void Start() {
       var settings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-      var page = GameUIManager.Instance.FindPage("PageSettingsControlsMobile");
+      var page = GameUIManager.Instance.FindPage("PageSettingsControls");
       var controlKeypadSettting = "";
 
       ScrollView.updateFunc = (index, item) => {

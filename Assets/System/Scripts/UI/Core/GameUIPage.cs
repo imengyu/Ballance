@@ -8,6 +8,8 @@ using Ballance2.Services.Debug;
 using Ballance2.UI.Utils;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using SubjectNerd.Utilities;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -37,15 +39,35 @@ namespace Ballance2.UI.Core
     public HorizontalLayoutGroup HorizontalLayoutGroup;
 
     /// <summary>
+    /// 返回上一页的按钮
+    /// </summary>
+    [Tooltip("返回上一页的按钮")]
+    public InputAction BackAction;
+    /// <summary>
     /// 页名称
     /// </summary>
     [Tooltip("页名称")]
     public string PageName;
     /// <summary>
-    /// 获取或设置是否可以按ESC键返回上一页
+    /// 控制器与键盘快捷键UI显示器
     /// </summary>
-    [Tooltip("设置是否可以按ESC键返回上一页")]
-    public bool CanEscBack = true;
+    public UIKeyButtons KeyButtons;
+    /// <summary>
+    /// 设定用户是否可以返回上一页
+    /// </summary>
+    public bool CanBack = true;
+    /// <summary>
+    /// 设定是否显示默认控制器控制按钮
+    /// </summary>
+    public bool ShowStaticDisplayAction = true;
+    /// <summary>
+    /// 设定是否在无控制器时依然显示控制按钮
+    /// </summary>
+    public bool ForceShowDisplayAction = false;
+    /// <summary>
+    /// 设定是否不隐藏上一页显示
+    /// </summary>
+    public bool NoPopPreviousPage = false;
     /// <summary>
     /// 显示页事件
     /// </summary>
@@ -58,6 +80,9 @@ namespace Ballance2.UI.Core
     /// 隐藏页事件
     /// </summary>
     public VoidDelegate OnHide;
+    [SerializeField]
+    [Reorderable]
+    public List<UIKeyButtons.StaticDisplayAction> StaticDisplayActions = new List<UIKeyButtons.StaticDisplayAction>();
 
     private DefaultSelection defaultSelection = null;
 
@@ -72,15 +97,22 @@ namespace Ballance2.UI.Core
 
     public delegate void OptionsDelegate(Dictionary<string, string> options);
 
-    private GameUIManager uIManager;
-    private int escBackId = 0;
+    private void Start() 
+    {
+      BackAction.performed += (e) => DoBack();
+    }
+
+    private void DoBack()
+    {
+      if (CanBack)
+        GameUIManager.Instance.BackPreviusPage();
+    }
 
     /// <summary>
     /// 显示页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。
     /// </summary>
     internal void Show()
     {
-      uIManager = GameManager.GetSystemService<GameUIManager>();
       gameObject.SetActive(true);
       OnShow?.Invoke(LastOptions);
 
@@ -96,11 +128,20 @@ namespace Ballance2.UI.Core
           sound.enabled = true;
       }
 #endif
-      if (CanEscBack)
+      //接入控制器后显示按键快捷键
+      if (ForceShowDisplayAction || Gamepad.all.Count > 0)
       {
-        escBackId = uIManager.WaitKey(KeyCode.Escape, false, () =>
-        {
-          uIManager.BackPreviusPage();
+        GameManager.Instance.Delay(0.2f, () => {
+          if (KeyButtons != null)
+            KeyButtons.EnableAllDisplayActions();
+          if (CanBack && BackAction.bindings.Count > 0)
+          {
+            BackAction.Enable();
+            KeyButtons.AddDisplayActions(BackAction, "I18N:core.ui.Back", () => DoBack());
+          }
+          if (ShowStaticDisplayAction)
+            foreach (var item in StaticDisplayActions)
+              KeyButtons.AddStaticDisplayActions(item);
         });
       }
     }
@@ -112,11 +153,9 @@ namespace Ballance2.UI.Core
     {
       gameObject.SetActive(false);
       OnHide?.Invoke();
-      if (escBackId != 0)
-      {
-        uIManager.DeleteKeyListen(escBackId);
-        escBackId = 0;
-      }
+      BackAction.Disable();
+      if (KeyButtons != null)
+        KeyButtons.DeleteAllDisplayActions();
     }
 
     /// <summary>
@@ -166,7 +205,6 @@ namespace Ballance2.UI.Core
         UIAnchorPosUtils.SetUIPos(content, 0, 0, 0, 0);
       }
     }
-
     /// <summary>
     /// 将内容设置至当前页的内容容器中
     /// </summary>

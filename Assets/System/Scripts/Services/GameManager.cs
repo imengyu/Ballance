@@ -16,7 +16,6 @@ using Ballance2.Res;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 /*
 * Copyright(c) 2021 imengyu
@@ -149,6 +148,7 @@ namespace Ballance2.Services
       GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
       GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
         finish.Invoke();
+        GameTimeMachine.Instance.RegisterFixedUpdate(() => Physics.Simulate(Time.fixedDeltaTime * 5), interval: 5);
         return false;
       });
       GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
