@@ -254,7 +254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1044484048878536426, guid: e7258cce79e72b543877bc49dd8b886f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.28485107
+      value: -0.28479004
       objectReference: {fileID: 0}
     - target: {fileID: 1044484048878536426, guid: e7258cce79e72b543877bc49dd8b886f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -374,7 +374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4527334084443952431, guid: e7258cce79e72b543877bc49dd8b886f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -29.360992
+      value: -29.360962
       objectReference: {fileID: 0}
     - target: {fileID: 6910264099479711512, guid: e7258cce79e72b543877bc49dd8b886f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1036,7 +1036,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1024, y: 768}
+  m_ReferenceResolution: {x: 1280, y: 960}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
@@ -1644,7 +1644,7 @@ MonoBehaviour:
   ModulInstance: {fileID: 0}
   ModulTestFloor: {fileID: 0}
   ModulTestUI: {fileID: 0}
-  LevelName: Level02
+  LevelName: "\u6D4B\u8BD5\u5173\u5361"
 --- !u!114 &1269806397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1660,7 +1660,7 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds

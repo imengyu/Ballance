@@ -32,7 +32,6 @@ RectTransform:
   m_Children:
   - {fileID: 3828980694039256441}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -63,8 +62,22 @@ MonoBehaviour:
   ContentHost: {fileID: 3828980694039256441}
   VerticalLayoutGroup: {fileID: 0}
   HorizontalLayoutGroup: {fileID: 0}
+  BackAction:
+    m_Name: Back
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c641f553-5a42-4cb7-85ad-9bdf2f609d8c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   PageName: 
-  CanEscBack: 1
+  KeyButtons: {fileID: 0}
+  CanBack: 1
+  ShowStaticDisplayAction: 1
+  ForceShowDisplayAction: 0
+  NoPopPreviousPage: 0
+  StaticDisplayActions: []
 --- !u!1 &3467133483369523536
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +108,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 384517519893201590}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

@@ -33,7 +33,7 @@ TextureImporter:
       213: -2244745117329454399
     second: ButtonBackActive
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -50,11 +50,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -77,7 +78,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,6 +94,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -104,6 +107,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -116,6 +120,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -128,6 +133,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -138,12 +144,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 194
-        width: 256
-        height: 60
+        y: 776
+        width: 1024
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 67, y: 0, z: 32, w: 0}
+      border: {x: 267, y: 0, z: 162, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -158,13 +164,13 @@ TextureImporter:
       name: ButtonLevelActive
       rect:
         serializedVersion: 2
-        x: 4
-        y: 162
-        width: 158
-        height: 30
+        x: 16
+        y: 648
+        width: 632
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 31, y: 0, z: 22, w: 0}
+      border: {x: 108, y: 0, z: 69, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -180,12 +186,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 125
-        width: 256
-        height: 28
+        y: 500
+        width: 1024
+        height: 112
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 122, y: 0, z: 71, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -200,10 +206,10 @@ TextureImporter:
       name: ButtonLeftActive
       rect:
         serializedVersion: 2
-        x: 162
-        y: 153
-        width: 40
-        height: 40
+        x: 648
+        y: 609
+        width: 160
+        height: 163
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,10 +227,10 @@ TextureImporter:
       name: ButtonRightActive
       rect:
         serializedVersion: 2
-        x: 202
-        y: 153
-        width: 40
-        height: 40
+        x: 808
+        y: 609
+        width: 160
+        height: 163
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -242,13 +248,13 @@ TextureImporter:
       name: ButtonSecondActive
       rect:
         serializedVersion: 2
-        x: 1
-        y: 64
-        width: 251
-        height: 60
+        x: 4
+        y: 256
+        width: 1004
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 50, y: 0, z: 42, w: 0}
+      border: {x: 205, y: 0, z: 181, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -263,10 +269,10 @@ TextureImporter:
       name: ButtonSubActive
       rect:
         serializedVersion: 2
-        x: 227
-        y: 36
-        width: 20
-        height: 20
+        x: 908
+        y: 144
+        width: 80
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,10 +290,10 @@ TextureImporter:
       name: ButtonAddActive
       rect:
         serializedVersion: 2
-        x: 227
-        y: 8
-        width: 20
-        height: 20
+        x: 908
+        y: 32
+        width: 80
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,12 +312,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 23
-        width: 58
-        height: 22
+        y: 92
+        width: 232
+        height: 88
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 10, y: 11, z: 12, w: 9}
+      border: {x: 91, y: 42, z: 130, w: 42}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -326,13 +332,13 @@ TextureImporter:
       name: ButtonBackActive
       rect:
         serializedVersion: 2
-        x: 62
-        y: 3
-        width: 162
-        height: 60
+        x: 248
+        y: 12
+        width: 648
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 44, y: 0, z: 36, w: 0}
+      border: {x: 180, y: 0, z: 215, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -354,19 +360,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ButtonBigActive: -169133938099427436
       ButtonAddActive: 8258464795292426863
-      ButtonSubActive: 6192946658363756518
-      ButtonSecondActive: 8542168454388939736
       ButtonBackActive: -2244745117329454399
+      ButtonBigActive: -169133938099427436
       ButtonLeftActive: 8540302488169686365
-      ButtonSmallActive: 6691177558344763123
-      ButtonRightActive: -3917515126769379270
-      ButtonToolsActive: 3989991476810995488
       ButtonLevelActive: -472048025614868537
-  spritePackingTag: 
+      ButtonRightActive: -3917515126769379270
+      ButtonSecondActive: 8542168454388939736
+      ButtonSmallActive: 6691177558344763123
+      ButtonSubActive: 6192946658363756518
+      ButtonToolsActive: 3989991476810995488
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: core
   assetBundleVariant: assetbundle

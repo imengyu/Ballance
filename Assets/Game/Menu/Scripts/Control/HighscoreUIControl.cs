@@ -2,12 +2,17 @@ using System.Collections.Generic;
 using Ballance2.Base;
 using Ballance2.Game.GamePlay;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
 {
   public class HighscoreUIControl : GameSingletonBehavior<HighscoreUIControl>  {
     public TMP_Text TextLevelName;
+    public RectTransform ContentView;
+    public InputAction PrevPage;
+    public InputAction NextPage;
 
     private int _CurrentIndex = 0;
     private List<TextItemData> _TextItem = new List<TextItemData>();
@@ -21,13 +26,23 @@ namespace Ballance2.Menu
     private void Start() {
       _CurrentIndex = 0;
       _TextItem.Clear();
+      PrevPage.performed += (c) => Prev();
+      NextPage.performed += (c) => Next();
       for (int i = 1; i <= 10; i++)
       {
          _TextItem.Add(new TextItemData {
-          textName = transform.Find($"ItemHighscore{i}/TextValue").GetComponent<TMP_Text>(),
-          testScore = transform.Find($"ItemHighscore{i}/TextScoreValue").GetComponent<TMP_Text>()
+          textName = ContentView.Find($"ItemHighscore{i}/TextValue").GetComponent<TMP_Text>(),
+          testScore = ContentView.Find($"ItemHighscore{i}/TextScoreValue").GetComponent<TMP_Text>()
         });
       }
+    }
+    private void OnEnable() {
+      PrevPage.Enable();
+      NextPage.Enable();
+    }
+    private void OnDisable() {
+      PrevPage.Disable();
+      NextPage.Disable();
     }
 
     public void LoadLevelData(int index) {

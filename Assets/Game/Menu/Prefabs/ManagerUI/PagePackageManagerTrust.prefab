@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  select: {fileID: 0}
+  select: {fileID: 3559533368484220118}
 --- !u!114 &6155820109754100617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,10 +277,6 @@ PrefabInstance:
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_SizeDelta.x
       value: 302.7991
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_LocalPosition.x
@@ -546,10 +542,6 @@ PrefabInstance:
       value: 302.7991
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -635,12 +627,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2163045131142455081, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
   m_PrefabInstance: {fileID: 3414483518712222717}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3559533368484220118}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3559533368484220118 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2163045131142455083, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+  m_PrefabInstance: {fileID: 3414483518712222717}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3559533368484220119 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
@@ -832,10 +829,6 @@ PrefabInstance:
       value: 302.7991
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -971,10 +964,6 @@ PrefabInstance:
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_SizeDelta.x
       value: 302.7991
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_LocalPosition.x

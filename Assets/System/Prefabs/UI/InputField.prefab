@@ -172,7 +172,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7094400628871204474}
   m_TextViewport: {fileID: 4676139009721860696}
   m_TextComponent: {fileID: 2555825379794015059}
-  m_Placeholder: {fileID: 0}
+  m_Placeholder: {fileID: 8373506156767512048}
   m_VerticalScrollbar: {fileID: 0}
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
@@ -319,6 +319,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
+      propertyPath: m_text
+      value: Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: b3878ebda42abc4419aa253900051707, type: 2}
@@ -368,6 +372,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4980394928004744558, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
   m_PrefabInstance: {fileID: 3351334830923601572}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8373506156767512048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
+  m_PrefabInstance: {fileID: 3351334830923601572}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8777202991145418759
 PrefabInstance:
   m_ObjectHideFlags: 0

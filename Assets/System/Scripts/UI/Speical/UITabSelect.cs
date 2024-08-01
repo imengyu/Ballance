@@ -23,70 +23,57 @@ namespace Ballance2.UI
     }    
    
     [SerializeField]
-    private GameObject tabPrefab;
+    private UIText text;
     [SerializeField]
-    private int startActiveIndex;
+    private int startActiveIndex = 0;
     [SerializeField]
     [Reorderable]
     private List<TabItem> tabs = new List<TabItem>();
-    private RectTransform rectTransform;
 
     public InputAction LeftAction;
     public InputAction RightAction;
 
     private TabItem currentActiveTab = null;
-    private List<UITabHeaderItem> headers = new List<UITabHeaderItem>();
 
-    private void Awake() 
+    private void Start() 
     {
-      rectTransform = GetComponent<RectTransform>();
-      UpdateHeader();
-      LeftAction.performed += (c) => {
-        var activeIndex = tabs.IndexOf(currentActiveTab);
-        if (activeIndex > 0)
-          JumpToItem(Tabs[activeIndex - 1]);
-      };
-      RightAction.performed += (c) => {
-        var activeIndex = tabs.IndexOf(currentActiveTab);
-        if (activeIndex < Tabs.Count - 1)
-          JumpToItem(Tabs[activeIndex + 1]);
-      };
-    }
-    private void UpdateHeader()
-    {
-      rectTransform.DestroyAllChildren();
-      headers.Clear();
-      foreach (var item in tabs)
-      {
-        var _item = item;
-        var trans = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UITabHeaderItem>(tabPrefab, rectTransform);
-        trans.SetTitle(item.Title);
-        trans.GetComponent<Button>().onClick.AddListener(() => JumpToItem(_item));
-        headers.Add(trans);
-      }
       if (tabs.Count > 0)
-        JumpToItem(tabs[startActiveIndex], false);
+      {
+        for (int i = 0; i < tabs.Count; i++) 
+          tabs[i].Content.gameObject.SetActive(false);
+        JumpToItem(tabs[startActiveIndex]);
+      }
+      LeftAction.performed += (c) => Prev(true);
+      RightAction.performed += (c) => Next(true);
     }
+
     public TabItem CurrentActiveTab => currentActiveTab;
     public ReadOnlyCollection<TabItem> Tabs => tabs.AsReadOnly();
+
+    public void Next(bool playSound = false)
+    {
+      var activeIndex = tabs.IndexOf(currentActiveTab);
+      if (activeIndex < Tabs.Count - 1)
+        JumpToItem(Tabs[activeIndex + 1], playSound);
+    }
+    public void Prev(bool playSound = false)
+    {
+      var activeIndex = tabs.IndexOf(currentActiveTab);
+      if (activeIndex > 0)
+        JumpToItem(Tabs[activeIndex - 1], playSound);
+    }
 
     public void SetTabs(TabItem[] _tabs)
     {
       tabs = new List<TabItem>(_tabs);
-      UpdateHeader();
     }
-    public void JumpToItem(TabItem tab, bool playSound = true)
+    public void JumpToItem(TabItem tab, bool playSound = false)
     {
-      var activeIndex = tabs.IndexOf(tab);
-      for (int i = 0; i < tabs.Count; i++) {
-        if (i != activeIndex)
-        {
-          tabs[i].Content.gameObject.SetActive(false);
-          headers[i].SetActive(false);
-        }
-      }
+      if (currentActiveTab!= null)
+          currentActiveTab.Content.gameObject.SetActive(false);
       tab.Content.gameObject.SetActive(true);
-      headers[activeIndex].SetActive(true);
+      text.text = tab.Title;
+      currentActiveTab = tab;
       
       if (playSound)
         GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.UI);

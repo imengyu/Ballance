@@ -3,7 +3,7 @@ guid: 690733426d49da745a68a92355ee6070
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -47,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -63,6 +64,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -74,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -86,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -98,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -110,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -122,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -132,12 +140,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 157
-        width: 99
-        height: 99
+        y: 628
+        width: 396
+        height: 396
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 5, y: 5, z: 5, w: 5}
+      border: {x: 24, y: 5, z: 27, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -152,10 +160,10 @@ TextureImporter:
       name: ToggleOffHover
       rect:
         serializedVersion: 2
-        x: 123
-        y: 178
-        width: 67
-        height: 30
+        x: 492
+        y: 712
+        width: 268
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,10 +181,10 @@ TextureImporter:
       name: ToggleOffPressed
       rect:
         serializedVersion: 2
-        x: 123
-        y: 220
-        width: 67
-        height: 30
+        x: 492
+        y: 880
+        width: 268
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,10 +202,10 @@ TextureImporter:
       name: ToggleOffNormal
       rect:
         serializedVersion: 2
-        x: 123
-        y: 136
-        width: 67
-        height: 30
+        x: 492
+        y: 544
+        width: 268
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,13 +223,13 @@ TextureImporter:
       name: SliderBackground
       rect:
         serializedVersion: 2
-        x: 163
-        y: 66
-        width: 60
-        height: 18
+        x: 652
+        y: 264
+        width: 240
+        height: 72
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 9, y: 9, z: 10, w: 8}
+      border: {x: 40, y: 35, z: 40, w: 35}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -236,13 +244,13 @@ TextureImporter:
       name: SliderDrag
       rect:
         serializedVersion: 2
-        x: 163
-        y: 36
-        width: 60
-        height: 18
+        x: 652
+        y: 144
+        width: 240
+        height: 72
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 9, y: 9, z: 11, w: 8}
+      border: {x: 40, y: 35, z: 40, w: 35}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -257,10 +265,10 @@ TextureImporter:
       name: PointPressed
       rect:
         serializedVersion: 2
-        x: 202
-        y: 220
-        width: 30
-        height: 30
+        x: 808
+        y: 880
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -278,10 +286,10 @@ TextureImporter:
       name: PointHlighted
       rect:
         serializedVersion: 2
-        x: 202
-        y: 178
-        width: 30
-        height: 30
+        x: 808
+        y: 712
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -299,10 +307,10 @@ TextureImporter:
       name: PointNormal
       rect:
         serializedVersion: 2
-        x: 202
-        y: 136
-        width: 30
-        height: 30
+        x: 808
+        y: 544
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -320,10 +328,10 @@ TextureImporter:
       name: ToggleOnPressed
       rect:
         serializedVersion: 2
-        x: 7
-        y: 103
-        width: 66
-        height: 32
+        x: 28
+        y: 412
+        width: 264
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -341,10 +349,10 @@ TextureImporter:
       name: ToggleOnHlighted
       rect:
         serializedVersion: 2
-        x: 7
-        y: 61
-        width: 66
-        height: 32
+        x: 28
+        y: 244
+        width: 264
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -362,10 +370,10 @@ TextureImporter:
       name: ToggleOnNormal
       rect:
         serializedVersion: 2
-        x: 7
-        y: 19
-        width: 66
-        height: 32
+        x: 28
+        y: 76
+        width: 264
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -383,13 +391,13 @@ TextureImporter:
       name: SmallBoxNormal
       rect:
         serializedVersion: 2
-        x: 87
-        y: 97
-        width: 66
-        height: 26
+        x: 348
+        y: 388
+        width: 264
+        height: 104
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 11, z: 17, w: 11}
+      border: {x: 60, y: 50, z: 60, w: 50}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -404,13 +412,13 @@ TextureImporter:
       name: SmallBoxWhite
       rect:
         serializedVersion: 2
-        x: 87
-        y: 57
-        width: 66
-        height: 26
+        x: 348
+        y: 228
+        width: 264
+        height: 104
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 13, y: 11, z: 17, w: 11}
+      border: {x: 60, y: 50, z: 60, w: 50}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -425,13 +433,13 @@ TextureImporter:
       name: SmallBoxHlighted
       rect:
         serializedVersion: 2
-        x: 87
-        y: 17
-        width: 66
-        height: 26
+        x: 348
+        y: 68
+        width: 264
+        height: 104
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 12, z: 16, w: 13}
+      border: {x: 60, y: 50, z: 60, w: 50}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -446,13 +454,13 @@ TextureImporter:
       name: SmallBoxPressed
       rect:
         serializedVersion: 2
-        x: 165
-        y: 97
-        width: 66
-        height: 26
+        x: 660
+        y: 388
+        width: 264
+        height: 104
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 12, z: 14, w: 12}
+      border: {x: 60, y: 50, z: 60, w: 50}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -474,25 +482,24 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SliderDrag: 1063425480
-      SmallBoxPressed: -214631220
-      ToggleOnNormal: -2123230490
+      MenuBackground: -495305040
       PointHlighted: -1797216058
       PointNormal: -194631971
-      SliderBackground: 1262532373
-      SmallBoxWhite: -1660457790
-      ToggleOnPressed: 1969844226
-      ToggleOffPressed: 153735091
-      SmallBoxNormal: 595134576
-      ToggleOffNormal: 1899961624
       PointPressed: 763722669
-      ToggleOnHlighted: 1805856386
+      SliderBackground: 1262532373
+      SliderDrag: 1063425480
       SmallBoxHlighted: -1668671222
+      SmallBoxNormal: 595134576
+      SmallBoxPressed: -214631220
+      SmallBoxWhite: -1660457790
       ToggleOffHover: -139200583
-      MenuBackground: -495305040
-  spritePackingTag: 
+      ToggleOffNormal: 1899961624
+      ToggleOffPressed: 153735091
+      ToggleOnHlighted: 1805856386
+      ToggleOnNormal: -2123230490
+      ToggleOnPressed: 1969844226
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

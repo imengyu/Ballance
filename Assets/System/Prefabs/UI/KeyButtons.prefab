@@ -84,5 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e490f3ba83dd04b93e99aef82a3433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyboardBox: {fileID: 4787464602123414442}
   keyButtonPrefab: {fileID: 601363914987601746, guid: a35c6aae3d0630440b55cb0af2965cd5, type: 3}
   actions: []
+  staticDisplayActions: []

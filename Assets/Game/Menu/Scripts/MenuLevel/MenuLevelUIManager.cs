@@ -6,6 +6,7 @@ using Ballance2.Game.LevelBuilder;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
+using Ballance2.UI.Core.Controls;
 using Ballance2.Utils;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,6 @@ namespace Ballance2.Menu
       var PageMain = GameUIManager.RegisterPage("PageMain", "PageCommon");
       var PageAbout = GameUIManager.RegisterPage("PageAbout", "PageCommon");
       var PageHighscore = GameUIManager.RegisterPage("PageHighscore", "PageCommon");
-      var PageQuit = GameUIManager.RegisterPage("PageQuit", "PageCommon");
       var PageStart = GameUIManager.RegisterPage("PageStart", "PageCommon");
       var PageLightZone = GameUIManager.RegisterPage("PageLightZone", "PageTransparent");
       var PageAboutCreators = GameUIManager.RegisterPage("PageAboutCreators", "PageCommon");
@@ -33,11 +33,11 @@ namespace Ballance2.Menu
       var PageGlobalConfirm = GameUIManager.RegisterPage("PageGlobalConfirm", "PageCommon");
 
       PageGlobalConfirm.CreateContent(package);
+      PageGlobalConfirm.ForceShowDisplayAction = true;
       PageMain.CreateContent(package);
       PageMain.CanBack = false;
       PageAbout.CreateContent(package);
       PageHighscore.CreateContent(package);
-      PageQuit.CreateContent(package);
       PageLightZone.CreateContent(package);
       PageAboutCreators.CreateContent(package);
       PageAboutProject.CreateContent(package);
@@ -45,8 +45,9 @@ namespace Ballance2.Menu
       PageStart.CreateContent(package);
       PageStartCustomLevel.CreateContent(package);
       PageStart.OnShow = (options) => {
+        var ContentView = PageStart.Content.Find("ScrollViewVetical/Viewport/ContentView");
         for (var i = 2; i <= 12; i++) {
-          var button = PageStart.Content.Find("ButtonLevel" + i).GetComponent<Button>();
+          var button = ContentView.Find("ButtonLevel" + i).GetComponent<Button>();
           var name = "level";
           if (i < 10) 
             name = name + "0" + i;
@@ -56,16 +57,16 @@ namespace Ballance2.Menu
         }
         //非 windows 隐藏此按扭
         #if !UNITY_STANDALONE_WIN
-          PageStart.Content.Find("ButtonNMO").gameObject.SetActive(false);
+          ContentView.Find("ButtonNMO").gameObject.SetActive(false);
         #else
         if (!FileUtils.DirectoryExists(Application.dataPath + "/VirtoolsLoader/"))
-          PageStart.Content.Find("ButtonNMO").gameObject.SetActive(false);
+          ContentView.Find("ButtonNMO").gameObject.SetActive(false);
         #endif
       };
       PageGlobalConfirm.OnShow = (options) => {
-        var ButtonConfirmText = PageStart.Content.Find("Panel/ButtonConfirm/Text").GetComponent<TMP_Text>();
-        var ButtonCancelText = PageStart.Content.Find("Panel/ButtonCancel/Text").GetComponent<TMP_Text>();
-        var Text = PageStart.Content.Find("Text").GetComponent<TMP_Text>();
+        var ButtonConfirmText = PageGlobalConfirm.Content.Find("Panel/ButtonConfirm/Text").GetComponent<UIText>();
+        var ButtonCancelText = PageGlobalConfirm.Content.Find("Panel/ButtonCancel/Text").GetComponent<UIText>();
+        var Text = PageGlobalConfirm.Content.Find("Text").GetComponent<UIText>();
         if (ButtonConfirmText != null)
           ButtonConfirmText.text = options["okText"];
         if (ButtonCancelText != null)
@@ -125,11 +126,10 @@ namespace Ballance2.Menu
       });
       MessageCenter.SubscribeEvent("BtnAboutClick", () => GameUIManager.GoPage("PageAbout"));
       MessageCenter.SubscribeEvent("BtnSettingsClick", () => GameUIManager.GoPage("PageSettings"));
-      MessageCenter.SubscribeEvent("BtnQuitClick", () => GameUIManager.GoPage("PageQuit"));
-      MessageCenter.SubscribeEvent("BtnQuitSureClick", () => {
+      MessageCenter.SubscribeEvent("BtnQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.MainMenuQuitTitle" , () => {
         GameUIManager.CloseAllPage();
         GameManager.Instance.QuitGame();
-      });
+      }));
       MessageCenter.SubscribeEvent("ButtonProjectClick", () => GameUIManager.GoPage("PageAboutProject"));
       MessageCenter.SubscribeEvent("BtnCreatorsClick", () => GameUIManager.GoPage("PageAboutCreators"));
       

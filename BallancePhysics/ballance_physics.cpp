@@ -821,7 +821,6 @@ void init_info() {
   get_executable_path(path, processname, sizeof(path));
   module0Path = path;
 #elif defined(OS_DARWIN)
-  //TODO:
   char path[1024];
   uint32_t rawPathSize = (uint32_t)sizeof(path);
   _NSGetExecutablePath(path, &rawPathSize);

@@ -21,7 +21,6 @@ namespace Ballance2.Menu
       var PageSettingsControls = GameUIManager.RegisterPage("PageSettingsControls", "PageCommon");
       var PageSettingsGraphics = GameUIManager.RegisterPage("PageSettingsGraphics", "PageCommon");
       var PageLanguage = GameUIManager.RegisterPage("PageLanguage", "PageCommon");
-      var PageApplyLangDialog = GameUIManager.RegisterPage("PageApplyLangDialog", "PageCommon");
       var PagePackageManager = GameUIManager.RegisterPage("PagePackageManager", "PageFull");
       var PagePackageManagerInfo = GameUIManager.RegisterPage("PagePackageManagerInfo", "PageFull");
       var PagePackageManagerTrust = GameUIManager.RegisterPage("PagePackageManagerTrust", "PageFull");
@@ -33,7 +32,6 @@ namespace Ballance2.Menu
       PageSettingsGraphics.CreateContent(package);
       PageSettingsInGame.CreateContent(package);
       PageLanguage.CreateContent(package);
-      PageApplyLangDialog.CreateContent(package);
       PagePackageManager.CreateContent(package);
       PagePackageManagerInfo.CreateContent(package);
       PagePackageManagerTrust.CreateContent(package);
@@ -104,7 +102,7 @@ namespace Ballance2.Menu
       PageBindKey.OnShow += (options) => {
         var keyName = options["keyName"];
         var keyCurrent = options["keyCurrent"];
-        var Text = PageBindKey.Content.Find("Text").GetComponent<UIText>();
+        var Text = PageBindKey.Content.Find("Panel/Text").GetComponent<UIText>();
         Text.text = I18N.TrF("core.ui.ControllerBind", keyName, keyCurrent);
       };
 
@@ -260,7 +258,7 @@ namespace Ballance2.Menu
     private static void ApplyLanguage(SystemLanguage language) {
       GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME).SetInt("language", (int)language);
       if (I18NProvider.GetCurrentLanguage() != language)
-        GameUIManager.Instance.GoPage("PageApplyLangDialog");
+        GameUIManager.Instance.GlobalConfirmWindow("I18N:core.ui.ChangeLanageNotice", () => GameManager.Instance.RestartGame(), okText: "I18N:core.ui.Restart");
       else
         GameUIManager.Instance.BackPreviusPage();
     }

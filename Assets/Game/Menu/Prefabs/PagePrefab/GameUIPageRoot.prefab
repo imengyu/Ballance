@@ -83,6 +83,8 @@ MonoBehaviour:
   KeyButtons: {fileID: 4046064695452301603}
   CanBack: 1
   ShowStaticDisplayAction: 1
+  ForceShowDisplayAction: 0
+  NoPopPreviousPage: 0
   StaticDisplayActions:
   - DisplayName: I18N:core.ui.controller.HelpSubmit
     Icons:
@@ -117,6 +119,10 @@ PrefabInstance:
     - target: {fileID: 1229069386710765329, guid: d7cb9c8769333334ab44577189ee2f05, type: 3}
       propertyPath: m_Name
       value: KeyButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 1229069386710765329, guid: d7cb9c8769333334ab44577189ee2f05, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2735121025157495926, guid: d7cb9c8769333334ab44577189ee2f05, type: 3}
       propertyPath: staticDisplayActions.Array.size

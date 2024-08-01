@@ -605,7 +605,7 @@ namespace Ballance2.Services
     /// <param name="okText">OK 按钮文字</param>
     /// <param name="cancelText">Cancel 按钮文字</param>
     /// <returns></returns>
-    public void GlobalConfirmWindow(string text, VoidDelegate onConfirm, VoidDelegate onCancel, string okText = null, string cancelText = null)
+    public void GlobalConfirmWindow(string text, VoidDelegate onConfirm, VoidDelegate onCancel = null, string okText = null, string cancelText = null)
     {
       GlobalConfirmWindoOnConfirm = onConfirm;
       GlobalConfirmWindoOnCancel = onCancel;

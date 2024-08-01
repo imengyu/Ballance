@@ -36,7 +36,6 @@ RectTransform:
   - {fileID: 5559283937840382342}
   - {fileID: 3954052586824610569}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -121,6 +120,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4894647076004959241}
     m_Modifications:
     - target: {fileID: 1102789122847417627, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
@@ -192,43 +192,43 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[0]
+      propertyPath: 'names.Array.data[0]'
       value: Graphy
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[1]
+      propertyPath: 'names.Array.data[1]'
       value: UnitySimpleFileBrowser
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[2]
+      propertyPath: 'names.Array.data[2]'
       value: UnityRuntimeInspector
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[3]
+      propertyPath: 'names.Array.data[3]'
       value: UnityRuntimeSceneGizmo
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[4]
+      propertyPath: 'names.Array.data[4]'
       value: UnityDynamicScrollView
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[5]
+      propertyPath: 'names.Array.data[5]'
       value: UnityRecyclingListView
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[6]
+      propertyPath: 'names.Array.data[6]'
       value: infinite-scroll-unity
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[7]
+      propertyPath: 'names.Array.data[7]'
       value: json
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[8]
+      propertyPath: 'names.Array.data[8]'
       value: classic
       objectReference: {fileID: 0}
     - target: {fileID: 6297993847181522697, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
-      propertyPath: names.Array.data[9]
+      propertyPath: 'names.Array.data[9]'
       value: classic
       objectReference: {fileID: 0}
     - target: {fileID: 6332297538632272784, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
@@ -332,6 +332,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7778df7f049fd2d49b8e5d780df7ec40, type: 3}
 --- !u!224 &5559283937840382342 stripped
 RectTransform:
@@ -343,6 +346,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4894647076004959241}
     m_Modifications:
     - target: {fileID: 14673124817102271, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
@@ -422,14 +426,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 162
-      objectReference: {fileID: 0}
-    - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -478,6 +474,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
 --- !u!224 &3954052586824610569 stripped
 RectTransform:

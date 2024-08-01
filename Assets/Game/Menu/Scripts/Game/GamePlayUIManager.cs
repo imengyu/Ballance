@@ -16,22 +16,15 @@ namespace Ballance2.Menu
 
       var PageGamePause = GameUIManager.RegisterPage("PageGamePause", "PageCommon");
       var PageGameFail = GameUIManager.RegisterPage("PageGameFail", "PageCommon");
-      var PageGameQuitAsk = GameUIManager.RegisterPage("PageGameQuitAsk", "PageCommon");
-      var PageGameRestartAsk = GameUIManager.RegisterPage("PageGameRestartAsk", "PageCommon");
-      var PageGameWinRestartAsk = GameUIManager.RegisterPage("PageGameWinRestartAsk", "PageCommon");
       var PageGameWin = GameUIManager.RegisterPage("PageGameWin", "PageCommon");
       var PageEndScore = GameUIManager.RegisterPage("PageEndScore", "PageTransparent");
       var PageHighscoreEntry = GameUIManager.RegisterPage("PageHighscoreEntry", "PageCommon");
       var PageGamePreviewPause = GameUIManager.RegisterPage("PageGamePreviewPause", "PageCommon");
-      var PageGamePreviewQuitAsk = GameUIManager.RegisterPage("PageGamePreviewQuitAsk", "PageCommon");
       
       PageGamePause.CreateContent(package);
-      PageGameQuitAsk.CreateContent(package);
-      PageGameRestartAsk.CreateContent(package);
       PageGamePause.CreateContent(package);
       PageGamePause.CanBack = false;
       PageGameWin.CreateContent(package);
-      PageGameWinRestartAsk.CreateContent(package);
       PageGameWin.CanBack = false;
       PageEndScore.CreateContent(package);
       PageEndScore.CanBack = false;
@@ -41,33 +34,28 @@ namespace Ballance2.Menu
       PageGameFail.CanBack = false;
       PageGamePreviewPause.CanBack = false;
       PageGamePreviewPause.CreateContent(package);
-      PageGamePreviewQuitAsk.CreateContent(package);
 
       MessageCenter.SubscribeEvent("BtnGameHomeClick", () => GamePlayManager.Instance.QuitLevel());
       MessageCenter.SubscribeEvent("BtnNextLevellick", () => GamePlayManager.Instance.NextLevel());
-      MessageCenter.SubscribeEvent("BtnGameRestartClick", () => GameUIManager.GoPage("PageGameRestartAsk"));
-      MessageCenter.SubscribeEvent("BtnGameWinRestartClick", () => GameUIManager.GoPage("PageGameWinRestartAsk"));
-      MessageCenter.SubscribeEvent("BtnGameQuitClick", () => GameUIManager.GoPage("PageGameQuitAsk"));
-      MessageCenter.SubscribeEvent("BtnGamePreviewQuitClick", () => GameUIManager.GoPage("PageGamePreviewQuitAsk"));
-      MessageCenter.SubscribeEvent("BtnPauseSettingsClick", () => GameUIManager.GoPage("PageSettingsInGame"));
-      MessageCenter.SubscribeEvent("BtnGameFailRestartClick", () => {
+      MessageCenter.SubscribeEvent("BtnGameRestartClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.MainMenuRestartLevelTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.RestartLevel();
-      });
-      MessageCenter.SubscribeEvent("BtnGameQuitSureClick", () => {
+      }, okText: "I18N:core.ui.RestartLevel"));
+      MessageCenter.SubscribeEvent("BtnGameWinRestartClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.MainMenuRestartLevelTitle", () => {
+        GameUIManager.HideCurrentPage();
+        GamePlayManager.Instance.RestartLevel();
+      }, okText: "I18N:core.ui.RestartLevel"));
+      MessageCenter.SubscribeEvent("BtnGameQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.QuitToMainMenuTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.QuitLevel();
-      });
-      MessageCenter.SubscribeEvent("BtnGameFailQuitClick", () => {
+      }));
+      MessageCenter.SubscribeEvent("BtnGamePreviewQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.QuitToMainMenuTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.QuitLevel();
-      });
+      }));
+      MessageCenter.SubscribeEvent("BtnPauseSettingsClick", () => GameUIManager.GoPage("PageSettingsInGame"));
       MessageCenter.SubscribeEvent("BtnResumeClick", () => GamePlayManager.Instance.ResumeLevel());
       MessageCenter.SubscribeEvent("BtnPreviewResumeClick", () => GamePreviewManager.Instance.ResumeLevel());
-      MessageCenter.SubscribeEvent("BtnGamePreviewQuitSureClick", () => {
-        GameUIManager.HideCurrentPage();
-        GamePreviewManager.Instance.QuitLevel();
-      });
 
       //高分默认数据
       var HighscoreEntryName = PageHighscoreEntry.Content.Find("InputField").GetComponent<TMP_InputField>();

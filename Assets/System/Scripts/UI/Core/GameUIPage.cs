@@ -131,17 +131,29 @@ namespace Ballance2.UI.Core
       //接入控制器后显示按键快捷键
       if (ForceShowDisplayAction || Gamepad.all.Count > 0)
       {
+        if (CanBack && BackAction.bindings.Count > 0)
+          KeyButtons.AddDisplayActions(BackAction, "I18N:core.ui.Back", () => DoBack());
+        var staticActions = Content.GetComponent<StaticDisplayActionSetter>();
+        var finalStaticDisplayActions = new List<UIKeyButtons.StaticDisplayAction>();
+        finalStaticDisplayActions.AddRange(StaticDisplayActions);
+        if (staticActions != null && staticActions.StaticDisplayActions != null)
+        {
+          if (staticActions.Override)
+            finalStaticDisplayActions = staticActions.StaticDisplayActions;
+          else
+            finalStaticDisplayActions.AddRange(staticActions.StaticDisplayActions);
+        }
+        if (ShowStaticDisplayAction)
+          foreach (var item in finalStaticDisplayActions)
+            KeyButtons.AddStaticDisplayActions(item);
         GameManager.Instance.Delay(0.2f, () => {
           if (KeyButtons != null)
-            KeyButtons.EnableAllDisplayActions();
-          if (CanBack && BackAction.bindings.Count > 0)
           {
-            BackAction.Enable();
-            KeyButtons.AddDisplayActions(BackAction, "I18N:core.ui.Back", () => DoBack());
+            KeyButtons.EnableAllDisplayActions();
+            KeyButtons.gameObject.SetActive(true);
           }
-          if (ShowStaticDisplayAction)
-            foreach (var item in StaticDisplayActions)
-              KeyButtons.AddStaticDisplayActions(item);
+          if (CanBack && BackAction.bindings.Count > 0)
+            BackAction.Enable();
         });
       }
     }
@@ -154,8 +166,10 @@ namespace Ballance2.UI.Core
       gameObject.SetActive(false);
       OnHide?.Invoke();
       BackAction.Disable();
-      if (KeyButtons != null)
+      if (KeyButtons != null) {
         KeyButtons.DeleteAllDisplayActions();
+        KeyButtons.gameObject.SetActive(false);
+      }
     }
 
     /// <summary>

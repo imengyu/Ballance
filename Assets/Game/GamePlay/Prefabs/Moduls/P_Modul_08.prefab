@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3564127593018148470}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 10.9508, z: 0.0169}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8454124386684465908}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8110758250561078349
 MeshFilter:
@@ -58,6 +58,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -112,13 +114,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4829323935290817531}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: -0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8454124386684465908}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8011176449165245927
 MeshFilter:
@@ -145,6 +147,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -195,6 +199,7 @@ MonoBehaviour:
   m_StartFrozen: 0
   m_Fixed: 0
   m_ShiftMassCenter: {x: 0, y: 0, z: 0}
+  m_CustomDePhysicsFall: 0
   m_DoNotAutoCreateAtAwake: 1
   m_AutoMassCenter: 0
   m_AutoControlActive: 1
@@ -273,6 +278,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9086229929543805006}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -282,7 +288,6 @@ Transform:
   - {fileID: 5142494604414522396}
   - {fileID: 2627139891906442269}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6979879414303497044
 MonoBehaviour:
@@ -297,16 +302,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPreviewMode: 0
+  IsDebugMode: 0
   P_Modul_08_Schaukel: {fileID: 3396108544480663978}
   P_Modul_08_Schaukel_Force: {fileID: 7184888546042004499}
-  Force: 1.1
+  Force: 2.2
   SwitchTime: 0.5
-  DelayTime: 0.5
+  DelayTime: 0.2
 --- !u!1001 &6850545455112928640
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 8454124386684465908}
     m_Modifications:
     - target: {fileID: 1068713305201475572, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}
@@ -362,6 +369,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}
 --- !u!4 &5892630108785099380 stripped
 Transform:

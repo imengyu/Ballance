@@ -24,7 +24,7 @@ namespace Ballance2.Services
     /// <returns>返回是否删除成功</returns>
     public static bool DeleteDelay(int timerId)
     {
-      return GameManager.Instance.DeleteDelay(timerId);
+      return GameManager.Instance?.DeleteDelay(timerId) ?? false;
     }
 
     /// <summary>

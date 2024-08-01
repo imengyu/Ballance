@@ -9,6 +9,8 @@
     <Text name="core.ui.RestartLevel">重新开始关卡</Text>
     <Text name="core.ui.Quit">退出</Text>
     <Text name="core.ui.Tip">提示</Text>
+    <Text name="core.ui.NextPage">下一页</Text>
+    <Text name="core.ui.PrevPage">上一页</Text>
     <Text name="core.ui.Continue">继续</Text>
     <Text name="core.ui.QuitToMenu">返回主菜单</Text>
     <Text name="core.ui.AboutProject">关于此项目</Text>
@@ -95,6 +97,7 @@ https://github.com/imengyu/ballance/issues/ 向我们反馈错误
     <Text name="core.ui.SettingsVersion">版本：{0}</Text>
     <Text name="core.ui.StartThisLevel">游玩此关卡</Text>
     <Text name="core.ui.PreviewThisLevel">预览此关卡</Text>
+    <Text name="core.ui.EditThisLevel">编辑此关卡</Text>
     <Text name="core.ui.Refresh">刷新</Text>
     <Text name="core.ui.Unknow">未知</Text>
     <Text name="core.ui.FileNotExist">文件不存在</Text>
@@ -236,6 +239,8 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     <Text name="core.ui.RestartLevel">Restart Level</Text>
     <Text name="core.ui.Quit">Quit</Text>
     <Text name="core.ui.Tip">Tip</Text>
+    <Text name="core.ui.NextPage">Next Page</Text>
+    <Text name="core.ui.PrevPage">Prev Page</Text>
     <Text name="core.ui.Unknow">Unknow</Text>
     <Text name="core.ui.Continue">Continue</Text>
     <Text name="core.ui.QuitToMenu">Back To Menu</Text>
@@ -321,7 +326,8 @@ https://github.com/imengyu/ballance/issues/ Feedback errors to us.
     <Text name="core.ui.SettingsVersion">Version: {0}</Text>
     <Text name="core.ui.StartThisLevel">Start this Level</Text>
     <Text name="core.ui.StartMenuNMO">NMO level</Text>
-    <Text name="core.ui.PreviewThisLevel">Preview this Level</Text>
+    <Text name="core.ui.PreviewThisLevel">Preview Level</Text>
+    <Text name="core.ui.EditThisLevel">Edit level</Text>
     <Text name="core.ui.NoLevelData">NoLevelData</Text>
     <Text name="core.ui.Refresh">Refresh</Text>
     <Text name="core.ui.FileNotExist">File not exist</Text>
@@ -448,6 +454,8 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.RestartLevel">重新開始關卡</Text>
     <Text name="core.ui.Quit">退出</Text>
     <Text name="core.ui.Tip">提示</Text>
+    <Text name="core.ui.NextPage">下一頁</Text>
+    <Text name="core.ui.PrevPage">上一頁</Text>
     <Text name="core.ui.NoLevelData">无数据</Text>
     <Text name="core.ui.QuitToMenu">返回主菜單</Text>
     <Text name="core.ui.AboutProject">關於此項目</Text>
@@ -498,11 +506,11 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.SettingsControlKeypadBaseCenter">按鍵式两侧</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyLeft">搖杆式左（不能走單軌）</Text>
     <Text name="core.ui.SettingsControlKeypadBaseJoyRight">搖杆式右（不能走單軌）</Text>
-    <Text name="core.ui.SettingsControlTitleMobile">手机</Text>
-    <Text name="core.ui.SettingsControlTitleOthers">其他按键</Text>
-    <Text name="core.ui.SettingsControlScreenshot">截图</Text>
-    <Text name="core.ui.SettingsControlToggleFPS">切换帧率显示</Text>
-    <Text name="core.ui.SettingsControlToggleView">切换界面显示</Text>
+    <Text name="core.ui.SettingsControlTitleMobile">手機</Text>
+    <Text name="core.ui.SettingsControlTitleOthers">其他按鍵</Text>
+    <Text name="core.ui.SettingsControlScreenshot">截圖</Text>
+    <Text name="core.ui.SettingsControlToggleFPS">切換幀率顯示</Text>
+    <Text name="core.ui.SettingsControlToggleView">切換界面顯示</Text>
     <Text name="core.ui.SettingsAudioTilte">聲音</Text>
     <Text name="core.ui.SettingsAudioBackground">背景音樂音量</Text>
     <Text name="core.ui.SettingsAudioMain">主音量</Text>
@@ -533,6 +541,7 @@ https://github.com/imengyu/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.StartThisLevel">遊玩此關卡</Text>
     <Text name="core.ui.StartMenuNMO">NMO 關卡</Text>
     <Text name="core.ui.PreviewThisLevel">預覽此關卡</Text>
+    <Text name="core.ui.EditThisLevel">編輯此關卡</Text>
     <Text name="core.ui.Refresh">重繪</Text>
     <Text name="core.ui.FileNotExist">檔案不存在</Text>
     <Text name="core.ui.Loading">正在加載，請稍後</Text>

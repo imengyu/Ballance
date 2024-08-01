@@ -35,6 +35,8 @@ namespace Ballance2.Menu
     public Button ButtonBack;
     public Button ButtonStart;
     public Button ButtonRefresh;
+    public Button ButtonPreview;
+    public Button ButtonEdit;
     public TMP_Text TextErrorContent;
     public Image ImageLogo;
     public TMP_Text TextName;
@@ -42,7 +44,6 @@ namespace Ballance2.Menu
     public TMP_Text TextVersion;
     public TMP_Text TextUrl;
     public TMP_Text TextIntroduction;
-    public TMP_Text TextPreview;
     public TMP_Text TextDepends;
     public Image ImageDepends;
     public Image ImageBigImage;
@@ -76,6 +77,7 @@ namespace Ballance2.Menu
       public string introduction;
       public string url;
       public bool allowPreview = false;
+      public bool allowEdit = false;
       public List<GameLevelDependencies> requiredPackages = new List<GameLevelDependencies>();
       public bool dependsSuccess;
       public string dependsStatus;
@@ -96,6 +98,7 @@ namespace Ballance2.Menu
         introduction = o.introduction;
         url = o.url;
         allowPreview = o.allowPreview;
+        allowEdit = o.allowPreview;
         requiredPackages = new List<GameLevelDependencies>(o.requiredPackages);
 
         if(requiredPackages.Count == 0) {
@@ -137,7 +140,8 @@ namespace Ballance2.Menu
       public string version;
       public string introduction;
       public string url;
-      public bool allowPreview;
+      public bool allowPreview = false;
+      public bool allowEdit= false;
       public GameLevelDependencies[] requiredPackages;
     }
 
@@ -159,7 +163,8 @@ namespace Ballance2.Menu
       ButtonDependsBack.onClick.AddListener(HideDependsInfo);
       ButtonEnableAllDepends.onClick.AddListener(EnableAllDepends);
       ButtonRefresh.onClick.AddListener(() => LoadLevelList(true));
-      EventTriggerListener.Get(TextPreview.gameObject).onClick = (go) => PreviewLevel();
+      ButtonPreview.onClick.AddListener(() => PreviewLevel());
+      ButtonEdit.onClick.AddListener(() => EditLevel());
       EventTriggerListener.Get(TextDepends.gameObject).onClick = (go) => ShowDependsInfo();
 
       GameManager.GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "PageStartCustomLevelLoad", "A", (evtName, param) => {
@@ -193,6 +198,11 @@ namespace Ballance2.Menu
           Log.D("StartCustomLevel", "PreviewLevel " + selectedItem.name);
           GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", new object[]{ selectedItem.name, true });
         });
+      }
+    }
+    private void EditLevel() {
+      if(selectedItem != null) {
+        //TODO:
       }
     }
     private void ShowDependsInfo() {
@@ -350,7 +360,8 @@ namespace Ballance2.Menu
           TextUrl.text = info.url;
           TextUrl.gameObject.SetActive(string.IsNullOrEmpty(info.url));
           TextIntroduction.text = info.introduction;
-          TextPreview.gameObject.SetActive(info.allowPreview);
+          ButtonPreview.gameObject.SetActive(info.allowPreview);
+          ButtonEdit.gameObject.SetActive(info.allowPreview && info.allowEdit);
           ImageDepends.sprite = info.dependsSuccess ? IconSuccess : IconError;
           ImageBigImage.sprite = info.image != null ? info.image : NoPreviewImage;
           ImageLogo.sprite = info.logo;

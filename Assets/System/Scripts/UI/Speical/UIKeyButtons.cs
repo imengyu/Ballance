@@ -46,6 +46,7 @@ namespace Ballance2.UI
       Dual
     }
 
+    [SerializeField]
     private RectTransform keyboardBox;
     [SerializeField]
     private GameObject keyButtonPrefab;
@@ -56,11 +57,6 @@ namespace Ballance2.UI
     [Reorderable]
     private List<StaticDisplayAction> staticDisplayActions = new List<StaticDisplayAction>();
 
-    private void Awake() 
-    {
-      keyboardBox = GetComponent<RectTransform>();
-      SetKeyButtons();
-    }
     private void SetKeyButtons() 
     {
       keyboardBox.DestroyAllChildren();
@@ -165,6 +161,7 @@ namespace Ballance2.UI
       var keyButton = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UIKeyButton>(keyButtonPrefab, keyboardBox.transform);
       keyButton.SetKeyImageWithStaticImage(action);
       keyButton.ActionName = action.DisplayName;
+      keyButton.interactable = false;
       keyButtons.Add(keyButton);
       dirty = 5;
     }

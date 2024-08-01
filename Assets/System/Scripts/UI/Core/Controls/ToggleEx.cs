@@ -1,5 +1,6 @@
 ﻿using Ballance2.Services.InputManager;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /*
@@ -22,7 +23,7 @@ namespace Ballance2.UI.Core.Controls
   /// </summary>
   [ExecuteInEditMode]
   [AddComponentMenu("Ballance/UI/Controls/ToggleEx")]
-  public class ToggleEx : MonoBehaviour
+  public class ToggleEx : Selectable, IPointerClickHandler
   {
     public RectTransform Drag;
     public RectTransform Background;
@@ -36,17 +37,8 @@ namespace Ballance2.UI.Core.Controls
     public Toggle.ToggleEvent onValueChanged;
     public bool UseButtonStyle = false;
 
-    void Start()
+    protected override void Start()
     {
-      if (Background != null)
-        EventTriggerListener.Get(Background.gameObject).onClick = (go) => { isOn = !isOn; };
-      if (CheckedButton != null)
-      {
-        var btn = UnCheckedButton.gameObject.GetComponent<Button>();
-        if (btn != null) btn.onClick.AddListener(() => isOn = false);
-        btn = CheckedButton.gameObject.GetComponent<Button>();
-        if (btn != null) btn.onClick.AddListener(() => isOn = true);
-      }
       UpdateOn();
     }
 
@@ -68,6 +60,11 @@ namespace Ballance2.UI.Core.Controls
         CheckedButton.sprite = on ? ActiveImage : DeactiveImage;
         UnCheckedButton.sprite = on ? DeactiveImage : ActiveImage;
       }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+      isOn = !isOn;
     }
 
     public bool isOn
