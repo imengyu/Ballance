@@ -682,7 +682,7 @@ namespace BallancePhysics.Wapper
     public void Impluse(Vector3 pos, Vector3 impluse) {
       checkPhysicalized();
       if(impluse.sqrMagnitude > 0)
-        PhysicsApi.API.physics_impluse(Handle, pos, impluse * currentEnvironment.PhysicsFactorFinalValue);
+        PhysicsApi.API.physics_impluse(Handle, pos, impluse * currentEnvironment.TimeFactor);
     }
     /// <summary>
     /// 给物体施加一个旋转推动
@@ -691,7 +691,7 @@ namespace BallancePhysics.Wapper
     public void Torque(Vector3 rotVec) {
       checkPhysicalized();
       if(rotVec.sqrMagnitude > 0) {
-        PhysicsApi.API.physics_torque(Handle, rotVec * currentEnvironment.PhysicsFactorFinalValue);
+        PhysicsApi.API.physics_torque(Handle, rotVec * currentEnvironment.TimeFactor);
       }
     }
     /// <summary>

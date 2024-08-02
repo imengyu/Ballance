@@ -95,7 +95,7 @@ namespace BallancePhysics.Wapper
       return 1;
     };
 
-    private GameTimeMachine.GameTimeMachineTimeTicket fixedUpdateTicket = null;
+    private GameTimeMachine.GameTimeMachineTimeTicket updateTicket = null;
 
     /// <summary>
     /// 手动创建物理环境
@@ -113,13 +113,13 @@ namespace BallancePhysics.Wapper
 
         PhysicsWorlds.Add(currentScenseIndex, this);
         Handle = PhysicsApi.API.create_environment(Gravity, 1.0f / SimulationRate, -2147483647, layerNames.GetGroupFilterMasks(), Marshal.GetFunctionPointerForDelegate(callback));
-      
-        if (fixedUpdateTicket != null)
+
+        if (updateTicket != null)
         {
-          fixedUpdateTicket.Unregister();
-          fixedUpdateTicket = null;
+          updateTicket.Unregister();
+          updateTicket = null;
         }
-        fixedUpdateTicket = GameManager.GameTimeMachine.RegisterFixedUpdate(_FixedUpdate, 15);
+        updateTicket = GameManager.GameTimeMachine.RegisterUpdate(_PhysicsSystemUpdate, 15);
       }
     }
 
@@ -139,10 +139,10 @@ namespace BallancePhysics.Wapper
     {
       if (Handle != IntPtr.Zero)
       {
-        if(fixedUpdateTicket != null)
+        if (updateTicket != null)
         {
-          fixedUpdateTicket.Unregister();
-          fixedUpdateTicket = null;
+          updateTicket.Unregister();
+          updateTicket = null;
         }
 
         Simulate = false;
@@ -225,10 +225,6 @@ namespace BallancePhysics.Wapper
     /// </summary>
     /// <value></value>
     public int PhysicsUpdateBodies { get { return _PhysicsUpdateBodies; } }
-    /// <summary>
-    /// 获取物理力大小系数。
-    /// </summary>
-    public float PhysicsFactorFinalValue = 1;
 
     private int _PhysicsActiveBodies = 0;
     private int _PhysicsConstantPushBodies = 0;
@@ -239,7 +235,9 @@ namespace BallancePhysics.Wapper
     private bool lastPauseIsSimuate = false;
     private List<PhysicsObject> nextNeedUnFallCollectObjects = new List<PhysicsObject>();
 
-    private void _FixedUpdate() {
+    private float deltaTime = 0;
+
+    private void _PhysicsSystemUpdate() {
       if(Simulate && Handle != IntPtr.Zero) {
 
         if(destroyLock) {
@@ -249,32 +247,32 @@ namespace BallancePhysics.Wapper
 
         Profiler.BeginSample("PhysicsEnvironmentUpdate");
 
-        PhysicsFactorFinalValue = TimeFactor;//(Time.fixedDeltaTime / (1.0f / SimulationRate));
-        
         //设置计数
-
-	      float startTime = Time.realtimeSinceStartup;
-        PhysicsBodies = objects.Count;
-        _PhysicsUpdateBodies = 0;
         _PhysicsConstantPushBodies = 0;
+        _PhysicsUpdateBodies = 0;
         _PhysicsFallCollectBodies = 0;
         _PhysicsFixedBodies = 0;
-
-        //先更新推力
+        PhysicsBodies = objects.Count;
+        
         float[] dat = new float[4];
-        LinkedListNode<PhysicsObject> obj = objects.First;
+	      float startTime = Time.realtimeSinceStartup;
+
+        //计算平均时间，与基准时间之比缩放。基准时间1秒66次
+        if (deltaTime == 0) deltaTime = Time.deltaTime;
+        else deltaTime = (deltaTime * 3.0f + Time.deltaTime) / 4;
+        float BasicTime = (1.0f / SimulationRate);
+        float PhysicsDeltaTime = deltaTime * (deltaTime / BasicTime) * TimeFactor;
   
         //模拟
         Profiler.BeginSample("PhysicsEnvironmentSimulate");
-        PhysicsApi.API.environment_simulate_dtime(Handle, /* Time.fixedDeltaTime */(1.0f / SimulationRate) * TimeFactor);
+        PhysicsApi.API.environment_simulate_dtime(Handle, PhysicsDeltaTime);
         Profiler.EndSample();
 
+        Profiler.BeginSample("PhysicsEnvironmentUpdate");
         PhysicsApi.API.do_update_all(Handle);
-        //获取一些参数
-        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies, ref _PhysicsSimuateTime);
+        Profiler.EndSample();
 
-        //更新位置到C#
-        obj = objects.First;
+        var obj = objects.First;
         while (obj != null) {
           var bodyCurrent = obj.Value;
           if(bodyCurrent.Fixed) {
@@ -307,12 +305,14 @@ namespace BallancePhysics.Wapper
             bodyCurrent.DoApplyConstantForce();
             _PhysicsConstantPushBodies++;
           }
-
           if(GameTimeMachine.FixedUpdateTick % 10 == 0) 
             bodyCurrent.DoSendContractCacheEvent();
 
           obj = obj.Next;
         }
+
+        //获取一些参数
+        PhysicsApi.API.get_stats(Handle, ref _PhysicsActiveBodies, ref _PhysicsSimuateTime);
 
         Profiler.EndSample();
 
@@ -323,7 +323,7 @@ namespace BallancePhysics.Wapper
           Profiler.EndSample();
         }
         //需要反物理化坠落的物体
-        if(nextNeedUnFallCollectObjects.Count > 0) {
+        if(GameTimeMachine.FixedUpdateTick % 16 == 0 && nextNeedUnFallCollectObjects.Count > 0) {
           for (var i = nextNeedUnFallCollectObjects.Count - 1; i >= 0; i--)
           {
             var bodyCurrent = nextNeedUnFallCollectObjects[i];
@@ -343,12 +343,12 @@ namespace BallancePhysics.Wapper
     }
 
     private void OnEnable() {
-      if(fixedUpdateTicket != null)
-        fixedUpdateTicket.Enable();
+      if(updateTicket != null)
+        updateTicket.Enable();
     }
     private void OnDisable() {
-      if(fixedUpdateTicket != null)
-        fixedUpdateTicket.Disable();
+      if(updateTicket != null)
+        updateTicket.Disable();
     }
 
     public static void HandleEditorPause() {
