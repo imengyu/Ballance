@@ -21,7 +21,7 @@ namespace Ballance2.Menu
       InitKeySize();
     }
     private void OnDestroy() {
-     GameManager.Instance.GameSettings.UnRegisterSettingsUpdateCallback(settingsUpdateCallbackId);
+     GameManager.Instance?.GameSettings.UnRegisterSettingsUpdateCallback(settingsUpdateCallbackId);
     }
     
     //键盘大小设置控制

@@ -234,6 +234,7 @@ namespace Ballance2.Services
       UIToast = CloneUtils.CloneNewObjectWithParent(GameStaticResourcesPool.FindStaticPrefabs("PrefabToast"), UIRoot.transform, "GlobalUIToast").GetComponent<RectTransform>();
       UIToastImage = UIToast.GetComponent<Image>();
       UIToastText = UIToast.Find("Text").GetComponent<UIText>();
+      UIToastAnimator = UIToast.GetComponent<Animator>();
       UIToast.gameObject.SetActive(false);
       UIToast.SetAsLastSibling();
       EventTriggerListener.Get(UIToast.gameObject).onClick = (g) => { toastTimeTick = 1; };
@@ -520,8 +521,7 @@ namespace Ballance2.Services
     private RectTransform UIToast;
     private Image UIToastImage;
     private UIText UIToastText;
-    private FadeObject UIToastImageFadeObject;
-    private FadeObject UIToastTextFadeObject;
+    private Animator UIToastAnimator;
 
     private float toastTimeTick = 0;
 
@@ -531,7 +531,7 @@ namespace Ballance2.Services
     /// <param name="text">提示文字</param>
     public void GlobalToast(string text)
     {
-      GlobalToast(text, text.Length / 30.0f);
+      GlobalToast(text, 3);
     }
 
     /// <summary>
@@ -552,44 +552,25 @@ namespace Ballance2.Services
       UIToast.sizeDelta = new Vector2(UIToast.sizeDelta.x, h > 50 ? h : 50);
       UIToast.gameObject.SetActive(true);
       UIToast.SetAsLastSibling();
+      UIToastAnimator.SetTrigger("Show");
       toastTimeTick = time + 0.25f;
-
-      if(UIToastTextFadeObject != null) {
-        UIToastTextFadeObject.ResetTo(1);
-        UIToastTextFadeObject.Delete();
-        UIToastTextFadeObject = null;
-      } else {
-        UIToastTextFadeObject = UIFadeManager.AddFadeIn(UIToastText.tmp.Get(), 0.26f);
-      }
-      if(UIToastImageFadeObject != null) {
-        UIToastImageFadeObject.ResetTo(1);
-        UIToastImageFadeObject.Delete();
-        UIToastImageFadeObject = null;
-      } else {
-        UIToastImageFadeObject = UIFadeManager.AddFadeIn(UIToastImage, 0.26f);
-      }
+      toastHideAnimPlayed = false;
     }
+    private bool toastHideAnimPlayed = false;
     private void UpdateToastShow()
     {
       if (toastTimeTick > 0)
       {
         toastTimeTick -= Time.deltaTime;
+        if (toastTimeTick <= 0.25f && !toastHideAnimPlayed)
+        {
+          UIToastAnimator.SetTrigger("Hide");
+          toastHideAnimPlayed = true;
+        }
         if (toastTimeTick <= 0)
         {
-          if(UIToastTextFadeObject != null) {
-            UIToastTextFadeObject.ResetTo(0);
-            UIToastTextFadeObject.Delete();
-            UIToastTextFadeObject = null;
-          } else {
-            UIToastTextFadeObject = UIFadeManager.AddFadeOut(UIToastText.tmp.Get(), 0.4f, false);
-          }
-          if(UIToastImageFadeObject != null) {
-            UIToastImageFadeObject.ResetTo(0);
-            UIToastImageFadeObject.Delete();
-            UIToastImageFadeObject = null;
-          } else {
-            UIToastImageFadeObject = UIFadeManager.AddFadeOut(UIToastImage, 0.4f, false);
-          }
+          UIToast.gameObject.SetActive(false);
+          toastHideAnimPlayed = false;
         }
       }
     }

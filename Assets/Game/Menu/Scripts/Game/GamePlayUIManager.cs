@@ -83,11 +83,11 @@ namespace Ballance2.Menu
         }
       });
 
-      KeypadUIManager.AddKeypad("BaseCenter", package.GetPrefabAsset("KeypadCenter.prefab"), package.GetSpriteAsset("keypad_c.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseCenter"));
-      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseLeft"));
-      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseRight"));
-      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyLeft"));
-      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r.png"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyRight"));
+      KeypadUIManager.AddKeypad("BaseCenter", package.GetPrefabAsset("KeypadCenter.prefab"), package.GetSpriteAsset("keypad_c"), I18N.Tr("core.ui.SettingsControlKeypadBaseCenter"));
+      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l"), I18N.Tr("core.ui.SettingsControlKeypadBaseLeft"));
+      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r"), I18N.Tr("core.ui.SettingsControlKeypadBaseRight"));
+      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyLeft"));
+      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyRight"));
     }
   }
 }

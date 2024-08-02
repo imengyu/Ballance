@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 1402359747694472800}
   - component: {fileID: 1712314360069462691}
   - component: {fileID: 6914357952817161683}
+  - component: {fileID: 7165601164350771941}
   m_Layer: 5
   m_Name: PageBindKey
   m_TagString: Untagged
@@ -176,6 +177,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MessageCenterName: GameUIGlobalMessageCenter
   MessageCenter: {fileID: 0}
+--- !u!114 &7165601164350771941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048576898993473563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1068300dbe8e0f14d8b6596850cee3a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StaticDisplayActions: []
+  Override: 1
 --- !u!1001 &6805984636735549959
 PrefabInstance:
   m_ObjectHideFlags: 0

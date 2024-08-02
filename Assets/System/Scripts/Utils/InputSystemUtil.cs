@@ -99,7 +99,7 @@ public static class InputSystemUtil
     }
     private void OnCanceled(InputAction.CallbackContext context)
     {
-      if (cancelRelease)
+      if (isPressed)
       {
         isPressed = false;
         callback.Invoke(false);

@@ -451,8 +451,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KeyBoardActionForward:
     m_Name: KeyBoardActionForward
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: d3da29bd-e3c9-4022-b0bc-f2704dd9b8a9
     m_Processors: 
     m_Interactions: 
@@ -468,8 +468,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionBack:
     m_Name: KeyBoardActionBack
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 5a7787ff-b150-448b-9837-cea5f1e21409
     m_Processors: 
     m_Interactions: 
@@ -485,8 +485,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionUp:
     m_Name: KeyBoardActionUp
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: c8c32ba6-c73f-462d-bbc7-aa0c1be29ec1
     m_Processors: 
     m_Interactions: 
@@ -502,8 +502,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionDown:
     m_Name: KeyBoardActionDown
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: bacfa8b0-a8c3-4804-b0a6-8581c7e58222
     m_Processors: 
     m_Interactions: 
@@ -519,8 +519,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionLeft:
     m_Name: KeyBoardActionLeft
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 5225eca2-0b97-43ea-8f40-e88a34a22ac9
     m_Processors: 
     m_Interactions: 
@@ -536,8 +536,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionRight:
     m_Name: KeyBoardActionRight
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: e396444d-3ef1-4a00-9aa4-e606dcb0e360
     m_Processors: 
     m_Interactions: 
@@ -553,8 +553,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionOverlook:
     m_Name: KeyBoardActionOverlook
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 34f5a2e4-d6c1-4b88-8c6f-f1207b23d51d
     m_Processors: 
     m_Interactions: 
@@ -570,8 +570,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardActionRotateCam:
     m_Name: KeyBoardActionRotateCam
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 96e024a3-54b6-4f95-9fed-63db36e04cf9
     m_Processors: 
     m_Interactions: 
@@ -677,8 +677,8 @@ MonoBehaviour:
     m_Flags: 0
   ControllerActionOverlook:
     m_Name: ControllerActionOverlook
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 4b591e9d-a334-4fc5-8a9e-1327d2a53a06
     m_Processors: 
     m_Interactions: 
@@ -694,8 +694,8 @@ MonoBehaviour:
     m_Flags: 0
   ControllerActionRotateCamLeft:
     m_Name: Controller Action Rotate Cam Left
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 4c244ce9-84da-4ac8-98c8-cce5734bb5ad
     m_Processors: 
     m_Interactions: 
@@ -711,8 +711,8 @@ MonoBehaviour:
     m_Flags: 0
   ControllerActionRotateCamRight:
     m_Name: Controller Action Rotate Cam Right
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 60ab3749-8270-41a0-bc57-ba24409b6388
     m_Processors: 
     m_Interactions: 
@@ -728,8 +728,8 @@ MonoBehaviour:
     m_Flags: 0
   ScreenShort:
     m_Name: Screen Short
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 7a88c209-f8fb-4d11-8232-c279b135b68b
     m_Processors: 
     m_Interactions: 
@@ -753,8 +753,8 @@ MonoBehaviour:
     m_Flags: 0
   ToggleView:
     m_Name: Toggle View
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: a16b0835-943d-456a-a2c3-5456ca24a7cf
     m_Processors: 
     m_Interactions: 
@@ -778,8 +778,8 @@ MonoBehaviour:
     m_Flags: 0
   ToggleFPS:
     m_Name: Toggle FPS
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 795a3337-e3af-4e10-a224-783d43fa59b4
     m_Processors: 
     m_Interactions: 
@@ -795,8 +795,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardTestBallWood:
     m_Name: Key Board Test Ball Wood
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: fb756f6a-f642-494f-90cc-647fec32e0a4
     m_Processors: 
     m_Interactions: 
@@ -812,8 +812,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardTestBallStone:
     m_Name: Key Board Test Ball Stone
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 36fd68bb-28cd-4ebd-9e91-988f17f95397
     m_Processors: 
     m_Interactions: 
@@ -829,8 +829,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardTestBallPaper:
     m_Name: Key Board Test Ball Paper
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 22774db5-c9e9-4ebd-98e1-cd187223f78b
     m_Processors: 
     m_Interactions: 
@@ -846,8 +846,8 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardTestReset:
     m_Name: Key Board Test Reset
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: fb6b8b51-396a-463e-b524-c1a94c8faa18
     m_Processors: 
     m_Interactions: 
@@ -863,12 +863,20 @@ MonoBehaviour:
     m_Flags: 0
   KeyBoardTestConsole:
     m_Name: Key Board Test Console
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: b8150465-9944-409e-8ae3-d3643a37ab23
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1a044c4c-feea-4ae5-988a-f1ae5c014b90
+      m_Path: <Keyboard>/backquote
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Key Board Test Console
+      m_Flags: 0
     m_Flags: 0
 --- !u!1001 &504756837
 PrefabInstance:
@@ -2065,6 +2073,11 @@ MonoBehaviour:
   - {fileID: 8476152238159757152, guid: 26e2070ee724bf048bb60236a699254f, type: 3}
   - {fileID: 8966134109007560416, guid: 64c18ae57dd945c43a63ae6690ecd5e2, type: 3}
   - {fileID: 2898932380966751237, guid: 2ddfd435976d7fa498b3a70c36d2e7a3, type: 3}
+  - {fileID: 21300000, guid: 7a2f3fa85f0245c4a8822531da85f1b9, type: 3}
+  - {fileID: 21300000, guid: 36e6abc9a9765624d93611c13c39f786, type: 3}
+  - {fileID: 21300000, guid: 19e6eb7e528977d4199205f5dea59b28, type: 3}
+  - {fileID: 21300000, guid: 8e2f48d9558caac46b9df92bb4b05d49, type: 3}
+  - {fileID: 21300000, guid: ca9cd9dd18eda494d9269cbd0a98154b, type: 3}
   SystemPackageLanguageRes: {fileID: 4900000, guid: 2ca35776dc2cf5a40a841f8c72848657, type: 3}
   SystemPackageDef: {fileID: 4900000, guid: 29d9e4a69df3dd6499649a8670725cb2, type: 3}
 --- !u!1 &1666437229

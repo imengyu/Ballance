@@ -26,16 +26,14 @@ namespace Ballance2.UI.Core.Controls
   /// 一个键盘按键选择组件
   /// </summary>
   [AddComponentMenu("Ballance/UI/Controls/KeyChoose")]
-  public class KeyChoose : MonoBehaviour
+  public class KeyChoose : MonoBehaviour, ISelectHandler, IDeselectHandler
   {
     public UIText Text;
     public UIText TextValue;
+    
+    public InputAction ResetAction;
 
     private InputAction bindAction; // Reference to an action to rebind.
-    private void Start()
-    {
-      UpdateValue();
-    }
 
     public InputAction BindAction 
     {
@@ -49,13 +47,33 @@ namespace Ballance2.UI.Core.Controls
     public string ActionName = "";
     public bool OnlyGamepad = false;
     public bool OnlyKeyboard = false;
+    public bool NoXYControl = true;
+
+    private void Awake() {
+      ResetAction.performed += (e) => {
+        bindAction.RemoveAllBindingOverrides();
+        UpdateValue();
+      };
+      ResetAction.Disable();
+    }
+    private void OnEnable() 
+    {
+      UpdateValue();
+    }
 
     public void UpdateValue()
     {
-      if (bindAction != null)
-        TextValue.text = bindAction.GetBindingDisplayString(BindingIndex);
-      else
-        TextValue.text = "";
+      try {
+        if (bindAction != null)
+          TextValue.text = bindAction.GetBindingDisplayString(BindingIndex);
+        else
+          TextValue.text = "";
+      } 
+      catch (Exception e)
+      {
+        Debug.LogWarning("KeyChoose failed to get DisplayString: " + e.ToString());
+        TextValue.text = "ERROR";
+      }
     }
     public void StartWaitKey() 
     {
@@ -71,6 +89,12 @@ namespace Ballance2.UI.Core.Controls
           .WithTargetBinding(BindingIndex)
           .WithCancelingThrough("*/{Cancel}");
 
+        if (NoXYControl)
+          rebindOperation = rebindOperation
+            .WithControlsExcluding("<Gamepad>/leftStick/x")
+            .WithControlsExcluding("<Gamepad>/leftStick/y")
+            .WithControlsExcluding("<Gamepad>/rightStick/x")
+            .WithControlsExcluding("<Gamepad>/rightStick/y");
         if (OnlyGamepad)
           rebindOperation = rebindOperation.WithControlsHavingToMatchPath("<Gamepad>");
         else if (OnlyKeyboard)
@@ -78,12 +102,21 @@ namespace Ballance2.UI.Core.Controls
           
         rebindOperation.OnComplete(_ => {
           UpdateValue();
-          onSelect.Invoke(bindAction.GetBindingDisplayString(BindingIndex));
+          onSelect?.Invoke(bindAction.GetBindingDisplayString(BindingIndex));
           uIManager.BackPreviusPage();
           rebindOperation.Dispose();
         })
           .Start();
       }
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+      ResetAction.Enable();
+    }
+    public void OnDeselect(BaseEventData eventData)
+    {
+      ResetAction.Disable();
     }
 
     public Action<string> onSelect;

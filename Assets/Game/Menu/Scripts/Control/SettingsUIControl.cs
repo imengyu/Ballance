@@ -38,75 +38,18 @@ namespace Ballance2.Menu
       PageBindKey.CreateContent(package);
       PageBindKey.ForceShowDisplayAction = true;
 
-      PageSettingsControls.OnShow += (options) => {
-        var control = ControlManager.Instance;
-        var PanelKeyboard = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelKeyboard");
-        var PanelController = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelController");
-        var PanelOthers = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelOthers");
-        var ButtonKeyChooseControlKeyForward = PanelKeyboard.Find("ButtonKeyChooseControlKeyForward").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyBack = PanelKeyboard.Find("ButtonKeyChooseControlKeyBack").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyUp = PanelKeyboard.Find("ButtonKeyChooseControlKeyUp").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyDown = PanelKeyboard.Find("ButtonKeyChooseControlKeyDown").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyLeft = PanelKeyboard.Find("ButtonKeyChooseControlKeyLeft").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyRight = PanelKeyboard.Find("ButtonKeyChooseControlKeyRight").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyOverlookCam = PanelKeyboard.Find("ButtonKeyChooseControlKeyOverlookCam").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyRoateCam = PanelKeyboard.Find("ButtonKeyChooseControlKeyRoateCam").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlKeyRoateCam2 = PanelKeyboard.Find("ButtonKeyChooseControlKeyRoateCam2").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerForward = PanelController.Find("ButtonKeyChooseControlControllerForward").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerBack = PanelController.Find("ButtonKeyChooseControlControllerBack").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerUp = PanelController.Find("ButtonKeyChooseControlControllerUp").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerDown = PanelController.Find("ButtonKeyChooseControlControllerDown").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerLeft = PanelController.Find("ButtonKeyChooseControlControllerLeft").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerRight = PanelController.Find("ButtonKeyChooseControlControllerRight").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerOverlookCam = PanelController.Find("ButtonKeyChooseControlControllerOverlookCam").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerRoateCamLeft = PanelController.Find("ButtonKeyChooseControlControllerRoateCamLeft").GetComponent<KeyChoose>();
-        var ButtonKeyChooseControlControllerRoateCamRight = PanelController.Find("ButtonKeyChooseControlControllerRoateCamRight").GetComponent<KeyChoose>();
-        var ButtonKeyChooseScreenShort = PanelOthers.Find("ButtonKeyChooseScreenShort").GetComponent<KeyChoose>();
-        var ButtonKeyChooseToggleFPS = PanelOthers.Find("ButtonKeyChooseToggleFPS").GetComponent<KeyChoose>();
-        var ButtonKeyChooseToggleView = PanelOthers.Find("ButtonKeyChooseToggleView").GetComponent<KeyChoose>();
-
-        control.LoadActionSettings(false);
-
-        ButtonKeyChooseControlKeyForward.BindAction = control.KeyBoardActionForward;
-        ButtonKeyChooseControlKeyBack.BindAction = control.KeyBoardActionBack;
-        ButtonKeyChooseControlKeyUp.BindAction = control.KeyBoardActionUp;
-        ButtonKeyChooseControlKeyDown.BindAction = control.KeyBoardActionDown;
-        ButtonKeyChooseControlKeyLeft.BindAction = control.KeyBoardActionLeft;
-        ButtonKeyChooseControlKeyRight.BindAction = control.KeyBoardActionRight;
-        ButtonKeyChooseControlKeyOverlookCam.BindAction = control.KeyBoardActionOverlook;
-        ButtonKeyChooseControlKeyRoateCam.BindAction = control.KeyBoardActionRotateCam;
-        ButtonKeyChooseControlKeyRoateCam.BindingIndex = 0;
-        ButtonKeyChooseControlKeyRoateCam2.BindAction = control.KeyBoardActionRotateCam;
-        ButtonKeyChooseControlKeyRoateCam2.BindingIndex = 1;
-
-        ButtonKeyChooseControlControllerForward.BindAction = control.ControllerActionMove;
-        ButtonKeyChooseControlControllerForward.BindingIndex = 0;
-        ButtonKeyChooseControlControllerBack.BindAction = control.ControllerActionMove;
-        ButtonKeyChooseControlControllerBack.BindingIndex = 1;
-        ButtonKeyChooseControlControllerLeft.BindAction = control.ControllerActionMove;
-        ButtonKeyChooseControlControllerLeft.BindingIndex = 2;
-        ButtonKeyChooseControlControllerRight.BindAction = control.ControllerActionMove;
-        ButtonKeyChooseControlControllerRight.BindingIndex = 3;
-        ButtonKeyChooseControlControllerDown.BindAction = control.ControllerActionFly;
-        ButtonKeyChooseControlControllerDown.BindingIndex = 0;
-        ButtonKeyChooseControlControllerUp.BindAction = control.ControllerActionFly;
-        ButtonKeyChooseControlControllerUp.BindingIndex = 1;
-        ButtonKeyChooseControlControllerOverlookCam.BindAction = control.ControllerActionOverlook;
-        ButtonKeyChooseControlControllerRoateCamLeft.BindAction = control.ControllerActionRotateCamLeft;
-        ButtonKeyChooseControlControllerRoateCamRight.BindAction = control.ControllerActionRotateCamRight;
-
-        ButtonKeyChooseScreenShort.BindAction = control.ScreenShort;
-        ButtonKeyChooseToggleFPS.BindAction = control.ToggleFPS;
-        ButtonKeyChooseToggleView.BindAction = control.ToggleView;
+      PageBindKey.OnHide = () => {
+        ControlManager.Instance.SaveActionSettings();
       };
       PageBindKey.OnShow += (options) => {
         var keyName = options["keyName"];
         var keyCurrent = options["keyCurrent"];
         var Text = PageBindKey.Content.Find("Panel/Text").GetComponent<UIText>();
-        Text.text = I18N.TrF("core.ui.ControllerBind", keyName, keyCurrent);
+        Text.text = I18N.TrF("core.ui.ControllerBind", "", keyName, keyCurrent);
       };
 
       GameTimer.Delay(1.0f, () => {
+        BindControllerSettingsUI(PageSettingsControls);
         BindSettingsUI(MessageCenter);
       });
     }
@@ -116,6 +59,68 @@ namespace Ballance2.Menu
       public int level;
     }
 
+    private static void BindControllerSettingsUI(GameUIPage PageSettingsControls)
+    {
+      var control = ControlManager.Instance;
+      control.LoadActionSettings(false);
+
+      var PanelKeyboard = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelKeyboard");
+      var PanelController = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelController");
+      var PanelOthers = PageSettingsControls.Content.Find("ScrollViewVetical/Viewport/ContentView/PanelOthers");
+      var ButtonKeyChooseControlKeyForward = PanelKeyboard.Find("ButtonKeyChooseControlKeyForward").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyBack = PanelKeyboard.Find("ButtonKeyChooseControlKeyBack").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyUp = PanelKeyboard.Find("ButtonKeyChooseControlKeyUp").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyDown = PanelKeyboard.Find("ButtonKeyChooseControlKeyDown").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyLeft = PanelKeyboard.Find("ButtonKeyChooseControlKeyLeft").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyRight = PanelKeyboard.Find("ButtonKeyChooseControlKeyRight").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyOverlookCam = PanelKeyboard.Find("ButtonKeyChooseControlKeyOverlookCam").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyRoateCam = PanelKeyboard.Find("ButtonKeyChooseControlKeyRoateCam").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlKeyRoateCam2 = PanelKeyboard.Find("ButtonKeyChooseControlKeyRoateCam2").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerForward = PanelController.Find("ButtonKeyChooseControlControllerForward").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerBack = PanelController.Find("ButtonKeyChooseControlControllerBack").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerUp = PanelController.Find("ButtonKeyChooseControlControllerUp").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerDown = PanelController.Find("ButtonKeyChooseControlControllerDown").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerLeft = PanelController.Find("ButtonKeyChooseControlControllerLeft").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerRight = PanelController.Find("ButtonKeyChooseControlControllerRight").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerOverlookCam = PanelController.Find("ButtonKeyChooseControlControllerOverlookCam").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerRoateCamLeft = PanelController.Find("ButtonKeyChooseControlControllerRoateCamLeft").GetComponent<KeyChoose>();
+      var ButtonKeyChooseControlControllerRoateCamRight = PanelController.Find("ButtonKeyChooseControlControllerRoateCamRight").GetComponent<KeyChoose>();
+      var ButtonKeyChooseScreenShort = PanelOthers.Find("ButtonKeyChooseScreenShort").GetComponent<KeyChoose>();
+      var ButtonKeyChooseToggleFPS = PanelOthers.Find("ButtonKeyChooseToggleFPS").GetComponent<KeyChoose>();
+      var ButtonKeyChooseToggleView = PanelOthers.Find("ButtonKeyChooseToggleView").GetComponent<KeyChoose>();
+
+      ButtonKeyChooseControlKeyForward.BindAction = control.KeyBoardActionForward;
+      ButtonKeyChooseControlKeyBack.BindAction = control.KeyBoardActionBack;
+      ButtonKeyChooseControlKeyUp.BindAction = control.KeyBoardActionUp;
+      ButtonKeyChooseControlKeyDown.BindAction = control.KeyBoardActionDown;
+      ButtonKeyChooseControlKeyLeft.BindAction = control.KeyBoardActionLeft;
+      ButtonKeyChooseControlKeyRight.BindAction = control.KeyBoardActionRight;
+      ButtonKeyChooseControlKeyOverlookCam.BindAction = control.KeyBoardActionOverlook;
+      ButtonKeyChooseControlKeyRoateCam.BindAction = control.KeyBoardActionRotateCam;
+      ButtonKeyChooseControlKeyRoateCam.BindingIndex = 0;
+      ButtonKeyChooseControlKeyRoateCam2.BindAction = control.KeyBoardActionRotateCam;
+      ButtonKeyChooseControlKeyRoateCam2.BindingIndex = 1;
+
+      ButtonKeyChooseControlControllerForward.BindAction = control.ControllerActionMove;
+      ButtonKeyChooseControlControllerForward.BindingIndex = 1;
+      ButtonKeyChooseControlControllerBack.BindAction = control.ControllerActionMove;
+      ButtonKeyChooseControlControllerBack.BindingIndex = 2;
+      ButtonKeyChooseControlControllerLeft.BindAction = control.ControllerActionMove;
+      ButtonKeyChooseControlControllerLeft.BindingIndex = 3;
+      ButtonKeyChooseControlControllerRight.BindAction = control.ControllerActionMove;
+      ButtonKeyChooseControlControllerRight.BindingIndex = 4;
+      ButtonKeyChooseControlControllerDown.BindAction = control.ControllerActionFly;
+      ButtonKeyChooseControlControllerDown.BindingIndex = 1;
+      ButtonKeyChooseControlControllerUp.BindAction = control.ControllerActionFly;
+      ButtonKeyChooseControlControllerUp.BindingIndex = 2;
+      ButtonKeyChooseControlControllerOverlookCam.BindAction = control.ControllerActionOverlook;
+      ButtonKeyChooseControlControllerRoateCamLeft.BindAction = control.ControllerActionRotateCamLeft;
+      ButtonKeyChooseControlControllerRoateCamRight.BindAction = control.ControllerActionRotateCamRight;
+
+      ButtonKeyChooseScreenShort.BindAction = control.ScreenShort;
+      ButtonKeyChooseToggleFPS.BindAction = control.ToggleFPS;
+      ButtonKeyChooseToggleView.BindAction = control.ToggleView;
+    }
     private static void BindSettingsUI(GameUIMessageCenter MessageCenter) {
       var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       var GameUIManager = Services.GameUIManager.Instance;
@@ -223,6 +228,11 @@ namespace Ballance2.Menu
       MessageCenter.SubscribeEvent("BtnSettingsPackageClick", () => {
         GameUIManager.GoPage("PagePackageManager");
       });
+      MessageCenter.SubscribeEvent("BtnSettingsResetClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.SettingsControlResetAsk" , () => {
+        GameSettingsManager.ResetDefaultSettings();
+        ControlManager.Instance.LoadActionSettings(true);
+        GameUIManager.BackPreviusPage();
+      }));
 
       //语言
       MessageCenter.SubscribeEvent("BtnSettingsLanguageClick", () => { GameUIManager.GoPage("PageLanguage"); });

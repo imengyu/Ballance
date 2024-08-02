@@ -42,7 +42,7 @@ namespace Ballance2.UI.Core
     public void OnSelect(BaseEventData eventData)
     {
       if (HasSelectSound && !string.IsNullOrEmpty(SoundName)) {
-        GameSoundManager.PlayFastVoice(SoundName, GameSoundType.UI);
+        GameSoundManager?.PlayFastVoice(SoundName, GameSoundType.UI);
         LastSelect = true;
       }
     }

@@ -22,12 +22,10 @@ namespace Ballance2.Menu
       public Sprite image;
     }
     private List<MobileControlItem> items = new List<MobileControlItem>();
+    private string controlKeypadSettting = "";
 
-    private void Start() {
+    private void Awake() {
       var settings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
-      var page = GameUIManager.Instance.FindPage("PageSettingsControls");
-      var controlKeypadSettting = "";
-
       ScrollView.updateFunc = (index, item) => {
         var data = items[index];
         var Listener = item.GetComponent<EventTriggerListener>();
@@ -55,19 +53,21 @@ namespace Ballance2.Menu
           ScrollView.UpdateData(false);
 
           //如果游戏正在运行中，则动态更换键盘
+          #if (UNITY_ANDROID || UNITY_IOS)
           if (GamePlayUIControl.Instance != null)
             GamePlayUIControl.Instance.ReBuildMobileKeyPad();
+          #endif
         };
       };
       ScrollView.itemCountFunc = () => {
         return items.Count;
       };
-
-      page.OnShow = (o) => {
-        controlKeypadSettting = settings.GetString("control.keypad", "BaseCenter");
-        LoadList();
-        ScrollView.UpdateData(false);
-      };
+    }
+    private void OnEnable() {
+      var settings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
+      controlKeypadSettting = settings.GetString("control.keypad", "BaseCenter");
+      LoadList();
+      ScrollView.UpdateData(false);
     }
     private void LoadList() {
       items.Clear();

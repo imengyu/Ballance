@@ -36,7 +36,7 @@
     <Text name="core.ui.MainMenuQuitTitle">你想退出游戏吗？</Text>
     <Text name="core.ui.QuitToMainMenuTitle">你想返回主菜单吗？</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">你想重新开始这一关卡吗？</Text>
-    <Text name="core.ui.StartMenuCustom">玩家自制关卡</Text>
+    <Text name="core.ui.StartMenuCustom">关卡管理</Text>
     <Text name="core.ui.StartMenuNMO">NMO File</Text>
     <Text name="core.ui.SettingsMenuTilte">设置</Text>
     <Text name="core.ui.SettingsMenuVSync">垂直同步?</Text>
@@ -56,6 +56,8 @@
     <Text name="core.ui.SettingsControlMenuRotateCam2">旋转辅助按键2</Text>
     <Text name="core.ui.SettingsControlMenuRotateCamLeft">向左旋转视角</Text>
     <Text name="core.ui.SettingsControlMenuRotateCamRight">向右旋转视角</Text>
+    <Text name="core.ui.SettingsControlReset">重设成默认值</Text>
+    <Text name="core.ui.SettingsControlResetAsk">你是否希望重设所有设置为默认值?</Text>
     <Text name="core.ui.SettingsControlMenuOverlook">俯视</Text>
     <Text name="core.ui.SettingsControlUISize">键盘大小</Text>
     <Text name="core.ui.SettingsControlKeypadBaseLeft">按键式左</Text>
@@ -268,7 +270,7 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     <Text name="core.ui.MainMenuQuitTitle">Do you want to quit the game?</Text>
     <Text name="core.ui.QuitToMainMenuTitle">Do you want to quit to main menu</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">Do you want to restart this level?</Text>
-    <Text name="core.ui.StartMenuCustom">Custem</Text>
+    <Text name="core.ui.StartMenuCustom">Level manager</Text>
     <Text name="core.ui.SettingsMenuTilte">Settings</Text>
     <Text name="core.ui.SettingsMenuVSync">VSync?</Text>
     <Text name="core.ui.SettingsMenuFullScreen">FullScreen?</Text>
@@ -287,6 +289,8 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     <Text name="core.ui.SettingsControlMenuRotateCam2">Rotate Camera 2nd</Text>
     <Text name="core.ui.SettingsControlMenuRotateCamLeft">Rotate Camera left</Text>
     <Text name="core.ui.SettingsControlMenuRotateCamRight">Rotate Camera right</Text>
+    <Text name="core.ui.SettingsControlReset">Reset to Default Value</Text>
+    <Text name="core.ui.SettingsControlResetAsk">Do you want to reset all Settings to default values?</Text>
     <Text name="core.ui.SettingsControlMenuOverlook">Overlook</Text>
     <Text name="core.ui.SettingsControlUISize">Keyboard size</Text>
     <Text name="core.ui.SettingsControlKeypadBaseLeft">Action keys in left</Text>
@@ -484,7 +488,7 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.MainMenuQuitTitle">你想退出遊戲嗎？</Text>
     <Text name="core.ui.QuitToMainMenuTitle">你想返回主菜单吗？</Text>
     <Text name="core.ui.MainMenuRestartLevelTitle">你想重新開始這一關卡嗎？</Text>
-    <Text name="core.ui.StartMenuCustom">自定義</Text>
+    <Text name="core.ui.StartMenuCustom">关卡管理</Text>
     <Text name="core.ui.SettingsMenuTilte">設定</Text>
     <Text name="core.ui.SettingsMenuVSync">垂直同步?</Text>
     <Text name="core.ui.SettingsMenuFullScreen">全屏?</Text>
@@ -503,6 +507,8 @@ Welcome to discuss the game at Ballance Discord.
     <Text name="core.ui.SettingsControlMenuRotateCam2">旋轉2</Text>
     <Text name="core.ui.SettingsControlMenuRotateCamLeft">向左旋轉视角</Text>
     <Text name="core.ui.SettingsControlMenuRotateCamRight">向右旋轉视角</Text>
+    <Text name="core.ui.SettingsControlReset">重设成默认值</Text>
+    <Text name="core.ui.SettingsControlResetAsk">你是否希望重设所有设置为默认值?</Text>
     <Text name="core.ui.SettingsControlMenuOverlook">俯視</Text>
     <Text name="core.ui.SettingsControlUISize">鍵盤大小</Text>
     <Text name="core.ui.SettingsControlKeypadBaseLeft">按鍵式左</Text>

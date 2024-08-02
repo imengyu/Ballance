@@ -1009,6 +1009,7 @@ namespace Ballance2.Services
     /// 进行截图
     /// </summary>
     public string CaptureScreenshot() {
+      
       //创建目录
       string saveDir = Application.persistentDataPath + "/Screenshot/";
       if(!Directory.Exists(saveDir))
@@ -1019,7 +1020,9 @@ namespace Ballance2.Services
       ScreenCapture.CaptureScreenshot(savePath);
       Log.D(TAG, "CaptureScreenshot to " + savePath);
       //提示
-      Delay(1.0f, () => GetSystemService<GameUIManager>().GlobalToast(I18N.I18N.TrF("global.CaptureScreenshotSuccess", "", savePath)));
+      Delay(1.0f, () => GetSystemService<GameUIManager>()
+        .GlobalToast(I18N.I18N.TrF("global.CaptureScreenshotSuccess", "", savePath))
+      );
       return savePath;
     }
     /// <summary>

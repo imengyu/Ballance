@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2418910925883428492}
   - component: {fileID: 2029416892943246169}
   - component: {fileID: 7855752346292515241}
+  - component: {fileID: 865378893606219698}
   m_Layer: 5
   m_Name: ButtonKeyChoose
   m_TagString: Untagged
@@ -93,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 3
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -165,10 +166,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Text: {fileID: 7725349419895199816}
   TextValue: {fileID: 8969645528511229925}
+  ResetAction:
+    m_Name: Reset
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e24707c0-2554-4f85-8daf-0509a175f873
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: bc0a7444-b12b-4972-894d-5c9e1d0e256c
+      m_Path: '*/{SecondaryAction}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Reset
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 264aaf10-9c43-4ea0-b73b-f07b13a69c47
+      m_Path: <Keyboard>/x
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Reset
+      m_Flags: 0
+    m_Flags: 0
   BindingIndex: 0
   ActionName: 
   OnlyGamepad: 0
   OnlyKeyboard: 0
+  NoXYControl: 1
+--- !u!114 &865378893606219698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2418910925883428494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca74a8e767916e546a25f8ab12ff9ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5445533670040969886
 PrefabInstance:
   m_ObjectHideFlags: 0
