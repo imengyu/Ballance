@@ -15,8 +15,10 @@ namespace Ballance2.Menu
       var GameUIManager = GameManager.GetSystemService<GameUIManager>();
 
       GameUIManager.RegisterUIPrefab("PageTransparent", GameUIPrefabType.Page, sytemPackage.GetPrefabAsset("GameUIPageBallanceTransparent.prefab"));
+      GameUIManager.RegisterUIPrefab("PageTransparentInGame", GameUIPrefabType.Page, sytemPackage.GetPrefabAsset("GameUIPageBallanceTransparentInGame.prefab"));
       GameUIManager.RegisterUIPrefab("PageWide", GameUIPrefabType.Page, sytemPackage.GetPrefabAsset("GameUIPageBallanceWide.prefab"));
       GameUIManager.RegisterUIPrefab("PageCommon", GameUIPrefabType.Page, sytemPackage.GetPrefabAsset("GameUIPageBallanceCommon.prefab"));
+      GameUIManager.RegisterUIPrefab("PageCommonInGame", GameUIPrefabType.Page, sytemPackage.GetPrefabAsset("GameUIPageBallanceCommonInGame.prefab"));
       GameUIManager.RegisterUIPrefab("PageFull", GameUIPrefabType.Page, sytemPackage.GetPrefabAsset("GameUIPageFull.prefab"));
 
       MessageCenter = GameUIManager.CreateUIMessageCenter("GameUIGlobalMessageCenter");

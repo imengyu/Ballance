@@ -14,12 +14,12 @@ namespace Ballance2.Menu
       var GameUIManager = GameManager.GetSystemService<GameUIManager>();
       var MessageCenter = MenuManager.MessageCenter;
 
-      var PageGamePause = GameUIManager.RegisterPage("PageGamePause", "PageCommon");
-      var PageGameFail = GameUIManager.RegisterPage("PageGameFail", "PageCommon");
-      var PageGameWin = GameUIManager.RegisterPage("PageGameWin", "PageCommon");
-      var PageEndScore = GameUIManager.RegisterPage("PageEndScore", "PageTransparent");
-      var PageHighscoreEntry = GameUIManager.RegisterPage("PageHighscoreEntry", "PageCommon");
-      var PageGamePreviewPause = GameUIManager.RegisterPage("PageGamePreviewPause", "PageCommon");
+      var PageGamePause = GameUIManager.RegisterPage("PageGamePause", "PageCommonInGame");
+      var PageGameFail = GameUIManager.RegisterPage("PageGameFail", "PageCommonInGame");
+      var PageGameWin = GameUIManager.RegisterPage("PageGameWin", "PageCommonInGame");
+      var PageEndScore = GameUIManager.RegisterPage("PageEndScore", "PageTransparentInGame");
+      var PageHighscoreEntry = GameUIManager.RegisterPage("PageHighscoreEntry", "PageCommonInGame");
+      var PageGamePreviewPause = GameUIManager.RegisterPage("PageGamePreviewPause", "PageCommonInGame");
       
       PageGamePause.CreateContent(package);
       PageGamePause.CreateContent(package);
@@ -28,6 +28,7 @@ namespace Ballance2.Menu
       PageGameWin.CanBack = false;
       PageEndScore.CreateContent(package);
       PageEndScore.CanBack = false;
+      PageEndScore.DelayShowDisplayAction = true;
       PageHighscoreEntry.CreateContent(package);
       PageHighscoreEntry.CanBack = false;
       PageGameFail.CreateContent(package);

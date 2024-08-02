@@ -121,6 +121,7 @@ namespace Ballance2.Menu
 
       Panel.SetActive(true);
       Next.Enable();
+      GameUIManager.Instance.CurrentPage.ShowKeyButtons();
 
       yield return new WaitForSeconds(1.7f);
       if (_Skip) 

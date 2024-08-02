@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SubjectNerd.Utilities;
+using System.Xml.Serialization;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -64,6 +65,7 @@ namespace Ballance2.UI.Core
     /// 设定是否在无控制器时依然显示控制按钮
     /// </summary>
     public bool ForceShowDisplayAction = false;
+    public bool DelayShowDisplayAction = false;
     /// <summary>
     /// 设定是否不隐藏上一页显示
     /// </summary>
@@ -108,6 +110,15 @@ namespace Ballance2.UI.Core
         GameUIManager.Instance.BackPreviusPage();
     }
 
+    public void ShowKeyButtons()
+    {
+      KeyButtons.gameObject.SetActive(true);
+    }
+    public void HideKeyButtons()
+    {
+      KeyButtons.gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// 显示页。直接调用此函数会导致脱离 GameUIManager 的栈管理，推荐使用 GameUIManager 来控制页的显示与隐藏。
     /// </summary>
@@ -133,24 +144,27 @@ namespace Ballance2.UI.Core
       {
         if (CanBack && BackAction.bindings.Count > 0)
           KeyButtons.AddDisplayActions(BackAction, "I18N:core.ui.Back", () => DoBack());
-        var staticActions = Content.GetComponent<StaticDisplayActionSetter>();
-        var finalStaticDisplayActions = new List<UIKeyButtons.StaticDisplayAction>();
-        finalStaticDisplayActions.AddRange(StaticDisplayActions);
-        if (staticActions != null && staticActions.StaticDisplayActions != null)
-        {
-          if (staticActions.Override)
-            finalStaticDisplayActions = staticActions.StaticDisplayActions;
-          else
-            finalStaticDisplayActions.AddRange(staticActions.StaticDisplayActions);
-        }
         if (ShowStaticDisplayAction)
-          foreach (var item in finalStaticDisplayActions)
-            KeyButtons.AddStaticDisplayActions(item);
+        {
+          var staticActions = Content.GetComponent<StaticDisplayActionSetter>();
+          var finalStaticDisplayActions = new List<UIKeyButtons.StaticDisplayAction>();
+          finalStaticDisplayActions.AddRange(StaticDisplayActions);
+          if (staticActions != null && staticActions.StaticDisplayActions != null)
+          {
+            if (staticActions.Override)
+              finalStaticDisplayActions = staticActions.StaticDisplayActions;
+            else
+              finalStaticDisplayActions.AddRange(staticActions.StaticDisplayActions);
+          }
+            foreach (var item in finalStaticDisplayActions)
+              KeyButtons.AddStaticDisplayActions(item);
+        }
         GameManager.Instance.Delay(0.2f, () => {
           if (KeyButtons != null)
           {
             KeyButtons.EnableAllDisplayActions();
-            KeyButtons.gameObject.SetActive(true);
+            if (!DelayShowDisplayAction)
+              ShowKeyButtons();
           }
           if (CanBack && BackAction.bindings.Count > 0)
             BackAction.Enable();
@@ -168,7 +182,7 @@ namespace Ballance2.UI.Core
       BackAction.Disable();
       if (KeyButtons != null) {
         KeyButtons.DeleteAllDisplayActions();
-        KeyButtons.gameObject.SetActive(false);
+        HideKeyButtons();
       }
     }
 

@@ -375,6 +375,23 @@ namespace Ballance2.Services
     }
 
     /// <summary>
+    /// 获取当前显示的页对象
+    /// </summary>
+    public GameUIPage CurrentPage => currentPage;
+
+    /// <summary>
+    /// 获取指定名称的页对象
+    /// </summary>
+    /// <param name="name">页名称</param>
+    /// <returns></returns>
+    public GameUIPage GetPage(string name)
+    {
+      if (pages.TryGetValue(name, out GameUIPage page))
+        return page;
+      return null;
+    }
+
+    /// <summary>
     /// 跳转到页
     /// </summary>
     /// <param name="name">页名称</param>

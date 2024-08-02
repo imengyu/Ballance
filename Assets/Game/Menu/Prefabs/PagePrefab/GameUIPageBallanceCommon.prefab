@@ -171,6 +171,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameUIPageBallanceCommon
       objectReference: {fileID: 0}
+    - target: {fileID: 6891604481642508031, guid: 6ba6ff8a13914cc44b67a08260e7c444, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6891604481642508031, guid: 6ba6ff8a13914cc44b67a08260e7c444, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Ballance2.UI.Utils
 {
@@ -9,6 +10,13 @@ namespace Ballance2.UI.Utils
   {
     public GameObject select;
 
-
+    public void SelectDefaultSelection()
+    {
+      Select(select);
+    }
+    public void Select(GameObject go)
+    {
+      EventSystem.current.SetSelectedGameObject(go);
+    }
   }
 }

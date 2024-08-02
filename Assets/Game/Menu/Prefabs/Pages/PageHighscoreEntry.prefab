@@ -398,6 +398,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5492639443823692175}
     m_Modifications:
+    - target: {fileID: 2555825379794015059, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_TextWrappingMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3080357253436928746, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
       propertyPath: m_Name
       value: InputField
@@ -509,6 +513,54 @@ PrefabInstance:
     - target: {fileID: 6322723725673039328, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
       propertyPath: m_FontData.m_FontSize
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_LineType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_LineLimit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6721563976610585963}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.UI.Core.GameUIControlMessageSender, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: BtnHighscrollEnterClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906378512249644005, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7094400628871204474, guid: 811d2a41527d36c43a3ec02653a15404, type: 3}
       propertyPath: m_Color.a
