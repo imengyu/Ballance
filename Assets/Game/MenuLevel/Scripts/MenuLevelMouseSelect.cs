@@ -17,13 +17,10 @@ namespace Ballance2.Game
       QuickOutline = gameObject.GetComponent<QuickOutline>();
       MessageSender = gameObject.GetComponent<GameUIControlMessageSender>();
     }
-    private void OnMouseEnter() {
-      QuickOutline.OutlineColor = HoverColor;
+    public void SetLightState(bool light) {
+      QuickOutline.OutlineColor = light ? HoverColor : NormalColor;
     }
-    private void OnMouseExit() {
-      QuickOutline.OutlineColor = NormalColor;
-    }
-    private void OnMouseDown() {
+    public void Select() {
       MessageSender.NotifyEvent(MessageName);
     }
   }

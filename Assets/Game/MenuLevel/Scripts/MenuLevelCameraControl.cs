@@ -20,7 +20,7 @@ namespace Ballance2.Game
     private Material skyBoxDay;
     private AudioSource menuSound;
     private float menuSoundTime = 0;
-    private float speed = -10;
+    private float speed = -5;
     private bool isInLightZone = false;
     private bool isRoatateCam = true;
     private Vector3 domePosition;

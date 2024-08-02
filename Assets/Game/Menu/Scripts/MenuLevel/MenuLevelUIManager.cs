@@ -10,6 +10,7 @@ using Ballance2.UI.Core.Controls;
 using Ballance2.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -25,12 +26,12 @@ namespace Ballance2.Menu
       var PageAbout = GameUIManager.RegisterPage("PageAbout", "PageCommon");
       var PageHighscore = GameUIManager.RegisterPage("PageHighscore", "PageCommon");
       var PageStart = GameUIManager.RegisterPage("PageStart", "PageCommon");
-      var PageLightZone = GameUIManager.RegisterPage("PageLightZone", "PageTransparent");
+      var PageLightZone = GameUIManager.RegisterPage("PageLightZone", "PageFull");
       var PageAboutCreators = GameUIManager.RegisterPage("PageAboutCreators", "PageCommon");
       var PageAboutProject = GameUIManager.RegisterPage("PageAboutProject", "PageCommon");
       var PageAboutLicense = GameUIManager.RegisterPage("PageAboutLicense", "PageCommon");
       var PageStartCustomLevel = GameUIManager.RegisterPage("PageStartCustomLevel", "PageFull");
-      var PageGlobalConfirm = GameUIManager.RegisterPage("PageGlobalConfirm", "PageCommon");
+      var PageGlobalConfirm = GameUIManager.RegisterPage("PageGlobalConfirm", "PageCommonInGame");
 
       PageGlobalConfirm.CreateContent(package);
       PageGlobalConfirm.ForceShowDisplayAction = true;
@@ -63,27 +64,15 @@ namespace Ballance2.Menu
           ContentView.Find("ButtonNMO").gameObject.SetActive(false);
         #endif
       };
+      PageGlobalConfirm.CanBack = false;
       PageGlobalConfirm.OnShow = (options) => {
-        var ButtonConfirmText = PageGlobalConfirm.Content.Find("Panel/ButtonConfirm/Text").GetComponent<UIText>();
-        var ButtonCancelText = PageGlobalConfirm.Content.Find("Panel/ButtonCancel/Text").GetComponent<UIText>();
-        var Text = PageGlobalConfirm.Content.Find("Text").GetComponent<UIText>();
-        if (ButtonConfirmText != null)
-          ButtonConfirmText.text = options["okText"];
-        if (ButtonCancelText != null)
-          ButtonCancelText.text = options["cancelText"];
-        if (Text != null)
-          Text.text = options["text"];
+        PageGlobalConfirm.Content
+          .GetComponent<PageGlobalConfirm>()
+          .SetInfo(options["text"], options["okText"], options["cancelText"]);
       };
-
-      MessageCenter.SubscribeEvent("BtnConfirmConfirmClick", () =>  {
-        GameUIManager.GlobalConfirmWindowCallback(true);
-        GameUIManager.BackPreviusPage();
-      });
-      MessageCenter.SubscribeEvent("BtnConfirmCancelClick", () => {
-        GameUIManager.GlobalConfirmWindowCallback(false);
-        GameUIManager.BackPreviusPage();
-      });
-      
+      PageLightZone.OnHide = () => {
+        GameManager.GameMediator.NotifySingleEvent(MenuLevelCameraControl.EVENT_SWITCH_LIGHTZONE, false);
+      };    
 
       //创建这个特殊logo特效
       var BallanceLogo3DObjects = GameManager.Instance.InstancePrefab(package.GetPrefabAsset("BallanceLogo3DObjects.prefab"), "BallanceLogo3DObjects");
@@ -133,10 +122,6 @@ namespace Ballance2.Menu
       MessageCenter.SubscribeEvent("ButtonProjectClick", () => GameUIManager.GoPage("PageAboutProject"));
       MessageCenter.SubscribeEvent("BtnCreatorsClick", () => GameUIManager.GoPage("PageAboutCreators"));
       
-      MessageCenter.SubscribeEvent("BtnLightZoneBackClick", () => {
-        GameManager.GameMediator.NotifySingleEvent(MenuLevelCameraControl.EVENT_SWITCH_LIGHTZONE, false);
-        GameUIManager.BackPreviusPage();
-      });
       MessageCenter.SubscribeEvent("BtnStartLightZoneClick", () => {
         GameManager.GameMediator.NotifySingleEvent(MenuLevelCameraControl.EVENT_SWITCH_LIGHTZONE, true);
         GameUIManager.GoPage("PageLightZone");

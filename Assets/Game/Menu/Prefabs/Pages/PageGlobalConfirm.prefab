@@ -57,10 +57,10 @@ GameObject:
   - component: {fileID: 4239617080997915344}
   - component: {fileID: 4791407904391922247}
   - component: {fileID: 3411102870644202484}
-  - component: {fileID: 7702427338916289421}
   - component: {fileID: -4243266992743796289}
   - component: {fileID: 3638120452959975643}
   - component: {fileID: 2874322828105982237}
+  - component: {fileID: 2949613744900309091}
   m_Layer: 5
   m_Name: PageGlobalConfirm
   m_TagString: Untagged
@@ -123,19 +123,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7702427338916289421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6769216344357698959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  select: {fileID: 6218158483277637009}
 --- !u!114 &-4243266992743796289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,17 +173,67 @@ MonoBehaviour:
     - Icon: {fileID: 21300000, guid: 967a9a69cf7ce3d41a2268fd2a1ad478, type: 3}
       Key: 
       Type: 2
-  - DisplayName: I18N:core.ui.controller.HelpNav
+  - DisplayName: I18N:core.ui.Cancel
     Icons:
     - Icon: {fileID: 0}
-      Key: "\u2190/\u2192"
+      Key: Esc
       Type: 0
-    - Icon: {fileID: 21300000, guid: 90918fd8340b1d24b9f8dbb42e9df8f9, type: 3}
+    - Icon: {fileID: 21300000, guid: f676630b4331f2841b20eb01539f9b50, type: 3}
       Key: 
       Type: 1
-    - Icon: {fileID: 21300000, guid: c12b43c9cfc08854ca97f9c97237c860, type: 3}
+    - Icon: {fileID: 21300000, guid: 3b920416d4556c0428c03d5d63c18836, type: 3}
       Key: 
       Type: 2
+  Override: 1
+--- !u!114 &2949613744900309091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6769216344357698959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 780bd82dd4d0a6b4a9a0980508c7bf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 5792128279028512496}
+  ButtonConfirmText: {fileID: 8380818868244963956}
+  ButtonCancelText: {fileID: 4554516902636853803}
+  Cancel:
+    m_Name: Cancel
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e5da210a-207a-424f-ab42-89b04ec609f7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: de836cdf-c2a0-4a47-bb5e-2105008a3d11
+      m_Path: '*/{Cancel}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cancel
+      m_Flags: 0
+    m_Flags: 0
+  Confirm:
+    m_Name: Confirm
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0a17c461-f005-4770-b711-9f641f1a60f2
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 52a005dc-9cf1-453c-af4b-1ae67c0196f4
+      m_Path: '*/{Submit}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Confirm
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &1861858692344729512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211,23 +248,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 3638120452959975643}
+      objectReference: {fileID: 2949613744900309091}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: ModalCallback
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.UI.Core.GameUIControlMessageSender, Assembly-CSharp
+      value: PageGlobalConfirm, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -364,6 +401,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 353446848343134823, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
   m_PrefabInstance: {fileID: 1861858692344729512}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4554516902636853803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2801874899369514371, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
+  m_PrefabInstance: {fileID: 1861858692344729512}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e039b3ed640b5cb41a236049c92dfd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5957387350007953399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -386,23 +434,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 3638120452959975643}
+      objectReference: {fileID: 2949613744900309091}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyEvent
+      value: ModalCallback
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Ballance2.UI.Core.GameUIControlMessageSender, Assembly-CSharp
+      value: PageGlobalConfirm, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 353446848343134820, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -539,11 +591,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 353446848343134823, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
   m_PrefabInstance: {fileID: 5957387350007953399}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6218158483277637009 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 353446848343134822, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
+--- !u!114 &8380818868244963956 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2801874899369514371, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
   m_PrefabInstance: {fileID: 5957387350007953399}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e039b3ed640b5cb41a236049c92dfd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8126285535944248358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -670,3 +728,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4980394928004744558, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
   m_PrefabInstance: {fileID: 8126285535944248358}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5792128279028512496 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2353016836425464534, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
+  m_PrefabInstance: {fileID: 8126285535944248358}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e039b3ed640b5cb41a236049c92dfd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
