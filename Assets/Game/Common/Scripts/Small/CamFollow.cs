@@ -91,21 +91,21 @@ namespace Ballance2.Game
     public float cameraMovePosGetPosTime = 0f;
     private Vector3 cameraMovePos = Vector3.zero;
 
-    private GameTimeMachine.GameTimeMachineTimeTicket fixedUpdateTicket = null;
+    private GameTimeMachine.GameTimeMachineTimeTicket updateTicket = null;
     
     private void Start() 
     {
-      fixedUpdateTicket = GameManager.GameTimeMachine.RegisterFixedUpdate(_FixedUpdate, 100);
+      updateTicket = GameManager.GameTimeMachine.RegisterUpdate(_UpdateCam, 100);
     }
     private void OnDestroy() {
-      if (fixedUpdateTicket != null)
+      if (updateTicket != null)
       {
-        fixedUpdateTicket.Unregister();
-        fixedUpdateTicket = null;
+        updateTicket.Unregister();
+        updateTicket = null;
       }
     }
 
-    private void _FixedUpdate()
+    private void _UpdateCam()
     {
       if (Target != null)
       {
@@ -125,10 +125,10 @@ namespace Ballance2.Game
           var z = Mathf.SmoothDamp(CamTarget.position.z, Target.position.z, ref smoothyVelocityCamTarget.z, CamTargetSmoothTime.z);
           CamTarget.position = new Vector3(x, y, z);
         
-          x = Mathf.SmoothDamp(InGameCam.transform.position.x, CamPos.position.x, ref smoothyVelocityCam.x, SmoothTime.x);
+          /*x = Mathf.SmoothDamp(InGameCam.transform.position.x, CamPos.position.x, ref smoothyVelocityCam.x, SmoothTime.x);
           y = Mathf.SmoothDamp(InGameCam.transform.position.y, CamPos.position.y, ref smoothyVelocityCam.y, SmoothTime.y);
           z = Mathf.SmoothDamp(InGameCam.transform.position.z, CamPos.position.z, ref smoothyVelocityCam.z, SmoothTime.z);
-          InGameCam.transform.position = new Vector3(x, y, z);
+          InGameCam.transform.position = new Vector3(x, y, z);*/
         }
       }
     }

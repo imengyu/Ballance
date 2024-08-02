@@ -21,9 +21,6 @@ namespace Ballance2.Res
   /// <summary>
   /// 游戏静态资源池
   /// </summary>
-  
-  
-  
   public class GameStaticResourcesPool
   {
     public static GameObject PrefabUIEmpty { get; private set; }
@@ -34,8 +31,6 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns>如果找到指定预制体资源，则返回预制体实例，否则返回null</returns>
-    
-    
     public static GameObject FindStaticPrefabs(string name)
     {
       if (GamePrefab == null)
@@ -68,8 +63,6 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="name">资源名称</param>
     /// <returns>如果找到指定资源，则返回资源实例，否则返回null</returns>
-    
-    
     public static Object FindStaticAssets(string name)
     {
       if (GameAssets == null)
@@ -100,13 +93,11 @@ namespace Ballance2.Res
 
     /// <summary>
     /// 静态引入 Prefab
-    /// </summary>
-    
+    /// </summary>   
     public static List<GameObjectInfo> GamePrefab { get; private set; }
     /// <summary>
     /// 静态引入资源
     /// </summary>
-    
     public static List<GameAssetsInfo> GameAssets { get; private set; }
   }
 }

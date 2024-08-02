@@ -32,7 +32,6 @@ namespace Ballance2.Editor.Modding
 
         allAssetsPath.Clear();
 
-        bool isCore = packPackageName == "core";
         string dirTargetPath = Path.GetDirectoryName(targetPath);
         if (!string.IsNullOrEmpty(projModDirPath))
         {
@@ -54,8 +53,6 @@ namespace Ballance2.Editor.Modding
               if (filesPath.Contains("NoPackage")) continue;
               if (filesPath.EndsWith(".cs")) continue;
               if (filesPath.EndsWith(".csproj")) continue;
-              if (isCore && filesPath.Contains("Levels")) continue;
-              if (isCore && filesPath.Contains("Scripts/Native")) continue;
 
               allAssetsPath.Add(filesPath.Replace(projPath, ""));
             }

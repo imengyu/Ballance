@@ -153,7 +153,6 @@ namespace Ballance2.Editor.Modding
         {
             packsPath.Clear();
             packsPath.Add("请选择");
-            packsPath.Add("core");
 
             DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
             DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);

@@ -86,11 +86,7 @@ namespace Ballance2.Package
 
     #region 系统包
 
-#if UNITY_EDITOR
-    private static GamePackage _SystemPackage = new GameEditorSystemPackage();
-#else
     private static GamePackage _SystemPackage = new GameSystemPackage();
-#endif
 
     /// <summary>
     /// 获取系统核心的模块包，包名是 system 。

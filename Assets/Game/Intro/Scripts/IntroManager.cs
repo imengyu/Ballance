@@ -24,7 +24,7 @@ namespace Ballance2.Game {
       var GameSoundManager = GameManager.GetSystemService<GameSoundManager>();
 
       if (IntroUI == null) {
-        IntroUI = GameUIManager.InitViewToCanvas(thisGamePackage.GetPrefabAsset("IntroUI.prefab"), "IntroUI", true);
+        IntroUI = GameUIManager.InitViewToCanvas(thisGamePackage.GetPrefabAsset("IntroUI"), "IntroUI", true);
         IntroUI.SetAsFirstSibling();  
       }
 

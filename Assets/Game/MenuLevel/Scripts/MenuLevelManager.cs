@@ -24,7 +24,7 @@ namespace Ballance2.Game {
       GameManager.Instance.SetGameBaseCameraVisible(false);
 
       if (GameMenuLevel == null)
-        GameMenuLevel = GameManager.Instance.InstancePrefab(thisGamePackage.GetPrefabAsset("GameMenuLevel.prefab"), "GameMenuLevel");
+        GameMenuLevel = GameManager.Instance.InstancePrefab(thisGamePackage.GetPrefabAsset("GameMenuLevel"), "GameMenuLevel");
 
       if (!GameMenuLevel.activeSelf)
         GameMenuLevel.SetActive(true);

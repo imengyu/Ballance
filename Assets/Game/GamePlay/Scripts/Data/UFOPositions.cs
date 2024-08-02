@@ -45,7 +45,7 @@ namespace Ballance2.Game.GamePlay
       Data.Add(new UFOPositionItem(new Vector3(8,0,3), 1.8f, 3));
       Data.Add(new UFOPositionItem(new Vector3(0,6,0), 1.8f, 3));
       Data.Add(new UFOPositionItem(new Vector3(0,6,0), 0.5f, 1.0f, false, true));
-      Data.Add(new UFOPositionItem(new Vector3(0,0,0), 0.3f, 1.2f, true));
+      Data.Add(new UFOPositionItem(new Vector3(0,0,0), 0.9f, 1.2f, true));
       Data.Add(new UFOPositionItem(new Vector3(0,0,0), 0.1f, 0.02f));
       Data.Add(new UFOPositionItem(new Vector3(0,5,0), 0.6f, 1));
       Data.Add(new UFOPositionItem(new Vector3(-25,15,0), 1.1f, 2));

@@ -352,15 +352,9 @@ namespace Ballance2.Services
 
         //路径转换
         realPackagePath = GamePathManager.GetResRealPath("package", packageName + ".ballance");
-        string realPackagePathInCore = GamePathManager.GetResRealPath("core", packageName + ".ballance");
 
-        //如果路径在Core中存在，则使用Core加载
-        if (FileUtils.FileExists(realPackagePathInCore)) realPackagePath = realPackagePathInCore;
-        else if (realPackagePath.Contains("jar:file://") || FileUtils.FileExists(realPackagePath))
-          realPackagePathInCore = "";
-        else if (realPackagePathInCore.Contains("jar:file://") || FileUtils.FileExists(realPackagePathInCore)) //如果路径在Packages中存在，则使用Packages加载
-          realPackagePath = realPackagePathInCore;
-        else {
+        if (!(realPackagePath.Contains("jar:file://") || FileUtils.FileExists(realPackagePath)))
+        {
           //不存在则抛出异常
           Log.E(TAG, "Package {0} register failed because file {1} not found", packageName, realPackagePath);
           return false;

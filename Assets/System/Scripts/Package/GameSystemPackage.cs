@@ -20,10 +20,12 @@ using UnityEngine;
 using Ballance2.Res;
 using System.Text;
 using Ballance2.Game;
+using System.Threading.Tasks;
+using Ballance2.Services.I18N;
 
 namespace Ballance2.Package
 {
-  class GameSystemPackage : GameZipPackage
+  class GameSystemPackage : GamePackage
   {
     public GameSystemPackage() {
       PackageName = GamePackageManager.SYSTEM_PACKAGE_NAME;
@@ -32,11 +34,28 @@ namespace Ballance2.Package
       _Status = GamePackageStatus.LoadSuccess;
       SetFlag(GetFlag() | (GamePackage.FLAG_PACK_NOT_UNLOADABLE | GamePackage.FLAG_PACK_SYSTEM_PACKAGE));
     }
-
     public override string ListResource() {
       StringBuilder sb = new StringBuilder();
       sb.Append("[System internal package]");
-      return base.ListResource();
+      return sb.ToString();
+    }
+
+    public override Task<bool> LoadInfo(string filePath)
+    {
+      XmlDocument doc = new XmlDocument();
+      doc.LoadXml(GameSystemPackageResource.Instance.SystemPackageDef.text);
+      ReadInfo(doc);
+      I18NProvider.LoadLanguageResources(GameSystemPackageResource.Instance.SystemPackageLanguageRes.text);
+      return base.LoadInfo(filePath);
+    }
+    public override T GetAsset<T>(string pathorname)
+    {
+      if (pathorname.EndsWith(".prefab"))
+        pathorname = pathorname.Substring(0, pathorname.Length - 7);
+      var obj = GameSystemPackageResource.GetAssetByName(pathorname);
+      if (obj != null)
+        return (T)obj;
+      return base.GetAsset<T>(pathorname);
     }
   }
 }

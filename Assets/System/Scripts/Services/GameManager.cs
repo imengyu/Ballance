@@ -315,12 +315,7 @@ namespace Ballance2.Services
 
       #region Load system core package
 
-#if UNITY_EDITOR
-      Task<bool> task = systemPackage.LoadInfo(GamePathManager.DEBUG_CORE_FOLDER);
-#else
-      Task<bool> task = systemPackage.LoadInfo(GamePathManager.GetResRealPath("core", "core.ballance"));
-#endif
-
+      Task<bool> task = systemPackage.LoadInfo("");
       yield return task.AsIEnumerator();
       if (!task.Result) 
       {

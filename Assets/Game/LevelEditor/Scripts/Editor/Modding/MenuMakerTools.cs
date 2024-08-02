@@ -24,7 +24,6 @@ namespace Ballance2.Editor.Modding
           string folder = DebugSettings.Instance.OutputFolder;
           if (Directory.Exists(debugFolder) && Directory.Exists(folder))
           {
-            CopyDebugFolder("Core", debugFolder, folder);
             CopyDebugFolder("Packages", debugFolder, folder);
             CopyDebugFolder("Levels", debugFolder, folder);
 
@@ -38,7 +37,6 @@ namespace Ballance2.Editor.Modding
           string folder = DebugSettings.Instance.OutputAppLinux + "/Ballance_Data/";
           if (Directory.Exists(debugFolder) && Directory.Exists(folder))
           {
-            CopyDebugFolder("Core", debugFolder, folder);
             CopyDebugFolder("Packages", debugFolder, folder);
             CopyDebugFolder("Levels", debugFolder, folder);
 
@@ -52,7 +50,6 @@ namespace Ballance2.Editor.Modding
           string folder = DebugSettings.Instance.OutputAppMac + "/Contents/";
           if (Directory.Exists(debugFolder) && Directory.Exists(folder))
           {
-            CopyDebugFolder("Core", debugFolder, folder);
             CopyDebugFolder("Packages", debugFolder, folder);
             CopyDebugFolder("Levels", debugFolder, folder);
 
@@ -69,7 +66,6 @@ namespace Ballance2.Editor.Modding
             if(!Directory.Exists(folder))
               Directory.CreateDirectory(folder);
 
-            CopyDebugFolder("Core", debugFolder, folder);
             CopyDebugFolder("Packages", debugFolder, folder);
             CopyDebugFolder("Levels", debugFolder, folder);
 
@@ -99,7 +95,6 @@ namespace Ballance2.Editor.Modding
           if (folder != GamePathManager.DEBUG_PATH)
             EditorPrefs.SetString("CopyDebugFolderDefSaveDir", GamePathManager.DEBUG_PATH);
 
-          CopyDebugFolder("Core", debugFolder, folder);
           CopyDebugFolder("Packages", debugFolder, folder);
           CopyDebugFolder("Levels", debugFolder, folder);
 

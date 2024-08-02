@@ -1,4 +1,5 @@
 using Ballance2.UI.Core.Controls;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,9 +19,9 @@ using UnityEngine.UI;
 namespace Ballance2.UI.Utils
 {
   public class GameGlobalIngameLoading : MonoBehaviour {
-    public UIText TextStatus;
+    public TMP_Text TextStatus;
 
-    /* private int currentLogObserver = 0;
+    private int currentLogObserver = 0;
 
     private void OnEnable() {
       TextStatus.text = "";
@@ -33,6 +34,6 @@ namespace Ballance2.UI.Utils
         Log.UnRegisterLogObserver(currentLogObserver);
         currentLogObserver = 0;
       }
-    } */
+    }
   }
 }

@@ -225,38 +225,6 @@ namespace Ballance2.Res
 #endif
         }
       }
-      else if (type == "core")
-      {
-        if (pathbuf.Contains(":"))
-        {
-          if (PathUtils.IsAbsolutePath(pathbuf)) 
-            return pathbuf;
-#if UNITY_EDITOR
-          pathbuf = DEBUG_PATH + "/Core/" + pathbuf;
-#elif UNITY_STANDALONE
-          pathbuf = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
-          pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Core/" + pathbuf;
-#else
-          GameErrorChecker.LastError = GameError.NotImplemented;
-          return pathorname;
-#endif
-          result = ReplacePathInResourceIdentifier(pathbuf, ref spbuf);
-        }
-        else
-        {
-#if UNITY_EDITOR
-          result = DEBUG_PATH + "/Core/" + pathbuf;
-#elif UNITY_STANDALONE
-          result = Application.dataPath + "/Core/" + pathbuf;
-#elif UNITY_ANDROID || UNITY_IOS
-          result = Application.streamingAssetsPath + "/BuiltInPackages/Core/" + pathbuf;
-#else
-          GameErrorChecker.LastError = GameError.NotImplemented;
-          return pathorname;
-#endif
-        }
-      }
       else
       {
         GameErrorChecker.LastError = GameError.UnKnowType;

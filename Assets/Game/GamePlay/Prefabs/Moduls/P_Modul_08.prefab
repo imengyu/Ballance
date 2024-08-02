@@ -305,7 +305,7 @@ MonoBehaviour:
   IsDebugMode: 0
   P_Modul_08_Schaukel: {fileID: 3396108544480663978}
   P_Modul_08_Schaukel_Force: {fileID: 7184888546042004499}
-  Force: 2.2
+  Force: 1.1
   SwitchTime: 0.5
   DelayTime: 0.2
 --- !u!1001 &6850545455112928640
@@ -322,15 +322,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1068713305201475572, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1068713305201475572, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.9508
+      value: 11.217
       objectReference: {fileID: 0}
     - target: {fileID: 1068713305201475572, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 1068713305201475572, guid: 4f475f423afed2541a7d63c9bbb4d3bd, type: 3}
       propertyPath: m_LocalRotation.w

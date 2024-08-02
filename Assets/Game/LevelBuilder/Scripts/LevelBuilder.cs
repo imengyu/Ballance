@@ -80,7 +80,7 @@ namespace Ballance2.Game.LevelBuilder {
           GameMediator.Instance.RegisterGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_START);
           GameMediator.Instance.RegisterGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_UNLOAD_START);
 
-          LevelBuilderUI = GameUIManager.Instance.InitViewToCanvas(GamePackage.GetSystemPackage().GetPrefabAsset("LevelBuilderUI.prefab"), "GameLevelBuilderUI", true);
+          LevelBuilderUI = GameUIManager.Instance.InitViewToCanvas(GamePackage.GetSystemPackage().GetPrefabAsset("LevelBuilderUI"), "GameLevelBuilderUI", true);
           LevelBuilderUIProgress = LevelBuilderUI.Find("Progress").GetComponent<Progress>();
           LevelBuilderUITextErrorContent = LevelBuilderUI.Find("PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent").GetComponent<TMP_Text>();
           LevelBuilderUIPanelFailed = LevelBuilderUI.Find("PanelFailed").gameObject;

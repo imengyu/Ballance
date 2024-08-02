@@ -10,7 +10,7 @@ namespace Ballance2.Game.LevelBuilder {
     public static GameObject LevelBuilderGameObject = null;
 
     public static GameObject Init() {
-      LevelBuilderGameObject = CloneUtils.CloneNewObject(GamePackage.GetSystemPackage().GetPrefabAsset("LevelBuilder.prefab"), "GameLevelBuilder");
+      LevelBuilderGameObject = CloneUtils.CloneNewObject(GamePackage.GetSystemPackage().GetPrefabAsset("LevelBuilder"), "GameLevelBuilder");
       return LevelBuilderGameObject;
     }
     public static void Destroy() {

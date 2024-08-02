@@ -22,23 +22,23 @@ namespace Ballance2.Game.GamePlay
 
       GameUIManager.Instance.SetUIOverlayVisible(true);
 
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("GamePlayManager.prefab"), "GamePlayManager"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("GamePlayManager"), "GamePlayManager"));
       
       GameManager.Instance.SetGameBaseCameraVisible(false);
 
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("BallManager.prefab"), "GameBallsManager"));
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("SectorManager.prefab"), "GameSectorManager"));
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("MusicManager.prefab"), "GameMusicManager"));
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("GameTranfoManager.prefab"), "GameTranfoManager"));
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("LevelBriz.prefab"), "GameLevelBriz"));
-      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("PE_UFO.prefab"), "GameUFOAnimController"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("BallManager"), "GameBallsManager"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("SectorManager"), "GameSectorManager"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("MusicManager"), "GameMusicManager"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("GameTranfoManager"), "GameTranfoManager"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("LevelBriz"), "GameLevelBriz"));
+      objects.Add(CloneUtils.CloneNewObject(package.GetPrefabAsset("PE_UFO"), "GameUFOAnimController"));
 
       //GamePlayUI
-      var GamePlayUIGameObject = GameUIManager.Instance.InitViewToCanvas(package.GetPrefabAsset("GamePlayUI.prefab"), "GamePlayUI", false).gameObject;
+      var GamePlayUIGameObject = GameUIManager.Instance.InitViewToCanvas(package.GetPrefabAsset("GamePlayUI"), "GamePlayUI", false).gameObject;
       GamePlayUIGameObject.SetActive(false);
       objects.Add(GamePlayUIGameObject);
       //GamePlayUI
-      var GamePlayPreviewUIGameObject = GameUIManager.Instance.InitViewToCanvas(package.GetPrefabAsset("GamePreviewUI.prefab"), "GamePlayPreviewUI", false).gameObject;
+      var GamePlayPreviewUIGameObject = GameUIManager.Instance.InitViewToCanvas(package.GetPrefabAsset("GamePreviewUI"), "GamePlayPreviewUI", false).gameObject;
       GamePlayPreviewUIGameObject.SetActive(false);
       objects.Add(GamePlayPreviewUIGameObject);
 

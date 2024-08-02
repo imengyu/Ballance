@@ -96,7 +96,6 @@ namespace Ballance2.Editor.Modding
         private void LoadModsPath()
         {
             packsPath.Clear();
-            packsPath.Add("core");
 
             DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_PACKAGE_FOLDER);
             DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -130,14 +129,9 @@ namespace Ballance2.Editor.Modding
 
             foreach(string path in packsPath) {
                 TextAsset packageDef = null;
-                if(path == "core") {
-                    packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Game/PackageDef.xml");
-                    dir = DebugSettings.Instance.DebugFolder + "/" + packTarget + "/Core/";
-                }
-                else {
-                    packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + path + "/PackageDef.xml");
-                    dir = DebugSettings.Instance.DebugFolder + "/" + packTarget + "/Packages/";
-                }
+                packageDef = AssetDatabase.LoadAssetAtPath<TextAsset>(GamePathManager.DEBUG_PACKAGE_FOLDER + "/" + path + "/PackageDef.xml");
+                dir = DebugSettings.Instance.DebugFolder + "/" + packTarget + "/Packages/";
+
                 if(packageDef  == null)
                 {
                     isError = true;
