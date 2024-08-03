@@ -12,21 +12,23 @@ namespace Ballance2.Game.LevelBuilder
   [JsonObject]
   public class LevelJson {
     [JsonProperty]
-    public string name;
+    public string name = "";
     [JsonProperty]
-    public string author;
+    public string author = "";
     [JsonProperty]
-    public string version;
+    public string version = "1.0";
     [JsonProperty]
-    public string introduction;
+    public string introduction = "";
     [JsonProperty]
-    public string url;
+    public string url = "";
     [JsonProperty]
-    public bool allowPreview;
+    public bool allowPreview = true;
     [JsonProperty]
-    public List<GameLevelDependencies> requiredPackages;
+    public bool allowEdit = false;
     [JsonProperty]
-    public LevelData level;
+    public List<GameLevelDependencies> requiredPackages = new List<GameLevelDependencies>();
+    [JsonProperty]
+    public LevelData level = new LevelData();
   }
   [JsonObject]
   [System.Serializable]
@@ -51,11 +53,11 @@ namespace Ballance2.Game.LevelBuilder
     [JsonProperty]
     public int musicTheme = 0;
     [JsonProperty]
-    public string skyBox;
+    public string skyBox = "A";
     [JsonProperty]
-    public string skyLayer;
+    public string skyLayer = "";
     [JsonProperty]
-    public string nextLevel;
+    public string nextLevel = "";
     [JsonProperty]
     public MusicThemeDataDefine customMusicTheme;
     [JsonProperty]
@@ -63,7 +65,7 @@ namespace Ballance2.Game.LevelBuilder
     [JsonProperty]
     public List<HighscoreDataItem> defaultHighscoreData;
     [JsonProperty]
-    public string lightColor;
+    public string lightColor = "#ffffff";
     [JsonProperty]
     public string customModEventName;
     [JsonProperty]

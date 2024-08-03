@@ -63,7 +63,7 @@ namespace Ballance2.Services.I18N
       var str = I18NProvider.GetLanguageString(key);
       if (str != null)
         return str;
-      return default;
+      return defaultString;
     }
     /// <summary>
     /// 获取国际化字符串并自定义格式化参数

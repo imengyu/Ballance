@@ -219,7 +219,7 @@ TextureImporter:
       213: -7630727215154562521
     second: MadeWithVirtools
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -236,11 +236,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -279,6 +280,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -290,6 +293,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -302,6 +306,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -314,6 +319,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -326,6 +332,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -338,6 +345,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -3019,7 +3027,7 @@ TextureImporter:
         width: 57
         height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3040,7 +3048,7 @@ TextureImporter:
         width: 143
         height: 142
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3061,7 +3069,7 @@ TextureImporter:
         width: 71
         height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3082,7 +3090,7 @@ TextureImporter:
         width: 73
         height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3090,6 +3098,27 @@ TextureImporter:
       bones: []
       spriteID: 1bada052efa93dc46ad4ae7642c33478
       internalID: 1840506921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconWarnS
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 99
+        width: 54
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a6a715e13bdfcf4e8315ccc60630419
+      internalID: 738513201
       vertices: []
       indices: 
       edges: []
@@ -3105,150 +3134,150 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BoxRoundTop: -1387942528601720239
-      GUIBoxRadiusSelect: 1883031710
-      IconRestoreMinDark: -9209596457331486333
-      BoxRound: 8902620681648697655
-      ModIconFailed: 7880049525172564496
-      RoundMini: -640165843456951987
-      IconCheck: -5823949816416637721
-      GUIBoxRadiusBaseTop: 1203335723
-      GUIBoxActiveLight: 1827166599
-      IconChec: 358538737
-      ModIconUnknow: -6506581538796598956
-      GUIBoxRadiusBase: -2111045409
-      IconStats: -971647924
-      RoundNor: 8641199821787465979
-      GUITabActive: -305588114
-      IconStorage: -677287127555733900
-      IconTransparent: 8051123311531701542
-      BoxRoundBottom: -7359264501309230124
-      GUITabSelect: 383261151
-      GUIDropDownNormal: 867570512
-      IconLeftRight: 1946805317
-      IconCloseDark: -8010207806092045782
-      Box: -4115149617545907244
-      GUIRadioCheckedPress: -55175660
-      RoundBorderSmall: -6748562370134372770
-      IconArrowLeft: -4610733912421552025
-      GUIBoxBase: -1068834650
-      GUIColorBoxLight: 513460928
-      TexMadeWithUnity: 2843758286862564216
-      BoxBorderNor: -5336445588202113547
-      GUICheckBoxNormal: -784179365
-      GUIDropDownDisable: 1044651688
-      IconArrowRight: -804274595266467298
-      GUIColorBoxActive: -1182764831
-      IconGlobal: 1219836524575074602
-      GUIBoxActive: 747441423
-      ColorDragger: -629796646736663849
-      IconCursorLeft: 1840506921
-      IconRestoreLight: -6685105678880452824
-      IconHand: -4825753653546556987
+      ArrowFat: -841565506489833938
       ArrowThin: -5390961871813075550
-      RoundSmall: 6185064589633493502
-      IconProtect: 1763761877
-      IconMinDark: -4194962791815199338
-      IconMaxLight: -2407097654950009958
-      GUIColorBoxThir: -817463954
-      GUIBoxRadiusLight: 1861294417
-      GUICheckBoxChecker: -1235036256
-      RoundBorderBig: 1392164897108038395
-      GUITabHover: -1754634823
-      GUIBoxDarkLight: -786502107
-      IconDebug: 1813996064
-      IconCursorRight: -2122737913
-      IconLocal: -775183344312285971
-      IconRestoreMinLight: 4339225749220643467
-      MadeWithVirtools: -7630727215154562521
-      GUIBoxSelect: -808396010
-      GUIButtonNormal: -754609266
-      GUIBoxLight: -185518461
-      IconInfoS: -396783105
-      GUICheckBoxHover: 1269170133
-      GUIRadioCheckedHover: -1822175537
-      IconHexagon: 7035618795537083928
-      RoundMiddle: 8017742803904545004
-      BoxRoundRight: 9125724041508807365
-      ModIconSuccess: -9100469446420412935
-      IconInfo: -1260817676324544406
-      GUIButtonPress: 1401237159
-      GUIRadioNormal: 1523582145
-      IconExlam: 537618950744142135
-      GUIBoxRadiusActive: -199278424
-      IconSmile: -3452515485003531442
-      GUIBoxRadiusDark: -1986299753
-      BoxRoundNs: -4918782725231409810
-      GUIBoxDark: 958810785
-      GUIColorBoxBase: 1893766822
-      IconBug: 330399109862669774
-      ModIconNotSupport: -8640479623088261172
-      IconAtari: 7928264306897510315
-      GUIDropDownHover: 974162097
-      IconCloseLight: 6984899539004896876
-      IconUpdown: -1771439767053489083
-      IconMoreDark: -7335684896397817085
-      IconMoreLight: 4339967757981605128
-      IconBu: -54218899
-      IconExpDark: -1668114865096956679
-      IconMove: -6787322772362598568
-      GUICheckBoxDisable: -1266105933
-      IconSizeDragger: 8199682685527786370
-      GUIColorBoxDark: 701365799
-      IconArrowDown: -9117897411005600601
-      GUIBoxMoreDark: -731778229
-      GUICheckBoxPress: 1764489331
-      IconMov: 971341162
-      GUIRadioDisable: -1563078941
-      GUISliderBarHorz: 633514227
-      IconArrowUp: 6700335028210261622
-      GUIBoxRadiusDarkLight: -104330533
-      GUISliderTumb: -1726993224
-      IconCheckCircle: 7846938490384685000
-      IconResize: -1714946349274030861
-      GUIRadioPress: -772440288
-      IconMinLight: 8172313790712727047
-      GUIColorBoxSecond: -1969488990
-      IconPiovt: -9041830655727726778
-      IconDrag: 8438798086717914939
-      GUIDraggerLight: 1366275564
-      IconSub: 7781389738337204524
-      GUIBoxRadiusActiveLight: 727286996
-      IconSettings: 1265141643
-      GUIRadioCheckedNormal: -1511599230
-      GUIDraggerDark: -359743979
+      Box: -4115149617545907244
+      BoxBorderDark: -8117073929778123104
+      BoxBorderNor: -5336445588202113547
+      BoxRound: 8902620681648697655
       BoxRoundBordered: 1154512629317595783
-      IconExpLight: 3399751484076023081
-      GUIDropDownPress: -230743245
-      IconRotate: 89167502557122216
-      IconRestoreDark: 9081126380634734799
-      IconMaxDark: -8442962142123173219
-      IconWarn: 296291400770824323
+      BoxRoundBottom: -7359264501309230124
+      BoxRoundLeft: 7105688129526397165
+      BoxRoundNs: -4918782725231409810
+      BoxRoundRight: 9125724041508807365
+      BoxRoundTop: -1387942528601720239
+      ColorDragger: -629796646736663849
+      GUIBoxActive: 747441423
+      GUIBoxActiveLight: 1827166599
+      GUIBoxBase: -1068834650
+      GUIBoxDark: 958810785
+      GUIBoxDarkLight: -786502107
+      GUIBoxLight: -185518461
+      GUIBoxMoreDark: -731778229
+      GUIBoxRadiusActive: -199278424
+      GUIBoxRadiusActiveLight: 727286996
+      GUIBoxRadiusBase: -2111045409
+      GUIBoxRadiusBaseTop: 1203335723
+      GUIBoxRadiusDark: -1986299753
+      GUIBoxRadiusDarkLight: -104330533
+      GUIBoxRadiusLight: 1861294417
+      GUIBoxRadiusMoreDark: -228192217
+      GUIBoxRadiusSelect: 1883031710
+      GUIBoxSelect: -808396010
       GUIButtonDisable: -1823820504
       GUIButtonHover: -1714441719
+      GUIButtonNormal: -754609266
+      GUIButtonPress: 1401237159
+      GUICheckBoxChecker: -1235036256
+      GUICheckBoxDisable: -1266105933
+      GUICheckBoxHover: 1269170133
+      GUICheckBoxNormal: -784179365
+      GUICheckBoxPress: 1764489331
+      GUIColorBoxActive: -1182764831
+      GUIColorBoxBase: 1893766822
+      GUIColorBoxDark: 701365799
+      GUIColorBoxLight: 513460928
+      GUIColorBoxSecond: -1969488990
+      GUIColorBoxThir: -817463954
       GUIColorBoxThird: -955630276
-      GUISliderBarVec: 1227050441
-      IconUpdate: -1979142173
-      GUISliderTumbPress: 1443569145
-      IconLoca: -4618419649242449049
-      GUIBoxRadiusMoreDark: -228192217
-      GUIRadioHover: 157931719
-      RoundBig: 9216228005841759499
-      GUISliderTumbActive: 205486610
-      IconCry: -3272098343177431209
-      IconSuccess: 2055094742030120401
+      GUIDraggerDark: -359743979
+      GUIDraggerLight: 1366275564
+      GUIDropDownDisable: 1044651688
+      GUIDropDownHover: 974162097
+      GUIDropDownNormal: 867570512
+      GUIDropDownPress: -230743245
       GUIRadioCheckedDisable: 454152750
+      GUIRadioCheckedHover: -1822175537
+      GUIRadioCheckedNormal: -1511599230
+      GUIRadioCheckedPress: -55175660
+      GUIRadioDisable: -1563078941
+      GUIRadioHover: 157931719
+      GUIRadioNormal: 1523582145
+      GUIRadioPress: -772440288
+      GUISliderBarHorz: 633514227
+      GUISliderBarVec: 1227050441
+      GUISliderTumb: -1726993224
+      GUISliderTumbActive: 205486610
+      GUISliderTumbPress: 1443569145
+      GUITabActive: -305588114
+      GUITabHover: -1754634823
+      GUITabSelect: 383261151
       IconAdd: -1889543990127176562
-      BoxBorderDark: -8117073929778123104
-      ArrowFat: -841565506489833938
-      IconFolder: 677004824
+      IconArrowDown: -9117897411005600601
+      IconArrowLeft: -4610733912421552025
+      IconArrowRight: -804274595266467298
+      IconArrowUp: 6700335028210261622
+      IconAtari: 7928264306897510315
+      IconBu: -54218899
+      IconBug: 330399109862669774
       IconBug2: 1155186978
-      BoxRoundLeft: 7105688129526397165
-      PoweredByHavok: -8983623551252004834
+      IconChec: 358538737
+      IconCheck: -5823949816416637721
+      IconCheckCircle: 7846938490384685000
+      IconCloseDark: -8010207806092045782
+      IconCloseLight: 6984899539004896876
+      IconCry: -3272098343177431209
+      IconCursorLeft: 1840506921
+      IconCursorRight: -2122737913
+      IconDebug: 1813996064
+      IconDrag: 8438798086717914939
       IconErr: -1127535243709945411
-  spritePackingTag: 
+      IconExlam: 537618950744142135
+      IconExpDark: -1668114865096956679
+      IconExpLight: 3399751484076023081
+      IconFolder: 677004824
+      IconGlobal: 1219836524575074602
+      IconHand: -4825753653546556987
+      IconHexagon: 7035618795537083928
+      IconInfo: -1260817676324544406
+      IconInfoS: -396783105
+      IconLeftRight: 1946805317
+      IconLoca: -4618419649242449049
+      IconLocal: -775183344312285971
+      IconMaxDark: -8442962142123173219
+      IconMaxLight: -2407097654950009958
+      IconMinDark: -4194962791815199338
+      IconMinLight: 8172313790712727047
+      IconMoreDark: -7335684896397817085
+      IconMoreLight: 4339967757981605128
+      IconMov: 971341162
+      IconMove: -6787322772362598568
+      IconPiovt: -9041830655727726778
+      IconProtect: 1763761877
+      IconResize: -1714946349274030861
+      IconRestoreDark: 9081126380634734799
+      IconRestoreLight: -6685105678880452824
+      IconRestoreMinDark: -9209596457331486333
+      IconRestoreMinLight: 4339225749220643467
+      IconRotate: 89167502557122216
+      IconSettings: 1265141643
+      IconSizeDragger: 8199682685527786370
+      IconSmile: -3452515485003531442
+      IconStats: -971647924
+      IconStorage: -677287127555733900
+      IconSub: 7781389738337204524
+      IconSuccess: 2055094742030120401
+      IconTransparent: 8051123311531701542
+      IconUpdate: -1979142173
+      IconUpdown: -1771439767053489083
+      IconWarn: 296291400770824323
+      IconWarnS: 738513201
+      MadeWithVirtools: -7630727215154562521
+      ModIconFailed: 7880049525172564496
+      ModIconNotSupport: -8640479623088261172
+      ModIconSuccess: -9100469446420412935
+      ModIconUnknow: -6506581538796598956
+      PoweredByHavok: -8983623551252004834
+      RoundBig: 9216228005841759499
+      RoundBorderBig: 1392164897108038395
+      RoundBorderSmall: -6748562370134372770
+      RoundMiddle: 8017742803904545004
+      RoundMini: -640165843456951987
+      RoundNor: 8641199821787465979
+      RoundSmall: 6185064589633493502
+      TexMadeWithUnity: 2843758286862564216
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

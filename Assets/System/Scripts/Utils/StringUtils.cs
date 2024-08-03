@@ -424,5 +424,27 @@ namespace Ballance2.Utils
         return input.Substring(index + find.Length);
       return input;
     }
+
+    public const string SpeicalPattern = "[\n`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}]";
+
+    /// <summary>
+    /// 检测字符串中是否存在特殊字符
+    /// </summary>
+    /// <param name="input">要截取的字符串</param>
+    /// <returns></returns>
+    public static bool ContainsSpeicalChars(string input)
+    {
+      return Regex.IsMatch(input, SpeicalPattern);
+    }
+    /// <summary>
+    /// 替换字符串中的特殊字符
+    /// </summary>
+    /// <param name="input">要截取的字符串</param>
+    /// <returns></returns>
+    public static string RemoveSpeicalChars(string input)
+    {
+      return Regex.Replace(input, SpeicalPattern, "");
+    }
+
   }
 }

@@ -7,6 +7,7 @@ using Ballance2.Services;
 using Ballance2.Base;
 using Ballance2.Services.Debug;
 using Ballance2.Game.GamePlay.DebugTools;
+using Ballance2.Game.LevelEditor;
 
 namespace Ballance2.Game {
   //游戏模块主入口
@@ -53,22 +54,44 @@ namespace Ballance2.Game {
         var nextLoadLevelIsPreview = false;
         GameMediatorInstance.RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, (evtName, param) => {
           var scense = param[0] as string;
-          if(scense == "Level") { 
-            GameTimer.Delay(0.3f, () => {
-              GamePlayInitManager.GamePlayInit(nextLoadLevelIsPreview, () => {
-                if (nextLoadLevel != "") {
-                  LevelBuilder.LevelBuilder.Instance.LoadLevel(nextLoadLevel, nextLoadLevelIsPreview);
-                  nextLoadLevel = "";
-                }
+          switch (scense)
+          {
+            case "Level":
+              GameTimer.Delay(0.3f, () => {
+                GamePlayInitManager.GamePlayInit(
+                  nextLoadLevelIsPreview ? GamePlayInitManager.GamePlayType.Preview : GamePlayInitManager.GamePlayType.Game, () => {
+                  if (nextLoadLevel != "") {
+                    LevelBuilder.LevelBuilder.Instance.LoadLevel(nextLoadLevel, nextLoadLevelIsPreview);
+                    nextLoadLevel = "";
+                  }
+                });
               });
-            });
+              break;
+            case "LevelEditor":
+              GameTimer.Delay(0.3f, () => {
+                GamePlayInitManager.GamePlayInit(GamePlayInitManager.GamePlayType.Editor, () => {
+                  if (nextLoadLevel != "") {
+                    LevelEditorManagerInit.Init(nextLoadLevel);
+                    nextLoadLevel = "";
+                  }
+                });
+              });
+              break;
           }
           return false;
         });    
         GameMediatorInstance.RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_QUIT, TAG, (evtName, param) => {
           var scense = param[0] as string;
-          if(scense == "Level")  
-            GamePlayInitManager.GamePlayUnload();
+          switch (scense)
+          {
+            case "Level":
+              GamePlayInitManager.GamePlayUnload();
+              break;
+            case "LevelEditor":
+              GamePlayInitManager.GamePlayUnload();
+              LevelEditorManagerInit.Destroy();
+              break;
+          } 
           return false;
         });
         
@@ -86,6 +109,20 @@ namespace Ballance2.Game {
             Log.D(TAG, $"Start load level {nextLoadLevel} preview {nextLoadLevelIsPreview}");
           }
           GameManager.Instance.RequestEnterLogicScense("Level");
+          return false;
+        });
+        GameMediatorInstance.SubscribeSingleEvent(SystemPackage, "CoreStartEditLevel", TAG, (evtName, param) => {
+          if (param.Length < 1 || !(param[0] is string)) {
+            var type = param[0] as string;
+            GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, $"Param 0 expect string, but got {type}");
+            return false;
+          } 
+          else 
+          {
+            nextLoadLevel = param[0] as string;
+            Log.D(TAG, $"Start edit level {nextLoadLevel}");
+          }
+          GameManager.Instance.RequestEnterLogicScense("LevelEditor");
           return false;
         });
         //退出入口

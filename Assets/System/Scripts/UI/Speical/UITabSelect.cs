@@ -23,12 +23,19 @@ namespace Ballance2.UI
     }    
    
     [SerializeField]
+    private bool useTab = false;
+    [SerializeField]
+    private GameObject tabPrefab;
+    [SerializeField]
+    private RectTransform tabHost;
+    [SerializeField]
     private UIText text;
     [SerializeField]
     private int startActiveIndex = 0;
     [SerializeField]
     [Reorderable]
     private List<TabItem> tabs = new List<TabItem>();
+    private List<UITabHeaderItem> tabHeaders = new List<UITabHeaderItem>();
 
     public InputAction LeftAction;
     public InputAction RightAction;
@@ -39,6 +46,8 @@ namespace Ballance2.UI
     {
       if (tabs.Count > 0)
       {
+        if (useTab)
+          UpdateTabItem();
         for (int i = 0; i < tabs.Count; i++) 
           tabs[i].Content.gameObject.SetActive(false);
         JumpToItem(tabs[startActiveIndex]);
@@ -63,17 +72,39 @@ namespace Ballance2.UI
         JumpToItem(Tabs[activeIndex - 1], playSound);
     }
 
+    private void UpdateTabItem()
+    {
+      tabHost.DestroyAllChildren();
+      tabHeaders.Clear();
+      foreach (var _item in tabs)
+      {
+        var item = _item;
+        var tabHeader = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UITabHeaderItem>(tabPrefab, tabHost);
+        tabHeader.GetComponent<Button>().onClick.AddListener(() => JumpToItem(item));
+        tabHeader.SetTitle(item.Title);
+        tabHeaders.Add(tabHeader);
+      }
+    }
+
     public void SetTabs(TabItem[] _tabs)
     {
       tabs = new List<TabItem>(_tabs);
+      if (useTab)
+        UpdateTabItem();
     }
     public void JumpToItem(TabItem tab, bool playSound = false)
     {
-      if (currentActiveTab!= null)
-          currentActiveTab.Content.gameObject.SetActive(false);
+      if (currentActiveTab!= null) {
+        currentActiveTab.Content.gameObject.SetActive(false);
+        if (useTab)
+          tabHeaders[tabs.IndexOf(currentActiveTab)].SetActive(false);
+      }
+      
       tab.Content.gameObject.SetActive(true);
       text.text = tab.Title;
       currentActiveTab = tab;
+      if (useTab)
+        tabHeaders[tabs.IndexOf(tab)].SetActive(false);
       
       if (playSound)
         GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.UI);

@@ -37,7 +37,7 @@ namespace Ballance2.Game.GamePlay.DebugTools
         return;
       }
 
-      GamePlayInitManager.GamePlayInit(false, () => {
+      GamePlayInitManager.GamePlayInit(GamePlayInitManager.GamePlayType.Game, () => {
         GameObject PR_Resetpoint = null;
         GameObject Modul_Placeholder = null;
         GamePlayManager GamePlayManager = GamePlay.GamePlayManager.Instance;

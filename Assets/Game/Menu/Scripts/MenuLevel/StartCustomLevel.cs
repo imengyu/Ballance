@@ -185,7 +185,6 @@ namespace Ballance2.Menu
         gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
         gameUIManager.MaskBlackFadeIn(1);
         GameTimer.Delay(1, () => {
-          Log.D("StartCustomLevel", "StartLevel " + selectedItem.name);
           GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", new object[]{ selectedItem.name });
         });
       }
@@ -195,14 +194,17 @@ namespace Ballance2.Menu
         gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
         gameUIManager.MaskBlackFadeIn(1);
         GameTimer.Delay(1, () => {
-          Log.D("StartCustomLevel", "PreviewLevel " + selectedItem.name);
           GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", new object[]{ selectedItem.name, true });
         });
       }
     }
     private void EditLevel() {
       if(selectedItem != null) {
-        //TODO:
+        gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
+        gameUIManager.MaskBlackFadeIn(1);
+        GameTimer.Delay(1, () => {
+          GameManager.GameMediator.NotifySingleEvent("CoreStartEditLevel", new object[]{ selectedItem.name });
+        });
       }
     }
     private void ShowDependsInfo() {

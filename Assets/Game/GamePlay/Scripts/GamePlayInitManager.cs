@@ -11,11 +11,18 @@ namespace Ballance2.Game.GamePlay
   {
     private static List<GameObject> objects = new List<GameObject>();
 
+    public enum GamePlayType
+    {
+      Game,
+      Preview,
+      Editor,
+    }
+
     /// <summary>
     /// 游戏玩模块初始化
     /// </summary>
     /// <param name="callback">完成回调</param>
-    public static void GamePlayInit(bool isPreview, GameManager.VoidDelegate callback) {
+    public static void GamePlayInit(GamePlayType type, GameManager.VoidDelegate callback) {
       Log.D("GamePlay", "GamePlayInit");
 
       var package = GamePackage.GetSystemPackage();
@@ -50,7 +57,7 @@ namespace Ballance2.Game.GamePlay
         GamePlayManagerInstance.CamManager = objects[1].transform.Find("BallCameraHost/CamTarget/CamOrient/MainCamera").GetComponent<CamManager>();
         GamePlayManagerInstance.BallSoundManager = objects[1].transform.Find("BallSoundManager").GetComponent<BallSoundManager>();
 
-        if (isPreview) {
+        if (type == GamePlayType.Preview) {
           var GamePreviewManagerInstance = GamePreviewManager.Instance;
           GamePreviewManagerInstance.MusicManager = GamePlayManagerInstance.MusicManager;
           GamePreviewManagerInstance.SectorManager = GamePlayManagerInstance.SectorManager;

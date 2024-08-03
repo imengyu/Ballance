@@ -232,6 +232,22 @@ Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐
     </Text>
     <Text name="core.package.Introduction">Ballance 基础系统包，包含全部自带基础球与基础机关</Text>
     <Text name="core.package.Description">Ballance 基础系统包，包含全部自带基础球与基础机关，是所有MOD的基础依赖，不可卸载。</Text>
+    <Text name="core.editor.Load">加载</Text>
+    <Text name="core.editor.Save">保存</Text>
+    <Text name="core.editor.New">新关卡</Text>
+    <Text name="core.editor.Play">测试玩</Text>
+    <Text name="core.editor.toolbar.Floors">路面</Text>
+    <Text name="core.editor.toolbar.Rails">轨道</Text>
+    <Text name="core.editor.toolbar.Moduls">机关</Text>
+    <Text name="core.editor.toolbar.Others">其他</Text>
+    <Text name="core.editor.toolbar.Import">导入模型</Text>
+    <Text name="core.editor.toolbar.Info">修改关卡信息</Text>
+    <Text name="core.editor.toolbar.Publish">发布</Text>
+    <Text name="core.editor.content.Search">搜索资产</Text>
+    <Text name="core.editor.load.New">新建关卡</Text>
+    <Text name="core.editor.load.NewDesc">现在将要新建一个关卡，请输入关卡的文件名，关卡文件将会被保存在 Levels 文件夹中。</Text>
+    <Text name="core.editor.load.NewDump">已存在同名关卡文件，你是否要覆盖已有文件？\n注意：覆盖后不可恢复！</Text>
+
   </Language>
   <Language name="English">
     <Text name="core.ui.Back">Back</Text>
