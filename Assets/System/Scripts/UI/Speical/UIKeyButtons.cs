@@ -79,7 +79,7 @@ namespace Ballance2.UI
               {
                 var keyButton = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UIKeyButton>(keyButtonPrefab, keyboardBox.transform);
                 keyButton.SetKeyImageWithControlPath(controlPath.Item1, controlPath.Item2);
-                keyButton.ActionName = displayAction.DisplayName;
+                keyButton.SetActionName(displayAction.DisplayName);
                 keyButton.SetOnScreenButton(controlPath.Item1);
               }
             }
@@ -94,7 +94,7 @@ namespace Ballance2.UI
         {
           var keyButton = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UIKeyButton>(keyButtonPrefab, keyboardBox.transform);
           keyButton.SetKeyImageWithStaticImage(action);
-          keyButton.ActionName = action.DisplayName;
+          keyButton.SetActionName(action.DisplayName);
           keyButtons.Add(keyButton);
         }
       }
@@ -147,7 +147,7 @@ namespace Ballance2.UI
       {
         var keyButton = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UIKeyButton>(keyButtonPrefab, keyboardBox.transform);
         keyButton.SetKeyImageWithControlPath(controlPath.Item1, controlPath.Item2);
-        keyButton.ActionName = DisplayName;
+        keyButton.SetActionName(DisplayName);
         if (actualAction != null)
           keyButton.onClick.AddListener(() => actualAction.Invoke());
         else
@@ -160,7 +160,7 @@ namespace Ballance2.UI
     {
       var keyButton = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UIKeyButton>(keyButtonPrefab, keyboardBox.transform);
       keyButton.SetKeyImageWithStaticImage(action);
-      keyButton.ActionName = action.DisplayName;
+      keyButton.SetActionName(action.DisplayName);
       keyButton.interactable = false;
       keyButtons.Add(keyButton);
       dirty = 5;

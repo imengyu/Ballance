@@ -13,10 +13,6 @@ namespace Ballance2.UI
   {
     private OnScreenButton onScreenButton = null;
     [SerializeField]
-    private string controlName = "Action";
-    [SerializeField]
-    private string actionName = "Action";
-    [SerializeField]
     private Image controllerIcon;
     [SerializeField]
     private RectTransform keyboardBox;
@@ -24,12 +20,6 @@ namespace Ballance2.UI
     private UIText keyboardText;
     [SerializeField]
     private UIText actionText;
-
-    protected override void Awake() {
-      actionText.text = actionName;
-      keyboardText.text = controlName;
-      base.Awake();
-    }
 
     private string GetKeyName(string name)
     {
@@ -78,6 +68,10 @@ namespace Ballance2.UI
       controllerIcon.gameObject.SetActive(false);
       keyboardBox.gameObject.SetActive(false);
     } 
+    public void SetActionName(string actionName) 
+    {
+      actionText.text = actionName;
+    }
     public void SetKeyImageWithStaticImage(StaticDisplayAction staticImages) 
     {
       var controlType = "Keyboard";
@@ -145,13 +139,5 @@ namespace Ballance2.UI
       }
     }
 
-    public string ActionName 
-    {
-      get { return actionName; }
-      set {
-        actionName = value;
-        actionText.text = actionName;
-      }
-    }
   }
 }
