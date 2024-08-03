@@ -1,4 +1,6 @@
+using Ballance2.Utils;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace Ballance2.Game.GamePlay
 {
@@ -8,6 +10,11 @@ namespace Ballance2.Game.GamePlay
   /// </summary>
   public class ModulBase : MonoBehaviour 
   {
+    [Tooltip("设置假贴图投射影子")]
+    /// <summary>
+    /// 设置假贴图投射影子
+    /// </summary>
+    public GameObject FakeShadow = null;
     /// <summary>
     /// 获取或者设置当前机关基类是否自动控制当前机关的激活与失活
     /// </summary>
@@ -40,7 +47,8 @@ namespace Ballance2.Game.GamePlay
     [HideInInspector]
     protected bool IsActive = false;
 
-    private TiggerTester BallRangeChecker = null;
+    protected TiggerTester BallRangeChecker = null;
+    protected Projector ShadowInstance = null;
 
     protected virtual void Start() {
       //机关内置的球区域检测功能初始化
@@ -63,6 +71,17 @@ namespace Ballance2.Game.GamePlay
           }
         };
       }
+      if (FakeShadow != null)
+      {
+        ShadowInstance = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<Projector>(FakeShadow, transform.parent, $"ShadowOf{name}");
+        ShadowInstance.gameObject.SetActive(false);
+        var parentConstraint = ShadowInstance.GetComponent<ParentConstraint>();
+        var constraintSource = new ConstraintSource();
+        constraintSource.sourceTransform = transform;
+        constraintSource.weight = 1;
+        parentConstraint.constraintActive = true;
+        parentConstraint.SetSource(0, constraintSource);
+      }
     }
 
     /// <summary>
@@ -72,6 +91,8 @@ namespace Ballance2.Game.GamePlay
     public virtual void Active() {
       if (AutoActiveBaseGameObject)
         gameObject.SetActive(true);
+      if (ShadowInstance != null)
+        ShadowInstance.gameObject.SetActive(true);
       IsActive = true;
     }
     /// <summary>
@@ -81,6 +102,8 @@ namespace Ballance2.Game.GamePlay
       IsActive = false;
       if (AutoActiveBaseGameObject)
         gameObject.SetActive(false);
+      if (ShadowInstance != null)
+        ShadowInstance.gameObject.SetActive(false);
     }
     /// <summary>
     /// 关卡卸载时发出此事件

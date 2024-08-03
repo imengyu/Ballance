@@ -129,6 +129,11 @@ namespace Ballance2.Game.GamePlay
     /// 球向下的力。仅调试中有效
     /// </summary>
     [JsonProperty]
-    public float DownForce; 
+    public float DownForce;
+    /// <summary>
+    /// 推力修正乘数
+    /// </summary> 
+    [JsonProperty]
+    public float ForceMultiplier;
   }
 }

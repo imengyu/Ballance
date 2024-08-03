@@ -183,15 +183,16 @@ namespace Ballance2.Game.GamePlay.Moduls
       });
     }
 
-    private void FixedUpdate() {
+    private void Update() {
       //旋转小球
       if (_Rotate) {
-        P_Extra_Point_Ball[1].transform.RotateAround(_RotCenter, _RotAxis1, _RotDegree);
-        P_Extra_Point_Ball[2].transform.RotateAround(_RotCenter, _RotAxis2, _RotDegree);;
-        P_Extra_Point_Ball[3].transform.RotateAround(_RotCenter, _RotAxis1, -_RotDegree);
-        P_Extra_Point_Ball[4].transform.RotateAround(_RotCenter, _RotAxis4, _RotDegree);
-        P_Extra_Point_Ball[5].transform.RotateAround(_RotCenter, _RotAxis5, _RotDegree);
-        P_Extra_Point_Ball[6].transform.RotateAround(_RotCenter, _RotAxis6, _RotDegree);
+        var rotate = _RotDegree * Time.deltaTime;
+        P_Extra_Point_Ball[1].transform.RotateAround(_RotCenter, _RotAxis1, rotate);
+        P_Extra_Point_Ball[2].transform.RotateAround(_RotCenter, _RotAxis2, rotate);;
+        P_Extra_Point_Ball[3].transform.RotateAround(_RotCenter, _RotAxis1, -rotate);
+        P_Extra_Point_Ball[4].transform.RotateAround(_RotCenter, _RotAxis4, rotate);
+        P_Extra_Point_Ball[5].transform.RotateAround(_RotCenter, _RotAxis5, rotate);
+        P_Extra_Point_Ball[6].transform.RotateAround(_RotCenter, _RotAxis6, rotate);
       } 
     }
 

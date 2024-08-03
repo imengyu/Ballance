@@ -226,8 +226,12 @@ namespace Ballance2.Services
     }
 
     public static int FixedUpdateTick = 0;
+    public static int UpdateTick = 0;
 
     protected override void Update() {
+      if(UpdateTick < 1024) UpdateTick++;
+      else UpdateTick = 0;
+
       DoFlushUpdateList("Update", updates);
     }
     private void LateUpdate() {

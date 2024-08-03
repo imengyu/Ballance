@@ -20,6 +20,7 @@ namespace Ballance2.Menu
     public Image _LifeBoardLeftBaffle;
     public GameObject _LifeBoardBallPrefab;
     public GameObject _LifeBoardBallInfPrefab;
+    public float _LifeBoardBallSize = 38;
     public RectTransform _LifeBalls;
     public GameObject _TextDebugMode;
     public GuiStats GuiStats;
@@ -216,9 +217,9 @@ namespace Ballance2.Menu
     private void _MoveLifeLeftBaffle() 
     {
       if (_CurrentShowLifeBallCount < 0)
-        _CurrentMoveBaffleTarget =  -27;
+        _CurrentMoveBaffleTarget =  -_LifeBoardBallSize;
       else
-        _CurrentMoveBaffleTarget =  -(_CurrentShowLifeBallCount * 27);
+        _CurrentMoveBaffleTarget =  -(_CurrentShowLifeBallCount * _LifeBoardBallSize);
       _CurrentMoveBaffleTick = 0;
       _CurrentMoveBaffleStart = _LifeBoardLeftBaffle.rectTransform.anchoredPosition.x;
     }

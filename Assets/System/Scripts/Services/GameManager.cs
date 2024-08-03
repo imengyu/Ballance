@@ -139,6 +139,9 @@ namespace Ballance2.Services
     {
       Instance = this;
 
+      if (File.Exists(Application.dataPath + "/debugenable.txt"))
+        GameManager.DebugMode = true;
+
       Application.wantsToQuit += Application_wantsToQuit;
 
       InitDebugConfig(gameEntryInstance);

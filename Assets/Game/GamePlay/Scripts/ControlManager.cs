@@ -42,6 +42,7 @@ namespace Ballance2.Game.GamePlay
       ScreenShort.Enable();
       ToggleView.Enable();
       ToggleFPS.Enable();
+      KeyBoardTestConsole.Enable();
 
       DisableControl();
     }

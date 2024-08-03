@@ -459,7 +459,7 @@ namespace Ballance2.Game.GamePlay
       //设置推动物理参数
       ball._PiecesMinForce = physicsData.PiecesMinForce;
       ball._PiecesMaxForce = physicsData.PiecesMaxForce;
-      ball._Force = physicsData.Force;
+      ball._Force = physicsData.Force * physicsData.ForceMultiplier;
       ball._UpForce = physicsData.UpForce * 1.5f;
       ball._DownForce = physicsData.DownForce;
       if(pieces != null)
@@ -819,16 +819,16 @@ namespace Ballance2.Game.GamePlay
               //物理时间
               PhysicsTime.Value = string.Format("{0:F2} ms", GamePhysicsWorld.PhysicsTime * 1000);
               //物理对象信息
-              PhysicsObjects.Value = string.Format("All/Active/Update {0}/{1}/{2}\nFixed/FallCollect/Push {3}/{4}/{5}", 
+              PhysicsObjects.Value = string.Format("All/Active/Update {0}/{1}/{2}\nFixed/FallCollect/Push {3}/{4}/{5}\nPhysicsForceFactor {6}", 
                 GamePhysicsWorld.PhysicsBodies, 
                 GamePhysicsWorld.PhysicsActiveBodies, 
                 GamePhysicsWorld.PhysicsUpdateBodies,
                 GamePhysicsWorld.PhysicsFixedBodies,
                 GamePhysicsWorld.PhysicsFallCollectBodies, 
-                GamePhysicsWorld.PhysicsConstantPushBodies
+                GamePhysicsWorld.PhysicsConstantPushBodies,
+                GamePhysicsWorld.PhysicsForceFactor
               );
             }
-
             if (!GameManager.Instance.GameSettings.GetBool("debugDisableBallInfo", false)) {
               //球的速度和推动数据
               if (current.rigidbody.IsPhysicalized) {

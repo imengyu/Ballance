@@ -10,7 +10,7 @@ namespace Ballance2.Game.GamePlay.Balls
   /// </summary>
   public class BallPaper : Ball
   {
-    private Vector3 paperPeicesForceDir = new Vector3(-0.03f, 0, 0.03f);
+    private Vector3 paperPeicesForceDir = new Vector3(0.03f, 0, -0.03f);
 
     public BallPaper() {
       this._PiecesSoundName = "core.sounds:Pieces_Wood.wav";
