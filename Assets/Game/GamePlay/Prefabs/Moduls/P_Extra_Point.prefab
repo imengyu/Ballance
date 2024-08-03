@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b395d711089d04bb9e53d025569f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FakeShadow: {fileID: 0}
   IsPreviewMode: 0
   IsDebugMode: 0
   P_Extra_Point_Tigger: {fileID: 2056935842118520208}
@@ -96,7 +97,7 @@ MonoBehaviour:
   _Rotate: 0
   _FlyUp: 0
   _FlyFollow: 0
-  _RotDegree: 4.5
+  _RotDegree: 300
   _FlyUpTime: 0.4
   _FlyFollowTime: 0.3
   _FlyTargetUpTime: 0.3

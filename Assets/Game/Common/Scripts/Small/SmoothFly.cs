@@ -102,7 +102,7 @@ namespace Ballance2.Game.Utils
     private Vector3 LerpStart = Vector3.zero;
     private Vector3 LerpEnd = Vector3.zero;
     
-    private void FixedUpdate() {
+    private void Update() {
       if(Fly) {
         switch (Type) {
           case SmoothFlyType.SmoothDamp: {
