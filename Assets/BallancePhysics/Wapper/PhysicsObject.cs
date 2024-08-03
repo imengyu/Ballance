@@ -681,8 +681,7 @@ namespace BallancePhysics.Wapper
     /// <param name="impluse">力的方向和大小（世界坐标系）</param>
     public void Impluse(Vector3 pos, Vector3 impluse) {
       checkPhysicalized();
-      if(impluse.sqrMagnitude > 0)
-        PhysicsApi.API.physics_impluse(Handle, pos, impluse * currentEnvironment.TimeFactor);
+      PhysicsApi.API.physics_impluse(Handle, pos, impluse * currentEnvironment.PhysicsForceFactor);
     }
     /// <summary>
     /// 给物体施加一个旋转推动
@@ -690,9 +689,7 @@ namespace BallancePhysics.Wapper
     /// <param name="rotVec">该矢量的每个分量表示施加在该对象相关核心轴上的旋转力。</param>
     public void Torque(Vector3 rotVec) {
       checkPhysicalized();
-      if(rotVec.sqrMagnitude > 0) {
-        PhysicsApi.API.physics_torque(Handle, rotVec * currentEnvironment.TimeFactor);
-      }
+      PhysicsApi.API.physics_torque(Handle, rotVec * currentEnvironment.PhysicsForceFactor);
     }
     /// <summary>
     /// 为物体添加速度

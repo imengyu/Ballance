@@ -14,12 +14,13 @@
       "RotDamp": 0.2
     },
     "PiecesMinForce": 0.8,
-    "PiecesMaxForce": 2.2,
+    "PiecesMaxForce": 1.8,
     "UpForce": 0.6,
     "DownForce": 0.3,
     "BallRadius": 2,
     "TiggerBallRadius": 2,
-    "Layer": 1
+    "Layer": 1,
+    "ForceMultiplier": 1
   },
   "BallStone": {
     "Force": 0.92,
@@ -41,7 +42,8 @@
     "DownForce": 0.05,
     "BallRadius": 2,
     "TiggerBallRadius": 2,
-    "Layer": 1
+    "Layer": 1,
+    "ForceMultiplier": 1.14
   },
   "BallPaper": {
     "Force": 0.065,
@@ -61,6 +63,7 @@
     "DownForce": 0.01,
     "BallRadius": 0,
     "TiggerBallRadius": 2,
-    "Layer": 1
+    "Layer": 1,
+    "ForceMultiplier": 1
   }
 }
