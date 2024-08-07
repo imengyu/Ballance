@@ -67,9 +67,9 @@ namespace Ballance2.Game.LevelBuilder
     [JsonProperty]
     public string lightColor = "#ffffff";
     [JsonProperty]
-    public string customModEventName;
+    public string customModEventName = "";
     [JsonProperty]
-    public int sectorCount;
+    public int sectorCount = 1;
     [JsonProperty]
     public bool endWithUFO = false;
     [JsonProperty]

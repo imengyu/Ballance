@@ -198,6 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34bee02a24d194b47b9fd5ac6ef39602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FakeShadow: {fileID: 0}
+  PlaceHolderPrefab: {fileID: 919132149155446097, guid: ce1db0d5429af3c43b977f2a839b4be6, type: 3}
   IsPreviewMode: 0
   IsDebugMode: 0
   P_Modul_34_Kiste: {fileID: 244039996087373597}

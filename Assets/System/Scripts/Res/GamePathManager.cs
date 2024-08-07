@@ -238,7 +238,7 @@ namespace Ballance2.Res
     /// </summary>
     /// <param name="pathorname">关卡的相对路径或名称</param>
     /// <returns>返回资源真实路径</returns>
-    public static string GetLevelRealPath(string pathorname, bool withFileSheme = true)
+    public static string GetLevelRealPath(string pathorname, bool withFileSheme = true, bool noExt = false)
     {
       string result = "";
       string pathbuf = "";
@@ -280,7 +280,7 @@ namespace Ballance2.Res
 #endif
       }
       
-      if(pathorname != "" && !result.EndsWith(".ballance"))
+      if(!noExt && pathorname != "" && !result.EndsWith(".ballance"))
         result += ".ballance";
 
       return (withFileSheme ? "file:///" : "") + result;

@@ -21,7 +21,8 @@ namespace Ballance2.UI
     }
     public void SetActive(bool active)
     {
-      image.sprite = active ? activeImage : deactiveImage;
+      if (image != null)
+        image.sprite = active ? activeImage : deactiveImage;
     }
   }
 }

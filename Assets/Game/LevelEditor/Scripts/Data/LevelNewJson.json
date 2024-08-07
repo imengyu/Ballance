@@ -1,0 +1,19 @@
+{
+  "LevelAssets": [],
+  "LevelModels": [
+    {
+      "Name": "PS_FourFlames",
+      "Position": { "x": 0, "y": 0, "z": 0 },
+      "EulerAngles": { "x": -90, "y": 0, "z": 0 },
+      "Scale": { "x": 1, "y": 1, "z": 1 },
+      "Asset": "core:PS_FourFlames"
+    },
+    {
+      "Name": "PE_Balloon",
+      "Position": { "x": -32.0, "y": 0, "z": 0 },
+      "EulerAngles": { "x": -90, "y": 0, "z": 0 },
+      "Scale": { "x": 1, "y": 1, "z": 1 },
+      "Asset": "core:PE_Balloon"
+    }
+  ]
+}

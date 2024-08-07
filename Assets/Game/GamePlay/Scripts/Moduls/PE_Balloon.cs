@@ -34,6 +34,7 @@ namespace Ballance2.Game.GamePlay.Moduls
     public PhysicsObject PE_Balloon_Platte08;
     public GameObject PE_Balloon_BallRefPos;
     public TiggerTester PE_Balloon_BallTigger;
+    public bool EnableMusic = true;
 
     private bool BallTiggerActived = false;
     private bool _MusicActived = false;
@@ -191,9 +192,11 @@ namespace Ballance2.Game.GamePlay.Moduls
         var _SoundLastSector = GamePlayManagerInstance.GetSoundLastSector();
         //设置为2d
         _SoundLastSector.spatialBlend = 0;
-        _SoundLastSector.Play();
-
-        MusicManager.DisableInSec(70);    
+        if (EnableMusic)
+        {
+          _SoundLastSector.Play();
+          MusicManager.DisableInSec(70);    
+        }
 
         if (_PlayMusicDelayTimer > 0)
           GameTimer.DeleteDelay(_PlayMusicDelayTimer);

@@ -63,6 +63,9 @@ namespace Ballance2.Game.GamePlay
           GamePreviewManagerInstance.SectorManager = GamePlayManagerInstance.SectorManager;
           GamePreviewManagerInstance.CamManager = GamePlayManagerInstance.CamManager;
         }
+        else if (type == GamePlayType.Editor) {
+          GamePlayManagerInstance.CamManager.SetCameraEnable(false);
+        }
         GameTimer.Delay(0.5f, () => {
           callback();
         });

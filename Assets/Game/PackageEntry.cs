@@ -23,6 +23,7 @@ namespace Ballance2.Game {
         MenuLevelManager.Init(package);
         MenuManager.Init();
         LevelBuilderInit.Init();
+        LevelEditorManagerInit.Init();
         HighscoreManager.Init();
         HighscoreManager.Instance.Load();
 
@@ -47,6 +48,10 @@ namespace Ballance2.Game {
             GamePlayLevelCustomDebugManager.Init();
             return false;
           });
+          GameMediatorInstance.RegisterEventHandler(SystemPackage, "LevelEditorDebug", TAG, (evtName, param) => {
+            LevelEditorDebugManager.Init();
+            return false;
+          });
         }
 
         //加载关卡控制
@@ -69,12 +74,9 @@ namespace Ballance2.Game {
               break;
             case "LevelEditor":
               GameTimer.Delay(0.3f, () => {
-                GamePlayInitManager.GamePlayInit(GamePlayInitManager.GamePlayType.Editor, () => {
-                  if (nextLoadLevel != "") {
-                    LevelEditorManagerInit.Init(nextLoadLevel);
-                    nextLoadLevel = "";
-                  }
-                });
+                GamePlayInitManager.GamePlayInit(GamePlayInitManager.GamePlayType.Editor, () => 
+                  LevelEditorManagerInit.Load(nextLoadLevel)
+                );
               });
               break;
           }
@@ -89,7 +91,7 @@ namespace Ballance2.Game {
               break;
             case "LevelEditor":
               GamePlayInitManager.GamePlayUnload();
-              LevelEditorManagerInit.Destroy();
+              LevelEditorManagerInit.Unload();
               break;
           } 
           return false;
@@ -139,6 +141,7 @@ namespace Ballance2.Game {
         IntroManager.Destroy(package);
         MenuLevelManager.Destroy(package);
         LevelBuilderInit.Destroy();
+        LevelEditorManagerInit.Destroy();
         HighscoreManager.Destroy();
         return true;
       };

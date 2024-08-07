@@ -391,6 +391,15 @@ namespace Ballance2.Game.GamePlay
       _UpdateStateForDebugStats();
     }
 
+    /// <summary>
+    /// 设置游戏主摄像机是否启用
+    /// </summary>
+    /// <param name="enable"></param>
+    public void SetCameraEnable(bool enable)
+    {
+      CamFollow.gameObject.SetActive(enable);
+    }
+
     #endregion
   }
 }

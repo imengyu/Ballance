@@ -37,6 +37,11 @@ namespace SimpleFileBrowser
 			}
 		}
 
+		private void Awake()
+		{
+			nameInputField.onEndEdit.AddListener( OnInputFieldEndEdit );
+		}
+
 		public void Show( string initialFilename, Color backgroundColor, Sprite icon, OnRenameCompleted onRenameCompleted )
 		{
 			background.color = backgroundColor;
@@ -63,13 +68,13 @@ namespace SimpleFileBrowser
 		}
 #endif
 
-		public void OnInputFieldEndEdit( string filename )
+		private void OnInputFieldEndEdit( string filename )
 		{
 			gameObject.SetActive( false );
 
 			// If we don't deselect the InputField manually, FileBrowser's keyboard shortcuts
 			// no longer work until user clicks on a UI element and thus, deselects the InputField
-			if( !EventSystem.current.alreadySelecting && EventSystem.current.currentSelectedGameObject == nameInputField.gameObject )
+			if( EventSystem.current && !EventSystem.current.alreadySelecting && EventSystem.current.currentSelectedGameObject == nameInputField.gameObject )
 				EventSystem.current.SetSelectedGameObject( null );
 
 			if( onRenameCompleted != null )

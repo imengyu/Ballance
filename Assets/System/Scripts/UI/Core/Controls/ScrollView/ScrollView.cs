@@ -704,13 +704,10 @@ namespace Ballance2.UI.Core.Controls
       return new Rect(leftBottom, size);
     }
 
-
     protected override void OnDestroy()
     {
       if (itemPool != null)
-      {
-        itemPool.Purge();
-      }
+        itemPool.Clear();
     }
 
     protected Rect GetItemLocalRect(int index)

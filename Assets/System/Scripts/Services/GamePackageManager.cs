@@ -6,8 +6,10 @@ using Ballance2.Res;
 using Ballance2.Services.Debug;
 using Ballance2.UI.Core;
 using Ballance2.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -262,7 +264,15 @@ namespace Ballance2.Services
       if (registeredPackages.TryGetValue(packageName, out var outPackage))
         outPackage.enableLoad = val;
     }
-    
+    /// <summary>
+    /// 获取已加载的模块
+    /// </summary>
+    /// <returns></returns>
+    public GamePackage[] GetLoadedPackages()
+    {
+      return loadedPackages.Values.ToArray<GamePackage>();
+    }
+
     #endregion
 
     #region 模块包管理API

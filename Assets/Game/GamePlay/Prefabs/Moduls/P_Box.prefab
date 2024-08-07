@@ -141,6 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a808cbf8fe022642bae03bb3d04b651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FakeShadow: {fileID: 0}
+  PlaceHolderPrefab: {fileID: 919132149155446097, guid: e3a643af35f362c4e982a03c3e757dff, type: 3}
   IsPreviewMode: 0
   IsDebugMode: 0
   PhysicsObject: {fileID: 0}

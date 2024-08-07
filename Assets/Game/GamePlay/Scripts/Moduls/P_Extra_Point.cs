@@ -64,7 +64,7 @@ namespace Ballance2.Game.GamePlay.Moduls
           var flowParticle = transform.Find($"P_Extra_Point_Ball{i}/P_Extra_Point_Flow").gameObject;
           var target = P_Extra_Point_Target[i];
 
-          GameSoundManager.Instance.RegisterSoundPlayer(GameSoundType.Normal, hitAudio);
+          GameSoundManager.Instance?.RegisterSoundPlayer(GameSoundType.Normal, hitAudio);
           _P_Extra_Point_Ball_Rest[i] = () => {
             ballParticle.SetActive(true);
             flowParticle.SetActive(true);

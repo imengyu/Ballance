@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b642f462fac575940a5fab7f0fb5ac6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FakeShadow: {fileID: 0}
+  PlaceHolderPrefab: {fileID: 919132149155446097, guid: 5a83110f0d0f2b14487cc8f89422d425, type: 3}
   IsPreviewMode: 0
   IsDebugMode: 0
   P_Modul_26_Sack: {fileID: 3916882267904110189}

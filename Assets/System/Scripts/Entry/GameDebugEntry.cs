@@ -34,5 +34,7 @@ namespace Ballance2.Entry
     
     [Tooltip("LevelCustomDebug 加载的关卡名称")]
     public string LevelName = "level01";
+    [Tooltip("LevelEditorDebugManager 加载的关卡名称")]
+    public string EditLevelName = "levelmake";
   }
 }

@@ -15,6 +15,11 @@ namespace Ballance2.Game.GamePlay
     /// 设置假贴图投射影子
     /// </summary>
     public GameObject FakeShadow = null;
+    [Tooltip("设置占位符预制体，占位符用于在关卡编辑器中显示")]
+    /// <summary>
+    /// 设置占位符预制体，占位符用于在关卡编辑器中显示
+    /// </summary>
+    public GameObject PlaceHolderPrefab = null;
     /// <summary>
     /// 获取或者设置当前机关基类是否自动控制当前机关的激活与失活
     /// </summary>

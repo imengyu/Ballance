@@ -111,17 +111,17 @@ namespace SimpleFileBrowser
 		internal void RefreshSkin( UISkin skin )
 		{
 			Image background = GetComponentInChildren<Image>();
-			background.color = skin.DeletePanelBackgroundColor;
-			background.sprite = skin.DeletePanelBackground;
+			background.color = skin.PopupPanelsBackgroundColor;
+			background.sprite = skin.PopupPanelsBackground;
 
 			skin.ApplyTo( yesButtonTransform.GetComponent<Button>() );
 			skin.ApplyTo( noButtonTransform.GetComponent<Button>() );
 
-			skin.ApplyTo( titleLabel, skin.DeletePanelTextColor );
-			skin.ApplyTo( deletedItemsRestLabel, skin.DeletePanelTextColor );
+			skin.ApplyTo( titleLabel, skin.PopupPanelsTextColor );
+			skin.ApplyTo( deletedItemsRestLabel, skin.PopupPanelsTextColor );
 
 			for( int i = 0; i < deletedItemNames.Length; i++ )
-				skin.ApplyTo( deletedItemNames[i], skin.DeletePanelTextColor );
+				skin.ApplyTo( deletedItemNames[i], skin.PopupPanelsTextColor );
 
 			for( int i = 0; i < deletedItems.Length; i++ )
 				deletedItems[i].GetComponent<LayoutElement>().preferredHeight = skin.FileHeight;

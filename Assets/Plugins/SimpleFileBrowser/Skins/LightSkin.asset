@@ -13,6 +13,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_fontSize: 14
+  m_rowHeight: 30
+  m_rowSpacing: 8
   m_windowColor: {r: 0.9338235, g: 0.9338235, b: 0.9338235, a: 1}
   m_filesListColor: {r: 1, g: 1, b: 1, a: 1}
   m_filesVerticalSeparatorColor: {r: 0.6397059, g: 0.6397059, b: 0.6397059, a: 1}
@@ -143,7 +145,7 @@ MonoBehaviour:
   m_contextMenuBackgroundColor: {r: 0.955, g: 0.955, b: 0.955, a: 1}
   m_contextMenuTextColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_contextMenuSeparatorColor: {r: 0.6397059, g: 0.6397059, b: 0.6397059, a: 1}
-  m_deletePanelBackgroundColor: {r: 0.955, g: 0.955, b: 0.955, a: 1}
-  m_deletePanelTextColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_deletePanelBackground: {fileID: 21300000, guid: b9c5fedc997f125448c4d8be2fc43bcd,
+  m_popupPanelsBackgroundColor: {r: 0.955, g: 0.955, b: 0.955, a: 1}
+  m_popupPanelsTextColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_popupPanelsBackground: {fileID: 21300000, guid: b9c5fedc997f125448c4d8be2fc43bcd,
     type: 3}

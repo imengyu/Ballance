@@ -208,8 +208,6 @@ namespace Ballance2.Game.GamePlay
           SetNextRecoverPos(Vector3.zero);
         }
       }));
-
-      controller.EnableControl();
     }
     private void _UnInitKeys() 
     {
@@ -514,6 +512,14 @@ namespace Ballance2.Game.GamePlay
         return ball;
       return null;
     }
+    /// <summary>
+    /// 获取所有注册的球
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<string, BallRegStorage>.ValueCollection GetRegisteredBalls()
+    {
+      return registerBalls.Values;
+    }
 
     #endregion
     
@@ -667,6 +673,11 @@ namespace Ballance2.Game.GamePlay
     private void _FlushCurrentBallAllStatus() 
     {
       var CamManager = GamePlayManager.Instance.CamManager;
+
+      if (controllingStatus == BallControlStatus.NoControl)
+        ControlManager.Instance.DisableControl();
+      else
+        ControlManager.Instance.EnableControl();
 
       switch (controllingStatus) {
         case BallControlStatus.NoControl: {
@@ -1253,6 +1264,10 @@ namespace Ballance2.Game.GamePlay
     /// 球名称
     /// </summary>
     public string name = "";
+    /// <summary>
+    /// 编辑器预览图片
+    /// </summary>
+    public Sprite Preview = null;
     /// <summary>
     /// 球类实例
     /// </summary>

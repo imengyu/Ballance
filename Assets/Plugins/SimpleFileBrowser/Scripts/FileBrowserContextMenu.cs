@@ -27,6 +27,8 @@ namespace SimpleFileBrowser
 		private GameObject selectAllButtonSeparator;
 
 		[SerializeField]
+		private LayoutElement[] allButtonLayoutElements;
+		[SerializeField]
 		private Text[] allButtonTexts;
 		[SerializeField]
 		private Image[] allButtonSeparators;
@@ -34,6 +36,15 @@ namespace SimpleFileBrowser
 		[SerializeField]
 		private float minDistanceToEdges = 10f;
 #pragma warning restore 0649
+
+		private void Awake()
+		{
+			selectAllButton.onClick.AddListener( OnSelectAllButtonClicked );
+			deselectAllButton.onClick.AddListener( OnDeselectAllButtonClicked );
+			createFolderButton.onClick.AddListener( OnCreateFolderButtonClicked );
+			deleteButton.onClick.AddListener( OnDeleteButtonClicked );
+			renameButton.onClick.AddListener( OnRenameButtonClicked );
+		}
 
 		internal void Show( bool selectAllButtonVisible, bool deselectAllButtonVisible, bool deleteButtonVisible, bool renameButtonVisible, Vector2 position, bool isMoreOptionsMenu )
 		{
@@ -102,6 +113,9 @@ namespace SimpleFileBrowser
 			deleteButton.image.color = skin.ContextMenuBackgroundColor;
 			renameButton.image.color = skin.ContextMenuBackgroundColor;
 
+			for( int i = 0; i < allButtonLayoutElements.Length; i++ )
+				allButtonLayoutElements[i].preferredHeight = skin.RowHeight + 1;
+
 			for( int i = 0; i < allButtonTexts.Length; i++ )
 				skin.ApplyTo( allButtonTexts[i], skin.ContextMenuTextColor );
 
@@ -109,31 +123,31 @@ namespace SimpleFileBrowser
 				allButtonSeparators[i].color = skin.ContextMenuSeparatorColor;
 		}
 
-		public void OnSelectAllButtonClicked()
+		private void OnSelectAllButtonClicked()
 		{
 			Hide();
 			fileBrowser.SelectAllFiles();
 		}
 
-		public void OnDeselectAllButtonClicked()
+		private void OnDeselectAllButtonClicked()
 		{
 			Hide();
 			fileBrowser.DeselectAllFiles();
 		}
 
-		public void OnCreateFolderButtonClicked()
+		private void OnCreateFolderButtonClicked()
 		{
 			Hide();
 			fileBrowser.CreateNewFolder();
 		}
 
-		public void OnDeleteButtonClicked()
+		private void OnDeleteButtonClicked()
 		{
 			Hide();
 			fileBrowser.DeleteSelectedFiles();
 		}
 
-		public void OnRenameButtonClicked()
+		private void OnRenameButtonClicked()
 		{
 			Hide();
 			fileBrowser.RenameSelectedFile();

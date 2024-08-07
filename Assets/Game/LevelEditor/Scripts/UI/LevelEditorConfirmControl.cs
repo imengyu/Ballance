@@ -43,7 +43,7 @@ namespace Ballance2.Game.LevelEditor
       string inputFieldText = "", string inputFieldPlaceholder = ""
     )
     {
-      ButtonConfirmText.text = string.IsNullOrEmpty(confirmText) ? "I18N:core.ui.Confirm" : confirmText;
+      ButtonConfirmText.text = string.IsNullOrEmpty(confirmText) ? "I18N:core.ui.Ok" : confirmText;
       ButtonCancelText.text = string.IsNullOrEmpty(cancelText) ? "I18N:core.ui.Cancel" : cancelText;
       TitleText.text = title;
       ContentText.text = content;

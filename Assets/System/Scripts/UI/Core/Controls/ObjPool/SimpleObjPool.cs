@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
+using Ballance2.Services;
 
 namespace AillieoUtils
 {
   public class SimpleObjPool<T>
   {
-    private readonly Stack<T> m_Stack;
-    private readonly Func<T> m_ctor;
-    private readonly Action<T> m_OnRecycle;
+    private Stack<T> m_Stack;
+    protected Func<T> m_ctor;
+    protected Action<T> m_OnRecycle;
+    protected Action<T> m_OnClear;
     private int m_Size;
     private int m_UsedCount;
 
-    public SimpleObjPool(int max = 5, Action<T> actionOnReset = null, Func<T> ctor = null)
+    public SimpleObjPool(int max = 5, Action<T> actionOnReset = null, Func<T> ctor = null, Action<T> actionOnClear = null)
     {
       m_Stack = new Stack<T>(max);
       m_Size = max;
       m_OnRecycle = actionOnReset;
       m_ctor = ctor;
     }
-
 
     public T Get()
     {
@@ -55,20 +56,12 @@ namespace AillieoUtils
       m_UsedCount--;
     }
 
-    /*
-    public T GetAndAutoRecycle()
+    public void Clear()
     {
-        T obj = Get();
-        Utils.OnNextFrameCall(()=> { Recycle(obj); });
-        return obj;
+      foreach (var item in m_Stack)
+        m_OnClear?.Invoke(item);
+      m_Stack.Clear();
     }
-    */
-
-    public void Purge()
-    {
-      // TODO
-    }
-
 
     public override string ToString()
     {

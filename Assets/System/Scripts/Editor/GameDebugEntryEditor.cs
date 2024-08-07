@@ -15,6 +15,7 @@ public class GameDebugEntryEditor : Editor
   private SerializedProperty ModulTestFloor;
   private SerializedProperty ModulTestUI;
   private SerializedProperty LevelName;
+  private SerializedProperty EditLevelName;
   private List<string> levelNames = new List<string>();
 
   private void OnEnable()
@@ -24,6 +25,7 @@ public class GameDebugEntryEditor : Editor
     ModulTestFloor = serializedObject.FindProperty("ModulTestFloor");
     ModulTestUI = serializedObject.FindProperty("ModulTestUI");
     LevelName = serializedObject.FindProperty("LevelName");
+    EditLevelName = serializedObject.FindProperty("EditLevelName");
 
     levelNames.Clear();
     DirectoryInfo direction = new DirectoryInfo(GamePathManager.DEBUG_LEVEL_FOLDER);
@@ -51,6 +53,8 @@ public class GameDebugEntryEditor : Editor
     var newIndex = EditorGUILayout.Popup(LevelName.displayName, levelNames.IndexOf(LevelName.stringValue), levelNames.ToArray());
     if (newIndex >= 0 && newIndex < levelNames.Count)
       LevelName.stringValue = levelNames[newIndex];
+
+    EditorGUILayout.PropertyField(EditLevelName);
 
     if (EditorGUI.EndChangeCheck())
     {

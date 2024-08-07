@@ -11,6 +11,8 @@
 * mengyu
 */
 
+using Ballance2.Game.LevelEditor;
+
 namespace Ballance2.Package
 {
   /// <summary>
@@ -34,6 +36,10 @@ namespace Ballance2.Package
     /// </summary>
     public GamePackageEntryDelogate OnLoadUI;
     /// <summary>
+    /// 关卡编辑器加载回调。此回调在关卡编辑器加载时回调，你可以在这里注册自定义资源
+    /// </summary>
+    public GamePackageEntryLevelEditorGetAssetsDelogate OnLevelEditorLoadAssets;
+    /// <summary>
     /// 模块版本参数
     /// </summary>
     public int Version = 0;
@@ -43,6 +49,10 @@ namespace Ballance2.Package
   /// 模块入口回调
   /// </summary>
   /// <returns></returns>
-  
   public delegate bool GamePackageEntryDelogate(GamePackage package);
+  /// <summary>
+  /// 模块入口回调
+  /// </summary>
+  /// <returns></returns>
+  public delegate LevelProviderAsset[] GamePackageEntryLevelEditorGetAssetsDelogate(GamePackage package, LevelEditorManager levelEditor);
 }

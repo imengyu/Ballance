@@ -35,6 +35,29 @@ namespace Ballance2.Services.I18N
       LanguageValues.Clear();
     }
 
+    private static void LoadLanguageNodeChild(Dictionary<string, string> dict, XmlNode nodeLanguage, string prefix) 
+    {
+      //Search Text node
+      foreach (XmlElement nodeText in nodeLanguage.ChildNodes)
+      {
+        var nodeTextName = nodeText.Attributes["name"];
+        if (nodeTextName != null && !string.IsNullOrEmpty(nodeTextName.Value) && !string.IsNullOrEmpty(nodeText.InnerXml))
+        {
+          var path = prefix + (string.IsNullOrEmpty(prefix) ? "" : ".") + nodeTextName.Value;
+          if (nodeText.Name == "Text")
+            dict[path.ToUpper()] = nodeText.InnerText;
+          else if (nodeText.Name == "Group")
+            LoadLanguageNodeChild(dict, nodeText, path);
+        }
+      }
+    }
+
+    /// <summary>
+    /// 直接加载语言文件到字典中
+    /// </summary>
+    /// <param name="dict">目标字典</param>
+    /// <param name="xmlAssets">语言文件XML</param>
+    /// <returns></returns>
     public static bool DirectLoadLanguageResources(Dictionary<string, string> dict, string xmlAssets)
     {
       try
@@ -50,16 +73,7 @@ namespace Ballance2.Services.I18N
           {
             if (System.Enum.TryParse<SystemLanguage>(nodeLanguageName.Value, true, out var languageName) && languageName == currentLanguage)
             {
-              //Search Text node
-              foreach (XmlElement nodeText in nodeLanguage.ChildNodes)
-              {
-                var nodeTextName = nodeText.Attributes["name"];
-                if (nodeText.Name == "Text" && nodeTextName != null
-                    && !string.IsNullOrEmpty(nodeTextName.Value) && !string.IsNullOrEmpty(nodeText.InnerXml))
-                {
-                  dict[nodeTextName.Value] = nodeText.InnerXml;
-                }
-              }
+              LoadLanguageNodeChild(dict, nodeLanguage, "");
               break;
             }
           }
@@ -103,16 +117,7 @@ namespace Ballance2.Services.I18N
           {
             if (nodeLanguageName.Value == currentLanguage.ToString())
             {
-              //Search Text node
-              foreach (XmlElement nodeText in nodeLanguage.ChildNodes)
-              {
-                var nodeTextName = nodeText.Attributes["name"];
-                if (nodeText.Name == "Text" && nodeTextName != null
-                    && !string.IsNullOrEmpty(nodeTextName.Value) && !string.IsNullOrEmpty(nodeText.InnerXml))
-                {
-                  LanguageValues[nodeTextName.Value] = nodeText.InnerXml;
-                }
-              }
+              LoadLanguageNodeChild(LanguageValues, nodeLanguage, "");
               break;
             }
           }
@@ -160,7 +165,7 @@ namespace Ballance2.Services.I18N
     /// <returns>如果找到对应键值字符串，则返回字符串，否则返回null</returns>
     public static string GetLanguageString(string key)
     {
-      if(LanguageValues.TryGetValue(key, out var s1))
+      if(LanguageValues.TryGetValue(key.ToUpper(), out var s1))
         return s1;
       return null;
     }
