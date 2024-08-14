@@ -42,6 +42,7 @@ namespace Ballance2.Game.LevelEditor
       m_selection.SelectionChanged += OnSelectionChanged;
       m_resourcePreview = gameObject.AddComponent<ResourcePreviewUtility>();
       IOC.Register<IResourcePreviewUtility>(m_resourcePreview);
+      ButtonToolMove.SetActive(true);
     }
     private void OnDestroy() {
       if (m_selection != null)

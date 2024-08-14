@@ -35,7 +35,7 @@ namespace Ballance2.UI.Core.Controls
       get { return tmp.Get().text; }
       set {
         var i18N = i18n.Get();
-        if (value.StartsWith(I18NController.AUTO_I18N_PREFIX))
+        if (value != null && value.StartsWith(I18NController.AUTO_I18N_PREFIX))
         {
           i18N.ResourceKey = value.Substring(I18NController.AUTO_I18N_PREFIX.Length);
           i18N.DefaultString = "";

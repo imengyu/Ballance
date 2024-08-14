@@ -20,7 +20,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.levelScore",
           Key = "levelScore",
-          Type = "System.Int32",
+          Type = "Integer",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -30,7 +30,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.startPoint",
           Key = "startPoint",
-          Type = "System.Int32",
+          Type = "Integer",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -40,7 +40,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.startLife",
           Key = "startLife",
-          Type = "System.Int32",
+          Type = "Integer",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,

@@ -16,9 +16,17 @@ namespace Ballance2.Game.GamePlay.Moduls
     protected override void Start()
     {
       base.Start();
-      this.FlameSmallLeft.SetActive(false);
-      this.FlameSmallRight.SetActive(false);
-      this.Flame.SetActive(false);
+      if (GamePlayManager.Instance.IsLevelEditor)
+      {
+        this.FlameSmallLeft.SetActive(true);
+        this.FlameSmallRight.SetActive(true);
+      }
+      else
+      {
+        this.FlameSmallLeft.SetActive(false);
+        this.FlameSmallRight.SetActive(false);
+      }
+        this.Flame.SetActive(false);
 
       if (!IsPreviewMode) 
       {

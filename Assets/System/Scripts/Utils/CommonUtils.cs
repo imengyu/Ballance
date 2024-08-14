@@ -122,6 +122,21 @@ namespace Ballance2.Utils
 
       return param.GetType().Name == typeName;
     }
+    /// <summary>
+    /// 将数字限制在指定范围内
+    /// </summary>
+    /// <param name="input">输入</param>
+    /// <param name="min">最小值</param>
+    /// <param name="max">最大值</param>
+    /// <returns></returns>
+    public static float LimitNumber(float input, float min, float max)
+    {
+      return Mathf.Min(Mathf.Max(input, min), max);
+    }
+    public static int LimitNumber(int input, int min, int max)
+    {
+      return Math.Min(Math.Max(input, min), max);
+    }
 
     /// <summary>
     /// 获取 Dictionary 里的string值数组（低性能！）
@@ -221,5 +236,12 @@ namespace Ballance2.Utils
         return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
       }
     }
+  }
+
+  public class EnumeratorResultPacker<T>
+  {
+    public T Result = default;
+    public bool Success= false;
+    public string Error = "";
   }
 }

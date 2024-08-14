@@ -40,7 +40,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
 
     public override string GetEditableType()
     {
-      return "UnityEngine.Vector2";
+      return "Vector2";
     }
     public override void UpdateValue(object _value) {
       lockValueChanged = true;

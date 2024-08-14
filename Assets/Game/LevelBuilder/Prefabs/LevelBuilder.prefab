@@ -31,7 +31,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7103730547279255602}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &934616148850458858
@@ -75,193 +76,441 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InternalAssets:
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 3302534360965334312, guid: 857890d2d2e72dc459cb4112a91c7195, type: 3}
+  - Preview: {fileID: 21300000, guid: fd3c96fc77d424841919ed90609f4217, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 3890289754434733487, guid: 85f17d5ada21106468586f5b69e6726b, type: 3}
     SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 3302534360965334312, guid: 0e61dff166e3df24b9530a336a12c288, type: 3}
-    SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 8084539552887755646, guid: 3a954ec5cbc2d0c4196c9695cc20c0ac, type: 3}
-    SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 3302534360965334312, guid: 5102069ade7aefc4aa7de9b436d34597, type: 3}
-    SubCategory: 
+    Tag: 
     Category: 4
     SubModelRefs: []
     OnlyOne: 0
     HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
+    HiddenPlaceholderRender: 0
+    ObjTarget: 
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: a096cab6f7d55ce4ba532096d744ef5a, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
     Prefab: {fileID: 3302534360965334312, guid: b150b2621414eb149a2c4f0ea1033772, type: 3}
     SubCategory: 
+    Tag: 
     Category: 4
     SubModelRefs: []
     OnlyOne: 0
     HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: 
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
   - Preview: {fileID: 0}
-    Prefab: {fileID: 2739005036857007299, guid: 13497765268511748b37a76012919d89, type: 3}
-    SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 3345126467629591664, guid: 4564a03b1cd97e74c9a0af6514e9d262, type: 3}
-    SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 325154313270052301, guid: 87312fdf431baa54cbda10359df01dbb, type: 3}
-    SubCategory: Stopper
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 2513683087560265735, guid: bf3bf12038502e343a1d7e7f8a5fb394, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 7459167465214101543, guid: 692a75e78377de8418c1cf44b23ef3f7, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 2410101611198118976, guid: 5a2ab49d18c3167428cd933b094f7a41, type: 3}
-    SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 8319650871823425257, guid: 23ee2e24ef6b8e743b1741a3c418976e, type: 3}
-    SubCategory: 
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 7768378815445984844, guid: 04cb60b7af6549845bba0b06098c733b, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 4214005892916380982, guid: 9b54b855ec6da054a999591931ebe39c, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 40832311824710713, guid: c0548bf241ad0584092d8fb079ed7014, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 1965475577313871331, guid: 32137dfb1c1f85a49b95660e593e9c09, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 6376658316172625694, guid: 88355cc8b6add414fbe2df10737b6f1a, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 7240981708561326617, guid: 22f5cafcf56952b48aaa15af0c69318e, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 8990778611695283698, guid: 00ecd61149e301a469216d45a9ef3e0b, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 7633188230796513692, guid: 39c0fd73e4d691149968d279c866eb5d, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 8888516596052358375, guid: f25bf2898940a84438127a8d9d40bcf3, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
-    Prefab: {fileID: 6993227592464385419, guid: 040332a3cae08ec4ba8907d099112af0, type: 3}
-    SubCategory: Wood
-    Category: 1
-    SubModelRefs: []
-    OnlyOne: 0
-    HiddenInContentSelector: 0
-  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
     Prefab: {fileID: 3302534360965334312, guid: 69cbb029e2981374798857fac05f8e54, type: 3}
-    SubCategory: 
+    SubCategory: Stone
+    Tag: 
     Category: 1
     SubModelRefs: []
     OnlyOne: 0
     HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
   - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
     Prefab: {fileID: 2540684214042796665, guid: cceb917d9b0c2df4cbdb6b2c333b5902, type: 3}
-    SubCategory: 
+    SubCategory: Stone
+    Tag: 
     Category: 1
     SubModelRefs: []
     OnlyOne: 0
     HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
   - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
     Prefab: {fileID: 1119375756832372353, guid: 852d8bb4845c58e4798742ddfba4361e, type: 3}
-    SubCategory: 
+    SubCategory: Stone
+    Tag: 
     Category: 1
     SubModelRefs: []
     OnlyOne: 0
     HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
   - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
     Prefab: {fileID: 5001491880575213726, guid: c906bceb8c79e8f498cbb6e8415fba3a, type: 3}
     SubCategory: Basic
+    Tag: 
     Category: 3
     SubModelRefs: []
     OnlyOne: 0
     HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: PR_ResetPoint
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: -1979142173, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Prefab: {fileID: 5176952809343758729, guid: b79b8ccc0097f944e8a965811ab29756, type: 3}
+    SubCategory: Basic
+    Tag: 
+    Category: 3
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: DepthTestCubes
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: 36c2871cab674534ca21cf981b91a04a, type: 3}
+    ScenseGizmePreviewImage: {fileID: -1979142173, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Prefab: {fileID: 240951622758755694, guid: 0f125ce63c32b4d45be4a9e615041416, type: 3}
+    SubCategory: Sky
+    Tag: 
+    Category: 4
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 1
+    ObjTarget: SkyLayer
+    IntitalScale: {x: 100, y: 1, z: 100}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: 6d1d152d08fff23478b39bef95bb7754, type: 3}
+    ScenseGizmePreviewImage: {fileID: -1979142173, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
+    Prefab: {fileID: 4294746121804726880, guid: 4991c8ac9167fd246a8cb8779c8ab524, type: 3}
+    SubCategory: Sky
+    Tag: 
+    Category: 4
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 1
+    ObjTarget: SkyVoterx
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: 405f732861fc2f94980827118806eb92, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 6329495458110797992, guid: b845809c95190a847854bcc62db9c72c, type: 3}
+    SubCategory: Stone
+    Tag: I18N:core.editor.sideedit.Dynamic
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: afccefb71c1e3674d8949baa1cf6844c, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 4872195385358859264, guid: db924767fa0b06744bcd7115a74fb3e9, type: 3}
+    SubCategory: Stone
+    Tag: I18N:core.editor.sideedit.Dynamic
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: d23f29aec639f2d4aa017bfc16be3588, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 4872195385358859264, guid: 831d583920816704f87647d16d495844, type: 3}
+    SubCategory: Stone
+    Tag: I18N:core.editor.sideedit.Dynamic
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: 02de425af6f615b4f9afcb512fae7e1a, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 4872195385358859264, guid: c3ab67b96d02e2c4194dbe544fd709b9, type: 3}
+    SubCategory: Stone
+    Tag: I18N:core.editor.sideedit.Dynamic
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 3302534360965334312, guid: 857890d2d2e72dc459cb4112a91c7195, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 3302534360965334312, guid: 0e61dff166e3df24b9530a336a12c288, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 8084539552887755646, guid: 3a954ec5cbc2d0c4196c9695cc20c0ac, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 3345126467629591664, guid: 4564a03b1cd97e74c9a0af6514e9d262, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 2739005036857007299, guid: 13497765268511748b37a76012919d89, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7240981708561326617, guid: 22f5cafcf56952b48aaa15af0c69318e, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 8990778611695283698, guid: 00ecd61149e301a469216d45a9ef3e0b, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7633188230796513692, guid: 39c0fd73e4d691149968d279c866eb5d, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 2513683087560265735, guid: bf3bf12038502e343a1d7e7f8a5fb394, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7459167465214101543, guid: 692a75e78377de8418c1cf44b23ef3f7, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 2410101611198118976, guid: 5a2ab49d18c3167428cd933b094f7a41, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 8319650871823425257, guid: 23ee2e24ef6b8e743b1741a3c418976e, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 1965475577313871331, guid: 32137dfb1c1f85a49b95660e593e9c09, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7768378815445984844, guid: 04cb60b7af6549845bba0b06098c733b, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 4214005892916380982, guid: 9b54b855ec6da054a999591931ebe39c, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 40832311824710713, guid: c0548bf241ad0584092d8fb079ed7014, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 6376658316172625694, guid: 88355cc8b6add414fbe2df10737b6f1a, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 8888516596052358375, guid: f25bf2898940a84438127a8d9d40bcf3, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 6993227592464385419, guid: 040332a3cae08ec4ba8907d099112af0, type: 3}
+    SubCategory: Wood
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorWoods
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 325154313270052301, guid: 87312fdf431baa54cbda10359df01dbb, type: 3}
+    SubCategory: Stopper
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_FloorStopper
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
   InternalModuls:
     _serializedList:
     - Key: P_Ball_Paper
       Value:
         Preview: {fileID: 21300000, guid: 14056d242fcf98a45a54720addb1b4c0, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 4496237636056940438, guid: 3960633641b755c4fbe009f2434f3b28, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -270,6 +519,7 @@ MonoBehaviour:
     - Key: P_Ball_Stone
       Value:
         Preview: {fileID: 21300000, guid: 0651f5e6038bf404298d759cec374607, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 1736762836638913147, guid: c9bd767875dea0d47be4f3d4eee3b333, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -278,6 +528,7 @@ MonoBehaviour:
     - Key: P_Ball_Wood
       Value:
         Preview: {fileID: 21300000, guid: 1fcc70a07c779f248a2737cdef0eac41, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 3660684224596906938, guid: 448620d5fd51dc344a49d1859c396616, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -286,6 +537,7 @@ MonoBehaviour:
     - Key: P_Box
       Value:
         Preview: {fileID: 21300000, guid: fa1e144654ee1a141aa7135bd2b66390, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 6519714479909359513, guid: 7adf8c288c7861b4e8b3577f3c2f24d1, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -294,6 +546,7 @@ MonoBehaviour:
     - Key: P_Dome
       Value:
         Preview: {fileID: 21300000, guid: 235b43f84cad6464aa0da0f8c57390cb, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 6113920336850124281, guid: 81193b59ba6ad16449010001b93a1021, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -302,6 +555,7 @@ MonoBehaviour:
     - Key: P_Extra_Life
       Value:
         Preview: {fileID: 21300000, guid: 094b709c36f78374faaae352d15d183a, type: 3}
+        ScenseGizmePreviewImage: {fileID: 21300000, guid: e8eab247422094c4b92fada7a7416c9f, type: 3}
         Prefab: {fileID: 159612, guid: 95103b586c23aa842bd5dd28ecd38a58, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -310,6 +564,7 @@ MonoBehaviour:
     - Key: P_Extra_Point
       Value:
         Preview: {fileID: 21300000, guid: b5e002e0473cf834f9cf61c5058a0c54, type: 3}
+        ScenseGizmePreviewImage: {fileID: 21300000, guid: e8eab247422094c4b92fada7a7416c9f, type: 3}
         Prefab: {fileID: 116406, guid: 14a1960897e6359409ddd3990d2fa155, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -318,6 +573,7 @@ MonoBehaviour:
     - Key: P_Modul_01
       Value:
         Preview: {fileID: 21300000, guid: 81676e16e14baac4ba4cdec6bce0bd07, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 9052374040560591088, guid: d45fe2b880400d04b868bb3e676d2bea, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -326,6 +582,7 @@ MonoBehaviour:
     - Key: P_Modul_03
       Value:
         Preview: {fileID: 21300000, guid: ab3c8bc1f3f6ce44782387016afc2480, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 2117202136982073962, guid: 66d25cf37f8e8c642851ad80a495f640, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -334,6 +591,7 @@ MonoBehaviour:
     - Key: P_Modul_08
       Value:
         Preview: {fileID: 21300000, guid: adf8fec82d42c5f4ebf9cdc1acba6553, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 9086229929543805006, guid: 5246ee59fd4252e41af3bb152b3da6ba, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -342,6 +600,7 @@ MonoBehaviour:
     - Key: P_Modul_17
       Value:
         Preview: {fileID: 21300000, guid: 6155935c777e5734e83329728de623f8, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 4918501139308884153, guid: 2bb89f9b46df476439c984861e655001, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -350,6 +609,7 @@ MonoBehaviour:
     - Key: P_Modul_18
       Value:
         Preview: {fileID: 21300000, guid: 9a4af4c7acca7274eaf633a4b8c27fca, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 1914414376910530616, guid: aa736928d00c0704486a2e1b10f6e481, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -358,6 +618,7 @@ MonoBehaviour:
     - Key: P_Modul_19
       Value:
         Preview: {fileID: 21300000, guid: 5dd5b2944ae8819428c0c430eea6a403, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 171209954376519767, guid: de41663607010904d979feb5ccfe6023, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -366,6 +627,7 @@ MonoBehaviour:
     - Key: P_Modul_25
       Value:
         Preview: {fileID: 21300000, guid: 0474f9e42d38e864e85ce887a5ab1794, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 7974462452713097589, guid: 93eec277e1ed5c141b9592a936cbb27f, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -374,6 +636,7 @@ MonoBehaviour:
     - Key: P_Modul_26
       Value:
         Preview: {fileID: 21300000, guid: f6ef187649b508d42ade91ebcd8c4673, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 585958241353488274, guid: f03ecfc32be2e4247b12fc9c26c4e392, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -382,6 +645,7 @@ MonoBehaviour:
     - Key: P_Modul_29
       Value:
         Preview: {fileID: 21300000, guid: 59431e51a10e7214fa2606f704915170, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 1292472034472238909, guid: 000a3bfe3e3c77948bbcbb97629f6ce8, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -390,6 +654,7 @@ MonoBehaviour:
     - Key: P_Modul_30
       Value:
         Preview: {fileID: 21300000, guid: 42f6ccf771de4f34aa39fff935cbfb76, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 5922638731943004962, guid: 532dc1de654e9564e8a75dda264e6ad9, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -398,6 +663,7 @@ MonoBehaviour:
     - Key: P_Modul_34
       Value:
         Preview: {fileID: 21300000, guid: c9c2889b9b62e8e4d8067e983b9d8940, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 4088031401384821701, guid: 1dc55f6c581f7424892d254c30d8db9a, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -406,6 +672,7 @@ MonoBehaviour:
     - Key: P_Modul_41
       Value:
         Preview: {fileID: 21300000, guid: 8220159ea9961c64d84300ecc25e801f, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 5350276191139009037, guid: 6841400870659de42a6b6a819f509e08, type: 3}
         SubCategory: 
         SubModelRefs: []
@@ -414,6 +681,7 @@ MonoBehaviour:
     - Key: P_Trafo_Paper
       Value:
         Preview: {fileID: 21300000, guid: 11c4f90d18eac0048ad4e3d5c7002bb8, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 365916250524180155, guid: 5a39f95cf04377d47a927f5790a96ce9, type: 3}
         SubCategory: Trafo
         SubModelRefs: []
@@ -422,6 +690,7 @@ MonoBehaviour:
     - Key: P_Trafo_Wood
       Value:
         Preview: {fileID: 21300000, guid: 9440d67d61260a148a453dddf57285dd, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 8364104576429199987, guid: 7e392bd5bf882434f809c4925774cbfd, type: 3}
         SubCategory: Trafo
         SubModelRefs: []
@@ -430,6 +699,7 @@ MonoBehaviour:
     - Key: P_Trafo_Stone
       Value:
         Preview: {fileID: 21300000, guid: eb545d8942fb09f4c883173c28a11588, type: 3}
+        ScenseGizmePreviewImage: {fileID: 0}
         Prefab: {fileID: 9215574345149969603, guid: dc9f30f241b91ef49a1e7d14fabe23f1, type: 3}
         SubCategory: Trafo
         SubModelRefs: []
@@ -438,6 +708,7 @@ MonoBehaviour:
     - Key: PS_FourFlames
       Value:
         Preview: {fileID: 21300000, guid: a091cb8d6da08a24f93bf193fd3573f9, type: 3}
+        ScenseGizmePreviewImage: {fileID: 21300000, guid: 87137120559c6b749acad55d629f18da, type: 3}
         Prefab: {fileID: 2898932380966751237, guid: 2ddfd435976d7fa498b3a70c36d2e7a3, type: 3}
         SubCategory: Basic
         SubModelRefs:
@@ -445,15 +716,18 @@ MonoBehaviour:
           EulerAngles: {x: 0, y: 0, z: 0}
           Scale: {x: 1, y: 1, z: 1}
           Path: core:Floor_Block_Start
+          Enable: 1
         - Position: {x: 0, y: 2.5, z: 0}
           EulerAngles: {x: 0, y: 180, z: 0}
           Scale: {x: 1, y: 1, z: 1}
           Path: core:PR_Resetpoint
+          Enable: 1
         OnlyOne: 1
         HiddenInContentSelector: 0
     - Key: PC_TwoFlames
       Value:
         Preview: {fileID: 21300000, guid: 8568369513854174b8cb7c65d6333196, type: 3}
+        ScenseGizmePreviewImage: {fileID: 21300000, guid: f108d26bba394b7498c0b5da60888092, type: 3}
         Prefab: {fileID: 1080734680750067192, guid: 62b833864f19f714d882c4610a4207a0, type: 3}
         SubCategory: Basic
         SubModelRefs:
@@ -461,17 +735,130 @@ MonoBehaviour:
           EulerAngles: {x: 0, y: 90, z: 0}
           Scale: {x: 1, y: 1, z: 1}
           Path: core:Floor_Block_CheckPoint
-        - Position: {x: 0, y: -2.5, z: 0}
+          Enable: 1
+        - Position: {x: 0, y: 2.5, z: 0}
           EulerAngles: {x: 0, y: -90, z: 0}
           Scale: {x: 1, y: 1, z: 1}
           Path: core:PR_Resetpoint
+          Enable: 1
         OnlyOne: 0
         HiddenInContentSelector: 0
     - Key: PE_Balloon
       Value:
         Preview: {fileID: 21300000, guid: 219e5c5304ee1b04f822ca287dd99962, type: 3}
+        ScenseGizmePreviewImage: {fileID: 21300000, guid: 19a26329d2c95654ca5e28acba75b39c, type: 3}
         Prefab: {fileID: 7221076326871398530, guid: 7949f22a519b56547aa5c4f510938ba7, type: 3}
         SubCategory: Basic
         SubModelRefs: []
         OnlyOne: 1
         HiddenInContentSelector: 0
+--- !u!1001 &8897237235833737439
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6152091142266863595}
+    m_Modifications:
+    - target: {fileID: 1344047168841060951, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_Name
+      value: FloorBlocks
+      objectReference: {fileID: 0}
+    - target: {fileID: 1479857091477366307, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1589801003551972326, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2225511485924594736, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3158749855060948045, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3241495197178578538, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351006888447755467, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4333413940825654795, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035755615365449302, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5064915040555964629, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6541588174870956735, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7340607523818992670, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044575347750084688, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+--- !u!4 &7103730547279255602 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1868100406103787757, guid: e7259ae4a06cdf04e8476977b914dab5, type: 3}
+  m_PrefabInstance: {fileID: 8897237235833737439}
+  m_PrefabAsset: {fileID: 0}

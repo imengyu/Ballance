@@ -10,7 +10,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.Name",
           Key = "Name",
-          Type = "System.String",
+          Type = "String",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -20,7 +20,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.Introduction",
           Key = "Introduction",
-          Type = "System.String",
+          Type = "Textarea",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -30,7 +30,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.Author",
           Key = "Author",
-          Type = "System.String",
+          Type = "String",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -40,7 +40,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.Version",
           Key = "Version",
-          Type = "System.String",
+          Type = "String",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -50,7 +50,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.Url",
           Key = "Url",
-          Type = "System.String",
+          Type = "String",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -60,7 +60,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.AllowPreview",
           Key = "AllowPreview",
-          Type = "System.Boolean",
+          Type = "Checkbox",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,
@@ -70,7 +70,7 @@ namespace Ballance2.Game.LevelEditor
         new LevelDynamicModelAssetConfigueItem() {
           Name = "I18N:core.editor.info.props.AllowEdit",
           Key = "AllowEdit",
-          Type = "System.Boolean",
+          Type = "Checkbox",
           Group = "Basic",
           NoIntitalUpdate = true,
           NoSaveToConfigues = true,

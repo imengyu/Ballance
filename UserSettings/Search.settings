@@ -1,7 +1,7 @@
 trackSelection = true
 refreshSearchWindowsInPlayMode = false
 fetchPreview = true
-defaultFlags = 0
+defaultFlags = 8
 keepOpen = false
 queryFolder = "Assets"
 onBoardingDoNotAskAgain = true
@@ -11,6 +11,9 @@ scopes = {
 	"last_search.8DF93128" = "p:t:PhysicsManager simulationmode=Script"
 	"OpenInspectorPreview.8DF93128" = "0"
 	"currentGroup.8DF93128" = null
+	"last_search.5A656512" = "ref=\"Assets/Battlehub/RTEditor/Content/Runtime/RTHandles/Shaders/Resources/Grid.shader\""
+	"OpenInspectorPreview.5A656512" = "0"
+	"currentGroup.5A656512" = null
 }
 providers = {
 	find = {

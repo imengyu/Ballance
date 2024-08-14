@@ -303,8 +303,11 @@ namespace Ballance2.Game.GamePlay
       }
 
       if (GameManager.DebugMode) { 
-        GamePlayUIControl.Instance.DebugStatValues["Sector"].Value = sector + "/" + this.CurrentLevelSectorCount;
-        GamePlayUIControl.Instance.DebugStatValues["Moduls"].Value = s.moduls.Count + "/" + this.CurrentLevelModulCount;
+        var stat =  GamePlayUIControl.Instance.DebugStatValues;
+        if (stat.ContainsKey("Sector"))
+          stat["Sector"].Value = sector + "/" + this.CurrentLevelSectorCount;
+        if (stat.ContainsKey("Moduls"))
+          stat["Moduls"].Value = s.moduls.Count + "/" + this.CurrentLevelModulCount;
       }
     }
 

@@ -1,5 +1,7 @@
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Ballance2.Utils
 {
@@ -32,11 +34,35 @@ namespace Ballance2.Utils
     /// <returns></returns>
     public static Texture2D LoadTexture2dFromFile(string path, int width, int height)
     {
+      if (!File.Exists(path))
+        return null;
       Texture2D t2d = new Texture2D(width, height);
       t2d.LoadImage(File.ReadAllBytes(path));
       t2d.Apply();
       return t2d;
     } 
+    /// <summary>
+    /// WWW加载图片
+    /// </summary>
+    /// <param name="path">URL</param>
+    /// <param name="outTex">返回信息</param>
+    /// <returns></returns>
+    public static IEnumerator LoadTexture2dFromFile(string url, EnumeratorResultPacker<Texture2D> outTex)
+    {
+      UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+      yield return request.SendWebRequest();
+
+      if (request.result == UnityWebRequest.Result.Success)
+      {
+        outTex.Result = DownloadHandlerTexture.GetContent(request);
+        outTex.Success = true;
+      }
+      else
+      {
+        outTex.Error = request.error;
+      }
+    } 
+
     /// <summary>
     /// 从文件中加载图片
     /// </summary>
@@ -45,6 +71,28 @@ namespace Ballance2.Utils
     public static Sprite LoadSpriteFromFile(string path, int width, int height)
     {
       return Sprite.Create(LoadTexture2dFromFile(path, width, height), new Rect(0.0f, 0.0f, width, height), new Vector2(0.5f, 0.5f), 100.0f);
+    }
+    public static Sprite CreateSpriteFromTexture(Texture2D tex)
+    {
+      return Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+    }
+    public static Texture2D TextureToTexture2D(Texture texture)
+    {
+      if (texture == null)
+        return null;
+        
+      Texture2D texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+      RenderTexture currentRT = RenderTexture.active;
+      RenderTexture renderTexture = RenderTexture.GetTemporary(texture.width, texture.height, 32);
+      Graphics.Blit(texture, renderTexture);
+
+      RenderTexture.active = renderTexture;
+      texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+      texture2D.Apply();
+
+      RenderTexture.active = currentRT;
+      RenderTexture.ReleaseTemporary(renderTexture);
+      return texture2D;
     }
   }
   

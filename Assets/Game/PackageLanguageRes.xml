@@ -156,7 +156,7 @@
         <Text name="TutorialText7">这个斜坡太陡了，不能用石球！\n\n找一个木制变球器，再试一次。\n\n提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！\n\n按“回车”键继续...</Text>
         <Text name="TutorialText8">额外分数球：\n\n左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。\n\n按“回车”键继续...</Text>
         <Text name="TutorialText9">检查点：\n\n这是你必须通过的第一个检查点。\n\n如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText10">最后有一些提示：\n\n如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。\n\n额外提示：上面是原版提示。如果你遇到了游戏的BUG或是有新的建议，请前往项目 https://github.com/imengyu/ballance/issues/ 向我们提交 Issues 反馈错误。\n\n欢迎前往 Ballance 吧讨论游戏！\n\n按“回车”键退出教程...</Text>
+        <Text name="TutorialText10">最后有一些提示：\n\n如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。\n\n额外提示：欢迎前往 Ballance 吧讨论游戏！\n\n按“回车”键退出教程...</Text>
         <Text name="ProjectAbout">Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐的梦鱼 制作。\n\n你可以游玩这个重制版，还可以根据此重制版制作自定义模组或者地图，分享给其他玩家游玩。\n\n项目的源代码存放在 https://github.com/imengyu/Ballance 。\n\n如果你遇到了BUG，或者有很棒的点子，建议，欢迎前往项目主页 https://github.com/imengyu/Ballance 提交你的 Issue，我们一起讨论呀。\n\n如果希望为Ballance开发自己的mod，关卡，欢迎前往 https://github.com/imengyu/Ballance/wiki 了解相关教程！\n\n也欢迎在 Ballance 吧讨论游戏。</Text>
       </Group>
       <Group name="package">
@@ -168,10 +168,17 @@
         <Text name="Save">保存</Text>
         <Text name="New">新关卡</Text>
         <Text name="Play">测试玩</Text>
+        <Text name="Edit">返回编辑</Text>
+        <Text name="GoSector">跳转到小节</Text>
+        <Text name="RestartSector">重新开始本节</Text>
+        <Text name="RestartLevel">重新开始关卡</Text>
+        <Text name="ResetModuls">重置所有机关</Text>
+        <Text name="Screenshort">拍照</Text>
         <Group name="sideedit">
           <Text name="Basic">基础设置</Text>
           <Text name="Model">机关设置</Text>
           <Text name="Extra">扩展设置</Text>
+          <Text name="Dynamic">可编辑</Text>
           <Group name="props">
             <Text name="Name">名称</Text>
             <Text name="Position">位置</Text>
@@ -182,26 +189,59 @@
             <Text name="WithFloor">附带路面</Text>
             <Text name="BallonSound">靠近播放音乐</Text>
             <Text name="ActiveSectors">激活的小节</Text>
+            
+            <Group name="Floor">
+              <Text name="Width">宽度</Text>
+              <Group name="Type">
+                <Text name="Name">类型</Text>
+                <Text name="Line">直线</Text>
+                <Text name="Arc">圆弧</Text>
+                <Text name="Bezier">曲线</Text>
+              </Group>
+              <Group name="ArcType">
+                <Text name="Name">方向</Text>
+                <Text name="X">水平</Text>
+                <Text name="Y">垂直</Text>
+              </Group>
+            </Group>
           </Group>
         </Group>
         <Group name="messages">
           <Text name="QuitAsk">确定退出编辑器吗？如果没有保存就退出的话会丢失修改哦！</Text>
+          <Text name="ExitTestModeAsk">确定退出试验场吗？</Text>
+          <Text name="EnterSector">请输入要跳转的小节（1-{0}）：</Text>
+          <Text name="EnterSectorInvalid">输入的小节数字不正确</Text>
           <Text name="DeleteAsk">确定删除选中的 {0} 个对象？</Text>
           <Text name="LoadFailed">加载关卡文件失败</Text>
           <Text name="NotExists">关卡文件不存在</Text>
           <Text name="SaveSuccess">保存成功</Text>
           <Text name="SaveFailed">保存失败</Text>
           <Text name="DuplicateObject">选择的物体在此关卡中已经存在，不能重复添加</Text>
+          <Text name="TooManySectors">检查点的数量太多了...</Text>
+          <Text name="LoadSkyTexFailed">加载图片失败，请确定选择了有效的图片文件！\n天空盒贴图必须是 png 文件格式，大小512x512</Text>
+          <Text name="PrepareTestMode">正在准备试验场模式...</Text>
+          <Text name="PrepareEditor">准备编辑器...</Text>
+          <Text name="MissingLevelStart">当前关卡缺少过关飞船</Text>
+          <Text name="MissingLevelEnd">当前关卡缺少出生点</Text>
+          <Text name="ResetedSector">已重置当前小节</Text>
+          <Text name="JumpedSector">已跳转小节</Text>
+          <Text name="TestFail">很不幸，你已经用完全部的生命</Text>
+          <Text name="TestPass">恭喜，您已经过关</Text>
+          <Text name="TestPaused">游戏已暂停，按 ESC 继续</Text>
         </Group>
         <Text name="StatusText">{0}/{1} 对象/小节 选中 {2}</Text>
         <Text name="CreateNew">创建新关卡文件</Text>
         <Text name="EmptyResources">此分类下未找到资产，你可以去创意工坊安装更多玩家创建的资产</Text>
+        <Text name="ShowAtStart">启动时显示</Text>
         <Group name="categoryNames">
           <Text name="Default">默认资产</Text>
+          <Text name="Stone">石制路面</Text>
+          <Text name="Speical">特殊</Text>
           <Text name="Wood">木制路面</Text>
           <Text name="Basic">关卡基础</Text>
           <Text name="Stopper">门挡板</Text>
           <Text name="Trafo">转换器</Text>
+          <Text name="Sky">云层</Text>
         </Group>
         <Group name="internalmodul">
           <Text name="P_Ball_Paper.Name">纸质道具球</Text>
@@ -258,7 +298,21 @@
           <Text name="PE_Balloon.Desc">它将载着勇敢的小球去往下一个挑战。\n\n玩家登上飞船则通关关卡</Text>
           <Text name="PR_Resetpoint.Name">出生位置</Text>
           <Text name="PR_Resetpoint.Desc">设置球的出生位置，箭头是前进方向</Text>
+          <Text name="Quader01.Name">死亡检测区</Text>
+          <Text name="Quader01.Desc">当球坠落时碰到该位置，可以重新开始一节</Text>
+          <Text name="FinalSkyVoterx.Name">漩涡云层</Text>
+          <Text name="FinalSkyVoterx.Desc">快跑，不要被卷入漩涡</Text>
+          <Text name="FinalSkyLayer.Name">平面云层</Text>
+          <Text name="FinalSkyLayer.Desc">平静，祥和，少云</Text>
 
+          <Text name="FloorDynamicFlat.Name">平坦路面</Text>
+          <Text name="FloorDynamicFlat.Desc">平坦好走的路面，但没有保护\n\n这是可编辑的网格，可以变形和调整大小</Text>
+          <Text name="FloorDynamicProfil.Name">四方凹槽路面</Text>
+          <Text name="FloorDynamicProfil.Desc">四周带有凹槽的路面，安全放心\n\n这是可编辑的网格，可以变形和调整大小</Text>
+          <Text name="FloorDynamicProfilLine.Name">双面凹槽路面</Text>
+          <Text name="FloorDynamicProfilLine.Desc">双面带有凹槽的路面，很适合导向\n\n这是可编辑的网格，可以变形和调整长度</Text>
+          <Text name="FloorDynamicBorderless.Name">无边框路面</Text>
+          <Text name="FloorDynamicBorderless.Desc">没有边框的路面，适合放在中心做一个平台\n\n这是可编辑的网格，可以调整大小</Text>
           <Text name="Floor_Block_Flat.Name">平坦路面</Text>
           <Text name="Floor_Block_Flat.Desc">平坦好走的路面，但没有保护</Text>
           <Text name="Floor_Block_Profile.Name">四方凹槽路面</Text>
@@ -326,9 +380,9 @@
             <Text name="AllowPreview">允许玩家预览关卡</Text>
             <Text name="AllowEdit">允许玩家编辑关卡</Text>
             <Text name="firstBall">初始球</Text>
-            <Text name="levelScore">关卡过关获得分数</Text>
-            <Text name="startPoint">关卡开始点数</Text>
-            <Text name="startLife">关卡开始生命数，-1则无限</Text>
+            <Text name="levelScore">过关获得分数</Text>
+            <Text name="startPoint">开始点数</Text>
+            <Text name="startLife">开始生命数(-1则无限)</Text>
             <Text name="musicTheme">背景音乐风格</Text>
             <Text name="skyBox">天空盒子风格</Text>
             <Text name="lightColor">灯光颜色</Text>
@@ -341,8 +395,13 @@
           <Text name="NewDump">已存在同名关卡文件，你是否要覆盖已有文件？\n注意：覆盖后不可恢复！</Text>
         </Group>
         <Group name="help">
-          <Text name="TransformHelpTitle">编辑器操作帮助</Text>
-          <Text name="TransformHelpContent"><![CDATA[ <size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 可以下降视角，按 <sprite=3> 可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n使用 <sprite=4> 点击删除选中的对象。 ]]></Text>
+          <Text name="TransformHelpTitle">欢迎使用关卡编辑器！</Text>
+          <Text name="TransformHelpContent"><![CDATA[ 关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。\n\n<size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 可以下降视角，按 <sprite=3> 可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n使用 <sprite=4> 或者点击删除按钮删除选中的对象。\n ]]></Text>
+        
+          <Text name="TestHelpTitle">欢迎使用试验场！</Text>
+          <Text name="TesHelpContent"><![CDATA[ 试验场是一个模拟环境，允许您测试自己的关卡是否可玩，在试验场中您可以随时重置球，随时重置机关，球可以在试验场上下飞行。\n\n小提示：进入试验场之前先选择检查点，可以从该检查点开始玩哦！ ]]></Text>
+
+          <Text name="CustomSkyTip">小提示：选择 custom 可以自定义天空图片</Text>
         </Group>
         <Group name="content">
           <Text name="Search">搜索资产</Text>

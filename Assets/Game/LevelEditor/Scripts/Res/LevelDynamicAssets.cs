@@ -19,12 +19,17 @@ namespace Ballance2.Game.LevelEditor
 
     public string Name;
     public string Desc;
+    public string Tag;
     public string ObjName;
+    public string ObjTarget;
+    public Vector3 IntitalScale = Vector3.one;
+    public Vector3 IntitalEulerAngles = Vector3.zero;
     public Sprite PreviewImage;
     public Sprite ScenseGizmePreviewImage;
     public bool OnlyOne = false;
     public bool CanDelete = true;
     public bool HiddenInContentSelector = false;
+    public bool HiddenPlaceholderRender = false;
 
     public GameObject Prefab;
     public bool Loaded = false;

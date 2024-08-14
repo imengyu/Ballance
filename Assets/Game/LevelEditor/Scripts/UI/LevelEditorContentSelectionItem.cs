@@ -15,6 +15,8 @@ namespace Ballance2.Game.LevelEditor
   {
     public Image Image;
     public UIText Text;
+    public RectTransform Tag;
+    public UIText TagText;
     public PrefabSpawnPoint prefabSpawnPoint;
 
     public Action<LevelDynamicModelAsset> onShowTip;
@@ -51,6 +53,8 @@ namespace Ballance2.Game.LevelEditor
       asset = info;
       Image.sprite = info.PreviewImage;
       Text.text = info.Name;
+      Tag.gameObject.SetActive(!string.IsNullOrEmpty(info.Tag));
+      TagText.text = info.Tag;
       prefabSpawnPoint.UpdateInfo(info.Prefab);
     }
   }

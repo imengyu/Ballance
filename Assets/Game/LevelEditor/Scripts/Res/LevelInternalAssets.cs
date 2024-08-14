@@ -3,6 +3,7 @@ using Ballance2.Base;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using SubjectNerd.Utilities;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -24,15 +25,21 @@ namespace Ballance2.Game.LevelEditor
           SourcePath = $"core:{key}",
           Category = item.Category,
           SubCategory = item.SubCategory,
+          Tag = item.Tag,
           SubModelRefs = item.SubModelRefs,
           ObjName = key,
           OnlyOne = item.OnlyOne,
           HiddenInContentSelector = item.HiddenInContentSelector,
+          HiddenPlaceholderRender = item.HiddenPlaceholderRender,
+          ObjTarget = item.ObjTarget,
+          IntitalScale = item.IntitalScale,
+          IntitalEulerAngles = item.IntitalEulerAngles,
           Loaded = true,
           Prefab = item.Prefab,
           Name = $"I18N:core.editor.internalmodul.{key}.Name",
           Desc = $"I18N:core.editor.internalmodul.{key}.Desc",
           PreviewImage = item.Preview,
+          ScenseGizmePreviewImage = item.ScenseGizmePreviewImage,
         });
       }
       foreach (var item in InternalModuls)
@@ -43,8 +50,10 @@ namespace Ballance2.Game.LevelEditor
           Category = LevelDynamicModelCategory.Moduls,
           SubCategory = item.Value.SubCategory,
           SubModelRefs = item.Value.SubModelRefs,
+          ScenseGizmePreviewImage = item.Value.ScenseGizmePreviewImage,
           ObjName = item.Key,
           OnlyOne = item.Value.OnlyOne,
+          ObjTarget = item.Key,
           HiddenInContentSelector = item.Value.HiddenInContentSelector,
           Loaded = true,
           Prefab = item.Value.Prefab,
@@ -72,13 +81,25 @@ namespace Ballance2.Game.LevelEditor
     /// </summary>
     public string Desc;
     /// <summary>
+    /// 显示在选择条目右上角的醒目标记文字，为空则不显示
+    /// </summary>
+    public string Tag;
+    /// <summary>
     /// 创建物体时使用的名称
     /// </summary>
     public string ObjName;
     /// <summary>
+    /// 设置当前物体在关卡中起到什么作用
+    /// </summary>
+    public string ObjTarget;
+    /// <summary>
     /// 预览图片，如果不提供，则系统尝试使用预览实时截图
     /// </summary>
     public Sprite Preview;
+    /// <summary>
+    /// 机关类型在关卡编辑器中的预览图标，不提供则为默认
+    /// </summary>
+    public Sprite ScenseGizmePreviewImage;
     /// <summary>
     /// 预制体
     /// </summary>
@@ -100,9 +121,17 @@ namespace Ballance2.Game.LevelEditor
     /// </summary>
     public bool HiddenInContentSelector = false;
     /// <summary>
+    /// 隐藏渲染占位符
+    /// </summary>
+    public bool HiddenPlaceholderRender = false;
+    /// <summary>
     /// 子模型引用
     /// </summary>
     public List<LevelProviderSubModelRefAsset> SubModelRefs = new List<LevelProviderSubModelRefAsset>();
+    /// <summary>
+    /// 创建时的初始缩放
+    /// </summary>
+    public Vector3 IntitalScale;
   }
   [Serializable]
   public class LevelProviderSubModelRefAsset
@@ -118,17 +147,24 @@ namespace Ballance2.Game.LevelEditor
   public class LevelInternalProviderAsset
   {
     public Sprite Preview;
+    public Sprite ScenseGizmePreviewImage;
     public GameObject Prefab;
     public string SubCategory;
+    public string Tag;
     public LevelDynamicModelCategory Category;
     public List<LevelProviderSubModelRefAsset> SubModelRefs = new List<LevelProviderSubModelRefAsset>();
     public bool OnlyOne = false;
     public bool HiddenInContentSelector = false;
+    public bool HiddenPlaceholderRender = false;
+    public string ObjTarget;
+    public Vector3 IntitalScale = Vector3.one;
+    public Vector3 IntitalEulerAngles = Vector3.zero;
   }  
   [Serializable]
   public class LevelInternalFixedProviderAsset
   {
     public Sprite Preview;
+    public Sprite ScenseGizmePreviewImage;
     public GameObject Prefab;
     public string SubCategory;
     public List<LevelProviderSubModelRefAsset> SubModelRefs = new List<LevelProviderSubModelRefAsset>();

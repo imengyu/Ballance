@@ -4,21 +4,18 @@ namespace Ballance2.Game.LevelEditor.Moduls
 {
   public class PS_Levelstart_Configue : LevelDynamicModelAssetConfigue
   {
-    public override void OnInit(LevelDynamicModel modelInstance, bool isEditor, bool isNew)
+    public override void OnEditorAdd(LevelDynamicModel modelInstance)
     {
-      if (isEditor)
-      {
-        //设置关卡小节数量
-        LevelEditorManager.Instance.SetSectorCountToFitModuls();
-      }
+      //设置关卡小节数量
+      LevelEditorManager.Instance.SetSectorCountToFitModuls();
     }
-    public override List<LevelDynamicModelAssetConfigueItem> GetConfigueItems(LevelDynamicModel modelInstance)
+    public override List<LevelDynamicModelAssetConfigueItem> GetConfigueItems(LevelDynamicModel modelInstance, LevelDynamicModelAssetModulConfig modulConfig)
     {
-      var list = base.GetConfigueItems(modelInstance);
+      var list = base.GetConfigueItems(modelInstance, modulConfig);
       list.Add(new LevelDynamicModelAssetConfigueItem() {
         Name = "I18N:core.editor.sideedit.props.WithFloor",
         Key = "WithFloor",
-        Type = "System.Boolean",
+        Type = "Checkbox",
         Group = "Extra",
         IntitalValue = true,
         OnValueChanged = (v) => {

@@ -186,6 +186,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6776804446499945912}
     m_Modifications:
+    - target: {fileID: 307202763781846139, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 307202763781846139, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 307202763781846139, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1304585943130108979, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
       propertyPath: m_Options.m_Options.Array.size
       value: 0
@@ -225,6 +237,14 @@ PrefabInstance:
     - target: {fileID: 1304585943130108979, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2386565587817597580, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2386565587817597580, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3258626995635468203, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
       propertyPath: m_text
@@ -313,6 +333,10 @@ PrefabInstance:
     - target: {fileID: 7376792225798084891, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7652738872313178241, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
+      propertyPath: m_Size
+      value: 0.81333333
       objectReference: {fileID: 0}
     - target: {fileID: 8208161216390723888, guid: b06c547398f0eed4d93488c7a82d692e, type: 3}
       propertyPath: m_Name

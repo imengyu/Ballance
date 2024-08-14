@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.UI;
 using Ballance2.UI.Core.Controls;
@@ -17,6 +18,7 @@ namespace Ballance2.Game.LevelEditor
     public UIText HoverTipName;
     public UIText HoverTipDesc;
     public UIText HoverTipTagText;
+    public RectTransform HoverTipTag;
     public UITabSelect SubCategoryTab;
     public RectTransform EmptyTip;
 
@@ -51,7 +53,8 @@ namespace Ballance2.Game.LevelEditor
       HoverTipImage.sprite = asset.PreviewImage;
       HoverTipName.text = asset.Name;
       HoverTipDesc.text = asset.Desc;
-      HoverTipTagText.text = "";
+      HoverTipTagText.text = asset.Tag;
+      HoverTipTag.gameObject.SetActive(!string.IsNullOrEmpty(asset.Tag));
       HoverTip.gameObject.SetActive(true);
     }
     public void HideTip()
@@ -82,6 +85,7 @@ namespace Ballance2.Game.LevelEditor
             currentShowAssets.Add(item);
         }
         AssetSelectList.UpdateData(false);
+        AssetSelectList.horizontalNormalizedPosition = 0;
         EmptyTip.gameObject.SetActive(currentShowAssets.Count == 0);
       }
     }
@@ -134,6 +138,7 @@ namespace Ballance2.Game.LevelEditor
         EmptyTip.gameObject.SetActive(currentShowAssets.Count == 0);
       }
       AssetSelectList.UpdateData(false);
+      GameManager.Instance.Delay(0.2f, () => AssetSelectList.horizontalNormalizedPosition = 0);
     }
 
   }

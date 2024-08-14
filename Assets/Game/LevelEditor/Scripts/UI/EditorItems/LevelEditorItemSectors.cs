@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Ballance2.Services;
 using Ballance2.UI;
 using Ballance2.UI.Core.Controls;
 using Ballance2.Utils;
@@ -13,6 +14,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
   {
     public RectTransform ContentView;
     public GameObject Prefab;
+    public ScrollRect ScrollRect;
 
     private List<UIButtonActiveState> SectorButtons = new List<UIButtonActiveState>();
 
@@ -22,7 +24,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
       var singleSelect = paramsDict["singleSelect"];
       var disableSelect = paramsDict["disableSelect"];
       var manager = LevelEditorManager.Instance;
-      var sectors = manager.LevelCurrent.LevelInfo.level.sectorCount;
+      var sectors = manager.LevelCurrent.GetSectorCount();
       SectorButtons.Clear();
       ContentView.DestroyAllChildren();
       for (int i = 1; i <= sectors; i++)
@@ -57,6 +59,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
           }
           EmitNewValue(currentValue);
         }; 
+        btn.transform.Find("Text").GetComponent<TMP_Text>().text = i.ToString();
         SectorButtons.Add(btn);
       }
       GameObject go = new GameObject();
@@ -64,6 +67,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
       space.sizeDelta = new Vector2(200, 10);
       space.SetParent(ContentView);
       LayoutRebuilder.ForceRebuildLayoutImmediate(ContentView);
+      GameManager.Instance.Delay(0.2f, () => ScrollRect.horizontalNormalizedPosition = 0);
     }
 
     private List<int> currentValue = new List<int>();

@@ -14,6 +14,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
   public class LevelEditorItemBallSelector : LevelEditorItemBase 
   {
     public RectTransform ContentView;
+    public ScrollRect ScrollRect;
     public GameObject Prefab;
 
     private List<UIButtonActiveState> SectorButtons = new List<UIButtonActiveState>();
@@ -29,6 +30,8 @@ namespace Ballance2.Game.LevelEditor.EditorItems
         var btn = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<UIButtonActiveState>(Prefab, ContentView);
         btn.data = ballCurrent.name;
         btn.gameObject.SetActive(true);
+        btn.transform.Find("Text").GetComponent<TMP_Text>().text = ball.name;
+        btn.transform.Find("Image").GetComponent<Image>().sprite = ball.Preview;
         btn.SetActive(currentValue == ballCurrent.name);
         btn.onClick = () => {
           foreach (var item in SectorButtons)
@@ -44,6 +47,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
       space.sizeDelta = new Vector2(200, 10);
       space.SetParent(ContentView);
       LayoutRebuilder.ForceRebuildLayoutImmediate(ContentView);
+      GameManager.Instance.Delay(0.2f, () => ScrollRect.horizontalNormalizedPosition = 0);
     }
 
     private string currentValue = "";

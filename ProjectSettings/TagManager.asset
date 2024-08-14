@@ -16,6 +16,9 @@ TagManager:
   - Background
   - IZoneSelect
   - Preview
+  - RGBA
+  - ColorSlider
+  - SnapPoint
   layers:
   - Default
   - TransparentFX
@@ -30,7 +33,7 @@ TagManager:
   - Speical
   - CustomRenderer
   - Preview
-  - CustomLayer13
+  - SnapPoint
   - CustomLayer14
   - CustomLayer15
   - CustomLayer16

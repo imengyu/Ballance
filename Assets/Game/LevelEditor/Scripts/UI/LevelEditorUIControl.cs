@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.UI;
 using Ballance2.UI.Core.Controls;
@@ -16,16 +19,19 @@ namespace Ballance2.Game.LevelEditor
     public LevelEditorContentSelection LevelEditorContentSelection;
     public LevelEditorTransformToolControl LevelEditorTransformToolControl;
     public LevelEditorObjectInfoControl LevelEditorObjectInfoControl;
+    public GameObject TransformHandles;
     public RectTransform DialogTransformHelp;
+    public RectTransform DialogTestHelp;
     public RectTransform DialogLevelInfo;
     public RectTransform DialogLoading;
+    public RectTransform DialogPause;
     public RectTransform MouseTip;
     public UIText MouseTipText;
     public UIText DialogLoadingText;
     public UIText TextStatus;
 
     public List<Color> SectorColors;
-    public LevelDynamicModel[] SelectedObject = new LevelDynamicModel[0];
+    public List<LevelDynamicModel> SelectedObject = new List<LevelDynamicModel>();
 
     public Color GetSectorColor(int sector)
     {
@@ -41,7 +47,7 @@ namespace Ballance2.Game.LevelEditor
 
     public InputAction DeleteAction;
 
-    private void Start() 
+    private void Awake() 
     {
       ButtonFloors.onClick = () => ShowContentSelectUI(LevelDynamicModelCategory.Floors);
       ButtonRails.onClick = () => ShowContentSelectUI(LevelDynamicModelCategory.Rails);
@@ -54,15 +60,41 @@ namespace Ballance2.Game.LevelEditor
         else onCancel?.Invoke();
       };
       LevelEditorTransformToolControl.OnSelect = (objects) => {
-        SelectedObject = objects;
         LevelEditorObjectInfoControl.SetSelectModel(objects);
+        ReSetSelect(objects);
+        HideLevelInfo();
         UpdateStatusText();
       };
     }
+    private void ReSetSelect(LevelDynamicModel[] newSels)
+    {
+      foreach (var item in SelectedObject)
+        item.SelectFlag = -1;
+      foreach (var item in newSels)
+      {
+        item.SelectFlag = 1;
+        if (!SelectedObject.Contains(item))
+        {
+          item.ConfigueRef.OnEditorSelected(newSels.Length == 1);
+          SelectedObject.Add(item);
+        }
+      }
+      for (int i = SelectedObject.Count - 1; i >= 0 ; i--)
+      {
+        if (SelectedObject[i].SelectFlag == -1)
+          SelectedObject.RemoveAt(i);
+      }
+    }
+
+    private Action<string> onConfirm = null;
+    private Action onCancel = null;
+    private LevelDynamicModelCategory currentShowTab = LevelDynamicModelCategory.UnSet;
 
     public void Init()
     {
       SetToolBarMode(ToolBarMode.Edit);
+      if (GameManager.Instance.GameSettings.GetBool("showHelpAtStart", true))
+        ShowTransformHelp();
     }
 
     public enum ToolBarMode
@@ -84,6 +116,7 @@ namespace Ballance2.Game.LevelEditor
           HideMouseTip();
           HideTransformHelp();
           DeleteAction.Disable();
+          TransformHandles.SetActive(false);
           break;
         case ToolBarMode.Edit:
           BottomBarTest.gameObject.SetActive(false);
@@ -91,24 +124,26 @@ namespace Ballance2.Game.LevelEditor
           LevelEditorTransformToolControl.gameObject.SetActive(true);
           ShowContentSelectUI(LevelDynamicModelCategory.UnSet);
           DeleteAction.Enable();
+          TransformHandles.SetActive(true);
           break;
         case ToolBarMode.Test:
           BottomBarTest.gameObject.SetActive(true);
           BottomBarEditor.gameObject.SetActive(false);
           LevelEditorTransformToolControl.gameObject.SetActive(false);
+          LevelEditorContentSelection.gameObject.SetActive(false);
           ShowContentSelectUI(LevelDynamicModelCategory.UnSet);
           HideLevelInfo();
           HideMouseTip();
           HideTransformHelp();
           DeleteAction.Disable();
+          TransformHandles.SetActive(false);
           break;
       }
     }
 
-    private Action<string> onConfirm = null;
-    private Action onCancel = null;
-    private LevelDynamicModelCategory currentShowTab = LevelDynamicModelCategory.UnSet;
-
+    public void SetShowHelpAtStart(bool v) {
+      GameManager.Instance.GameSettings.SetBool("showHelpAtStart", v);
+    }
     public void CloseContentSelectUI()
     {
       ButtonFloors.SetActive(false);
@@ -148,9 +183,18 @@ namespace Ballance2.Game.LevelEditor
     {
       DialogTransformHelp.gameObject.SetActive(false);
     }
-        
+    public void ShowTestHelp()
+    {
+      DialogTestHelp.gameObject.SetActive(true);
+    }
+    public void HideTestHelp()
+    {
+      DialogTestHelp.gameObject.SetActive(false);
+    }
+      
     public void ShowLevelInfo()
     {
+      LevelEditorObjectInfoControl.gameObject.SetActive(false);
       DialogLevelInfo.gameObject.SetActive(true);
     }
     public void HideLevelInfo()
@@ -159,22 +203,30 @@ namespace Ballance2.Game.LevelEditor
     }
     public void SwitchLevelInfo()
     {
-      DialogLevelInfo.gameObject.SetActive(!DialogLevelInfo.gameObject.activeSelf);
+      if (!DialogLevelInfo.gameObject.activeSelf)
+        ShowLevelInfo();
+      else
+        HideLevelInfo();
     }
     
+    public void SetPauseTipShow(bool s)
+    {
+      DialogPause.gameObject.SetActive(s);
+    }
+      
     public void ClearSelectionWhenDelete()
     {
       LevelEditorTransformToolControl.ClearSelection();
     }
     public void DeleteSelection()
     {
-      if (SelectedObject.Length > 1)
+      if (SelectedObject.Count > 1)
       {
-        Confirm("I18N:core.ui.Tip", I18N.TrF("core.editor..messages.DeleteAsk", "", SelectedObject.Length), LevelEditorConfirmIcon.Warning, onConfirm: (_) => {
+        Confirm("I18N:core.ui.Tip", I18N.TrF("core.editor..messages.DeleteAsk", "", SelectedObject.Count), LevelEditorConfirmIcon.Warning, onConfirm: (_) => {
           LevelEditorTransformToolControl.DoDeleteSeletedObjects();
         });
       }
-      else if (SelectedObject.Length == 1)
+      else if (SelectedObject.Count == 1)
       {
         LevelEditorTransformToolControl.DoDeleteSeletedObjects();
       }
@@ -186,8 +238,8 @@ namespace Ballance2.Game.LevelEditor
       {
         TextStatus.text = I18N.TrF("core.editor.StatusText", "", 
           level.LevelData.LevelModels.Count,
-          level.LevelInfo.level.sectorCount,
-          SelectedObject.Length
+          level.GetSectorCount(),
+          SelectedObject.Count
         );
       }
       else
@@ -200,7 +252,7 @@ namespace Ballance2.Game.LevelEditor
       string title, string content, 
       LevelEditorConfirmIcon icon = LevelEditorConfirmIcon.None, 
       string confirmText = "", string cancelText = "", 
-      bool showInput = true,
+      bool showInput = false,
       string inputFieldText = "", string inputFieldPlaceholder = "",
       Action<string> onConfirm = null, Action onCancel = null)
     {

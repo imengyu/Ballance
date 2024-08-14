@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using Ballance2.Base;
 using Ballance2.Game.GamePlay;
+using Ballance2.Game.GamePlay.Moduls;
+using Ballance2.Game.LevelBuilder;
 using Ballance2.Game.Utils;
+using Ballance2.Menu;
 using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services;
@@ -25,11 +28,13 @@ namespace Ballance2.Game.LevelEditor
 
     public LevelEditorUIControl LevelEditorUIControl;
     public Camera LevelEditorCamera;
+    public Skybox LevelEditorCameraSkyBox;
     public GameObject TransformHandles;
     public GameObject ScenseRoot;
     public GameObject ErrorPrefab;
     public GameObject LevelEditorObjectScenseIconPrefab;
     public Material TransparentMaterial;
+    public Material TransparentMaterial2;
     public TextAsset LevelNewJson;
 
     /// <summary>
@@ -117,6 +122,7 @@ namespace Ballance2.Game.LevelEditor
     /// 退出编辑器
     /// </summary>
     public void Quit() {
+      GameUIManager.Instance.MaskBlackSet(true);
       UnloadLevel(() => {
         LevelEditorCamera.gameObject.SetActive(false);
         GameManager.Instance.SetGameBaseCameraVisible(true);
@@ -139,7 +145,7 @@ namespace Ballance2.Game.LevelEditor
       }
     }
 
-    private void ReportLoadError(string message)
+    public void ReportLoadError(string message)
     {
       Log.E(TAG, message);
       LevelEditorUIControl.Alert("I18N:core.editor.messages.LoadFailed", message, LevelEditorConfirmIcon.Error, onConfirm: () => Quit());
@@ -193,19 +199,216 @@ namespace Ballance2.Game.LevelEditor
       //根据系统中拥有的检查点数量设置节数量
       if (LevelCurrent != null)
       {
-        var sectorCount = 0;
-        foreach (var model in LevelCurrent.LevelData.LevelModels)
-        {
-          if (model.Asset == "core:PS_FourFlames")
-            sectorCount++;
-          else if (model.Asset == "core:PC_TwoFlames")
-            sectorCount++;
-        }
-        LevelCurrent.LevelInfo.level.sectorCount = sectorCount;
+        LevelCurrent.SetSectorCountToFitModuls();
         LevelEditorUIControl.UpdateStatusText();
       }
     }
+    public void SetLightColor(Color currentColor)
+    {
+      LevelCurrent.LevelInfo.level.lightColor = "#" + ColorUtility.ToHtmlStringRGB(currentColor);
+      GameManager.GameLight.color = currentColor;
+    }
+    public IEnumerator CreateSky() {
+      Material customSkyMat = null;
+      if (LevelCurrent.LevelInfo.level.skyBox == "custom")
+      {
+        Texture B = null, F = null, L = null, R = null, T = null, D = null;
+        var result = new EnumeratorResultPacker<Texture2D>();
+        yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxB.png", result));
+        B = result.Result;
+        yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxF.png", result));
+        F = result.Result;
+        yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxL.png", result));
+        L = result.Result;
+        yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxR.png", result));
+        R = result.Result;
+        yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxT.png", result));
+        T = result.Result;
+        yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxD.png", result));
+        D = result.Result;
+        customSkyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T);
+      }
 
+      LevelEditorCameraSkyBox.material = GamePlayManager.Instance.CreateSkyAndLight(
+        LevelCurrent.LevelInfo.level.skyBox, 
+        customSkyMat, 
+        StringUtils.StringToColor(LevelCurrent.LevelInfo.level.lightColor)
+      );
+    }
+    public void StartTestMode() 
+    {
+      LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.PrepareTestMode");
+      LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
+      StartCoroutine(_IntoTest());
+    }
+    public void ExitTestMode() 
+    {      
+      LevelEditorUIControl.Confirm(
+        "", 
+        "I18N:core.editor.messages.ExitTestModeAsk", 
+        LevelEditorConfirmIcon.Warning, onConfirm: (_) => 
+        {
+          LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.PrepareEditor");
+          LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
+          LevelEditorUIControl.SetPauseTipShow(false);
+          StartCoroutine(_QuitTest());
+        }
+      );
+    }
+    public void TestResetSector(bool restart)
+    {
+      if (restart)
+        GamePlayManager.Instance.GoSector(GamePlayManager.Instance.CurrentSector);
+      else
+        GamePlayManager.Instance.SectorManager.ResetCurrentSector(true);
+      GameUIManager.Instance.GlobalToast("I18N:core.editor.messages.ResetedSector");
+    }
+    public void TestResetLevel()
+    {
+      GamePlayManager.Instance.RestartLevel();
+    }
+    public void TestGoSector()
+    {
+      LevelEditorUIControl.Confirm(
+        "", 
+        I18N.TrF("core.editor.messages.EnterSector", "", GamePlayManager.Instance.SectorManager.CurrentLevelSectorCount), 
+        LevelEditorConfirmIcon.Warning, onConfirm: (value) => 
+        {
+          if (int.TryParse(value, out var sector) && sector >= 1 && sector < GamePlayManager.Instance.SectorManager.CurrentLevelSectorCount)
+          {
+            GamePlayManager.Instance.GoSector(sector);
+            GameUIManager.Instance.GlobalToast("I18N:core.editor.messages.JumpedSector");
+          }
+          else
+          {
+            GameUIManager.Instance.GlobalToast("I18N:core.editor.messages.EnterSectorInvalid");
+          }
+        },
+        showInput: true
+      );
+    }
+    public void TestScreenshort()
+    {
+      if (isTakingScreenshort)
+        return;
+      isTakingScreenshort = true;
+      StartCoroutine(_Screenshort());
+    }
+    public void TestFallShowAlert()
+    {
+      LevelEditorUIControl.Confirm(
+        "", 
+        "I18N:core.editor.messages.TestFail", 
+        LevelEditorConfirmIcon.Warning, 
+        onConfirm: (_) => 
+        {
+          TestResetSector(true);
+        },
+        onCancel: () => {
+          TestResetLevel();
+        },
+        confirmText: "I18N:core.editor.RestartSector",
+        cancelText: "I18N:core.editor.RestartLevel"
+      );
+    }
+    public void TestSwitchPauseAlert(bool show)
+    {
+      LevelEditorUIControl.SetPauseTipShow(show);
+    }
+    public void TestPass()
+    {
+      LevelEditorUIControl.Confirm(
+        "", 
+        "I18N:core.editor.messages.TestPass", 
+        LevelEditorConfirmIcon.Warning, 
+        onConfirm: (_) => 
+        {
+          ExitTestMode();
+        },
+        onCancel: () => {
+          TestResetLevel();
+        },
+        confirmText: "I18N:core.editor.Edit",
+        cancelText: "I18N:core.editor.RestartLevel"
+      );
+    }
+
+    private bool isTakingScreenshort = false;
+    private IEnumerator _Screenshort()
+    {
+      string saveDir = LevelCurrent.LevelDirPath + "/screenshot/";
+      string savePath = saveDir + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
+      if (!Directory.Exists(saveDir))
+        Directory.CreateDirectory(saveDir);
+      
+      LevelEditorUIControl.BottomBarTest.gameObject.SetActive(false);
+      GamePlayUIControl.Instance.gameObject.SetActive(false);
+
+      yield return new WaitForEndOfFrame();
+
+      ScreenCapture.CaptureScreenshot(savePath);
+      GamePlayUIControl.Instance.gameObject.SetActive(true);
+
+      LevelEditorUIControl.BottomBarTest.gameObject.SetActive(true);
+
+      Log.D(TAG, "CaptureScreenshot to " + savePath);
+      GameUIManager.Instance.GlobalToast(I18N.TrF("global.CaptureScreenshotSuccess", "", ""));
+      isTakingScreenshort = false;
+    }
+    private IEnumerator _IntoTest()
+    {
+      yield return new WaitForSeconds(1);
+
+      //当选择了检查点时，则从检查点选择的节开始
+      var startSector = 1;
+      if (LevelEditorUIControl.SelectedObject.Count > 0)
+      {
+        var firstSelObj = LevelEditorUIControl.SelectedObject[0];
+        if (firstSelObj.AssetRef.ObjName == "PC_TwoFlames" && firstSelObj.ActiveSectors.Count > 0)
+          startSector = firstSelObj.ActiveSectors[0];
+      }
+      GamePlayManager.Instance.StartSector = startSector;
+
+      //所有元素切换状态
+      foreach (var item in LevelCurrent.LevelData.LevelModels)
+      {
+        if (item.ConfigueRef != null)
+          item.ConfigueRef.OnEditorIntoTest(item);
+      } 
+
+      LevelEditorCamera.gameObject.SetActive(false);
+      GamePlayManager.Instance.CamManager.SetCameraEnable(true);
+      yield return StartCoroutine(LevelBuilder.LevelBuilder.Instance.LoadDynamicLevelInternal(LevelCurrent, true));
+
+      LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.Test);
+      LevelEditorUIControl.HideLoading();
+    }
+    private IEnumerator _QuitTest()
+    {
+      yield return new WaitForSeconds(1);
+
+      GamePlayManager.Instance._Stop(BallControlStatus.NoControl);
+
+      yield return StartCoroutine(LevelBuilder.LevelBuilder.Instance.UnLoadDynamicLevelInternal(LevelCurrent, true, () => {}));
+
+      //恢复所有机关显示
+      foreach (var item in LevelCurrent.LevelData.LevelModels)
+      {
+        if (item.ModulRef != null)
+        {
+          item.ModulRef.Reset(ModulBaseResetType.LevelRestart);
+          item.ModulRef.ActiveForPreview();
+        }
+        if (item.ConfigueRef != null)
+          item.ConfigueRef.OnEditorQuitTest(item);
+      } 
+
+      GamePlayManager.Instance.CamManager.SetCameraEnable(false);
+      LevelEditorCamera.gameObject.SetActive(true);
+
+      LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.Edit);
+      LevelEditorUIControl.HideLoading();
+    }
     private IEnumerator _LoadAsset(LevelDynamicModelAsset asset) 
     {
       //TODO
@@ -276,26 +479,8 @@ namespace Ballance2.Game.LevelEditor
       Log.D(TAG, $"Load objects done. All {loadCount} objects");
 
       //加载天空盒子和灯光颜色
-      Material customSkyMat = null;
-      if (level.LevelInfo.level.skyBox == "custom")
-      {
-        var B = TextureUtils.LoadTexture2dFromFile($"{level.LevelDirPath}/CustomSkyBoxB.png", 1024, 1024);
-        var F = TextureUtils.LoadTexture2dFromFile($"{level.LevelDirPath}/CustomSkyBoxF.png", 1024, 1024);
-        var L = TextureUtils.LoadTexture2dFromFile($"{level.LevelDirPath}/CustomSkyBoxL.png", 1024, 1024);
-        var R = TextureUtils.LoadTexture2dFromFile($"{level.LevelDirPath}/CustomSkyBoxR.png", 1024, 1024);
-        var T = TextureUtils.LoadTexture2dFromFile($"{level.LevelDirPath}/CustomSkyBoxT.png", 1024, 1024);
-        var D = TextureUtils.LoadTexture2dFromFile($"{level.LevelDirPath}/CustomSkyBoxD.png", 1024, 1024);
-        if (B == null) Log.W(TAG, "Failed to load customSkyBox.B texture");
-        if (F == null) Log.W(TAG, "Failed to load customSkyBox.F texture");
-        if (L == null) Log.W(TAG, "Failed to load customSkyBox.L texture");
-        if (R == null) Log.W(TAG, "Failed to load customSkyBox.R texture");
-        if (D == null) Log.W(TAG, "Failed to load customSkyBox.D texture");
-
-        customSkyMat = SkyBoxUtils.MakeCustomSkyBox(L, R, F, B, D, T);
-      }
-
-      GamePlayManager.Instance.CreateSkyAndLight(level.LevelInfo.level.skyBox, customSkyMat, StringUtils.StringToColor(level.LevelInfo.level.lightColor));
-
+      yield return StartCoroutine(CreateSky());
+      
       LevelEditorUIControl.Init();
       LevelEditorUIControl.HideLoading();
       LevelEditorUIControl.UpdateStatusText();
@@ -305,6 +490,7 @@ namespace Ballance2.Game.LevelEditor
     }
     private IEnumerator _Unload(Action finish) 
     {
+      yield return new WaitForSeconds(1f);
       //界面与控件归位
       LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
       TransformHandles.SetActive(true);
@@ -347,8 +533,8 @@ namespace Ballance2.Game.LevelEditor
         Asset = asset.SourcePath,
         AssetRef = asset,
         Position = go.transform.position,
-        EulerAngles = go.transform.eulerAngles,
-        Scale = go.transform.localScale,
+        EulerAngles = asset.IntitalEulerAngles,
+        Scale = asset.IntitalScale,
         Uid = ++LevelCurrent.LevelData.LevelObjectId,
         CanDelete = asset.CanDelete,
       };
@@ -447,14 +633,20 @@ namespace Ballance2.Game.LevelEditor
                     SourceType = LevelDynamicModelSource.Package,
                     Category = item.Category,
                     SubCategory = item.SubCategory,
+                    Tag = item.Tag,
                     SubModelRefs = item.SubModelRefs,
                     OnlyOne = item.OnlyOne,
                     HiddenInContentSelector = item.HiddenInContentSelector,
+                    HiddenPlaceholderRender = item.HiddenPlaceholderRender,
                     Loaded = true,
                     Prefab = item.Prefab,
                     Name = item.Name,
                     Desc = item.Desc,
                     PreviewImage = item.Preview,
+                    ObjName = item.ObjName,
+                    ObjTarget = item.ObjTarget,
+                    ScenseGizmePreviewImage = item.ScenseGizmePreviewImage,
+                    IntitalScale = item.IntitalScale,
                   });
             }
           } 
@@ -486,6 +678,16 @@ namespace Ballance2.Game.LevelEditor
       {
         LevelEditorUIControl.ShowMouseTip("I18N:core.editor.messages.DuplicateObject");
         return true;
+      }
+      var comp = asset.Prefab.GetComponent<LevelDynamicModelAssetConfigue>();
+      if (comp != null)
+      {
+        var res = comp.OnBeforeEditorAdd();
+        if (!string.IsNullOrEmpty(res))
+        {
+          LevelEditorUIControl.ShowMouseTip(res);
+          return true;
+        }
       }
       return false;
     }

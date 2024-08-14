@@ -196,6 +196,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1892408662396614361}
+  - {fileID: 4087215031675761057}
   - {fileID: 8826026333742350710}
   - {fileID: 8098735447730203408}
   m_Father: {fileID: 5750256463580583313}
@@ -300,11 +301,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2361850722080739061}
-  m_Father: {fileID: 8098735447730203408}
+  m_Father: {fileID: 2900185318026253631}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -8.20775}
+  m_AnchoredPosition: {x: 50, y: -61.792305}
   m_SizeDelta: {x: 14.187, y: 16.4155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4297850157801372562
@@ -423,6 +424,7 @@ MonoBehaviour:
   SpriteNone: {fileID: 21300000, guid: 2d122f45ef24cfa4a986e71d0eafe34a, type: 3}
   HideTextDistance: 0
   HideIconDistance: 0
+  distance: 0
 --- !u!1 &5525556969768177497
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,8 +529,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4087215031675761057}
+  m_Children: []
   m_Father: {fileID: 2900185318026253631}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

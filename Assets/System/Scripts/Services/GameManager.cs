@@ -151,7 +151,7 @@ namespace Ballance2.Services
       GameMediator.RegisterGlobalEvent(GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED);
       GameMediator.SubscribeSingleEvent(GamePackage.GetSystemPackage(), "GameManagerWaitPackageManagerReady", TAG, (evtName, param) => {
         finish.Invoke();
-        GameTimeMachine.Instance.RegisterFixedUpdate(() => Physics.Simulate(Time.fixedDeltaTime * 5), interval: 5);
+        //GameTimeMachine.Instance.RegisterFixedUpdate(() => Physics.Simulate(Time.fixedDeltaTime * 5), interval: 5);
         return false;
       });
       GameMediator.RegisterEventHandler(GamePackage.GetSystemPackage(), GameEventNames.EVENT_UI_MANAGER_INIT_FINISHED, TAG, (evtName, param) => {
@@ -1023,7 +1023,7 @@ namespace Ballance2.Services
       ScreenCapture.CaptureScreenshot(savePath);
       Log.D(TAG, "CaptureScreenshot to " + savePath);
       //提示
-      Delay(1.0f, () => GetSystemService<GameUIManager>()
+      Delay(0.4f, () => GetSystemService<GameUIManager>()
         .GlobalToast(I18N.I18N.TrF("global.CaptureScreenshotSuccess", "", savePath))
       );
       return savePath;

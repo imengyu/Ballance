@@ -22,7 +22,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
 
     public override string GetEditableType()
     {
-      return "System.String";
+      return "String";
     }
     public override void UpdateValue(object _value) {
       lockValueChanged = true;

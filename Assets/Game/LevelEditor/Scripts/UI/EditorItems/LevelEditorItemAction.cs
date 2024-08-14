@@ -13,7 +13,7 @@ namespace Ballance2.Game.LevelEditor.EditorItems
 
     public override string GetEditableType()
     {
-      return "System.Action";
+      return "Action";
     }
   }
 }

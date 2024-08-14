@@ -29,7 +29,9 @@ namespace Ballance2.Game.LevelEditor
     public string Asset;
     [JsonProperty]
     public List<int> ActiveSectors = new List<int>();
-    [JsonProperty]
+    [JsonProperty("Configues")]
+    private Dictionary<string, object> ConfiguesSave = new Dictionary<string, object>();
+    [JsonIgnore]
     public Dictionary<string, object> Configues = new Dictionary<string, object>();
     [JsonProperty]
     public int Uid = 0;
@@ -46,6 +48,8 @@ namespace Ballance2.Game.LevelEditor
     public GameObject InstanceHost;
     public GameObject InstanceRef;
     public ModulBase ModulRef;
+    public LevelEditorObjectScenseIcon ObjectScenseIconRef;
+    public int SelectFlag = 0;
     
     private MeshRenderer MeshRenderer;
     private bool IsEditor;
@@ -57,15 +61,26 @@ namespace Ballance2.Game.LevelEditor
       {
         if (mode)
         {
-          MeshRenderer.material = GameStaticResourcesPool.FindStaticAssets<Material>("DefaultMaterial");
-          InstanceRef.gameObject.SetActive(false);
+          if (MeshRenderer != null && !AssetRef.HiddenPlaceholderRender)
+            MeshRenderer.enabled = true;
+          ObjectScenseIconRef.gameObject.SetActive(true);
         }
         else
         {
-          MeshRenderer.material = LevelEditorManager.Instance.TransparentMaterial;
-          InstanceRef.gameObject.SetActive(true);
+          if (MeshRenderer != null)
+            MeshRenderer.enabled = false;
+          ObjectScenseIconRef.gameObject.SetActive(false);
         }
       }
+    }
+    public LevelDynamicModel GetSubModel(string name) 
+    {
+      foreach (var item in SubModelRef)
+      {
+        if (item.SubObjName == name)
+          return item;
+      }
+      return null;
     }
 
     public void DestroyModul() 
@@ -107,29 +122,18 @@ namespace Ballance2.Game.LevelEditor
         //机关，添加配套的占位
         ModulRef = InstanceRef.GetComponent<ModulBase>();
 
+        //配置相关
         if (ConfigueRef == null)
           ConfigueRef = InstanceRef.AddComponent<LevelDynamicModelAssetConfigue>();
+        Load();
         ConfigueRef.OnInit(this, editor, isNew);
-        var items = ConfigueRef.GetConfigueItems(this);
+        if (editor && isNew)
+          ConfigueRef.OnEditorAdd(this);
         var modulConfig = ConfigueRef.GetModulConfigue(this);
+        var items = ConfigueRef.GetConfigueItems(this, modulConfig);
         foreach (var item in items)
           ConfigueItemsRef.Add(item.Key, item);
-        if (modulConfig.NeedActiveSector)
-        {
-          ConfigueItemsRef.Add("ActiveSectors", new LevelDynamicModelAssetConfigueItem() {
-            Name = "I18N:core.editor.sideedit.props.ActiveSectors",
-            Key = "ActiveSectors",
-            Type = "SectorsEditor",
-            Group = "Extra",
-            EditorParams = new Dictionary<string, bool>() {
-              { "singleSelect", modulConfig.ActiveSectorSingle },
-              { "disableSelect", modulConfig.FixedActiveSector != 0 }
-            },
-            OnGetValue = () => ActiveSectors,
-            OnValueChanged = (v) => ActiveSectors = (List<int>)v,
-          });
-        }
-        else if (modulConfig.FixedActiveSector != 0)
+        if (modulConfig.FixedActiveSector != 0)
         {
           ActiveSectors.Clear();
           ActiveSectors.Add(modulConfig.FixedActiveSector);
@@ -145,7 +149,8 @@ namespace Ballance2.Game.LevelEditor
         foreach (var item in Configues)
         {
           if (ConfigueItemsRef.TryGetValue(item.Key, out var c))
-            c.OnValueChanged(item.Value);
+            if (!c.NoIntitalUpdate)
+              c.OnValueChanged(item.Value);
         }
         
         //编辑器特殊处理
@@ -161,11 +166,11 @@ namespace Ballance2.Game.LevelEditor
           }
           else
           {
+            //在占位符寻找一个可用的mesh
+            meshFilter = InstanceHost.AddComponent<MeshFilter>();
             //组合原件，没有mesh，但如果是modul，则使用Modul的占位符
             if (ModulRef != null)
             {
-              //在占位符寻找一个可用的mesh
-              meshFilter = InstanceHost.AddComponent<MeshFilter>();
               var innerMeshFilter = ModulRef.PlaceHolderPrefab?.GetComponent<MeshFilter>();
               if (innerMeshFilter == null && ModulRef.PlaceHolderPrefab.transform.childCount > 0)
               {
@@ -177,38 +182,52 @@ namespace Ballance2.Game.LevelEditor
                 }
               }
               mesh = innerMeshFilter?.sharedMesh;
+              //只有机关渲染占位符
               if (mesh != null)
               {
-                meshFilter.mesh = mesh;
-                //InstanceHost.AddComponent<MeshCollider>();
-              }
-              else
-              {
-                Log.W("LevelDynamicModel", $"Modul {Asset} that does not set PlaceHolderPrefab, it unable to select.");
+                MeshRenderer = InstanceHost.AddComponent<MeshRenderer>();
+                MeshRenderer.material = LevelEditorManager.Instance.TransparentMaterial;
+                MeshRenderer.enabled = !AssetRef.HiddenPlaceholderRender;
               }
             }
-          }
-          if (mesh != null)
-          {
-            MeshRenderer = InstanceHost.AddComponent<MeshRenderer>();
-            MeshRenderer.material = LevelEditorManager.Instance.TransparentMaterial;
+            else {
+              //非modul，则尝试使用第一个字对象的mesh
+              MeshFilter innerMeshFilter = null;
+              for (int i = 0; i < InstanceRef.transform.childCount; i++)
+              {
+                innerMeshFilter = InstanceRef.transform.GetChild(i).gameObject.GetComponent<MeshFilter>();
+                if (innerMeshFilter != null)
+                  break;
+              }
+              mesh = innerMeshFilter?.sharedMesh;
+            }
+              
+            if (mesh != null)
+              meshFilter.mesh = mesh;
+            else
+              Log.W("LevelDynamicModel", $"Modul {Asset} that does not set PlaceHolderPrefab, it unable to select.");
           }
 
           //添加浮动UI控制
-          var objectScenseIcon = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelEditorObjectScenseIcon>(
+          ObjectScenseIconRef = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelEditorObjectScenseIcon>(
             LevelEditorManager.Instance.LevelEditorObjectScenseIconPrefab, 
-            InstanceHost.transform
+            InstanceHost.transform,
+            "ObjectScenseIcon"
           );
-          objectScenseIcon.BindCamera = LevelEditorManager.Instance.LevelEditorCamera;
-          objectScenseIcon.BindCanvas.worldCamera = LevelEditorManager.Instance.LevelEditorCamera;
-          objectScenseIcon.BindModel = this;
-          objectScenseIcon.UpdateBindModel();
+          ObjectScenseIconRef.BindCamera = LevelEditorManager.Instance.LevelEditorCamera;
+          ObjectScenseIconRef.BindCanvas.worldCamera = LevelEditorManager.Instance.LevelEditorCamera;
+          ObjectScenseIconRef.BindModel = this;
+          ObjectScenseIconRef.UpdateBindModel();
 
           var selectionData = InstanceHost.AddComponent<LevelEditorObjectSelectionData>();
           selectionData.LevelDynamicModel = this;
 
           var expose = InstanceHost.AddComponent<ExposeToEditor>();
           expose.CanDelete = CanDelete;
+
+          //机关切换至预览模式
+          if (ModulRef != null)
+            ModulRef.ActiveForPreview();
         }
       } 
       catch (Exception e)
@@ -217,12 +236,22 @@ namespace Ballance2.Game.LevelEditor
       }
     }
 
+    public void Load()
+    {
+      Configues.Clear();
+      foreach (var item in ConfiguesSave)
+        Configues.Add(item.Key, ConfigueRef.OnConfigueLoad(item.Key, item.Value));
+    }
     public void Save()
     {
       Name = InstanceHost.name;
       Position = InstanceHost.transform.position;
       EulerAngles = InstanceHost.transform.eulerAngles;
       Scale = InstanceHost.transform.localScale;
+
+      ConfiguesSave.Clear();
+      foreach (var item in Configues)
+        ConfiguesSave.Add(item.Key, ConfigueRef.OnConfigueSave(item.Key, item.Value));
     }
 
   }

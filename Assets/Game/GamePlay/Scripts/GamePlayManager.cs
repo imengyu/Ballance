@@ -5,6 +5,7 @@ using Ballance2.Game.GamePlay.Balls;
 using Ballance2.Game.GamePlay.Other;
 using Ballance2.Game.GamePlay.Tranfo;
 using Ballance2.Game.LevelBuilder;
+using Ballance2.Game.LevelEditor;
 using Ballance2.Game.Utils;
 using Ballance2.Menu;
 using Ballance2.Package;
@@ -43,6 +44,10 @@ namespace Ballance2.Game.GamePlay
     /// 当前关卡的下一关名称，为空表示没有下一关
     /// </summary>
     public string NextLevelName = "";
+    /// <summary>
+    /// 设置初始小节
+    /// </summary>
+    public int StartSector = 1;
     /// <summary>
     /// 物理环境
     /// </summary>
@@ -104,6 +109,7 @@ namespace Ballance2.Game.GamePlay
     internal bool _IsCountDownPoint = false;
     internal bool _BallBirthed = false;
     internal bool _FirstStart = false;
+    internal bool _IsLevelEditor = false;
 
     private float _UpdateTick = 0;
     private List<int> _CommandIds = new List<int>();
@@ -112,6 +118,10 @@ namespace Ballance2.Game.GamePlay
     internal bool _ShouldStartByCustom = false;
     [SerializeField]
     private InputAction ActionPause;
+    /// <summary>
+    /// 获取是否是编辑器模式
+    /// </summary>
+    public bool IsLevelEditor => _IsLevelEditor;
 
     private void Awake() 
     {
@@ -196,10 +206,7 @@ namespace Ballance2.Game.GamePlay
         var ox = DebugUtils.CheckIntDebugParam(0, args, out var nx, true, 0);
         if (!ox) 
           return false;
-        BallManager.SetControllingStatus(BallControlStatus.NoControl);
-        SectorManager.SetCurrentSector(nx);
-        _SetCamPos();
-        _Start(true, null);
+        GoSector(nx);
         return true;
       }, 1, "gos <count:number> > 跳转到指定的小节"));
       _CommandIds.Add(GameDebugCommandServer.RegisterCommand("rebirth", (keyword, fullCmd, argsCount, args) => {
@@ -445,6 +452,12 @@ namespace Ballance2.Game.GamePlay
 
       if (CurrentDisableStart) 
         return;
+        
+      if (_HideBalloonEndTimerID > 0)
+      {
+        GameTimer.DeleteDelay(_HideBalloonEndTimerID);
+        _HideBalloonEndTimerID = 0;
+      }
 
       //开始音乐
       MusicManager.EnableBackgroundMusic();
@@ -523,7 +536,7 @@ namespace Ballance2.Game.GamePlay
       GamePlayUIControl.Instance.SetLifeBallCount(CurrentLife);
       GamePlayUIControl.Instance.SetPointText(CurrentPoint);
       //进入第一小节
-      SectorManager.SetCurrentSector(1);
+      SectorManager.SetCurrentSector(StartSector);
       //设置初始球
       BallManager.SetCurrentBall(StartBall);
       BallManager.CanControllCamera = true;
@@ -636,7 +649,10 @@ namespace Ballance2.Game.GamePlay
 
           //延时显示失败菜单
           GameTimer.Delay(1, () => {
-            GameUIManager.Instance.GoPage("PageGameFail");
+            if (IsLevelEditor)
+              LevelEditorManager.Instance.TestFallShowAlert();
+            else
+              GameUIManager.Instance.GoPage("PageGameFail");
             _DethLock = false;
           });
         });
@@ -662,12 +678,22 @@ namespace Ballance2.Game.GamePlay
       //禁用键盘摄像机控制
       BallManager.CanControllCamera = false;
 
+      //停止背景音乐
+      MusicManager.DisableBackgroundMusicWithoutAtmo();
+
       //过关后马上渐变淡出云层，因为摄像机要放平看到边界的地方了
       if (LevelBuilderRef.CurrentLevelSkyLayer && LevelBuilderRef.CurrentLevelSkyLayer.activeSelf)
         GameUIManager.Instance.UIFadeManager.AddFadeOut(LevelBuilderRef.CurrentLevelSkyLayer, 5, true, null);
 
-      //停止背景音乐
-      MusicManager.DisableBackgroundMusicWithoutAtmo();
+      EventPass.Emit();
+
+      //编辑器中则直接弹框
+      if (IsLevelEditor)
+      {
+        _HideBalloonEnd(false); //开始隐藏飞船
+        LevelEditorManager.Instance.TestPass();
+        return;
+      }
 
       if (CurrentEndWithUFO) 
       {
@@ -683,7 +709,6 @@ namespace Ballance2.Game.GamePlay
           WinScoreUIControl.Instance.StartSeq();
         });
       }
-      EventPass.Emit();
     }
     /// <summary>
     /// 暂停关卡
@@ -704,7 +729,10 @@ namespace Ballance2.Game.GamePlay
       if (showPauseUI)
       {
         GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.UI);
-        GameUIManager.Instance.GoPage("PageGamePause");
+        if (IsLevelEditor)
+          LevelEditorManager.Instance.TestSwitchPauseAlert(true);
+        else
+          GameUIManager.Instance.GoPage("PageGamePause");
       }
 
       EventPause.Emit();
@@ -719,7 +747,11 @@ namespace Ballance2.Game.GamePlay
 
       //UI
       GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.UI);
-      GameUIManager.Instance.CloseAllPage();
+      
+      if (IsLevelEditor)
+        LevelEditorManager.Instance.TestSwitchPauseAlert(false);
+      else
+        GameUIManager.Instance.CloseAllPage();
 
       //重新开始摄像机跟随
       BallManager.StartCamMove();
@@ -729,7 +761,17 @@ namespace Ballance2.Game.GamePlay
 
       EventResume.Emit();
     }
-
+    /// <summary>
+    /// 跳转小节
+    /// </summary>
+    /// <param name="sector"></param>
+    public void GoSector(int sector)
+    {
+      BallManager.SetControllingStatus(BallControlStatus.NoControl);
+      SectorManager.SetCurrentSector(sector);
+      _SetCamPos();
+      _Start(true, null);
+    }
     //过关后隐藏飞船
     private void _HideBalloonEnd(bool fromUfo) 
     {
@@ -853,7 +895,7 @@ namespace Ballance2.Game.GamePlay
         LevelBuilderRef.UnLoadLevel(callBack);
       });
     }
-
+    private bool restarting = false;
     //-加载下一关
     public void NextLevel() 
     {
@@ -864,6 +906,10 @@ namespace Ballance2.Game.GamePlay
     //-重新开始关卡
     public void RestartLevel()
     { 
+      if (restarting)
+        return;
+      restarting = true;
+
       //黑色进入
       GameUIManager.Instance.MaskBlackFadeIn(1);
 
@@ -883,6 +929,7 @@ namespace Ballance2.Game.GamePlay
         GameTimer.Delay(0.5f, () => {
           //开始
           _InitAndStart();
+          restarting = false;
         });
       });
     }
@@ -938,10 +985,12 @@ namespace Ballance2.Game.GamePlay
     /// <param name="skyBoxPre">A-K 或者空，为空则使用 customSkyMat 材质</param>
     /// <param name="customSkyMat">自定义天空盒材质</param>
     /// <param name="lightColor">灯光颜色</param>
-    public void CreateSkyAndLight(string skyBoxPre, Material customSkyMat, Color lightColor)
+    public Material CreateSkyAndLight(string skyBoxPre, Material customSkyMat, Color lightColor)
     {
-      CamManager.SetSkyBox(customSkyMat != null ? customSkyMat : SkyBoxUtils.MakeSkyBox(skyBoxPre));
+      var mat = customSkyMat != null ? customSkyMat : SkyBoxUtils.MakeSkyBox(skyBoxPre);
+      CamManager.SetSkyBox(mat);
       GameManager.GameLight.color = lightColor;
+      return mat;
     }
     /// <summary>
     /// 隐藏天空盒和关卡灯光

@@ -25,6 +25,9 @@ namespace Ballance2.Game.GamePlay
     public GameObject _BallPaper;
     public GameObject _BallSmoke;
     public ParentConstraint _BallShadowProjector;
+    public Sprite _BallWoodPreview;
+    public Sprite _BallStonePreview;
+    public Sprite _BallPaperPreview;
 
     public BallPiecesControllManager BallPiecesControllManager;
 
@@ -96,9 +99,9 @@ namespace Ballance2.Game.GamePlay
       _InitKeys();
 
       //注册内置球
-      RegisterBall("BallWood", _BallWood);
-      RegisterBall("BallStone", _BallStone);
-      RegisterBall("BallPaper", _BallPaper);
+      RegisterBall("BallWood", _BallWood, _BallWoodPreview);
+      RegisterBall("BallStone", _BallStone, _BallStonePreview);
+      RegisterBall("BallPaper", _BallPaper, _BallPaperPreview);
     }
     private void OnDestroy() {
       _DeleteCommands();
@@ -151,7 +154,7 @@ namespace Ballance2.Game.GamePlay
       );
       bindInputActionHolders.Add(controller.ControllerActionFly.BindInputAction(
         (context) => {
-          if (GameManager.DebugMode)
+          if (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor)
           {
             var val = context.ReadValue<float>();
             KeyStateUp = val > 0.3f;
@@ -159,7 +162,7 @@ namespace Ballance2.Game.GamePlay
             FlushBallPush();
           }
         }, (context) => {
-          if (GameManager.DebugMode)
+          if (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor)
           {
             KeyStateUp = false;
             KeyStateDown = false;
@@ -185,25 +188,25 @@ namespace Ballance2.Game.GamePlay
       bindInputActionHolders.Add(controller.KeyBoardActionRotateCam.BindInputActionButton((v) => _Shift_Key(v)));
 
       bindInputActionHolders.Add(controller.KeyBoardTestBallWood.BindInputActionButton((v) => {
-        if (v && GameManager.DebugMode) {
+        if (v && (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor)) {
           SetNextRecoverPosToNowPos();
           SetCurrentBall("BallWood", BallControlStatus.Control);
         }
       }));
       bindInputActionHolders.Add(controller.KeyBoardTestBallStone.BindInputActionButton((v) => {
-        if (v && GameManager.DebugMode) {
+        if (v && (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor)) {
           SetNextRecoverPosToNowPos();
           SetCurrentBall("BallStone", BallControlStatus.Control);
         }
       }));
       bindInputActionHolders.Add(controller.KeyBoardTestBallPaper.BindInputActionButton((v) => {
-        if (v && GameManager.DebugMode) {
+        if (v && (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor)) {
           SetNextRecoverPosToNowPos();
           SetCurrentBall("BallPaper", BallControlStatus.Control);
         }
       }));
       bindInputActionHolders.Add(controller.KeyBoardTestReset.BindInputActionButton((v) => {
-        if (v && GameManager.DebugMode) {
+        if (v && (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor)) {
           SetControllingStatus(BallControlStatus.NoControl);
           SetNextRecoverPos(Vector3.zero);
         }
@@ -387,7 +390,7 @@ namespace Ballance2.Game.GamePlay
     /// </summary>
     /// <param name="name">球名称</param>
     /// <param name="gameObject">球游戏对象，必须已经添加到场景中</param>
-    public void RegisterBall(string name, GameObject gameObject)
+    public void RegisterBall(string name, GameObject gameObject, Sprite preview = null)
     {
       //检查是否注册
       if(GetRegisterBall(name) != null) 
@@ -482,6 +485,7 @@ namespace Ballance2.Game.GamePlay
         ball = ball,
         rigidbody = body,
         speedMeter = speedMeter,
+        Preview = preview,
       };
     }
     /// <summary>
@@ -1042,14 +1046,14 @@ namespace Ballance2.Game.GamePlay
     }
     private void _Down_Key(bool down)
     {
-      if (GameManager.DebugMode) {
+      if (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor) {
         KeyStateDown = down;
         FlushBallPush();
       }
     }
     private void _Up_Key(bool down)
     {
-      if (GameManager.DebugMode) {
+      if (GameManager.DebugMode || GamePlayManager.Instance.IsLevelEditor) {
         KeyStateUp = down;
         FlushBallPush();
       }

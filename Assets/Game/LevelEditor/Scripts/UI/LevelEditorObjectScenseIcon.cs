@@ -23,6 +23,7 @@ namespace Ballance2.Game.LevelEditor
     public float HideTextDistance = 0;
     public float HideIconDistance = 0;
     public float distance = 0;
+    public float MinDistance = 1;
 
     private void Update() 
     {
@@ -34,13 +35,20 @@ namespace Ballance2.Game.LevelEditor
         {
           this.distance = distance;
           if (HideTextDistance == 0)
+          {
             Name.gameObject.SetActive(false);
+            Sectors.gameObject.SetActive(false);
+          }
           else
-            Name.gameObject.SetActive(distance < HideTextDistance);
+          {
+            Name.gameObject.SetActive(distance < HideTextDistance && distance > MinDistance);
+            Sectors.gameObject.SetActive(distance < HideTextDistance && distance > MinDistance);
+          }
+
           if (HideIconDistance == 0)
             Icon.gameObject.SetActive(false);
           else
-            Icon.gameObject.SetActive(distance < HideIconDistance);
+            Icon.gameObject.SetActive(distance < HideIconDistance && distance > MinDistance);
         }
       }
     }
@@ -73,15 +81,24 @@ namespace Ballance2.Game.LevelEditor
       }
 
       NameText.text = BindModel.Name;
-      Sectors.DestroyAllChildren();
 
       if (BindModel.IsError)
         Icon.sprite = SpriteError;
       else if (BindModel.ModulRef != null)
-        Icon.sprite = BindModel.AssetRef.ScenseGizmePreviewImage ?? SpriteModel;
+        Icon.sprite = BindModel.AssetRef.ScenseGizmePreviewImage == null ?  SpriteModel : BindModel.AssetRef.ScenseGizmePreviewImage;
       else 
+      {
         Icon.sprite = SpriteNone;
+        HideIconDistance = 0;
+      }
 
+      CreateSectorDisplay();
+    }
+
+    private int currentDisplaySectorCount = 0;
+    private void CreateSectorDisplay()
+    {
+      Sectors.DestroyAllChildren();
       foreach (var item in BindModel.ActiveSectors)
       {
         var go = CloneUtils.CloneNewObjectWithParent(SectorTextPrefab, Sectors);
@@ -91,6 +108,24 @@ namespace Ballance2.Game.LevelEditor
         text.text = item.ToString();
         go.SetActive(true);
       }
+      currentDisplaySectorCount = BindModel.ActiveSectors.Count;
     }
+    public void UpdateSectorDisplay()
+    {
+      if (currentDisplaySectorCount != Sectors.transform.childCount)
+        CreateSectorDisplay();
+      else
+      {
+        for (int i = 0; i < Sectors.transform.childCount; i++)
+        {
+          var go = Sectors.transform.GetChild(i);
+          var image = go.GetComponent<Image>();
+          var text = go.transform.Find("Text").GetComponent<TMP_Text>();
+          image.color = LevelEditorManager.Instance.LevelEditorUIControl.GetSectorColor(BindModel.ActiveSectors[i]);
+          text.text = BindModel.ActiveSectors[i].ToString();
+        }
+      }
+    }
+  
   }
 }
