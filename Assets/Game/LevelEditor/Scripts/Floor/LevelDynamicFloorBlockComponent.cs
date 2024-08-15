@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Ballance2.Utils;
-using UnityEditor.Callbacks;
 using UnityEngine;
-using UnityEngine.Rendering;
 using static Ballance2.Game.LevelEditor.LevelDynamicFloorBlockMaker;
 
 namespace Ballance2.Game.LevelEditor
@@ -17,7 +13,7 @@ namespace Ballance2.Game.LevelEditor
     public LevelDynamicComponentArcType ArcDirection = LevelDynamicComponentArcType.X;
     public float Width = 5f;
 
-    public Vector3 ModelRotate = new Vector3(-90, 0, 0);
+    public Vector3 ModelRotate = new Vector3(-90, 180, 0);
     public float CompSize = 2.5f;
     public string FloorScheme = "";
 
@@ -46,8 +42,6 @@ namespace Ballance2.Game.LevelEditor
       meshRenderer = this.GetOrAddComponent<MeshRenderer>();
       meshFilter = this.GetOrAddComponent<MeshFilter>();
       pMesh = LevelDynamicFloorBlockMaker.Instance.FloorSchemes[FloorScheme];
-      if (EnableEdit)
-        Editor.UpdateControllers();
       UpdateShape();
     }
 
@@ -121,7 +115,7 @@ namespace Ballance2.Game.LevelEditor
               return false;
           }
           arcLength = arcDeg / 360 * 2 * Mathf.PI * arcRadius;
-          if (arcLength < CompSize || arcDeg < 1)
+          if (arcLength < CompSize)
             return false;
           return true;
         }
@@ -230,6 +224,11 @@ namespace Ballance2.Game.LevelEditor
       }
       
       meshRenderer.materials = pMesh.CombineGetMeshMaterials();
+
+      //更新编辑器用于选择的MeshCollider
+      var meshCol = transform.parent?.gameObject?.GetComponent<MeshCollider>();
+      if (meshCol != null)
+        meshCol.sharedMesh = mesh;
     }
   } 
 

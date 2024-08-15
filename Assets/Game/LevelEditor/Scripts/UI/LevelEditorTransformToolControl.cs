@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ballance2.UI;
-using Ballance2.UI.Core.Controls;
 using Battlehub.RTCommon;
+using Battlehub.RTHandles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +19,7 @@ namespace Ballance2.Game.LevelEditor
     public Image HandleRotationImage;
     public TMP_Text HandlePositionText;
     public TMP_Text HandleRotationText;
+    public UIButtonActiveState ButtonSnap;
 
     public Sprite PovitRotLocal;
     public Sprite PovitRotGrobal;
@@ -28,6 +29,10 @@ namespace Ballance2.Game.LevelEditor
     private IRTE m_editor;
     private ResourcePreviewUtility m_resourcePreview;
     private IRuntimeSelection m_selection;
+    [SerializeField]
+    private BoxSelection m_boxSelection;
+    [SerializeField]
+    private PositionHandle m_positionHandle;
 
     public Action<LevelDynamicModel[]> OnSelect;
     public Action<LevelDynamicModel[]> OnDelete;
@@ -43,7 +48,9 @@ namespace Ballance2.Game.LevelEditor
       m_resourcePreview = gameObject.AddComponent<ResourcePreviewUtility>();
       IOC.Register<IResourcePreviewUtility>(m_resourcePreview);
       ButtonToolMove.SetActive(true);
+      m_boxSelection.Filtering += OnBoxSelection_Filtering;
     }
+
     private void OnDestroy() {
       if (m_selection != null)
         m_selection.SelectionChanged -= OnSelectionChanged;
@@ -74,8 +81,20 @@ namespace Ballance2.Game.LevelEditor
     {
       m_editor.Selection.objects = new UnityEngine.Object[0];
     }
+    public void SetSelection(UnityEngine.Object[] objects)
+    {
+      m_editor.Selection.objects = objects;
+    }
 
     private List<UnityEngine.Object> lastSelectObjects = new List<UnityEngine.Object>();
+
+    private void OnBoxSelection_Filtering(object sender, FilteringArgs e)
+    {
+      if (e.Object.tag == "SnapPoint")
+      {
+        e.Cancel = true;
+      }
+    }
     private void OnSelectionChanged(UnityEngine.Object[] unselectedObjects)
     {
       if (unselectedObjects != null)

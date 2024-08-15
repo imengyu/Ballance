@@ -16,7 +16,7 @@ namespace Ballance2.Game.LevelEditor
 
       transform.position = vector / 2 + point1;
       transform.rotation = Quaternion.LookRotation(vector.normalized, Vector3.up);
-      Cylinder.transform.localScale = new Vector3(oldScale.x, length, oldScale.z);
+      Cylinder.transform.localScale = new Vector3(oldScale.x, length / 2, oldScale.z);
     }
     public void SetText(string text)
     {

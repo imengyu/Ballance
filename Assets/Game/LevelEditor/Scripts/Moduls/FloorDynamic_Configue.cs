@@ -38,6 +38,16 @@ namespace Ballance2.Game.LevelEditor.Moduls
         component.ArcDirection = config.ArcDirection;
       }
     }
+    public override void OnAfterInit(LevelDynamicModel modelInstance, bool isEditor, bool isNew)
+    {
+      if (isEditor)
+      {
+        component.Editor = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelDynamicFloorBlockEditor>(component.EditorPrefab, component.transform.parent, "LevelDynamicFloorBlockEditor");
+        component.Editor.Floor = component;
+        component.Editor.ApplyValueToControllers();
+        component.EnableEdit = true;
+      }
+    }
     public override object OnConfigueLoad(string key, object value)
     {
       switch (key)
@@ -68,13 +78,6 @@ namespace Ballance2.Game.LevelEditor.Moduls
       config.Width = component.Width;
       modelInstance.Configues["Config"] = config;
     }
-    public override void OnEditorAdd(LevelDynamicModel modelInstance)
-    {
-      component.Editor = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelDynamicFloorBlockEditor>(component.EditorPrefab, component.transform);
-      component.Editor.Floor = component;
-      component.EnableEdit = true;
-    }
-
     public override void OnEditorIntoTest(LevelDynamicModel modelInstance)
     {
       component.EnableEdit = false;
@@ -82,6 +85,15 @@ namespace Ballance2.Game.LevelEditor.Moduls
     public override void OnEditorQuitTest(LevelDynamicModel modelInstance)
     {
       component.EnableEdit = true;
+    }
+
+    public override void OnEditorSelected(bool onlySelf)
+    {
+      component.Editor.UpdateSnapEnable(true);
+    }
+    public override void OnEditorDeselect()
+    {
+      component.Editor.UpdateSnapEnable(false);
     }
 
     public override List<LevelDynamicModelAssetConfigueItem> GetConfigueItems(LevelDynamicModel modelInstance, LevelDynamicModelAssetModulConfig modulConfig)

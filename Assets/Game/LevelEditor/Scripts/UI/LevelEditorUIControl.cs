@@ -7,7 +7,9 @@ using Ballance2.Services.I18N;
 using Ballance2.UI;
 using Ballance2.UI.Core.Controls;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -45,16 +47,12 @@ namespace Ballance2.Game.LevelEditor
     public UIButtonActiveState ButtonModuls;
     public UIButtonActiveState ButtonOthers;
 
-    public InputAction DeleteAction;
-
     private void Awake() 
     {
       ButtonFloors.onClick = () => ShowContentSelectUI(LevelDynamicModelCategory.Floors);
       ButtonRails.onClick = () => ShowContentSelectUI(LevelDynamicModelCategory.Rails);
       ButtonModuls.onClick = () => ShowContentSelectUI(LevelDynamicModelCategory.Moduls);
       ButtonOthers.onClick = () => ShowContentSelectUI(LevelDynamicModelCategory.Decoration);
-      DeleteAction.performed += (e) => DeleteSelection();
-      DeleteAction.Disable();
       LevelEditorConfirmControl.onClose = (confirm, text) => {
         if (confirm) onConfirm?.Invoke(text);
         else onCancel?.Invoke();
@@ -65,6 +63,16 @@ namespace Ballance2.Game.LevelEditor
         HideLevelInfo();
         UpdateStatusText();
       };
+    }
+    private void Update()
+    {
+      if (!EventSystem.current.IsPointerOverGameObject())
+      {
+        if (Input.GetKeyDown(KeyCode.C))
+          CopySelection();
+        if (Input.GetKeyDown(KeyCode.Delete))
+          DeleteSelection();
+      }
     }
     private void ReSetSelect(LevelDynamicModel[] newSels)
     {
@@ -81,8 +89,12 @@ namespace Ballance2.Game.LevelEditor
       }
       for (int i = SelectedObject.Count - 1; i >= 0 ; i--)
       {
-        if (SelectedObject[i].SelectFlag == -1)
+        var item = SelectedObject[i];
+        if (item.SelectFlag == -1)
+        {
+          item.ConfigueRef.OnEditorDeselect();
           SelectedObject.RemoveAt(i);
+        }
       }
     }
 
@@ -115,7 +127,6 @@ namespace Ballance2.Game.LevelEditor
           HideLevelInfo();
           HideMouseTip();
           HideTransformHelp();
-          DeleteAction.Disable();
           TransformHandles.SetActive(false);
           break;
         case ToolBarMode.Edit:
@@ -123,7 +134,6 @@ namespace Ballance2.Game.LevelEditor
           BottomBarEditor.gameObject.SetActive(true);
           LevelEditorTransformToolControl.gameObject.SetActive(true);
           ShowContentSelectUI(LevelDynamicModelCategory.UnSet);
-          DeleteAction.Enable();
           TransformHandles.SetActive(true);
           break;
         case ToolBarMode.Test:
@@ -135,10 +145,16 @@ namespace Ballance2.Game.LevelEditor
           HideLevelInfo();
           HideMouseTip();
           HideTransformHelp();
-          DeleteAction.Disable();
           TransformHandles.SetActive(false);
           break;
       }
+    }
+    public void SetSelectedObjects(LevelDynamicModel[] newSels)
+    {
+      var rs = new List<GameObject>();
+      foreach (var sel in newSels)
+        rs.Add(sel.InstanceHost);
+     LevelEditorTransformToolControl.SetSelection(rs.ToArray());
     }
 
     public void SetShowHelpAtStart(bool v) {
@@ -222,7 +238,7 @@ namespace Ballance2.Game.LevelEditor
     {
       if (SelectedObject.Count > 1)
       {
-        Confirm("I18N:core.ui.Tip", I18N.TrF("core.editor..messages.DeleteAsk", "", SelectedObject.Count), LevelEditorConfirmIcon.Warning, onConfirm: (_) => {
+        Confirm("I18N:core.ui.Tip", I18N.TrF("core.editor.messages.DeleteAsk", "", SelectedObject.Count), LevelEditorConfirmIcon.Warning, onConfirm: (_) => {
           LevelEditorTransformToolControl.DoDeleteSeletedObjects();
         });
       }
@@ -230,6 +246,11 @@ namespace Ballance2.Game.LevelEditor
       {
         LevelEditorTransformToolControl.DoDeleteSeletedObjects();
       }
+    }
+    public void CopySelection()
+    {
+      if (SelectedObject.Count > 0)
+        LevelEditorManager.Instance.CloneModels(SelectedObject.ToArray());
     }
     public void UpdateStatusText()
     {
@@ -246,6 +267,12 @@ namespace Ballance2.Game.LevelEditor
       {
         TextStatus.text = "";
       }
+    }
+    public void ToggleSnap()
+    {
+      var control = LevelEditorManager.Instance.LevelDynamicControlSnap;
+      control.EnableSnap = !control.EnableSnap;
+      LevelEditorTransformToolControl.ButtonSnap.SetActive(control.EnableSnap);
     }
 
     public void Confirm(

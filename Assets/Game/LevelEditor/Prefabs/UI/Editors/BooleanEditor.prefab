@@ -186,6 +186,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6776804446499945912}
     m_Modifications:
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4144269872246740757}
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnToggleSwitch
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Ballance2.Game.LevelEditor.EditorItems.LevelEditorItemBoolean, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204011257898846916, guid: a87e44f91d6213f49b9661a717875686, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4811967493016973982, guid: a87e44f91d6213f49b9661a717875686, type: 3}
       propertyPath: m_Name
       value: Toggle

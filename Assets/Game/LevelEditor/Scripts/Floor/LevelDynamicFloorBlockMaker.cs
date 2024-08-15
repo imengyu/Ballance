@@ -20,15 +20,19 @@ namespace Ballance2.Game.LevelEditor
     public enum InputFloorSchemeType
     {
       /// <summary>
-      /// 四周圈和中心
+      /// 四周圈和中心（由边块，边角，内块组成，可重复扩展）
       /// </summary>
       BorderAndCenter,
       /// <summary>
-      /// 无边圈2x2
+      /// 无边圈（2x2网格可重复扩展）
       /// </summary>
       Bordeless,
       /// <summary>
-      /// 静态网格3x3
+      /// 同B ordeless 但带侧墙
+      /// </summary>
+      BordelessWithSide,
+      /// <summary>
+      /// 静态网格（最大支持3x3大小）
       /// </summary>
       Grid,
     }
@@ -66,6 +70,7 @@ namespace Ballance2.Game.LevelEditor
     public class InputFloorSchemeDefine
     {
       public InputFloorSchemeType Type = InputFloorSchemeType.BorderAndCenter;
+      public bool NeedSecondSwitch = false;
       public List<InputFloorBlockDefine> Prefabs;
     }
     [Serializable]
@@ -138,42 +143,55 @@ namespace Ballance2.Game.LevelEditor
           item.Value.Clear();
         combineMeshPrepare.Clear();
       }
+
+      private void BuildMeshGridBorderAndCenter(PreparedMeshGroupCombineByGrid p, Vector3 transformPos, bool needInner)
+      {
+        if (p.left && p.top)
+          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerNW], transformPos);
+        else if (p.left && p.bottom)
+          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerSW], transformPos);
+        else if (p.right && p.bottom)
+          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerSE], transformPos);
+        else if (p.right && p.top)
+          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerNE], transformPos);
+        else if (p.left)
+          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.z % 2 == 0 ? InputFloorBlockType.SideW2 : InputFloorBlockType.SideW], transformPos);
+        else if (p.top)
+          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.x % 2 == 0 ? InputFloorBlockType.SideN2 : InputFloorBlockType.SideN], transformPos);
+        else if (p.right)
+          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.z % 2 == 0 ? InputFloorBlockType.SideE2 : InputFloorBlockType.SideE], transformPos);
+        else if (p.bottom)
+          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.x % 2 == 0 ? InputFloorBlockType.SideS2 : InputFloorBlockType.SideS], transformPos);
+        else
+          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.Inner], transformPos);
+      }
+
       public void CombineMeshAddByGrid(PreparedMeshGroupCombineByGrid p, Vector3 transformPos)
       {
         switch (Define.Type)
         {
           case InputFloorSchemeType.BorderAndCenter: {
-            if (p.left && p.top)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerNW], transformPos);
-            else if (p.left && p.bottom)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerSW], transformPos);
-            else if (p.right && p.bottom)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerSE], transformPos);
-            else if (p.right && p.top)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerNE], transformPos);
-            else if (p.left)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.SideW], transformPos);
-            else if (p.top)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.SideN], transformPos);
-            else if (p.right)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.SideE], transformPos);
-            else if (p.bottom)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.SideS], transformPos);
-            else
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.Inner], transformPos);
+            BuildMeshGridBorderAndCenter(p, transformPos, true);
             break;
           }
+          case InputFloorSchemeType.BordelessWithSide:
           case InputFloorSchemeType.Bordeless: {
+              /*
+               1 1 
+               0 1
+               */
             var x2 = p.x % 2 == 0;
             var z2 = p.z % 2 == 0;
             if (x2 && z2)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerNE], transformPos);
-            else if (x2)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerSE], transformPos);
-            else if (z2)
-              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerNW], transformPos);
-            else
               CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerSW], transformPos);
+            else if (x2)
+              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerNW], transformPos);
+            else if (z2)
+              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerSE], transformPos);
+            else
+              CombineMeshAdd(PreparedMeshes[InputFloorBlockType.InnerNE], transformPos);
+            if (Define.Type == InputFloorSchemeType.BordelessWithSide)
+              BuildMeshGridBorderAndCenter(p, transformPos, false);
             break;
           }
           case InputFloorSchemeType.Grid: {

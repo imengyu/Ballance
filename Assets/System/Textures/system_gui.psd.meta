@@ -3270,6 +3270,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: IconCopy
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 133
+        width: 56
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3f8d0153846e4943975a5f7bbd683b8
+      internalID: -1173719876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconSnap
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 203
+        width: 65
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f06ff272de0a4b8418622cbecabe48e1
+      internalID: 301094215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -3365,6 +3407,7 @@ TextureImporter:
       IconCloseDark: -8010207806092045782
       IconCloseLarge: 803107130
       IconCloseLight: 6984899539004896876
+      IconCopy: -1173719876
       IconCry: -3272098343177431209
       IconCursorLeft: 1840506921
       IconCursorRight: -2122737913
@@ -3407,6 +3450,7 @@ TextureImporter:
       IconSettings: 1265141643
       IconSizeDragger: 8199682685527786370
       IconSmile: -3452515485003531442
+      IconSnap: 301094215
       IconStats: -971647924
       IconStorage: -677287127555733900
       IconSub: 7781389738337204524

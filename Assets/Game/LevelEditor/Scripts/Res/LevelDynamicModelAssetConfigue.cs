@@ -22,6 +22,16 @@ namespace Ballance2.Game.LevelEditor
 
     }
     /// <summary>
+    /// 元件完全初始化化事件(编辑器模式与游戏模式都会触发)
+    /// </summary>
+    /// <param name="modelInstance">实例</param>
+    /// <param name="isEditor">确定当前是不是在编辑器模式</param>
+    /// <param name="isNew">在编辑器模式时，确定现在是不是第一次把当前对象添加入关卡</param>
+    public virtual void OnAfterInit(LevelDynamicModel modelInstance, bool isEditor, bool isNew)
+    {
+
+    }
+    /// <summary>
     /// 当对象被保存时触发（编辑器模式触发)
     /// </summary>
     /// <param name="modelInstance"></param>

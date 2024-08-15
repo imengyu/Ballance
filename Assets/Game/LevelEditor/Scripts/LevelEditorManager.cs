@@ -14,6 +14,7 @@ using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using JetBrains.Annotations;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,6 +28,7 @@ namespace Ballance2.Game.LevelEditor
     public const string TAG = "LevelEditorManager";
 
     public LevelEditorUIControl LevelEditorUIControl;
+    public LevelDynamicControlSnap LevelDynamicControlSnap;
     public Camera LevelEditorCamera;
     public Skybox LevelEditorCameraSkyBox;
     public GameObject TransformHandles;
@@ -185,7 +187,7 @@ namespace Ballance2.Game.LevelEditor
     public string GetUseableName(string baseName)
     {
       if (LevelCurrent == null)
-        return baseName;
+        throw new Exception("LevelCurrent == null !");
       for (var i = 1; i < 100; i++)
       {
         var name = $"{baseName}_{i.ToString("D2")}";
@@ -332,6 +334,10 @@ namespace Ballance2.Game.LevelEditor
         cancelText: "I18N:core.editor.RestartLevel"
       );
     }
+    public void CloneModels(LevelDynamicModel[] model)
+    {
+      StartCoroutine(_CloneModels(model));
+    }
 
     private bool isTakingScreenshort = false;
     private IEnumerator _Screenshort()
@@ -441,35 +447,66 @@ namespace Ballance2.Game.LevelEditor
         if (loadCount % 8 == 0)
           yield return new WaitForEndOfFrame();
       }
-      //加载资源实例
-      var modelsTempMap = new Dictionary<int, LevelDynamicModel>();
+
+      Log.D(TAG, $"Load objects stage 1");
+
+      //加载资源
       foreach (var item in level.LevelData.LevelModels)
       {
         if (LevelAssets.TryGetValue(item.Asset, out var asset))
+        {
           item.AssetRef = asset;
+          item.CanDelete = asset.CanDelete;
+
+          //如果对象没有加载，则现在加载
+          if (!asset.Loaded && asset.SourceType == LevelDynamicModelSource.Embed)
+            yield return StartCoroutine(_LoadAsset(asset));
+        }
         else
+        {
           loadMissingAssets.Add(item);
-
-        //如果对象没有加载，则现在加载
-        if (!asset.Loaded && asset.SourceType == LevelDynamicModelSource.Embed)
-          yield return StartCoroutine(_LoadAsset(asset));
-
-        item.InstantiateModul(ScenseRoot.transform, true, false);
-        item.CanDelete = asset.CanDelete;
-        modelsTempMap.Add(item.Uid, item);
+        }
         loadCount++;
         if (loadCount % 16 == 0)
           yield return new WaitForEndOfFrame();
+      }
+      //分类父子关系
+      var modelsTempMap = new Dictionary<int, LevelDynamicModel>();
+      foreach (var item in level.LevelData.LevelModels)
+      {
+        modelsTempMap.Add(item.Uid, item);
       }
       foreach (var item in level.LevelData.LevelModels)
       {
         if (item.ParentUid != 0 && modelsTempMap.TryGetValue(item.ParentUid, out var parentModel))
         {
           parentModel.SubModelRef.Add(item);
-          item.SubObjName = item.AssetRef.ObjName;
           item.IsSubObj = true;
           item.CanDelete = false;
-          item.InstanceHost.transform.SetParent(parentModel.InstanceHost.transform);
+        }
+      }
+
+      Log.D(TAG, $"Load objects stage 2");
+
+      //加载实例
+      foreach (var item in level.LevelData.LevelModels)
+      {
+        item.InstantiateModul(ScenseRoot.transform, true, false);
+        loadCount++;
+        if (loadCount % 8 == 0)
+          yield return new WaitForEndOfFrame();
+      }
+      //子模型层级修改
+      foreach (var item in level.LevelData.LevelModels)
+      {
+        if (item.SubModelRef.Count > 0)
+        {
+          for (int i = 0; i < item.SubModelRef.Count; i++)
+          {
+            var subItem = item.SubModelRef[i];
+            subItem.InstanceHost.transform.SetParent(item.InstanceHost.transform);
+            subItem.SubObjName = subItem.AssetRef.ObjName;
+          }
         }
       }
       modelsTempMap.Clear();
@@ -526,6 +563,27 @@ namespace Ballance2.Game.LevelEditor
       finish.Invoke();
       yield break;
     }
+    private IEnumerator _CloneModels(LevelDynamicModel[] models)
+    {
+      var result = new List<LevelDynamicModel>();
+      foreach (var model in models)
+      {
+        var newModel = new LevelDynamicModel()
+        {
+          Name = GetUseableName(model.AssetRef.ObjName),
+          Asset = model.Asset,
+          AssetRef = model.AssetRef,
+          Position = model.Position,
+          EulerAngles = model.EulerAngles,
+          Scale = model.Scale,
+          Uid = ++LevelCurrent.LevelData.LevelObjectId,
+          CanDelete = model.CanDelete,
+        };
+        yield return StartCoroutine(_CreateModelSolve(newModel));
+        result.Add(newModel);
+      }
+      LevelEditorUIControl.SetSelectedObjects(result.ToArray());
+    }
     private IEnumerator _DropAssetSolve(LevelDynamicModelAsset asset, GameObject go) 
     {
       var model = new LevelDynamicModel() {
@@ -539,25 +597,31 @@ namespace Ballance2.Game.LevelEditor
         CanDelete = asset.CanDelete,
       };
 
-      if (!asset.Loaded && asset.SourceType == LevelDynamicModelSource.Embed)
-        yield return StartCoroutine(_LoadAsset(asset));
+      yield return StartCoroutine(_CreateModelSolve(model));
 
       //删除编辑器创建的无用对象
-      Destroy(go);
+      if (go != null)
+        Destroy(go);
+    }
+    private IEnumerator _CreateModelSolve(LevelDynamicModel model)
+    {
+      if (!model.AssetRef.Loaded && model.AssetRef.SourceType == LevelDynamicModelSource.Embed)
+        yield return StartCoroutine(_LoadAsset(model.AssetRef));
 
       LevelCurrent.LevelData.LevelModels.Add(model);
 
       model.InstantiateModul(ScenseRoot.transform, true, true);
 
       //创建子对象
-      foreach (var _subAssetRef in asset.SubModelRefs)
+      foreach (var _subAssetRef in model.AssetRef.SubModelRefs)
       {
         if (LevelAssets.TryGetValue(_subAssetRef.Path, out var subAsset))
         {
           if (!subAsset.Loaded && subAsset.SourceType == LevelDynamicModelSource.Embed)
             yield return StartCoroutine(_LoadAsset(subAsset));
 
-          var subModel = new LevelDynamicModel() {
+          var subModel = new LevelDynamicModel()
+          {
             Name = GetUseableName(subAsset.ObjName),
             SubObjName = subAsset.ObjName,
             IsSubObj = true,
@@ -578,7 +642,7 @@ namespace Ballance2.Game.LevelEditor
         }
         else
         {
-          Log.W(TAG, $"Failed to load SubAsset {_subAssetRef.Path} of model {asset}!");
+          Log.W(TAG, $"Failed to load SubAsset {_subAssetRef.Path} of model {model.AssetRef.Name}!");
         }
       }
 

@@ -227,7 +227,7 @@
           <Text name="JumpedSector">已跳转小节</Text>
           <Text name="TestFail">很不幸，你已经用完全部的生命</Text>
           <Text name="TestPass">恭喜，您已经过关</Text>
-          <Text name="TestPaused">游戏已暂停，按 ESC 继续</Text>
+          <Text name="TestPaused"><![CDATA[ 游戏已暂停，按 <sprite=8> 继续 ]]></Text>
         </Group>
         <Text name="StatusText">{0}/{1} 对象/小节 选中 {2}</Text>
         <Text name="CreateNew">创建新关卡文件</Text>
@@ -396,7 +396,7 @@
         </Group>
         <Group name="help">
           <Text name="TransformHelpTitle">欢迎使用关卡编辑器！</Text>
-          <Text name="TransformHelpContent"><![CDATA[ 关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。\n\n<size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 可以下降视角，按 <sprite=3> 可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n使用 <sprite=4> 或者点击删除按钮删除选中的对象。\n ]]></Text>
+          <Text name="TransformHelpContent"><![CDATA[ 关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。\n\n<size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 键可以下降视角，按 <sprite=3> 键可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n点击工具栏上的删除按钮可以删除选中的对象。\n ]]></Text>
         
           <Text name="TestHelpTitle">欢迎使用试验场！</Text>
           <Text name="TesHelpContent"><![CDATA[ 试验场是一个模拟环境，允许您测试自己的关卡是否可玩，在试验场中您可以随时重置球，随时重置机关，球可以在试验场上下飞行。\n\n小提示：进入试验场之前先选择检查点，可以从该检查点开始玩哦！ ]]></Text>
@@ -414,6 +414,9 @@
           <Text name="Import">导入模型</Text>
           <Text name="Info">修改关卡信息</Text>
           <Text name="Publish">发布</Text>
+          <Text name="Delete">删除(Del)</Text>
+          <Text name="Copy">复制(C)</Text>
+          <Text name="Snap">节点吸附</Text>
         </Group>
         <Text name="Loading">加载中</Text>
       </Group>

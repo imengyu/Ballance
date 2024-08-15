@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -108,7 +108,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.7
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &937880981303438451
 MonoBehaviour:
@@ -177,17 +177,17 @@ MonoBehaviour:
   PositionX: 0
   PositionY: 0
   PositionZ: 0
-  RotationX: 0
-  RotationY: 0
-  RotationZ: 0
-  RotationFree: 0
-  RotationScreen: 0
-  ScaleX: 0
-  ScaleY: 0
-  ScaleZ: 0
-  RectXY: 0
-  RectYZ: 0
-  RectXZ: 0
+  RotationX: 1
+  RotationY: 1
+  RotationZ: 1
+  RotationFree: 1
+  RotationScreen: 1
+  ScaleX: 1
+  ScaleY: 1
+  ScaleZ: 1
+  RectXY: 1
+  RectYZ: 1
+  RectXZ: 1
   PivotMode: 0
   PivotModeValue: 0
   PivotRotation: 1

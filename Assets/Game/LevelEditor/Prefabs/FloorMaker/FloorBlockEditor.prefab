@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004863839784790029}
   - component: {fileID: 4671241658417564889}
+  - component: {fileID: 6224693897892192452}
   m_Layer: 0
   m_Name: FloorBlockEditor
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1272326990456402400}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -55,6 +56,41 @@ MonoBehaviour:
   ControlPoint4: {fileID: 7506528766341900127}
   Ruler1: {fileID: 2498372730259233312}
   Ruler2: {fileID: 8102153273704485530}
+--- !u!114 &6224693897892192452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272326990456402400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a961995cedcfac146a43008994f76948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_colliders: []
+  Selected:
+    m_PersistentCalls:
+      m_Calls: []
+  Unselected:
+    m_PersistentCalls:
+      m_Calls: []
+  BoundsObject: {fileID: 0}
+  BoundsType: 0
+  CustomBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  CanTransform: 0
+  CanInspect: 0
+  CanDuplicate: 0
+  CanDelete: 0
+  CanRename: 0
+  CanCreatePrefab: 0
+  ShowSelectionGizmo: 0
+  CanSelect: 1
+  CanSnap: 1
+  AddColliders: 0
+  m_markAsDestroyed: 0
 --- !u!1001 &1697230485327943964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -183,6 +219,10 @@ PrefabInstance:
     - target: {fileID: 2074992492997079986, guid: 35737ec4e6f5c6f4899eedd5fefa96ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9041049819434585889, guid: 35737ec4e6f5c6f4899eedd5fefa96ba, type: 3}
+      propertyPath: SnapId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9041049819434585889, guid: 35737ec4e6f5c6f4899eedd5fefa96ba, type: 3}
       propertyPath: dragType

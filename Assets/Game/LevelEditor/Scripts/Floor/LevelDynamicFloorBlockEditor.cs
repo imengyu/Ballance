@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using Ballance2.Utils;
-using UnityEditor.Callbacks;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static Ballance2.Game.LevelEditor.LevelDynamicFloorBlockMaker;
 using static Ballance2.Game.LevelEditor.LevelDynamicControlPoint;
 
 namespace Ballance2.Game.LevelEditor
 {
   public class LevelDynamicFloorBlockEditor : MonoBehaviour 
   {
+    public static int IdPool = 0;
+
     public LevelDynamicFloorBlockComponent Floor;
     public LevelDynamicControlPoint ControlPoint1;
     public LevelDynamicControlPoint ControlPoint2;
@@ -19,6 +15,13 @@ namespace Ballance2.Game.LevelEditor
     public LevelDynamicStraitRuler Ruler1;
     public LevelDynamicStraitRuler Ruler2;
 
+    public void UpdateSnapEnable(bool snapable)
+    {
+      ControlPoint1.EnableSnap = snapable;
+      ControlPoint2.EnableSnap = snapable;
+      ControlPoint3.EnableSnap = snapable;
+      ControlPoint4.EnableSnap = snapable;
+    }
     public void UpdateRuler()
     {
       switch(Floor.Type)
@@ -63,28 +66,50 @@ namespace Ballance2.Game.LevelEditor
       Ruler1.gameObject.SetActive(enableEdit);
       Ruler2.gameObject.SetActive(enableEdit);
 
+      ControlPoint1.SnapParent = Floor.transform.parent.gameObject;
+      ControlPoint2.SnapParent = Floor.transform.parent.gameObject;
+      ControlPoint3.SnapParent = Floor.transform.parent.gameObject;
+      ControlPoint4.SnapParent = Floor.transform.parent.gameObject;
+
       if (!enableEdit)
         return;
-      
+
+      ControlPoint1.DragType = LevelDynamicControlPointDragType.None;
       switch (Floor.Type)
       {
         case LevelDynamicComponentType.Strait:
-          ControlPoint2.DragMinValue = new Vector3(1, 0, 0);
+          ControlPoint2.DragMinValue = new Vector3(0, 0, 1);
+          ControlPoint2.DragModValue = new Vector3(0, 0, Floor.CompSize);
           ControlPoint2.DragType = LevelDynamicControlPointDragType.Z;
-          ControlPoint2.transform.localPosition = new Vector3(0, 0, ControlPoint2.transform.position.z);
+          ControlPoint2.transform.localPosition = new Vector3(0, 0, ControlPoint2.transform.localPosition.z);
           ControlPoint3.gameObject.SetActive(false);
           ControlPoint4.gameObject.SetActive(false);
           break;
         case LevelDynamicComponentType.Arc:
-          ControlPoint2.DragType = LevelDynamicControlPointDragType.XZ;
-          ControlPoint3.DragType = LevelDynamicControlPointDragType.X;
-          ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, 0);
-          ControlPoint3.DragMinValue = new Vector3(1, 0, 0);
-          ControlPoint2.transform.localPosition = new Vector3(ControlPoint2.transform.localPosition.x < 1 ? 10 : ControlPoint2.transform.localPosition.x, 0, ControlPoint2.transform.localPosition.z);
-          ControlPoint3.transform.localPosition = new Vector3(ControlPoint3.transform.localPosition.x < 1 ? 10 : ControlPoint3.transform.localPosition.x, 0, 0);
+          ControlPoint2.DragModValue = Vector3.zero;
+          switch (Floor.ArcDirection)
+          {
+            case LevelDynamicComponentArcType.X:
+              ControlPoint2.DragType = LevelDynamicControlPointDragType.XZ;
+              ControlPoint3.DragType = LevelDynamicControlPointDragType.X;
+              ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, 0);
+              ControlPoint3.DragMinValue = new Vector3(1, 0, 0);
+              ControlPoint2.transform.localPosition = new Vector3((ControlPoint2.transform.localPosition.x < 1 ? 10 : ControlPoint2.transform.localPosition.x), 0, ControlPoint2.transform.localPosition.z);
+              ControlPoint3.transform.localPosition = new Vector3((ControlPoint3.transform.localPosition.x < 1 ? 10 : ControlPoint3.transform.localPosition.x), 0, 0);
+              break;
+            case LevelDynamicComponentArcType.Y:
+              ControlPoint2.DragType = LevelDynamicControlPointDragType.YZ;
+              ControlPoint3.DragType = LevelDynamicControlPointDragType.Y;
+              ControlPoint2.DragMinValue = new Vector3(0, DragMinValueNoLimit.y, 0);
+              ControlPoint3.DragMinValue = new Vector3(0, 1, 0);
+              ControlPoint2.transform.localPosition = new Vector3(0, (ControlPoint2.transform.localPosition.y < 1 ? 10 : ControlPoint2.transform.localPosition.y), ControlPoint2.transform.localPosition.z);
+              ControlPoint3.transform.localPosition = new Vector3(0, (ControlPoint3.transform.localPosition.y < 1 ? 10 : ControlPoint3.transform.localPosition.y), 0);
+              break;
+          }
           ControlPoint4.gameObject.SetActive(false);
           break;
         case LevelDynamicComponentType.Bizer:
+          ControlPoint2.DragModValue = Vector3.zero;
           ControlPoint2.DragType = LevelDynamicControlPointDragType.All;
           ControlPoint3.DragType = LevelDynamicControlPointDragType.All;
           ControlPoint4.DragType = LevelDynamicControlPointDragType.All;
@@ -95,12 +120,28 @@ namespace Ballance2.Game.LevelEditor
           ControlPoint4.DragMaxValue = new Vector3(DragMaxValueNoLimit.x, DragMaxValueNoLimit.y, 1);
           break;
       }
-      
+
+      ControlPoint1.UpdateDragValues();
+      ControlPoint2.UpdateDragValues();
+      ControlPoint3.UpdateDragValues();
+      ControlPoint4.UpdateDragValues();
       UpdateRuler();
+    }
+    public void ApplyValueToControllers()
+    {
+      ControlPoint1.transform.localPosition = Floor.ControlPoint1;
+      ControlPoint2.transform.localPosition = Floor.ControlPoint2;
+      ControlPoint3.transform.localPosition = Floor.ControlPoint3;
+      ControlPoint4.transform.localPosition = Floor.ControlPoint4;
     }
 
     private void Awake() 
     {
+      var id = ++IdPool;
+      ControlPoint1.ParentId = id;
+      ControlPoint2.ParentId = id;
+      ControlPoint3.ParentId = id;
+      ControlPoint4.ParentId = id;
       ControlPoint4.onMoved = () => {
         if (Floor.EnableEdit)
         {

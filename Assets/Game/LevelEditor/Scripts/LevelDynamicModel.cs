@@ -229,6 +229,9 @@ namespace Ballance2.Game.LevelEditor
           if (ModulRef != null)
             ModulRef.ActiveForPreview();
         }
+
+        //初始化完成事件
+        ConfigueRef.OnAfterInit(this, editor, isNew);
       } 
       catch (Exception e)
       {
