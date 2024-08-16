@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
-using Ballance2;
 using Ballance2.Base;
 using Ballance2.Utils;
 using UnityEngine;
@@ -112,11 +111,18 @@ namespace Ballance2.Game.LevelEditor
       {
         Define = define;
         foreach (var item in define.Prefabs)
-          PreparedMeshes.Add(item.Type, new PreparedMesh(item.Prefab));
+        {
+          if (!PreparedMeshes.TryGetValue(item.Type, out var list))
+          {
+            list = new List<PreparedMesh>();
+            PreparedMeshes.Add(item.Type, list);
+          }
+          list.Add(new PreparedMesh(item.Prefab));
+        }
       }
 
       public readonly InputFloorSchemeDefine Define;
-      public Dictionary<InputFloorBlockType, PreparedMesh> PreparedMeshes = new Dictionary<InputFloorBlockType, PreparedMesh>();
+      public Dictionary<InputFloorBlockType, List<PreparedMesh>> PreparedMeshes = new Dictionary<InputFloorBlockType, List<PreparedMesh>>();
 
       public Material[] CombineGetMeshMaterials()
       {
@@ -146,24 +152,24 @@ namespace Ballance2.Game.LevelEditor
 
       private void BuildMeshGridBorderAndCenter(PreparedMeshGroupCombineByGrid p, Vector3 transformPos, bool needInner)
       {
-        if (p.left && p.top)
-          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerNW], transformPos);
-        else if (p.left && p.bottom)
-          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerSW], transformPos);
-        else if (p.right && p.bottom)
-          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerSE], transformPos);
-        else if (p.right && p.top)
-          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.CornerNE], transformPos);
-        else if (p.left)
-          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.z % 2 == 0 ? InputFloorBlockType.SideW2 : InputFloorBlockType.SideW], transformPos);
+        if (p.left && p.top && PreparedMeshes.ContainsKey(InputFloorBlockType.CornerNW))
+          CombineMeshAdd(InputFloorBlockType.CornerNW, transformPos);
+        else if (p.left && p.bottom && PreparedMeshes.ContainsKey(InputFloorBlockType.CornerSW))
+          CombineMeshAdd(InputFloorBlockType.CornerSW, transformPos);
+        else if (p.right && p.bottom && PreparedMeshes.ContainsKey(InputFloorBlockType.CornerSE))
+          CombineMeshAdd(InputFloorBlockType.CornerSE, transformPos);
+        else if (p.right && p.top && PreparedMeshes.ContainsKey(InputFloorBlockType.CornerNE))
+          CombineMeshAdd(InputFloorBlockType.CornerNE, transformPos);
         else if (p.top)
-          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.x % 2 == 0 ? InputFloorBlockType.SideN2 : InputFloorBlockType.SideN], transformPos);
-        else if (p.right)
-          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.z % 2 == 0 ? InputFloorBlockType.SideE2 : InputFloorBlockType.SideE], transformPos);
+          CombineMeshAdd(Define.NeedSecondSwitch && p.x % 2 == 0 ? InputFloorBlockType.SideN2 : InputFloorBlockType.SideN, transformPos);
         else if (p.bottom)
-          CombineMeshAdd(PreparedMeshes[Define.NeedSecondSwitch && p.x % 2 == 0 ? InputFloorBlockType.SideS2 : InputFloorBlockType.SideS], transformPos);
-        else
-          CombineMeshAdd(PreparedMeshes[InputFloorBlockType.Inner], transformPos);
+          CombineMeshAdd(Define.NeedSecondSwitch && p.x % 2 == 0 ? InputFloorBlockType.SideS2 : InputFloorBlockType.SideS, transformPos);
+        else if (p.left)
+          CombineMeshAdd(Define.NeedSecondSwitch && p.z % 2 == 0 ? InputFloorBlockType.SideW2 : InputFloorBlockType.SideW, transformPos);
+        else if (p.right)
+          CombineMeshAdd(Define.NeedSecondSwitch && p.z % 2 == 0 ? InputFloorBlockType.SideE2 : InputFloorBlockType.SideE, transformPos);
+        else if (needInner)
+          CombineMeshAdd(InputFloorBlockType.Inner, transformPos);
       }
 
       public void CombineMeshAddByGrid(PreparedMeshGroupCombineByGrid p, Vector3 transformPos)
@@ -220,6 +226,16 @@ namespace Ballance2.Game.LevelEditor
             MeshSub = item
           });
         }
+      }
+      public void CombineMeshAdd(List<PreparedMesh> meshs, Vector3 transformPos)
+      {
+        foreach (var mesh in meshs)
+         CombineMeshAdd(mesh, transformPos);
+      }
+      public void CombineMeshAdd(InputFloorBlockType type, Vector3 transformPos)
+      {
+        if (PreparedMeshes.TryGetValue(type, out var meshs))
+          CombineMeshAdd(meshs, transformPos);
       }
       public void CombineMeshFinish(Mesh result, Vector3 modelRotate, PointSolverCallback pointSolver = null, bool reverseTrangles = false)
       {

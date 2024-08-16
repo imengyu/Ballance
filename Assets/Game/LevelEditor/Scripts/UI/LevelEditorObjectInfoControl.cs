@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using AillieoUtils;
 using Ballance2.Game.LevelEditor.EditorItems;
 using Ballance2.Utils;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -78,6 +76,8 @@ namespace Ballance2.Game.LevelEditor
     }
     private Dictionary<string, List<LevelEditorItemBase>> currentShowingEditorItems = new Dictionary<string, List<LevelEditorItemBase>>();
     private HashSet<string> currentShowingEditorKeys = new HashSet<string>();
+    private List<LevelEditorCurrentShowingItem> currentShowingItems = new List<LevelEditorCurrentShowingItem>();
+
 
     private void DestroyUI()
     {
@@ -93,6 +93,14 @@ namespace Ballance2.Game.LevelEditor
         editorItemPool.Add(comp.GetEditableType(), new SimplePool(Pool, item));
       }
     }
+    private void UpdateItemVisible()
+    {
+      foreach (var item in currentShowingItems)
+      {
+        if (item.ConfigueItem.OnGetVisible != null)
+          item.Editor.gameObject.SetActive(item.ConfigueItem.OnGetVisible());
+      }
+    }
     private void UpdateUI()
     {
       foreach (var group in currentShowingEditorItems)
@@ -106,6 +114,7 @@ namespace Ballance2.Game.LevelEditor
         return;
       }
       gameObject.SetActive(true);
+      currentShowingItems.Clear();
 
       var isFirst = true;
       foreach (var item in editingModels)
@@ -135,28 +144,51 @@ namespace Ballance2.Game.LevelEditor
                 currentConfigueItem.OnValueChanged(v);
                 if (!currentConfigueItem.NoSaveToConfigues)
                   currentItem.Configues[currentConfigueItem.Key] = v;
+                if (currentConfigueItem.NeedFlushVisible)
+                  UpdateItemVisible();
               };
               editor.OnTimingUpdateValue = null;
+              if (currentConfigueItem.OnGetVisible != null)
+              {
+                editor.gameObject.SetActive(currentConfigueItem.OnGetVisible());
+              }
+              else
+              {
+                editor.gameObject.SetActive(true);
+              }
               if (currentConfigueItem.OnGetValue != null)
               {
                 editor.UpdateValue(currentConfigueItem.OnGetValue());
                 if (!currentConfigueItem.NoTimingUpdate)
-                  editor.OnTimingUpdateValue = () => {
+                  editor.OnTimingUpdateValue = () =>
+                  {
                     editor.UpdateValue(currentConfigueItem.OnGetValue());
                   };
                 else
                   editor.OnTimingUpdateValue = null;
               }
               else if (currentItem.Configues.TryGetValue(currentConfigueItem.Key, out var v))
+              {
                 editor.UpdateValue(v);
+              }
               editor.transform.SetParent(ContentView);
               currentShowingEditorKeys.Add(currentConfigueItem.Key);
               group.Add(editor);
+              currentShowingItems.Add(new LevelEditorCurrentShowingItem()
+              {
+                Editor = editor,
+                ConfigueItem = currentConfigueItem,
+              });
             }
           }
         } 
         isFirst = false;
       }
     }
+  }
+  public struct LevelEditorCurrentShowingItem
+  {
+    public LevelEditorItemBase Editor;
+    public LevelDynamicModelAssetConfigueItem ConfigueItem;
   }
 }

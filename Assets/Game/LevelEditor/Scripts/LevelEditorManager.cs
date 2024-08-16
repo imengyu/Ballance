@@ -4,19 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using Ballance2.Base;
 using Ballance2.Game.GamePlay;
-using Ballance2.Game.GamePlay.Moduls;
-using Ballance2.Game.LevelBuilder;
 using Ballance2.Game.Utils;
 using Ballance2.Menu;
-using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Utils;
-using JetBrains.Annotations;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -192,7 +186,7 @@ namespace Ballance2.Game.LevelEditor
       {
         var name = $"{baseName}_{i.ToString("D2")}";
         if (LevelCurrent.LevelData.LevelModels.Find((a) => a.Name == name) == null)
-          return baseName;
+          return name;
       }
       return $"{baseName}_{CommonUtils.GenRandomID()}";
     }
@@ -565,6 +559,10 @@ namespace Ballance2.Game.LevelEditor
     }
     private IEnumerator _CloneModels(LevelDynamicModel[] models)
     {
+      LevelEditorUIControl.ClearSelectedObjects();
+
+      yield return new WaitForSeconds(0.1f);
+
       var result = new List<LevelDynamicModel>();
       foreach (var model in models)
       {
@@ -580,9 +578,17 @@ namespace Ballance2.Game.LevelEditor
           CanDelete = model.CanDelete,
         };
         yield return StartCoroutine(_CreateModelSolve(newModel));
+        newModel.ConfigueRef.OnClone(newModel, model);
         result.Add(newModel);
       }
+
       LevelEditorUIControl.SetSelectedObjects(result.ToArray());
+
+      foreach (var model in result)
+      {
+        model.ConfigueRef.OnCloneed(model);
+      }
+      yield return new WaitForSeconds(1f);
     }
     private IEnumerator _DropAssetSolve(LevelDynamicModelAsset asset, GameObject go) 
     {

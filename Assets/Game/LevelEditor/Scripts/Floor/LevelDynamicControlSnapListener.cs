@@ -7,9 +7,16 @@ namespace Ballance2.Game.LevelEditor
   {
     [HideInInspector]
     public LevelDynamicControlPoint Parent;
+    [HideInInspector]
+    public Collider Collider;
 
     public Action<LevelDynamicControlPoint> onStartSnap;
     public Action onQuitSnap;
+
+    private void Awake()
+    {
+      Collider = GetComponent<Collider>();
+    }
 
     private LevelDynamicControlPoint currentEnterSnapPoint = null;
 
@@ -17,11 +24,11 @@ namespace Ballance2.Game.LevelEditor
     {
       if (Parent.EnableSnap && !Parent.DisableSnapWhenChanged && collider.gameObject.layer == 13) //SnapPoint
       {
-        var point = collider.gameObject.GetComponent<LevelDynamicControlPoint>();
-        if (point != null && point.ParentId != Parent.ParentId && point.Snapable) //不能是同一个对象的吸附点
+        var point = collider.gameObject.GetComponent<LevelDynamicControlSnapListener>();
+        if (point != null && point.Parent.ParentId != Parent.ParentId && point.Parent.Snapable) //不能是同一个对象的吸附点
         {
-          currentEnterSnapPoint = point;
-          onStartSnap(point);
+          currentEnterSnapPoint = point.Parent;
+          onStartSnap(point.Parent);
         }
       }
     }
@@ -29,8 +36,8 @@ namespace Ballance2.Game.LevelEditor
     {
       if (collider.gameObject.layer == 13)
       {
-        var point = collider.gameObject.GetComponent<LevelDynamicControlPoint>();
-        if (point != null && point == currentEnterSnapPoint)
+        var point = collider.gameObject.GetComponent<LevelDynamicControlSnapListener>();
+        if (point != null && point.Parent == currentEnterSnapPoint)
         {
           currentEnterSnapPoint = null;
           onQuitSnap();

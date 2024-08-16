@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.UI;
 using Ballance2.UI.Core.Controls;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -155,6 +151,10 @@ namespace Ballance2.Game.LevelEditor
       foreach (var sel in newSels)
         rs.Add(sel.InstanceHost);
      LevelEditorTransformToolControl.SetSelection(rs.ToArray());
+    }
+    public void ClearSelectedObjects()
+    {
+      LevelEditorTransformToolControl.ClearSelection();
     }
 
     public void SetShowHelpAtStart(bool v) {

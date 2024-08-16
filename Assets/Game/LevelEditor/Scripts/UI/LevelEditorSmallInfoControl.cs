@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using AillieoUtils;
 using Ballance2.Game.LevelEditor.EditorItems;
 using Ballance2.Utils;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -59,7 +57,15 @@ namespace Ballance2.Game.LevelEditor
     }
     private Dictionary<string, List<LevelEditorItemBase>> currentShowingEditorItems = new Dictionary<string, List<LevelEditorItemBase>>();
     private HashSet<string> currentShowingEditorKeys = new HashSet<string>();
-
+    private List<LevelEditorCurrentShowingItem> currentShowingItems = new List<LevelEditorCurrentShowingItem>();
+    private void UpdateItemVisible()
+    {
+      foreach (var item in currentShowingItems)
+      {
+        if (item.ConfigueItem.OnGetVisible != null)
+          item.Editor.gameObject.SetActive(item.ConfigueItem.OnGetVisible());
+      }
+    }
     private void DestroyUI()
     {
       foreach (var group in editorItemPool)
@@ -105,6 +111,14 @@ namespace Ballance2.Game.LevelEditor
             editor.Params = currentConfigueItem.EditorParams;
             editor.OnValueChanged = currentConfigueItem.OnValueChanged;
             editor.OnTimingUpdateValue = null;
+            if (currentConfigueItem.OnGetVisible != null)
+            {
+              editor.gameObject.SetActive(currentConfigueItem.OnGetVisible());
+            }
+            else
+            {
+              editor.gameObject.SetActive(true);
+            }
             if (currentConfigueItem.OnGetValue != null)
             {
               editor.UpdateValue(currentConfigueItem.OnGetValue());
@@ -114,10 +128,17 @@ namespace Ballance2.Game.LevelEditor
                 };
               else
                 editor.OnTimingUpdateValue = null;
+              if (currentConfigueItem.NeedFlushVisible)
+                UpdateItemVisible();
             }
             editor.transform.SetParent(ContentView);
             currentShowingEditorKeys.Add(currentConfigueItem.Key);
             group.Add(editor);
+            currentShowingItems.Add(new LevelEditorCurrentShowingItem()
+            {
+              Editor = editor,
+              ConfigueItem = currentConfigueItem,
+            });
           }
         }
       } 

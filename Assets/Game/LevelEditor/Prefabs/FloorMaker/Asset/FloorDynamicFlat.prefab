@@ -48,14 +48,14 @@ MonoBehaviour:
   Type: 0
   ArcDirection: 0
   Width: 5
-  ModelRotate: {x: -90, y: 180, z: 0}
-  CompSize: 2.5
-  FloorScheme: Flat
-  Editor: {fileID: 0}
   ControlPoint1: {x: 0, y: 0, z: 0}
   ControlPoint2: {x: 0, y: 0, z: 10}
   ControlPoint3: {x: 0, y: 0, z: 0}
   ControlPoint4: {x: 0, y: 0, z: 0}
+  ModelRotate: {x: -90, y: 180, z: 0}
+  CompSize: 2.5
+  FloorScheme: Flat
+  Editor: {fileID: 0}
   EditorPrefab: {fileID: 1272326990456402400, guid: f9376787b917f764da40cd3ec4456a69, type: 3}
   straitLength: 0
   arcRadius: 0

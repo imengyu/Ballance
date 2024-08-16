@@ -32,6 +32,23 @@ namespace Ballance2.Game.LevelEditor
 
     }
     /// <summary>
+    /// 当物体复制后初始化时回调（编辑器模式触发)
+    /// </summary>
+    /// <param name="modelInstance"></param>
+    /// <param name="reference">复制引用</param>
+    public virtual void OnClone(LevelDynamicModel modelInstance, LevelDynamicModel reference)
+    {
+
+    }
+    /// <summary>
+    /// 当物体复制后回调（编辑器模式触发)
+    /// </summary>
+    /// <param name="modelInstance"></param>
+    public virtual void OnCloneed(LevelDynamicModel modelInstance)
+    {
+
+    }
+    /// <summary>
     /// 当对象被保存时触发（编辑器模式触发)
     /// </summary>
     /// <param name="modelInstance"></param>
@@ -222,6 +239,10 @@ namespace Ballance2.Game.LevelEditor
     /// </summary>
     public bool NoSaveToConfigues = false;
     /// <summary>
+    /// 是否当此条目数据更改后，刷新同一页的其他条目是否显示状态
+    /// </summary>
+    public bool NeedFlushVisible = false;
+    /// <summary>
     /// 初始值
     /// </summary>
     public object IntitalValue = null;
@@ -237,6 +258,10 @@ namespace Ballance2.Game.LevelEditor
     /// 数据更改回调
     /// </summary>
     public Action<object> OnValueChanged;
+    /// <summary>
+    /// 获取当前条目是否显示回调函数，如果不设置此函数，则一直显示
+    /// </summary>
+    public Func<bool> OnGetVisible = null;
   }
   /// <summary>
   /// 机关的特殊配置

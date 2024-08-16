@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using Ballance2.Utils;
 using Battlehub.RTCommon;
 using UnityEngine;
@@ -14,16 +13,27 @@ namespace Ballance2.Game.LevelEditor
 
     [HideInInspector]
     public int ParentId = 0;
-    public int SnapId = 0;
+    public int SnapId = 0; //用于标记吸附点的顺序，规定S0 N1 W2 E3
     [HideInInspector]
     public GameObject SnapParent = null;
     public bool Snapable = false;
-    public bool EnableSnap = false;
+    public bool EnableSnap
+    {
+      get => enableSnap;
+      set
+      {
+        enableSnap = value;
+        if (snapListener != null)
+          snapListener.Collider.isTrigger = !enableSnap;
+      }
+    }
     public Material ActiveMateral;
     public Material NormalMateral;
     public MeshRenderer meshRenderer;
     public GameObject Inner;
+    public Func<Vector3, Vector3> DragValueFixer = null;
 
+    private bool enableSnap = false;
     internal bool DisableSnapWhenChanged = false;
     [SerializeField]
     private LevelDynamicControlSnapListener snapListener;
@@ -34,6 +44,7 @@ namespace Ballance2.Game.LevelEditor
     private Vector3 pos;
     private int tick = 0;
     private bool dirty = false;
+    private bool nextNoEmit = false;
     private LevelDynamicControlPoint currentSnapOtherPoint = null;
 
     private void Awake() {
@@ -64,9 +75,14 @@ namespace Ballance2.Game.LevelEditor
           pos.y -= pos.y % DragModValue.y;
         if (DragModValue.z > 0)
           pos.z -= pos.z % DragModValue.z;
+        if (DragValueFixer != null)
+          pos = DragValueFixer(pos);
 
         transform.localPosition = pos;
-        dirty = true;
+        if (nextNoEmit)
+          nextNoEmit = false;
+        else
+          dirty = true;
       }
 
       if (tick < 5)
@@ -89,6 +105,12 @@ namespace Ballance2.Game.LevelEditor
       //吸附
       if (LevelDynamicControlSnap.Instance.EnableSnap && EnableSnap && currentSnapOtherPoint != null)
       {
+        DisableSnapWhenChanged = true;
+        //本点的旋转永远是与另外一个点相对
+        var targeRot = currentSnapOtherPoint.SnapParent.transform.eulerAngles + currentSnapOtherPoint.Inner.transform.localEulerAngles - Inner.transform.localEulerAngles;
+        SnapParent.transform.eulerAngles = targeRot;
+        SnapParent.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+
         var targetPos = currentSnapOtherPoint.SnapParent.transform.TransformPoint(currentSnapOtherPoint.transform.localPosition) - transform.localPosition;
         //如果距离已经大于10，则停止
         if (Vector3.Distance(targetPos, SnapParent.transform.position) > 10)
@@ -96,13 +118,7 @@ namespace Ballance2.Game.LevelEditor
           OnQuitSnap();
           return;
         }
-        var targeRot = currentSnapOtherPoint.SnapParent.transform.eulerAngles + currentSnapOtherPoint.transform.localEulerAngles - transform.localEulerAngles;
-        //如果另外一个吸附点的ID和当前一致，则认为是相同方向，则将当前物体旋转180度
-        if (currentSnapOtherPoint.SnapId != SnapId)
-          targeRot.y -= 180;
         SnapParent.transform.position = targetPos;
-        SnapParent.transform.eulerAngles = targeRot;
-        DisableSnapWhenChanged = true;
       }
     }
 
@@ -115,6 +131,10 @@ namespace Ballance2.Game.LevelEditor
       currentSnapOtherPoint = null;
     }
 
+    public void NextNoEmit()
+    {
+      nextNoEmit = true;
+    }
     public bool IsConnected {
       get {
         return false;

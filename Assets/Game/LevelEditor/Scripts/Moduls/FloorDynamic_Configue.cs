@@ -42,7 +42,7 @@ namespace Ballance2.Game.LevelEditor.Moduls
     {
       if (isEditor)
       {
-        component.Editor = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelDynamicFloorBlockEditor>(component.EditorPrefab, component.transform.parent, "LevelDynamicFloorBlockEditor");
+        component.Editor = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelDynamicFloorBlockEditor>(component.EditorPrefab, component.transform.parent, "Editor");
         component.Editor.Floor = component;
         component.Editor.ApplyValueToControllers();
         component.EnableEdit = true;
@@ -78,6 +78,24 @@ namespace Ballance2.Game.LevelEditor.Moduls
       config.Width = component.Width;
       modelInstance.Configues["Config"] = config;
     }
+    public override void OnClone(LevelDynamicModel modelInstance, LevelDynamicModel reference)
+    {
+      var refComp = reference.InstanceRef.GetComponent<LevelDynamicFloorBlockComponent>();
+      component.Width = refComp.Width;
+      component.Type = refComp.Type;
+      component.ArcDirection = refComp.ArcDirection;
+      component.ControlPoint1 = refComp.ControlPoint1;
+      component.ControlPoint2 = refComp.ControlPoint2;
+      component.ControlPoint3 = refComp.ControlPoint3;
+      component.ControlPoint4 = refComp.ControlPoint4;
+      component.Editor.ApplyValueToControllers();
+      component.Editor.UpdateControllers();
+      component.UpdateShape();
+    }
+    public override void OnCloneed(LevelDynamicModel modelInstance)
+    {
+      component.Editor.UpdateSnapEnable(false);
+    }
     public override void OnEditorIntoTest(LevelDynamicModel modelInstance)
     {
       component.EnableEdit = false;
@@ -112,6 +130,7 @@ namespace Ballance2.Game.LevelEditor.Moduls
             new LevelEditorItemSelectorItem(I18N.Tr("core.editor.sideedit.props.Floor.Type.Bezier"), LevelEditorStaticAssets.GetAssetByName<Sprite>("ToolIconsBerizer")),
           } },
         },
+        NeedFlushVisible = true,
         NoIntitalUpdate = true,
         OnGetValue = () => (int)component.Type,
         OnValueChanged = (v) => {
@@ -131,12 +150,13 @@ namespace Ballance2.Game.LevelEditor.Moduls
         EditorParams = new Dictionary<string, object>() {
           { "disableSelect", false },
           { "options", new List<LevelEditorItemSelectorItem>() {
-            new LevelEditorItemSelectorItem("X", LevelEditorStaticAssets.GetAssetByName<Sprite>("ToolIconsNone")),
-            new LevelEditorItemSelectorItem("Y", LevelEditorStaticAssets.GetAssetByName<Sprite>("ToolIconsNone")),
+            new LevelEditorItemSelectorItem("X"),
+            new LevelEditorItemSelectorItem("Y"),
           } },
         },
         NoIntitalUpdate = true,
         OnGetValue = () => (int)component.ArcDirection,
+        OnGetVisible = () => component.Type == LevelDynamicComponentType.Arc,
         OnValueChanged = (v) => {
           if (component != null && component.ArcDirection != (LevelDynamicComponentArcType)v)
           {

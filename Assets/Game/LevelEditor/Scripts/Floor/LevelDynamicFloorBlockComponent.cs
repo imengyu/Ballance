@@ -12,18 +12,17 @@ namespace Ballance2.Game.LevelEditor
     public LevelDynamicComponentType Type = LevelDynamicComponentType.Strait;
     public LevelDynamicComponentArcType ArcDirection = LevelDynamicComponentArcType.X;
     public float Width = 5f;
-
-    public Vector3 ModelRotate = new Vector3(-90, 180, 0);
-    public float CompSize = 2.5f;
-    public string FloorScheme = "";
-
-    public LevelDynamicFloorBlockEditor Editor;
-
     public Vector3 ControlPoint1 = Vector3.zero;
     public Vector3 ControlPoint2 = new Vector3(0, 0, 10);
     public Vector3 ControlPoint3 = Vector3.zero;
     public Vector3 ControlPoint4 = Vector3.zero;
 
+    public Vector3 ModelRotate = new Vector3(-90, 180, 0);
+    public float CompSize = 2.5f;
+    public string FloorScheme = "";
+
+    [HideInInspector]
+    public LevelDynamicFloorBlockEditor Editor;
     public GameObject EditorPrefab;
 
     private MeshRenderer meshRenderer;
@@ -84,7 +83,29 @@ namespace Ballance2.Game.LevelEditor
       }
     }
 
-    private bool ReadControlPoint()
+    public Vector3 CalcArcPoint(float inRadiusRef, float angle)
+    {
+      var center = ControlPoint3;
+      switch (ArcDirection)
+      {
+        case LevelDynamicComponentArcType.X:
+          {
+            var radius = inRadiusRef + Mathf.Abs(arcRadius);
+            var x = center.x + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
+            var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+            return new Vector3(x, 0, z);
+          }
+        case LevelDynamicComponentArcType.Y:
+          {
+            var radius = inRadiusRef + Mathf.Abs(arcRadius);
+            var y = center.y + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
+            var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+            return new Vector3(0, y, z);
+          }
+      }
+      return Vector3.zero;
+    }
+    public bool ReadControlPoint()
     {
       switch (Type)
       {
@@ -103,6 +124,9 @@ namespace Ballance2.Game.LevelEditor
           float dot = Vector3.Dot(vec1.normalized, vec2.normalized);
           arcDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
+          if (ControlPoint2.z < ControlPoint1.z)
+            arcDeg = 180 - arcDeg + 180;//已经超出一个圆弧了，认为是钝角
+
           switch (ArcDirection)
           {
             case LevelDynamicComponentArcType.X:
@@ -114,7 +138,7 @@ namespace Ballance2.Game.LevelEditor
             default:
               return false;
           }
-          arcLength = arcDeg / 360 * 2 * Mathf.PI * arcRadius;
+          arcLength = Mathf.Abs(arcDeg / 360 * 2 * Mathf.PI * arcRadius);
           if (arcLength < CompSize)
             return false;
           return true;
@@ -197,30 +221,63 @@ namespace Ballance2.Game.LevelEditor
         }
         //圆弧
         case LevelDynamicComponentType.Arc: {
-          var center = ControlPoint3;
           var zld = zl * CompSize;
           pMesh.CombineMeshFinish(mesh, ModelRotate, (p) => {
             var angle = p.Vertex.z / zld * arcDeg;
-            var radius = p.Vertex.x + Mathf.Abs(arcRadius);
-            var x = center.x + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
-            var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-            p.Vertex = new Vector3(x, p.Vertex.y, z);
+            switch (ArcDirection)
+            {
+              case LevelDynamicComponentArcType.X:
+                {
+                  var point = CalcArcPoint(p.Vertex.x, angle);
+                  p.Vertex = new Vector3(point.x, p.Vertex.y, point.z);
+                  break;
+                }
+              case LevelDynamicComponentArcType.Y:
+                {
+                  var point = CalcArcPoint(p.Vertex.y,angle);
+                  p.Vertex = new Vector3(p.Vertex.x, point.y, point.z);
+                }
+                break;
+            }
           }, arcRadius < 0);
           break;
         }
         //贝塞尔曲线
-        case LevelDynamicComponentType.Bizer: {
-          pMesh.CombineMeshFinish(mesh, ModelRotate, (p) => {
-            var pec = p.Vertex.z / bizerLength;
-            var off = new Vector3(p.Vertex.x, p.Vertex.y, 0);
-            var pt1 = ControlPoint1 + off;
-            var pt2 = ControlPoint2 + off;
+        case LevelDynamicComponentType.Bizer:
+          { 
+            var pt1 = ControlPoint1;
+            var pt2 = ControlPoint2;
             var pt3 = pt1 + ControlPoint3;
             var pt4 = pt2 + ControlPoint4;
-            p.Vertex = BezierUtils.Bezier(pt1, pt3, pt4, pt2, pec);
-          }, arcRadius < 0);
-          break;
-        }
+
+            var _IsStrait = true;
+            var _BendVector = new Vector3(0, 0, 0);
+
+            if (pt2.x != 0 || pt2.y != 0)
+            {
+              _BendVector.x = pt2.x;
+              _BendVector.y = pt2.y;
+              _BendVector.z = pt2.z;
+              _IsStrait = false;
+            }
+
+            pMesh.CombineMeshFinish(mesh, ModelRotate, _IsStrait ? null : (p) => {
+              var pec = p.Vertex.z / bizerLength;
+
+              var _BezierPos = BezierUtils.Bezier(pt1, pt3, pt4, pt2, pec);
+
+              if (pec <= 0.05 || pec >= 0.95)
+              {
+                p.Vertex = _BezierPos + new Vector3(p.Vertex.x, p.Vertex.y, 0);
+              }
+              else
+              {
+                Vector3 _VerticalVector = new Vector3(p.Vertex.x, p.Vertex.y, 0) - Vector3.Project(new Vector3(p.Vertex.x, p.Vertex.y, 0), _BendVector); //获取顶点在曲线上应有的垂直偏移向量
+                p.Vertex = _BezierPos + _VerticalVector;
+              }
+            });
+            break;
+          }
       }
       
       meshRenderer.materials = pMesh.CombineGetMeshMaterials();

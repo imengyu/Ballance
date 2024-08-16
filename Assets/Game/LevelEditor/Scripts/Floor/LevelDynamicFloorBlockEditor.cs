@@ -7,6 +7,7 @@ namespace Ballance2.Game.LevelEditor
   {
     public static int IdPool = 0;
 
+    [HideInInspector]
     public LevelDynamicFloorBlockComponent Floor;
     public LevelDynamicControlPoint ControlPoint1;
     public LevelDynamicControlPoint ControlPoint2;
@@ -52,7 +53,7 @@ namespace Ballance2.Game.LevelEditor
           Ruler2.gameObject.SetActive(true);
           Ruler2.SetText("");
           Ruler2.FitInTowPoint(ControlPoint2.transform.position, ControlPoint4.transform.position);
-          ControlPoint2.Inner.transform.localEulerAngles = new Vector3(0, Floor.bizerEndDeg, 0);
+          ControlPoint2.Inner.transform.localEulerAngles = Vector3.zero;
           break;
       }
     }
@@ -81,27 +82,34 @@ namespace Ballance2.Game.LevelEditor
           ControlPoint2.DragMinValue = new Vector3(0, 0, 1);
           ControlPoint2.DragModValue = new Vector3(0, 0, Floor.CompSize);
           ControlPoint2.DragType = LevelDynamicControlPointDragType.Z;
+          ControlPoint2.DragValueFixer = null;
           ControlPoint2.transform.localPosition = new Vector3(0, 0, ControlPoint2.transform.localPosition.z);
           ControlPoint3.gameObject.SetActive(false);
           ControlPoint4.gameObject.SetActive(false);
           break;
         case LevelDynamicComponentType.Arc:
           ControlPoint2.DragModValue = Vector3.zero;
+          ControlPoint2.DragValueFixer = (pt) => 
+          {
+            Floor.ControlPoint2 = pt;
+            Floor.ReadControlPoint();
+            return Floor.CalcArcPoint(0, Floor.arcDeg);
+          };
           switch (Floor.ArcDirection)
           {
             case LevelDynamicComponentArcType.X:
               ControlPoint2.DragType = LevelDynamicControlPointDragType.XZ;
               ControlPoint3.DragType = LevelDynamicControlPointDragType.X;
-              ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, 0);
-              ControlPoint3.DragMinValue = new Vector3(1, 0, 0);
+              ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, DragMinValueNoLimit.z);
+              ControlPoint3.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, 0);
               ControlPoint2.transform.localPosition = new Vector3((ControlPoint2.transform.localPosition.x < 1 ? 10 : ControlPoint2.transform.localPosition.x), 0, ControlPoint2.transform.localPosition.z);
               ControlPoint3.transform.localPosition = new Vector3((ControlPoint3.transform.localPosition.x < 1 ? 10 : ControlPoint3.transform.localPosition.x), 0, 0);
               break;
             case LevelDynamicComponentArcType.Y:
               ControlPoint2.DragType = LevelDynamicControlPointDragType.YZ;
               ControlPoint3.DragType = LevelDynamicControlPointDragType.Y;
-              ControlPoint2.DragMinValue = new Vector3(0, DragMinValueNoLimit.y, 0);
-              ControlPoint3.DragMinValue = new Vector3(0, 1, 0);
+              ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, DragMinValueNoLimit.y, 0);
+              ControlPoint3.DragMinValue = new Vector3(0, DragMinValueNoLimit.y, 0);
               ControlPoint2.transform.localPosition = new Vector3(0, (ControlPoint2.transform.localPosition.y < 1 ? 10 : ControlPoint2.transform.localPosition.y), ControlPoint2.transform.localPosition.z);
               ControlPoint3.transform.localPosition = new Vector3(0, (ControlPoint3.transform.localPosition.y < 1 ? 10 : ControlPoint3.transform.localPosition.y), 0);
               break;
@@ -113,9 +121,10 @@ namespace Ballance2.Game.LevelEditor
           ControlPoint2.DragType = LevelDynamicControlPointDragType.All;
           ControlPoint3.DragType = LevelDynamicControlPointDragType.All;
           ControlPoint4.DragType = LevelDynamicControlPointDragType.All;
-          ControlPoint3.transform.localPosition = new Vector3(10, 0, 0);
-          ControlPoint4.transform.localPosition = new Vector3(-10, 0, 0);
+          ControlPoint3.transform.localPosition = new Vector3(0, 0, ControlPoint3.transform.localPosition.z < 1 ? 10 : ControlPoint3.transform.localPosition.z);
+          ControlPoint4.transform.localPosition = new Vector3(0, 0, ControlPoint4.transform.localPosition.z > -1 ? -10 : ControlPoint4.transform.localPosition.z);
           ControlPoint2.DragMinValue = DragMinValueNoLimit;
+          ControlPoint2.DragValueFixer = null;
           ControlPoint3.DragMinValue = new Vector3(DragMinValueNoLimit.x, DragMinValueNoLimit.y, 1);
           ControlPoint4.DragMaxValue = new Vector3(DragMaxValueNoLimit.x, DragMaxValueNoLimit.y, 1);
           break;

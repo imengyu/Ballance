@@ -505,6 +505,84 @@ MonoBehaviour:
     ObjTarget: Phys_FloorStopper
     IntitalScale: {x: 1, y: 1, z: 1}
     IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 5520717862156324067, guid: 274c0339944eec0409756abafa9247b4, type: 3}
+    SubCategory: Special
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 975737110671295696, guid: 1c0dc8d4b146ffe4ab908901f793e981, type: 3}
+    SubCategory: Special
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 0}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 4816743770021040695, guid: 44e2aa3cf7917e54fbbbfb63181f2642, type: 3}
+    SubCategory: Special
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: 061ab028b7bcf314c8a47e1098e9dc7a, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7753747683245863629, guid: c2ae7139730595c4ea3bf215d17999bf, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: 0067830da82aa334aa2f5903c34cc64d, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7753747683245863629, guid: 7c1b412de0d404544afda1baf3fcd0e6, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
+  - Preview: {fileID: 21300000, guid: cd8a420de57254a4f9b40a507e7a08a0, type: 3}
+    ScenseGizmePreviewImage: {fileID: 0}
+    Prefab: {fileID: 7753747683245863629, guid: 9e5760ba32a59b347bb37aef7fe8afc6, type: 3}
+    SubCategory: Stone
+    Tag: 
+    Category: 1
+    SubModelRefs: []
+    OnlyOne: 0
+    HiddenInContentSelector: 0
+    HiddenPlaceholderRender: 0
+    ObjTarget: Phys_Floors
+    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalEulerAngles: {x: 0, y: 0, z: 0}
   InternalModuls:
     _serializedList:
     - Key: P_Ball_Paper
