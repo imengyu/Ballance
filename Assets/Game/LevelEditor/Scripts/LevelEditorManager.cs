@@ -622,6 +622,8 @@ namespace Ballance2.Game.LevelEditor
 
       yield return StartCoroutine(_CreateModelSolve(model));
 
+      LevelEditorUIControl.SetSelectedObjects(new LevelDynamicModel[] { model });
+
       //删除编辑器创建的无用对象
       if (go != null)
         Destroy(go);

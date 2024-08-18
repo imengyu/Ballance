@@ -5,7 +5,6 @@ using Ballance2.Base;
 using Ballance2.Utils;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static UnityEditor.Progress;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -386,7 +385,7 @@ namespace Ballance2.Game.LevelEditor
                 vertices.Add(pt + combine.Translate);
               }
               foreach (var item in combine.MeshSub.Normals)
-                normals.Add(rotationMatrix.MultiplyVector(item));
+                normals.Add(rotationMatrix.MultiplyVector(item).normalized);
               uv.AddRange(combine.MeshSub.UV);
             }
             else
@@ -399,7 +398,7 @@ namespace Ballance2.Game.LevelEditor
                 pointSolverResult.RawVertex = pt;
                 pointSolverResult.Translate = combine.Translate;
                 pointSolverResult.Vertex = pt + pointSolverResult.Translate;
-                pointSolverResult.Normal = rotationMatrix.MultiplyVector(combine.MeshSub.Normals[i]);
+                pointSolverResult.Normal = rotationMatrix.MultiplyVector(combine.MeshSub.Normals[i]).normalized;
                 pointSolverResult.UV = combine.MeshSub.UV[i];
 
                 pointSolver(pointSolverResult);
@@ -445,7 +444,7 @@ namespace Ballance2.Game.LevelEditor
         result.triangles = triangles.ToArray();
         result.uv = uv.ToArray();
         result.SetSubMeshes(subMeshs.ToArray());
-        result.RecalculateNormals();
+        //result.RecalculateNormals();
         result.RecalculateBounds();
       }
     }

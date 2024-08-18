@@ -1,7 +1,6 @@
 using Ballance2.Utils;
 using UnityEngine;
 using static Ballance2.Game.LevelEditor.LevelDynamicFloorBlockMaker;
-using static UnityEditor.Progress;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -13,6 +12,7 @@ namespace Ballance2.Game.LevelEditor
     public LevelDynamicComponentType Type = LevelDynamicComponentType.Strait;
     public LevelDynamicComponentArcType ArcDirection = LevelDynamicComponentArcType.X;
     public float Width = 5f;
+    public int SpiralLevelCount = 3;
     public float ControlPoint1ConnectHoleWidth = 0;
     public float ControlPoint2ConnectHoleWidth = 0;
     public Vector3 ControlPoint1 = Vector3.zero;
@@ -43,6 +43,12 @@ namespace Ballance2.Game.LevelEditor
     public float arcLength = 0;
     public float bizerLength = 0;
     public float bizerEndDeg = 0;
+    public float spiralRadius = 0;
+    public float spiralAllDeg = 0;
+    public float spiralLength = 0;
+    public float spiralHeight = 0;
+    public float spiralTierHeight = 0;
+    public float spiralEndDeg = 0;
 
     private void Awake() 
     {
@@ -80,21 +86,34 @@ namespace Ballance2.Game.LevelEditor
     public Vector3 CalcArcPoint(float inRadiusRef, float angle)
     {
       var center = ControlPoint3;
-      switch (ArcDirection)
+      switch(Type)
       {
-        case LevelDynamicComponentArcType.X:
+        case LevelDynamicComponentType.Arc:
+
+          switch (ArcDirection)
           {
-            var radius = inRadiusRef + Mathf.Abs(arcRadius);
-            var x = center.x + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
+            case LevelDynamicComponentArcType.X:
+              {
+                var radius = inRadiusRef + Mathf.Abs(arcRadius);
+                var x = center.x + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
+                var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+                return new Vector3(x, 0, z);
+              }
+            case LevelDynamicComponentArcType.Y:
+              {
+                var radius = inRadiusRef + Mathf.Abs(arcRadius);
+                var y = center.y + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
+                var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+                return new Vector3(0, y, z);
+              }
+          }
+          break;
+        case LevelDynamicComponentType.Spiral:
+          {
+            var radius = inRadiusRef + Mathf.Abs(spiralRadius);
+            var x = center.x + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (spiralRadius < 0 ? -1 : 1));
             var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
             return new Vector3(x, 0, z);
-          }
-        case LevelDynamicComponentArcType.Y:
-          {
-            var radius = inRadiusRef + Mathf.Abs(arcRadius);
-            var y = center.y + (radius * Mathf.Cos(angle * Mathf.Deg2Rad) * (arcRadius < 0 ? -1 : 1));
-            var z = center.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-            return new Vector3(0, y, z);
           }
       }
       return Vector3.zero;
@@ -158,6 +177,40 @@ namespace Ballance2.Game.LevelEditor
             return false;
           return true;
         }
+        //螺旋
+        case LevelDynamicComponentType.Spiral: {
+          var pt1 = ControlPoint1; //控制点1，圆周4/1位置
+          var pt2 = ControlPoint2; //控制点2，高度
+          var pt3 = ControlPoint3; //控制点3，半径
+          var pt2n = ControlPoint2;
+          var pt3n = ControlPoint3;
+          pt2n.y = 0;
+          pt3n.y = 0;
+
+          spiralRadius = pt1.x - pt3.x;
+          spiralHeight = pt2.y;
+
+          var vec1 = pt1 - pt3n;
+          var vec2 = pt2n - pt3n;
+          var dot = Vector3.Dot(vec1.normalized, vec2.normalized);
+          spiralEndDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
+          if (pt2.z < pt1.z)
+            spiralEndDeg = 180 - spiralEndDeg + 180;//已经超出一个圆弧了，认为是钝角
+
+          if (LevelDynamicControlSnap.Instance.EnableRotSnap) //旋转吸附，取整为5的倍数
+          {
+            spiralEndDeg = Mathf.Floor(spiralEndDeg);
+            spiralEndDeg -= spiralEndDeg % 5;
+          }
+
+          //（螺旋层数-1）*360+spiralEndDeg
+          spiralAllDeg = 360 * (SpiralLevelCount - 1) + spiralEndDeg;
+          spiralLength = Mathf.Abs(spiralAllDeg / 360 * 2 * Mathf.PI * spiralRadius);
+          if (spiralLength < CompSize)
+            return false;
+          return true;
+        }
       }
       return false;
     }
@@ -193,21 +246,10 @@ namespace Ballance2.Game.LevelEditor
 
       switch (Type)
       {
-        //直线
-        case LevelDynamicComponentType.Strait: {
-          zl = Mathf.Abs(Mathf.Floor(straitLength / CompSize));
-          break;
-        }
-        //圆弧
-        case LevelDynamicComponentType.Arc: {
-          zl = Mathf.Abs(Mathf.Floor(arcLength / CompSize));
-          break;
-        }
-        //贝塞尔曲线
-        case LevelDynamicComponentType.Bizer: {
-          zl = Mathf.Abs(Mathf.Floor(bizerLength / CompSize));
-          break;
-        }
+        case LevelDynamicComponentType.Strait: zl = Mathf.Abs(Mathf.Floor(straitLength / CompSize)); break;
+        case LevelDynamicComponentType.Arc: zl = Mathf.Abs(Mathf.Floor(arcLength / CompSize)); break;
+        case LevelDynamicComponentType.Bizer: zl = Mathf.Abs(Mathf.Floor(bizerLength / CompSize)); break;
+        case LevelDynamicComponentType.Spiral: zl = Mathf.Abs(Mathf.Floor(spiralLength / CompSize)); break;
       }
       
       //生成Mesh
@@ -261,16 +303,20 @@ namespace Ballance2.Game.LevelEditor
         //圆弧
         case LevelDynamicComponentType.Arc: {
           var zld = zl * CompSize;
+          var reverse = arcRadius < 0;
           switch (ArcDirection)
           {
             case LevelDynamicComponentArcType.X:
               {
-                pMesh.CombineMeshFinish(mesh, ModelRotate, IsRail ? null : (p) =>
+                pMesh.CombineMeshFinish(mesh, ModelRotate, (p) =>
                 {
                   var angle = p.Vertex.z / zld * arcDeg;
                   var point = CalcArcPoint(p.Vertex.x, angle);
                   p.Vertex = new Vector3(point.x, p.Vertex.y, point.z);
-                }, arcRadius < 0);
+                  if (reverse && Mathf.Abs(p.Normal.y) < 0.8f)
+                    p.Normal = new Vector3(-p.Normal.x, p.Normal.y, -p.Normal.z);//因为模型进行了左右反向，所以需要对平的法向量反向
+                  p.Normal = Matrix4x4.Rotate(Quaternion.Euler(0, angle, 0)).MultiplyVector(p.Normal);
+                }, reverse);
                 break;
               }
             case LevelDynamicComponentArcType.Y:
@@ -280,6 +326,9 @@ namespace Ballance2.Game.LevelEditor
                   var angle = p.Vertex.z / zld * arcDeg;
                   var point = CalcArcPoint(p.Vertex.y * (arcRadius < 0 ? -1 : 1), angle);
                   p.Vertex = new Vector3(p.Vertex.x, point.y, point.z);
+                  if (reverse && Mathf.Abs(p.Normal.y) < 0.8f)
+                    p.Normal = new Vector3(-p.Normal.x, p.Normal.y, -p.Normal.z);//因为模型进行了左右反向，所以需要对平的法向量反向
+                  p.Normal = Matrix4x4.Rotate(Quaternion.Euler(0, angle, 0)).MultiplyVector(p.Normal);
                 });
               }
               break;
@@ -322,6 +371,22 @@ namespace Ballance2.Game.LevelEditor
             });
             break;
           }
+        //螺旋
+        case LevelDynamicComponentType.Spiral:
+          {
+            var reverse = spiralRadius < 0;
+            pMesh.CombineMeshFinish(mesh, ModelRotate, (p) =>
+            {
+              var pec = p.Vertex.z / spiralLength;
+              var angle = pec * spiralAllDeg;
+              var point = CalcArcPoint(p.Vertex.x, angle);
+              p.Vertex = new Vector3(point.x, p.Vertex.y + pec * spiralHeight, point.z);
+              if (reverse && Mathf.Abs(p.Normal.y) < 0.8f)
+                p.Normal = new Vector3(-p.Normal.x, p.Normal.y, -p.Normal.z);//因为模型进行了左右反向，所以需要对平的法向量反向
+              p.Normal = Matrix4x4.Rotate(Quaternion.Euler(0, angle, 0)).MultiplyVector(p.Normal);
+            }, reverse);
+            break;
+          }
       }
       
       meshRenderer.materials = pMesh.CombineGetMeshMaterials();
@@ -337,6 +402,7 @@ namespace Ballance2.Game.LevelEditor
     Strait,
     Arc,
     Bizer,
+    Spiral,
   }
   public enum LevelDynamicComponentArcType 
   {

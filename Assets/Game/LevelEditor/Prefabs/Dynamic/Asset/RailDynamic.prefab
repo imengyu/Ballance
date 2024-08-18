@@ -60,13 +60,14 @@ MonoBehaviour:
   Type: 0
   ArcDirection: 0
   Width: 0.5
+  SpiralLevelCount: 3
   ControlPoint1ConnectHoleWidth: 0
   ControlPoint2ConnectHoleWidth: 0
   ControlPoint1: {x: 0, y: 0, z: 0}
   ControlPoint2: {x: 0, y: 0, z: 10}
   ControlPoint3: {x: 0, y: 0, z: 0}
   ControlPoint4: {x: 0, y: 0, z: 0}
-  ModelRotate: {x: -90, y: 180, z: 0}
+  ModelRotate: {x: 0, y: 180, z: 0}
   CompSize: 0.5
   FloorScheme: Rail
   IsRail: 1
@@ -78,3 +79,9 @@ MonoBehaviour:
   arcLength: 0
   bizerLength: 0
   bizerEndDeg: 0
+  spiralRadius: 0
+  spiralAllDeg: 0
+  spiralLength: 0
+  spiralHeight: 0
+  spiralTierHeight: 0
+  spiralEndDeg: 0

@@ -1,3 +1,4 @@
+using Ballance2.Utils;
 using UnityEngine;
 using static Ballance2.Game.LevelEditor.LevelDynamicControlPoint;
 
@@ -60,6 +61,17 @@ namespace Ballance2.Game.LevelEditor
           Ruler2.FitInTowPoint(ControlPoint2.transform.position, ControlPoint4.transform.position);
           ControlPoint2.Inner.transform.localEulerAngles = Vector3.zero;
           break;
+        case LevelDynamicComponentType.Spiral:
+          {
+            Ruler1.gameObject.SetActive(true);
+            Ruler1.SetText($"{Mathf.Abs(Floor.spiralRadius).ToString("F2")} m");
+            Ruler1.FitInTowPoint(ControlPoint3.transform.position, ControlPoint1.transform.position);
+            Ruler2.gameObject.SetActive(true);
+            Ruler2.SetText("");
+            Ruler2.FitInTowPoint(ControlPoint2.transform.position, ControlPoint3.transform.position);
+            ControlPoint2.Inner.transform.localEulerAngles = new Vector3(0, Floor.spiralEndDeg, 0);
+            break;
+          }
       }
     }
     public void UpdateControllers()
@@ -111,16 +123,16 @@ namespace Ballance2.Game.LevelEditor
               ControlPoint3.DragType = LevelDynamicControlPointDragType.X;
               ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, DragMinValueNoLimit.z);
               ControlPoint3.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, 0);
-              ControlPoint2.transform.localPosition = new Vector3((ControlPoint2.transform.localPosition.x < 1 ? 10 : ControlPoint2.transform.localPosition.x), 0, ControlPoint2.transform.localPosition.z);
-              ControlPoint3.transform.localPosition = new Vector3((ControlPoint3.transform.localPosition.x < 1 ? 10 : ControlPoint3.transform.localPosition.x), 0, 0);
+              ControlPoint2.transform.localPosition = new Vector3((Mathf.Abs(ControlPoint2.transform.localPosition.x) < 1 ? 10 : ControlPoint2.transform.localPosition.x), 0, ControlPoint2.transform.localPosition.z);
+              ControlPoint3.transform.localPosition = new Vector3((Mathf.Abs(ControlPoint3.transform.localPosition.x) < 1 ? 10 : ControlPoint3.transform.localPosition.x), 0, 0);
               break;
             case LevelDynamicComponentArcType.Y:
               ControlPoint2.DragType = LevelDynamicControlPointDragType.YZ;
               ControlPoint3.DragType = LevelDynamicControlPointDragType.Y;
               ControlPoint2.DragMinValue = new Vector3(DragMinValueNoLimit.x, DragMinValueNoLimit.y, 0);
               ControlPoint3.DragMinValue = new Vector3(0, DragMinValueNoLimit.y, 0);
-              ControlPoint2.transform.localPosition = new Vector3(0, (ControlPoint2.transform.localPosition.y < 1 ? 10 : ControlPoint2.transform.localPosition.y), ControlPoint2.transform.localPosition.z);
-              ControlPoint3.transform.localPosition = new Vector3(0, (ControlPoint3.transform.localPosition.y < 1 ? 10 : ControlPoint3.transform.localPosition.y), 0);
+              ControlPoint2.transform.localPosition = new Vector3(0, (Mathf.Abs(ControlPoint2.transform.localPosition.y) < 1 ? 10 : ControlPoint2.transform.localPosition.y), ControlPoint2.transform.localPosition.z);
+              ControlPoint3.transform.localPosition = new Vector3(0, (Mathf.Abs(ControlPoint3.transform.localPosition.y) < 1 ? 10 : ControlPoint3.transform.localPosition.y), 0);
               break;
           }
           ControlPoint4.gameObject.SetActive(false);
@@ -137,6 +149,28 @@ namespace Ballance2.Game.LevelEditor
           ControlPoint3.DragMinValue = new Vector3(DragMinValueNoLimit.x, DragMinValueNoLimit.y, 1);
           ControlPoint4.DragMaxValue = new Vector3(DragMaxValueNoLimit.x, DragMaxValueNoLimit.y, 1);
           break;
+        case LevelDynamicComponentType.Spiral:
+          ControlPoint2.DragModValue = Vector3.zero;
+          ControlPoint2.DragValueFixer = (pt) =>
+          {
+            Floor.ControlPoint2 = pt;
+            Floor.ReadControlPoint();
+            var result = Floor.CalcArcPoint(0, Floor.spiralEndDeg);
+            result.y = pt.y;
+            return result;
+          };
+          ControlPoint2.DragType = LevelDynamicControlPointDragType.All;
+          ControlPoint3.DragType = LevelDynamicControlPointDragType.X;
+          ControlPoint2.DragMinValue = DragMinValueNoLimit;
+          ControlPoint3.DragMinValue = new Vector3(DragMinValueNoLimit.x, 0, 0);
+          ControlPoint3.transform.localPosition = new Vector3(
+            0,
+            CommonUtils.LimitNumber(ControlPoint3.transform.localPosition.y, 10, 1000),
+            0
+          );
+          ControlPoint3.transform.localPosition = new Vector3((Mathf.Abs(ControlPoint3.transform.localPosition.x) < 1 ? 10 : ControlPoint3.transform.localPosition.x), 0, 0);
+          ControlPoint4.gameObject.SetActive(false);
+          break;
       }
 
       ControlPoint1.UpdateDragValues();
@@ -145,16 +179,19 @@ namespace Ballance2.Game.LevelEditor
       ControlPoint4.UpdateDragValues();
       UpdateRuler();
     }
-    public void ApplyValueToControllers()
+    public void ApplyValueToControllers(bool noNextEmit = true)
     {
       ControlPoint1.transform.localPosition = Floor.ControlPoint1;
       ControlPoint2.transform.localPosition = Floor.ControlPoint2;
       ControlPoint3.transform.localPosition = Floor.ControlPoint3;
       ControlPoint4.transform.localPosition = Floor.ControlPoint4;
-      ControlPoint1.NoNextPositionChangeEdit();
-      ControlPoint2.NoNextPositionChangeEdit();
-      ControlPoint3.NoNextPositionChangeEdit();
-      ControlPoint4.NoNextPositionChangeEdit();
+      if (noNextEmit)
+      {
+        ControlPoint1.NoNextPositionChangeEdit();
+        ControlPoint2.NoNextPositionChangeEdit();
+        ControlPoint3.NoNextPositionChangeEdit();
+        ControlPoint4.NoNextPositionChangeEdit();
+      }
     }
 
     private void Awake() 

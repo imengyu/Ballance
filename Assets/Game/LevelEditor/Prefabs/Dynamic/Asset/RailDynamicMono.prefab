@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: FloorScheme
       value: RailMono
       objectReference: {fileID: 0}
+    - target: {fileID: -3410216387897296972, guid: ad9eec690d2b5574f9666b8989b8a0cb, type: 3}
+      propertyPath: ModelRotate.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 6329495458110797992, guid: ad9eec690d2b5574f9666b8989b8a0cb, type: 3}
       propertyPath: m_Name
       value: RailDynamicMono

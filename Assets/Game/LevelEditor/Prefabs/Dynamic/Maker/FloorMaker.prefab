@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2214783193154944306, guid: b03513de8c05e004b95056424967ab42, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2214783193154944306, guid: b03513de8c05e004b95056424967ab42, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f4732ea8b074e1e4691a15a27688edd5, type: 2}
     - target: {fileID: -1605270249842224460, guid: b03513de8c05e004b95056424967ab42, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -56,6 +64,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: FloorMaker
       objectReference: {fileID: 0}
+    - target: {fileID: 971490514817689233, guid: b03513de8c05e004b95056424967ab42, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 971490514817689233, guid: b03513de8c05e004b95056424967ab42, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580799169380270437, guid: b03513de8c05e004b95056424967ab42, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580799169380270437, guid: b03513de8c05e004b95056424967ab42, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f4732ea8b074e1e4691a15a27688edd5, type: 2}
     - target: {fileID: 5045625458948402922, guid: b03513de8c05e004b95056424967ab42, type: 3}
       propertyPath: m_IsActive
       value: 1

@@ -11,6 +11,7 @@ namespace Ballance2.Game.LevelEditor
     public bool EnableRotSnap = true;
     public bool EnableSnap = true;
     public LevelDynamicControlPoint ActiveSnapPoint = null;
+    public AudioSource SnapSound;
 
     public static LevelDynamicControlSnap Instance;
 
@@ -25,6 +26,11 @@ namespace Ballance2.Game.LevelEditor
     public static void ResetSnapCheck()
     {
       Instance.ActiveSnapPoint = null;
+    }
+    public static void Snap(LevelDynamicControlPoint point)
+    {
+      Instance.ActiveSnapPoint = point;
+      Instance.SnapSound.Play();
     }
 
     public LevelDynamicControlSnap()

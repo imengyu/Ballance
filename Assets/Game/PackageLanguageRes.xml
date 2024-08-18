@@ -189,14 +189,19 @@
             <Text name="WithFloor">附带路面</Text>
             <Text name="BallonSound">靠近播放音乐</Text>
             <Text name="ActiveSectors">激活的小节</Text>
-            
+
             <Group name="Floor">
+              <Text name="Length">长度</Text>
+              <Text name="ArcDeg">角度</Text>
+              <Text name="ArcRadius">半径</Text>
               <Text name="Width">宽度</Text>
+              <Text name="SpiralLevelCount">螺旋层数</Text>
               <Group name="Type">
                 <Text name="Name">类型</Text>
                 <Text name="Line">直线</Text>
                 <Text name="Arc">圆弧</Text>
                 <Text name="Bezier">曲线</Text>
+                <Text name="Spiral">螺旋</Text>
               </Group>
               <Group name="ArcType">
                 <Text name="Name">方向</Text>
@@ -463,6 +468,18 @@
           <Text name="Move">移动工具</Text>
           <Text name="Rotate">旋转工具</Text>
           <Text name="Scale">缩放工具</Text>
+        </Group>
+        <Group name="import">
+          <Text name="Title">导入自定义模型</Text>
+          <Text name="Desc"><![CDATA[ 你可以导入其他软件制作的自定义3D模型至当前关卡中，你可以使用3dsMax或者是Blender制作自定义模型，自定义模型可以实现更复杂的效果。\n\n导入提示：支持FBX,OBJ等格式的3D文件，建议您导出单一的模型，导入成功后资源会在资源库中出现，你可以随时拖拽放到关卡中哦。 ]]></Text>
+          <Text name="ChooseAModelFile">选择3D模型文件</Text>
+          <Text name="MapMaterial">重定向内置材质</Text>
+          <Text name="MapMaterialDesc">对于您的模型中的一些材质，如果与游戏内置的材质同名，则自动替换成游戏内更高清的内置材质</Text>
+          <Text name="Scale">缩放比例</Text>
+          <Text name="ImportAs">这个模型是什么?</Text>
+          <Text name="LoadingModel">加载模型中 {0}</Text>
+          <Text name="LoadingModelFailedTitle">加载模型失败</Text>
+          <Text name="LoadingModelFailedDesc">这可能是您加载的模型无效或者文件无法读取，异常信息： {0}</Text>
         </Group>
         <Text name="Loading">加载中</Text>
       </Group>

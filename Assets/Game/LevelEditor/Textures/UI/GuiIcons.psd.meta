@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b36153127c7ba594b973afb4ce2a803c
+guid: 631a5a15c3fd9004db90db416a790fb8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ToolIconsStrait
+      name: GuiIconInto
       rect:
         serializedVersion: 2
-        x: 4
-        y: 174
-        width: 78
-        height: 78
+        x: 1
+        y: 245
+        width: 197
+        height: 102
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,41 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c4cdb442d835c1b4c997100bae5d178c
-      internalID: -521309593
+      spriteID: 757aec9efd4ff1b4ab65257408675eb7
+      internalID: -1585303802
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ToolIconsArc
+      name: GuiIcon3DS
       rect:
         serializedVersion: 2
-        x: 82
-        y: 174
-        width: 78
-        height: 78
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fcd58f8718b1c4645ad2e63046907082
-      internalID: -191936041
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ToolIconsBerizer
-      rect:
-        serializedVersion: 2
-        x: 161
-        y: 174
-        width: 78
-        height: 78
+        x: 1
+        y: 346
+        width: 80
+        height: 81
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8ec6aca7621d3c2449742ffe73563b45
-      internalID: -835571539
+      spriteID: 06ede9314f77e0c43b94414096946430
+      internalID: -505806430
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ToolIconsNone
+      name: GuiIconsBlender
       rect:
         serializedVersion: 2
-        x: 239
-        y: 175
-        width: 16
-        height: 15
+        x: 83
+        y: 348
+        width: 90
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,29 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6d4d97733909b4459f43ca9375459a1
-      internalID: 1099725975
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ToolIconsSpiral
-      rect:
-        serializedVersion: 2
-        x: 4
-        y: 96
-        width: 78
-        height: 78
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b041544d75aa08f4babb7587fcdabbe5
-      internalID: -2085623048
+      spriteID: 3f8421481fa2f30438588db5539ab38a
+      internalID: -576477380
       vertices: []
       indices: 
       edges: []
@@ -204,7 +162,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6b36072c21306224ea4e8bc3aa24c783
+    spriteID: 9e55b1da95da44e4da7fd3b0d7acd018
     internalID: 0
     vertices: []
     indices: 
@@ -212,11 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ToolIconsArc: -191936041
-      ToolIconsBerizer: -835571539
-      ToolIconsNone: 1099725975
-      ToolIconsSpiral: -2085623048
-      ToolIconsStrait: -521309593
+      GuiIcon3DS: -505806430
+      GuiIconInto: -1585303802
+      GuiIconsBlender: -576477380
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

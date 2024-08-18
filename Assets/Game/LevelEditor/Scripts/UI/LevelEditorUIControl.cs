@@ -17,12 +17,14 @@ namespace Ballance2.Game.LevelEditor
     public LevelEditorContentSelection LevelEditorContentSelection;
     public LevelEditorTransformToolControl LevelEditorTransformToolControl;
     public LevelEditorObjectInfoControl LevelEditorObjectInfoControl;
+    public LevelEditorImportControl LevelEditorImportControl;
     public GameObject TransformHandles;
     public RectTransform DialogTransformHelp;
     public RectTransform DialogTestHelp;
     public RectTransform DialogLevelInfo;
     public RectTransform DialogLoading;
     public RectTransform DialogPause;
+    public RectTransform DialogImportTip;
     public RectTransform MouseTip;
     public UIText MouseTipText;
     public UIText DialogLoadingText;
@@ -181,6 +183,16 @@ namespace Ballance2.Game.LevelEditor
       LevelEditorContentSelection.LoadCategory(tab);
     }
 
+    public void StartImport()
+    {
+      DialogImportTip.gameObject.SetActive(false);
+      LevelEditorImportControl.StartImport();
+    }
+    public void ShowImport()
+    {
+      LevelEditorContentSelection.Close();
+      DialogImportTip.gameObject.SetActive(true);
+    }
     public void ShowTransformHelp()
     {
       DialogTransformHelp.gameObject.SetActive(true);

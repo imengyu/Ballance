@@ -191,8 +191,20 @@ PrefabInstance:
       value: InputField
       objectReference: {fileID: 0}
     - target: {fileID: 3415491810112644429, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1421363534163544783f775dece5fb7e, type: 2}
+    - target: {fileID: 3415491810112644429, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4999783351295421769, guid: 1421363534163544783f775dece5fb7e, type: 2}
+    - target: {fileID: 3415491810112644429, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
       propertyPath: m_TextWrappingMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3415491810112644429, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7098359002695427160, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
       propertyPath: m_Pivot.x
@@ -297,6 +309,18 @@ PrefabInstance:
     - target: {fileID: 8481325169263230674, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
       propertyPath: m_text
       value: Enter...
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481325169263230674, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1421363534163544783f775dece5fb7e, type: 2}
+    - target: {fileID: 8481325169263230674, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4999783351295421769, guid: 1421363534163544783f775dece5fb7e, type: 2}
+    - target: {fileID: 8481325169263230674, guid: 15233a2867bde784c8b3491618f4b345, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

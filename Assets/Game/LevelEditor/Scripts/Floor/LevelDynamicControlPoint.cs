@@ -112,14 +112,14 @@ namespace Ballance2.Game.LevelEditor
         if (LevelDynamicControlSnap.CheckSnap(this) && EnableSnap)
         {
           //本点的旋转永远是与另外一个点相对
-          var targeRot = currentSnapOtherPoint.SnapParent.transform.eulerAngles + currentSnapOtherPoint.Inner.transform.localEulerAngles - Inner.transform.localEulerAngles;
+          var targeRot = currentSnapOtherPoint.Inner.transform.eulerAngles - Inner.transform.localEulerAngles;
           SnapParent.transform.eulerAngles = targeRot;
-          SnapParent.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+          SnapParent.transform.localEulerAngles = new Vector3(SnapParent.transform.localEulerAngles.x, SnapParent.transform.localEulerAngles.y - 180, SnapParent.transform.localEulerAngles.z);
 
           var targetPos = currentSnapOtherPoint.SnapParent.transform.TransformPoint(currentSnapOtherPoint.transform.localPosition) //目标吸附点的世界位置
             + (SnapParent.transform.position - SnapParent.transform.TransformPoint(transform.localPosition)); //当前点的相对原点位置
           //如果距离已经大于10，则停止
-          if (Vector3.Distance(targetPos, SnapParent.transform.position) > 20)
+          if (Vector3.Distance(targetPos, SnapParent.transform.position) > 10)
           { 
             OnQuitSnap();
             return;
@@ -160,7 +160,7 @@ namespace Ballance2.Game.LevelEditor
     }
     private void OnStartSnap(LevelDynamicControlPoint otherPoint)
     {
-      LevelDynamicControlSnap.Instance.ActiveSnapPoint = this;
+      LevelDynamicControlSnap.Snap(this);
       currentSnapOtherPoint = otherPoint;
     }
     private void OnQuitSnap()

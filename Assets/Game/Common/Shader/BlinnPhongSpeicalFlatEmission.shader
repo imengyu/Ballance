@@ -24,7 +24,7 @@ Shader "LikeVirtools/BlinnPhongSpeicalFlatEmission"
       Tags { "LightMode" = "ForwardBase" }
 
       CGPROGRAM
-			#pragma target 3.0
+	#pragma target 3.0
       #pragma multi_compile_fog
       #pragma multi_compile_fwdbase
       #pragma multi_compile LIGHTPROBE_SH
@@ -57,7 +57,7 @@ Shader "LikeVirtools/BlinnPhongSpeicalFlatEmission"
       Fog { Color (0,0,0,0) }
 
       CGPROGRAM
-			#pragma target 3.0
+      #pragma target 3.0
       #pragma multi_compile_fwdadd
       #pragma vertex vert
       #pragma fragment frag
