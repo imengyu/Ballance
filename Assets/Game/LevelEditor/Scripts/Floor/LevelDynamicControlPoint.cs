@@ -11,6 +11,8 @@ namespace Ballance2.Game.LevelEditor
     public static Vector3 DragMinValueNoLimit = new Vector3(-10000, -10000, -10000);
     public static Vector3 DragMaxValueNoLimit = new Vector3(10000, 10000, 10000);
 
+    public object Parent = null;
+    public Func<float> GetParentSnapPortWidth = () => 0;
     [HideInInspector]
     public int ParentId = 0;
     public int SnapId = 0; //用于标记吸附点的顺序，规定S0 N1 W2 E3
@@ -34,7 +36,6 @@ namespace Ballance2.Game.LevelEditor
     public Func<Vector3, Vector3> DragValueFixer = null;
 
     private bool enableSnap = false;
-    internal bool DisableSnapWhenChanged = false;
     [SerializeField]
     private LevelDynamicControlSnapListener snapListener;
     [SerializeField]
@@ -43,9 +44,10 @@ namespace Ballance2.Game.LevelEditor
     private LockAxes lockAxes;
     private Vector3 pos;
     private int tick = 0;
+    private int resetTick = 0;
     private bool dirty = false;
-    private bool nextNoEmit = false;
     private LevelDynamicControlPoint currentSnapOtherPoint = null;
+    private LevelDynamicControlPoint currentConnectedOtherPoint = null;
 
     private void Awake() {
       if (meshRenderer == null)
@@ -57,11 +59,12 @@ namespace Ballance2.Game.LevelEditor
         snapListener.Parent = this;
         snapListener.onStartSnap = OnStartSnap;
         snapListener.onQuitSnap = OnQuitSnap;
+        snapListener.onPointEnter = OnOtherSnapPointEnter;
+        snapListener.onPointLeave = OnOtherSnapPointLeave;
       }
     }
     private void Update()
     {
-
       if (pos != transform.localPosition)
       {
         pos = new Vector3(
@@ -79,10 +82,7 @@ namespace Ballance2.Game.LevelEditor
           pos = DragValueFixer(pos);
 
         transform.localPosition = pos;
-        if (nextNoEmit)
-          nextNoEmit = false;
-        else
-          dirty = true;
+        dirty = true;
       }
 
       if (tick < 5)
@@ -97,49 +97,79 @@ namespace Ballance2.Game.LevelEditor
           dirty = false;
           onMoved?.Invoke();
         }
-        
-        if (DisableSnapWhenChanged)
-          DisableSnapWhenChanged = false;
+      }
+      //吸附状态重置
+      if (resetTick > 0)
+      {
+        resetTick--;
+        if (resetTick <= 0)
+          LevelDynamicControlSnap.ResetSnapCheck();
       }
 
       //吸附
-      if (LevelDynamicControlSnap.Instance.EnableSnap && EnableSnap && currentSnapOtherPoint != null)
+      if (currentSnapOtherPoint != null)
       {
-        DisableSnapWhenChanged = true;
-        //本点的旋转永远是与另外一个点相对
-        var targeRot = currentSnapOtherPoint.SnapParent.transform.eulerAngles + currentSnapOtherPoint.Inner.transform.localEulerAngles - Inner.transform.localEulerAngles;
-        SnapParent.transform.eulerAngles = targeRot;
-        SnapParent.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+        if (LevelDynamicControlSnap.CheckSnap(this) && EnableSnap)
+        {
+          //本点的旋转永远是与另外一个点相对
+          var targeRot = currentSnapOtherPoint.SnapParent.transform.eulerAngles + currentSnapOtherPoint.Inner.transform.localEulerAngles - Inner.transform.localEulerAngles;
+          SnapParent.transform.eulerAngles = targeRot;
+          SnapParent.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
 
-        var targetPos = currentSnapOtherPoint.SnapParent.transform.TransformPoint(currentSnapOtherPoint.transform.localPosition) - transform.localPosition;
-        //如果距离已经大于10，则停止
-        if (Vector3.Distance(targetPos, SnapParent.transform.position) > 10)
+          var targetPos = currentSnapOtherPoint.SnapParent.transform.TransformPoint(currentSnapOtherPoint.transform.localPosition) //目标吸附点的世界位置
+            + (SnapParent.transform.position - SnapParent.transform.TransformPoint(transform.localPosition)); //当前点的相对原点位置
+          //如果距离已经大于10，则停止
+          if (Vector3.Distance(targetPos, SnapParent.transform.position) > 20)
+          { 
+            OnQuitSnap();
+            return;
+          }
+          SnapParent.transform.position = targetPos;
+        }
+        else
         {
           OnQuitSnap();
-          return;
         }
-        SnapParent.transform.position = targetPos;
       }
     }
 
+    public void NoNextPositionChangeEdit()
+    {
+      pos = transform.localPosition;
+    }
+
+    private void OnOtherSnapPointEnter(LevelDynamicControlPoint otherPoint)
+    {
+      if (currentConnectedOtherPoint == null)
+      {
+        currentConnectedOtherPoint = otherPoint;
+        currentConnectedOtherPoint.onConnectedChanged?.Invoke(this);
+        currentConnectedOtherPoint.currentConnectedOtherPoint = this;
+        onConnectedChanged?.Invoke(currentConnectedOtherPoint);
+      }
+    }
+    private void OnOtherSnapPointLeave(LevelDynamicControlPoint otherPoint)
+    {
+      if (currentConnectedOtherPoint == otherPoint)
+      {
+        currentConnectedOtherPoint.onConnectedChanged?.Invoke(null);
+        currentConnectedOtherPoint.currentConnectedOtherPoint = null;
+        currentConnectedOtherPoint = null;
+        onConnectedChanged?.Invoke(null);
+      }
+    }
     private void OnStartSnap(LevelDynamicControlPoint otherPoint)
     {
+      LevelDynamicControlSnap.Instance.ActiveSnapPoint = this;
       currentSnapOtherPoint = otherPoint;
     }
     private void OnQuitSnap()
     {
+      resetTick = 30;
       currentSnapOtherPoint = null;
     }
-
-    public void NextNoEmit()
-    {
-      nextNoEmit = true;
-    }
-    public bool IsConnected {
-      get {
-        return false;
-      }
-    }
+    public LevelDynamicControlPoint ConnectedOtherPoint  { get => currentConnectedOtherPoint; }
+    public bool IsConnected { get => currentConnectedOtherPoint != null; }
     public bool IsHovered {
       get => isHovered;
       set {
@@ -202,6 +232,7 @@ namespace Ballance2.Game.LevelEditor
     }
 
     public Action onMoved;
+    public Action<LevelDynamicControlPoint> onConnectedChanged;
   } 
   
   public enum LevelDynamicControlPointDragType

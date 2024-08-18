@@ -5,8 +5,6 @@ namespace Ballance2.Game.LevelEditor
 {
   public class LevelDynamicFloorBlockEditor : MonoBehaviour 
   {
-    public static int IdPool = 0;
-
     [HideInInspector]
     public LevelDynamicFloorBlockComponent Floor;
     public LevelDynamicControlPoint ControlPoint1;
@@ -36,14 +34,21 @@ namespace Ballance2.Game.LevelEditor
           break;
         }
         case LevelDynamicComponentType.Arc: {
-          var radius = ControlPoint3.transform.localPosition.x - ControlPoint1.transform.localPosition.x;
           Ruler1.gameObject.SetActive(true);
-          Ruler1.SetText($"Radius: {radius.ToString("F2")} m");
+          Ruler1.SetText($"{Mathf.Abs(Floor.arcRadius).ToString("F2")} m");
           Ruler1.FitInTowPoint(ControlPoint3.transform.position, ControlPoint1.transform.position);
           Ruler2.gameObject.SetActive(true);
-          Ruler2.SetText($"Angle: {Floor.arcDeg.ToString("F2")} deg");
+          Ruler2.SetText($"{Floor.arcDeg.ToString("F2")} deg");
           Ruler2.FitInTowPoint(ControlPoint2.transform.position, ControlPoint3.transform.position);
-          ControlPoint2.Inner.transform.localEulerAngles = new Vector3(0, Floor.arcDeg, 0);
+          switch (Floor.ArcDirection)
+          {
+            case LevelDynamicComponentArcType.X:
+              ControlPoint2.Inner.transform.localEulerAngles = new Vector3(0, Floor.arcDeg, 0);
+              break;
+            case LevelDynamicComponentArcType.Y:
+              ControlPoint2.Inner.transform.localEulerAngles = new Vector3(Floor.arcDeg * (Floor.arcRadius < 0 ? -1 : 1), 0, 0);
+              break;
+          }
           break;
         }
         case LevelDynamicComponentType.Bizer:
@@ -67,6 +72,10 @@ namespace Ballance2.Game.LevelEditor
       Ruler1.gameObject.SetActive(enableEdit);
       Ruler2.gameObject.SetActive(enableEdit);
 
+      ControlPoint1.Parent = Floor;
+      ControlPoint2.Parent = Floor;
+      ControlPoint3.Parent = Floor;
+      ControlPoint4.Parent = Floor;
       ControlPoint1.SnapParent = Floor.transform.parent.gameObject;
       ControlPoint2.SnapParent = Floor.transform.parent.gameObject;
       ControlPoint3.SnapParent = Floor.transform.parent.gameObject;
@@ -142,15 +151,21 @@ namespace Ballance2.Game.LevelEditor
       ControlPoint2.transform.localPosition = Floor.ControlPoint2;
       ControlPoint3.transform.localPosition = Floor.ControlPoint3;
       ControlPoint4.transform.localPosition = Floor.ControlPoint4;
+      ControlPoint1.NoNextPositionChangeEdit();
+      ControlPoint2.NoNextPositionChangeEdit();
+      ControlPoint3.NoNextPositionChangeEdit();
+      ControlPoint4.NoNextPositionChangeEdit();
     }
 
     private void Awake() 
     {
-      var id = ++IdPool;
+      var id = ++LevelDynamicControlSnap.IdPool;
       ControlPoint1.ParentId = id;
       ControlPoint2.ParentId = id;
       ControlPoint3.ParentId = id;
       ControlPoint4.ParentId = id;
+      ControlPoint1.GetParentSnapPortWidth = () => Floor.IsRail ? 5 : Mathf.Floor(Floor.Width / Floor.CompSize);
+      ControlPoint2.GetParentSnapPortWidth = () => Floor.IsRail ? 5 : Mathf.Floor(Floor.Width / Floor.CompSize);
       ControlPoint4.onMoved = () => {
         if (Floor.EnableEdit)
         {
@@ -176,6 +191,20 @@ namespace Ballance2.Game.LevelEditor
         if (Floor.EnableEdit)
         {
           Floor.ControlPoint1 = ControlPoint1.transform.localPosition;
+          Floor.UpdateShape();
+        }
+      };
+      ControlPoint1.onConnectedChanged = (other) => {
+        if (Floor.EnableEdit)
+        {
+          Floor.ControlPoint1ConnectHoleWidth = other != null ? other.GetParentSnapPortWidth(): 0;
+          Floor.UpdateShape();
+        }
+      };
+      ControlPoint2.onConnectedChanged = (other) => {
+        if (Floor.EnableEdit)
+        {
+          Floor.ControlPoint2ConnectHoleWidth = other != null ? other.GetParentSnapPortWidth() : 0;
           Floor.UpdateShape();
         }
       };

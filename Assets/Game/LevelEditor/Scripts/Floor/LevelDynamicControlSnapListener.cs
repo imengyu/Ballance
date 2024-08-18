@@ -12,6 +12,8 @@ namespace Ballance2.Game.LevelEditor
 
     public Action<LevelDynamicControlPoint> onStartSnap;
     public Action onQuitSnap;
+    public Action<LevelDynamicControlPoint> onPointEnter;
+    public Action<LevelDynamicControlPoint> onPointLeave;
 
     private void Awake()
     {
@@ -22,13 +24,17 @@ namespace Ballance2.Game.LevelEditor
 
     private void OnTriggerEnter(Collider collider)
     {
-      if (Parent.EnableSnap && !Parent.DisableSnapWhenChanged && collider.gameObject.layer == 13) //SnapPoint
+      if (collider.gameObject.layer == 13)//SnapPoint
       {
         var point = collider.gameObject.GetComponent<LevelDynamicControlSnapListener>();
-        if (point != null && point.Parent.ParentId != Parent.ParentId && point.Parent.Snapable) //不能是同一个对象的吸附点
+        if (point != null && point.Parent.ParentId != Parent.ParentId && point.Parent.Snapable)//不能是同一个对象的吸附点
         {
-          currentEnterSnapPoint = point.Parent;
-          onStartSnap(point.Parent);
+          if (LevelDynamicControlSnap.CheckSnapListener() && Parent.EnableSnap)
+          {
+            currentEnterSnapPoint = point.Parent;
+            onStartSnap(point.Parent);
+          }
+          onPointEnter(point.Parent);
         }
       }
     }
@@ -37,10 +43,14 @@ namespace Ballance2.Game.LevelEditor
       if (collider.gameObject.layer == 13)
       {
         var point = collider.gameObject.GetComponent<LevelDynamicControlSnapListener>();
-        if (point != null && point.Parent == currentEnterSnapPoint)
+        if (point != null && point.Parent.ParentId != Parent.ParentId)
         {
-          currentEnterSnapPoint = null;
-          onQuitSnap();
+          onPointLeave(point.Parent);
+          if (point.Parent == currentEnterSnapPoint)
+          {
+            currentEnterSnapPoint = null;
+            onQuitSnap();
+          }
         }
       }
     }

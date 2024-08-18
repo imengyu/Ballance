@@ -313,11 +313,11 @@
           <Text name="FloorDynamicProfilLine.Desc">双面带有凹槽的路面，很适合导向\n\n这是可编辑的网格，可以变形和调整长度</Text>
           <Text name="FloorDynamicBorderless.Name">无边框路面</Text>
           <Text name="FloorDynamicBorderless.Desc">没有边框的路面，适合放在中心做一个平台\n\n这是可编辑的网格，可以调整大小</Text>
-          <Text name="Floor_Block_Flat.Name">平坦路面</Text>
+          <Text name="Floor_Block_Flat.Name">平坦路面（单块）</Text>
           <Text name="Floor_Block_Flat.Desc">平坦好走的路面，但没有保护</Text>
-          <Text name="Floor_Block_Profile.Name">四方凹槽路面</Text>
+          <Text name="Floor_Block_Profile.Name">四方凹槽路面（单块）</Text>
           <Text name="Floor_Block_Profile.Desc">四周带有凹槽的路面，安全放心</Text>
-          <Text name="Floor_Block_ProfileFull.Name">双面凹槽路面</Text>
+          <Text name="Floor_Block_ProfileFull.Name">双面凹槽路面（单块）</Text>
           <Text name="Floor_Block_ProfileFull.Desc">双面带有凹槽的路面，很适合导向</Text>
           <Text name="FloorBoxPaper.Name">纸质转换器底座</Text>
           <Text name="FloorBoxPaper.Desc">需要搭配纸质转换器使用</Text>
@@ -326,11 +326,33 @@
           <Text name="FloorBoxWood.Name">木质转换器底座</Text>
           <Text name="FloorBoxWood.Desc">需要搭配木质转换器使用</Text>
           <Text name="FloorDynamicGridFlatCorner2.Name">平坦路面（转角路口）</Text>
-          <Text name="FloorDynamicGridFlatCorner2.Desc"></Text>
+          <Text name="FloorDynamicGridFlatCorner2.Desc">此模块用于平坦路面的转角，可以吸附其他路面</Text>
           <Text name="FloorDynamicGridFlatCorner3.Name">平坦路面（T字路口）</Text>
-          <Text name="FloorDynamicGridFlatCorner3.Desc"></Text>
+          <Text name="FloorDynamicGridFlatCorner3.Desc">此模块用于平坦路面的T字路口，可以吸附其他路面</Text>
           <Text name="FloorDynamicGridFlatCorner4.Name">平坦路面（十字路口）</Text>
-          <Text name="FloorDynamicGridFlatCorner5.Desc"></Text>
+          <Text name="FloorDynamicGridFlatCorner4.Desc">此模块用于平坦路面的十字路口，可以吸附其他路面</Text>
+          <Text name="FloorDynamicGridProfilCorner2.Name">凹槽路面（转角路口）</Text>
+          <Text name="FloorDynamicGridProfilCorner2.Desc">此模块用于凹槽路面的转角，可以吸附其他路面</Text>
+          <Text name="FloorDynamicGridProfilCorner3.Name">凹槽路面（T字路口）</Text>
+          <Text name="FloorDynamicGridProfilCorner3.Desc">此模块用于凹槽路面的T字路口，可以吸附其他路面</Text>
+          <Text name="FloorDynamicGridProfilCorner4.Name">凹槽路面（十字路口）</Text>
+          <Text name="FloorDynamicGridProfilCorner4.Desc">此模块用于凹槽路面的十字路口，可以吸附其他路面</Text>
+          <Text name="FloorDynamicGridProfilFlat.Name">平坦至凹槽路面转换</Text>
+          <Text name="FloorDynamicGridProfilFlat.Desc">此模块用于平坦路面至凹槽路面的过渡，可以吸附其他路面</Text>
+          <Text name="RailGuardrail2.Name">护栏（平坦）</Text>
+          <Text name="RailGuardrail2.Desc">有护栏的保护，走起来更安全\n\n这是可编辑的网格，可以调整大小</Text>
+          <Text name="RailGuardrail3.Name">护栏（转角）</Text>
+          <Text name="RailGuardrail3.Desc">有护栏的保护，走起来更安全\n\n这是可编辑的网格，可以调整大小</Text>
+          <Text name="RailSide.Name">侧轨</Text>
+          <Text name="RailSide.Desc">这可不是护栏！</Text>
+          <Text name="RailCornerWithMono.Name">带单轨定位的转角</Text>
+          <Text name="RailCornerWithMono.Desc">单轨需要转弯时重新需要使用它来定位</Text>
+          <Text name="RailOpen.Name">喇叭开口双轨</Text>
+          <Text name="RailOpen.Desc">走着走着就掉下去了</Text>
+          <Text name="RailDynamic.Name">双轨</Text>
+          <Text name="RailDynamic.Desc">安全稳定的轨道\n\n这是可编辑的网格，可以变形和调整长度</Text>
+          <Text name="RailDynamicMono.Name">单轨</Text>
+          <Text name="RailDynamicMono.Desc">保持平衡！\n\n这是可编辑的网格，可以变形和调整长度</Text>
           
           <Text name="Floor_Columns.Name">支柱</Text>
           <Text name="Floor_Columns.Desc">用于装饰的支撑柱，毕竟路浮空也太不合常理了吧</Text>
@@ -376,6 +398,10 @@
           <Text name="WoodBridges.Desc">超短的木拱桥，只有一半</Text>
           <Text name="WoodWaveBridge.Name">过山车波浪木板</Text>
           <Text name="WoodWaveBridge.Desc">走上这条路，你的心情也如过山车一般起起伏伏</Text>
+          <Text name="Misc_Schelle.Name">护栏固定螺丝</Text>
+          <Text name="Misc_Schelle.Desc">装饰，用于固定侧边护栏</Text>
+
+          
         </Group>
         <Group name="info">
           <Text name="Title">编辑此关卡的基础信息</Text>
@@ -423,13 +449,20 @@
           <Text name="Floors">路面</Text>
           <Text name="Rails">轨道</Text>
           <Text name="Moduls">机关</Text>
-          <Text name="Others">其他</Text>
+          <Text name="Others">装饰</Text>
           <Text name="Import">导入模型</Text>
           <Text name="Info">修改关卡信息</Text>
           <Text name="Publish">发布</Text>
-          <Text name="Delete">删除(Del)</Text>
-          <Text name="Copy">复制(C)</Text>
-          <Text name="Snap">节点吸附</Text>
+          <Text name="Delete">删除选中的对象</Text>
+          <Text name="Copy">复制选中的对象</Text>
+          <Text name="Snap">启用节点吸附</Text>
+          <Text name="RotSnap">启用旋转吸附</Text>
+          <Text name="ShowName">显示物体名称标签</Text>
+          <Text name="HandlePosition">设置移动工具位置。\nPovit: 放置在选中物体的锚点上。\nCenter: 放置在选中物体的中心位置。</Text>
+          <Text name="HandleRotation">设置旋转工具参考。\nGlobal: 以世界坐标系进行旋转。\nLocal: 以物体坐标系进行旋转。</Text>
+          <Text name="Move">移动工具</Text>
+          <Text name="Rotate">旋转工具</Text>
+          <Text name="Scale">缩放工具</Text>
         </Group>
         <Text name="Loading">加载中</Text>
       </Group>

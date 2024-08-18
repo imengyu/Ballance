@@ -60,16 +60,6 @@ namespace Ballance2.Game.LevelEditor
         UpdateStatusText();
       };
     }
-    private void Update()
-    {
-      if (!EventSystem.current.IsPointerOverGameObject())
-      {
-        if (Input.GetKeyDown(KeyCode.C))
-          CopySelection();
-        if (Input.GetKeyDown(KeyCode.Delete))
-          DeleteSelection();
-      }
-    }
     private void ReSetSelect(LevelDynamicModel[] newSels)
     {
       foreach (var item in SelectedObject)
@@ -270,9 +260,22 @@ namespace Ballance2.Game.LevelEditor
     }
     public void ToggleSnap()
     {
-      var control = LevelEditorManager.Instance.LevelDynamicControlSnap;
+      var control = LevelDynamicControlSnap.Instance;
       control.EnableSnap = !control.EnableSnap;
       LevelEditorTransformToolControl.ButtonSnap.SetActive(control.EnableSnap);
+    }
+    public void ToggleRotSnap()
+    {
+      var control = LevelDynamicControlSnap.Instance;
+      control.EnableRotSnap = !control.EnableRotSnap;
+      LevelEditorTransformToolControl.OnUpdateEnableRotSnap();
+      LevelEditorTransformToolControl.ButtonRotSnap.SetActive(control.EnableRotSnap);
+    }
+    public void ToggleShowTag()
+    {
+      var m = LevelEditorManager.Instance;
+      m.ShowNameTag = !m.ShowNameTag;
+      LevelEditorTransformToolControl.ButtonShowName.SetActive(m.ShowNameTag);
     }
 
     public void Confirm(

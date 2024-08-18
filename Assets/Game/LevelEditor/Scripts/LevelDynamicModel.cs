@@ -6,6 +6,7 @@ using Ballance2.Res;
 using Ballance2.Utils;
 using Battlehub.RTCommon;
 using Newtonsoft.Json;
+using NUnit.Framework.Internal;
 using UnityEngine;
 
 namespace Ballance2.Game.LevelEditor
@@ -54,22 +55,25 @@ namespace Ballance2.Game.LevelEditor
     private MeshRenderer MeshRenderer;
     private bool IsEditor;
     public bool IsError;
-    
+
+    public void SetNameTagVisible(bool show)
+    {
+      ObjectScenseIconRef.gameObject.SetActive(show && LevelEditorManager.Instance.ShowNameTag);
+    }
     public void SetModulPlaceholdeMode(bool mode)
     {
       if (IsEditor)
       {
+        SetNameTagVisible(mode);
         if (mode)
         {
           if (MeshRenderer != null && !AssetRef.HiddenPlaceholderRender)
             MeshRenderer.enabled = true;
-          ObjectScenseIconRef.gameObject.SetActive(true);
         }
         else
         {
           if (MeshRenderer != null)
             MeshRenderer.enabled = false;
-          ObjectScenseIconRef.gameObject.SetActive(false);
         }
       }
     }
@@ -152,83 +156,10 @@ namespace Ballance2.Game.LevelEditor
             if (!c.NoIntitalUpdate)
               c.OnValueChanged(item.Value);
         }
-        
+
         //编辑器特殊处理
         if (editor)
-        {
-          //添加碰撞器以使其可以选择
-          var meshFilter = InstanceRef.GetComponent<MeshFilter>();
-          Mesh mesh = null;
-          if (meshFilter != null) {
-            mesh = meshFilter.sharedMesh;
-            InstanceHost.AddComponent<MeshFilter>().mesh = meshFilter.sharedMesh;
-            //InstanceHost.AddComponent<MeshCollider>();
-          }
-          else
-          {
-            //在占位符寻找一个可用的mesh
-            meshFilter = InstanceHost.AddComponent<MeshFilter>();
-            //组合原件，没有mesh，但如果是modul，则使用Modul的占位符
-            if (ModulRef != null)
-            {
-              var innerMeshFilter = ModulRef.PlaceHolderPrefab?.GetComponent<MeshFilter>();
-              if (innerMeshFilter == null && ModulRef.PlaceHolderPrefab.transform.childCount > 0)
-              {
-                for (int i = 0; i < ModulRef.PlaceHolderPrefab.transform.childCount; i++)
-                {
-                  innerMeshFilter = ModulRef.PlaceHolderPrefab.transform.GetChild(i).gameObject.GetComponent<MeshFilter>();
-                  if (innerMeshFilter != null)
-                    break;
-                }
-              }
-              mesh = innerMeshFilter?.sharedMesh;
-              //只有机关渲染占位符
-              if (mesh != null)
-              {
-                MeshRenderer = InstanceHost.AddComponent<MeshRenderer>();
-                MeshRenderer.material = LevelEditorManager.Instance.TransparentMaterial;
-                MeshRenderer.enabled = !AssetRef.HiddenPlaceholderRender;
-              }
-            }
-            else {
-              //非modul，则尝试使用第一个字对象的mesh
-              MeshFilter innerMeshFilter = null;
-              for (int i = 0; i < InstanceRef.transform.childCount; i++)
-              {
-                innerMeshFilter = InstanceRef.transform.GetChild(i).gameObject.GetComponent<MeshFilter>();
-                if (innerMeshFilter != null)
-                  break;
-              }
-              mesh = innerMeshFilter?.sharedMesh;
-            }
-              
-            if (mesh != null)
-              meshFilter.mesh = mesh;
-            else
-              Log.W("LevelDynamicModel", $"Modul {Asset} that does not set PlaceHolderPrefab, it unable to select.");
-          }
-
-          //添加浮动UI控制
-          ObjectScenseIconRef = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelEditorObjectScenseIcon>(
-            LevelEditorManager.Instance.LevelEditorObjectScenseIconPrefab, 
-            InstanceHost.transform,
-            "ObjectScenseIcon"
-          );
-          ObjectScenseIconRef.BindCamera = LevelEditorManager.Instance.LevelEditorCamera;
-          ObjectScenseIconRef.BindCanvas.worldCamera = LevelEditorManager.Instance.LevelEditorCamera;
-          ObjectScenseIconRef.BindModel = this;
-          ObjectScenseIconRef.UpdateBindModel();
-
-          var selectionData = InstanceHost.AddComponent<LevelEditorObjectSelectionData>();
-          selectionData.LevelDynamicModel = this;
-
-          var expose = InstanceHost.AddComponent<ExposeToEditor>();
-          expose.CanDelete = CanDelete;
-
-          //机关切换至预览模式
-          if (ModulRef != null)
-            ModulRef.ActiveForPreview();
-        }
+          InstantiateModulEditorPart();
 
         //初始化完成事件
         ConfigueRef.OnAfterInit(this, editor, isNew);
@@ -237,6 +168,105 @@ namespace Ballance2.Game.LevelEditor
       {
         Log.E("LevelDynamicModel:" + Name, "InstantiateModul failed: " + e.ToString());
       }
+    }
+
+    private Mesh RotMesh(Vector3 rot, Mesh orginalMesh)
+    {
+      if (rot == Vector3.zero) 
+        return orginalMesh;
+      var mesh = new Mesh();
+      var rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(rot));
+      var vertices = new List<Vector3>();
+      var normals = new List<Vector3>();
+      foreach (var vertex in orginalMesh.vertices)
+        vertices.Add(rotationMatrix.MultiplyPoint(vertex));
+      foreach (var normal in orginalMesh.normals)
+        normals.Add(rotationMatrix.MultiplyVector(normal));
+
+      mesh.vertices = vertices.ToArray();
+      mesh.normals = normals.ToArray();
+      mesh.triangles = orginalMesh.triangles;
+      mesh.uv = orginalMesh.uv;
+      return mesh;
+    }
+    private void InstantiateModulEditorPart()
+    {
+      //添加碰撞器以使其可以选择
+      var meshFilter = InstanceRef.GetComponent<MeshFilter>();
+      if (meshFilter != null)
+        InstanceHost.AddComponent<MeshFilter>().mesh = meshFilter.sharedMesh;
+      else
+      {
+        Mesh mesh;
+        Vector3 rot = Vector3.zero;
+        //在占位符寻找一个可用的mesh
+        meshFilter = InstanceHost.AddComponent<MeshFilter>();
+        //组合原件，没有mesh，但如果是modul，则使用Modul的占位符
+        if (ModulRef != null)
+        {
+          var innerMeshFilter = ModulRef.PlaceHolderPrefab?.GetComponent<MeshFilter>();
+          if (innerMeshFilter == null && ModulRef.PlaceHolderPrefab.transform.childCount > 0)
+          {
+            for (int i = 0; i < ModulRef.PlaceHolderPrefab.transform.childCount; i++)
+            {
+              innerMeshFilter = ModulRef.PlaceHolderPrefab.transform.GetChild(i).gameObject.GetComponent<MeshFilter>();
+              if (innerMeshFilter != null)
+                break;
+            }
+          }
+          mesh = innerMeshFilter?.sharedMesh;
+          //只有机关渲染占位符
+          if (mesh != null)
+          {
+            MeshRenderer = InstanceHost.AddComponent<MeshRenderer>();
+            MeshRenderer.material = LevelEditorManager.Instance.TransparentMaterial;
+            MeshRenderer.enabled = !AssetRef.HiddenPlaceholderRender;
+          }
+        }
+        else
+        {
+          //非modul，则尝试使用第一个字对象的mesh
+          MeshFilter innerMeshFilter = null;
+          for (int i = 0; i < InstanceRef.transform.childCount; i++)
+          {
+            var child = InstanceRef.transform.GetChild(i);
+            innerMeshFilter = child.gameObject.GetComponent<MeshFilter>();
+            if (innerMeshFilter != null)
+            {
+              rot = child.localEulerAngles;
+              break;
+            }
+          }
+          mesh = RotMesh(rot, innerMeshFilter?.sharedMesh);
+        }
+
+        if (mesh != null)
+          meshFilter.mesh = mesh;
+        else
+          Log.W("LevelDynamicModel", $"Modul {Asset} that does not set PlaceHolderPrefab, it unable to select.");
+      }
+
+      //添加浮动UI控制
+      ObjectScenseIconRef = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelEditorObjectScenseIcon>(
+        LevelEditorManager.Instance.LevelEditorObjectScenseIconPrefab,
+        InstanceHost.transform,
+        "ObjectScenseIcon"
+      );
+      ObjectScenseIconRef.BindCamera = LevelEditorManager.Instance.LevelEditorCamera;
+      ObjectScenseIconRef.BindCanvas.worldCamera = LevelEditorManager.Instance.LevelEditorCamera;
+      ObjectScenseIconRef.BindModel = this;
+      ObjectScenseIconRef.UpdateBindModel();
+      SetNameTagVisible(true);
+
+      var selectionData = InstanceHost.AddComponent<LevelEditorObjectSelectionData>();
+      selectionData.LevelDynamicModel = this;
+
+      var expose = InstanceHost.AddComponent<ExposeToEditor>();
+      expose.CanDelete = CanDelete;
+
+      //机关切换至预览模式
+      if (ModulRef != null)
+        ModulRef.ActiveForPreview();
     }
 
     public void Load()

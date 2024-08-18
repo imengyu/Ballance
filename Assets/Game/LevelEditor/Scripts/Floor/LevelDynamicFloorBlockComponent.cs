@@ -1,17 +1,20 @@
 using Ballance2.Utils;
 using UnityEngine;
 using static Ballance2.Game.LevelEditor.LevelDynamicFloorBlockMaker;
+using static UnityEditor.Progress;
 
 namespace Ballance2.Game.LevelEditor
 {
   /// <summary>
   /// 线性动态路面
   /// </summary>
-  public class LevelDynamicFloorBlockComponent : MonoBehaviour 
+  public class LevelDynamicFloorBlockComponent : LevelDynamicComponent
   {
     public LevelDynamicComponentType Type = LevelDynamicComponentType.Strait;
     public LevelDynamicComponentArcType ArcDirection = LevelDynamicComponentArcType.X;
     public float Width = 5f;
+    public float ControlPoint1ConnectHoleWidth = 0;
+    public float ControlPoint2ConnectHoleWidth = 0;
     public Vector3 ControlPoint1 = Vector3.zero;
     public Vector3 ControlPoint2 = new Vector3(0, 0, 10);
     public Vector3 ControlPoint3 = Vector3.zero;
@@ -20,14 +23,19 @@ namespace Ballance2.Game.LevelEditor
     public Vector3 ModelRotate = new Vector3(-90, 180, 0);
     public float CompSize = 2.5f;
     public string FloorScheme = "";
+    public bool IsRail = false;
 
     [HideInInspector]
     public LevelDynamicFloorBlockEditor Editor;
     public GameObject EditorPrefab;
+    protected override void OnUpdateControllers()
+    {
+      Editor?.UpdateControllers();
+    }
 
-    private MeshRenderer meshRenderer;
-    private MeshFilter meshFilter;
-    private PreparedMeshGroup pMesh;
+    protected MeshRenderer meshRenderer;
+    protected MeshFilter meshFilter;
+    protected PreparedMeshGroup pMesh;
 
     public float straitLength = 0;
     public float arcRadius = 0;
@@ -43,21 +51,7 @@ namespace Ballance2.Game.LevelEditor
       pMesh = LevelDynamicFloorBlockMaker.Instance.FloorSchemes[FloorScheme];
       UpdateShape();
     }
-
-    [SerializeField]
-    private bool enableEdit = false;
-    public bool EnableEdit { 
-      get => enableEdit; 
-      set {
-        if (enableEdit != value)
-        {
-          enableEdit = value;
-          Editor?.UpdateControllers();
-        }
-      }
-    }
-
-    public void UpdateShape()
+    public override void UpdateShape()
     {
       if (ReadControlPoint())
       {
@@ -127,6 +121,12 @@ namespace Ballance2.Game.LevelEditor
           if (ControlPoint2.z < ControlPoint1.z)
             arcDeg = 180 - arcDeg + 180;//已经超出一个圆弧了，认为是钝角
 
+          if (LevelDynamicControlSnap.Instance.EnableRotSnap) //旋转吸附，取整为5的倍数
+          {
+            arcDeg = Mathf.Floor(arcDeg);
+            arcDeg -= arcDeg % 5;
+          }
+
           switch (ArcDirection)
           {
             case LevelDynamicComponentArcType.X:
@@ -161,7 +161,23 @@ namespace Ballance2.Game.LevelEditor
       }
       return false;
     }
-    private void GenerateMesh()
+
+    protected virtual void DoGenerateBaseMesh(float xl, float zl, Vector3 posOff, PreparedMeshGroupCombineByGrid temp, PreparedMeshGroupCombineTraslateProps ptemp)
+    {
+      for (temp.x = 0; temp.x < xl; temp.x++)
+      {
+        for (temp.z = 0; temp.z < zl; temp.z++)
+        {
+          temp.left = temp.x == 0;
+          temp.top = temp.z == zl - 1;
+          temp.right = temp.x == xl - 1;
+          temp.bottom = temp.z == 0;
+          ptemp.transformPos = new Vector3(temp.x * CompSize - Width / 2, 0, temp.z * CompSize) + posOff;
+          pMesh.CombineMeshAddByGrid(temp, ptemp);
+        }
+      }
+    }
+    protected virtual void GenerateMesh()
     {
       var mesh = meshFilter.mesh;
       if (mesh == null)
@@ -196,20 +212,43 @@ namespace Ballance2.Game.LevelEditor
       
       //生成Mesh
       var posOff = new Vector3(CompSize / 2, 0, CompSize / 2);
-      var temp = new PreparedMeshGroupCombineByGrid();
-      var transformPos = Vector3.zero;
-      for (temp.x = 0; temp.x < xl; temp.x++)
+      var temp = new PreparedMeshGroupCombineByGrid()
       {
-        for (temp.z = 0; temp.z < zl; temp.z++)
+        zl = (int)zl - 1,
+        xl = (int)xl - 1,
+      };
+      var ptemp = new PreparedMeshGroupCombineTraslateProps();
+      var transformPos = Vector3.zero;
+      if (ControlPoint1ConnectHoleWidth > 0)
+      {
+        if (ControlPoint1ConnectHoleWidth < xl)
         {
-          temp.left = temp.x == 0;
-          temp.top = temp.z == zl - 1;
-          temp.right = temp.x == xl - 1;
-          temp.bottom = temp.z == 0;
-          transformPos = new Vector3(temp.x * CompSize - Width / 2, 0, temp.z * CompSize) + posOff;
-          pMesh.CombineMeshAddByGrid(temp, transformPos);
+          temp.bottomHoleRange = new Vector2(
+            Mathf.Floor(xl / 2 - ControlPoint1ConnectHoleWidth / 2),
+            Mathf.Floor(xl / 2 + ControlPoint1ConnectHoleWidth / 2) - 1
+          );
+        }
+        else
+        {
+          temp.bottomHoleRange = new Vector2(0, 1);
         }
       }
+      if (ControlPoint2ConnectHoleWidth > 0)
+      {
+       
+        if (ControlPoint1ConnectHoleWidth < xl)
+        {
+          temp.topHoleRange = new Vector2(
+            Mathf.Floor(xl / 2 - ControlPoint2ConnectHoleWidth / 2),
+            Mathf.Floor(xl / 2 + ControlPoint2ConnectHoleWidth / 2) - 1
+          );
+        }
+        else
+        {
+          temp.topHoleRange = new Vector2(0, 1);
+        }
+      }
+      DoGenerateBaseMesh(xl, zl, posOff, temp, ptemp);
 
       //拼接与缩放
       switch (Type)
@@ -222,24 +261,29 @@ namespace Ballance2.Game.LevelEditor
         //圆弧
         case LevelDynamicComponentType.Arc: {
           var zld = zl * CompSize;
-          pMesh.CombineMeshFinish(mesh, ModelRotate, (p) => {
-            var angle = p.Vertex.z / zld * arcDeg;
-            switch (ArcDirection)
-            {
-              case LevelDynamicComponentArcType.X:
+          switch (ArcDirection)
+          {
+            case LevelDynamicComponentArcType.X:
+              {
+                pMesh.CombineMeshFinish(mesh, ModelRotate, IsRail ? null : (p) =>
                 {
+                  var angle = p.Vertex.z / zld * arcDeg;
                   var point = CalcArcPoint(p.Vertex.x, angle);
                   p.Vertex = new Vector3(point.x, p.Vertex.y, point.z);
-                  break;
-                }
-              case LevelDynamicComponentArcType.Y:
-                {
-                  var point = CalcArcPoint(p.Vertex.y,angle);
-                  p.Vertex = new Vector3(p.Vertex.x, point.y, point.z);
-                }
+                }, arcRadius < 0);
                 break;
-            }
-          }, arcRadius < 0);
+              }
+            case LevelDynamicComponentArcType.Y:
+              {
+                pMesh.CombineMeshFinish(mesh, ModelRotate, (p) =>
+                {
+                  var angle = p.Vertex.z / zld * arcDeg;
+                  var point = CalcArcPoint(p.Vertex.y * (arcRadius < 0 ? -1 : 1), angle);
+                  p.Vertex = new Vector3(p.Vertex.x, point.y, point.z);
+                });
+              }
+              break;
+          }
           break;
         }
         //贝塞尔曲线
@@ -283,9 +327,7 @@ namespace Ballance2.Game.LevelEditor
       meshRenderer.materials = pMesh.CombineGetMeshMaterials();
 
       //更新编辑器用于选择的MeshCollider
-      var meshCol = transform.parent?.gameObject?.GetComponent<MeshCollider>();
-      if (meshCol != null)
-        meshCol.sharedMesh = mesh;
+      UpdateEditorMesh(mesh);
     }
   } 
 

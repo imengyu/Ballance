@@ -7,8 +7,6 @@ namespace Ballance2.Game.LevelEditor
 {
   public class LevelDynamicFloorStaticEditor : MonoBehaviour 
   {
-    public static int IdPool = 0;
-
     [HideInInspector]
     public LevelDynamicFloorStaticComponent Floor;
     public LevelDynamicControlPoint SnapPointpPrefab;
@@ -25,25 +23,26 @@ namespace Ballance2.Game.LevelEditor
         Destroy(item);
       SnapPoints.Clear();
 
-      var id = ++IdPool;
+      var id = ++LevelDynamicControlSnap.IdPool;
       var i = 0;
 
       foreach (var item in Floor.SnapPoints)
       {
         if (item != null)
         {
+          item.gameObject.SetActive(false);
           var newPoint = CloneUtils.CloneNewObjectWithParentAndGetGetComponent<LevelDynamicControlPoint>(SnapPointpPrefab.gameObject, transform, $"SnapPoint{i}");
           newPoint.transform.localPosition = item.localPosition;
           newPoint.Inner.transform.localEulerAngles = item.localEulerAngles;
           newPoint.SnapId = i;
-          item.gameObject.SetActive(false);
+          newPoint.ParentId = id;
+          newPoint.Parent = Floor;
+          newPoint.GetParentSnapPortWidth = i % 2 == 0 ? () => Mathf.Floor(Floor.Width / Floor.CompSize) : () => Mathf.Floor(Floor.Length / Floor.CompSize);
           SnapPoints.Add(newPoint);
         }
         i++;
       }
 
-      foreach (var item in SnapPoints)
-        item.ParentId = id;
     }
     public void UpdateControllers()
     { 

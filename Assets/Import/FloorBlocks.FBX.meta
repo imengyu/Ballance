@@ -44,6 +44,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Floor_Trafo_Wood
     second: {fileID: 2100000, guid: 571694b180ba64c4aacf40bea703cb24, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rail
+    second: {fileID: 2100000, guid: f85ef732b14c163458238163b3238780, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

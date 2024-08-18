@@ -20,6 +20,8 @@ namespace Ballance2.Game.LevelEditor
     public TMP_Text HandlePositionText;
     public TMP_Text HandleRotationText;
     public UIButtonActiveState ButtonSnap;
+    public UIButtonActiveState ButtonRotSnap;
+    public UIButtonActiveState ButtonShowName;
 
     public Sprite PovitRotLocal;
     public Sprite PovitRotGrobal;
@@ -33,6 +35,8 @@ namespace Ballance2.Game.LevelEditor
     private BoxSelection m_boxSelection;
     [SerializeField]
     private PositionHandle m_positionHandle;
+    [SerializeField]
+    private RotationHandle m_rotationHandle;
 
     public Action<LevelDynamicModel[]> OnSelect;
     public Action<LevelDynamicModel[]> OnDelete;
@@ -110,20 +114,31 @@ namespace Ballance2.Game.LevelEditor
         .ToArray());
     }
 
+    public void OnUpdateEnableRotSnap()
+    {
+      RuntimeTool tool = m_editor.Tools.Current;
+      if (tool == RuntimeTool.Rotate)
+        m_editor.Tools.UnitSnapping = LevelDynamicControlSnap.Instance.EnableRotSnap;
+    }
+
     private void OnToolChanged()
     {
       ButtonToolMove.SetActive(false);
       ButtonToolRotation.SetActive(false);
       ButtonToolScale.SetActive(false);
+      m_editor.Tools.UnitSnapping = false;
+      LevelDynamicControlSnap.Instance.IsMoveTool = false;
 
       RuntimeTool tool = m_editor.Tools.Current;
       switch(tool)
       {
         case RuntimeTool.Move:
           ButtonToolMove.SetActive(true);
+          LevelDynamicControlSnap.Instance.IsMoveTool = true;
           break;
         case RuntimeTool.Rotate:
           ButtonToolRotation.SetActive(true);
+          m_editor.Tools.UnitSnapping = LevelDynamicControlSnap.Instance.EnableRotSnap;
           break;
         case RuntimeTool.Scale:
           ButtonToolScale.SetActive(true);

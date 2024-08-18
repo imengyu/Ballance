@@ -30,8 +30,8 @@ namespace Ballance2.Game.LevelEditor
     public GameObject ErrorPrefab;
     public GameObject LevelEditorObjectScenseIconPrefab;
     public Material TransparentMaterial;
-    public Material TransparentMaterial2;
     public TextAsset LevelNewJson;
+    public AudioSource ScreenShortAudio;
 
     /// <summary>
     /// 当前加载的关卡实例
@@ -47,6 +47,20 @@ namespace Ballance2.Game.LevelEditor
     public Dictionary<string, LevelDynamicModelAsset> LevelAssets { get; } = new Dictionary<string, LevelDynamicModelAsset>();
 
     private bool isFirstInit = true;
+    private bool showNameTag = true;
+    public bool ShowNameTag
+    {
+      get => showNameTag;
+      set
+      {
+        if (showNameTag != value)
+        {
+          showNameTag = value;
+          foreach (var item in LevelCurrent.LevelData.LevelModels)
+            item.SetNameTagVisible(showNameTag);
+        }
+      }
+    }
 
     private void Awake()
     {
@@ -336,6 +350,8 @@ namespace Ballance2.Game.LevelEditor
     private bool isTakingScreenshort = false;
     private IEnumerator _Screenshort()
     {
+      ScreenShortAudio.Play();
+
       string saveDir = LevelCurrent.LevelDirPath + "/screenshot/";
       string savePath = saveDir + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
       if (!Directory.Exists(saveDir))
@@ -401,8 +417,9 @@ namespace Ballance2.Game.LevelEditor
         }
         if (item.ConfigueRef != null)
           item.ConfigueRef.OnEditorQuitTest(item);
-      } 
+      }
 
+      GamePlayUIControl.Instance.gameObject.SetActive(false);
       GamePlayManager.Instance.CamManager.SetCameraEnable(false);
       LevelEditorCamera.gameObject.SetActive(true);
 

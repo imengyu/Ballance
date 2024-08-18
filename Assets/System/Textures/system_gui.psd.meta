@@ -3279,7 +3279,7 @@ TextureImporter:
         width: 56
         height: 62
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3295,12 +3295,12 @@ TextureImporter:
       name: IconSnap
       rect:
         serializedVersion: 2
-        x: 672
+        x: 673
         y: 203
         width: 65
         height: 65
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3308,6 +3308,48 @@ TextureImporter:
       bones: []
       spriteID: f06ff272de0a4b8418622cbecabe48e1
       internalID: 301094215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconRotSnap
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 204
+        width: 60
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 386d4bf85d1fa9c479a8ce8f83bff7d8
+      internalID: -360248191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IconTag
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 206
+        width: 59
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65263cd28f9ff6f4d9f07d6d5c360d8c
+      internalID: 1592154898
       vertices: []
       indices: 
       edges: []
@@ -3446,6 +3488,7 @@ TextureImporter:
       IconRestoreLight: -6685105678880452824
       IconRestoreMinDark: -9209596457331486333
       IconRestoreMinLight: 4339225749220643467
+      IconRotSnap: -360248191
       IconRotate: 89167502557122216
       IconSettings: 1265141643
       IconSizeDragger: 8199682685527786370
@@ -3455,6 +3498,7 @@ TextureImporter:
       IconStorage: -677287127555733900
       IconSub: 7781389738337204524
       IconSuccess: 2055094742030120401
+      IconTag: 1592154898
       IconTransparent: 8051123311531701542
       IconUpdate: -1979142173
       IconUpdown: -1771439767053489083

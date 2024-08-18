@@ -18,6 +18,8 @@ namespace Ballance2.Game.LevelEditor.Moduls
       public Vector3 ControlPoint2;
       public Vector3 ControlPoint3;
       public Vector3 ControlPoint4;
+      public float ControlPoint1ConnectHoleWidth = 0;
+      public float ControlPoint2ConnectHoleWidth = 0;
       public float Width;
       public LevelDynamicComponentType Type;
       public LevelDynamicComponentArcType ArcDirection;
@@ -33,9 +35,12 @@ namespace Ballance2.Game.LevelEditor.Moduls
         component.ControlPoint2 = config.ControlPoint2;
         component.ControlPoint3 = config.ControlPoint3;
         component.ControlPoint4 = config.ControlPoint4;
+        component.ControlPoint1ConnectHoleWidth = config.ControlPoint1ConnectHoleWidth;
+        component.ControlPoint2ConnectHoleWidth = config.ControlPoint2ConnectHoleWidth;
         component.Width = config.Width;
         component.Type = config.Type;
         component.ArcDirection = config.ArcDirection;
+        component.UpdateShape();
       }
     }
     public override void OnAfterInit(LevelDynamicModel modelInstance, bool isEditor, bool isNew)
@@ -73,6 +78,8 @@ namespace Ballance2.Game.LevelEditor.Moduls
       config.ControlPoint2 = component.ControlPoint2;
       config.ControlPoint3 = component.ControlPoint3;
       config.ControlPoint4 = component.ControlPoint4;
+      config.ControlPoint1ConnectHoleWidth = component.ControlPoint1ConnectHoleWidth;
+      config.ControlPoint2ConnectHoleWidth = component.ControlPoint2ConnectHoleWidth;
       config.ArcDirection = component.ArcDirection;
       config.Type = component.Type;
       config.Width = component.Width;
@@ -88,6 +95,8 @@ namespace Ballance2.Game.LevelEditor.Moduls
       component.ControlPoint2 = refComp.ControlPoint2;
       component.ControlPoint3 = refComp.ControlPoint3;
       component.ControlPoint4 = refComp.ControlPoint4;
+      component.ControlPoint1ConnectHoleWidth = refComp.ControlPoint1ConnectHoleWidth;
+      component.ControlPoint2ConnectHoleWidth = refComp.ControlPoint2ConnectHoleWidth;
       component.Editor.ApplyValueToControllers();
       component.Editor.UpdateControllers();
       component.UpdateShape();

@@ -8,7 +8,7 @@ namespace Ballance2.Game.LevelEditor
   /// <summary>
   /// 静态拼块路面
   /// </summary>
-  public class LevelDynamicFloorStaticComponent : MonoBehaviour 
+  public class LevelDynamicFloorStaticComponent : LevelDynamicComponent
   {
     public Vector3 ModelRotate = new Vector3(-90, 180, 0);
     public float CompSize = 2.5f;
@@ -20,6 +20,10 @@ namespace Ballance2.Game.LevelEditor
     [HideInInspector]
     public LevelDynamicFloorStaticEditor Editor;
     public GameObject EditorPrefab;
+    protected override void OnUpdateControllers()
+    {
+      Editor?.UpdateControllers();
+    }
 
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
@@ -29,29 +33,20 @@ namespace Ballance2.Game.LevelEditor
     {
       meshRenderer = this.GetOrAddComponent<MeshRenderer>();
       meshFilter = this.GetOrAddComponent<MeshFilter>();
-      pMesh = LevelDynamicFloorBlockMaker.Instance.FloorSchemes[FloorScheme];
+      if (!string.IsNullOrEmpty(FloorScheme))
+        pMesh = LevelDynamicFloorBlockMaker.Instance.FloorSchemes[FloorScheme];
       UpdateShape();
     }
 
-    [SerializeField]
-    private bool enableEdit = false;
-    public bool EnableEdit { 
-      get => enableEdit; 
-      set {
-        if (enableEdit != value)
-        {
-          enableEdit = value;
-          Editor?.UpdateControllers();
-        }
-      }
-    }
-
-    public void UpdateShape()
+    public override void UpdateShape()
     {
       GenerateMesh();
     }
     private void GenerateMesh()
     {
+      if (string.IsNullOrEmpty(FloorScheme))
+        return;
+
       var mesh = meshFilter.mesh;
       if (mesh == null)
       {
@@ -67,7 +62,10 @@ namespace Ballance2.Game.LevelEditor
       //生成Mesh
       var posOff = new Vector3(CompSize / 2, 0, CompSize / 2);
       var temp = new PreparedMeshGroupCombineByGrid();
-      var transformPos = Vector3.zero;
+      var otemp = new PreparedMeshGroupCombineTraslateProps()
+      {
+        transformPos = Vector3.zero,
+      };
       for (temp.x = 0; temp.x < xl; temp.x++)
       {
         for (temp.z = 0; temp.z < zl; temp.z++)
@@ -76,8 +74,8 @@ namespace Ballance2.Game.LevelEditor
           temp.top = temp.z == zl - 1;
           temp.right = temp.x == xl - 1;
           temp.bottom = temp.z == 0;
-          transformPos = new Vector3(temp.x * CompSize - Width / 2, 0, temp.z * CompSize) + posOff;
-          pMesh.CombineMeshAddByGrid(temp, transformPos);
+          otemp.transformPos = new Vector3(temp.x * CompSize - Width / 2, 0, temp.z * CompSize) + posOff;
+          pMesh.CombineMeshAddByGrid(temp, otemp);
         }
       }
 
