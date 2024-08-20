@@ -981,7 +981,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7059145561469175277, guid: bd7e600d2cecbdd44ae3131bb1544ec5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 504756841}
   m_SourcePrefab: {fileID: 100100000, guid: bd7e600d2cecbdd44ae3131bb1544ec5, type: 3}
 --- !u!224 &504756838 stripped
 RectTransform:
@@ -993,6 +996,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7059145561469175277, guid: bd7e600d2cecbdd44ae3131bb1544ec5, type: 3}
   m_PrefabInstance: {fileID: 504756837}
   m_PrefabAsset: {fileID: 0}
+--- !u!222 &504756841
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504756839}
+  m_CullTransparentMesh: 1
 --- !u!1 &646464397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1669,7 +1680,7 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds

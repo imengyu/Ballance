@@ -83,10 +83,13 @@ namespace Ballance2.Game.LevelEditor
       NameText.text = BindModel.Name;
 
       if (BindModel.IsError)
+      {
         Icon.sprite = SpriteError;
+        HideIconDistance = 500;
+      }
       else if (BindModel.ModulRef != null)
-        Icon.sprite = BindModel.AssetRef.ScenseGizmePreviewImage == null ?  SpriteModel : BindModel.AssetRef.ScenseGizmePreviewImage;
-      else 
+        Icon.sprite = BindModel.AssetRef.ScenseGizmePreviewImage == null ? SpriteModel : BindModel.AssetRef.ScenseGizmePreviewImage;
+      else
       {
         Icon.sprite = SpriteNone;
         HideIconDistance = 0;

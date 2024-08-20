@@ -7,6 +7,7 @@ using Ballance2.Services.Debug;
 using Ballance2.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.Audio;
 
 /*
@@ -72,6 +73,7 @@ namespace Ballance2.Services
         fastPlayVoices.Clear();
         fastPlayVoices = null;
       }
+      reuseAudios.Clear();
       if (null != audios)
       {
         for (int i = audios.Count - 1; i >= 0; i--)
@@ -82,6 +84,7 @@ namespace Ballance2.Services
     }
 
     private List<AudioGlobalControl> audios = new List<AudioGlobalControl>();
+    private Dictionary<string, AudioSource> reuseAudios = new Dictionary<string, AudioSource>();
     private GameObject audioSourcePrefab = null;
     private class AudioGlobalControl
     {
@@ -190,8 +193,11 @@ namespace Ballance2.Services
     /// <param name="activeStart">播放对象是否开始时激活</param>
     /// <param name="name">播放对象的名称</param>
     /// <returns>返回 AudioSource 实例</returns>
-    public AudioSource RegisterSoundPlayer(GameSoundType type, string assets, bool playOnAwake = false, bool activeStart = true, string name = "")
+    public AudioSource RegisterSoundPlayer(GameSoundType type, string assets, bool playOnAwake = false, bool activeStart = true, string name = "", bool reuse = false)
     {
+      if (reuse && reuseAudios.TryGetValue(assets, out var v))
+        return v;
+
       AudioClip audioClip = null;
       if (!string.IsNullOrEmpty(assets))
       {
@@ -211,6 +217,10 @@ namespace Ballance2.Services
         audioSource.gameObject.SetActive(false);
 
       RegisterAudioSource(type, audioSource);
+
+      if (reuse)
+        reuseAudios.Add(assets, audioSource);
+
       return audioSource;
     }
 
@@ -222,8 +232,11 @@ namespace Ballance2.Services
     /// <param name="activeStart">播放对象是否开始时激活</param>
     /// <param name="name">播放对象的名称</param>
     /// <returns>返回 AudioSource 实例</returns>
-    public AudioSource RegisterSoundPlayer(GameSoundType type, AudioClip audioClip, bool playOnAwake = false, bool activeStart = true, string name = "")
+    public AudioSource RegisterSoundPlayer(GameSoundType type, AudioClip audioClip, bool playOnAwake = false, bool activeStart = true, string name = "", bool reuse = false)
     {
+      if (reuse && audioClip != null && reuseAudios.TryGetValue(audioClip.name, out var v))
+        return v;
+
       AudioSource audioSource = Object.Instantiate(audioSourcePrefab, GameSoundManagerObject.transform).GetComponent<AudioSource>();
       audioSource.clip = audioClip;
       audioSource.playOnAwake = playOnAwake;
@@ -235,6 +248,10 @@ namespace Ballance2.Services
         audioSource.gameObject.SetActive(false);
 
       RegisterAudioSource(type, audioSource);
+
+      if (reuse && audioClip != null)
+        reuseAudios.Add(audioClip.name, audioSource);
+
       return audioSource;
     }
 

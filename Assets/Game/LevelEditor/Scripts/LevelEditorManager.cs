@@ -11,6 +11,7 @@ using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -76,7 +77,7 @@ namespace Ballance2.Game.LevelEditor
     /// </summary>
     /// <param name="levelName"></param>
     public void Init(string levelName)
-    {      
+    {
       Log.D(TAG, $"Entry with {levelName}");
 
       if (isFirstInit)
@@ -125,8 +126,7 @@ namespace Ballance2.Game.LevelEditor
     {
       var levelPath = GamePathManager.GetLevelRealPath(levelName, false, true);
       LevelCurrent = new LevelDynamicAssembe(levelPath);
-      LevelCurrent.New();
-      StartCoroutine(_Load(LevelCurrent));
+      StartCoroutine(_Load(LevelCurrent, true));
     }
     /// <summary>
     /// 退出编辑器
@@ -144,31 +144,28 @@ namespace Ballance2.Game.LevelEditor
     /// 保存关卡
     /// </summary>
     public void Save() {
-      try 
-      {
-        LevelCurrent.Save();
-        LevelEditorUIControl.Alert("I18N:core.editor.messages.SaveSuccess", "");
-      } 
-      catch(Exception e)
-      {
-        LevelEditorUIControl.Alert("I18N:core.editor.messages.SaveFailed", e.ToString(), LevelEditorConfirmIcon.Error);
-      }
+      StartCoroutine(_Save(LevelCurrent));
     }
 
+    private void ReportCreateAssetFailed(string err)
+    {
+      LevelEditorUIControl.Alert("", err, LevelEditorConfirmIcon.Error);
+    }
     public void ReportLoadError(string message)
     {
       Log.E(TAG, message);
+      LevelEditorUIControl.HideLoading();
       LevelEditorUIControl.Alert("I18N:core.editor.messages.LoadFailed", message, LevelEditorConfirmIcon.Error, onConfirm: () => Quit());
     }
     private void ShowNewLevelDialog() {
       Log.D(TAG, $"New Level Dialog");
 
       LevelEditorUIControl.Confirm(
-        "I18N:core.editor.load.New", 
-        "I18N:core.editor.load.NewDesc", 
-        LevelEditorConfirmIcon.Info, 
-        showInput: true, 
-        onConfirm: (text) => 
+        "I18N:core.editor.load.New",
+        "I18N:core.editor.load.NewDesc",
+        LevelEditorConfirmIcon.Info,
+        showInput: true,
+        onConfirm: (text) =>
       {
         var finalName = StringUtils.RemoveSpeicalChars(text);
         var levelPath = GamePathManager.GetLevelRealPath(finalName, false, true);
@@ -186,11 +183,11 @@ namespace Ballance2.Game.LevelEditor
     public void QuitAndAsk()
     {
       LevelEditorUIControl.Confirm(
-        "", 
-        "I18N:core.editor.messages.QuitAsk", 
+        "",
+        "I18N:core.editor.messages.QuitAsk",
         LevelEditorConfirmIcon.Warning, onConfirm: (_) => {
-        Quit();
-      });
+          Quit();
+        });
     }
     public string GetUseableName(string baseName)
     {
@@ -240,23 +237,23 @@ namespace Ballance2.Game.LevelEditor
       }
 
       LevelEditorCameraSkyBox.material = GamePlayManager.Instance.CreateSkyAndLight(
-        LevelCurrent.LevelInfo.level.skyBox, 
-        customSkyMat, 
+        LevelCurrent.LevelInfo.level.skyBox,
+        customSkyMat,
         StringUtils.StringToColor(LevelCurrent.LevelInfo.level.lightColor)
       );
     }
-    public void StartTestMode() 
+    public void StartTestMode()
     {
       LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.PrepareTestMode");
       LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
       StartCoroutine(_IntoTest());
     }
-    public void ExitTestMode() 
-    {      
+    public void ExitTestMode()
+    {
       LevelEditorUIControl.Confirm(
-        "", 
-        "I18N:core.editor.messages.ExitTestModeAsk", 
-        LevelEditorConfirmIcon.Warning, onConfirm: (_) => 
+        "",
+        "I18N:core.editor.messages.ExitTestModeAsk",
+        LevelEditorConfirmIcon.Warning, onConfirm: (_) =>
         {
           LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.PrepareEditor");
           LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
@@ -280,9 +277,9 @@ namespace Ballance2.Game.LevelEditor
     public void TestGoSector()
     {
       LevelEditorUIControl.Confirm(
-        "", 
-        I18N.TrF("core.editor.messages.EnterSector", "", GamePlayManager.Instance.SectorManager.CurrentLevelSectorCount), 
-        LevelEditorConfirmIcon.Warning, onConfirm: (value) => 
+        "",
+        I18N.TrF("core.editor.messages.EnterSector", "", GamePlayManager.Instance.SectorManager.CurrentLevelSectorCount),
+        LevelEditorConfirmIcon.Warning, onConfirm: (value) =>
         {
           if (int.TryParse(value, out var sector) && sector >= 1 && sector < GamePlayManager.Instance.SectorManager.CurrentLevelSectorCount)
           {
@@ -307,10 +304,10 @@ namespace Ballance2.Game.LevelEditor
     public void TestFallShowAlert()
     {
       LevelEditorUIControl.Confirm(
-        "", 
-        "I18N:core.editor.messages.TestFail", 
-        LevelEditorConfirmIcon.Warning, 
-        onConfirm: (_) => 
+        "",
+        "I18N:core.editor.messages.TestFail",
+        LevelEditorConfirmIcon.Warning,
+        onConfirm: (_) =>
         {
           TestResetSector(true);
         },
@@ -324,14 +321,16 @@ namespace Ballance2.Game.LevelEditor
     public void TestSwitchPauseAlert(bool show)
     {
       LevelEditorUIControl.SetPauseTipShow(show);
+      if (!show)
+        EventSystem.current.SetSelectedGameObject(null); //禁止选中，以防止UI与控制按键冲突
     }
     public void TestPass()
     {
       LevelEditorUIControl.Confirm(
-        "", 
-        "I18N:core.editor.messages.TestPass", 
-        LevelEditorConfirmIcon.Warning, 
-        onConfirm: (_) => 
+        "",
+        "I18N:core.editor.messages.TestPass",
+        LevelEditorConfirmIcon.Warning,
+        onConfirm: (_) =>
         {
           ExitTestMode();
         },
@@ -346,6 +345,39 @@ namespace Ballance2.Game.LevelEditor
     {
       StartCoroutine(_CloneModels(model));
     }
+    public void SaveCustomModelAsset(GameObject root, string name, string objTarget, bool reMapMat, Vector3 intitalScale)
+    {
+      LevelEditorUIControl.ShowLoading("I18N:core.editor.import.SavingAssets");
+      StartCoroutine(_SaveCustomModelAsset(root, name, objTarget, reMapMat, intitalScale));
+    }
+    public void DeleteCustomModelAsset(LevelDynamicModelAsset asset)
+    {
+      if (LevelCurrent.LevelData.LevelAssets.Contains(asset))
+      {
+        var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
+        LevelDynamicLoader.Instance.DeleteAsset(result, asset);
+        if (!result.Success)
+        {
+          LevelEditorUIControl.Alert("", result.Error, LevelEditorConfirmIcon.Error);
+          return;
+        }
+
+        //移除所有引用了当前资产的模型实例
+        foreach (var model in LevelCurrent.LevelData.LevelModels)
+        {
+          if (model.AssetRef == asset)
+          {
+            model.AssetRef = null;
+            model.ReInstantiateModul(ScenseRoot.transform, true);
+          }
+        }
+
+        //从列表中移除
+        LevelCurrent.LevelData.LevelAssets.Remove(asset);
+        RemoveAssetFromList(asset, true);
+      }
+    }
+
 
     private bool isTakingScreenshort = false;
     private IEnumerator _Screenshort()
@@ -356,7 +388,7 @@ namespace Ballance2.Game.LevelEditor
       string savePath = saveDir + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
       if (!Directory.Exists(saveDir))
         Directory.CreateDirectory(saveDir);
-      
+
       LevelEditorUIControl.BottomBarTest.gameObject.SetActive(false);
       GamePlayUIControl.Instance.gameObject.SetActive(false);
 
@@ -375,6 +407,8 @@ namespace Ballance2.Game.LevelEditor
     {
       yield return new WaitForSeconds(1);
 
+      GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_BEFORE_START);
+
       //当选择了检查点时，则从检查点选择的节开始
       var startSector = 1;
       if (LevelEditorUIControl.SelectedObject.Count > 0)
@@ -388,9 +422,10 @@ namespace Ballance2.Game.LevelEditor
       //所有元素切换状态
       foreach (var item in LevelCurrent.LevelData.LevelModels)
       {
+        item.SetModulPlaceholdeMode(false);
         if (item.ConfigueRef != null)
           item.ConfigueRef.OnEditorIntoTest(item);
-      } 
+      }
 
       LevelEditorCamera.gameObject.SetActive(false);
       GamePlayManager.Instance.CamManager.SetCameraEnable(true);
@@ -398,6 +433,8 @@ namespace Ballance2.Game.LevelEditor
 
       LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.Test);
       LevelEditorUIControl.HideLoading();
+
+      EventSystem.current.SetSelectedGameObject(null);
     }
     private IEnumerator _QuitTest()
     {
@@ -405,7 +442,7 @@ namespace Ballance2.Game.LevelEditor
 
       GamePlayManager.Instance._Stop(BallControlStatus.NoControl);
 
-      yield return StartCoroutine(LevelBuilder.LevelBuilder.Instance.UnLoadDynamicLevelInternal(LevelCurrent, true, () => {}));
+      yield return StartCoroutine(LevelBuilder.LevelBuilder.Instance.UnLoadDynamicLevelInternal(LevelCurrent, true, () => { }));
 
       //恢复所有机关显示
       foreach (var item in LevelCurrent.LevelData.LevelModels)
@@ -426,105 +463,47 @@ namespace Ballance2.Game.LevelEditor
       LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.Edit);
       LevelEditorUIControl.HideLoading();
     }
-    private IEnumerator _LoadAsset(LevelDynamicModelAsset asset) 
+    private IEnumerator _Save(LevelDynamicAssembe level) 
     {
-      //TODO
-      yield break;
+      LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.Saving");
+
+      var task = level.Save();
+      yield return task.AsIEnumerator();
+
+      LevelEditorUIControl.HideLoading();
+
+      if (!task.Result.Success)
+      {
+        LevelEditorUIControl.Alert("", I18N.Tr("core.editor.messages.SaveFailed") + " " + task.Result.Error, LevelEditorConfirmIcon.Error);
+        yield break;
+      }
     }
-    private IEnumerator _Load(LevelDynamicAssembe level) 
+    private IEnumerator _Load(LevelDynamicAssembe level, bool newLevel = false) 
     {
       LevelCurrent = level;
       LevelEditorUIControl.ShowLoading();
 
-      Log.D(TAG, $"Start load level {level.LevelDirPath}");
-
-      try {
-        level.Load();
-      } catch(Exception e) {
-        ReportLoadError($"Failed to load info " + e.ToString());
-        yield break;
+      if (newLevel)
+      {
+        var task = LevelCurrent.New();
+        yield return task.AsIEnumerator();
       }
-          
+
       yield return new WaitForSeconds(1);
 
-      var loadCount = 0;
-      var loadMissingAssets = new List<LevelDynamicModel>();
-      //加载内嵌资源至系统中
-      foreach (var item in level.LevelData.LevelAssets)
+      var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
+      yield return StartCoroutine(LevelDynamicLoader.Instance.LoadLevel(
+        result, 
+        level,
+        ScenseRoot.transform, 
+        LevelAssets,
+        (asset) => AddAssetToList(asset)
+      ));
+      if (!result.Success)
       {
-        if (item.SourceType == LevelDynamicModelSource.Embed)
-          AddAssetToList(item);
-        loadCount++;
-        if (loadCount % 8 == 0)
-          yield return new WaitForEndOfFrame();
+        ReportLoadError(result.Error);
+        yield break;
       }
-
-      Log.D(TAG, $"Load objects stage 1");
-
-      //加载资源
-      foreach (var item in level.LevelData.LevelModels)
-      {
-        if (LevelAssets.TryGetValue(item.Asset, out var asset))
-        {
-          item.AssetRef = asset;
-          item.CanDelete = asset.CanDelete;
-
-          //如果对象没有加载，则现在加载
-          if (!asset.Loaded && asset.SourceType == LevelDynamicModelSource.Embed)
-            yield return StartCoroutine(_LoadAsset(asset));
-        }
-        else
-        {
-          loadMissingAssets.Add(item);
-        }
-        loadCount++;
-        if (loadCount % 16 == 0)
-          yield return new WaitForEndOfFrame();
-      }
-      //分类父子关系
-      var modelsTempMap = new Dictionary<int, LevelDynamicModel>();
-      foreach (var item in level.LevelData.LevelModels)
-      {
-        modelsTempMap.Add(item.Uid, item);
-      }
-      foreach (var item in level.LevelData.LevelModels)
-      {
-        if (item.ParentUid != 0 && modelsTempMap.TryGetValue(item.ParentUid, out var parentModel))
-        {
-          parentModel.SubModelRef.Add(item);
-          item.IsSubObj = true;
-          item.CanDelete = false;
-        }
-      }
-
-      Log.D(TAG, $"Load objects stage 2");
-
-      //加载实例
-      foreach (var item in level.LevelData.LevelModels)
-      {
-        item.InstantiateModul(ScenseRoot.transform, true, false);
-        loadCount++;
-        if (loadCount % 8 == 0)
-          yield return new WaitForEndOfFrame();
-      }
-      //子模型层级修改
-      foreach (var item in level.LevelData.LevelModels)
-      {
-        if (item.SubModelRef.Count > 0)
-        {
-          for (int i = 0; i < item.SubModelRef.Count; i++)
-          {
-            var subItem = item.SubModelRef[i];
-            subItem.InstanceHost.transform.SetParent(item.InstanceHost.transform);
-            subItem.SubObjName = subItem.AssetRef.ObjName;
-          }
-        }
-      }
-      modelsTempMap.Clear();
-
-      yield return new WaitForEndOfFrame();
-
-      Log.D(TAG, $"Load objects done. All {loadCount} objects");
 
       //加载天空盒子和灯光颜色
       yield return StartCoroutine(CreateSky());
@@ -533,7 +512,6 @@ namespace Ballance2.Game.LevelEditor
       LevelEditorUIControl.HideLoading();
       LevelEditorUIControl.UpdateStatusText();
 
-      Log.D(TAG, "Load level done");
       yield break;
     }
     private IEnumerator _Unload(Action finish) 
@@ -631,11 +609,24 @@ namespace Ballance2.Game.LevelEditor
     private IEnumerator _CreateModelSolve(LevelDynamicModel model)
     {
       if (!model.AssetRef.Loaded && model.AssetRef.SourceType == LevelDynamicModelSource.Embed)
-        yield return StartCoroutine(_LoadAsset(model.AssetRef));
+      {
+        var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
+        yield return StartCoroutine(LevelDynamicLoader.Instance.LoadAsset(result, model.AssetRef));
+        if (!result.Success)
+          ReportCreateAssetFailed(I18N.TrF("core.editor.messages.LoadModelAssetFailed", "", result.Error));
+      }
+
+      try
+      {
+        model.InstantiateModul(ScenseRoot.transform, true, true);
+      } 
+      catch (Exception e)
+      {
+        ReportCreateAssetFailed(I18N.TrF("core.editor.messages.InstanceModelFailed", "", e.ToString()));
+        yield break;
+      }
 
       LevelCurrent.LevelData.LevelModels.Add(model);
-
-      model.InstantiateModul(ScenseRoot.transform, true, true);
 
       //创建子对象
       foreach (var _subAssetRef in model.AssetRef.SubModelRefs)
@@ -643,7 +634,12 @@ namespace Ballance2.Game.LevelEditor
         if (LevelAssets.TryGetValue(_subAssetRef.Path, out var subAsset))
         {
           if (!subAsset.Loaded && subAsset.SourceType == LevelDynamicModelSource.Embed)
-            yield return StartCoroutine(_LoadAsset(subAsset));
+          {
+            var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
+            yield return StartCoroutine(LevelDynamicLoader.Instance.LoadAsset(result, subAsset));
+            if (!result.Success)
+              ReportCreateAssetFailed(I18N.TrF("core.editor.messages.LoadModelAssetFailed", "", result.Error));
+          }
 
           var subModel = new LevelDynamicModel()
           {
@@ -660,21 +656,107 @@ namespace Ballance2.Game.LevelEditor
             CanDelete = false,
           };
           model.SubModelRef.Add(subModel);
+
+          try
+          {
+            subModel.InstantiateModul(model.InstanceHost.transform, true, true);
+          }
+          catch (Exception e)
+          {
+            ReportCreateAssetFailed(I18N.TrF("core.editor.messages.InstanceModelFailed", "", e.ToString()));
+            yield break;
+          }
           LevelCurrent.LevelData.LevelModels.Add(subModel);
-          subModel.InstantiateModul(model.InstanceHost.transform, true, true);
           if (!_subAssetRef.Enable)
             subModel.InstanceHost.SetActive(false);
         }
         else
         {
-          Log.W(TAG, $"Failed to load SubAsset {_subAssetRef.Path} of model {model.AssetRef.Name}!");
+          ReportCreateAssetFailed(I18N.TrF(
+            "core.editor.messages.InstanceModelFailed", "", 
+            $"Failed to load SubAsset {_subAssetRef.Path} of model {model.AssetRef.Name}!"
+          ));
+          yield break;
         }
       }
 
       LevelEditorUIControl.UpdateStatusText();
     }
+    private IEnumerator _SaveCustomModelAsset(GameObject root, string name, string objTarget, bool reMapMat, Vector3 intitalScale)
+    {
+      //保存用户导入的模型作为资产
+      var newAsset = new LevelDynamicModelAsset();
 
-    private void RemoveAssetFromList(LevelDynamicModelAsset asset)
+      newAsset.Name = name;
+      newAsset.Desc = I18N.Tr("CORE.EDITOR.IMPORT.ImportSource");
+      newAsset.ObjName = root.name;
+      newAsset.ObjTarget = objTarget;
+      newAsset.Tag = "I18N:CORE.EDITOR.IMPORT.CustomAsset";
+      newAsset.SubCategory = "MyAsset";
+
+      switch (objTarget)
+      {
+        case "Phys_Floors":
+        case "Phys_FloorWoods":
+          newAsset.Category = LevelDynamicModelCategory.Floors;
+          break;
+        case "Phys_FloorRails":
+          newAsset.Category = LevelDynamicModelCategory.Rails;
+          break;
+        case "":
+          newAsset.Category = LevelDynamicModelCategory.Decoration;
+          break;
+        default:
+          try
+          {
+            if (CustomModelAssetSaveTargetHandler.TryGetValue(objTarget, out var cb))
+              cb(newAsset, objTarget, root);
+          }
+          catch (Exception e)
+          {
+            ReportCreateAssetFailed(I18N.TrF("core.editor.import.SavingAssetsFailed", "", e.ToString()));
+            yield break;
+          }
+          break;
+      }
+
+      newAsset.Prefab = root;
+      newAsset.Loaded = true;
+      newAsset.SourcePath = null;
+
+      var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
+
+      yield return StartCoroutine(LevelDynamicLoader.Instance.SaveAsset(result, newAsset, root, reMapMat, intitalScale.x));
+
+      LevelEditorUIControl.HideLoading();
+
+      if (!result.Success)
+      {
+        LevelEditorUIControl.Alert("", I18N.TrF("core.editor.import.ImportFailed", "", result.Error));
+        yield break;
+      }
+
+      AddAssetToList(newAsset, true);
+
+      //对于缺失资源的模型实例，重新匹配
+      foreach (var model in LevelCurrent.LevelData.LevelModels)
+      {
+        if (model.Asset == newAsset.SourcePath)
+        {
+          model.AssetRef = newAsset;
+          model.ReInstantiateModul(ScenseRoot.transform, true);
+        }
+      }
+
+      LevelEditorUIControl.Alert("", "I18N:core.editor.import.ImportSuccess");
+    }
+
+    /// <summary>
+    /// 在导入自定义模型时，允许对自定义 objTarget 进行预处理。同时在 LevelEditorImportControl.Choises 中增加自定义类型的选项。
+    /// </summary>
+    public Dictionary<string, Action<LevelDynamicModelAsset, string, GameObject>> CustomModelAssetSaveTargetHandler = new Dictionary<string, Action<LevelDynamicModelAsset, string, GameObject>>();
+
+    private void RemoveAssetFromList(LevelDynamicModelAsset asset, bool refreshList = false)
     {
       if (LevelAssetsGrouped.TryGetValue(asset.Category, out var catgory))
       {
@@ -683,8 +765,9 @@ namespace Ballance2.Game.LevelEditor
           subCatgory.Remove(asset);
       }
       LevelAssets.Remove(asset.SourcePath);
+      if (refreshList) RefreshAllAssetsList();
     }
-    private void AddAssetToList(LevelDynamicModelAsset asset)
+    private void AddAssetToList(LevelDynamicModelAsset asset, bool refreshList = false)
     {
       if (!LevelAssetsGrouped.TryGetValue(asset.Category, out var catgory))
       {
@@ -697,8 +780,19 @@ namespace Ballance2.Game.LevelEditor
         subCatgory = new List<LevelDynamicModelAsset>();
         catgory.Add(SubCategoryName, subCatgory);
       }
+      var oldItem = subCatgory.Find(p => p.SourcePath == asset.SourcePath);
+      if (oldItem != null)
+        subCatgory.Remove(oldItem);
       subCatgory.Add(asset);
-      LevelAssets.Add(asset.SourcePath, asset);
+
+      if (!asset.HiddenInContentSelector)
+      {
+        if (LevelAssets.ContainsKey(asset.SourcePath))
+          LevelAssets[asset.SourcePath] = asset;
+        else
+          LevelAssets.Add(asset.SourcePath, asset);
+      }
+      if (refreshList) RefreshAllAssetsList();
     }
     private void LoadAllAssets()
     {
@@ -716,27 +810,7 @@ namespace Ballance2.Game.LevelEditor
             if (assets != null)
             {
               foreach (var item in assets)
-                if (!item.HiddenInContentSelector)
-                  AddAssetToList(new LevelDynamicModelAsset() {
-                    SourcePath = $"{package.PackageName}:{item.Name}",
-                    SourceType = LevelDynamicModelSource.Package,
-                    Category = item.Category,
-                    SubCategory = item.SubCategory,
-                    Tag = item.Tag,
-                    SubModelRefs = item.SubModelRefs,
-                    OnlyOne = item.OnlyOne,
-                    HiddenInContentSelector = item.HiddenInContentSelector,
-                    HiddenPlaceholderRender = item.HiddenPlaceholderRender,
-                    Loaded = true,
-                    Prefab = item.Prefab,
-                    Name = item.Name,
-                    Desc = item.Desc,
-                    PreviewImage = item.Preview,
-                    ObjName = item.ObjName,
-                    ObjTarget = item.ObjTarget,
-                    ScenseGizmePreviewImage = item.ScenseGizmePreviewImage,
-                    IntitalScale = item.IntitalScale,
-                  });
+                AddAssetToList(new LevelDynamicModelAsset(item, package));
             }
           } 
           catch (Exception e)
@@ -746,7 +820,11 @@ namespace Ballance2.Game.LevelEditor
         }
       }
     }
-  
+    private void RefreshAllAssetsList()
+    {
+      LevelEditorUIControl.LevelEditorContentSelection.Refresh();
+    }
+
     private void OnObjectDelete(LevelDynamicModel[] models)
     {
       foreach (var item in models)

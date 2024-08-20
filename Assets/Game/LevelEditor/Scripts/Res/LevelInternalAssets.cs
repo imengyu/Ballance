@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using SubjectNerd.Utilities;
+using Newtonsoft.Json;
 
 namespace Ballance2.Game.LevelEditor
 {
@@ -134,6 +135,7 @@ namespace Ballance2.Game.LevelEditor
     public Vector3 IntitalScale;
   }
   [Serializable]
+  [JsonObject]
   public class LevelProviderSubModelRefAsset
   {
     public Vector3 Position = Vector3.zero;

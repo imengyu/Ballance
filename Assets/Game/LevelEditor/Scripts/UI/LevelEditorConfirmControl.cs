@@ -1,4 +1,5 @@
 using System;
+using Ballance2.Services;
 using Ballance2.UI.Core.Controls;
 using TMPro;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Ballance2.Game.LevelEditor
 {
-  public class LevelEditorConfirmControl : MonoBehaviour 
+  public class LevelEditorConfirmControl : MonoBehaviour
   {
     public Button ButtonConfirm;
     public Button ButtonCancel;
@@ -16,29 +17,33 @@ namespace Ballance2.Game.LevelEditor
     public UIText ContentText;
     public TMP_InputField InputField;
     public Image Icon;
+    public ScrollRect ScrollView;
 
     public Sprite IconNone;
     public Sprite IconInfo;
     public Sprite IconWarning;
     public Sprite IconError;
+    public Sprite IconSuccess;
 
     public Action<bool, string> onClose;
 
-    private void Start() 
+    private void Start()
     {
-      ButtonConfirm.onClick.AddListener(() => {
+      ButtonConfirm.onClick.AddListener(() =>
+      {
         onClose.Invoke(true, InputField.text);
         gameObject.SetActive(false);
       });
-      ButtonCancel.onClick.AddListener(() => {
+      ButtonCancel.onClick.AddListener(() =>
+      {
         onClose.Invoke(false, InputField.text);
         gameObject.SetActive(false);
       });
     }
     public void SetInfo(
-      string title, string content, 
-      LevelEditorConfirmIcon icon = LevelEditorConfirmIcon.None, 
-      string confirmText = "", string cancelText = "", 
+      string title, string content,
+      LevelEditorConfirmIcon icon = LevelEditorConfirmIcon.None,
+      string confirmText = "", string cancelText = "",
       bool showCancel = true, bool showInput = false,
       string inputFieldText = "", string inputFieldPlaceholder = ""
     )
@@ -47,25 +52,32 @@ namespace Ballance2.Game.LevelEditor
       ButtonCancelText.text = string.IsNullOrEmpty(cancelText) ? "I18N:core.ui.Cancel" : cancelText;
       TitleText.text = title;
       ContentText.text = content;
+      TitleText.gameObject.SetActive(!string.IsNullOrEmpty(title));
+      ContentText.gameObject.SetActive(!string.IsNullOrEmpty(content));
       ButtonCancel.gameObject.SetActive(showCancel);
       InputField.gameObject.SetActive(showInput);
       InputField.text = inputFieldText;
       (InputField.placeholder as TMP_Text).text = inputFieldPlaceholder;
-      switch(icon)
+      switch (icon)
       {
-        case LevelEditorConfirmIcon.None: 
+        case LevelEditorConfirmIcon.None:
           Icon.sprite = IconNone;
           break;
-        case LevelEditorConfirmIcon.Info: 
+        case LevelEditorConfirmIcon.Info:
           Icon.sprite = IconInfo;
           break;
-        case LevelEditorConfirmIcon.Warning: 
+        case LevelEditorConfirmIcon.Warning:
           Icon.sprite = IconWarning;
           break;
-        case LevelEditorConfirmIcon.Error: 
+        case LevelEditorConfirmIcon.Error:
           Icon.sprite = IconError;
           break;
+        case LevelEditorConfirmIcon.Success:
+          Icon.sprite = IconSuccess;
+          break;
       }
+
+      GameManager.Instance.Delay(0.3f, () => ScrollView.verticalNormalizedPosition = 1);
     }
   }
   public enum LevelEditorConfirmIcon
@@ -74,5 +86,6 @@ namespace Ballance2.Game.LevelEditor
     Info,
     Warning,
     Error,
+    Success,
   }
 }

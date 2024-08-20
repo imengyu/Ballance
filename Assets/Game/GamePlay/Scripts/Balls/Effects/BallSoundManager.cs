@@ -143,7 +143,7 @@ namespace Ballance2.Game.GamePlay.Balls
     {
       if (_SoundCollData.ContainsKey(colId)) 
       {
-        Log.E(TAG, $"AddSoundCollData failed because SoundCollData id: {colId} already added");
+        Log.W(TAG, $"AddSoundCollData failed because SoundCollData id: {colId} already added");
         return;
       }
       _SoundCollData[colId] = data;

@@ -18,6 +18,7 @@ namespace Ballance2.Game.LevelEditor
     public LevelEditorTransformToolControl LevelEditorTransformToolControl;
     public LevelEditorObjectInfoControl LevelEditorObjectInfoControl;
     public LevelEditorImportControl LevelEditorImportControl;
+    public LevelEditorSubmitControl LevelEditorSubmitControl;
     public GameObject TransformHandles;
     public RectTransform DialogTransformHelp;
     public RectTransform DialogTestHelp;
@@ -158,7 +159,8 @@ namespace Ballance2.Game.LevelEditor
       ButtonRails.SetActive(false);
       ButtonModuls.SetActive(false);
       ButtonOthers.SetActive(false);
-       LevelEditorContentSelection.Close();
+      currentShowTab = LevelDynamicModelCategory.UnSet;
+      LevelEditorContentSelection.Close();
     }
     public void ShowContentSelectUI(LevelDynamicModelCategory tab)
     {
@@ -190,7 +192,7 @@ namespace Ballance2.Game.LevelEditor
     }
     public void ShowImport()
     {
-      LevelEditorContentSelection.Close();
+      CloseContentSelectUI();
       DialogImportTip.gameObject.SetActive(true);
     }
     public void ShowTransformHelp()
@@ -209,7 +211,11 @@ namespace Ballance2.Game.LevelEditor
     {
       DialogTestHelp.gameObject.SetActive(false);
     }
-      
+    public void ShowUpload()
+    {
+      LevelEditorSubmitControl.Show(LevelEditorManager.Instance.LevelCurrent);
+    }
+
     public void ShowLevelInfo()
     {
       LevelEditorObjectInfoControl.gameObject.SetActive(false);
@@ -288,6 +294,13 @@ namespace Ballance2.Game.LevelEditor
       var m = LevelEditorManager.Instance;
       m.ShowNameTag = !m.ShowNameTag;
       LevelEditorTransformToolControl.ButtonShowName.SetActive(m.ShowNameTag);
+    }
+    public void DeleteCustomModelAsset(LevelDynamicModelAsset asset)
+    {
+      Confirm("", "I18N:core.editor.messages.DeleteImportAsset", LevelEditorConfirmIcon.Warning, onConfirm: (a) =>
+      {
+        LevelEditorManager.Instance.DeleteCustomModelAsset(asset);
+      });
     }
 
     public void Confirm(

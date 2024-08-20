@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using Ballance2.Services.I18N;
-using Ballance2.UI;
+using System.Dynamic;
 using Ballance2.UI.Core.Controls;
 using Battlehub.RTHandles;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,9 +15,13 @@ namespace Ballance2.Game.LevelEditor
     public RectTransform Tag;
     public UIText TagText;
     public PrefabSpawnPoint prefabSpawnPoint;
+    public RectTransform DeleteButton;
+
+    public Sprite ImageMissing;
 
     public Action<LevelDynamicModelAsset> onShowTip;
     public Action onHideTip;
+    public Action<LevelDynamicModelAsset> onDelete;
 
     private LevelDynamicModelAsset asset = null;
 
@@ -47,15 +48,20 @@ namespace Ballance2.Game.LevelEditor
         asset.PreviewImage = Image.sprite;
       onShowTip.Invoke(asset);
     }
+    public void Delete()
+    {
+      onDelete.Invoke(asset);
+    }
 
     public void SetInfo(LevelDynamicModelAsset info)
     {
       asset = info;
-      Image.sprite = info.PreviewImage;
+      Image.sprite = info.Prefab == null ? ImageMissing : info.PreviewImage;
       Text.text = info.Name;
       Tag.gameObject.SetActive(!string.IsNullOrEmpty(info.Tag));
       TagText.text = info.Tag;
       prefabSpawnPoint.UpdateInfo(info.Prefab);
+      DeleteButton.gameObject.SetActive(info.SourceType == LevelDynamicModelSource.Embed && info.SourcePath.StartsWith("levelasset:"));
     }
   }
 }

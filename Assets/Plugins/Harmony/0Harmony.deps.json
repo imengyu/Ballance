@@ -1,0 +1,278 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "0Harmony/2.3.3.0": {
+        "dependencies": {
+          "ILRepack.Lib.MSBuild.Task": "2.0.26",
+          "Lib.Harmony.Ref": "2.3.3",
+          "Microsoft.NETFramework.ReferenceAssemblies": "1.0.3",
+          "Microsoft.SourceLink.GitHub": "8.0.0",
+          "MonoMod.Core": "1.1.0",
+          "NETStandard.Library": "2.0.3",
+          "System.Reflection.Emit": "4.7.0"
+        },
+        "runtime": {
+          "0Harmony.dll": {}
+        }
+      },
+      "ILRepack.Lib.MSBuild.Task/2.0.26": {},
+      "Lib.Harmony.Ref/2.3.3": {
+        "dependencies": {
+          "System.Reflection.Emit": "4.7.0"
+        }
+      },
+      "Microsoft.Build.Tasks.Git/8.0.0": {},
+      "Microsoft.NETCore.Platforms/1.1.0": {},
+      "Microsoft.NETFramework.ReferenceAssemblies/1.0.3": {
+        "dependencies": {
+          "Microsoft.NETFramework.ReferenceAssemblies.net461": "1.0.3"
+        }
+      },
+      "Microsoft.NETFramework.ReferenceAssemblies.net461/1.0.3": {},
+      "Microsoft.SourceLink.Common/8.0.0": {},
+      "Microsoft.SourceLink.GitHub/8.0.0": {
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "8.0.0",
+          "Microsoft.SourceLink.Common": "8.0.0"
+        }
+      },
+      "Mono.Cecil/0.11.5": {
+        "runtime": {
+          "lib/netstandard2.0/Mono.Cecil.Mdb.dll": {
+            "assemblyVersion": "0.11.5.0",
+            "fileVersion": "0.11.5.0"
+          },
+          "lib/netstandard2.0/Mono.Cecil.Pdb.dll": {
+            "assemblyVersion": "0.11.5.0",
+            "fileVersion": "0.11.5.0"
+          },
+          "lib/netstandard2.0/Mono.Cecil.Rocks.dll": {
+            "assemblyVersion": "0.11.5.0",
+            "fileVersion": "0.11.5.0"
+          },
+          "lib/netstandard2.0/Mono.Cecil.dll": {
+            "assemblyVersion": "0.11.5.0",
+            "fileVersion": "0.11.5.0"
+          }
+        }
+      },
+      "MonoMod.Backports/1.1.0": {
+        "dependencies": {
+          "MonoMod.ILHelpers": "1.0.1",
+          "System.Reflection.Emit.ILGeneration": "4.7.0",
+          "System.Reflection.Emit.Lightweight": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoMod.Backports.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        }
+      },
+      "MonoMod.Core/1.1.0": {
+        "dependencies": {
+          "Mono.Cecil": "0.11.5",
+          "MonoMod.Backports": "1.1.0",
+          "MonoMod.ILHelpers": "1.0.1",
+          "MonoMod.Utils": "25.0.4",
+          "System.Reflection.Emit.ILGeneration": "4.7.0",
+          "System.Reflection.Emit.Lightweight": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoMod.Core.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          },
+          "lib/netstandard2.0/MonoMod.Iced.dll": {
+            "assemblyVersion": "1.17.0.0",
+            "fileVersion": "1.17.0.0"
+          }
+        }
+      },
+      "MonoMod.ILHelpers/1.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/MonoMod.ILHelpers.dll": {
+            "assemblyVersion": "1.0.1.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "MonoMod.Utils/25.0.4": {
+        "dependencies": {
+          "Mono.Cecil": "0.11.5",
+          "MonoMod.Backports": "1.1.0",
+          "MonoMod.ILHelpers": "1.0.1",
+          "System.Reflection.Emit.ILGeneration": "4.7.0",
+          "System.Reflection.Emit.Lightweight": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoMod.Utils.dll": {
+            "assemblyVersion": "25.0.4.0",
+            "fileVersion": "25.0.4.0"
+          }
+        }
+      },
+      "NETStandard.Library/2.0.3": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "System.Reflection.Emit/4.7.0": {
+        "dependencies": {
+          "System.Reflection.Emit.ILGeneration": "4.7.0"
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.7.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.Reflection.Emit.ILGeneration.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.700.19.56404"
+          }
+        }
+      },
+      "System.Reflection.Emit.Lightweight/4.7.0": {
+        "dependencies": {
+          "System.Reflection.Emit.ILGeneration": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.700.19.56404"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "0Harmony/2.3.3.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ILRepack.Lib.MSBuild.Task/2.0.26": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dSvyqVB6qs/PqSWXMRZ5da2Vm1Tz25xcMlA1AdvS9++ORFhBb3nBTOfolf3oUGgAcBH1LPLo948/GWjcVmNdMQ==",
+      "path": "ilrepack.lib.msbuild.task/2.0.26",
+      "hashPath": "ilrepack.lib.msbuild.task.2.0.26.nupkg.sha512"
+    },
+    "Lib.Harmony.Ref/2.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OJ3cLy2eAKLKYbPqsI1leZt+p+ZSqCEGVZzSlyFVTxwR9eG5HwSxJBb3G+qT4cW0VdL58E+qv35wkeBj0ErqZQ==",
+      "path": "lib.harmony.ref/2.3.3",
+      "hashPath": "lib.harmony.ref.2.3.3.nupkg.sha512"
+    },
+    "Microsoft.Build.Tasks.Git/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bZKfSIKJRXLTuSzLudMFte/8CempWjVamNUR5eHJizsy+iuOuO/k2gnh7W0dHJmYY0tBf+gUErfluCv5mySAOQ==",
+      "path": "microsoft.build.tasks.git/8.0.0",
+      "hashPath": "microsoft.build.tasks.git.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETFramework.ReferenceAssemblies/1.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vUc9Npcs14QsyOD01tnv/m8sQUnGTGOw1BCmKcv77LBJY7OxhJ+zJF7UD/sCL3lYNFuqmQEVlkfS4Quif6FyYg==",
+      "path": "microsoft.netframework.referenceassemblies/1.0.3",
+      "hashPath": "microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512"
+    },
+    "Microsoft.NETFramework.ReferenceAssemblies.net461/1.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AmOJZwCqnOCNp6PPcf9joyogScWLtwy0M1WkqfEQ0M9nYwyDD7EX9ZjscKS5iYnyvteX7kzSKFCKt9I9dXA6mA==",
+      "path": "microsoft.netframework.referenceassemblies.net461/1.0.3",
+      "hashPath": "microsoft.netframework.referenceassemblies.net461.1.0.3.nupkg.sha512"
+    },
+    "Microsoft.SourceLink.Common/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dk9JPxTCIevS75HyEQ0E4OVAFhB2N+V9ShCXf8Q6FkUQZDkgLI12y679Nym1YqsiSysuQskT7Z+6nUf3yab6Vw==",
+      "path": "microsoft.sourcelink.common/8.0.0",
+      "hashPath": "microsoft.sourcelink.common.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.SourceLink.GitHub/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-G5q7OqtwIyGTkeIOAc3u2ZuV/kicQaec5EaRnc0pIeSnh9LUjj+PYQrJYBURvDt7twGl2PKA7nSN0kz1Zw5bnQ==",
+      "path": "microsoft.sourcelink.github/8.0.0",
+      "hashPath": "microsoft.sourcelink.github.8.0.0.nupkg.sha512"
+    },
+    "Mono.Cecil/0.11.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fxfX+0JGTZ8YQeu1MYjbBiK2CYTSzDyEeIixt+yqKKTn7FW8rv7JMY70qevup4ZJfD7Kk/VG/jDzQQTpfch87g==",
+      "path": "mono.cecil/0.11.5",
+      "hashPath": "mono.cecil.0.11.5.nupkg.sha512"
+    },
+    "MonoMod.Backports/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GUAjCrCZEddqHKHFA7Lh61PgTzoKY7gfBShFe0hQe0p8iynHhBK3TWGyRi+QIw/PGfaRPwx6c33CPGFURBVM6g==",
+      "path": "monomod.backports/1.1.0",
+      "hashPath": "monomod.backports.1.1.0.nupkg.sha512"
+    },
+    "MonoMod.Core/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ks8RntZGVcktr2QF/AovTEbuOkrgXz6omjrvT5LRveOIQJuy+IFuEQPBVWu+cSKVIoZD5XkpRFvlVrItgPIrXw==",
+      "path": "monomod.core/1.1.0",
+      "hashPath": "monomod.core.1.1.0.nupkg.sha512"
+    },
+    "MonoMod.ILHelpers/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6djj/Hz+/eTomo1H/sJEJNxBz2ZdhXjvH0MOmyU2xRtbjaIfBQuyVV0zNUbJhMY/8qoWrz7WXfskfFhdaY0afA==",
+      "path": "monomod.ilhelpers/1.0.1",
+      "hashPath": "monomod.ilhelpers.1.0.1.nupkg.sha512"
+    },
+    "MonoMod.Utils/25.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cB94MaZtFD9u4clYEFTwM4jGXnJnzXsxYF3yBpMZKHhXOas66tMF2frbdYte023i0MH4C5iRJbDjxHmA4x5VgA==",
+      "path": "monomod.utils/25.0.4",
+      "hashPath": "monomod.utils.25.0.4.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "path": "netstandard.library/2.0.3",
+      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "System.Reflection.Emit/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VR4kk8XLKebQ4MZuKuIni/7oh+QGFmZW3qORd1GvBq/8026OpW501SzT/oypwiQl4TvT8ErnReh/NzY9u+C6wQ==",
+      "path": "system.reflection.emit/4.7.0",
+      "hashPath": "system.reflection.emit.4.7.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit.ILGeneration/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AucBYo3DSI0IDxdUjKksBcQJXPHyoPyrCXYURW1WDsLI4M65Ar/goSHjdnHOAY9MiYDNKqDlIgaYm+zL2hA1KA==",
+      "path": "system.reflection.emit.ilgeneration/4.7.0",
+      "hashPath": "system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit.Lightweight/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-a4OLB4IITxAXJeV74MDx49Oq2+PsF6Sml54XAFv+2RyWwtDBcabzoxiiJRhdhx+gaohLh4hEGCLQyBozXoQPqA==",
+      "path": "system.reflection.emit.lightweight/4.7.0",
+      "hashPath": "system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
+    }
+  }
+}

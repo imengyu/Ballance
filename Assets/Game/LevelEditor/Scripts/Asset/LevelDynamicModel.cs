@@ -8,6 +8,7 @@ using Battlehub.RTCommon;
 using Newtonsoft.Json;
 using NUnit.Framework.Internal;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 namespace Ballance2.Game.LevelEditor
 {  
@@ -97,9 +98,18 @@ namespace Ballance2.Game.LevelEditor
         ModulRef = null;
         InstanceHost = null;
         MeshRenderer = null;
+
+        if (IsEditor)
+          DestroyModulEditorPart();
       }
     }
-    public void InstantiateModul(Transform ScenseRoot, bool editor, bool isNew) 
+
+    public void ReInstantiateModul(Transform ScenseRoot, bool editor)
+    {
+      DestroyModul();
+      InstantiateModul(ScenseRoot, editor, false);
+    }
+    public void InstantiateModul(Transform ScenseRoot, bool editor, bool isNew)
     {
       if (InstanceHost != null)
         return;
@@ -107,10 +117,12 @@ namespace Ballance2.Game.LevelEditor
       {
         IsEditor = editor;
         InstanceHost = CloneUtils.CreateEmptyObjectWithParent(ScenseRoot, Name);
-        if (AssetRef != null)
+        if (AssetRef != null && AssetRef.Loaded && AssetRef.Prefab != null)
         {
           InstanceRef = CloneUtils.CloneNewObjectWithParent(AssetRef.Prefab, InstanceHost.transform, Name);
           ConfigueRef = InstanceRef.GetComponent<LevelDynamicModelAssetConfigue>();
+          if (!InstanceRef.activeSelf)
+            InstanceRef.SetActive(true);
           IsError = false;
         }
         else
@@ -170,12 +182,12 @@ namespace Ballance2.Game.LevelEditor
       }
     }
 
-    private Mesh RotMesh(Vector3 rot, Mesh orginalMesh)
+    private Mesh FixMesh(Vector3 trans, Vector3 rot, Vector3 scale, Mesh orginalMesh)
     {
       if (rot == Vector3.zero) 
         return orginalMesh;
       var mesh = new Mesh();
-      var rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(rot));
+      var rotationMatrix = Matrix4x4.Translate(trans) * Matrix4x4.Scale(scale) * Matrix4x4.Rotate(Quaternion.Euler(rot));
       var vertices = new List<Vector3>();
       var normals = new List<Vector3>();
       foreach (var vertex in orginalMesh.vertices)
@@ -189,18 +201,22 @@ namespace Ballance2.Game.LevelEditor
       mesh.uv = orginalMesh.uv;
       return mesh;
     }
+
+    private void DestroyModulEditorPart()
+    {
+    }
     private void InstantiateModulEditorPart()
     {
       //添加碰撞器以使其可以选择
       var meshFilter = InstanceRef.GetComponent<MeshFilter>();
-      if (meshFilter != null)
+      if (meshFilter != null && meshFilter.sharedMesh != null)
         InstanceHost.AddComponent<MeshFilter>().mesh = meshFilter.sharedMesh;
       else
       {
-        Mesh mesh;
-        Vector3 rot = Vector3.zero;
+        Mesh mesh = null;
         //在占位符寻找一个可用的mesh
-        meshFilter = InstanceHost.AddComponent<MeshFilter>();
+        if (meshFilter == null)
+          meshFilter = InstanceHost.AddComponent<MeshFilter>();
         //组合原件，没有mesh，但如果是modul，则使用Modul的占位符
         if (ModulRef != null)
         {
@@ -225,19 +241,17 @@ namespace Ballance2.Game.LevelEditor
         }
         else
         {
-          //非modul，则尝试使用第一个字对象的mesh
-          MeshFilter innerMeshFilter = null;
+          //非modul，则尝试使用第一个子对象的mesh
           for (int i = 0; i < InstanceRef.transform.childCount; i++)
           {
             var child = InstanceRef.transform.GetChild(i);
-            innerMeshFilter = child.gameObject.GetComponent<MeshFilter>();
-            if (innerMeshFilter != null)
+            var innerMeshFilter = child.gameObject.GetComponent<MeshFilter>();
+            if (innerMeshFilter != null && innerMeshFilter.sharedMesh != null)
             {
-              rot = child.localEulerAngles;
+              mesh = FixMesh(child.localPosition, child.localEulerAngles, child.lossyScale, innerMeshFilter.sharedMesh);
               break;
             }
           }
-          mesh = RotMesh(rot, innerMeshFilter?.sharedMesh);
         }
 
         if (mesh != null)

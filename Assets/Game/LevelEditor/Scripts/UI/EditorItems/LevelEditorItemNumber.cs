@@ -18,13 +18,16 @@ namespace Ballance2.Game.LevelEditor.EditorItems
 
     private void Awake() 
     {       
-      var paramsDict = (Dictionary<string, object>)Params;
-      if (paramsDict.TryGetValue("maxValue", out var v)) maxValue = (float)v;
-      else maxValue = float.MaxValue;
-      if (paramsDict.TryGetValue("maxValue", out v)) minValue = (float)v;
-      else minValue = float.MinValue;
-      if (paramsDict.TryGetValue("stepValue", out v)) stepValue = (float)v;
-      else stepValue = 0;
+      var paramsDict = (Dictionary<string, object>)Params; 
+      if (paramsDict != null)
+      {
+        if (paramsDict.TryGetValue("maxValue", out var v)) maxValue = (float)v;
+        else maxValue = float.MaxValue;
+        if (paramsDict.TryGetValue("maxValue", out v)) minValue = (float)v;
+        else minValue = float.MinValue;
+        if (paramsDict.TryGetValue("stepValue", out v)) stepValue = (float)v;
+        else stepValue = 0;
+      }
 
       Value.onSelect.AddListener((value) => {
         disableTimingUpdate = true;

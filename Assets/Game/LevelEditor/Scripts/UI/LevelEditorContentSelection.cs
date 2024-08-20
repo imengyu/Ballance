@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.UI;
@@ -36,11 +37,13 @@ namespace Ballance2.Game.LevelEditor
       AssetSelectList.SetItemCountFunc(() => currentShowAssets?.Count ?? 0);
       AssetSelectList.SetUpdateFunc((index, item) => {
         var data = currentShowAssets[index];
-        var ui = item.GetComponent<LevelEditorContentSelectionItem>();
+        var inner = item.transform.Find("InnerSelect").gameObject;
+        var ui = inner.GetComponent<LevelEditorContentSelectionItem>();
         ui.SetInfo(data);
         ui.onShowTip = ShowTip;
         ui.onHideTip = HideTip;
-        var ui2 = item.GetComponent<PrefabSpawnPoint>();
+        ui.onDelete = Delete;
+        var ui2 = inner.GetComponent<PrefabSpawnPoint>();
         ui2.onPrefabInstantiate = (go) => onPrefabInstantiate?.Invoke(data, go);
         ui2.onPrefabDrop = (go) => onPrefabDrop?.Invoke(data, go);
         ui2.onPrefabDragStart = () => onPrefabDragStart?.Invoke(data) ?? false;
@@ -48,6 +51,10 @@ namespace Ballance2.Game.LevelEditor
       });
     }
 
+    public void Delete(LevelDynamicModelAsset asset)
+    {
+      LevelEditorManager.Instance.LevelEditorUIControl.DeleteCustomModelAsset(asset);
+    }
     public void ShowTip(LevelDynamicModelAsset asset)
     {
       HoverTipImage.sprite = asset.PreviewImage;
@@ -70,6 +77,8 @@ namespace Ballance2.Game.LevelEditor
     public void Close()
     {
       gameObject.SetActive(false);
+      currentShowCategory = LevelDynamicModelCategory.UnSet;
+      currentShowCategoryData = null;
     }
     public void Search(string filter) 
     {
@@ -95,7 +104,7 @@ namespace Ballance2.Game.LevelEditor
       if (category == currentShowCategory)
         return;
       currentShowCategory = category;
-      if (LevelEditorManager.Instance.LevelAssetsGrouped.TryGetValue(category, out var v))
+      if (LevelEditorManager.Instance.LevelAssetsGrouped.TryGetValue(currentShowCategory, out var v))
         currentShowCategoryData = v;
       else
       {
@@ -105,20 +114,20 @@ namespace Ballance2.Game.LevelEditor
       }
 
       var tabs = new List<UITabSelect.TabItem>();
-      var firstItem = "";
 
       foreach (var _item in currentShowCategoryData.Keys)
       {
         var item = _item;
-        if (firstItem == "")
-          firstItem = _item;
-        tabs.Add(new UITabSelect.TabItem() {
+        tabs.Add(new UITabSelect.TabItem()
+        {
           Title = I18N.Tr($"core.editor.categoryNames.{item}", item),
           OnShowContent = () => LoadSubCategory(item),
         });
       }
 
       SubCategoryTab.SetTabs(tabs.ToArray());
+
+      var firstItem = currentShowCategoryData.Keys.Count > 0 ? currentShowCategoryData.Keys.First() : "";
       LoadSubCategory(firstItem);
     }
     public void LoadSubCategory(string subCategory) 
@@ -137,9 +146,15 @@ namespace Ballance2.Game.LevelEditor
         currentShowAssets = currentShowCategoryData[subCategory];
         EmptyTip.gameObject.SetActive(currentShowAssets.Count == 0);
       }
-      AssetSelectList.UpdateData(false);
-      GameManager.Instance.Delay(0.2f, () => AssetSelectList.horizontalNormalizedPosition = 0);
+      Refresh();
     }
-
+    public void Refresh()
+    {
+      if (gameObject.activeInHierarchy)
+      {
+        AssetSelectList.UpdateData(false);
+        GameManager.Instance.Delay(0.2f, () => AssetSelectList.horizontalNormalizedPosition = 0);
+      }
+    }
   }
 }

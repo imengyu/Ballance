@@ -198,13 +198,6 @@ namespace Ballance2.Game.LevelBuilder {
         //编辑器模式不需要销毁模型对象，只需要恢复状态即可
         foreach (var item in LevelCurrent.LevelData.LevelModels)
         {
-          //机关
-          if (item.ModulRef != null)
-          {
-            //设置所有机关显示占位符
-            item.SetModulPlaceholdeMode(true);
-          }
-
           switch (item.AssetRef.Category)
           {
             //路面相关
@@ -569,13 +562,6 @@ namespace Ballance2.Game.LevelBuilder {
       //加载路面、加载机关、加载特殊对象
       foreach (var item in LevelCurrent.LevelData.LevelModels)
       {
-        //机关
-        if (item.ModulRef != null)
-        {
-          //设置所有机关隐藏占位符
-          item.SetModulPlaceholdeMode(false);
-        }
-
         switch (item.AssetRef.Category)
         {
           //路面相关
@@ -1145,7 +1131,11 @@ namespace Ballance2.Game.LevelBuilder {
         body.Physicalize();
 
         if (!string.IsNullOrEmpty(physicsData.HitSound)) {
-          var hitSound = GameSoundManager.Instance.RegisterSoundPlayer(GameSoundType.Normal, physicsData.HitSound, false, true, $"Floor_{name}_HitSound");
+          var hitSound = GameSoundManager.Instance.RegisterSoundPlayer(
+            GameSoundType.Normal, 
+            physicsData.HitSound, false, true, 
+            $"Floor_{name}_HitSound", true
+          );
           
           body.EnableContractEventCallback();
           body.EnableCollisionEvent = true;

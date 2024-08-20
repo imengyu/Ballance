@@ -29,12 +29,14 @@ namespace Ballance2.Game.LevelEditor
     private MeshFilter meshFilter;
     private PreparedMeshGroup pMesh;
 
-    private void Awake() 
+    private void Awake()
     {
-      meshRenderer = this.GetOrAddComponent<MeshRenderer>();
-      meshFilter = this.GetOrAddComponent<MeshFilter>();
       if (!string.IsNullOrEmpty(FloorScheme))
+      {
+        meshRenderer = this.GetOrAddComponent<MeshRenderer>();
+        meshFilter = this.GetOrAddComponent<MeshFilter>();
         pMesh = LevelDynamicFloorBlockMaker.Instance.FloorSchemes[FloorScheme];
+      }
       UpdateShape();
     }
 

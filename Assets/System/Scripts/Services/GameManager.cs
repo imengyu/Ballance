@@ -15,6 +15,7 @@ using Ballance2.Package;
 using Ballance2.Res;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
+using HarmonyLib;
 using UnityEngine;
 
 /*
@@ -206,6 +207,12 @@ namespace Ballance2.Services
       //加载用户选择的模块
       if (sLoadUserPackages)
         yield return StartCoroutine(LoadUserPackages());
+
+#if !UNITY_EDITOR && !UNITY_IOS
+      //加载模块完成后，允许其他模块对游戏进行修改
+      var harmony = new Harmony("com.ballance2.patch");
+      harmony.PatchAll();
+#endif
 
       //全部加载完毕之后通知所有模块初始化
       GetSystemService<GamePackageManager>().NotifyAllPackageRun("*");
@@ -828,7 +835,7 @@ namespace Ballance2.Services
 
     #endregion
 
-    #endregion
+#endregion
 
     #region 退出和销毁
 

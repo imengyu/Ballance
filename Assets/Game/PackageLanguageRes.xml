@@ -233,6 +233,21 @@
           <Text name="TestFail">很不幸，你已经用完全部的生命</Text>
           <Text name="TestPass">恭喜，您已经过关</Text>
           <Text name="TestPaused"><![CDATA[ 游戏已暂停，按 <sprite=8> 继续 ]]></Text>
+          <Text name="LoadModelAssetFailed">加载模型资产失败：{0}</Text>
+          <Text name="InstanceModelFailed">实例化模型失败：{0}</Text>
+          <Text name="Saving">保存中, 请勿关闭电源...</Text>
+          <Text name="LoadLevelDataFailed">加载关卡存档文件失败，这可能是无法访问文件或者文件损坏</Text>
+          <Text name="AccessFileFailed">访问文件失败，可能是文件权限不足</Text>
+          <Text name="IOException">访问文件错误，{0}</Text>
+          <Text name="PathTooLongException">路径过长，建议不要将游戏放在过深的目录中。</Text>
+          <Text name="FileMissing">文件丢失</Text>
+          <Text name="UnknowException">发生了未知错误，{0}</Text>
+          <Text name="LevelAlreadyPacked">当前关卡无法编辑</Text>
+          <Text name="PassAndSubmit">确认发布吗？建议您自己测试一遍可以通关后再分享给其他玩家游玩</Text>
+          <Text name="ModelAssetMissing">这个模型所属的资产加载失败或者丢失，已经不能再使用了。您可以尝试重新导入同名资产。</Text>
+          <Text name="DuplicateImportAsset">您导入资产的名称 “{0}” 已经在当前关卡中有一个同名资产了，继续导入会覆盖原有资产，确认覆盖吗？</Text>
+          <Text name="DeleteImportAsset">您将要删除此资产，删除会导致引用此资产的模型实例不可再使用，确认吗？</Text>
+          <Text name="PackeLevelFailed">打包关卡失败</Text>
         </Group>
         <Text name="StatusText">{0}/{1} 对象/小节 选中 {2}</Text>
         <Text name="CreateNew">创建新关卡文件</Text>
@@ -247,6 +262,7 @@
           <Text name="Stopper">门挡板</Text>
           <Text name="Trafo">转换器</Text>
           <Text name="Sky">云层</Text>
+          <Text name="MyAsset">我的资产</Text>
         </Group>
         <Group name="internalmodul">
           <Text name="P_Ball_Paper.Name">纸质道具球</Text>
@@ -475,11 +491,42 @@
           <Text name="ChooseAModelFile">选择3D模型文件</Text>
           <Text name="MapMaterial">重定向内置材质</Text>
           <Text name="MapMaterialDesc">对于您的模型中的一些材质，如果与游戏内置的材质同名，则自动替换成游戏内更高清的内置材质</Text>
+          <Text name="MapMaterial">重定向内置材质</Text>
           <Text name="Scale">缩放比例</Text>
+          <Text name="ScaleDesc">设置模型的缩放比例，小于1则是缩小，等于1则保持原比例，大于1则是放大</Text>
           <Text name="ImportAs">这个模型是什么?</Text>
+          <Text name="ImportAsDesc">你需要定义这个模型用作什么功能，例如它是路面还是轨道？还是没有交互的装饰模型？</Text>
+          <Text name="ShowScaleRefBall">显示比例参考球</Text>
+          <Text name="ShowScaleRefBallDesc">在场景中显示一个木球，用于参考比例是否正确</Text>
           <Text name="LoadingModel">加载模型中 {0}</Text>
           <Text name="LoadingModelFailedTitle">加载模型失败</Text>
           <Text name="LoadingModelFailedDesc">这可能是您加载的模型无效或者文件无法读取，异常信息： {0}</Text>
+          <Text name="ModelStatus">已加载 {0} 模型 {1} 材质 {2} 贴图 \n大小：{3}</Text>
+          <Text name="ModelTooSmall">模型过小，可能是缩放比例不正确</Text>
+          <Text name="ModelTooLarge">模型过大，可能是缩放比例不正确</Text>
+          <Text name="ImportAssetName">导入新资产名称</Text>
+          <Text name="ImportAssetNameDesc">设置您的新模型在资产库中显示的名称</Text>
+          <Text name="ImportSource">这是您导入的自定义模型</Text>
+          <Text name="SavingAssets">保存资产中...</Text>
+          <Text name="SavingAssetsFailed">保存资产中失败：{0}</Text>
+          <Text name="CustomAsset">导入的</Text>
+          <Text name="ImportFailed">导入失败，可能是模型不支持，错误信息：{0}</Text>
+          <Text name="ImportSuccess">导入成功！资产可以在选择器分类下的“我的资产”分类中找到</Text>
+        </Group>
+        <Group name="share">
+          <Text name="Title">分享你的关卡到创意工坊让更多玩家游玩</Text>
+          <Text name="ChooseImage">选择一张截图作为物品封面，可以在测试玩模式中截图</Text>
+          <Text name="FileChangeBeforeUpload">分享之前，您可以使用其他软件修改封面图片</Text>
+          <Text name="Name">工坊名称</Text>
+          <Text name="NameDesc">填写您的物品在创意工坊中显示的名称</Text>
+          <Text name="Desc">工坊介绍内容</Text>
+          <Text name="DescDesc">填写您的物品在创意工坊中显示的介绍内容</Text>
+          <Text name="Change">更新内容</Text>
+          <Text name="ChangeDesc">填写本次更新了什么内容</Text>
+          <Text name="UploadLicenseArgeement">上传此内容，表明您同意</Text>
+          <Text name="SteamWorkshopLicense">模组商店服务条款</Text>
+          <Text name="Upload">上传</Text>
+          <Text name="PleaseEnterName">请填写物品名称哦</Text>
         </Group>
         <Text name="Loading">加载中</Text>
       </Group>

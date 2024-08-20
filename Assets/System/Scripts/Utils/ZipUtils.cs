@@ -26,6 +26,20 @@ namespace Ballance2.Utils
   public class ZipUtils
   {
     /// <summary>
+    /// 添加文件夹至 Zip 文件中
+    /// </summary>
+    /// <param name="zipStream">Zip 文件</param>
+    /// <param name="dir">要添加的文件夹路径</param>
+    /// <param name="patten">子文件搜索筛选，所有文件则可以是 *</param>
+    /// <param name="crc">Crc32校验</param>
+    public static void AddDirFileToZip(ZipOutputStream zipStream, string baseDir, string dir, string patten, ref Crc32 crc)
+    {
+      var dirinfo = new DirectoryInfo(dir);
+      var dirs = dirinfo.GetFiles(patten, SearchOption.TopDirectoryOnly);
+      foreach(var file in dirs)
+        AddFileToZip(zipStream, file.FullName, baseDir.Length, ref crc);
+    }
+    /// <summary>
     /// 添加文件至 Zip 文件中
     /// </summary>
     /// <param name="zipStream">Zip 文件</param>
@@ -155,6 +169,34 @@ namespace Ballance2.Utils
         else break;
       }
       return ms;
+    }
+
+    /// <summary>
+    /// 读取ZIP文件当前文件为字符串返回
+    /// </summary>
+    /// <param name="zip"></param>
+    /// <param name="theEntry"></param>
+    /// <returns></returns>
+    public static async Task<string> LoadStringInZip(ZipInputStream zip, ZipEntry theEntry)
+    {
+      MemoryStream ms = await ZipUtils.ReadZipFileToMemoryAsync(zip);
+      string content = "";
+
+      try
+      {
+        content = StringUtils.GetUtf8Bytes(StringUtils.FixUtf8BOM(ms.ToArray()));
+      }
+      catch (Exception e)
+      {
+        throw e;
+      }
+      finally
+      {
+        ms.Close();
+        ms.Dispose();
+      }
+
+      return content;
     }
   }
 }

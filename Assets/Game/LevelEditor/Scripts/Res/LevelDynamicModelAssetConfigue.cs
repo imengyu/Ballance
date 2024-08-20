@@ -170,6 +170,19 @@ namespace Ballance2.Game.LevelEditor
           OnGetValue = () => modelInstance.InstanceHost.transform.localScale,
           OnValueChanged = (v) => modelInstance.InstanceHost.transform.localScale = (Vector3)v,
         },
+        new LevelDynamicModelAssetConfigueItem() {
+          Name = "I18N:core.editor.messages.ModelAssetMissing",
+          Key = "ErrorTip",
+          Type = "Tip",
+          Group = "Basic",
+          EditorParams = new Dictionary<string, object>()
+          {
+            { "type", LevelEditorConfirmIcon.Error },
+          },
+          NoIntitalUpdate = true,
+          NoSaveToConfigues = true,
+          OnGetVisible = () => modelInstance.IsError,
+        },
       };
       //小节编辑
       if (modulConfig.NeedActiveSector)
