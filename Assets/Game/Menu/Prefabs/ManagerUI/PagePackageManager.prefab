@@ -626,7 +626,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsPackageTilte
+      value: core.ui.Settings.Menu.PackageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -860,7 +860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerEnableAll
+      value: core.ui.PackageManager.EnableAll
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: DefaultString
@@ -872,15 +872,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerEnableAll
+      value: core.ui.PackageManager.EnableAll
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerEnableAll
+      value: core.ui.PackageManager.EnableAll
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerEnableAll
+      value: core.ui.PackageManager.EnableAll
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -917,7 +917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1333428224205139028, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerSave
+      value: core.ui.PackageManager.Save
       objectReference: {fileID: 0}
     - target: {fileID: 1333428224205139028, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: DefaultString
@@ -933,15 +933,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerSave
+      value: core.ui.PackageManager.Save
       objectReference: {fileID: 0}
     - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerSave
+      value: core.ui.PackageManager.Save
       objectReference: {fileID: 0}
     - target: {fileID: 2467975609913627885, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerSave
+      value: core.ui.PackageManager.Save
       objectReference: {fileID: 0}
     - target: {fileID: 4738103559299698205, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -1074,7 +1074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1333428224205139028, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerGiveUpSave
+      value: core.ui.PackageManager.GiveUpSave
       objectReference: {fileID: 0}
     - target: {fileID: 1333428224205139028, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: DefaultString
@@ -1166,7 +1166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -337
+      value: -885.42
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1441,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerDisableAll
+      value: core.ui.PackageManager.DisableAll
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: DefaultString
@@ -1453,15 +1453,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerDisableAll
+      value: core.ui.PackageManager.DisableAll
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerDisableAll
+      value: core.ui.PackageManager.DisableAll
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerDisableAll
+      value: core.ui.PackageManager.DisableAll
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -6,6 +6,7 @@ using Ballance2.Base;
 using Ballance2.Game.GamePlay;
 using Ballance2.Game.Utils;
 using Ballance2.Menu;
+using Ballance2.Menu.LevelManager;
 using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
@@ -76,8 +77,18 @@ namespace Ballance2.Game.LevelEditor
     /// 初始化
     /// </summary>
     /// <param name="levelName"></param>
-    public void Init(string levelName)
+    public void Init(LevelRegistedItem level)
     {
+      if (level != null && level.Type != LevelRegistedType.Mine)
+      {
+        LevelEditorUIControl.Alert("", "I18N:core.editor.messages.CantEditPackedLevel", LevelEditorConfirmIcon.Error, onConfirm: () =>
+        {
+          Quit();
+        });
+        return;
+      }
+
+      var levelName = level == null ? "" : Path.GetFileNameWithoutExtension(((LevelRegistedLocallItem)level).path);
       Log.D(TAG, $"Entry with {levelName}");
 
       if (isFirstInit)
@@ -133,12 +144,7 @@ namespace Ballance2.Game.LevelEditor
     /// </summary>
     public void Quit() {
       GameUIManager.Instance.MaskBlackSet(true);
-      UnloadLevel(() => {
-        LevelEditorCamera.gameObject.SetActive(false);
-        GameManager.Instance.SetGameBaseCameraVisible(true);
-        //通知回到menulevel
-        GameManager.Instance.RequestEnterLogicScense("MenuLevel");
-      });
+      UnloadLevel(QuitToMenu);
     }
     /// <summary>
     /// 保存关卡
@@ -147,6 +153,13 @@ namespace Ballance2.Game.LevelEditor
       StartCoroutine(_Save(LevelCurrent));
     }
 
+    private void QuitToMenu()
+    {
+      LevelEditorCamera.gameObject.SetActive(false);
+      GameManager.Instance.SetGameBaseCameraVisible(true);
+      //通知回到menulevel
+      GameManager.Instance.RequestEnterLogicScense("MenuLevel");
+    }
     private void ReportCreateAssetFailed(string err)
     {
       LevelEditorUIControl.Alert("", err, LevelEditorConfirmIcon.Error);
@@ -177,6 +190,9 @@ namespace Ballance2.Game.LevelEditor
           });
         else
           NewLevel(finalName);
+      }, onCancel: () =>
+      {
+        QuitToMenu();
       });
     }
 
@@ -467,6 +483,32 @@ namespace Ballance2.Game.LevelEditor
     {
       LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.Saving");
 
+      //收集使用了的第三方模组，写入关卡信息中
+      var packs = new HashSet<string>();
+      foreach (var model in level.LevelData.LevelModels)
+      {
+        var pack = model.Asset.Split(':')[0];
+        if (pack != "core" && pack != "levelasset" && !packs.Contains(pack))
+          packs.Add(pack);
+      }
+      var pm = GameManager.GetSystemService<GamePackageManager>();
+      foreach (var pack in packs)
+      {
+        var p = pm.FindPackage(pack);
+        if (p != null)
+        {
+          var define = level.LevelInfo.requiredPackages.Find(d => d.name == pack);
+          if (define == null)
+          {
+            define = new LevelBuilder.GameLevelDependencies();
+            level.LevelInfo.requiredPackages.Add(define);
+          }
+          define.name = pack;
+          define.minVersion = p.PackageVersion;
+        }
+      }
+
+      //保存
       var task = level.Save();
       yield return task.AsIEnumerator();
 
@@ -497,7 +539,8 @@ namespace Ballance2.Game.LevelEditor
         level,
         ScenseRoot.transform, 
         LevelAssets,
-        (asset) => AddAssetToList(asset)
+        (asset) => AddAssetToList(asset),
+        true
       ));
       if (!result.Success)
       {
@@ -548,6 +591,8 @@ namespace Ballance2.Game.LevelEditor
 
       //天空盒子和灯光颜色重置
       GamePlayManager.Instance.CreateSkyAndLight("A", null, Color.white);
+
+      LevelDynamicLoader.Instance.DestroyAllTempDynamicAsset();
 
       finish.Invoke();
       yield break;
@@ -611,10 +656,12 @@ namespace Ballance2.Game.LevelEditor
       if (!model.AssetRef.Loaded && model.AssetRef.SourceType == LevelDynamicModelSource.Embed)
       {
         var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
-        yield return StartCoroutine(LevelDynamicLoader.Instance.LoadAsset(result, model.AssetRef));
+        yield return StartCoroutine(LevelDynamicLoader.Instance.LoadAsset(result, LevelCurrent, model.AssetRef));
         if (!result.Success)
           ReportCreateAssetFailed(I18N.TrF("core.editor.messages.LoadModelAssetFailed", "", result.Error));
       }
+
+      LevelCurrent.LevelData.LevelModels.Add(model);
 
       try
       {
@@ -623,10 +670,10 @@ namespace Ballance2.Game.LevelEditor
       catch (Exception e)
       {
         ReportCreateAssetFailed(I18N.TrF("core.editor.messages.InstanceModelFailed", "", e.ToString()));
+        LevelCurrent.LevelData.LevelModels.Remove(model);
+
         yield break;
       }
-
-      LevelCurrent.LevelData.LevelModels.Add(model);
 
       //创建子对象
       foreach (var _subAssetRef in model.AssetRef.SubModelRefs)
@@ -636,7 +683,7 @@ namespace Ballance2.Game.LevelEditor
           if (!subAsset.Loaded && subAsset.SourceType == LevelDynamicModelSource.Embed)
           {
             var result = new LevelDynamicLoader.LevelDynamicLoaderResult();
-            yield return StartCoroutine(LevelDynamicLoader.Instance.LoadAsset(result, subAsset));
+            yield return StartCoroutine(LevelDynamicLoader.Instance.LoadAsset(result, LevelCurrent, subAsset));
             if (!result.Success)
               ReportCreateAssetFailed(I18N.TrF("core.editor.messages.LoadModelAssetFailed", "", result.Error));
           }
@@ -796,29 +843,11 @@ namespace Ballance2.Game.LevelEditor
     }
     private void LoadAllAssets()
     {
-      var internalAssets = LevelInternalAssets.Instance.LoadAll();
-      foreach (var item in internalAssets)
+      LevelDynamicLoader.Instance.LoadAllInternalAsset((item) =>
+      {
         if (!item.HiddenInContentSelector)
           AddAssetToList(item);
-      var packages = GamePackageManager.Instance.GetLoadedPackages();
-      if (packages != null)
-      {
-        foreach (var package in packages)
-        {
-          try {
-            var assets = package.PackageEntry.OnLevelEditorLoadAssets?.Invoke(package, this);
-            if (assets != null)
-            {
-              foreach (var item in assets)
-                AddAssetToList(new LevelDynamicModelAsset(item, package));
-            }
-          } 
-          catch (Exception e)
-          {
-            Log.E("LevelEditorManager.LoadAllAssets", "Failed load assets for mod " + package.PackageName + " :" + e.ToString());
-          }
-        }
-      }
+      });
     }
     private void RefreshAllAssetsList()
     {

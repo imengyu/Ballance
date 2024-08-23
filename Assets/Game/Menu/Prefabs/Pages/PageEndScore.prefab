@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.WinUIExtraLife
+  ResourceKey: core.ui.GameUI.WinUI.ExtraLife
   DefaultString: "\u989D\u5916\u7684\u751F\u547D"
   ControlText: {fileID: 7935721504349557137}
   localizedText: 
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.WinUILevelBouns
+  ResourceKey: core.ui.GameUI.WinUI.LevelBouns
   DefaultString: "\u5173\u5361\u5206\u6570"
   ControlText: {fileID: 2728557767570046681}
   localizedText: 
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.WinUITimePoints
+  ResourceKey: core.ui.GameUI.WinUI.TimePoints
   DefaultString: "\u5269\u4F59\u65F6\u95F4\u70B9"
   ControlText: {fileID: 8230276187218836479}
   localizedText: 
@@ -1346,7 +1346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.WinUIScore
+  ResourceKey: core.ui.GameUI.WinUI.Score
   DefaultString: "\u5206\u6570"
   ControlText: {fileID: 7867368278451201641}
   localizedText: 

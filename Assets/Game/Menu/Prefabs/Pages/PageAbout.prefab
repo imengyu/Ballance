@@ -902,7 +902,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.AbouOpenSourceLicense
+      value: core.ui.Menu.About.AbouOpenSourceLicense
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -914,7 +914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.AbouOpenSourceLicense
+      value: core.ui.Menu.About.AbouOpenSourceLicense
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
@@ -1256,7 +1256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.AboutProject
+      value: core.ui.Menu.About.AboutProject
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -1268,7 +1268,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.AboutProject
+      value: core.ui.Menu.About.AboutProject
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
@@ -1719,7 +1719,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.AboutOldCreators
+      value: core.ui.Menu.About.AboutOldCreators
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -1727,15 +1727,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: core.ui.AboutOldCreators
+      value: core.ui.Menu.About.AboutOldCreators
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.AboutOldCreators
+      value: core.ui.Menu.About.AboutOldCreators
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.AboutOldCreators
+      value: core.ui.Menu.About.AboutOldCreators
       objectReference: {fileID: 0}
     - target: {fileID: 5705591227440305647, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_text

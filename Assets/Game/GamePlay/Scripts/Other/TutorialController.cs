@@ -482,14 +482,14 @@ namespace Ballance2.Game.GamePlay.Other
       if (_TutorialUI.gameObject.activeSelf) {
         GameUIManager.UIFadeManager.AddFadeOut(_TutorialUIText, 0.3f, false);
         GameTimer.Delay(0.350f, () => {
-          _TutorialUIText.text = I18N.Tr("core.ui.TutorialText" + _TutorialStep);
+          _TutorialUIText.text = I18N.Tr("core.ui.GameUI.TutorialText." + _TutorialStep);
           _TutorialUIText.gameObject.SetActive(true);
           GameUIManager.UIFadeManager.AddFadeIn(_TutorialUIText, 0.3f);
         });
       }
       else
       {
-        _TutorialUIText.text = I18N.Tr("core.ui.TutorialText" + _TutorialStep);
+        _TutorialUIText.text = I18N.Tr("core.ui.GameUI.TutorialText." + _TutorialStep);
         _TutorialUI.gameObject.SetActive(true);
         _TutorialUIText.gameObject.SetActive(true);
         GameUIManager.UIFadeManager.AddFadeIn(_TutorialUIText, 0.5f);

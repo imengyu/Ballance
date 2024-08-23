@@ -1,19 +1,50 @@
 {
+  "LevelObjectId": 3,
   "LevelAssets": [],
-  "LevelModels": [
+  "LevelModels": [ 
     {
-      "Name": "PS_FourFlames",
-      "Position": { "x": 0, "y": 0, "z": 0 },
-      "EulerAngles": { "x": -90, "y": 0, "z": 0 },
-      "Scale": { "x": 1, "y": 1, "z": 1 },
-      "Asset": "core:PS_FourFlames"
+      "Name": "PE_Balloon_01",
+      "Position": { "x": 29.74061, "y": 0.4622735, "z": 0.7997627 },
+      "EulerAngles": { "x": 0.0, "y": 180.0, "z": 0.0 },
+      "Scale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+      "Asset": "core:PE_Balloon",
+      "ActiveSectors": [],
+      "Configues": { "BallonSound": true },
+      "Uid": 1,
+      "ParentUid": 0
     },
     {
-      "Name": "PE_Balloon",
-      "Position": { "x": -32.0, "y": 0, "z": 0 },
-      "EulerAngles": { "x": -90, "y": 0, "z": 0 },
-      "Scale": { "x": 1, "y": 1, "z": 1 },
-      "Asset": "core:PE_Balloon"
+      "Name": "PS_FourFlames_01",
+      "Position": { "x": 0.0177675448, "y": -3.81469727e-6, "z": 0.3597207 },
+      "EulerAngles": { "x": 0.0, "y": 0.0, "z": 0.0 },
+      "Scale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+      "Asset": "core:PS_FourFlames",
+      "ActiveSectors": [1],
+      "Configues": { "WithFloor": true },
+      "Uid": 2,
+      "ParentUid": 0
+    },
+    {
+      "Name": "Floor_Block_Start_01",
+      "Position": { "x": 0.0177675448, "y": -1.50000381, "z": 0.3597207 },
+      "EulerAngles": { "x": 0.0, "y": 0.0, "z": 0.0 },
+      "Scale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+      "Asset": "core:Floor_Block_Start",
+      "ActiveSectors": [],
+      "Configues": {},
+      "Uid": 3,
+      "ParentUid": 2
+    },
+    {
+      "Name": "PR_Resetpoint_01",
+      "Position": { "x": 0.0177675448, "y": 2.49999619, "z": 0.3597207 },
+      "EulerAngles": { "x": 0.0, "y": 180.0, "z": 0.0 },
+      "Scale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+      "Asset": "core:PR_Resetpoint",
+      "ActiveSectors": [],
+      "Configues": {},
+      "Uid": 4,
+      "ParentUid": 2
     }
   ]
 }

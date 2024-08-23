@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
 using Ballance2.Game.LevelBuilder;
 using Ballance2.Game.LevelEditor.Exceptions;
-using Ballance2.Services.Debug;
 using Ballance2.Utils;
-using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -56,7 +53,7 @@ namespace Ballance2.Game.LevelEditor
 
     public LevelDynamicAssembe(string path)
     {
-      LevelDirPath = path;  
+      LevelDirPath = path;
     }
 
     public async Task New()
@@ -78,9 +75,9 @@ namespace Ballance2.Game.LevelEditor
           ZipEntry theEntry;
           while ((theEntry = zip.GetNextEntry()) != null)
           {
-            if (theEntry.Name == "/assets.json" || theEntry.Name == "assets.json")
+            if (ZipUtils.MatchRootName("assets.json", theEntry))
               LevelData = JsonConvert.DeserializeObject<LevelDynamicAssetData>(await ZipUtils.LoadStringInZip(zip, theEntry));
-            else if (theEntry.Name == "/level.json" || theEntry.Name == "level.json")
+            else if (ZipUtils.MatchRootName("Level.json", theEntry))
               LevelInfo = JsonConvert.DeserializeObject<LevelJson>(await ZipUtils.LoadStringInZip(zip, theEntry));
           }
 
@@ -114,7 +111,8 @@ namespace Ballance2.Game.LevelEditor
 
         foreach (var item in LevelData.LevelModels)
         {
-          item.ConfigueRef.OnSave(item);
+          if (item.ConfigueRef != null)
+            item.ConfigueRef.OnSave(item);
           item.Save();
         }
 

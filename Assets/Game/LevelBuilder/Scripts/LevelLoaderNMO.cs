@@ -103,7 +103,7 @@ namespace Ballance2.Game.LevelBuilder
 
       if (result != null) {
         ((LevelNMOAssets)level).result = result;
-        callback(result.mainObj, CreateJsonFromNMO(((LevelNMOAssets)level)), level);
+        callback(result.mainObj, CreateJsonFromNMO(((LevelNMOAssets)level)), level, null);
       }
       yield break;
     }

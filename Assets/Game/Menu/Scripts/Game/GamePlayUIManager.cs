@@ -38,19 +38,19 @@ namespace Ballance2.Menu
 
       MessageCenter.SubscribeEvent("BtnGameHomeClick", () => GamePlayManager.Instance.QuitLevel());
       MessageCenter.SubscribeEvent("BtnNextLevellick", () => GamePlayManager.Instance.NextLevel());
-      MessageCenter.SubscribeEvent("BtnGameRestartClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.MainMenuRestartLevelTitle", () => {
+      MessageCenter.SubscribeEvent("BtnGameRestartClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.GameUI.RestartLevelTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.RestartLevel();
       }, okText: "I18N:core.ui.RestartLevel"));
-      MessageCenter.SubscribeEvent("BtnGameWinRestartClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.MainMenuRestartLevelTitle", () => {
+      MessageCenter.SubscribeEvent("BtnGameWinRestartClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.GameUI.RestartLevelTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.RestartLevel();
       }, okText: "I18N:core.ui.RestartLevel"));
-      MessageCenter.SubscribeEvent("BtnGameQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.QuitToMainMenuTitle", () => {
+      MessageCenter.SubscribeEvent("BtnGameQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.GameUI.QuitToMainMenuTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.QuitLevel();
       }));
-      MessageCenter.SubscribeEvent("BtnGamePreviewQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.QuitToMainMenuTitle", () => {
+      MessageCenter.SubscribeEvent("BtnGamePreviewQuitClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.GameUI.QuitToMainMenuTitle", () => {
         GameUIManager.HideCurrentPage();
         GamePlayManager.Instance.QuitLevel();
       }));
@@ -83,11 +83,11 @@ namespace Ballance2.Menu
         }
       });
 
-      KeypadUIManager.AddKeypad("BaseCenter", package.GetPrefabAsset("KeypadCenter.prefab"), package.GetSpriteAsset("keypad_c"), I18N.Tr("core.ui.SettingsControlKeypadBaseCenter"));
-      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l"), I18N.Tr("core.ui.SettingsControlKeypadBaseLeft"));
-      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r"), I18N.Tr("core.ui.SettingsControlKeypadBaseRight"));
-      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyLeft"));
-      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r"), I18N.Tr("core.ui.SettingsControlKeypadBaseJoyRight"));
+      KeypadUIManager.AddKeypad("BaseCenter", package.GetPrefabAsset("KeypadCenter.prefab"), package.GetSpriteAsset("keypad_c"), I18N.Tr("core.ui.Settings.ControlKeypadBaseCenter"));
+      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l"), I18N.Tr("core.ui.Settings.ControlKeypadBaseLeft"));
+      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r"), I18N.Tr("core.ui.Settings.ControlKeypadBaseRight"));
+      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l"), I18N.Tr("core.ui.Settings.ControlKeypadBaseJoyLeft"));
+      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r"), I18N.Tr("core.ui.Settings.ControlKeypadBaseJoyRight"));
     }
   }
 }

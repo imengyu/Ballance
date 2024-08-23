@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.PackageManagerPackageDependsTitle
+  ResourceKey: core.ui.PackageManager.PackageDependsTitle
   DefaultString: "\u6A21\u7EC4\u4F9D\u8D56\u7684\u6A21\u7EC4"
   ControlText: {fileID: 3924073083938963188}
   localizedText: 
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.PackageManagerPackageInfoTitle
+  ResourceKey: core.ui.PackageManager.PackageInfoTitle
   DefaultString: "\u6A21\u7EC4\u4FE1\u606F"
   ControlText: {fileID: 7194138747122779905}
   localizedText: 
@@ -731,7 +731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.PackageManagerLinkVisitSite
+  ResourceKey: core.ui.PackageManager.LinkVisitSite
   DefaultString: "\u8BBF\u95EE\u9879\u76EE\u4E3B\u9875"
   ControlText: {fileID: 5318241808998196599}
   localizedText: 
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.PackageManagerLinkVisiAuthor
+  ResourceKey: core.ui.PackageManager.LinkVisiAuthor
   DefaultString: "\u8BBF\u95EE\u4F5C\u8005\u4E3B\u9875"
   ControlText: {fileID: 5858869019425148502}
   localizedText: 
@@ -1391,7 +1391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.PackageManagerLinkVisitDoc
+  ResourceKey: core.ui.PackageManager.LinkVisitDoc
   DefaultString: "\u8BBF\u95EE\u6587\u6863"
   ControlText: {fileID: 8920777096323754450}
   localizedText: 
@@ -1888,7 +1888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.PackageManagerPackageIntroductionTitle
+  ResourceKey: core.ui.PackageManager.PackageIntroductionTitle
   DefaultString: "\u6A21\u7EC4\u7B80\u4ECB"
   ControlText: {fileID: 4424897895521149469}
   localizedText: 
@@ -2401,7 +2401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerPackageAuthor
+      value: core.ui.PackageManager.PackageAuthor
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: DefaultString
@@ -2579,7 +2579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerPackageInstallTime
+      value: core.ui.PackageManager.PackageInstallTime
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: DefaultString
@@ -2761,7 +2761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -214.52292
+      value: -196.72533
       objectReference: {fileID: 0}
     - target: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Horizontal
@@ -2897,7 +2897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Size
-      value: 0.7455063
+      value: 0.67897147
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Value
@@ -3155,7 +3155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerPackageName
+      value: core.ui.PackageManager.PackageName
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: DefaultString
@@ -3329,7 +3329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerPackageVersion
+      value: core.ui.PackageManager.PackageVersion
       objectReference: {fileID: 0}
     - target: {fileID: 4693319988094808606, guid: 60482dae29f31784dabab5006d3a7acd, type: 3}
       propertyPath: DefaultString

@@ -16,6 +16,10 @@ using Ballance2.Game.Utils;
 using Ballance2.Utils;
 using TMPro;
 using Ballance2.Game.LevelEditor;
+using Ballance2.Menu.LevelManager;
+using static Ballance2.Game.LevelEditor.LevelDynamicLoader;
+using System.IO;
+using System;
 
 namespace Ballance2.Game.LevelBuilder {
 
@@ -85,7 +89,6 @@ namespace Ballance2.Game.LevelBuilder {
           LevelBuilderUITextErrorContent = LevelBuilderUI.Find("PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent").GetComponent<TMP_Text>();
           LevelBuilderUIPanelFailed = LevelBuilderUI.Find("PanelFailed").gameObject;
           LevelBuilderUIButtonBack = LevelBuilderUI.Find("PanelFailed/ButtonBack").GetComponent<Button>();
-          LevelBuilderUIButtonSubmitBug = LevelBuilderUI.Find("PanelFailed/ButtonSubmitBug").GetComponent<Button>();
           LevelBuilderUIButtonCopyErrInfo = LevelBuilderUI.Find("PanelFailed/ButtonCopyErrInfo").GetComponent<Button>();
           LevelBuilderUIPanelFailed.gameObject.SetActive(false);
           LevelBuilderUI.gameObject.SetActive(false);
@@ -95,9 +98,6 @@ namespace Ballance2.Game.LevelBuilder {
             GameManager.Instance.SetGameBaseCameraVisible(true);
             LevelBuilderUI.gameObject.SetActive(false);
             UnLoadLevel(null);
-          });
-          LevelBuilderUIButtonSubmitBug.onClick.AddListener(() => {
-            Application.OpenURL(ConstLinks.BugReportURL) ;
           });
           LevelBuilderUIButtonCopyErrInfo.onClick.AddListener(() => { 
             GUIUtility.systemCopyBuffer = LevelBuilderCurrentError;
@@ -112,7 +112,7 @@ namespace Ballance2.Game.LevelBuilder {
     }
     protected override void OnDestroy() {
       if (LevelBuilderUI != null) {
-        UnityEngine.Object.Destroy(LevelBuilderUI.gameObject);
+        Destroy(LevelBuilderUI.gameObject);
         LevelBuilderUI = null;
       }
       LevelInternal.UnInitBulitInModuls();
@@ -162,6 +162,14 @@ namespace Ballance2.Game.LevelBuilder {
     /// 获取是不是编辑器模式
     /// </summary>
     public bool IsEditorMode { get; private set; }
+    /// <summary>
+    /// 获取是不是动态关卡
+    /// </summary>
+    public bool IsDynamicLevel { get; private set; }
+    /// <summary>
+    /// 获取是不是动态关卡
+    /// </summary>
+    public LevelDynamicAssembe DynamicLevel { get; private set; }
 
     /// <summary>
     /// 开始卸载关卡
@@ -174,7 +182,11 @@ namespace Ballance2.Game.LevelBuilder {
       }
 
       IsLoading = true;
-      StartCoroutine(UnLoadLevelInternal(endCallback));
+
+      if (IsDynamicLevel)
+        StartCoroutine(UnLoadDynamicLevelInternal(DynamicLevel, true, endCallback));
+      else
+        StartCoroutine(UnLoadLevelInternal(endCallback));
     }
 
     internal IEnumerator UnLoadDynamicLevelInternal(LevelDynamicAssembe LevelCurrent, bool editor, GameManager.VoidDelegate endCallback) {
@@ -225,7 +237,6 @@ namespace Ballance2.Game.LevelBuilder {
             }
           }
         }
-      
       }
       else
       {
@@ -239,6 +250,15 @@ namespace Ballance2.Game.LevelBuilder {
 
       Log.D(TAG, "Unload level finish");
 
+      if (DynamicLevel == LevelCurrent)
+      {
+        DynamicLevel = null;
+        IsDynamicLevel = false;
+      }
+
+      LevelDynamicLoader.Instance.DestroyAllTempDynamicAsset();
+
+      CurrentLevelAsset = null;
       IsLoading = false;
 
       if (endCallback != null)
@@ -271,9 +291,6 @@ namespace Ballance2.Game.LevelBuilder {
 
       //删除资源连接器
       GameLevelResourcesLinker.allRes.Clear();
-
-      //删除关卡元件
-      UnityEngine.Object.Destroy(CurrentLevelObject);
 
       //清空变量
       UnLoadClearAllVars();
@@ -315,7 +332,11 @@ namespace Ballance2.Game.LevelBuilder {
     }
     private void UnLoadClearAllVars()
     {
-      CurrentLevelObject = null;
+      if (CurrentLevelObject != null)
+      {
+        Destroy(CurrentLevelObject);
+        CurrentLevelObject = null;
+      }
       CurrentLevelJson = null;
       CurrentLevelModuls.Clear();
       CurrentLevelFloors.Clear();
@@ -329,12 +350,12 @@ namespace Ballance2.Game.LevelBuilder {
           yield return new WaitForSeconds(0.01f);
           tickCount = 0;
         }
-        UnityEngine.Object.Destroy(item.Value.go);
+        Destroy(item.Value.go);
         tickCount = tickCount + 1;
       }
       //删除路面
       foreach (var floor in CurrentLevelFloors) {
-        UnityEngine.Object.Destroy(floor);
+        Destroy(floor);
       }
       CurrentLevelFloors.Clear();
 
@@ -345,10 +366,9 @@ namespace Ballance2.Game.LevelBuilder {
         GamePlayManager.Instance.HideSkyAndLight();
       
       if (CurrentLevelSkyLayer != null) {
-        UnityEngine.Object.Destroy(CurrentLevelSkyLayer);
+        Destroy(CurrentLevelSkyLayer);
         CurrentLevelSkyLayer = null;
       }
-
     }
     private void UnLoadDestroyInternal()
     {
@@ -363,7 +383,7 @@ namespace Ballance2.Game.LevelBuilder {
     /// </summary>
     /// <param name="name">关卡文件名</param>
     /// <param name="preview">是否是预览模式</param>
-    public void LoadLevel(string name, bool preview = false) {
+    public void LoadLevel(LevelRegistedItem level, bool preview = false) {
       if (IsLoading) {
         Log.E(TAG, "Level is loading! ");
         return;
@@ -390,9 +410,8 @@ namespace Ballance2.Game.LevelBuilder {
       //发送开始事件
       GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_BEFORE_START);
 
-      LevelLoader.LoadLevel(name, (mainObj, jsonString, level) => {
+      LevelLoader.LoadLevel(level, (mainObj, jsonString, level, isDynamic) => {
         CurrentLevelAsset = level;
-
         try {
           CurrentLevelJson = JsonConvert.DeserializeObject<LevelJson>(jsonString);
         }catch (System.Exception e) {
@@ -421,21 +440,92 @@ namespace Ballance2.Game.LevelBuilder {
 
         Log.D(TAG, "Load level prefab");
 
-        //载入Prefab
-        CurrentLevelObject = mainObj; 
-        mainObj.transform.SetParent(gameObject.transform);
-        mainObj.name = "GameLevelMain";
-        GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY, CurrentLevelObject);
+        if (isDynamic != null)
+        {
+          IsDynamicLevel = true;
+          CurrentLevelObject = CloneUtils.CreateEmptyObjectWithParent(transform, "GameLevelMain");
+          StartCoroutine(LoadDynamicLevel(isDynamic));
+        }
+        else
+        {
+          IsDynamicLevel = false;
+          //载入Prefab
+          CurrentLevelObject = CloneUtils.CloneNewObjectWithParent(mainObj, transform, "GameLevelMain");
+          GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY, CurrentLevelObject);
 
-        //加载
-        StartCoroutine(LoadLevelInternal());
+          //加载
+          StartCoroutine(LoadLevelInternal());
+        }
       }, 
       (code, err) => {
         UpdateErrStatus(true, code + ": " + err);
       });
     }
-    
-    internal IEnumerator LoadDynamicLevelInternal(LevelDynamicAssembe LevelCurrent, bool editor) 
+
+    private IEnumerator LoadDynamicLevel(string path)
+    {
+      Log.D(TAG, $"Start load {path}");
+
+      var LevelAssets = new Dictionary<string, LevelDynamicModelAsset>();
+      Action<LevelDynamicModelAsset> AddToLevelAssets = (asset) =>
+      {
+        if (LevelAssets.ContainsKey(asset.SourcePath))
+          LevelAssets[asset.SourcePath] = asset;
+        else
+          LevelAssets.Add(asset.SourcePath, asset);
+      };
+
+      UpdateLoadProgress(0.2f);
+      yield return new WaitForSeconds(0.5f);
+
+      Log.D(TAG, $"Start load internal asset");
+
+      //动态关卡资源加载
+      LevelDynamicLoader.Instance.LoadAllInternalAsset(AddToLevelAssets);
+
+      UpdateLoadProgress(0.3f);
+      yield return new WaitForSeconds(0.5f);
+
+      Log.D(TAG, $"Start load dynamic level base");
+
+      //动态关卡特殊加载
+      var result = new LevelDynamicLoaderResult();
+      DynamicLevel = new LevelDynamicAssembe(path);
+      yield return StartCoroutine(LevelDynamicLoader.Instance.LoadLevel(
+        result,
+        DynamicLevel,
+        CurrentLevelObject.transform,
+        LevelAssets,
+        AddToLevelAssets,
+        false
+      ));
+      if (!result.Success)
+      {
+        UpdateErrStatus(true, result.Error);
+        yield break;
+      }
+
+      //SkyLayer特殊处理
+      var Sky = DynamicLevel.LevelData.LevelModels.Find(p => p.AssetRef.ObjTarget == "SkyVoterx" || p.AssetRef.ObjTarget == "SkyLayer");
+      if (Sky != null)
+        CurrentLevelSkyLayer = Sky.InstanceRef;
+
+      var level = DynamicLevel.LevelInfo.level;
+
+      UpdateLoadProgress(0.5f);
+      yield return new WaitForSeconds(0.5f);
+
+      GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_MAIN_PREFAB_STANDBY, CurrentLevelObject);
+
+      yield return StartCoroutine(LoadDynamicLevelInternal(DynamicLevel, false, () =>
+      {
+        Log.D(TAG, $"Start load sky");
+        LoadSkyAndLight(level);
+      }));
+
+      UpdateLoadProgress(1);
+    }
+    internal IEnumerator LoadDynamicLevelInternal(LevelDynamicAssembe LevelCurrent, bool editor, Action almostEnd = null) 
     {
       Log.D(TAG, "Start load DynamicLevel " + LevelCurrent.LevelInfo.name);
       //发送开始事件
@@ -447,7 +537,6 @@ namespace Ballance2.Game.LevelBuilder {
       IsLoading = true;
 
       CurrentLevelModuls.Clear();
-      CurrentLevelSkyLayer = null;
       CurrentLevelFloors.Clear();
 
       //加载关卡基础数据
@@ -461,12 +550,12 @@ namespace Ballance2.Game.LevelBuilder {
 
       Log.D(TAG, "Pre load");
 
-      UpdateLoadProgress(0.1f);
+      UpdateLoadProgress(0.6f);
 
       //调用自定义加载步骤 pre
       yield return StartCoroutine(LoadLevelStep(level, "pre"));
 
-      UpdateLoadProgress(0.2f);
+      UpdateLoadProgress(0.65f);
 
       Log.D(TAG, "Load level data");
 
@@ -494,7 +583,7 @@ namespace Ballance2.Game.LevelBuilder {
 
       Log.D(TAG, "Load level internal objects");
 
-      UpdateLoadProgress(0.3f);
+      UpdateLoadProgress(0.7f);
 
       //加载内部对象，出生点，检查点，飞船
       var model_PC_TwoFlames = LevelCurrent.LevelData.FindModulsByModulName("PC_TwoFlames");
@@ -553,7 +642,7 @@ namespace Ballance2.Game.LevelBuilder {
 
       Log.D(TAG, "Load level objects");
 
-      UpdateLoadProgress(0.5f);
+      UpdateLoadProgress(0.8f);
 
       var lowerY = -1000.0f; //最低y坐标
       var depthTestCubesCount = 0;
@@ -642,7 +731,7 @@ namespace Ballance2.Game.LevelBuilder {
       //---------------------------
       LoadSkyAndLight(level);
 
-      UpdateLoadProgress(0.7f);
+      UpdateLoadProgress(0.85f);
 
       Log.D(TAG, "Init moduls");
 
@@ -658,21 +747,21 @@ namespace Ballance2.Game.LevelBuilder {
       //---------------------------
       LoadMusic(level, MusicManager);
 
-      UpdateLoadProgress(0.8f);
+      UpdateLoadProgress(0.9f);
       LoadOthers(levelName);
 
       //调用自定义加载步骤 last
       //-----------------------------
       yield return StartCoroutine(LoadLevelStep(level, "last"));
 
-      UpdateLoadProgress(0.9f);
+      almostEnd?.Invoke();
+
+      UpdateLoadProgress(0.95f);
 
       Log.D(TAG, "Load finish");
 
       UpdateLoadProgress(1);
       yield return new WaitForSeconds(0.5f);
-
-      //GamePlayManagerInstance._InitAndStart(startSector);
 
       //最后加载步骤
       LoadStart();
@@ -1155,7 +1244,7 @@ namespace Ballance2.Game.LevelBuilder {
     private void UnLoadPhysicsFloors(GameObject go) {
       var body = go.GetComponent<PhysicsObject>();
       if (body != null)
-        Object.Destroy(body);
+        Destroy(body);
     }
     private void LoadDepthTestCubes(GameObject go, float inLowerY, out float lowerY) {
       //计算最低y坐标，用于坠落回收物体
@@ -1187,7 +1276,7 @@ namespace Ballance2.Game.LevelBuilder {
         renderer.enabled = true;
       var tigger = go.AddComponent<TiggerTester>();
       if (tigger != null) 
-        Object.Destroy(tigger);
+        Destroy(tigger);
     }
     private void LoadSkyAndLight(LevelData level)
     {

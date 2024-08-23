@@ -54,5 +54,5 @@ namespace Ballance2.Package
   /// 模块入口回调
   /// </summary>
   /// <returns></returns>
-  public delegate LevelProviderAsset[] GamePackageEntryLevelEditorGetAssetsDelogate(GamePackage package, LevelEditorManager levelEditor);
+  public delegate LevelProviderAsset[] GamePackageEntryLevelEditorGetAssetsDelogate(GamePackage package);
 }

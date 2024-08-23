@@ -33,8 +33,10 @@ namespace Ballance2.Menu
       ButtonDisallow.onClick.AddListener(() => gamePackageManager.TrustPackageDialogFinish(false, false));
       ButtonDisallowAndDelete.onClick.AddListener(() => gamePackageManager.TrustPackageDialogFinish(false, true));
       ButtonCheckInfo.onClick.AddListener(() => {
-        Dictionary<string, string> options = new Dictionary<string, string>();
-        options.Add("PackageName", currentPackageName);
+        var options = new Dictionary<string, object>
+        {
+          { "PackageName", currentPackageName }
+        };
         gameUIManager.GoPageWithOptions("PagePackageManagerInfo", options);
       });
 
@@ -42,10 +44,10 @@ namespace Ballance2.Menu
       page.OnShow = (options) =>
       {
         if (options.ContainsKey("PackageName"))
-          currentPackageName = options["PackageName"];
+          currentPackageName = (string)options["PackageName"];
         if (options.ContainsKey("PackageTitle"))
-          currentPackageTitle = options["PackageTitle"];
-        TextTitle.text = I18N.TrF("core.ui.PackageManagerTrustTitle", currentPackageTitle);
+          currentPackageTitle = (string)options["PackageTitle"];
+        TextTitle.text = I18N.TrF("core.ui.PackageManager.TrustTitle", currentPackageTitle);
       };
     }
   }

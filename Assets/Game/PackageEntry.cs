@@ -8,6 +8,8 @@ using Ballance2.Base;
 using Ballance2.Services.Debug;
 using Ballance2.Game.GamePlay.DebugTools;
 using Ballance2.Game.LevelEditor;
+using Ballance2.Menu.LevelManager;
+using UnityEngine;
 
 namespace Ballance2.Game {
   //游戏模块主入口
@@ -36,10 +38,6 @@ namespace Ballance2.Game {
             LevelBuilderInit.CoreDebugLevelBuliderEntry();
             return false;
           });
-          GameMediatorInstance.RegisterEventHandler(SystemPackage, "CoreDebugLevelEnvironmentEntry", TAG, (evtName, param) => {
-            LevelBuilderInit.CoreDebugLevelEnvironmentEntry();
-            return false;
-          });
           GameMediatorInstance.RegisterEventHandler(SystemPackage, "ModulCustomDebug", TAG, (evtName, param) => {
             GamePlayModulDebugManager.Init();
             return false;
@@ -55,7 +53,7 @@ namespace Ballance2.Game {
         }
 
         //加载关卡控制
-        var nextLoadLevel = "";
+        LevelRegistedItem nextLoadLevel = null;
         var nextLoadLevelIsPreview = false;
         GameMediatorInstance.RegisterEventHandler(SystemPackage, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, TAG, (evtName, param) => {
           var scense = param[0] as string;
@@ -65,9 +63,9 @@ namespace Ballance2.Game {
               GameTimer.Delay(0.3f, () => {
                 GamePlayInitManager.GamePlayInit(
                   nextLoadLevelIsPreview ? GamePlayInitManager.GamePlayType.Preview : GamePlayInitManager.GamePlayType.Game, () => {
-                  if (nextLoadLevel != "") {
+                  if (nextLoadLevel != null) {
                     LevelBuilder.LevelBuilder.Instance.LoadLevel(nextLoadLevel, nextLoadLevelIsPreview);
-                    nextLoadLevel = "";
+                    nextLoadLevel = null;
                   }
                 });
               });
@@ -99,29 +97,29 @@ namespace Ballance2.Game {
         
         //加载关卡入口
         GameMediatorInstance.SubscribeSingleEvent(SystemPackage, "CoreStartLoadLevel", TAG, (evtName, param) => {
-          if (param.Length < 1 || !(param[0] is string)) {
-            var type = param[0] as string;
-            GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, $"Param 0 expect string, but got {type}");
+          if (param.Length < 1 || !(param[0] is LevelRegistedItem)) {
+            var type = param[0].GetType().ToString();
+            GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, $"Param 0 expect LevelRegistedItem, but got {type}");
             return false;
           } 
           else 
           {
             nextLoadLevelIsPreview = param.Length >= 2 && param[1] is bool ? (bool)param[1] : false;
-            nextLoadLevel = param[0] as string;
+            nextLoadLevel = param[0] as LevelRegistedItem;
             Log.D(TAG, $"Start load level {nextLoadLevel} preview {nextLoadLevelIsPreview}");
           }
           GameManager.Instance.RequestEnterLogicScense("Level");
           return false;
         });
         GameMediatorInstance.SubscribeSingleEvent(SystemPackage, "CoreStartEditLevel", TAG, (evtName, param) => {
-          if (param.Length < 1 || !(param[0] is string)) {
-            var type = param[0] as string;
-            GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, $"Param 0 expect string, but got {type}");
+          if ((param.Length < 1 || !(param[0] is LevelRegistedItem)) && param[0] != null) {
+            var type = param[0].GetType().ToString();
+            GameErrorChecker.SetLastErrorAndLog(GameError.ParamNotProvide, TAG, $"Param 0 expect LevelRegistedItem, but got {type}");
             return false;
           } 
           else 
           {
-            nextLoadLevel = param[0] as string;
+            nextLoadLevel = param[0] as LevelRegistedItem;
             Log.D(TAG, $"Start edit level {nextLoadLevel}");
           }
           GameManager.Instance.RequestEnterLogicScense("LevelEditor");

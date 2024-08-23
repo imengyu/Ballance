@@ -2,6 +2,7 @@
 using Ballance2.Base;
 using Ballance2.Game.LevelBuilder;
 using Ballance2.Game.LevelEditor.Exceptions;
+using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
@@ -26,8 +27,11 @@ namespace Ballance2.Game.LevelEditor
     private Dictionary<string, Texture2D> InternalTexturesMap = new Dictionary<string, Texture2D>();
     private Dictionary<string, Material> InternalMaterialsMap = new Dictionary<string, Material>();
 
+    private Transform DynamicModelRoot;
+
     private void Awake()
     {
+      DynamicModelRoot = CloneUtils.CreateEmptyObjectWithParent(transform, "DynamicModelRoot").transform;
       foreach (var tex in InternalTextures)
         InternalTexturesMap.Add(tex.name, tex);
       foreach (var mat in InternalMaterials)
@@ -53,10 +57,14 @@ namespace Ballance2.Game.LevelEditor
       public string Error = "";
     }
 
-    public IEnumerator LoadAsset(LevelDynamicLoaderResult result, LevelDynamicModelAsset asset)
+    public void DestroyAllTempDynamicAsset()
+    {
+      DynamicModelRoot.DestroyAllChildren();
+    }
+
+    public IEnumerator LoadAsset(LevelDynamicLoaderResult result, LevelDynamicAssembe level, LevelDynamicModelAsset asset)
     {
       Log.D(TAG, $"Load asset {asset.SourcePath}");
-      var level = LevelEditorManager.Instance.LevelCurrent;
       SaveableObjectRoot sroot = null;
 
       yield return new WaitForSeconds(0.1f);
@@ -79,46 +87,47 @@ namespace Ballance2.Game.LevelEditor
             yield break;
           }
 
-          ZipEntry theEntry;
-          while ((theEntry = zip.GetNextEntry()) != null)
+          try
           {
-            if (theEntry.Name == sourceName || theEntry.Name == $"/{sourceName}")
+            sourceName = $"assets/{sourceName}.bmodel";
+            ZipEntry theEntry;
+            while ((theEntry = zip.GetNextEntry()) != null)
             {
-              var task = ZipUtils.ReadZipFileToMemoryAsync(zip);
-              yield return task.AsIEnumerator();
-              var ms = task.Result;
+              if (ZipUtils.MatchRootName(sourceName, theEntry))
+              {
+                var task = ZipUtils.ReadZipFileToMemoryAsync(zip);
+                yield return task.AsIEnumerator();
+                var ms = task.Result;
 
-              try
-              {
-                sroot = Serializer.Deserialize<SaveableObjectRoot>(ms);
-                break;
-              }
-              catch (Exception e)
-              {
-                HandleExceptionAndGetMessages(e, result);
-                yield break;
-              }
-              finally
-              {
-                ms.Close();
-                ms.Dispose();
+                try
+                {
+                  ms.Seek(0, SeekOrigin.Begin);
+                  sroot = Serializer.Deserialize<SaveableObjectRoot>(ms);
+                  break;
+                }
+                catch (Exception e)
+                {
+                  HandleExceptionAndGetMessages(e, result);
+                  yield break;
+                }
+                finally
+                {
+                  ms.Close();
+                  ms.Dispose();
+                }
               }
             }
           }
-          zip.Close();
-          zip.Dispose();
-
-          if (sroot == null)
+          finally
           {
-            result.Error = I18N.Tr("core.editor.messages.FileMissing") + " " + sourceName;
-            yield break;
+            zip.Close();
+            zip.Dispose();
           }
         }
         //从文件直接读取
         else
         {
-          
-          var path = level.LevelDirPath + "/assets/" + sourceName + ".bmodel";
+          var path = $"{level.LevelDirPath}/assets/{sourceName}.bmodel";
           if (!File.Exists(path))
           {
             result.Error = I18N.Tr("core.editor.messages.FileMissing") + " " + path;
@@ -154,11 +163,23 @@ namespace Ballance2.Game.LevelEditor
 
       yield return new WaitForSeconds(0.1f);
 
+      if (sroot == null)
+      {
+        result.Error = I18N.Tr("core.editor.messages.FileMissing") + " " + asset.Name;
+        yield break;
+      }
+      if (sroot.childs == null)
+      {
+        result.Error = I18N.Tr("core.editor.messages.ModelBroken") + " " + asset.Name;
+        yield break;
+      }
+
       //创建Prefab
       try
       {
         GameObject prefab = new GameObject(sroot.name);
         prefab.SetActive(false);
+        prefab.transform.SetParent(DynamicModelRoot);
         prefab.transform.localScale = new Vector3(sroot.scale, sroot.scale, sroot.scale);
         foreach (var child in sroot.childs)
         {
@@ -294,7 +315,7 @@ namespace Ballance2.Game.LevelEditor
         HandleExceptionAndGetMessages(e, result);
       }
     }
-    public IEnumerator PackLevel(LevelDynamicLoaderResult result, LevelDynamicAssembe level)
+    public IEnumerator PackLevel(LevelDynamicLoaderResult result, LevelDynamicAssembe level, string logoImage, string previewImage)
     {
       Log.D(TAG, $"Start pack level {level.LevelDirPath}");
 
@@ -332,9 +353,12 @@ namespace Ballance2.Game.LevelEditor
         zip = ZipUtils.CreateZipFile(path);
 
         ZipUtils.AddFileToZip(zip, $"{levelDir}/assets.json", levelDir.Length, ref crc32);
-        ZipUtils.AddFileToZip(zip, $"{levelDir}/level.json", levelDir.Length, ref crc32);
-        ZipUtils.AddDirFileToZip(zip, levelDir, $"{levelDir}/screenshot", "*.png", ref crc32);
+        ZipUtils.AddFileToZip(zip, $"{levelDir}/Level.json", levelDir.Length, ref crc32);
         ZipUtils.AddDirFileToZip(zip, levelDir, $"{levelDir}/assets", "*", ref crc32);
+        if (!string.IsNullOrEmpty(logoImage))
+          ZipUtils.AddFileToZip(zip, logoImage, "/LevelLogo.png", ref crc32);
+        if (!string.IsNullOrEmpty(previewImage))
+          ZipUtils.AddFileToZip(zip, previewImage, "/LevelPreview.png", ref crc32);
       }
       catch (Exception e)
       {
@@ -353,12 +377,41 @@ namespace Ballance2.Game.LevelEditor
       result.Success = true;
     }
 
+    public void LoadAllInternalAsset(Action<LevelDynamicModelAsset> addLevelAsset)
+    {
+      var internalAssets = LevelInternalAssets.Instance.LoadAll();
+      foreach (var item in internalAssets)
+        if (!item.HiddenInContentSelector)
+          addLevelAsset(item);
+      var packages = GamePackageManager.Instance.GetLoadedPackages();
+      if (packages != null)
+      {
+        foreach (var package in packages)
+        {
+          try
+          {
+            var assets = package.PackageEntry.OnLevelEditorLoadAssets?.Invoke(package);
+            if (assets != null)
+            {
+              foreach (var item in assets)
+                addLevelAsset(new LevelDynamicModelAsset(item, package));
+            }
+          }
+          catch (Exception e)
+          {
+            Log.E("LevelEditorManager.LoadAllAssets", "Failed load assets for mod " + package.PackageName + " :" + e.ToString());
+          }
+        }
+      }
+    }
+
     public IEnumerator LoadLevel(
       LevelDynamicLoaderResult result, 
       LevelDynamicAssembe level, 
       Transform instaceRoot, 
       Dictionary<string, LevelDynamicModelAsset> LevelAssets,
-      Action<LevelDynamicModelAsset> addLevelAsset
+      Action<LevelDynamicModelAsset> addLevelAsset,
+      bool fromEditor
     )
     {
       Log.D(TAG, $"Start load level {level.LevelDirPath}");
@@ -400,7 +453,7 @@ namespace Ballance2.Game.LevelEditor
           if (!asset.Loaded && asset.SourceType == LevelDynamicModelSource.Embed)
           {
             var result2 = new LevelDynamicLoaderResult();
-            yield return StartCoroutine(LoadAsset(result2, asset));
+            yield return StartCoroutine(LoadAsset(result2, level, asset));
             if (!result2.Success)
               Log.E(TAG, "Failed to load asset {0}, error: {1}.", item.Asset, result2.Error);
           }
@@ -437,7 +490,7 @@ namespace Ballance2.Game.LevelEditor
       //加载实例
       foreach (var item in level.LevelData.LevelModels)
       {
-        item.InstantiateModul(instaceRoot, true, false);
+        item.InstantiateModul(instaceRoot, fromEditor, false);
         loadCount++;
         if (loadCount % 8 == 0)
           yield return new WaitForEndOfFrame();

@@ -307,9 +307,11 @@ namespace Ballance2.Services
       _trustPackageCurrent = p;
 
       GameUIManager uIManager = GameSystem.GetSystemService<GameUIManager>();
-      Dictionary<string, string> options = new Dictionary<string, string>();
-      options.Add("PackageName", p.PackageName);
-      options.Add("PackageTitle", p.BaseInfo.Name);
+      var options = new Dictionary<string, object>
+      {
+        { "PackageName", p.PackageName },
+        { "PackageTitle", p.BaseInfo.Name }
+      };
       uIManager.GoPageWithOptions("PagePackageManagerTrust", options);
     }
 

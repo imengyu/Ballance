@@ -144,15 +144,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsMenuFullScreen
+      value: core.ui.Settings.MenuFullScreen
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsMenuFullScreen
+      value: core.ui.Settings.MenuFullScreen
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsMenuFullScreen
+      value: core.ui.Settings.MenuFullScreen
       objectReference: {fileID: 0}
     - target: {fileID: 1977096574704402867, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Pivot.x
@@ -236,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuFullScreen
+      value: core.ui.Settings.MenuFullScreen
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -491,15 +491,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsMenuVSync
+      value: core.ui.Settings.MenuVSync
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsMenuVSync
+      value: core.ui.Settings.MenuVSync
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsMenuVSync
+      value: core.ui.Settings.MenuVSync
       objectReference: {fileID: 0}
     - target: {fileID: 1977096574704402867, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Pivot.x
@@ -583,7 +583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuVSync
+      value: core.ui.Settings.MenuVSync
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -897,7 +897,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsGraphicsTilte
+      value: core.ui.Settings.Menu.GraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 4980394928004744558, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_Pivot.x
@@ -981,7 +981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_text
-      value: core.ui.SettingsGraphicsTilte
+      value: core.ui.Settings.Menu.GraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_fontSize
@@ -1055,15 +1055,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsMenuQuality
+      value: core.ui.Settings.MenuQuality
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsMenuQuality
+      value: core.ui.Settings.MenuQuality
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsMenuQuality
+      value: core.ui.Settings.MenuQuality
       objectReference: {fileID: 0}
     - target: {fileID: 5705238403932930756, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: _value
@@ -1087,7 +1087,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuQuality
+      value: core.ui.Settings.MenuQuality
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -1280,15 +1280,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsMenuCloud
+      value: core.ui.Settings.MenuCloud
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsMenuCloud
+      value: core.ui.Settings.MenuCloud
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsMenuCloud
+      value: core.ui.Settings.MenuCloud
       objectReference: {fileID: 0}
     - target: {fileID: 1977096574704402867, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Pivot.x
@@ -1372,7 +1372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuCloud
+      value: core.ui.Settings.MenuCloud
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -1517,15 +1517,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsMenuResolution
+      value: core.ui.Settings.MenuResolution
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsMenuResolution
+      value: core.ui.Settings.MenuResolution
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsMenuResolution
+      value: core.ui.Settings.MenuResolution
       objectReference: {fileID: 0}
     - target: {fileID: 5705238403932930756, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: _value
@@ -1549,7 +1549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuResolution
+      value: core.ui.Settings.MenuResolution
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString

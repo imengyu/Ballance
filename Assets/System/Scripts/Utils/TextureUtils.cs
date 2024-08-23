@@ -2,6 +2,8 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
+using StbImageSharp;
+using System.Threading.Tasks;
 
 namespace Ballance2.Utils
 {
@@ -40,7 +42,31 @@ namespace Ballance2.Utils
       t2d.LoadImage(File.ReadAllBytes(path));
       t2d.Apply();
       return t2d;
-    } 
+    }
+    /// <summary>
+    /// 从文件中加载图片(Stb)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public static Texture2D LoadTexture2dFromFile(string path)
+    {
+      if (File.Exists(path))
+      {
+        ImageInfo? info = null;
+        using (var stream = File.OpenRead(path))
+          info = ImageInfo.FromStream(stream);
+        if (info != null)
+        {
+          Texture2D t2d = new Texture2D(info.Value.Width, info.Value.Height, TextureFormat.RGBA32, true);
+          t2d.LoadImage(File.ReadAllBytes(path));
+          t2d.Apply();
+          return t2d;
+        }
+      }
+      return null;
+    }
     /// <summary>
     /// WWW加载图片
     /// </summary>
@@ -68,9 +94,13 @@ namespace Ballance2.Utils
     /// </summary>
     /// <param name="path">要加载的路径</param>
     /// <returns></returns>
-    public static Sprite LoadSpriteFromFile(string path, int width, int height)
+    public static Sprite LoadSpriteFromFile(string path, int width = 0, int height = 0)
     {
-      return Sprite.Create(LoadTexture2dFromFile(path, width, height), new Rect(0.0f, 0.0f, width, height), new Vector2(0.5f, 0.5f), 100.0f);
+      return Sprite.Create(
+        width == 0 && height == 0 ? LoadTexture2dFromFile(path) : LoadTexture2dFromFile(path, width, height), 
+        new Rect(0.0f, 0.0f, width, height), 
+        new Vector2(0.5f, 0.5f), 100.0f
+       );
     }
     public static Sprite CreateSpriteFromTexture(Texture2D tex)
     {
@@ -80,7 +110,9 @@ namespace Ballance2.Utils
     {
       if (texture == null)
         return null;
-        
+      if (texture is Texture2D)
+        return (Texture2D)texture;
+
       Texture2D texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
       RenderTexture currentRT = RenderTexture.active;
       RenderTexture renderTexture = RenderTexture.GetTemporary(texture.width, texture.height, 32);

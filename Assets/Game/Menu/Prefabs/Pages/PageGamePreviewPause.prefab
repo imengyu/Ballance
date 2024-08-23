@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -214,15 +214,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Text
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Pivot.x

@@ -8,6 +8,7 @@ using Ballance2.Game.LevelBuilder;
 using Ballance2.Game.LevelEditor;
 using Ballance2.Game.Utils;
 using Ballance2.Menu;
+using Ballance2.Menu.LevelManager;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Utils;
@@ -862,7 +863,7 @@ namespace Ballance2.Game.GamePlay
       GameManager.VoidDelegate callBack = null;
       if (loadNext)
       {
-        callBack = () => LevelBuilder.LevelBuilder.Instance.LoadLevel(NextLevelName);
+        callBack = () => LevelBuilder.LevelBuilder.Instance.LoadLevel(LevelManager.Instance.GetLevelByName(NextLevelName));
       }
 
       //停止隐藏飞船定时

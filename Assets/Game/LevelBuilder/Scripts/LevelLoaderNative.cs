@@ -1,22 +1,21 @@
 using System.Collections;
 using System.IO;
-using Ballance2.Config.Settings;
 using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 using Ballance2.Res;
 using Ballance2.Utils;
 using SimpleFileBrowser;
+using Ballance2.Menu.LevelManager;
+using ICSharpCode.SharpZipLib.Zip;
 
 /*
- * Copyright (c) 2020  mengyu
+ * Copyright (c) 2024  mengyu
  * 
  * 模块名：     
  * GameLevelLoaderNative.cs
  * 
  * 用途：
  * 关卡 AssetBundle 加载。
- * 因为 lua 中无法直接调用 AssetBundle 加载文件，因此将加载 AssetBundle 的代码抽离至 C# 中。
  * 
  * 作者：
  * mengyu
@@ -25,7 +24,7 @@ using SimpleFileBrowser;
 namespace Ballance2.Game.LevelBuilder
 {
 
-  public delegate void GameLevelLoaderNativeCallback(GameObject mainObj, string jsonString, LevelAssets level);
+  public delegate void GameLevelLoaderNativeCallback(GameObject mainPrefab, string jsonString, LevelAssets level, string dynamicLevelPath);
   public delegate void GameLevelLoaderNativeErrCallback(string code, string err);
 
   public class LevelAssets
@@ -76,6 +75,8 @@ namespace Ballance2.Game.LevelBuilder
     private Dictionary<string, string> fileList = new Dictionary<string, string>();
     private void LoadAllFileNames()
     {
+      if (string.IsNullOrEmpty(Path))
+        return; 
       DirectoryInfo theFolder = new DirectoryInfo(Path);
       FileInfo[] thefileInfo = theFolder.GetFiles("*.*", SearchOption.AllDirectories);
       foreach (FileInfo NextFile in thefileInfo)
@@ -134,53 +135,33 @@ namespace Ballance2.Game.LevelBuilder
     /// <param name="name">名称或者路径</param>
     /// <param name="callback">成功回调</param>
     /// <param name="errCallback">失败回调</param>
-    public void LoadLevel(string name, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
+    public void LoadLevel(LevelRegistedItem _level, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {
-#if UNITY_EDITOR
-      string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + name;
-      //在编辑器中加载
-      if (DebugSettings.Instance.PackageLoadWay == LoadResWay.InUnityEditorProject && Directory.Exists(realPackagePath))
+      if (_level.Type == LevelRegistedType.Internal)
       {
-        Log.D(TAG, "Load package in editor : {0}", realPackagePath);
-        StartCoroutine(Loader(new LevelAssets(realPackagePath, true), callback, errCallback));
+        var internalLevel = (LevelRegistedInternalItem)_level;
+        callback(internalLevel.LevelDefineInternal.Prefab, internalLevel.LevelDefineInternal.Json.text, null, null);
+        return;
       }
-      else
-#else
-      if(true) 
-#endif
+      else if (_level.Type == LevelRegistedType.Local)
       {
-        //路径
-        string path = name;
-        if (!PathUtils.IsAbsolutePath(path))
-          path = GamePathManager.GetLevelRealPath(name.ToLower(), false);
-
-        //去除file://前缀
-        path = PathUtils.FixFilePathScheme(path);
-        //jar特殊处理
-        if(!path.Contains("jar:file://") && !File.Exists(path))
+        var level = (LevelRegistedLocallItem)_level;
+#if UNITY_EDITOR
+        string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + Path.GetFileNameWithoutExtension(name);
+        //在编辑器中加载
+        if (level.isEditor && Directory.Exists(realPackagePath))
         {
-          Log.E(TAG, "File not exist : {0}", path);
-          errCallback("FILE_NOT_EXISTS", "File not exist: \"" + path + "\"");
-          return;
+          Log.D(TAG, "Load package in editor : {0}", realPackagePath);
+          StartCoroutine(Loader(level, new LevelAssets(realPackagePath, true), callback, errCallback));
         }
-        //osx前缀 file://
-#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX || UNITY_IOS
-        if(!path.Contains("jar:file://"))
-          path = "file://" + path;
-        #endif
-
-        //加载NMO
-#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-        var ext = Path.GetExtension(path).ToLower();
-        Log.D(TAG, "Load nmo file : {0} ext: {1}", path, ext);
-        if (ext == ".nmo" || ext == ".cmo") {
-          StartCoroutine(LevelLoaderNMO.LoaderNMO(new LevelNMOAssets(path), callback, errCallback));
-          return;
-        }
+        else
+#else
+        if(true) 
 #endif
-        Log.D(TAG, "Load package : {0}", path);
-        //加载资源包
-        StartCoroutine(Loader(new LevelAssets(path), callback, errCallback));
+        {
+          //加载资源包
+          StartCoroutine(Loader(level, new LevelAssets(""), callback, errCallback));
+        }
       }
     }
     /// <summary>
@@ -206,53 +187,76 @@ namespace Ballance2.Game.LevelBuilder
       }, () => {}, FileBrowser.PickMode.Files);
     }
 
-    private IEnumerator Loader(LevelAssets level, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
+    private IEnumerator Loader(LevelRegistedLocallItem level, LevelAssets asset, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {
-      if (!level.LoadInEditor)
+      var levelJson = "";
+      var isDynamic = false;
+      GameObject LevelPrefab = null;
+      if (asset.LoadInEditor)
       {
-        UnityWebRequest request = UnityWebRequest.Get(level.Path);
-        yield return request.SendWebRequest();
-
-        if (request.result != UnityWebRequest.Result.Success)
+        levelJson = asset.GetTextAssetAsset("Level.json").text;
+        LevelPrefab = asset.GetPrefabAsset("Level.prefab");
+      }
+      else
+      { 
+        var zip = ZipUtils.OpenZipFile(level.GetLocalPath());
+        ZipEntry theEntry;
+        while ((theEntry = zip.GetNextEntry()) != null)
         {
-          if (request.responseCode == 404)
-            errCallback("FILE_NOT_FOUND", "Level file not found");
-          else if (request.responseCode == 403)
-            errCallback("ACCESS_DENINED", "No permission to read file");
-          else
-            errCallback("REQUEST_ERROR", "Http error: " + request.responseCode);
-          yield break;
+          if (ZipUtils.MatchRootName("assets.json", theEntry))
+          {
+            isDynamic = true;
+          }
+          else if (ZipUtils.MatchRootName("Level.json", theEntry))
+          {
+            //定义文件
+            var task = ZipUtils.LoadStringInZip(zip, theEntry);
+            yield return task.AsIEnumerator();
+            levelJson = task.Result;
+          }
+          else if (ZipUtils.MatchRootName("assets/packed.assetbundle", theEntry))
+          {
+            //已打包的ab包
+            var task = ZipUtils.ReadZipFileToMemoryAsync(zip);
+            yield return task.AsIEnumerator();
+
+            AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(task.Result.ToArray());
+            yield return assetBundleCreateRequest;
+            var assetBundle = assetBundleCreateRequest.assetBundle;
+
+            if (assetBundle == null)
+            {
+              errCallback("FAILED_LOAD_ASSETBUNDLE", "Wrong level, failed to load AssetBundle");
+              yield break;
+            }
+
+            asset.AssetBundle = assetBundle;
+          }
         }
 
-        AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(request.downloadHandler.data);
-        yield return assetBundleCreateRequest;
-        var assetBundle = assetBundleCreateRequest.assetBundle;
-
-        if (assetBundle == null)
-        {
-          errCallback("FAILED_LOAD_ASSETBUNDLE", "Wrong level, failed to load AssetBundle");
-          yield break;
-        }
-
-        level.AssetBundle = assetBundle;
+        zip.Close();
+        zip.Dispose();
       }
       
-      Log.D(TAG, "Level package {0} loaded", level.Path);
+      Log.D(TAG, "Level package {0} loaded", level.GetLocalPath());
 
-      TextAsset LevelJsonTextAsset = level.GetTextAssetAsset("Level.json");
-      if (LevelJsonTextAsset == null || string.IsNullOrEmpty(LevelJsonTextAsset.text))
+      if (levelJson == null)
       {
         errCallback("BAD_LEVEL_JSON", "Level.json is empty or invalid");
         yield break;
       }
-      GameObject LevelPrefab = level.GetPrefabAsset("Level.prefab");
-      if (LevelPrefab == null)
+
+      if (!isDynamic)
       {
-        errCallback("BAD_LEVEL", "The level is invalid. Level.prefab cannot be found");
-        yield break;
+        LevelPrefab = asset.GetPrefabAsset("Level.prefab");
+
+        if (LevelPrefab == null)
+        {
+          errCallback("BAD_LEVEL", "The level is invalid. Level.prefab cannot be found");
+          yield break;
+        }
       }
-      GameObject LevelMainObj = CloneUtils.CloneNewObject(LevelPrefab, "");
-      callback(LevelMainObj, LevelJsonTextAsset.text, level);
+      callback(LevelPrefab, levelJson, asset, isDynamic ? level.GetLocalPath() : null);
     }
   }
 }

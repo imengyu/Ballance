@@ -59,7 +59,6 @@ MonoBehaviour:
   - {fileID: 2171344738450376364}
   Editor: {fileID: 0}
   EditorPrefab: {fileID: 7753747683245863629, guid: 2c1b51a94be005c4f8161029e066f79a, type: 3}
-  enableEdit: 0
 --- !u!114 &5969014657844035242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +123,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8859108317370647005, guid: b3759de4e1846cd45ac9a5397bdc24e7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -184,6 +187,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2074992492997079986, guid: b3759de4e1846cd45ac9a5397bdc24e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8859108317370647005, guid: b3759de4e1846cd45ac9a5397bdc24e7, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

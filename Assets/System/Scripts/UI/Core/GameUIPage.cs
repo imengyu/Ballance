@@ -91,13 +91,13 @@ namespace Ballance2.UI.Core
     /// <summary>
     /// 页面上一次打开时所设置的参数
     /// </summary>
-    public Dictionary<string, string> LastOptions;
+    public Dictionary<string, object> LastOptions;
     /// <summary>
     /// 页面上由子页所返回设置的参数
     /// </summary>
-    public Dictionary<string, string> LastBackOptions;
+    public Dictionary<string, object> LastBackOptions;
 
-    public delegate void OptionsDelegate(Dictionary<string, string> options);
+    public delegate void OptionsDelegate(Dictionary<string, object> options);
 
     private void Start() 
     {
@@ -129,7 +129,7 @@ namespace Ballance2.UI.Core
 
 #if UNITY_EDITOR || UNITY_STANDALONE
       //选择默认按扭
-      if(defaultSelection != null) {
+      if(defaultSelection != null && defaultSelection.select != null) {
         //默认选择的时候不要播放声音
         var sound = defaultSelection.select.GetComponent<ClickSound>();
         if(sound != null)

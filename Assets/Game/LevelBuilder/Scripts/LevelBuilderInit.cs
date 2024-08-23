@@ -2,6 +2,7 @@ using Ballance2.Utils;
 using UnityEngine;
 using Ballance2.Package;
 using Ballance2.Services;
+using Ballance2.Menu.LevelManager;
 
 namespace Ballance2.Game.LevelBuilder {
 
@@ -15,15 +16,12 @@ namespace Ballance2.Game.LevelBuilder {
     }
     public static void Destroy() {
       if (LevelBuilderGameObject != null) 
-        UnityEngine.Object.Destroy(LevelBuilderGameObject);
+        Object.Destroy(LevelBuilderGameObject);
       LevelBuilderGameObject = null;
     }
 
     public static void CoreDebugLevelBuliderEntry() {
-      GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", "Level01");
-    }
-    public static void CoreDebugLevelEnvironmentEntry() {
-      GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", "测试关卡");
+      GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", LevelManager.Instance.GetInternalLevel("Level01"));
     }
   }
 }

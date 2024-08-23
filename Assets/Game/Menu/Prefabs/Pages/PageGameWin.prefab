@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  select: {fileID: 2154680258802881683}
+  select: {fileID: 6080445412830952434}
 --- !u!114 &12236535041725961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.MainMenuHighScore
+      value: core.ui.Menu.MainHighScore
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -217,15 +217,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Text
-      value: core.ui.MainMenuHighScore
+      value: core.ui.Menu.MainHighScore
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.MainMenuHighScore
+      value: core.ui.Menu.MainHighScore
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.MainMenuHighScore
+      value: core.ui.Menu.MainHighScore
       objectReference: {fileID: 0}
     - target: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Pivot.x
@@ -387,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -395,15 +395,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Text
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.QuitToMenu
+      value: core.ui.GameUI.QuitToMenu
       objectReference: {fileID: 0}
     - target: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Pivot.x
@@ -565,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.MainMenuSettings
+      value: core.ui.Menu.MainSettings
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -573,15 +573,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Text
-      value: core.ui.MainMenuSettings
+      value: core.ui.Menu.MainSettings
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.MainMenuSettings
+      value: core.ui.Menu.MainSettings
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.MainMenuSettings
+      value: core.ui.Menu.MainSettings
       objectReference: {fileID: 0}
     - target: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Pivot.x
@@ -875,6 +875,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
   m_PrefabInstance: {fileID: 2694575844329856303}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6080445412830952434 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8144507687473784541, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
+  m_PrefabInstance: {fileID: 2694575844329856303}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7845812406506631758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -921,7 +926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.WinUINext
+      value: core.ui.GameUI.WinUI.Next
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -929,15 +934,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Text
-      value: core.ui.WinUINext
+      value: core.ui.GameUI.WinUI.Next
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.WinUINext
+      value: core.ui.GameUI.WinUI.Next
       objectReference: {fileID: 0}
     - target: {fileID: 3550795917701169019, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.WinUINext
+      value: core.ui.GameUI.WinUI.Next
       objectReference: {fileID: 0}
     - target: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: m_Pivot.x
@@ -1048,11 +1053,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
---- !u!1 &2154680258802881683 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8144507687473784541, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
-  m_PrefabInstance: {fileID: 7845812406506631758}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6902717889495699168 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}

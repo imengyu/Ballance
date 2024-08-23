@@ -66,11 +66,11 @@ namespace Ballance2.Package
         ZipEntry theEntry;
         while ((theEntry = zip.GetNextEntry()) != null)
         {
-          if (theEntry.Name == "/PackageDef.xml" || theEntry.Name == "PackageDef.xml")
+          if (ZipUtils.MatchRootName("PackageDef.xml", theEntry))
             packageDef = await LoadPackageDefInZip(zip, theEntry); //加载定义文件
-          else if (theEntry.Name == "/PackageLanguageResPre.xml" || theEntry.Name == "PackageLanguageResPre.xml")
+          else if (ZipUtils.MatchRootName("PackageLanguageResPre.xml", theEntry))
             await LoadPackageLanguageResPreInZip(zip, theEntry); //加载语言文件
-          else if (theEntry.Name == "/PackageLogo.png" || theEntry.Name == "PackageLogo.png")
+          else if (ZipUtils.MatchRootName("PackageLogo.png", theEntry))
             logo = await LoadLogoInZip(zip, theEntry); //加载图标
         }
 

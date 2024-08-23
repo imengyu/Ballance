@@ -399,7 +399,7 @@ namespace Ballance2.Services
     /// <returns>返回跳转是否成功</returns>
     public bool GoPage(string name)
     {
-      return GoPageWithOptions(name, new Dictionary<string, string>());
+      return GoPageWithOptions(name, new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -408,7 +408,7 @@ namespace Ballance2.Services
     /// <param name="name">页名称</param>
     /// <param name="options">打开页所需要携带的参数，在页中可以使用 `GameUIPage.LastOption` 读取到传递进入页的参数。</param>
     /// <returns>返回跳转是否成功</returns>
-    public bool GoPageWithOptions(string name, Dictionary<string, string> options)
+    public bool GoPageWithOptions(string name, Dictionary<string, object> options)
     {
       if (currentPage != null && currentPage.name == name)
         return true;
@@ -461,7 +461,7 @@ namespace Ballance2.Services
     /// <returns>如果可以返回，则返回true，否则返回false</returns>
     public bool BackPreviusPage()
     {
-      return BackPreviusPageWithOptions(new Dictionary<string, string>());
+      return BackPreviusPageWithOptions(new Dictionary<string, object>());
     }
 
     /// <summary>
@@ -469,7 +469,7 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="options">传递返回上一页参数，页中可以使用 `GameUIPage.LastBackOptions` 读取到传递进入上一页的参数。</param>
     /// <returns>如果可以返回，则返回true，否则返回false</returns>
-    public bool BackPreviusPageWithOptions(Dictionary<string, string> options)
+    public bool BackPreviusPageWithOptions(Dictionary<string, object> options)
     {
       if (pageStack.Count > 0)
       {
@@ -607,10 +607,12 @@ namespace Ballance2.Services
     {
       GlobalConfirmWindoOnConfirm = onConfirm;
       GlobalConfirmWindoOnCancel = onCancel;
-      var options = new Dictionary<string, string>();
-      options.Add("text", text);
-      options.Add("okText", okText ?? I18N.I18N.Tr("core.ui.Ok"));
-      options.Add("cancelText", cancelText ??  I18N.I18N.Tr("core.ui.Cancel"));
+      var options = new Dictionary<string, object>
+      {
+        { "text", text },
+        { "okText", okText ?? I18N.I18N.Tr("core.ui.Ok") },
+        { "cancelText", cancelText ?? I18N.I18N.Tr("core.ui.Cancel") }
+      };
       GoPageWithOptions("PageGlobalConfirm", options);
     }
 

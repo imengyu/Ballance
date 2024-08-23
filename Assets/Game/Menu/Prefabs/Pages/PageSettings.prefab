@@ -399,7 +399,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: DefaultString
@@ -539,15 +539,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -569,7 +569,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlReset
+      value: core.ui.Settings.ControlReset
       objectReference: {fileID: 0}
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: DefaultString
@@ -709,15 +709,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsLanguageTilte
+      value: core.ui.Settings.Menu.LanguageTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -739,7 +739,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsPackageTilte
+      value: core.ui.Settings.Menu.PackageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: DefaultString
@@ -879,15 +879,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsPackageTilte
+      value: core.ui.Settings.Menu.PackageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsPackageTilte
+      value: core.ui.Settings.Menu.PackageTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsPackageTilte
+      value: core.ui.Settings.Menu.PackageTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -909,7 +909,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsAudioTilte
+      value: core.ui.Settings.AudioTilte
       objectReference: {fileID: 0}
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: DefaultString
@@ -1049,15 +1049,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsAudioTilte
+      value: core.ui.Settings.AudioTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsAudioTilte
+      value: core.ui.Settings.AudioTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsAudioTilte
+      value: core.ui.Settings.AudioTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1079,7 +1079,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsGraphicsTilte
+      value: core.ui.Settings.Menu.GraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: DefaultString
@@ -1219,15 +1219,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsGraphicsTilte
+      value: core.ui.Settings.Menu.GraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsGraphicsTilte
+      value: core.ui.Settings.Menu.GraphicsTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsGraphicsTilte
+      value: core.ui.Settings.Menu.GraphicsTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1254,7 +1254,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuTilte
+      value: core.ui.Settings.MenuTilte
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -1392,7 +1392,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlTilte
+      value: core.ui.Settings.ControlTilte
       objectReference: {fileID: 0}
     - target: {fileID: 3758974284105205884, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: DefaultString
@@ -1532,15 +1532,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlTilte
+      value: core.ui.Settings.ControlTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlTilte
+      value: core.ui.Settings.ControlTilte
       objectReference: {fileID: 0}
     - target: {fileID: 8238568955643011076, guid: cd89bb8e8792cc946afbb908ee6e64ff, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlTilte
+      value: core.ui.Settings.ControlTilte
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

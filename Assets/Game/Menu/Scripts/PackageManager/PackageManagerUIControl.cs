@@ -77,7 +77,7 @@ namespace Ballance2.Menu
           firstShow = false;
         }
         if(options.ContainsKey("LocatePackage")) 
-          SelectPackage(options["LocatePackage"]);
+          SelectPackage((string)options["LocatePackage"]);
       };
     }
 
@@ -118,8 +118,10 @@ namespace Ballance2.Menu
 
       Button.onClick.RemoveAllListeners();
       Button.onClick.AddListener(() => {
-        Dictionary<string, string> options = new Dictionary<string, string>();
-        options.Add("PackageName", data.packageName);
+        var options = new Dictionary<string, object>
+        {
+          { "PackageName", data.packageName }
+        };
         gameUIManager.GoPageWithOptions("PagePackageManagerInfo", options);
       });
 
@@ -174,15 +176,17 @@ namespace Ballance2.Menu
 
     //更新状态文字
     private void UpdateStatusText() {
-      TextStatus.text = I18N.TrF("core.ui.PackageManagerStatus", "", packageItems.Count, gamePackageManager.loadedPackages.Count);
+      TextStatus.text = I18N.TrF("core.ui.PackageManager.Status", "", packageItems.Count, gamePackageManager.loadedPackages.Count);
     }
 
     //选择模块查看信息
     private void SelectPackage(string name) {
       var pack = gamePackageManager.FindRegisteredPackage(name);
       if(pack != null) {
-        Dictionary<string, string> options = new Dictionary<string, string>();
-        options.Add("PackageName", name);
+        var options = new Dictionary<string, object>
+        {
+          { "PackageName", name }
+        };
         gameUIManager.GoPageWithOptions("PagePackageSettings", options);
       }
     }
@@ -325,11 +329,11 @@ namespace Ballance2.Menu
     }
     private void Back() {
       if(packageStateChanges.Count > 0) {
-        gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManagerTip")  + '\n' + I18N.TrF("core.ui.PackageManagerChangeTip", packageStateChanges.Count), () => {
+        gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManager.Tip")  + '\n' + I18N.TrF("core.ui.PackageManager.ChangeTip", packageStateChanges.Count), () => {
           packageStateChanges.Clear();
           gameUIManager.BackPreviusPage();
         }, () => {
-        }, I18N.Tr("core.ui.PackageManagerGiveUpSave"), I18N.Tr("core.ui.Back"));
+        }, I18N.Tr("core.ui.PackageManager.GiveUpSave"), I18N.Tr("core.ui.Back"));
       } else {
         gameUIManager.BackPreviusPage();
       }
@@ -371,7 +375,7 @@ namespace Ballance2.Menu
         else {
           Page.CreateContent(GamePackage.GetSystemPackage(), PagePackageSettingUIPageDefaultContent);
           PageContent = Page.Content.Find("ScrollView/Viewport/Content").GetComponent<RectTransform>();
-          Page.Content.Find("Title").GetComponent<TMP_Text>().text = I18N.TrF("core.ui.PackageManagerSettingUITitle", "{0}", package.BaseInfo.Name);
+          Page.Content.Find("Title").GetComponent<TMP_Text>().text = I18N.TrF("core.ui.PackageManager.SettingUITitle", "{0}", package.BaseInfo.Name);
         }
       } 
       internal void Delete() {

@@ -80,7 +80,7 @@ namespace Ballance2.UI.Core.Controls
       if (bindAction != null)
       {
         var uIManager = GameUIManager.Instance;
-        uIManager.GoPageWithOptions("PageBindKey", new Dictionary<string, string>() {
+        uIManager.GoPageWithOptions("PageBindKey", new Dictionary<string, object>() {
           { "keyName", ActionName == "" ? Text.text : ActionName },
           { "keyCurrent", bindAction.GetBindingDisplayString(BindingIndex) },
         });

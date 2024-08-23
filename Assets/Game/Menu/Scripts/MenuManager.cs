@@ -28,7 +28,9 @@ namespace Ballance2.Menu
       SettingsUIControl.Create();
       GamePlayUIManager.Create();
     }
-    public static void Destroy() {
+    public static void Destroy()
+    {
+      MenuLevelUIManager.Destroy();
       var GameUIManager = GameManager.GetSystemService<GameUIManager>();
       GameUIManager.DestroyUIMessageCenter("GameUIGlobalMessageCenter");
     }

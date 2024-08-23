@@ -709,7 +709,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.WinUINewHighScore
+      value: core.ui.GameUI.WinUI.NewHighScore
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -843,7 +843,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.WinUIWin
+      value: core.ui.GameUI.WinUI.Win
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -977,7 +977,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.WinUIEnterYourName
+      value: core.ui.GameUI.WinUI.EnterYourName
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -1115,7 +1115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1333428224205139028, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.WinUINext
+      value: core.ui.GameUI.WinUI.Next
       objectReference: {fileID: 0}
     - target: {fileID: 1333428224205139028, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: DefaultString

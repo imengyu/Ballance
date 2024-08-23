@@ -929,7 +929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsMenuTilte
+      value: core.ui.Settings.MenuTilte
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: DefaultString
@@ -941,15 +941,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerSetting
+      value: core.ui.PackageManager.Setting
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerSetting
+      value: core.ui.PackageManager.Setting
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerSetting
+      value: core.ui.PackageManager.Setting
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1063,7 +1063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerUnLoad
+      value: core.ui.PackageManager.UnLoad
       objectReference: {fileID: 0}
     - target: {fileID: 2457594624519080609, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: DefaultString
@@ -1075,15 +1075,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerUnLoad
+      value: core.ui.PackageManager.UnLoad
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerUnLoad
+      value: core.ui.PackageManager.UnLoad
       objectReference: {fileID: 0}
     - target: {fileID: 9024560429656741269, guid: 63e5a5e31183c354cae28c651e1834b3, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerUnLoad
+      value: core.ui.PackageManager.UnLoad
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

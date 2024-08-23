@@ -45,7 +45,7 @@ namespace Ballance2.Menu
         var keyName = options["keyName"];
         var keyCurrent = options["keyCurrent"];
         var Text = PageBindKey.Content.Find("Panel/Text").GetComponent<UIText>();
-        Text.text = I18N.TrF("core.ui.ControllerBind", "", keyName, keyCurrent);
+        Text.text = I18N.TrF("core.ui.Settings.Control.ControllerBind", "", keyName, keyCurrent);
       };
 
       GameTimer.Delay(1.0f, () => {
@@ -197,12 +197,12 @@ namespace Ballance2.Menu
         if (qualities == null) 
         {
           qualities = new QualitiesItemData[] {
-            new QualitiesItemData { level = 0, text = I18N.Tr("core.ui.SettingsQualityVeryLow") },
-            new QualitiesItemData { level = 1, text = I18N.Tr("core.ui.SettingsQualityLow") },
-            new QualitiesItemData { level = 2, text = I18N.Tr("core.ui.SettingsQualityMedium") },
-            new QualitiesItemData { level = 3, text = I18N.Tr("core.ui.SettingsQualityHigh") },
-            new QualitiesItemData { level = 4, text = I18N.Tr("core.ui.SettingsQualityVeryHigh") },
-            new QualitiesItemData { level = 5, text = I18N.Tr("core.ui.SettingsQualityUltra") },
+            new QualitiesItemData { level = 0, text = I18N.Tr("core.ui.Settings.QualityVeryLow") },
+            new QualitiesItemData { level = 1, text = I18N.Tr("core.ui.Settings.QualityLow") },
+            new QualitiesItemData { level = 2, text = I18N.Tr("core.ui.Settings.QualityMedium") },
+            new QualitiesItemData { level = 3, text = I18N.Tr("core.ui.Settings.QualityHigh") },
+            new QualitiesItemData { level = 4, text = I18N.Tr("core.ui.Settings.QualityVeryHigh") },
+            new QualitiesItemData { level = 5, text = I18N.Tr("core.ui.Settings.QualityUltra") },
           };
           var GrQuality = MessageCenter.GetComponentInstance("GrQuality").GetComponent<Updown>();
           var qualitiyCurrent = QualitySettings.GetQualityLevel();
@@ -228,7 +228,7 @@ namespace Ballance2.Menu
       MessageCenter.SubscribeEvent("BtnSettingsPackageClick", () => {
         GameUIManager.GoPage("PagePackageManager");
       });
-      MessageCenter.SubscribeEvent("BtnSettingsResetClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.SettingsControlResetAsk" , () => {
+      MessageCenter.SubscribeEvent("BtnSettingsResetClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.Settings.ControlResetAsk" , () => {
         GameSettingsManager.ResetDefaultSettings();
         ControlManager.Instance.LoadActionSettings(true);
         GameUIManager.BackPreviusPage();
@@ -268,7 +268,7 @@ namespace Ballance2.Menu
     private static void ApplyLanguage(SystemLanguage language) {
       GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME).SetInt("language", (int)language);
       if (I18NProvider.GetCurrentLanguage() != language)
-        GameUIManager.Instance.GlobalConfirmWindow("I18N:core.ui.ChangeLanageNotice", () => GameManager.Instance.RestartGame(), okText: "I18N:core.ui.Restart");
+        GameUIManager.Instance.GlobalConfirmWindow("I18N:core.ui.Menu.Main.ChangeLanageNotice", () => GameManager.Instance.RestartGame(), okText: "I18N:core.ui.Restart");
       else
         GameUIManager.Instance.BackPreviusPage();
     }

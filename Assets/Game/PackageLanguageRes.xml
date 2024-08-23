@@ -14,156 +14,212 @@
         <Text name="NextPage">下一页</Text>
         <Text name="PrevPage">上一页</Text>
         <Text name="Continue">继续</Text>
-        <Text name="QuitToMenu">返回主菜单</Text>
-        <Text name="AboutProject">关于此项目</Text>
-        <Text name="AboutOldCreators">主创人员</Text>
-        <Text name="AbouOpenSourceLicense">开源许可</Text>
-        <Text name="GoGithub">前往项目 GitHub </Text>
-        <Text name="NoLevelData">无数据</Text>
-        <Text name="WinUILevelBouns">关卡分数</Text>
-        <Text name="WinUITimePoints">剩余时间点</Text>
-        <Text name="WinUIExtraLife">额外的生命</Text>
-        <Text name="WinUIPoints">分</Text>
-        <Text name="WinUIScore">分数</Text>
-        <Text name="WinUINewHighScore">新的高分！</Text>
-        <Text name="WinUIEnterYourName">留下你的大名吧</Text>
-        <Text name="WinUIWin">胜利！</Text>
-        <Text name="WinUINext">下一关</Text>
-        <Text name="ChangeLanageNotice">更改的语言设置将会在下一次重启游戏时生效，您想现在重启游戏吗？</Text>
-        <Text name="MainMenuStart">开始</Text>
-        <Text name="MainMenuHighScore">高分</Text>
-        <Text name="MainMenuSettings">设置</Text>
-        <Text name="MainMenuAbout">关于</Text>
-        <Text name="MainMenuQuit">退出</Text>
-        <Text name="MainMenuQuitTitle">你想退出游戏吗？</Text>
-        <Text name="QuitToMainMenuTitle">你想返回主菜单吗？</Text>
-        <Text name="MainMenuRestartLevelTitle">你想重新开始这一关卡吗？</Text>
-        <Text name="StartMenuCustom">关卡管理</Text>
-        <Text name="StartMenuNMO">NMO File</Text>
-        <Text name="SettingsMenuTilte">设置</Text>
-        <Text name="SettingsMenuVSync">垂直同步?</Text>
-        <Text name="SettingsMenuFullScreen">全屏?</Text>
-        <Text name="SettingsMenuCloud">显示云层?</Text>
-        <Text name="SettingsMenuResolution">屏幕分辨率</Text>
-        <Text name="SettingsMenuQuality">画质</Text>
-        <Text name="SettingsControlTilte">控制</Text>
-        <Text name="SettingsControlMenuReverseControl">反向旋转</Text>
-        <Text name="SettingsControlMenuForward">向前</Text>
-        <Text name="SettingsControlMenuBack">向后</Text>
-        <Text name="SettingsControlMenuLeft">向左</Text>
-        <Text name="SettingsControlMenuRight">向右</Text>
-        <Text name="SettingsControlMenuUp">升高</Text>
-        <Text name="SettingsControlMenuDown">下降</Text>
-        <Text name="SettingsControlMenuRotateCam">旋转辅助按键</Text>
-        <Text name="SettingsControlMenuRotateCam2">旋转辅助按键2</Text>
-        <Text name="SettingsControlMenuRotateCamLeft">向左旋转视角</Text>
-        <Text name="SettingsControlMenuRotateCamRight">向右旋转视角</Text>
-        <Text name="SettingsControlReset">重设成默认值</Text>
-        <Text name="SettingsControlResetAsk">你是否希望重设所有设置为默认值?</Text>
-        <Text name="SettingsControlMenuOverlook">俯视</Text>
-        <Text name="SettingsControlUISize">键盘大小</Text>
-        <Text name="SettingsControlKeypadBaseLeft">按键式左</Text>
-        <Text name="SettingsControlKeypadBaseRight">按键式右</Text>
-        <Text name="SettingsControlKeypadBaseCenter">按键式两侧</Text>
-        <Text name="SettingsControlKeypadBaseJoyLeft">摇杆式左（不能走单轨）</Text>
-        <Text name="SettingsControlKeypadBaseJoyRight">摇杆式右（不能走单轨）</Text>
-        <Text name="SettingsControlTitleMobile">手机</Text>
-        <Text name="SettingsControlTitleOthers">其他按键</Text>
-        <Text name="SettingsControlScreenshot">截图</Text>
-        <Text name="SettingsControlToggleFPS">切换帧率显示</Text>
-        <Text name="SettingsControlToggleView">切换界面显示</Text>
-        <Text name="SettingsAudioTilte">声音</Text>
-        <Text name="SettingsAudioBackground">背景音乐音量</Text>
-        <Text name="SettingsAudioMain">主音量</Text>
-        <Text name="SettingsAudioUI">界面音效音量</Text>
-        <Text name="SettingsLanguageTilte">语言</Text>
-        <Text name="SettingsPackageTilte">模组管理器</Text>
-        <Text name="SettingsGraphicsTilte">视频</Text>
-        <Text name="SettingsQualityVeryLow">最低</Text>
-        <Text name="SettingsQualityLow">低</Text>
-        <Text name="SettingsQualityMedium">中等</Text>
-        <Text name="SettingsQualityHigh">高</Text>
-        <Text name="SettingsQualityVeryHigh">极高</Text>
-        <Text name="SettingsQualityUltra">最高</Text>
-        <Text name="controller.HelpNav">选择</Text>
-        <Text name="controller.HelpSubmit">确定</Text>
-        <Text name="LevelLoaderErrorUITitle">加载关卡失败</Text>
-        <Text name="LevelLoaderErrorUIMessage">关卡开发者：您可以按 F12 进入控制台查看更多错误信息。\n玩家：如果这是第三方玩家制作的关卡，您可以向制作者反馈错误信息。\n如果这是游戏自带关卡，您可以点击 “提交BUG” 或访问 \nhttps://github.com/imengyu/ballance/issues/ 向我们反馈错误</Text>
-        <Text name="LevelLoaderErrorUISubmitBug">提交BUG</Text>
-        <Text name="LevelLoaderErrorUICopyErrInfo">复制错误信息</Text>
-        <Text name="ErrorUIErrInfoCopied">错误信息已复制到剪贴板</Text>
-        <Text name="SettingsYouAreInDebugMode">你已经在开发者模式了哦，第一次开启需要重启游戏才能生效</Text>
-        <Text name="SettingsClickNTimeToDebugMode">再点击 {0} 次进入开发者模式了</Text>
-        <Text name="SettingsVersion">版本：{0}</Text>
-        <Text name="StartThisLevel">游玩此关卡</Text>
-        <Text name="PreviewThisLevel">预览此关卡</Text>
-        <Text name="EditThisLevel">编辑此关卡</Text>
-        <Text name="Refresh">刷新</Text>
-        <Text name="Unknow">未知</Text>
-        <Text name="FileNotExist">文件不存在</Text>
-        <Text name="Loading">正在加载，请稍后</Text>
-        <Text name="ChooseLevelInLeft">在左侧选择一个你要加载的关卡</Text>
-        <Text name="NoCustomLevel">看起来你没有安装任何自定义关卡，访问帮助文档了解如何安装自定义关卡</Text>
-        <Text name="LevelNoDepends">此关卡没有依赖额外的模组</Text>
-        <Text name="LevelHasDepends">此关卡依赖 {0} 个额外的模组，已成功加载</Text>
-        <Text name="LevelHasBadDepends">此关卡依赖 {0} 个额外的模组，{1} 个未能成功加载</Text>
-        <Text name="LevelEnableAllDepends">尝试启用此关卡的所有依赖</Text>
-        <Text name="LevelAllDependsTile">关卡 {0} 的所有依赖 ({1})</Text>
-        <Text name="VersionMismatch">依赖版本过低</Text>
-        <Text name="LevelEnableAllDependsTodo">暂时不支持自动下载或启用依赖，请手动开启或安装</Text>
-        <Text name="PackageManagerEnableAll">启用所有模组</Text>
-        <Text name="PackageManagerDisableAll">禁用所有模组</Text>
-        <Text name="PackageManagerSave">保存修改</Text>
-        <Text name="PackageManagerUnLoad">卸载</Text>
-        <Text name="PackageManagerSetting">设置</Text>
-        <Text name="PackageManagerTip">模组修改提示</Text>
-        <Text name="PackageManagerChangeTip"> 改动了 {0} 个模组</Text>
-        <Text name="PackageManagerStatus"> 共有 {0} 个模组，已启用 {1} 个</Text>
-        <Text name="PackageManagerGiveUpSave">放弃修改</Text>
-        <Text name="PackageManagerPackNotFound">没有找到模组 {0}，它似乎没有在这里安装。</Text>
-        <Text name="PackageManagerOptional">可选</Text>
-        <Text name="PackageManagerNoDepends">此模组没有依赖额外的模组</Text>
-        <Text name="PackageManagerTrustTitle">模组 {0} 正在尝试加载一个C#模块，是否允许？</Text>
-        <Text name="PackageManagerTrustDescrb">模组C#模块拥有完全的文件访问权限，如果允许，此模组将可以访问您个人文件，并有能力对您的计算机修改设置。因此，加载此模块是比较危险的，在加载之前，请确认此模组是否在官方下载。如果您不信任此模组，请不要加载。</Text>
-        <Text name="PackageManagerTrustAndsLoad">信任并且加载</Text>
-        <Text name="PackageManagerNotTrust">不信任</Text>
-        <Text name="PackageManagerNotTrustAndDelete">不信任并删除</Text>
-        <Text name="PackageManagerCheckInfo">查看模组信息</Text>
-        <Text name="PackageManagerNoDepends">此模组没有依赖额外的模组</Text>
-        <Text name="PackageManagerLinkVisitSite">访问项目主页</Text>
-        <Text name="PackageManagerLinkVisitDoc">访问文档</Text>
-        <Text name="PackageManagerLinkVisiAuthor">访问作者主页</Text>
-        <Text name="PackageManagerPackageInfoTitle">模组信息</Text>
-        <Text name="PackageManagerPackageIntroductionTitle">模组简介</Text>
-        <Text name="PackageManagerPackageDependsTitle">模组依赖的模组</Text>
-        <Text name="PackageManagerPackageName">包名</Text>
-        <Text name="PackageManagerPackageVersion">版本</Text>
-        <Text name="PackageManagerPackageAuthor">作者</Text>
-        <Text name="PackageManagerPackageInstallTime">安装和更新时间</Text>
-        <Text name="PackageSystemPackage">核心模组无法卸载或禁用</Text>
-        <Text name="PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
-        <Text name="PackageUnaloadTip">卸载模组提示</Text>
-        <Text name="PackageManagerSettingUITitle">模组 {0} 的自定义配置</Text>
-        <Text name="Type.Keyboard">键盘</Text>
-        <Text name="Type.Controller">控制器</Text>
-        <Text name="ControllerBind">请按下你想要绑定到 {0} 的按键（目前：{1}）</Text>
-        <Text name="TutorialText1">欢迎来到 Ballance！\nBallance 平衡球 是一款滚球游戏。\n你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。\n\n游戏教程：\n您可以随时使用“ESC”键停止或退出游戏。\n你可以按“回车”键继续游戏教程，或按“Q”键退出教程。</Text>
-        <Text name="TutorialText2">视图旋转：\n按住左“SHIFT”键并使用“LEFT”或“RIGHT”箭头键将视图旋转90°。\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText3">俯瞰视图：\n按住“空格键”以升高摄像机，你可以看的更高。\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText4">移动球：\n请将视线转向前方，直到看到前面有两座塔楼的轨道。\n使用“箭头”键（不带“SHIFT”）向前、向后、向左和向右移动球。\n\n请沿着这条路走！</Text>
-        <Text name="TutorialText5">额外生命球：\n\n如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText6">变球器：\n\n通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。\n\n这是一个石质变球器。\n\n 按“回车”键继续...</Text>
-        <Text name="TutorialText7">这个斜坡太陡了，不能用石球！\n\n找一个木制变球器，再试一次。\n\n提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText8">额外分数球：\n\n左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText9">检查点：\n\n这是你必须通过的第一个检查点。\n\n如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。\n\n按“回车”键继续...</Text>
-        <Text name="TutorialText10">最后有一些提示：\n\n如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。\n\n额外提示：欢迎前往 Ballance 吧讨论游戏！\n\n按“回车”键退出教程...</Text>
-        <Text name="ProjectAbout">Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，由 快乐的梦鱼 制作。\n\n你可以游玩这个重制版，还可以根据此重制版制作自定义模组或者地图，分享给其他玩家游玩。\n\n项目的源代码存放在 https://github.com/imengyu/Ballance 。\n\n如果你遇到了BUG，或者有很棒的点子，建议，欢迎前往项目主页 https://github.com/imengyu/Ballance 提交你的 Issue，我们一起讨论呀。\n\n如果希望为Ballance开发自己的mod，关卡，欢迎前往 https://github.com/imengyu/Ballance/wiki 了解相关教程！\n\n也欢迎在 Ballance 吧讨论游戏。</Text>
+        <Group name="Menu">
+          <Group name="Main">
+            <Text name="ChangeLanageNotice">更改的语言设置将会在下一次重启游戏时生效，您想现在重启游戏吗？</Text>
+            <Text name="Start">开始</Text>
+            <Text name="HighScore">高分</Text>
+            <Text name="Settings">设置</Text>
+            <Text name="About">关于</Text>
+            <Text name="Quit">退出</Text>
+            <Text name="QuitTitle">你想退出游戏吗？</Text>
+            <Text name="Orginal">原版关卡</Text>
+            <Text name="Creative">玩家创意关卡</Text>
+            <Text name="Editor">关卡编辑器</Text>
+          </Group>
+          <Group name="About">
+            <Text name="AboutProject">关于此项目</Text>
+            <Text name="AboutOldCreators">主创人员</Text>
+            <Text name="AbouOpenSourceLicense">开源许可</Text>
+            <Text name="GoGithub">前往项目 GitHub </Text>
+            <Text name="ProjectAbout">Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，让 Ballance 老游戏可以运行在最新的设备上。由 快乐的梦鱼 制作。\n\n你可以游玩这个重制版，还可以根据此重制版制作自定义模组或者地图，分享给其他玩家游玩。\n\n项目的源代码存放在 https://github.com/imengyu/Ballance 。\n\n如果你遇到了BUG，或者有很棒的点子，建议，欢迎前往项目主页 https://github.com/imengyu/Ballance 提交你的 Issue，我们一起讨论呀。\n\n如果希望为Ballance开发自己的mod，关卡，欢迎前往 https://github.com/imengyu/Ballance/wiki 了解相关教程！\n\n也欢迎在 Ballance 吧讨论游戏。</Text>
+          </Group>
+          <Group name="Start">    
+            <Text name="StartMenuNMO">加载旧版Ballance关卡（NMO文件）</Text>
+            <Text name="StartMenuNMODesc"><![CDATA[ 你可以加载一个标准的 Ballance 原版关卡（NMO文件）。大部分关卡可以加载成功并且游玩，但目前有少数限制：\n不能加载带有 Virtools 脚本的关卡\n不支持 Virtools 的点、线网格。\n材质不支持 Virtools 的特殊效果，将使用默认材质代替。\n不支持设置关卡天空盒、关卡分数，没有背景音乐。]]></Text>
+            <Text name="NewLevel">创建新关卡</Text>
+            <Text name="EditExistsLevel">编辑已有关卡</Text>
+          </Group>
+          <Group name="LevelSelect">
+            <Group name="Category">
+              <Text name="Hot">热门关卡</Text>
+              <Text name="Subscribe">订阅关卡</Text>
+              <Text name="Local">本地关卡</Text>
+              <Text name="Mine">我的关卡</Text>
+            </Group>
+            <Text name="EmptySubscribe">你还没有订阅关卡，可以去创意工坊订阅一些</Text>
+            <Text name="EmptyMine">你还没有创建过自己的关卡，可以去关卡编辑器创建一个属于自己的关卡！</Text>
+            <Text name="Empty">当前分类下没有找到关卡，去其他地方看看吧</Text>
+            <Text name="Play">游玩！</Text>
+            <Text name="PreviewThisLevel">预览此关卡</Text>
+            <Text name="EditThisLevel">编辑此关卡</Text>
+            <Text name="NoDsec">关卡作者很懒，还没有为此关卡撰写说明。</Text>
+            <Text name="NoAuthor">(无名)</Text>
+            <Text name="DeleteConfirmText">你确定要删除此关卡吗？删除后不可恢复！</Text>
+            <Text name="UnSubscribeConfirmText">你确定要取消订阅此关卡吗？</Text>
+
+            <Text name="LocalPath">本地文件路径：{0}</Text>
+            <Text name="LevelNoDepends">此关卡没有依赖额外的模组</Text>
+            <Text name="LevelHasDepends">此关卡依赖 {0} 个额外的模组，已成功加载</Text>
+            <Text name="LevelHasBadDepends">此关卡依赖 {0} 个额外的模组，{1} 个未能成功加载</Text>
+            <Text name="LevelAllDependsTile">关卡 {0} 的所有依赖 ({1})</Text>
+            <Text name="VersionMismatch">依赖版本过低</Text>
+          </Group>
+        </Group>
+        <Group name="GameUI">
+          <Text name="QuitToMenu">返回主菜单</Text>
+          <Text name="QuitToMainMenuTitle">你想返回主菜单吗？</Text>
+          <Text name="RestartLevelTitle">你想重新开始这一关卡吗？</Text>
+          <Group name="WinUI">
+            <Text name="LevelBouns">关卡分数</Text>
+            <Text name="TimePoints">剩余时间点</Text>
+            <Text name="ExtraLife">额外的生命</Text>
+            <Text name="Points">分</Text>
+            <Text name="Score">分数</Text>
+            <Text name="NewHighScore">新的高分！</Text>
+            <Text name="EnterYourName">留下你的大名吧</Text>
+            <Text name="Win">胜利！</Text>
+            <Text name="Next">下一关</Text>
+          </Group>
+          <Group name="TutorialText">
+            <Text name="1">欢迎来到 Ballance！\nBallance 平衡球 是一款滚球游戏。\n你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。\n\n游戏教程：\n您可以随时使用“ESC”键停止或退出游戏。\n你可以按“回车”键继续游戏教程，或按“Q”键退出教程。</Text>
+            <Text name="2">视图旋转：\n按住左“SHIFT”键并使用“LEFT”或“RIGHT”箭头键将视图旋转90°。\n\n按“回车”键继续...</Text>
+            <Text name="3">俯瞰视图：\n按住“空格键”以升高摄像机，你可以看的更高。\n\n按“回车”键继续...</Text>
+            <Text name="4">移动球：\n请将视线转向前方，直到看到前面有两座塔楼的轨道。\n使用“箭头”键（不带“SHIFT”）向前、向后、向左和向右移动球。\n\n请沿着这条路走！</Text>
+            <Text name="5">额外生命球：\n\n如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。\n\n按“回车”键继续...</Text>
+            <Text name="6">变球器：\n\n通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。\n\n这是一个石质变球器。\n\n 按“回车”键继续...</Text>
+            <Text name="7">这个斜坡太陡了，不能用石球！\n\n找一个木制变球器，再试一次。\n\n提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！\n\n按“回车”键继续...</Text>
+            <Text name="8">额外分数球：\n\n左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。\n\n按“回车”键继续...</Text>
+            <Text name="9">检查点：\n\n这是你必须通过的第一个检查点。\n\n如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。\n\n按“回车”键继续...</Text>
+            <Text name="10">最后有一些提示：\n\n如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。\n\n额外提示：欢迎前往 Ballance 吧讨论游戏！\n\n按“回车”键退出教程...</Text>
+          </Group>
+        </Group>
+        <Group name="Controller">
+          <Text name="HelpNav">选择</Text>
+          <Text name="HelpSubmit">确定</Text>
+        </Group>
+        <Group name="Type">
+          <Text name="Keyboard">键盘</Text>
+          <Text name="Controller">控制器</Text>
+        </Group>
+        <Group name="Settings">
+          <Group name="Menu">
+            <Text name="Tilte">设置</Text>
+            <Text name="VSync">垂直同步?</Text>
+            <Text name="FullScreen">全屏?</Text>
+            <Text name="Cloud">显示云层?</Text>
+            <Text name="Resolution">屏幕分辨率</Text>
+            <Text name="Quality">画质</Text>
+            <Text name="LanguageTilte">语言</Text>
+            <Text name="PackageTilte">模组管理器</Text>
+            <Text name="GraphicsTilte">视频</Text>
+          </Group>
+          <Group name="Control">
+            <Text name="Tilte">控制</Text>
+            <Text name="MenuReverseControl">反向旋转</Text>
+            <Text name="MenuForward">向前</Text>
+            <Text name="MenuBack">向后</Text>
+            <Text name="MenuLeft">向左</Text>
+            <Text name="MenuRight">向右</Text>
+            <Text name="MenuUp">升高</Text>
+            <Text name="MenuDown">下降</Text>
+            <Text name="MenuRotateCam">旋转辅助按键</Text>
+            <Text name="MenuRotateCam2">旋转辅助按键2</Text>
+            <Text name="MenuRotateCamLeft">向左旋转视角</Text>
+            <Text name="MenuRotateCamRight">向右旋转视角</Text>
+            <Text name="Reset">重设成默认值</Text>
+            <Text name="ResetAsk">你是否希望重设所有设置为默认值?</Text>
+            <Text name="MenuOverlook">俯视</Text>
+            <Text name="UISize">键盘大小</Text>
+            <Text name="KeypadBaseLeft">按键式左</Text>
+            <Text name="KeypadBaseRight">按键式右</Text>
+            <Text name="KeypadBaseCenter">按键式两侧</Text>
+            <Text name="KeypadBaseJoyLeft">摇杆式左（不能走单轨）</Text>
+            <Text name="KeypadBaseJoyRight">摇杆式右（不能走单轨）</Text>
+            <Text name="TitleMobile">手机</Text>
+            <Text name="TitleOthers">其他按键</Text>
+            <Text name="Screenshot">截图</Text>
+            <Text name="ToggleFPS">切换帧率显示</Text>
+            <Text name="ToggleView">切换界面显示</Text>
+            <Text name="ControllerBind">请按下你想要绑定到 {0} 的按键（目前：{1}）</Text>
+          </Group>
+          <Group name="Audio">
+            <Text name="Tilte">声音</Text>
+            <Text name="Background">背景音乐音量</Text>
+            <Text name="Main">主音量</Text>
+            <Text name="UI">界面音效音量</Text>
+          </Group>
+          <Group name="Quality">
+            <Text name="VeryLow">最低</Text>
+            <Text name="Low">低</Text>
+            <Text name="Medium">中等</Text>
+            <Text name="High">高</Text>
+            <Text name="VeryHigh">极高</Text>
+            <Text name="Ultra">最高</Text>
+          </Group>
+          <Group name="Debug">
+            <Text name="YouAreInDebugMode">你已经在开发者模式了哦，第一次开启需要重启游戏才能生效</Text>
+            <Text name="ClickNTimeToDebugMode">再点击 {0} 次进入开发者模式了</Text>
+            <Text name="Version">版本：{0}</Text>
+          </Group>
+        </Group>
+        <Group name="PackageManager">
+          <Text name="EnableAll">启用所有模组</Text>
+          <Text name="DisableAll">禁用所有模组</Text>
+          <Text name="Save">保存修改</Text>
+          <Text name="UnLoad">卸载</Text>
+          <Text name="Setting">设置</Text>
+          <Text name="Tip">模组修改提示</Text>
+          <Text name="ChangeTip"> 改动了 {0} 个模组</Text>
+          <Text name="Status"> 共有 {0} 个模组，已启用 {1} 个</Text>
+          <Text name="GiveUpSave">放弃修改</Text>
+          <Text name="PackNotFound">没有找到模组 {0}，它似乎没有在这里安装。</Text>
+          <Text name="Optional">可选</Text>
+          <Text name="NoDepends">此模组没有依赖额外的模组</Text>
+          <Text name="TrustTitle">模组 {0} 正在尝试加载一个C#模块，是否允许？</Text>
+          <Text name="TrustDescrb">模组C#模块拥有完全的文件访问权限，如果允许，此模组将可以访问您个人文件，并有能力对您的计算机修改设置。因此，加载此模块是比较危险的，在加载之前，请确认此模组是否在官方下载。如果您不信任此模组，请不要加载。</Text>
+          <Text name="TrustAndsLoad">信任并且加载</Text>
+          <Text name="NotTrust">不信任</Text>
+          <Text name="NotTrustAndDelete">不信任并删除</Text>
+          <Text name="CheckInfo">查看模组信息</Text>
+          <Text name="NoDepends">此模组没有依赖额外的模组</Text>
+          <Text name="LinkVisitSite">访问项目主页</Text>
+          <Text name="LinkVisitDoc">访问文档</Text>
+          <Text name="LinkVisiAuthor">访问作者主页</Text>
+          <Text name="PackageInfoTitle">模组信息</Text>
+          <Text name="PackageIntroductionTitle">模组简介</Text>
+          <Text name="PackageDependsTitle">模组依赖的模组</Text>
+          <Text name="PackageName">包名</Text>
+          <Text name="PackageVersion">版本</Text>
+          <Text name="PackageAuthor">作者</Text>
+          <Text name="PackageInstallTime">安装和更新时间</Text>
+          <Text name="PackageSystemPackage">核心模组无法卸载或禁用</Text>
+          <Text name="PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
+          <Text name="PackageUnaloadTip">卸载模组提示</Text>
+          <Text name="SettingUITitle">模组 {0} 的自定义配置</Text>
+        </Group>
+        <Group name="LevelLoaderErrorUI">
+          <Text name="Title">oops! 加载关卡失败了</Text>
+          <Text name="Message">放心，这不是你的问题，换一个关卡玩吧\n如果这是其他玩家制作的关卡，可以试试向他们反馈问题。\n关卡开发者：您可以进入开发者模式按 F12 进入控制台查看更多错误信息。</Text>
+          <Text name="CopyErrInfo">复制错误信息</Text>
+          <Text name="ErrInfoCopied">错误信息已复制到剪贴板</Text>
+        </Group>
+        <Group name="PreviewUI">
+          <Text name="SkyBox">显示天空</Text>
+          <Text name="WireFrame">线框渲染模式</Text>
+          <Text name="Audio">播放背景音乐</Text>
+          <Text name="Fog">显示雾</Text>
+          <Text name="DethTethCubes">显示死亡区</Text>
+          <Text name="Skylayer">显示云层</Text>
+          <Text name="CameraSpeed">相机速度 {0}</Text>
+        </Group>
       </Group>
       <Group name="package">
         <Text name="Introduction">Ballance 基础系统包，包含全部自带基础球与基础机关</Text>
         <Text name="Description">Ballance 基础系统包，包含全部自带基础球与基础机关，是所有MOD的基础依赖，不可卸载。</Text>
       </Group>
       <Group name="editor">
+        <Text name="Loading">加载中</Text>
         <Text name="Load">加载</Text>
         <Text name="Save">保存</Text>
         <Text name="New">新关卡</Text>
@@ -241,6 +297,7 @@
           <Text name="IOException">访问文件错误，{0}</Text>
           <Text name="PathTooLongException">路径过长，建议不要将游戏放在过深的目录中。</Text>
           <Text name="FileMissing">文件丢失</Text>
+          <Text name="ModelBroken">模型损坏</Text>
           <Text name="UnknowException">发生了未知错误，{0}</Text>
           <Text name="LevelAlreadyPacked">当前关卡无法编辑</Text>
           <Text name="PassAndSubmit">确认发布吗？建议您自己测试一遍可以通关后再分享给其他玩家游玩</Text>
@@ -248,6 +305,7 @@
           <Text name="DuplicateImportAsset">您导入资产的名称 “{0}” 已经在当前关卡中有一个同名资产了，继续导入会覆盖原有资产，确认覆盖吗？</Text>
           <Text name="DeleteImportAsset">您将要删除此资产，删除会导致引用此资产的模型实例不可再使用，确认吗？</Text>
           <Text name="PackeLevelFailed">打包关卡失败</Text>
+          <Text name="CantEditPackedLevel">错误，已打包的关卡无法编辑</Text>
         </Group>
         <Text name="StatusText">{0}/{1} 对象/小节 选中 {2}</Text>
         <Text name="CreateNew">创建新关卡文件</Text>
@@ -374,7 +432,7 @@
           <Text name="RailDynamic.Desc">安全稳定的轨道\n\n这是可编辑的网格，可以变形和调整长度</Text>
           <Text name="RailDynamicMono.Name">单轨</Text>
           <Text name="RailDynamicMono.Desc">保持平衡！\n\n这是可编辑的网格，可以变形和调整长度</Text>
-          
+
           <Text name="Floor_Columns.Name">支柱</Text>
           <Text name="Floor_Columns.Desc">用于装饰的支撑柱，毕竟路浮空也太不合常理了吧</Text>
           <Text name="Tower.Name">灯塔</Text>
@@ -422,7 +480,7 @@
           <Text name="Misc_Schelle.Name">护栏固定螺丝</Text>
           <Text name="Misc_Schelle.Desc">装饰，用于固定侧边护栏</Text>
 
-          
+
         </Group>
         <Group name="info">
           <Text name="Title">编辑此关卡的基础信息</Text>
@@ -453,15 +511,6 @@
           <Text name="New">新建关卡</Text>
           <Text name="NewDesc">现在将要新建一个关卡，请输入关卡的文件名，关卡文件将会被保存在 Levels 文件夹中。</Text>
           <Text name="NewDump">已存在同名关卡文件，你是否要覆盖已有文件？\n注意：覆盖后不可恢复！</Text>
-        </Group>
-        <Group name="help">
-          <Text name="TransformHelpTitle">欢迎使用关卡编辑器！</Text>
-          <Text name="TransformHelpContent"><![CDATA[ 关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。\n\n<size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 键可以下降视角，按 <sprite=3> 键可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n点击工具栏上的删除按钮可以删除选中的对象。\n ]]></Text>
-        
-          <Text name="TestHelpTitle">欢迎使用试验场！</Text>
-          <Text name="TesHelpContent"><![CDATA[ 试验场是一个模拟环境，允许您测试自己的关卡是否可玩，在试验场中您可以随时重置球，随时重置机关，球可以在试验场上下飞行。\n\n小提示：进入试验场之前先选择检查点，可以从该检查点开始玩哦！ ]]></Text>
-
-          <Text name="CustomSkyTip">小提示：选择 custom 可以自定义天空图片</Text>
         </Group>
         <Group name="content">
           <Text name="Search">搜索资产</Text>
@@ -515,7 +564,7 @@
         </Group>
         <Group name="share">
           <Text name="Title">分享你的关卡到创意工坊让更多玩家游玩</Text>
-          <Text name="ChooseImage">选择一张截图作为物品封面，可以在测试玩模式中截图</Text>
+          <Text name="ChooseImage">选择2张截图作为物品封面和预览图，可以在测试玩模式中截图</Text>
           <Text name="FileChangeBeforeUpload">分享之前，您可以使用其他软件修改封面图片</Text>
           <Text name="Name">工坊名称</Text>
           <Text name="NameDesc">填写您的物品在创意工坊中显示的名称</Text>
@@ -528,7 +577,29 @@
           <Text name="Upload">上传</Text>
           <Text name="PleaseEnterName">请填写物品名称哦</Text>
         </Group>
-        <Text name="Loading">加载中</Text>
+        <Group name="help">
+          <Text name="TestHelpTitle">欢迎使用试验场！</Text>
+          <Text name="TesHelpContent"><![CDATA[ 试验场是一个模拟环境，允许您测试自己的关卡是否可玩，在试验场中您可以随时重置球，随时重置机关，球可以在试验场上下飞行。\n\n小提示：进入试验场之前先选择检查点，可以从该检查点开始玩哦！ ]]></Text>
+          <Text name="CustomSkyTip">小提示：选择 custom 可以自定义天空图片</Text>
+          <Text name="BasicTitle">关卡编辑器</Text>
+          <Text name="BasicDesc"><![CDATA[ 欢迎使用关卡编辑器！\n\n关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。 ]]></Text>
+          <Text name="MoveTitle">基础操作</Text>
+          <Text name="MoveDesc"><![CDATA[ <size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 键可以下降视角，按 <sprite=3> 键可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n点击工具栏上的删除按钮可以删除选中的对象。\n ]]></Text>
+          <Text name="ResourceTitle">资产库</Text>
+          <Text name="ResourceDesc1"><![CDATA[ 如你所见，下方是关卡的资产库，游戏内置了许多制作关卡的资产，包括道路、轨道、机关、装饰，可以选中他们，将其拖拽进入场景来添加。 ]]></Text>
+          <Text name="ResourceDesc2"><![CDATA[ 可编辑组件\n游戏内置了可编辑（可变形）组件，例如可变形的道路与轨道，你可以在资产库找到带有“可编辑”标记的资产添加，可以选择多种变形方式，例如直线、曲线、螺旋等等，你可以通过变形组件与拼块组件拼接出属于你自己的路面与轨道。 ]]></Text>
+          <Text name="ResourceDesc3"><![CDATA[ 你也可以导入使用其他软件，例如Blender、3DSMax等软件自己的3D模型至场景中以实现自己的道路、轨道等等，支持FBX、OBJ等格式的3D文件。 ]]></Text>
+          <Text name="LevelTitle">关卡介绍</Text>
+          <Text name="LevelDesc1"><![CDATA[ <size=+1>基础要素</size>\n\n一个完整的关卡由以下这些组件组成，你的关卡如果要可玩，也须要添加这些组件。下方介绍他们的功能。 ]]></Text>
+          <Text name="LevelDesc2"><![CDATA[ <size=+1>出生点</size>\n\n玩家从这里开始游戏，这个组件只能在关卡中存在1个。当你新建关卡时，系统为你自动创建了。\n出生点可以在资产库“机关”>“关卡基础”中找到。 ]]></Text>
+          <Text name="LevelDesc3"><![CDATA[ <size=+1>检查点</size>\n\n检查点用于保存玩家进度，当玩家坠落失败后，可以从最近的检查点继续游玩。\n检查点的属性设置中可以设置它是第几个节，你需要按自己的关卡行进线路设置小节序号。 ]]></Text>
+          <Text name="LevelDesc4"><![CDATA[ <size=+1>小节</size>\n\n小节是被检查点分割的关卡区域，您可以添加若干个检查点，将您的关卡分割为几个短节，这样玩家失败后可以从最近的检查点继续游玩。\n\n机关激活小节\n每个机关需要在属性设置中设置它在哪个节激活，这样当用户进入该节后，机关就会激活，用户坠落重置后，设置了该节的机关也可以重置初始状态。 ]]></Text>
+          <Text name="LevelDesc5"><![CDATA[ <size=+1>过关飞船</size>\n\n过关飞船是关卡的终点，玩家登上飞船后即过关。\n当你新建关卡时，系统为你自动创建了。\\n出生点可以在资产库“机关”>“关卡基础”中找到。 ]]></Text>
+          <Text name="LevelDesc6"><![CDATA[ <size=+1>死亡检测区</size>\n\n死亡检测区用于检测玩家从道路上跌落，当玩家球触碰到这个区域后，即认为失败。\n死亡检测区可以在资产库“机关”>“关卡基础”中找到。 ]]></Text>
+          <Text name="LevelDesc7"><![CDATA[ <size=+1>机关</size>\n\n机关是游戏中特殊的一种可交互的部件，它为游戏增添了许多乐趣，多个机关互相组合，还可以形成更有趣的迷宫，发挥你的想象力放置机关吧。如果要制作游戏中没有的，自己的机关，需要开发模组，具体可以参考游戏Wiki。\n游戏内置的机关可以在资产库“机关”中找到。 ]]></Text>
+          <Text name="ShareTitle">分享您的关卡</Text>
+          <Text name="ShareDesc"><![CDATA[ 当您的关卡制作完成并且可玩后，你可以将其分享至Steam创意工坊，以供其他玩家游玩，点击“分享”按钮即可显示分享窗口，在其中填写关卡介绍信息后，即可分享。 ]]></Text>
+        </Group>
       </Group>
     </Group>
   </Language>
@@ -608,9 +679,9 @@
         <Text name="SettingsAudioBackground">Background music volume</Text>
         <Text name="SettingsAudioMain">Main volume</Text>
         <Text name="SettingsAudioUI">UI volume</Text>
-        <Text name="SettingsLanguageTilte">Language</Text>
-        <Text name="SettingsPackageTilte">Module manager</Text>
-        <Text name="SettingsGraphicsTilte">Graphics</Text>
+        <Text name="Settings.Menu.LanguageTilte">Language</Text>
+        <Text name="Settings.Menu.PackageTilte">Module manager</Text>
+        <Text name="Settings.Menu.GraphicsTilte">Graphics</Text>
         <Text name="SettingsQualityVeryLow">VeryLow</Text>
         <Text name="SettingsQualityLow">Low</Text>
         <Text name="SettingsQualityMedium">Medium</Text>

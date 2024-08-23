@@ -332,7 +332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerNotTrust
+      value: core.ui.PackageManager.NotTrust
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -340,15 +340,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerNotTrust
+      value: core.ui.PackageManager.NotTrust
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerNotTrust
+      value: core.ui.PackageManager.NotTrust
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerNotTrust
+      value: core.ui.PackageManager.NotTrust
       objectReference: {fileID: 0}
     - target: {fileID: 5705591227440305647, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_text
@@ -385,7 +385,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerTrustDescrb
+      value: core.ui.PackageManager.TrustDescrb
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -595,7 +595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerCheckInfo
+      value: core.ui.PackageManager.CheckInfo
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -603,15 +603,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerCheckInfo
+      value: core.ui.PackageManager.CheckInfo
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerCheckInfo
+      value: core.ui.PackageManager.CheckInfo
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerCheckInfo
+      value: core.ui.PackageManager.CheckInfo
       objectReference: {fileID: 0}
     - target: {fileID: 5705591227440305647, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_text
@@ -653,7 +653,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerTrustTitle
+      value: core.ui.PackageManager.TrustTitle
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -882,7 +882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerNotTrustAndDelete
+      value: core.ui.PackageManager.NotTrustAndDelete
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -890,15 +890,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerNotTrustAndDelete
+      value: core.ui.PackageManager.NotTrustAndDelete
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerNotTrustAndDelete
+      value: core.ui.PackageManager.NotTrustAndDelete
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerNotTrustAndDelete
+      value: core.ui.PackageManager.NotTrustAndDelete
       objectReference: {fileID: 0}
     - target: {fileID: 5705591227440305647, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_text
@@ -1019,7 +1019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.PackageManagerNotTrust
+      value: core.ui.PackageManager.NotTrust
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -1027,15 +1027,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: core.ui.PackageManagerTrustAndsLoad
+      value: core.ui.PackageManager.TrustAndsLoad
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.PackageManagerTrustAndsLoad
+      value: core.ui.PackageManager.TrustAndsLoad
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.PackageManagerTrustAndsLoad
+      value: core.ui.PackageManager.TrustAndsLoad
       objectReference: {fileID: 0}
     - target: {fileID: 5705591227440305647, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_text

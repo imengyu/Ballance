@@ -838,7 +838,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.MainMenuHighScore
+      value: core.ui.Menu.MainHighScore
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -1785,11 +1785,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4537979571061933298, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Size
-      value: 0.8282056
+      value: 0.83259404
       objectReference: {fileID: 0}
     - target: {fileID: 4537979571061933298, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Value
-      value: -0.0000015568871
+      value: -0.0027036811
       objectReference: {fileID: 0}
     - target: {fileID: 5078828430005765189, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Size
@@ -1829,7 +1829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492604842380458381, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -224.69481
+      value: -230.39323
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -769,6 +769,14 @@ PrefabInstance:
       propertyPath: m_IsOn
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: ResourceKey
+      value: CORE.UI.PREVIEWUI.WIREFRAME
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: DefaultString
+      value: "\u7EBF\u6846\u6E32\u67D3\u6A21\u5F0F"
+      objectReference: {fileID: 0}
     - target: {fileID: 4753628922408554539, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000015258789
@@ -857,6 +865,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_text
+      value: "\u7EBF\u6846\u6E32\u67D3\u6A21\u5F0F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8193969246310834946, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_Text
       value: WireFrame
@@ -898,6 +914,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8811008842480364801}
     m_Modifications:
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: ResourceKey
+      value: CORE.UI.PREVIEWUI.FOG
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: DefaultString
+      value: "\u663E\u793A\u96FE"
+      objectReference: {fileID: 0}
     - target: {fileID: 4753628922408554539, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000015258789
@@ -986,6 +1010,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_text
+      value: "\u663E\u793A\u96FE"
+      objectReference: {fileID: 0}
     - target: {fileID: 8193969246310834946, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_Text
       value: Fog
@@ -1027,6 +1055,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8811008842480364801}
     m_Modifications:
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: ResourceKey
+      value: CORE.UI.PREVIEWUI.AUDIO
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: DefaultString
+      value: "\u64AD\u653E\u80CC\u666F\u97F3\u4E50"
+      objectReference: {fileID: 0}
     - target: {fileID: 4753628922408554539, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000015258789
@@ -1115,6 +1151,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_text
+      value: "\u64AD\u653E\u80CC\u666F\u97F3\u4E50"
+      objectReference: {fileID: 0}
     - target: {fileID: 8193969246310834946, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_Text
       value: Audio
@@ -1160,6 +1200,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8811008842480364801}
     m_Modifications:
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: ResourceKey
+      value: CORE.UI.PREVIEWUI.SKYLAYER
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: DefaultString
+      value: "\u663E\u793A\u4E91\u5C42"
+      objectReference: {fileID: 0}
     - target: {fileID: 4753628922408554539, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.5
@@ -1248,6 +1296,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_text
+      value: "\u663E\u793A\u4E91\u5C42"
+      objectReference: {fileID: 0}
     - target: {fileID: 8193969246310834946, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_Text
       value: Skylayer
@@ -1289,6 +1341,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8811008842480364801}
     m_Modifications:
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: ResourceKey
+      value: CORE.UI.PREVIEWUI.SKYBOX
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: DefaultString
+      value: "\u663E\u793A\u5929\u7A7A"
+      objectReference: {fileID: 0}
     - target: {fileID: 4753628922408554539, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000015258789
@@ -1377,6 +1437,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_text
+      value: "\u663E\u793A\u5929\u7A7A"
+      objectReference: {fileID: 0}
     - target: {fileID: 8193969246310834946, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_Text
       value: SkyBox
@@ -1418,6 +1482,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8811008842480364801}
     m_Modifications:
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: ResourceKey
+      value: CORE.UI.PREVIEWUI.DETHTETHCUBES
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878772192808814969, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: DefaultString
+      value: "\u663E\u793A\u6B7B\u4EA1\u533A"
+      objectReference: {fileID: 0}
     - target: {fileID: 4753628922408554539, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.5
@@ -1505,6 +1577,10 @@ PrefabInstance:
     - target: {fileID: 6917781562189187346, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7276330534136840153, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
+      propertyPath: m_text
+      value: "\u663E\u793A\u6B7B\u4EA1\u533A"
       objectReference: {fileID: 0}
     - target: {fileID: 8193969246310834946, guid: 4f5f0df7282ad944e8674e115a3a2820, type: 3}
       propertyPath: m_Text

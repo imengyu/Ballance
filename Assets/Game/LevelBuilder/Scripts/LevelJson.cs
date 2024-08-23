@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using Ballance2.Game.GamePlay;
 using Newtonsoft.Json;
@@ -23,8 +24,6 @@ namespace Ballance2.Game.LevelBuilder
     public string url = "";
     [JsonProperty]
     public bool allowPreview = true;
-    [JsonProperty]
-    public bool allowEdit = false;
     [JsonProperty]
     public List<GameLevelDependencies> requiredPackages = new List<GameLevelDependencies>();
     [JsonProperty]

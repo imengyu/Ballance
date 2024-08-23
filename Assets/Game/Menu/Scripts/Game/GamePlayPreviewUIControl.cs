@@ -2,6 +2,7 @@ using Ballance2.Base;
 using Ballance2.Game;
 using Ballance2.Game.GamePlay;
 using Ballance2.Game.LevelBuilder;
+using Ballance2.Services.I18N;
 using RuntimeSceneGizmo;
 using TMPro;
 using UnityEngine.UI;
@@ -76,7 +77,7 @@ namespace Ballance2.Menu
       _FreeCamera = freeCam;
       _GizmoRenderer.ReferenceTransform = freeCam.transform;
       freeCam.onCamSpeedChanged = () => {
-        _TextCameraSpeed.text = "CamSpeed: " + string.Format("{0:F2}", freeCam.cameraSpeed);
+        _TextCameraSpeed.text = I18N.TrF("CORE.UI.PREVIEWUI.CAMERASPEED", "", string.Format("{0:F2}", freeCam.cameraSpeed));
       };
     }
   }

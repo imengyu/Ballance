@@ -13,6 +13,7 @@ namespace Ballance2.Game.LevelEditor
   {
     public Button ButtonSubmit;
     public Image ImageInto;
+    public Image ImageLogo;
     public TMP_Text ChooseImageCount;
     public TMP_InputField InputFieldName;
     public TMP_InputField InputFieldDesc;
@@ -21,14 +22,17 @@ namespace Ballance2.Game.LevelEditor
     public Sprite DefaultImage;
 
     private LevelDynamicAssembe currentLevel = null;
-    private int currentImageIndex = 0;
+    private int currentLogoImageIndex = 0;
+    private int currentIntoImageIndex = 0;
     private List<Sprite> currentImages = new List<Sprite>();
+    private List<string> currentImagePaths = new List<string>();
 
     public void Show(LevelDynamicAssembe levelDynamicAssembe)
     {
       gameObject.SetActive(true);
       currentLevel = levelDynamicAssembe;
-      currentImageIndex = 0;
+      currentLogoImageIndex = 0;
+      currentIntoImageIndex = 0;
       StartCoroutine(LoadScreenShorts());
       InputFieldName.text = currentLevel.LevelInfo.name;
       InputFieldDesc.text = currentLevel.LevelInfo.introduction;
@@ -44,6 +48,7 @@ namespace Ballance2.Game.LevelEditor
       foreach (Sprite sprite in currentImages)
         Destroy(sprite);
       currentImages.Clear();
+      currentImagePaths.Clear();
 
       var dirName = currentLevel.LevelDirPath + "/screenshot";
       if (Directory.Exists(dirName))
@@ -55,31 +60,51 @@ namespace Ballance2.Game.LevelEditor
           var result = new EnumeratorResultPacker<Texture2D>();
           yield return TextureUtils.LoadTexture2dFromFile("file:///" + item.FullName, result);
           if (result.Success)
+          {
             currentImages.Add(TextureUtils.CreateSpriteFromTexture(result.Result));
+            currentImagePaths.Add(item.FullName);
+          }
         }
       }
       ShowImage();
     }
     private void ShowImage()
     {
-      ImageInto.sprite = currentImages.Count > 0 ? currentImages[currentImageIndex] : DefaultImage;
-      ChooseImageCount.text = $"{currentImageIndex + 1}/{currentImages.Count}";
+      ImageInto.sprite = currentImages.Count > 0 ? currentImages[currentIntoImageIndex] : DefaultImage;
+      ImageLogo.sprite = currentImages.Count > 0 ? currentImages[currentLogoImageIndex] : DefaultImage;
+      ChooseImageCount.text = $"{currentIntoImageIndex + 1}/{currentImages.Count}";
     }
 
     public void PrevImage()
     {
-      if (currentImageIndex > 0)
-        currentImageIndex--;
+      if (currentIntoImageIndex > 0)
+        currentIntoImageIndex--;
       else
-        currentImageIndex = currentImages.Count - 1;
+        currentIntoImageIndex = currentImages.Count - 1;
       ShowImage();
     }
     public void NextImage()
     {
-      if (currentImageIndex < currentImages.Count - 1)
-        currentImageIndex++;
+      if (currentIntoImageIndex < currentImages.Count - 1)
+        currentIntoImageIndex++;
       else
-        currentImageIndex = 0;
+        currentIntoImageIndex = 0;
+      ShowImage();
+    }
+    public void PrevLogoImage()
+    {
+      if (currentLogoImageIndex > 0)
+        currentLogoImageIndex--;
+      else
+        currentLogoImageIndex = currentImages.Count - 1;
+      ShowImage();
+    }
+    public void NextLogoImage()
+    {
+      if (currentLogoImageIndex < currentImages.Count - 1)
+        currentLogoImageIndex++;
+      else
+        currentLogoImageIndex = 0;
       ShowImage();
     }
     public void ShowSteamLicense()
@@ -104,7 +129,12 @@ namespace Ballance2.Game.LevelEditor
       ui.ShowLoading();
 
       var result = new LevelDynamicLoaderResult();
-      yield return StartCoroutine(LevelDynamicLoader.Instance.PackLevel(result, currentLevel));
+      yield return StartCoroutine(LevelDynamicLoader.Instance.PackLevel(
+        result, 
+        currentLevel,
+        currentLogoImageIndex < currentImagePaths.Count ? currentImagePaths[currentLogoImageIndex] : null,
+        currentIntoImageIndex < currentImagePaths.Count ? currentImagePaths[currentIntoImageIndex] : null
+      ));
 
       if (!result.Success)
       {

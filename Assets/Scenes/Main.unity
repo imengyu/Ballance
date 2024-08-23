@@ -1110,6 +1110,116 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &675450031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675450032}
+  - component: {fileID: 675450033}
+  m_Layer: 0
+  m_Name: GameLevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &675450032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675450031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1269806398}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &675450033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675450031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36092f8a0857a474dae2daf6d8c63c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  internalLevel:
+  - Name: Level01
+    Logo: {fileID: 21300000, guid: 612744364e2f5cc409178b1c5af8b88c, type: 3}
+    Preview: {fileID: 21300000, guid: 361f359c3d439ca419c7f791d15026ee, type: 3}
+    Json: {fileID: 4900000, guid: 9b522b1eaed9c954f83972adc923afaa, type: 3}
+    Prefab: {fileID: 8465281388536148233, guid: cd4bdf41baad3844399b1a5aa0dba23f, type: 3}
+  - Name: Level02
+    Logo: {fileID: 21300000, guid: d5122be85fa76104d92317c6f371a663, type: 3}
+    Preview: {fileID: 21300000, guid: ebcdb5f84f34f224b8e2856fb4772df0, type: 3}
+    Json: {fileID: 4900000, guid: f2cd7cb03c3c4d3458cf1dfeb556e901, type: 3}
+    Prefab: {fileID: 1791754690101752385, guid: 1179d9475d0713e4d8c2b765d334f70b, type: 3}
+  - Name: Level03
+    Logo: {fileID: 21300000, guid: 77bec7945d198de47be9e4ff2f255c74, type: 3}
+    Preview: {fileID: 21300000, guid: a1449f664087e9443b58e6727bcccdfd, type: 3}
+    Json: {fileID: 4900000, guid: a03dbc5350f094443b483b54d4adae27, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: b377202ff17c9cb40b61c40ac5cca00f, type: 3}
+  - Name: Level04
+    Logo: {fileID: 21300000, guid: d5240209c8adddd4b8852149a697aded, type: 3}
+    Preview: {fileID: 21300000, guid: 86dcdaad78a8d46429d9229d3d3c580b, type: 3}
+    Json: {fileID: 4900000, guid: c1f5ff2ea10eac34a9dbaa264b69a105, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 8b6c974531e750d46acbb92276c37deb, type: 3}
+  - Name: Level05
+    Logo: {fileID: 21300000, guid: 6386791e73024e94d8dd465ae0fe9ba5, type: 3}
+    Preview: {fileID: 21300000, guid: e388d695cf0cab145b087f50f36c8720, type: 3}
+    Json: {fileID: 4900000, guid: 69d28f16b7c4f0f48a2ba3e17852acd5, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 258be3017eacd0c4598650ca71256b86, type: 3}
+  - Name: Level06
+    Logo: {fileID: 21300000, guid: cd6a237418e889547a56c1de7e4bf856, type: 3}
+    Preview: {fileID: 21300000, guid: 395d2e75cb17b2e48b4ff1bf84962e24, type: 3}
+    Json: {fileID: 4900000, guid: 853e1a8485a1e1f4d8d4ef0b434a82d7, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: a92fb16101f13d74d995b20b43b08008, type: 3}
+  - Name: Level07
+    Logo: {fileID: 21300000, guid: e9f04e37d9670514d811c76a10affcab, type: 3}
+    Preview: {fileID: 21300000, guid: f96ee24608d1db24188bef922d715723, type: 3}
+    Json: {fileID: 4900000, guid: 66adeb21fd1e80c44baf0a1a4ee4cbce, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 4a4d9f6357ef3054b8e343b16e0f621b, type: 3}
+  - Name: Level08
+    Logo: {fileID: 21300000, guid: 190e6620f3ed1e64fb5944e4db371671, type: 3}
+    Preview: {fileID: 21300000, guid: ac552dd5bd4acf64b93c4d9fcc66e9f9, type: 3}
+    Json: {fileID: 4900000, guid: 027445872db40bc439966f5701a63886, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: ec2175218e6558f48b3852f70145ad9e, type: 3}
+  - Name: Level09
+    Logo: {fileID: 21300000, guid: d515d611e11831c4494d01e6688b9c6c, type: 3}
+    Preview: {fileID: 21300000, guid: 038bc54f6976a654181d95140f1fb455, type: 3}
+    Json: {fileID: 4900000, guid: 293809783a5cd5f4dbca0fde8f8ebe9c, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 7a78d5f314faa5f44b49f0761c4f90d8, type: 3}
+  - Name: Level10
+    Logo: {fileID: 21300000, guid: 95e3e645c9127984fb24bc177d838776, type: 3}
+    Preview: {fileID: 21300000, guid: bfd24cbb6d823844fbf6956d8957e617, type: 3}
+    Json: {fileID: 4900000, guid: 5b4748bc648c95044b919947260c6d2e, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: b36d5d733584c374fb1e8db828b5b3ae, type: 3}
+  - Name: Level11
+    Logo: {fileID: 21300000, guid: 62827e1a6d9c7e443a6b824084595793, type: 3}
+    Preview: {fileID: 21300000, guid: f1cefe20ca391214da3952657429ebea, type: 3}
+    Json: {fileID: 4900000, guid: 6612bd68237f897439834b0c47ca7022, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 237b427a140549f418c5c52ea88d1476, type: 3}
+  - Name: Level12
+    Logo: {fileID: 21300000, guid: 2c3c761fb1c87df4fa746b395da5015f, type: 3}
+    Preview: {fileID: 21300000, guid: 4153d90c0fa062f4697f295b86da6fe2, type: 3}
+    Json: {fileID: 4900000, guid: 5e7eb39efe152054589f06d6bb1601c1, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 85278d2ea51ea5a499060859e2dfe2e0, type: 3}
+  - Name: Level13
+    Logo: {fileID: 21300000, guid: 1c3a78ad2a589d24bbf84510f8451a2d, type: 3}
+    Preview: {fileID: 21300000, guid: e3320588ebaf74c4cb624823634e6cc6, type: 3}
+    Json: {fileID: 4900000, guid: 66d2361aaafbfcc40a95c283eaf79407, type: 3}
+    Prefab: {fileID: 3738719117668168893, guid: 82a1b963a7428fa44912102592c04c1b, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,7 +1790,7 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugType: 2
+  DebugType: 0
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -1721,6 +1831,7 @@ Transform:
   - {fileID: 963194228}
   - {fileID: 317783243}
   - {fileID: 1378279533}
+  - {fileID: 675450032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1269806399
@@ -2092,6 +2203,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8e2f48d9558caac46b9df92bb4b05d49, type: 3}
   - {fileID: 21300000, guid: ca9cd9dd18eda494d9269cbd0a98154b, type: 3}
   - {fileID: 906161840266283162, guid: e215dd81ff02be84bb124c407e839930, type: 3}
+  - {fileID: 7048576898993473563, guid: 1c510c892a26cb14ca341d93abf55088, type: 3}
+  - {fileID: 7048576898993473563, guid: a6ef498f1c3cdbd4e99c10193ad7e6e9, type: 3}
+  - {fileID: 7048576898993473563, guid: 64e366f934ff0ac43bd506bd5c4c8ea4, type: 3}
+  - {fileID: 7048576898993473563, guid: 498b156e31229db418e7ea46cfc838ba, type: 3}
   SystemPackageLanguageRes: {fileID: 4900000, guid: 2ca35776dc2cf5a40a841f8c72848657, type: 3}
   SystemPackageDef: {fileID: 4900000, guid: 29d9e4a69df3dd6499649a8670725cb2, type: 3}
 --- !u!1 &1666437229

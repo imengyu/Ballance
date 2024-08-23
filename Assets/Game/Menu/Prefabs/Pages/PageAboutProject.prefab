@@ -108,10 +108,10 @@ RectTransform:
   - {fileID: 7422316301499555115}
   m_Father: {fileID: 4894647076004959241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 350, y: 400}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 65}
+  m_SizeDelta: {x: 350, y: -173}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6431632325768558616
 CanvasRenderer:
@@ -161,7 +161,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4894647076004959241}
   - component: {fileID: 7606098162195014164}
-  - component: {fileID: 5813638005234843907}
   - component: {fileID: -4899737274344735246}
   - component: {fileID: -562905785332600339}
   - component: {fileID: 8117039697762247592}
@@ -202,32 +201,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2980229759797305245}
   m_CullTransparentMesh: 1
---- !u!114 &5813638005234843907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2980229759797305245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!114 &-4899737274344735246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +275,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 350, y: 145}
+  m_SizeDelta: {x: 350, y: 217.6911}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5689818235191792256
 CanvasRenderer:
@@ -379,7 +352,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: -337.83002}
+  m_AnchoredPosition: {x: 175, y: -403.52112}
   m_SizeDelta: {x: 350, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8115119261824511082
@@ -444,12 +417,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\r\nBallance Rebuild \u662F\u6EDA\u7403 Ballance \u6E38\u620F\u7684\u5F00\u6E90
-    Unity \u91CD\u5236\u7248\uFF0C\u7531 \u5FEB\u4E50\u7684\u68A6\u9C7C \u5236\u4F5C\u3002\r\n\r\n\u4F60\u53EF\u4EE5\u6E38\u73A9\u8FD9\u4E2A\u91CD\u5236\u7248\uFF0C\u8FD8\u53EF\u4EE5\u6839\u636E\u6B64\u91CD\u5236\u7248\u5236\u4F5C\u81EA\u5B9A\u4E49\u6A21\u7EC4\u6216\u8005\u5730\u56FE\uFF0C\u5206\u4EAB\u7ED9\u5176\u4ED6\u73A9\u5BB6\u6E38\u73A9\u3002\r\n\r\n\u9879\u76EE\u7684\u6E90\u4EE3\u7801\u5B58\u653E\u5728
-    https://github.com/imengyu/Ballance \u3002\r\n\r\n\u5982\u679C\u4F60\u9047\u5230\u4E86BUG\uFF0C\u6216\u8005\u6709\u5F88\u68D2\u7684\u70B9\u5B50\uFF0C\u5EFA\u8BAE\uFF0C\u6B22\u8FCE\u524D\u5F80\u9879\u76EE\u4E3B\u9875
-    https://github.com/imengyu/Ballance \u63D0\u4EA4\u4F60\u7684 Issue\uFF0C\u6211\u4EEC\u4E00\u8D77\u8BA8\u8BBA\u5440\u3002\r\n\r\n\u5982\u679C\u5E0C\u671B\u4E3ABallance\u5F00\u53D1\u81EA\u5DF1\u7684mod\uFF0C\u5173\u5361\uFF0C\u6B22\u8FCE\u524D\u5F80
-    https://github.com/imengyu/Ballance/wiki \u4E86\u89E3\u76F8\u5173\u6559\u7A0B\uFF01\r\n\r\n\u4E5F\u6B22\u8FCE\u5728
-    Ballance \u5427\u8BA8\u8BBA\u6E38\u620F\u3002\r\n    "
+  m_text: "Ballance Rebuild \u662F\u6EDA\u7403 Ballance \u6E38\u620F\u7684\u5F00\u6E90
+    Unity \u91CD\u5236\u7248\uFF0C\u7531 \u5FEB\u4E50\u7684\u68A6\u9C7C \u5236\u4F5C\u3002\\n\\n\u4F60\u53EF\u4EE5\u6E38\u73A9\u8FD9\u4E2A\u91CD\u5236\u7248\uFF0C\u8FD8\u53EF\u4EE5\u6839\u636E\u6B64\u91CD\u5236\u7248\u5236\u4F5C\u81EA\u5B9A\u4E49\u6A21\u7EC4\u6216\u8005\u5730\u56FE\uFF0C\u5206\u4EAB\u7ED9\u5176\u4ED6\u73A9\u5BB6\u6E38\u73A9\u3002\\n\\n\u9879\u76EE\u7684\u6E90\u4EE3\u7801\u5B58\u653E\u5728
+    https://github.com/imengyu/Ballance \u3002\\n\\n\u5982\u679C\u4F60\u9047\u5230\u4E86BUG\uFF0C\u6216\u8005\u6709\u5F88\u68D2\u7684\u70B9\u5B50\uFF0C\u5EFA\u8BAE\uFF0C\u6B22\u8FCE\u524D\u5F80\u9879\u76EE\u4E3B\u9875
+    https://github.com/imengyu/Ballance \u63D0\u4EA4\u4F60\u7684 Issue\uFF0C\u6211\u4EEC\u4E00\u8D77\u8BA8\u8BBA\u5440\u3002\\n\\n\u5982\u679C\u5E0C\u671B\u4E3ABallance\u5F00\u53D1\u81EA\u5DF1\u7684mod\uFF0C\u5173\u5361\uFF0C\u6B22\u8FCE\u524D\u5F80
+    https://github.com/imengyu/Ballance/wiki \u4E86\u89E3\u76F8\u5173\u6559\u7A0B\uFF01\\n\\n\u4E5F\u6B22\u8FCE\u5728
+    Ballance \u5427\u8BA8\u8BBA\u6E38\u620F\u3002"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b3878ebda42abc4419aa253900051707, type: 2}
   m_sharedMaterial: {fileID: -1416837840553145013, guid: b3878ebda42abc4419aa253900051707, type: 2}
@@ -483,7 +456,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -532,13 +505,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ecd0d56e284114b84aa9be12d5eb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceKey: core.ui.ProjectAbout
-  DefaultString: "\r\nBallance Rebuild \u662F\u6EDA\u7403 Ballance \u6E38\u620F\u7684\u5F00\u6E90
-    Unity \u91CD\u5236\u7248\uFF0C\u7531 \u5FEB\u4E50\u7684\u68A6\u9C7C \u5236\u4F5C\u3002\r\n\r\n\u4F60\u53EF\u4EE5\u6E38\u73A9\u8FD9\u4E2A\u91CD\u5236\u7248\uFF0C\u8FD8\u53EF\u4EE5\u6839\u636E\u6B64\u91CD\u5236\u7248\u5236\u4F5C\u81EA\u5B9A\u4E49\u6A21\u7EC4\u6216\u8005\u5730\u56FE\uFF0C\u5206\u4EAB\u7ED9\u5176\u4ED6\u73A9\u5BB6\u6E38\u73A9\u3002\r\n\r\n\u9879\u76EE\u7684\u6E90\u4EE3\u7801\u5B58\u653E\u5728
-    https://github.com/imengyu/Ballance \u3002\r\n\r\n\u5982\u679C\u4F60\u9047\u5230\u4E86BUG\uFF0C\u6216\u8005\u6709\u5F88\u68D2\u7684\u70B9\u5B50\uFF0C\u5EFA\u8BAE\uFF0C\u6B22\u8FCE\u524D\u5F80\u9879\u76EE\u4E3B\u9875
-    https://github.com/imengyu/Ballance \u63D0\u4EA4\u4F60\u7684 Issue\uFF0C\u6211\u4EEC\u4E00\u8D77\u8BA8\u8BBA\u5440\u3002\r\n\r\n\u5982\u679C\u5E0C\u671B\u4E3ABallance\u5F00\u53D1\u81EA\u5DF1\u7684mod\uFF0C\u5173\u5361\uFF0C\u6B22\u8FCE\u524D\u5F80
-    https://github.com/imengyu/Ballance/wiki \u4E86\u89E3\u76F8\u5173\u6559\u7A0B\uFF01\r\n\r\n\u4E5F\u6B22\u8FCE\u5728
-    Ballance \u5427\u8BA8\u8BBA\u6E38\u620F\u3002\r\n    "
+  ResourceKey: CORE.UI.MENU.ABOUT.PROJECTABOUT
+  DefaultString: "Ballance Rebuild \u662F\u6EDA\u7403 Ballance \u6E38\u620F\u7684\u5F00\u6E90
+    Unity \u91CD\u5236\u7248\uFF0C\u7531 \u5FEB\u4E50\u7684\u68A6\u9C7C \u5236\u4F5C\u3002\\n\\n\u4F60\u53EF\u4EE5\u6E38\u73A9\u8FD9\u4E2A\u91CD\u5236\u7248\uFF0C\u8FD8\u53EF\u4EE5\u6839\u636E\u6B64\u91CD\u5236\u7248\u5236\u4F5C\u81EA\u5B9A\u4E49\u6A21\u7EC4\u6216\u8005\u5730\u56FE\uFF0C\u5206\u4EAB\u7ED9\u5176\u4ED6\u73A9\u5BB6\u6E38\u73A9\u3002\\n\\n\u9879\u76EE\u7684\u6E90\u4EE3\u7801\u5B58\u653E\u5728
+    https://github.com/imengyu/Ballance \u3002\\n\\n\u5982\u679C\u4F60\u9047\u5230\u4E86BUG\uFF0C\u6216\u8005\u6709\u5F88\u68D2\u7684\u70B9\u5B50\uFF0C\u5EFA\u8BAE\uFF0C\u6B22\u8FCE\u524D\u5F80\u9879\u76EE\u4E3B\u9875
+    https://github.com/imengyu/Ballance \u63D0\u4EA4\u4F60\u7684 Issue\uFF0C\u6211\u4EEC\u4E00\u8D77\u8BA8\u8BBA\u5440\u3002\\n\\n\u5982\u679C\u5E0C\u671B\u4E3ABallance\u5F00\u53D1\u81EA\u5DF1\u7684mod\uFF0C\u5173\u5361\uFF0C\u6B22\u8FCE\u524D\u5F80
+    https://github.com/imengyu/Ballance/wiki \u4E86\u89E3\u76F8\u5173\u6559\u7A0B\uFF01\\n\\n\u4E5F\u6B22\u8FCE\u5728
+    Ballance \u5427\u8BA8\u8BBA\u6E38\u620F\u3002"
   ControlText: {fileID: 3526606356985302135}
   localizedText: 
 --- !u!1 &8855897926369662846
@@ -783,7 +756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_AnchorMax.y
@@ -791,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_AnchorMin.y
@@ -835,7 +808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 126.5
       objectReference: {fileID: 0}
     - target: {fileID: 2163045131142455082, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -855,7 +828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.GoGithub
+      value: core.ui.Menu.About.GoGithub
       objectReference: {fileID: 0}
     - target: {fileID: 3586643998408155983, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: DefaultString
@@ -863,19 +836,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_Text
-      value: core.ui.GoGithub
+      value: core.ui.Menu.About.GoGithub
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.GoGithub
+      value: core.ui.Menu.About.GoGithub
       objectReference: {fileID: 0}
     - target: {fileID: 5352430087373172606, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.GoGithub
+      value: core.ui.Menu.About.GoGithub
       objectReference: {fileID: 0}
     - target: {fileID: 5705591227440305647, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
       propertyPath: m_text
       value: "\u524D\u5F80\u9879\u76EE GitHub "
+      objectReference: {fileID: 0}
+    - target: {fileID: 5802114100255228885, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 4.5510864
+      objectReference: {fileID: 0}
+    - target: {fileID: 5802114100255228885, guid: c40ae3053d23f714491047c9cbd60554, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.8161011
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -957,7 +938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchorMax.y
@@ -965,7 +946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchorMin.y
@@ -1005,7 +986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 61.5
       objectReference: {fileID: 0}
     - target: {fileID: 4929648224336437860, guid: 7b75ab1b54ff10c42baedf9c01273fc2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

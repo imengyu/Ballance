@@ -60,7 +60,7 @@ namespace Ballance2.Menu
       page = gameUIManager.FindPage("PagePackageManagerInfo");
       page.OnShow = (options) => {
         if(options.ContainsKey("PackageName")) 
-          SetPackageInfo(options["PackageName"]);
+          SetPackageInfo((string)options["PackageName"]);
       };
       
       ButtonBack.onClick.AddListener(() => gameUIManager.BackPreviusPage());
@@ -91,7 +91,7 @@ namespace Ballance2.Menu
       if(currentPackage == null) {
         ScrollView.gameObject.SetActive(false);
         ContentNotFound.gameObject.SetActive(true);
-        TextContentNotFound.text = I18N.TrF("core.ui.PackageManagerPackNotFound", name);
+        TextContentNotFound.text = I18N.TrF("core.ui.PackageManager.PackNotFound", name);
       } else {
         var package = currentPackage;
         TextPackageName.text = package.BaseInfo.Name;
@@ -143,7 +143,7 @@ namespace Ballance2.Menu
               sb.Append(" ");
               if(!p.MustLoad) {
                 sb.Append(" (");
-                sb.Append(I18N.Tr("core.ui.PackageManagerOptional"));
+                sb.Append(I18N.Tr("core.ui.PackageManager.Optional"));
                 sb.Append(")");
               }
 
@@ -161,7 +161,7 @@ namespace Ballance2.Menu
           var go = itemDependsPrefabPool.NextAvailableObject();
           var text = go.transform.Find("Text").GetComponent<TMP_Text>();
           var button = go.transform.Find("Button").GetComponent<Button>();
-          text.text = I18N.Tr("core.ui.PackageManagerNoDepends");
+          text.text = I18N.Tr("core.ui.PackageManager.NoDepends");
           button.gameObject.SetActive(false);
           button.onClick.RemoveAllListeners();
         }

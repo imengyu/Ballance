@@ -248,7 +248,7 @@ namespace Ballance2.Menu
       var PageHighscoreEntry = GameUIManager.Instance.GetCurrentPage();
       var HighscoreEntryNameTextScore = PageHighscoreEntry.Content.Find("TextScore").GetComponent<TMP_Text>();
       
-      HighscoreEntryNameTextScore.text = $"{_ScoreNTotal} <size=20>{I18N.Tr("core.ui.WinUIPoints")}</size>";
+      HighscoreEntryNameTextScore.text = $"{_ScoreNTotal} <size=20>{I18N.Tr("core.ui.GameUI.WinUI.Points")}</size>";
       
       _HighscoreSound.Play();
       if(HighscoreManager.Instance.CheckLevelHighScore(_GamePlayManager.CurrentLevelName, _ScoreNTotal))

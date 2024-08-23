@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using SubjectNerd.Utilities;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using Ballance2.Utils;
 using Ballance2.UI.Core.Controls;
@@ -42,6 +40,8 @@ namespace Ballance2.UI
     public InputAction LeftAction;
     public InputAction RightAction;
 
+    public event Action<TabItem, int> onActiveTabChanged;
+
     private TabItem currentActiveTab = null;
 
     private void Start() 
@@ -62,6 +62,7 @@ namespace Ballance2.UI
     }
 
     public TabItem CurrentActiveTab => currentActiveTab;
+    public int CurrentActiveTabIndex => currentActiveTab != null ? tabs.IndexOf(currentActiveTab) : -1;
     public ReadOnlyCollection<TabItem> Tabs => tabs.AsReadOnly();
 
     public void Next(bool playSound = false)
@@ -113,7 +114,9 @@ namespace Ballance2.UI
         tab.OnShowContent();
       if (!useTab)
         text.text = tab.Title;
+
       currentActiveTab = tab;
+      onActiveTabChanged?.Invoke(tab, tabs.IndexOf(tab));
       if (useTab)
         currentActiveTab.Header?.SetActive(true);
       

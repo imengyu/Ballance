@@ -5,6 +5,7 @@ using Ballance2.Package;
 using Ballance2.Services;
 using System;
 using System.Collections;
+using Ballance2.Menu.LevelManager;
 
 namespace Ballance2.Game.LevelEditor {
 
@@ -22,7 +23,7 @@ namespace Ballance2.Game.LevelEditor {
         UnityEngine.Object.Destroy(EditorManagerGameObject);
       EditorManagerGameObject = null;
     }
-    public static void Load(string nextLoadLevel)
+    public static void Load(LevelRegistedItem nextLoadLevel)
     {
       EditorManagerGameObject.SetActive(true);
       LevelEditorManager.Instance.Init(nextLoadLevel);

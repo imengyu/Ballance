@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Ballance2.Game.GamePlay;
-using Ballance2.Res;
 using Ballance2.Utils;
 using Battlehub.RTCommon;
 using Newtonsoft.Json;
-using NUnit.Framework.Internal;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
 namespace Ballance2.Game.LevelEditor
 {  
@@ -291,11 +287,13 @@ namespace Ballance2.Game.LevelEditor
     }
     public void Save()
     {
-      Name = InstanceHost.name;
-      Position = InstanceHost.transform.position;
-      EulerAngles = InstanceHost.transform.eulerAngles;
-      Scale = InstanceHost.transform.localScale;
-
+      if (InstanceHost != null)
+      {
+        Name = InstanceHost.name;
+        Position = InstanceHost.transform.position;
+        EulerAngles = InstanceHost.transform.eulerAngles;
+        Scale = InstanceHost.transform.localScale;
+      }
       ConfiguesSave.Clear();
       foreach (var item in Configues)
         ConfiguesSave.Add(item.Key, ConfigueRef.OnConfigueSave(item.Key, item.Value));

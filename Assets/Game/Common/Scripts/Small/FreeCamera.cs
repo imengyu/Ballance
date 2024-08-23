@@ -164,6 +164,10 @@ namespace Ballance2.Game
       Instance = this;
       AudioListener = GetComponent<AudioListener>();
     }
+    private void OnDisable()
+    {
+      Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
     private void Update()
     {
       if (Wireframe != _Wireframe) UpdateWireframe();
@@ -261,15 +265,15 @@ namespace Ballance2.Game
           //增加移动速度
           if (Input.GetAxis("Mouse ScrollWheel") < 0)
           {
-            if (cameraSpeed < 1)
+            if (cameraSpeed < 0.5f)
               cameraSpeed -= 0.01f;
-            else if (cameraSpeed < 5)
+            else if (cameraSpeed < 1f)
               cameraSpeed -= 0.2f;
             else if (cameraSpeed < 10)
               cameraSpeed -= 2f;
-            else if (cameraSpeed < 150)
+            else if (cameraSpeed < 100)
               cameraSpeed -= 10f;
-            else if (cameraSpeed < 500)
+            else if (cameraSpeed < 400)
               cameraSpeed -= 50f;
             else 
               cameraSpeed -= 100f;
@@ -279,15 +283,15 @@ namespace Ballance2.Game
           //减少移动速度
           if (Input.GetAxis("Mouse ScrollWheel") > 0)
           {
-            if (cameraSpeed < 1)
+            if (cameraSpeed < 0.5f)
               cameraSpeed += 0.01f;
-            else if (cameraSpeed < 10)
+            else if (cameraSpeed < 1f)
               cameraSpeed += 0.2f;
-            else if (cameraSpeed < 20)
+            else if (cameraSpeed < 10)
               cameraSpeed += 2f;
-            else if (cameraSpeed < 150)
+            else if (cameraSpeed < 100)
               cameraSpeed += 10f;
-            else if (cameraSpeed < 500)
+            else if (cameraSpeed < 400)
               cameraSpeed += 50f;
             else cameraSpeed += 100f;
 

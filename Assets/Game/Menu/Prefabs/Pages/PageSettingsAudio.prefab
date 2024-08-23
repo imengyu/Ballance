@@ -152,19 +152,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsAudioBackground
+      value: core.ui.Settings.AudioBackground
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsAudioBackground
+      value: core.ui.Settings.AudioBackground
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsAudioBackground
+      value: core.ui.Settings.AudioBackground
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsAudioBackground
+      value: core.ui.Settings.AudioBackground
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -341,19 +341,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsAudioMain
+      value: core.ui.Settings.AudioMain
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsAudioMain
+      value: core.ui.Settings.AudioMain
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsAudioMain
+      value: core.ui.Settings.AudioMain
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsAudioMain
+      value: core.ui.Settings.AudioMain
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -506,7 +506,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsAudioTilte
+      value: core.ui.Settings.AudioTilte
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -819,19 +819,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsAudioUI
+      value: core.ui.Settings.AudioUI
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsAudioUI
+      value: core.ui.Settings.AudioUI
       objectReference: {fileID: 0}
     - target: {fileID: 5283831835903969488, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsAudioUI
+      value: core.ui.Settings.AudioUI
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsAudioUI
+      value: core.ui.Settings.AudioUI
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString

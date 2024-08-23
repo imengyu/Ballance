@@ -67,16 +67,6 @@ namespace Ballance2.Game.LevelEditor
           OnGetValue = () => editor.LevelCurrent.LevelInfo.allowPreview,
           OnValueChanged = (v) => editor.LevelCurrent.LevelInfo.allowPreview = (bool)v,
         },
-        new LevelDynamicModelAssetConfigueItem() {
-          Name = "I18N:core.editor.info.props.AllowEdit",
-          Key = "AllowEdit",
-          Type = "Checkbox",
-          Group = "Basic",
-          NoIntitalUpdate = true,
-          NoSaveToConfigues = true,
-          OnGetValue = () => editor.LevelCurrent.LevelInfo.allowEdit,
-          OnValueChanged = (v) => editor.LevelCurrent.LevelInfo.allowEdit = (bool)v,
-        },
       };
     }
   }

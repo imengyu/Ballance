@@ -639,7 +639,7 @@ MonoBehaviour:
     - Icon: {fileID: 21300000, guid: 22baf584d8d62584ba2de472668c1895, type: 3}
       Key: 
       Type: 2
-  - DisplayName: I18N:core.ui.SettingsControlReset
+  - DisplayName: I18N:core.ui.Settings.ControlReset
     Icons:
     - Icon: {fileID: 0}
       Key: X
@@ -1451,7 +1451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -1459,15 +1459,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1593,7 +1593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -1601,15 +1601,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1735,7 +1735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlScreenshot
+      value: core.ui.Settings.ControlScreenshot
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -1743,15 +1743,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1877,7 +1877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuRotateCamLeft
+      value: core.ui.Settings.ControlMenuRotateCamLeft
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -1885,15 +1885,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2019,7 +2019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlToggleFPS
+      value: core.ui.Settings.ControlToggleFPS
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -2027,15 +2027,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2161,7 +2161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -2169,15 +2169,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuBack
+      value: core.ui.Settings.ControlMenuBack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2303,7 +2303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -2311,15 +2311,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuDown
+      value: core.ui.Settings.ControlMenuDown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2445,7 +2445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -2453,15 +2453,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2495,15 +2495,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuReverseControl
+      value: core.ui.Settings.ControlMenuReverseControl
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuReverseControl
+      value: core.ui.Settings.ControlMenuReverseControl
       objectReference: {fileID: 0}
     - target: {fileID: 1738402947542025941, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuReverseControl
+      value: core.ui.Settings.ControlMenuReverseControl
       objectReference: {fileID: 0}
     - target: {fileID: 1977096574704402867, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Pivot.x
@@ -2587,7 +2587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuReverseControl
+      value: core.ui.Settings.ControlMenuReverseControl
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -2787,7 +2787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -2795,15 +2795,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2929,7 +2929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -2937,15 +2937,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3482,7 +3482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -3490,15 +3490,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuRight
+      value: core.ui.Settings.ControlMenuRight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3624,7 +3624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuRotateCamRight
+      value: core.ui.Settings.ControlMenuRotateCamRight
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -3632,15 +3632,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3678,11 +3678,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2764827186682267922, guid: 04cf1fa71385d5f4fa7f24b239d610ac, type: 3}
       propertyPath: tabs.Array.data[2].Title
-      value: I18N:core.ui.SettingsControlTitleMobile
+      value: I18N:core.ui.Settings.ControlTitleMobile
       objectReference: {fileID: 0}
     - target: {fileID: 2764827186682267922, guid: 04cf1fa71385d5f4fa7f24b239d610ac, type: 3}
       propertyPath: tabs.Array.data[3].Title
-      value: I18N:core.ui.SettingsControlTitleOthers
+      value: I18N:core.ui.Settings.ControlTitleOthers
       objectReference: {fileID: 0}
     - target: {fileID: 2764827186682267922, guid: 04cf1fa71385d5f4fa7f24b239d610ac, type: 3}
       propertyPath: tabs.Array.data[0].Content
@@ -3924,7 +3924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -3932,15 +3932,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuLeft
+      value: core.ui.Settings.ControlMenuLeft
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4066,7 +4066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlToggleView
+      value: core.ui.Settings.ControlToggleView
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -4074,15 +4074,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4208,7 +4208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -4216,15 +4216,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4350,7 +4350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -4358,15 +4358,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4492,7 +4492,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -4500,15 +4500,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuUp
+      value: core.ui.Settings.ControlMenuUp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4638,7 +4638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -4646,15 +4646,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuForward
+      value: core.ui.Settings.ControlMenuForward
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4676,7 +4676,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlTilte
+      value: core.ui.Settings.ControlTilte
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -4918,7 +4918,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuRotateCam2
+      value: core.ui.Settings.ControlMenuRotateCam2
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -4926,15 +4926,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuRotateCam2
+      value: core.ui.Settings.ControlMenuRotateCam2
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuRotateCam2
+      value: core.ui.Settings.ControlMenuRotateCam2
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuRotateCam2
+      value: core.ui.Settings.ControlMenuRotateCam2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5060,7 +5060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -5068,15 +5068,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuOverlook
+      value: core.ui.Settings.ControlMenuOverlook
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5202,7 +5202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 8055980374653781866, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: DefaultString
@@ -5210,15 +5210,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_Text
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_ResourceKey
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     - target: {fileID: 9165112632644006965, guid: 08cd00bd10b452844a2abfbf8bb17e2a, type: 3}
       propertyPath: m_DefaultString
-      value: core.ui.SettingsControlMenuRotateCam
+      value: core.ui.Settings.ControlMenuRotateCam
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -424,6 +424,16 @@ namespace Ballance2.Utils
         return input.Substring(index + find.Length);
       return input;
     }
+    /// <summary>
+    /// 如果输入字符串为空，则返回默认字符串，否则返回输入字符串
+    /// </summary>
+    /// <param name="input">输入字符串</param>
+    /// <param name="defaultString">默认字符串</param>
+    /// <returns></returns>
+    public static string ReturnDefaultIsNullOrEmpty(string input, string defaultString)
+    {
+      return string.IsNullOrEmpty(input) ? defaultString : input;
+    }
 
     public const string SpeicalPattern = "[\n`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}]";
 

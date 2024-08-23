@@ -56,7 +56,7 @@ namespace Ballance2.Menu
       if (data != null) {
         _CurrentIndex = LevelNames.IndexOf(name);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10 && i < data.Count; i++) {
           var item = data[i];
           if (item != null) {
             _TextItem[i].textName.text = item.name;
