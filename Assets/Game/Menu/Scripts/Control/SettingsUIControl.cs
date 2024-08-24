@@ -5,7 +5,10 @@ using Ballance2.Services;
 using Ballance2.Services.I18N;
 using Ballance2.UI.Core;
 using Ballance2.UI.Core.Controls;
+using Ballance2.Utils;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ballance2.Menu
 {
@@ -46,6 +49,9 @@ namespace Ballance2.Menu
         var keyCurrent = options["keyCurrent"];
         var Text = PageBindKey.Content.Find("Panel/Text").GetComponent<UIText>();
         Text.text = I18N.TrF("core.ui.Settings.Control.ControllerBind", "", keyName, keyCurrent);
+      };
+      PageLanguage.OnShow += (options) => {
+        LoadAdditionalLanguagesToUI(PageLanguage);
       };
 
       GameTimer.Delay(1.0f, () => {
@@ -178,6 +184,7 @@ namespace Ballance2.Menu
         if (resolutions == null) 
         {
           //加载分辨率设置
+          var isMathed = false;
           resolutions = Screen.resolutions;
           var GrResolution = MessageCenter.GetComponentInstance("GrResolution").GetComponent<Updown>();
           var currentResolution = Screen.currentResolution;
@@ -187,22 +194,30 @@ namespace Ballance2.Menu
             GrResolution.AddOption($"{resolution.width}x{resolution.height}@{resolution.refreshRateRatio.value}");
             if (
               updateGrResolution != null
-              && currentResolution.width == resolution.width 
+              && currentResolution.width == resolution.width
               && currentResolution.height == resolution.height
               && currentResolution.refreshRateRatio.value == resolution.refreshRateRatio.value
-            ) 
+            )
+            {
+              isMathed = true;
               updateGrResolution.Invoke(i - 1);
+            }
+          }
+          GrResolution.AddOption("Default");
+          if (!isMathed)
+          {
+            updateGrResolution.Invoke(resolutions.Length);
           }
         }
         if (qualities == null) 
         {
           qualities = new QualitiesItemData[] {
-            new QualitiesItemData { level = 0, text = I18N.Tr("core.ui.Settings.QualityVeryLow") },
-            new QualitiesItemData { level = 1, text = I18N.Tr("core.ui.Settings.QualityLow") },
-            new QualitiesItemData { level = 2, text = I18N.Tr("core.ui.Settings.QualityMedium") },
-            new QualitiesItemData { level = 3, text = I18N.Tr("core.ui.Settings.QualityHigh") },
-            new QualitiesItemData { level = 4, text = I18N.Tr("core.ui.Settings.QualityVeryHigh") },
-            new QualitiesItemData { level = 5, text = I18N.Tr("core.ui.Settings.QualityUltra") },
+            new QualitiesItemData { level = 0, text = I18N.Tr("core.ui.Settings.Quality.VeryLow") },
+            new QualitiesItemData { level = 1, text = I18N.Tr("core.ui.Settings.Quality.Low") },
+            new QualitiesItemData { level = 2, text = I18N.Tr("core.ui.Settings.Quality.Medium") },
+            new QualitiesItemData { level = 3, text = I18N.Tr("core.ui.Settings.Quality.High") },
+            new QualitiesItemData { level = 4, text = I18N.Tr("core.ui.Settings.Quality.VeryHigh") },
+            new QualitiesItemData { level = 5, text = I18N.Tr("core.ui.Settings.Quality.Ultra") },
           };
           var GrQuality = MessageCenter.GetComponentInstance("GrQuality").GetComponent<Updown>();
           var qualitiyCurrent = QualitySettings.GetQualityLevel();
@@ -236,9 +251,12 @@ namespace Ballance2.Menu
 
       //语言
       MessageCenter.SubscribeEvent("BtnSettingsLanguageClick", () => { GameUIManager.GoPage("PageLanguage"); });
-      MessageCenter.SubscribeEvent("BtnChineseSimplifiedClick", () => { ApplyLanguage(SystemLanguage.ChineseSimplified); });
-      MessageCenter.SubscribeEvent("BtnChineseTraditionalClick", () => { ApplyLanguage(SystemLanguage.ChineseTraditional); });
-      MessageCenter.SubscribeEvent("BtnEnglishClick", () => { ApplyLanguage(SystemLanguage.English); });
+      MessageCenter.SubscribeEvent("BtnChineseSimplifiedClick", () => { 
+        ApplyLanguage(SystemLanguage.ChineseSimplified); 
+      });
+      MessageCenter.SubscribeEvent("BtnHelpTranslateClick", () => {
+        Application.OpenURL(ConstLinks.HelpTranslate);
+      });
 
       MessageCenter.SubscribeEvent("BtnLangBackClick", () => {
         GameUIManager.BackPreviusPage();
@@ -265,6 +283,22 @@ namespace Ballance2.Menu
       MessageCenter.SubscribeEvent("BtnRestartGameClick", () => { GameManager.Instance.RestartGame(); });
     }
 
+    private static void LoadAdditionalLanguagesToUI(GameUIPage PageLanguage)
+    {
+      var Prefab = PageLanguage.Content.Find("ScrollViewVetical/Viewport/ContentView/BtnPrefab").gameObject;
+      var AdditionalLanguages = PageLanguage.Content.Find("ScrollViewVetical/Viewport/ContentView/AdditionalLanguages");
+
+      foreach(var lang in I18NProvider.AdditionalLanguageFiles)
+      {
+        var langKey = lang.Key;
+        var btn = CloneUtils.CloneNewObjectWithParent(Prefab, AdditionalLanguages);
+        btn.transform.Find("Text").gameObject.GetComponent<TMP_Text>().text = lang.Value;
+        btn.SetActive(true);
+        btn.GetComponent<Button>().onClick.AddListener(() => {
+          ApplyLanguage(langKey);
+        });
+      }
+    }
     private static void ApplyLanguage(SystemLanguage language) {
       GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME).SetInt("language", (int)language);
       if (I18NProvider.GetCurrentLanguage() != language)

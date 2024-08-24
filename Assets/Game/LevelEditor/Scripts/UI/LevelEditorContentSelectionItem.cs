@@ -24,6 +24,9 @@ namespace Ballance2.Game.LevelEditor
     public Action<LevelDynamicModelAsset> onDelete;
 
     private LevelDynamicModelAsset asset = null;
+    private bool canDelete = false;
+
+
 
     public void OnDeselect(BaseEventData eventData)
     {
@@ -50,7 +53,8 @@ namespace Ballance2.Game.LevelEditor
     }
     public void Delete()
     {
-      onDelete.Invoke(asset);
+      if (canDelete)
+        onDelete.Invoke(asset);
     }
 
     public void SetInfo(LevelDynamicModelAsset info)
@@ -61,7 +65,8 @@ namespace Ballance2.Game.LevelEditor
       Tag.gameObject.SetActive(!string.IsNullOrEmpty(info.Tag));
       TagText.text = info.Tag;
       prefabSpawnPoint.UpdateInfo(info.Prefab);
-      DeleteButton.gameObject.SetActive(info.SourceType == LevelDynamicModelSource.Embed && info.SourcePath.StartsWith("levelasset:"));
+      canDelete = info.SourceType == LevelDynamicModelSource.Embed && info.SourcePath.StartsWith("levelasset:");
+      DeleteButton.gameObject.SetActive(canDelete);
     }
   }
 }

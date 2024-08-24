@@ -11,8 +11,11 @@ using UnityEngine;
 using static Ballance2.UI.UITabSelect;
 using System.Collections.Generic;
 using Ballance2.Game.GamePlay;
+
 /**
 自定义关卡管理菜单的控制脚本
+
+todo: 订阅
 */
 namespace Ballance2.Menu
 {
@@ -157,16 +160,17 @@ namespace Ballance2.Menu
     private void LoadLevelList()
     {
       list.Clear();
-      EmptyText.text = I18N.Tr("core.ui.Menu.LevelSelect.Empty");
       switch (Tab.CurrentActiveTabIndex)
       {
         case 0:
+          EmptyText.text = I18N.Tr("core.ui.Menu.LevelSelect.Empty");
 
           break;
         case 1:
           EmptyText.text = I18N.Tr("core.ui.Menu.LevelSelect.EmptySubscribe");
           break;
         case 2:
+          EmptyText.text = I18N.Tr("core.ui.Menu.LevelSelect.Empty");
           foreach (var level in LevelManager.LevelManager.Instance.LocalLevels)
           {
             var item = new ListItem(level);
@@ -176,6 +180,7 @@ namespace Ballance2.Menu
           }
           break;
         case 3:
+          EmptyText.text = I18N.Tr("core.ui.Menu.LevelSelect.EmptyMine");
           foreach (var level in LevelManager.LevelManager.Instance.MineLevels)
           {
             var item = new ListItem(level);

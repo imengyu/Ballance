@@ -87,6 +87,17 @@ namespace Ballance2.Utils
       return (arr == null || arr.Length == 0);
     }
     /// <summary>
+    /// 如果输入为空，则返回默认值
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="input">输入</param>
+    /// <param name="defaultValue">默认值</param>
+    /// <returns></returns>
+    public static T ReturnDefaultIfNull<T>(T input, T defaultValue)
+    {
+      return input == null ? defaultValue : input;
+    }
+    /// <summary>
     /// 检查 Dictionary 是否为空
     /// </summary>
     /// <param name="arr">要检查的 Dictionary</param>

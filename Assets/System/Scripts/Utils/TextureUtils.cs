@@ -104,6 +104,8 @@ namespace Ballance2.Utils
     }
     public static Sprite CreateSpriteFromTexture(Texture2D tex)
     {
+      if (tex == null)
+        return null;
       return Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
     }
     public static Texture2D TextureToTexture2D(Texture texture)

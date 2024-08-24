@@ -57,6 +57,8 @@ namespace Ballance2.Services.Init
         newGameManager.name = "GameSystemInit";
         newGameManager.AddComponent<GameSystemInit>();
 
+        I18NProvider.LoadLanguageFile();
+
         //Init system services
         GameSystem.RegSystemService<GameMediator>();
 

@@ -13,14 +13,14 @@ namespace Ballance2.Game.GamePlay.Balls
     private Vector3 paperPeicesForceDir = new Vector3(0.03f, 0, -0.03f);
 
     public BallPaper() {
-      this._PiecesSoundName = "core.sounds:Pieces_Wood.wav";
-      this._SoundConfig.HitSound.Names.Add("All", "core.sounds:Hit_Paper.wav");
-      this._SoundConfig.RollSound.Names.Add("All", "core.sounds:Roll_Paper.wav");
-      this._SoundConfig.RollSoundSpeedReference = 12f;
-      this._SoundConfig.RollSound.TimeDelayStart = 0.8f;
-      this._SoundConfig.RollSound.TimeDelayEnd = 0.1f;
+      _PiecesSoundName = "core.sounds:Pieces_Wood.wav";
+      _SoundConfig.HitSound.Names.Add("All", "core.sounds:Hit_Paper.wav");
+      _SoundConfig.RollSound.Names.Add("All", "core.sounds:Roll_Paper.wav");
+      _SoundConfig.RollSoundSpeedReference = 12f;
+      _SoundConfig.RollSound.TimeDelayStart = 0.8f;
+      _SoundConfig.RollSound.TimeDelayEnd = 0.1f;
       //自定义物理化碎片
-      this._PiecesPhysCallback = (go, data) => {
+      _PiecesPhysCallback = (go, data) => {
         var body = go.AddComponent<PhysicsObject>();
         body.Mass = CommonUtils.RandomFloat(0.02f, 0.09f);
         body.Elasticity = data.Elasticity;

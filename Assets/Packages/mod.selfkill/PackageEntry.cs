@@ -28,6 +28,9 @@ namespace mod.selfkill {
       {
         OnLoad = (package) =>
         {
+          var setting = GameSettingsManager.GetSettings(package.PackageName);
+          deathKey.LoadBindingOverridesFromJson(setting.GetString("key", ""));
+
           GameEventEmitterHandler eventHandler = null;
           //进入关卡事件，进入关卡之后才能访问 GamePlayManager
           GameManager.GameMediator.RegisterEventHandler(package, GameEventNames.EVENT_LEVEL_BUILDER_START, TAG, (evtName, param) =>
@@ -59,9 +62,9 @@ namespace mod.selfkill {
           {
             deathKey.LoadBindingOverridesFromJson(setting.GetString("key", ""));
             key.BindAction = deathKey;
-            key.BindingIndex = 0;
+            key.BindingIndex = 1;
             controller.BindAction = deathKey;
-            controller.BindingIndex = 1;
+            controller.BindingIndex = 2;
           };
           settingsUI.Page.OnHide += () =>
           {

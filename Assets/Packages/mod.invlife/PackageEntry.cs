@@ -14,9 +14,11 @@ namespace mod.invlife {
     public static GamePackageEntry Main() {
       GamePackageEntry entry = new GamePackageEntry();
       entry.OnLoad = (package) => {
+        var setting = GameSettingsManager.GetSettings(package.PackageName);
+        enable = setting.GetBool("enable");
         /*
         此处功能是监听GamePlayManager上的EventBeforeStart事件，在关卡开始之前设置生命为-1（无限）
-        */ 
+        */
         GameEventEmitterHandler eventHandler = null; 
         GameManager.GameMediator.RegisterEventHandler(package, GameEventNames.EVENT_LEVEL_BUILDER_START, TAG, (evtName, param) => {
           var GamePlayManagerInstance = GamePlayManager.Instance;

@@ -531,7 +531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 283.9433, y: -276.62454}
+  m_AnchoredPosition: {x: 283.9433, y: -296.62454}
   m_SizeDelta: {x: 567.8866, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3786646487473707782
@@ -560,7 +560,7 @@ MonoBehaviour:
     m_Top: 15
     m_Bottom: 20
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -1432,7 +1432,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 286.4433, y: -281.8491}
+  m_AnchoredPosition: {x: 286.4433, y: -321.8491}
   m_SizeDelta: {x: 532.8866, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3563593741473335650
@@ -1548,7 +1548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 286.4433, y: -209.4579}
+  m_AnchoredPosition: {x: 286.4433, y: -239.4579}
   m_SizeDelta: {x: 532.8866, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2908553605950786573
@@ -1957,6 +1957,7 @@ MonoBehaviour:
   TextExplain: {fileID: 5463183678585355880}
   PanelDepends: {fileID: 3050444823777018252}
   ItemDependsPrefab: {fileID: 3666559123491602894}
+  DefaultPackageLogo: {fileID: -9100469446420412935, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
   ScrollView: {fileID: 3125780382158733591}
   ContentNotFound: {fileID: 1507085899952898256}
   TextContentNotFound: {fileID: 7900510118029390435}
@@ -2761,7 +2762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3510988253724056833, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -196.72533
+      value: -246.5
       objectReference: {fileID: 0}
     - target: {fileID: 3835671058773838595, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Horizontal
@@ -2897,7 +2898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Size
-      value: 0.67897147
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8905980744782028926, guid: 38d86cc1785d7774f87dab7495bf034d, type: 3}
       propertyPath: m_Value

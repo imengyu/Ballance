@@ -44,6 +44,7 @@ namespace Ballance2.Package
     {
       XmlDocument doc = new XmlDocument();
       doc.LoadXml(GameSystemPackageResource.Instance.SystemPackageDef.text);
+      PreLoadI18NResource(GameSystemPackageResource.Instance.SystemPackageLanguageResPre.text);
       ReadInfo(doc);
       I18NProvider.LoadLanguageResources(GameSystemPackageResource.Instance.SystemPackageLanguageRes.text);
       return base.LoadInfo(filePath);

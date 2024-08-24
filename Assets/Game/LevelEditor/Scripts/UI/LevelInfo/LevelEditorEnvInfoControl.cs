@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Ballance2;
+using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Utils;
 using SimpleFileBrowser;
@@ -14,6 +15,7 @@ namespace Ballance2.Game.LevelEditor
 {
   public class LevelEditorEnvInfoControl : MonoBehaviour
   {
+    private const string TAG = "LevelEditorEnvInfoControl";
     private LevelDynamicAssembe level;
 
     public Toggle ToggleUFO;
@@ -30,7 +32,7 @@ namespace Ballance2.Game.LevelEditor
       "1", "2", "3", "4", "5"
     };
     private List<string> skys = new List<string>() {
-      "Custom", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"
+      "custom", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"
     };
 
     private AudioSource musicPreviewPlayer;
@@ -54,8 +56,7 @@ namespace Ballance2.Game.LevelEditor
         if (noSkyChange)
           return;
         level.LevelInfo.level.skyBox = skys[v];
-        LevelEditorManager.Instance.CreateSky();
-        UpdateSkySelectImages();
+        StartCoroutine(DelayUpdateSky());
       });
       DropdownMusic.onValueChanged.AddListener((v) => {
         if (noMusicChange)
@@ -83,19 +84,25 @@ namespace Ballance2.Game.LevelEditor
     private void OnDestroy() {
       GameSoundManager.Instance?.DestroySoundPlayer(musicPreviewPlayer);
     }
-    
+
+
+    private IEnumerator DelayUpdateSky()
+    {
+      yield return StartCoroutine(LevelEditorManager.Instance.CreateSky());
+      UpdateSkySelectImages();
+    }
     private IEnumerator LoadSkyImage(string path, string type)
     {
       var targetPath = $"{level.LevelDirPath}/assets/CustomSkyBox{type}.png";
-      Texture2D tex = null;
       try
       {
         if (!File.Exists(path))
           throw null;
-        File.Copy(path, targetPath);
+        File.Copy(path, targetPath, true);
       }
-      catch
+      catch (System.Exception e)
       {
+        Log.E(TAG, "Copy file to asset failed: " + e.ToString());
         LevelEditorManager.Instance.LevelEditorUIControl.Alert("I18N:core.ui.Tip", "I18N:core.editor.messages.LoadSkyTexFailed", LevelEditorConfirmIcon.Error);
         yield break;
       }
@@ -104,17 +111,18 @@ namespace Ballance2.Game.LevelEditor
       yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile(targetPath, result));
       if (result.Result == null)
       {
+        Log.E(TAG, "LoadTexture2dFromFile failed: " + result.Error);
         LevelEditorManager.Instance.LevelEditorUIControl.Alert("I18N:core.ui.Tip", "I18N:core.editor.messages.LoadSkyTexFailed", LevelEditorConfirmIcon.Error);
         yield break;
       }
     
       switch (type)
       {
-        case "F": ImageSkyBoxF.sprite = TextureUtils.CreateSpriteFromTexture(tex); break;
-        case "B": ImageSkyBoxB.sprite = TextureUtils.CreateSpriteFromTexture(tex); break;
-        case "L": ImageSkyBoxL.sprite = TextureUtils.CreateSpriteFromTexture(tex); break;
-        case "R": ImageSkyBoxR.sprite = TextureUtils.CreateSpriteFromTexture(tex); break;
-        case "D": ImageSkyBoxD.sprite = TextureUtils.CreateSpriteFromTexture(tex); break;
+        case "F": ImageSkyBoxF.sprite = TextureUtils.CreateSpriteFromTexture(result.Result); break;
+        case "B": ImageSkyBoxB.sprite = TextureUtils.CreateSpriteFromTexture(result.Result); break;
+        case "L": ImageSkyBoxL.sprite = TextureUtils.CreateSpriteFromTexture(result.Result); break;
+        case "R": ImageSkyBoxR.sprite = TextureUtils.CreateSpriteFromTexture(result.Result); break;
+        case "D": ImageSkyBoxD.sprite = TextureUtils.CreateSpriteFromTexture(result.Result); break;
       }
       yield return StartCoroutine(LevelEditorManager.Instance.CreateSky());
     }

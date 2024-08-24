@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using UnityEngine;
 
@@ -25,14 +27,36 @@ namespace Ballance2.Services.I18N
     private const string TAG = "I18NProvider";
 
     private static SystemLanguage currentLanguage = SystemLanguage.ChineseSimplified;
-    private static Dictionary<string, string> LanguageValues = new Dictionary<string, string>();
+    public static Dictionary<string, string> LanguageValues { get; } = new Dictionary<string, string>();
+    public static Dictionary<SystemLanguage, string> AdditionalLanguageFiles { get; } = new Dictionary<SystemLanguage, string>();
 
     //由GameManager调用
-    
-    public static void ClearAllLanguageResources()
+
+    internal static void ClearAllLanguageResources()
     {
       currentLanguage = SystemLanguage.ChineseSimplified;
       LanguageValues.Clear();
+    }
+    internal static void LoadLanguageFile()
+    {
+      var files = new DirectoryInfo(Application.streamingAssetsPath + "/Languages").GetFiles("*.xml", SearchOption.TopDirectoryOnly);
+      foreach (var file in files)
+      {
+        var xml = new XmlDocument();
+        xml.LoadXml(File.ReadAllText(file.FullName));
+        if (xml.DocumentElement != null && xml.DocumentElement.Name == "I18n" && xml.DocumentElement.ChildNodes.Count > 0)
+        {
+          var child = xml.DocumentElement.ChildNodes[0];
+          if (child.Name == "Language" && child.ChildNodes.Count > 0 && child.Attributes["name"] != null)
+          {
+            if (Enum.TryParse<SystemLanguage>(child.Attributes["name"].Value, out var result))
+            {
+              if (!AdditionalLanguageFiles.ContainsKey(result))
+                AdditionalLanguageFiles.Add(result, child.ChildNodes[0].InnerText);
+            }
+          }
+        }
+      }
     }
 
     private static void LoadLanguageNodeChild(Dictionary<string, string> dict, XmlNode nodeLanguage, string prefix) 

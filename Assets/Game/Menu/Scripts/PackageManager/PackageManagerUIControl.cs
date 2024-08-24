@@ -63,7 +63,6 @@ namespace Ballance2.Menu
 
       ScrollView.SetItemCountFunc(() => packageItems.Count);
       ScrollView.SetUpdateFunc(ItemUpdateFn);
-      ScrollView.defaultItemSize = new Vector2((transform as RectTransform).rect.width - 250, 80);
 
       ButtonEnableAll.onClick.AddListener(() => EnableAll());
       ButtonDisableAll.onClick.AddListener(() => DisableAll());
@@ -168,7 +167,7 @@ namespace Ballance2.Menu
       else {
         ButtonUnload.gameObject.SetActive(false);
         TextNotUnloadableText.gameObject.SetActive(true);
-        TextNotUnloadableText.text = I18N.Tr("core.ui.PackageSystemPackage");
+        TextNotUnloadableText.text = I18N.Tr("core.ui.PackageManager.PackageSystemPackage");
         ToggleEnable.onValueChanged.RemoveAllListeners();
         ToggleEnable.gameObject.SetActive(false);
       }
@@ -233,7 +232,7 @@ namespace Ballance2.Menu
     }
 
     private void UnloadPackage(string name) {
-      gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageUnaloadTip")  + '\n' + I18N.TrF("core.ui.PackageWantUnaload", packageStateChanges.Count), () => {
+      gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManager.PackageUnaloadTip")  + '\n' + I18N.TrF("core.ui.PackageManager.PackageWantUnaload", packageStateChanges.Count), () => {
         packageStateChanges.Clear();
         gameUIManager.BackPreviusPage();
       }, () => {

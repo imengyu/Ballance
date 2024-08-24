@@ -159,17 +159,17 @@ namespace Ballance2.UI.Core
             foreach (var item in finalStaticDisplayActions)
               KeyButtons.AddStaticDisplayActions(item);
         }
-        GameManager.Instance.Delay(0.2f, () => {
-          if (KeyButtons != null)
-          {
-            KeyButtons.EnableAllDisplayActions();
-            if (!DelayShowDisplayAction)
-              ShowKeyButtons();
-          }
-          if (CanBack && BackAction.bindings.Count > 0)
-            BackAction.Enable();
-        });
       }
+      GameManager.Instance.Delay(0.2f, () => {
+        if (KeyButtons != null)
+        {
+          KeyButtons.EnableAllDisplayActions();
+          if (!DelayShowDisplayAction)
+            ShowKeyButtons();
+        }
+        if (CanBack && BackAction.bindings.Count > 0)
+          BackAction.Enable();
+      });
     }
 
     /// <summary>

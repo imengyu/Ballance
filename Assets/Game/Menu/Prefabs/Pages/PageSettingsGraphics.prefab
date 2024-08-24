@@ -236,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.MenuFullScreen
+      value: core.ui.Settings.Menu.FullScreen
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -583,7 +583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.MenuVSync
+      value: core.ui.Settings.Menu.VSync
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -771,11 +771,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4537979571061933298, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Size
-      value: 0.723549
+      value: 0.9515086
       objectReference: {fileID: 0}
     - target: {fileID: 4537979571061933298, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Value
-      value: -0.7906907
+      value: -0.00002926348
       objectReference: {fileID: 0}
     - target: {fileID: 6670425074761761996, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -795,7 +795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492604842380458381, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -238.06773
+      value: -271.89917
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -897,7 +897,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.Menu.GraphicsTilte
+      value: CORE.UI.SETTINGS.MENU.GRAPHICSTILTE
+      objectReference: {fileID: 0}
+    - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
+      propertyPath: DefaultString
+      value: "\u89C6\u9891"
       objectReference: {fileID: 0}
     - target: {fileID: 4980394928004744558, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_Pivot.x
@@ -981,7 +985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_text
-      value: core.ui.Settings.Menu.GraphicsTilte
+      value: "\u89C6\u9891"
       objectReference: {fileID: 0}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_fontSize
@@ -1087,7 +1091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.MenuQuality
+      value: core.ui.Settings.Menu.Quality
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -1372,7 +1376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.MenuCloud
+      value: core.ui.Settings.Menu.Cloud
       objectReference: {fileID: 0}
     - target: {fileID: 3050068471726342216, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: DefaultString
@@ -1527,6 +1531,22 @@ PrefabInstance:
       propertyPath: m_DefaultString
       value: core.ui.Settings.MenuResolution
       objectReference: {fileID: 0}
+    - target: {fileID: 5548127341266196940, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -48.5923
+      objectReference: {fileID: 0}
+    - target: {fileID: 5548127341266196940, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 24.296616
+      objectReference: {fileID: 0}
+    - target: {fileID: 5675741392010398145, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 78.593
+      objectReference: {fileID: 0}
+    - target: {fileID: 5675741392010398145, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -9.999996
+      objectReference: {fileID: 0}
     - target: {fileID: 5705238403932930756, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: _value
       value: 0
@@ -1547,9 +1567,13 @@ PrefabInstance:
       propertyPath: m_text
       value: Unknow %
       objectReference: {fileID: 0}
+    - target: {fileID: 6497597936550056333, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -42.7
+      objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.MenuResolution
+      value: core.ui.Settings.Menu.Resolution
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -1558,6 +1582,10 @@ PrefabInstance:
     - target: {fileID: 7033815402476303036, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: StepValue
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033815402476303036, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
+      propertyPath: AppendText
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7033815402476303036, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: UseOptions

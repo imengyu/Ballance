@@ -1,4 +1,5 @@
 using Ballance2.Entry;
+using Ballance2.Menu.LevelManager;
 using Ballance2.Services;
 using Ballance2.Services.Debug;
 
@@ -12,7 +13,7 @@ namespace Ballance2.Game.GamePlay.DebugTools
         GameErrorChecker.ThrowGameError(GameError.ParamNotProvide, "LevelName 未设置！");
         return;
       }
-      GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", GameDebugEntry.Instance.LevelName);
+      GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", LevelManager.Instance.GetLevelByName(GameDebugEntry.Instance.LevelName));
     } 
   }
 }

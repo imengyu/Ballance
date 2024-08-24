@@ -235,7 +235,7 @@ namespace Ballance2.Game.LevelEditor
       Material customSkyMat = null;
       if (LevelCurrent.LevelInfo.level.skyBox == "custom")
       {
-        Texture B = null, F = null, L = null, R = null, T = null, D = null;
+        Texture B, F, L, R, T, D;
         var result = new EnumeratorResultPacker<Texture2D>();
         yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile($"{LevelCurrent.LevelDirPath}/assets/CustomSkyBoxB.png", result));
         B = result.Result;

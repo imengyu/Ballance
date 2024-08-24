@@ -23,6 +23,9 @@ namespace mod.speedball {
     public static GamePackageEntry Main() {
       GamePackageEntry entry = new GamePackageEntry();
       entry.OnLoad = (package) => {
+        var setting = GameSettingsManager.GetSettings(package.PackageName);
+        ballSpeedChoice = setting.GetInt("choice", 0);
+
         /*
         此处功能是监听GamePlayManager上的EventBeforeStart事件，在关卡开始之前设置倍速球设置
         */

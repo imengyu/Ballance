@@ -528,8 +528,6 @@ namespace Ballance2.Game.LevelBuilder {
     internal IEnumerator LoadDynamicLevelInternal(LevelDynamicAssembe LevelCurrent, bool editor, Action almostEnd = null) 
     {
       Log.D(TAG, "Start load DynamicLevel " + LevelCurrent.LevelInfo.name);
-      //发送开始事件
-      GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_START);
 
       UpdateLoadProgress(0);
 
@@ -578,6 +576,9 @@ namespace Ballance2.Game.LevelBuilder {
         GamePlayManagerInstance.LevelScore = level.levelScore;
 
       Log.D(TAG, "Sector count: {0}", SectorManager.CurrentLevelSectorCount);
+
+      //发送开始事件
+      GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_START);
 
       LoadInternals();
 
@@ -776,8 +777,6 @@ namespace Ballance2.Game.LevelBuilder {
       yield break;
     }
     private IEnumerator LoadLevelInternal() {
-      //发送开始事件
-      GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_START);
       //加载基础设置
       var level = CurrentLevelJson.level;
       var levelName = CurrentLevelJson.name;
@@ -882,6 +881,9 @@ namespace Ballance2.Game.LevelBuilder {
         if (level.levelScore > 0)
           GamePlayManagerInstance.LevelScore = level.levelScore;
       }
+
+      //发送开始事件
+      GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_START);
 
       UpdateLoadProgress(0.1f);
 

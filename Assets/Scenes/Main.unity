@@ -1790,7 +1790,7 @@ MonoBehaviour:
   DebugMode: 0
   DebugTargetFrameRate: 60
   DebugSetFrameRate: 1
-  DebugType: 0
+  DebugType: 2
   DebugInitPackages:
   - Enable: 1
     PackageName: core.sounds
@@ -2208,6 +2208,7 @@ MonoBehaviour:
   - {fileID: 7048576898993473563, guid: 64e366f934ff0ac43bd506bd5c4c8ea4, type: 3}
   - {fileID: 7048576898993473563, guid: 498b156e31229db418e7ea46cfc838ba, type: 3}
   SystemPackageLanguageRes: {fileID: 4900000, guid: 2ca35776dc2cf5a40a841f8c72848657, type: 3}
+  SystemPackageLanguageResPre: {fileID: 4900000, guid: 1076ce0fa2022da4a908edd3d306755f, type: 3}
   SystemPackageDef: {fileID: 4900000, guid: 29d9e4a69df3dd6499649a8670725cb2, type: 3}
 --- !u!1 &1666437229
 GameObject:

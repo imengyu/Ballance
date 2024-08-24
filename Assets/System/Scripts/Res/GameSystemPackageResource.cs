@@ -16,6 +16,7 @@ namespace Ballance2
     [Reorderable("GameAssets", true, "Name")]
     public List<Object> GameAssets = null;
     public TextAsset SystemPackageLanguageRes;
+    public TextAsset SystemPackageLanguageResPre;
     public TextAsset SystemPackageDef;
 
     private static Dictionary<string, Object> namedObjects = new Dictionary<string, Object>();

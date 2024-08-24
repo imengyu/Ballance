@@ -43,6 +43,8 @@ namespace Ballance2.Menu
     public RectTransform PanelDepends;
     public GameObject ItemDependsPrefab;
 
+    public Sprite DefaultPackageLogo;
+
     public RectTransform ScrollView;
     public RectTransform ContentNotFound;
     public TMP_Text TextContentNotFound; 
@@ -100,7 +102,7 @@ namespace Ballance2.Menu
         LinkVisitSite.SetActive(!StringUtils.isNullOrEmpty(package.BaseInfo.Link));
         LinkVisiAuthor.SetActive(!StringUtils.isNullOrEmpty(package.BaseInfo.AuthorLink));
         LinkVisitDoc.SetActive(!StringUtils.isNullOrEmpty(package.BaseInfo.DocLink));
-        ImagePackageLogo.sprite = package.BaseInfo.LogoTexture;
+        ImagePackageLogo.sprite = CommonUtils.ReturnDefaultIfNull(package.BaseInfo.LogoTexture, DefaultPackageLogo);
         InputPackageName.text = package.PackageName;
         InputFieldVersion.text = package.PackageVersion.ToString();
         InputFieldAuthor.text = package.BaseInfo.Author;

@@ -564,7 +564,7 @@ namespace Ballance2.Package
     /// <param name="key">键</param>
     /// <returns>返回国际化字符串，如果未找到，则返回null</returns>
     public string GetPackageI18NResourceInPre(string key) {
-      if(preI18NResource.TryGetValue(key, out var s))
+      if(preI18NResource.TryGetValue(key.ToUpper(), out var s))
         return s;
       return null;
     }

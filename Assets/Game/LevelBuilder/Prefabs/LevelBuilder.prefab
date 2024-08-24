@@ -127,7 +127,7 @@ MonoBehaviour:
     HiddenInContentSelector: 0
     HiddenPlaceholderRender: 0
     ObjTarget: DepthTestCubes
-    IntitalScale: {x: 1, y: 1, z: 1}
+    IntitalScale: {x: 100, y: 20, z: 100}
     IntitalEulerAngles: {x: 0, y: 0, z: 0}
   - Preview: {fileID: 21300000, guid: 36c2871cab674534ca21cf981b91a04a, type: 3}
     ScenseGizmePreviewImage: {fileID: -1979142173, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}

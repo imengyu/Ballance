@@ -310,7 +310,7 @@ namespace BallancePhysics.Wapper
             _PhysicsConstantPushBodies++;
           }
           //碰撞处理
-          if(GameTimeMachine.UpdateTick % 10 == 0) 
+          if(GameTimeMachine.UpdateTick % 4 == 0) 
             bodyCurrent.DoSendContractCacheEvent();
 
           obj = obj.Next;
@@ -319,7 +319,7 @@ namespace BallancePhysics.Wapper
         Profiler.EndSample();
 
         //更新碰撞处理器
-        if(GameTimeMachine.UpdateTick % 12 == 0) {
+        if(GameTimeMachine.UpdateTick % 10 == 0) {
           Profiler.BeginSample("PhysicsEnvironmentContactEvent");
           PhysicsApi.API.do_update_all_physics_contact_detection(Handle);
           Profiler.EndSample();
