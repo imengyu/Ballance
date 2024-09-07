@@ -922,9 +922,6 @@ namespace Ballance2.Services
 
       delayItems.Clear();
 
-      var pm = GetSystemService<GamePackageManager>();
-      pm.SavePackageRegisterInfo();
-
       ObjectStateBackupUtils.ClearAll();
 
       if (DebugMode)

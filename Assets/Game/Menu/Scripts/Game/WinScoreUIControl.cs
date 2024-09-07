@@ -229,7 +229,9 @@ namespace Ballance2.Menu
     //保存高分数据
     public void SaveHighscore(string entryName) {
       HighscoreManager.Instance.AddItem(_GamePlayManager.CurrentLevelName, entryName, _ScoreNTotal);
-      HighscoreManager.Instance.AddLevelPassState(_GamePlayManager.NextLevelName);
+      HighscoreManager.Instance.AddLevelPassState(_GamePlayManager.CurrentLevelName);
+      //保存分数数据
+      HighscoreManager.Instance.Save();
     }
 
     //按ESC键直接进入高分界面

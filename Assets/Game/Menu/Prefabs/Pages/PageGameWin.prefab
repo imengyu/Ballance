@@ -92,7 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d921f4e8a2eabb642b3d284fff89790c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  select: {fileID: 6080445412830952434}
+  select: {fileID: 2154680258802881683}
+  selectSecondChoice: {fileID: 6080445412830952434}
 --- !u!114 &12236535041725961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Menu.MainHighScore
+      value: CORE.UI.MENU.MAIN.HIGHSCORE
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -565,7 +566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Menu.MainSettings
+      value: CORE.UI.MENU.MAIN.SETTINGS
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -1053,6 +1054,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
+--- !u!1 &2154680258802881683 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8144507687473784541, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
+  m_PrefabInstance: {fileID: 7845812406506631758}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6902717889495699168 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3686914867527040174, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Ballance2.DebugTools;
 using Ballance2.Services.Debug;
 using Ballance2.Utils;
 
@@ -202,7 +203,7 @@ namespace Ballance2.Services
       string helpText = "命令帮助：\n";
       foreach (CmdItem cmdItem in commands)
         helpText += cmdItem.Keyword + " <color=#adadad>" + cmdItem.HelpText + "</color>\n";
-      Log.V(TAG, helpText);
+      DebugConsole.Instance.AddStringToConsole(helpText, helpText, LogLevel.Verbose);
       return true;
     }
 

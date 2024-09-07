@@ -3,6 +3,7 @@ using Ballance2.Base;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
+using Ballance2.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -53,8 +54,7 @@ namespace Ballance2.Game.GamePlay.Other
     private RectTransform _TutorialUI = null;
     private TMP_Text _TutorialUIText = null;
     private Image _TutorialUIBg = null;
-    private Button _TutorialUIButtonContinue = null;
-    private Button _TutorialUIButtonQuit = null;
+    private UIKeyButtons _TutorialUIKeyButtons;
 
     private GameSoundManager GameSoundManager;
     private GameUIManager GameUIManager;
@@ -110,11 +110,11 @@ namespace Ballance2.Game.GamePlay.Other
           //-初始化教程UI
           _TutorialUI = GameUIManager.InitViewToCanvas(GamePackage.GetSystemPackage().GetPrefabAsset("GameTutorialUI.prefab"), "GameTutorialUI", false);
           var view = _TutorialUI.transform.GetChild(0);
-          var buttonView = _TutorialUI.transform.GetChild(1);
           _TutorialUIBg = view.GetComponent<Image>();
           _TutorialUIText = view.GetChild(0).GetComponent<TMP_Text>();
-          _TutorialUIButtonContinue = buttonView.GetChild(0).GetComponent<Button>();
-          _TutorialUIButtonQuit = buttonView.GetChild(1).GetComponent<Button>();
+          _TutorialUIKeyButtons = _TutorialUI.transform.GetChild(1).GetComponent<UIKeyButtons>();
+          _TutorialUIKeyButtons.AddDisplayActions(ActionNext, "I18N:core.ui.Continue", nextCallback);
+          _TutorialUIKeyButtons.AddDisplayActions(ActionQuit, "I18N:core.ui.Quit", quitCallback);
           _TutorialUI.gameObject.SetActive(false);
           StartSeq();
 
@@ -260,8 +260,8 @@ namespace Ballance2.Game.GamePlay.Other
         GameUIManager.UIFadeManager.AddFadeIn(Tut_Richt_Pfeil02, 1, null);
         GameUIManager.UIFadeManager.AddFadeIn(Tut_Richt_Pfeil03, 1, null);
         GameUIManager.UIFadeManager.AddFadeIn(Tut_Richt_Pfeil04, 1, null);
-        
-        _TutorialUIButtonContinue.gameObject.SetActive(false);
+
+        _TutorialUIKeyButtons.SetDisplayActionVisible(0, false);
 
         //按下按键以后几个箭头有拉长的特效        
         GameEventEmitterDelegate FlushBallPushListener = (_) => {
@@ -292,7 +292,7 @@ namespace Ballance2.Game.GamePlay.Other
           GameUIManager.UIFadeManager.AddFadeOut(Tut_Richt_Pfeil04, 1, true, null);
           GameTimer.Delay(1, () => {
             Tut_Richt_Pfeil.constraintActive = false;
-            _TutorialUIButtonContinue.gameObject.SetActive(true);
+            _TutorialUIKeyButtons.SetDisplayActionVisible(0, true);
             BallManager.EventFlushBallPush.Off(FlushBallPushListener);
           });
         };
@@ -330,14 +330,14 @@ namespace Ballance2.Game.GamePlay.Other
           GameUIManager.UIFadeManager.AddFadeIn(Pfeil_Hoch, 1, null);
           _TutorialStep = 3;
           ShowTutorialText();
+          nextCallback = () => funStep2();
         });
         
-        nextCallback = () => funStep2();
       };
       GameManager.VoidDelegate commonTurHide = null;
       GameManager.VoidDelegate funSeq = () => {
         GameSoundManager.PlayFastVoice("core.sounds:Menu_click.wav", GameSoundType.Normal);
-        _TutorialUIButtonQuit.gameObject.SetActive(false);
+        _TutorialUIKeyButtons.SetDisplayActionVisible(1, false);
         ActionQuit.Disable();
         //恢复球推动键
         ControlManager.Instance.EnableControl();
@@ -434,12 +434,10 @@ namespace Ballance2.Game.GamePlay.Other
         };
       };
 
-      _TutorialUIButtonContinue.onClick.RemoveAllListeners();
-      _TutorialUIButtonQuit.onClick.RemoveAllListeners();
-      _TutorialUIButtonContinue.onClick.AddListener(() => {
-
+      nextCallback = () =>
+      {
         //防止按键安得太快
-        if (funStepLock) 
+        if (funStepLock)
           return;
         funStepLock = true;
         GameTimer.Delay(1, () => funStepLock = false);
@@ -452,19 +450,15 @@ namespace Ballance2.Game.GamePlay.Other
           funStep2();
         else if (_TutorialStep >= 5)
           commonTurHide();
-      });
-      _TutorialUIButtonQuit.onClick.AddListener(() => funQuit());
+      };
+      quitCallback = () => funQuit();
 
       //先暂停球推动键
       ControlManager.Instance.DisableControl();
 
       GameTimer.Delay(0.5f, () => {
-        ShowTutorialText();
         //步骤1，按 q 退出，按回车继续
-        ActionQuit.Enable();
-        ActionNext.Enable();
-        quitCallback = () => funQuit();
-        nextCallback = () => funSeq();
+        ShowTutorialText();
       });
     }
     
@@ -496,6 +490,9 @@ namespace Ballance2.Game.GamePlay.Other
         GameUIManager.UIFadeManager.AddFadeIn(_TutorialUIBg, 0.5f);
       }
       GamePlayManager._IsCountDownPoint = false;
+      if (_TutorialStep == 1)
+        ActionQuit.Enable();
+      ActionNext.Enable();
     }
     
     /// <summary>

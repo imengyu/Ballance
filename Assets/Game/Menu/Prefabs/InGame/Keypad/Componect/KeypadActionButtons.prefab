@@ -36,7 +36,6 @@ RectTransform:
   - {fileID: 6246351386802569983}
   - {fileID: 4479157931998152506}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -80,6 +79,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2761412623693142611}
     m_Modifications:
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
@@ -187,6 +187,9 @@ PrefabInstance:
       value: ButtonCamRight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
 --- !u!114 &6246351386802569981 stripped
 MonoBehaviour:
@@ -209,6 +212,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2761412623693142611}
     m_Modifications:
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
@@ -316,6 +320,9 @@ PrefabInstance:
       value: ButtonCamLeft
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
 --- !u!224 &3652302101920568404 stripped
 RectTransform:
@@ -338,6 +345,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2761412623693142611}
     m_Modifications:
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
@@ -445,6 +453,9 @@ PrefabInstance:
       value: ButtonSpace
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
 --- !u!114 &4479157931998152504 stripped
 MonoBehaviour:
@@ -467,12 +478,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2761412623693142611}
     m_Modifications:
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 21ab6ec9bb6378643b86d760433d5b2d, type: 3}
+      objectReference: {fileID: 6700335028210261622, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -487,7 +499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -499,7 +511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -507,7 +519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286436432646, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_Pivot.x
@@ -598,6 +610,9 @@ PrefabInstance:
       value: ButtonUp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
 --- !u!224 &1198230431752593216 stripped
 RectTransform:
@@ -620,12 +635,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2761412623693142611}
     m_Modifications:
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 21ab6ec9bb6378643b86d760433d5b2d, type: 3}
+      objectReference: {fileID: -9117897411005600601, guid: 3446e9c4a9a9e014abed1e326914b7b4, type: 3}
     - target: {fileID: 330945638364400722, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -640,7 +656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -652,11 +668,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286159798495, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8169353286436432646, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
       propertyPath: m_Pivot.x
@@ -747,6 +763,9 @@ PrefabInstance:
       value: ButtonDown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32394a8e3e5f624fb59a526abd4451c, type: 3}
 --- !u!114 &1660876412738402285 stripped
 MonoBehaviour:

@@ -4,9 +4,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using Ballance2.Res;
 using Ballance2.Utils;
-using SimpleFileBrowser;
 using Ballance2.Menu.LevelManager;
 using ICSharpCode.SharpZipLib.Zip;
+using TriLibCore.SFB;
 
 /*
  * Copyright (c) 2024  mengyu
@@ -40,6 +40,13 @@ namespace Ballance2.Game.LevelBuilder
 #if UNITY_EDITOR
       LoadAllFileNames();
 #endif
+    }
+
+    private Dictionary<string, Object> preloadedAsset = new Dictionary<string, Object>();
+
+    public void PushPreloadedAsset(string name, Object o)
+    {
+      preloadedAsset.Add(name, o);
     }
 
     public virtual Texture GetTextureAsset(string name)
@@ -100,6 +107,8 @@ namespace Ballance2.Game.LevelBuilder
 #endif
     private T GetLevelAsset<T>(string name) where T : Object
     {
+      if (preloadedAsset.TryGetValue(name, out var o))
+        return (T)o;
 #if UNITY_EDITOR
       if (LoadInEditor)
       {
@@ -145,7 +154,7 @@ namespace Ballance2.Game.LevelBuilder
       }
       else if (_level.Type == LevelRegistedType.Local)
       {
-        var level = (LevelRegistedLocallItem)_level;
+        var level = (LevelRegistedLocalItem)_level;
 #if UNITY_EDITOR
         string realPackagePath = GamePathManager.DEBUG_LEVEL_FOLDER + "/" + Path.GetFileNameWithoutExtension(name);
         //在编辑器中加载
@@ -162,6 +171,16 @@ namespace Ballance2.Game.LevelBuilder
           //加载资源包
           StartCoroutine(Loader(level, new LevelAssets(""), callback, errCallback));
         }
+      }
+      else if (_level.Type == LevelRegistedType.Mine)
+      {
+        var level = (LevelRegistedLocalItem)_level;
+        StartCoroutine(LoaderMine(level, new LevelAssets(""), callback, errCallback));
+      }
+      else
+      {
+        errCallback("BAD_LEVEL", "Bad level.Type: " + _level.Type);
+        return;
       }
     }
     /// <summary>
@@ -181,13 +200,49 @@ namespace Ballance2.Game.LevelBuilder
     /// <param name="ext">文件后缀名，包括点</param>
     /// <param name="callback">成功回调</param>
     public static void PickLevelFile(string ext, GameLevelLoaderNativeErrCallback callback) {
-      FileBrowser.SetFilters(false, ext);
-      FileBrowser.ShowLoadDialog((paths) => {
-        callback(paths[0], "");
-      }, () => {}, FileBrowser.PickMode.Files);
+      var result = StandaloneFileBrowser.OpenFilePanel("Pick nmo file", "", new[]
+      {
+        new ExtensionFilter("Level file", ext)
+      }, false);
+      if (result.Count > 0)
+        callback(result[0].Name, "");
     }
 
-    private IEnumerator Loader(LevelRegistedLocallItem level, LevelAssets asset, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
+    private IEnumerator LoaderMine(LevelRegistedLocalItem level, LevelAssets asset, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
+    {
+      var path = level.GetLocalPath();
+      var jsonPath = $"{path}/level.json";
+      var assetPath = $"{path}/assets/";
+      if (!Directory.Exists(path))
+      {
+        errCallback("BAD_LEVEL_JSON", "Level faile is not exist");
+        yield break;
+      }
+      if (!File.Exists(jsonPath))
+      {
+        errCallback("BAD_LEVEL_JSON", "level.json is not exist");
+        yield break;
+      }
+
+      var task = File.ReadAllTextAsync(jsonPath);
+      yield return task.AsIEnumerator();
+
+      //加载资源
+      if (Directory.Exists(assetPath))
+      {
+        var result = new EnumeratorResultPacker<Texture2D>();
+        var images = new DirectoryInfo(assetPath).GetFiles("*.png", SearchOption.TopDirectoryOnly);
+        foreach (var item in images)
+        {
+          yield return StartCoroutine(TextureUtils.LoadTexture2dFromFile(item.FullName, result));
+          asset.PushPreloadedAsset(Path.GetFileName(item.FullName), result.Result);
+        }
+      }
+      callback(null, task.Result, asset, path);
+      yield break;
+
+    }
+    private IEnumerator Loader(LevelRegistedLocalItem level, LevelAssets asset, GameLevelLoaderNativeCallback callback, GameLevelLoaderNativeErrCallback errCallback)
     {
       var levelJson = "";
       var isDynamic = false;
@@ -213,6 +268,13 @@ namespace Ballance2.Game.LevelBuilder
             var task = ZipUtils.LoadStringInZip(zip, theEntry);
             yield return task.AsIEnumerator();
             levelJson = task.Result;
+          }
+          else if (ZipUtils.MatchRootName2("assets/", ".png", theEntry))
+          {
+            //天空盒资源
+            var task = ZipUtils.LoadTextureInZip(zip, theEntry);
+            yield return task.AsIEnumerator();
+            asset.PushPreloadedAsset(Path.GetFileName(theEntry.Name), task.Result);
           }
           else if (ZipUtils.MatchRootName("assets/packed.assetbundle", theEntry))
           {

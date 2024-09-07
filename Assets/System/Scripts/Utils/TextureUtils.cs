@@ -85,6 +85,8 @@ namespace Ballance2.Utils
       }
       else
       {
+        outTex.Result = null;
+        outTex.Success = false;
         outTex.Error = request.error;
       }
     } 

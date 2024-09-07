@@ -122,38 +122,11 @@ namespace Ballance2.Res
       "core.sounds.ballance",
       "core.sounds.music.ballance",
     };
-    /// <summary>
-    /// 内置关卡的文件名
-    /// </summary>
-    private static string[] builtInLevelsFiles = new string[] {
-      "level01",
-      "level02",
-      "level03",
-      "level04",
-      "level05",
-      "level06",
-      "level07",
-      "level08",
-      "level09",
-      "level10",
-      "level11",
-      "level12",
-      "level13",
-    };
 
     internal static bool CheckPackageInBuiltInPackage(string packageName) {
       for (int i = 0; i < builtInPackagesFiles.Length; i++)
       { 
         if(builtInPackagesFiles[i] == packageName)
-          return true;
-      }
-      return false;
-    }
-    internal static bool CheckPackageInBuiltInLevel(string packageName) {
-      var n = Path.GetFileNameWithoutExtension(packageName.ToLower());
-      for (int i = 0; i < builtInLevelsFiles.Length; i++)
-      { 
-        if(builtInLevelsFiles[i] == n)
           return true;
       }
       return false;
@@ -255,10 +228,7 @@ namespace Ballance2.Res
 #elif UNITY_STANDALONE
         pathbuf = Application.dataPath + "/Levels/" + pathbuf;
 #elif UNITY_ANDROID || UNITY_IOS
-        if(CheckPackageInBuiltInLevel(pathbuf))
-          pathbuf = Application.streamingAssetsPath + "/BuiltInPackages/Levels/" + pathbuf;
-        else
-          pathbuf = Application.persistentDataPath + "/Levels/" + pathbuf;
+        pathbuf = Application.persistentDataPath + "/Levels/" + pathbuf;
 #else
         pathbuf = pathbuf;
 #endif
@@ -271,10 +241,7 @@ namespace Ballance2.Res
 #elif UNITY_STANDALONE
         result = Application.dataPath + "/Levels/" + pathorname;
 #elif UNITY_ANDROID || UNITY_IOS
-        if(CheckPackageInBuiltInLevel(pathorname))
-          result = Application.streamingAssetsPath + "/BuiltInPackages/Levels/" + pathorname;
-        else
-          result = Application.persistentDataPath + "/Levels/" + pathorname;
+        result = Application.persistentDataPath + "/Levels/" + pathorname;
 #else
         result = pathorname;
 #endif

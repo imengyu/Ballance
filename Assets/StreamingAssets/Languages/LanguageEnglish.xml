@@ -36,8 +36,6 @@
             <Text name="ProjectAbout">Ballance Rebuild is an open-source Unity remake of the Ball Ball game, produced by IMengyu.\n\nYou can play this remastered version, and you can also create custom modules or maps based on this remastered version to share with other players.\n\nThe source code of the project is stored in https://github.com/imengyu/Ballance 。\n\nIf you encounter bugs or have great ideas, please feel free to visit the project homepage https://github.com/imengyu/Ballance Submit your issue and let's discuss it together.\n\nIf you want to develop your own mod and level for Ballance, welcome to https://github.com/imengyu/Ballance/wiki Learn about related tutorials!\n\nWelcome to discuss the game at Ballance Discord.</Text>
           </Group>
           <Group name="Start">    
-            <Text name="StartMenuNMO">Load old Ballance level (NMO)</Text>
-            <Text name="StartMenuNMODesc"><![CDATA[ You can load a standard old Ballance original level (NMO file). Most levels can be successfully loaded and played, but there are a few limitations: \nCannot load levels with Virtools scripts. \nDoes not support Virtools point, line mesh. \nMaterials do not support Virtools special effects and will use default materials instead. \nDoes not support setting level sky box, level score, no background music.]]></Text>
             <Text name="NewLevel">Create New</Text>
             <Text name="EditExistsLevel">Edit Exist</Text>
           </Group>
@@ -48,7 +46,7 @@
               <Text name="Local">Local</Text>
               <Text name="Mine">Mine</Text>
             </Group>
-            <Text name="EmptySubscribe">You haven't subscribed yet, you can go to Workshop and subscribe to some levels</Text>
+            <Text name="EmptySubscribe"><![CDATA[Unfortunately, the author does not have enough funding and copyright, and the Ballance remake is not available on Steam. If it is available in the future, there will be content here]]></Text>
             <Text name="EmptyMine">You haven't created your own level yet, go to the Level editor and create your own level!</Text>
             <Text name="Empty">No level found in the current category, look elsewhere</Text>
             <Text name="Play">Play!</Text>
@@ -83,16 +81,22 @@
             <Text name="Next">Next level</Text>
           </Group>
           <Group name="TutorialText">
-            <Text name="1">Game Tutorial:\nYou may halt or quit the game any time using the "ESC" key.\nYou may continue the game tutorial with the "RETURN" key or quit the tutorial by pressing "Q".</Text>
-            <Text name="2">View Rotation: \nKeep the left "SHIFT" key pressed and use the "LEFT" or "RIGHT" ARROW key to rotate the view in 90 steps.\nContinue with "RETURN" ...</Text>
-            <Text name="3">Overview:\nHold down the "SPACEBAR" to raise the viewpoint.\n\nContinue with "RETURN" ...</Text>
-            <Text name="4">Navigation:\nTurn the view until the track with the two towers is in front of you.\nUse the "ARROW" keys (without "SHIFT") to move the ball forward, backward, left and right.\nFollow the path!</Text>
-            <Text name="5">Life Extra:\nIf you fall off the track, you lose one life. Your remaining lifes are displayed at the right bottom of the screen. You receive an additional life by picking up a "Life Extra".\n\nContinue with "RETURN"  ...</Text>
-            <Text name="6">Transformer:\nWith the use of "transformers" you can change the material of the ball. The material of the transformer field indicates the type of transformer. \nThis is a stone transformer.\n\nContinue with "RETURN" ... </Text>
-            <Text name="7">This slope is too steep for a stoneball!\nLook for a wood transformer and try again. \nHint: Turn the view (SHIFT + RIGHT/LEFT), to get a better orientation. Rolling backwards can be dangerous!\nContinue with "RETURN" ...</Text>
-            <Text name="8">Point Extra:\nThe display on the left shows your actual time-points, which are constantly decreasing during the game. You increase your score by picking up a Point Extra.\n\nContinue with "RETURN"  ...</Text>
-            <Text name="9">Checkpoints:\nThis is the first checkpoint you have to pass.\nIn case you loose a life during the game, you can continue the game from the last checkpoint.\n\nContinue with "RETURN"  ...</Text>
-            <Text name="10">Some hints at the end:\nIn case you get stuck at some point or need some technical help, please take a look at the "Ballance HTML Help", which is accessible via the Windows Start Menu (not during the game!).\n\nQuit the tutorial with "RETURN" ...</Text>
+            <Text name="Continue">Continue...</Text>
+            <Text name="Quit">Quit</Text>
+            <Text name="KeyAnd">{0} 和 {1}</Text>
+            <Text name="KeyOr">{0} or {1}</Text>
+            <Text name="KeyOr4">{0}, {1}, {2}, {3}</Text>
+            <Text name="KeyBoth">Hold {0} and use {1}</Text>
+            <Text name="1"><![CDATA[ Game Tutorial:\nYou may halt or quit the game any time using the "ESC" key. ]]> </Text>
+            <Text name="2"><![CDATA[ View Rotation: \nUse <settings-replacer=control>RotateView</settings-replacer> key to rotate the view in 90 steps.]]> </Text>
+            <Text name="3"><![CDATA[ Overview:\n<settings-replacer=control>Overlook</settings-replacer> to raise the viewpoint.]]> </Text>
+            <Text name="4"><![CDATA[ Navigation:\nTurn the view until the track with the two towers is in front of you.\nUse the <settings-replacer=control>Move</settings-replacer> to move the ball forward, backward, left and right.\nFollow the path! ]]> </Text>
+            <Text name="5"><![CDATA[ Life Extra:\nIf you fall off the track, you lose one life. Your remaining lifes are displayed at the right bottom of the screen. You receive an additional life by picking up a "Life Extra".]]> </Text>
+            <Text name="6"><![CDATA[ Transformer:\nWith the use of "transformers" you can change the material of the ball. The material of the transformer field indicates the type of transformer. \nThis is a stone transformer.]]>  </Text>
+            <Text name="7"><![CDATA[ This slope is too steep for a stoneball!\nLook for a wood transformer and try again. \nHint: Turn the view (<settings-replacer=control>RotateView</settings-replacer>), to get a better orientation. Rolling backwards can be dangerous!]]> </Text>
+            <Text name="8"><![CDATA[ Point Extra:\nThe display on the left shows your actual time-points, which are constantly decreasing during the game. You increase your score by picking up a Point Extra.]]> </Text>
+            <Text name="9"><![CDATA[ Checkpoints:\nThis is the first checkpoint you have to pass.\nIn case you loose a life during the game, you can continue the game from the last checkpoint.]]> </Text>
+            <Text name="10"><![CDATA[ Some hints at the end:\nIn case you get stuck at some point or need some technical help, please take a look at the "Ballance HTML Help", which is accessible via the Windows Start Menu (not during the game!).]]></Text>
           </Group>
         </Group>
         <Group name="Controller">
@@ -124,25 +128,27 @@
             <Text name="MenuRight">Right</Text>
             <Text name="MenuUp">Up</Text>
             <Text name="MenuDown">Down</Text>
-            <Text name="MenuRotateCam">Rotate Camera key</Text>
-            <Text name="MenuRotateCam2">Rotate Camera key2</Text>
-            <Text name="MenuRotateCamLeft">Rotate Camera left</Text>
-            <Text name="MenuRotateCamRight">Rotate Camera right</Text>
+            <Text name="MenuRotateCam">Rotate Cam key</Text>
+            <Text name="MenuRotateCam2">Rotate Cam key2</Text>
+            <Text name="MenuRotateCamLeft">Cam left</Text>
+            <Text name="MenuRotateCamRight">Cam right</Text>
             <Text name="Reset">Reset to default</Text>
             <Text name="ResetAsk">Do you want to reset all Settings to default values?</Text>
             <Text name="MenuOverlook">Overlook</Text>
             <Text name="UISize">Keyboard size</Text>
-            <Text name="KeypadBaseLeft">Action keys in left</Text>
-            <Text name="KeypadBaseRight">Action keys in right</Text>
-            <Text name="KeypadBaseCenter">Action keys two side</Text>
-            <Text name="KeypadBaseJoyLeft">Joystick in left (Cannot walk on monorail)</Text>
-            <Text name="KeypadBaseJoyRight">Joystick in right (Cannot walk on monorail)</Text>
             <Text name="TitleMobile">Mobile</Text>
-            <Text name="TitleOthers">thers</Text>
+            <Text name="TitleOthers">Others</Text>
             <Text name="Screenshot">Screenshot</Text>
             <Text name="ToggleFPS">Toggle FPS</Text>
             <Text name="ToggleView">Toggle UI</Text>
             <Text name="ControllerBind">Press the button you want to bind to {0} (currently: {1})</Text>
+          </Group>
+          <Group name="ControlKeypad">
+            <Text name="BaseLeft">Action keys in left</Text>
+            <Text name="BaseRight">Action keys in right</Text>
+            <Text name="BaseCenter">Action keys two side</Text>
+            <Text name="BaseJoyLeft">Joystick in left (Cannot walk on monorail)</Text>
+            <Text name="BaseJoyRight">Joystick in right (Cannot walk on monorail)</Text>
           </Group>
           <Group name="Audio">
             <Text name="Tilte">Audio</Text>
@@ -159,49 +165,49 @@
             <Text name="Ultra">Ultra</Text>
           </Group>
           <Group name="Debug">
-            <Text name="YouAreInDebugMode">你已经在开发者模式了哦，第一次开启需要重启游戏才能生效</Text>
-            <Text name="ClickNTimeToDebugMode">再点击 {0} 次进入开发者模式了</Text>
+            <Text name="YouAreInDebugMode">You are already in developer mode, and the first time you turn it on, you need to restart the game to take effect.</Text>
+            <Text name="ClickNTimeToDebugMode">Press {0} to enter the developer mode</Text>
             <Text name="Version">Version: {0}</Text>
           </Group>
         </Group>
         <Group name="PackageManager">
-          <Text name="EnableAll">启用所有模组</Text>
-          <Text name="DisableAll">禁用所有模组</Text>
-          <Text name="Save">保存修改</Text>
-          <Text name="UnLoad">卸载</Text>
-          <Text name="Setting">设置</Text>
-          <Text name="Tip">模组修改提示</Text>
-          <Text name="ChangeTip"> 改动了 {0} 个模组</Text>
-          <Text name="Status"> 共有 {0} 个模组，已启用 {1} 个</Text>
-          <Text name="GiveUpSave">放弃修改</Text>
-          <Text name="PackNotFound">没有找到模组 {0}，它似乎没有在这里安装。</Text>
-          <Text name="Optional">可选</Text>
-          <Text name="NoDepends">此模组没有依赖额外的模组</Text>
-          <Text name="TrustTitle">模组 {0} 正在尝试加载一个C#模块，是否允许？</Text>
-          <Text name="TrustDescrb">模组C#模块拥有完全的文件访问权限，如果允许，此模组将可以访问您个人文件，并有能力对您的计算机修改设置。因此，加载此模块是比较危险的，在加载之前，请确认此模组是否在官方下载。如果您不信任此模组，请不要加载。</Text>
-          <Text name="TrustAndsLoad">信任并且加载</Text>
-          <Text name="NotTrust">不信任</Text>
-          <Text name="NotTrustAndDelete">不信任并删除</Text>
-          <Text name="CheckInfo">查看模组信息</Text>
-          <Text name="NoDepends">此模组没有依赖额外的模组</Text>
-          <Text name="LinkVisitSite">访问项目主页</Text>
-          <Text name="LinkVisitDoc">访问文档</Text>
-          <Text name="LinkVisiAuthor">访问作者主页</Text>
-          <Text name="PackageInfoTitle">模组信息</Text>
-          <Text name="PackageIntroductionTitle">模组简介</Text>
-          <Text name="PackageDependsTitle">模组依赖的模组</Text>
-          <Text name="PackageName">包名</Text>
-          <Text name="PackageVersion">版本</Text>
-          <Text name="PackageAuthor">作者</Text>
-          <Text name="PackageInstallTime">安装和更新时间</Text>
-          <Text name="PackageSystemPackage">核心模组无法卸载或禁用</Text>
-          <Text name="PackageWantUnaload">你希望卸载模组吗？它将立即从游戏中卸载。模组文件将被删除，无法恢复！</Text>
-          <Text name="PackageUnaloadTip">卸载模组提示</Text>
-          <Text name="SettingUITitle">模组 {0} 的自定义配置</Text>
+          <Text name="EnableAll">Enable all mods</Text>
+          <Text name="DisableAll">Disable all mods</Text>
+          <Text name="Save">Save</Text>
+          <Text name="UnLoad">UnLoad</Text>
+          <Text name="Setting">Setting</Text>
+          <Text name="Tip">Mod modification prompts</Text>
+          <Text name="ChangeTip"> Changed {0} mods</Text>
+          <Text name="Status"> All {0} Mods, {1} enabled</Text>
+          <Text name="GiveUpSave">Discard change</Text>
+          <Text name="PackNotFound">Not found mod {0}, It doesn't seem to be installed here.</Text>
+          <Text name="Optional">Optional</Text>
+          <Text name="NoDepends">This mod does not depend on additional mod</Text>
+          <Text name="TrustTitle">Mod {0} is trying to load a C# module, is it allowed?</Text>
+          <Text name="TrustDescrb">The mod of C# has full file access, if allowed, this module will have access to your personal files and the ability to modify Settings on your computer. Therefore, loading this module is relatively dangerous, before loading, please make sure that this mod is in the official download. If you do not trust this mod, do not load it.</Text>
+          <Text name="TrustAndsLoad">Trust and Load</Text>
+          <Text name="NotTrust">Not Trust</Text>
+          <Text name="NotTrustAndDelete">Not Trust and Delete</Text>
+          <Text name="CheckInfo">Check info</Text>
+          <Text name="NoDepends">This mod does not depend on additional mods</Text>
+          <Text name="LinkVisitSite">Visit Site</Text>
+          <Text name="LinkVisitDoc">Visit Document page</Text>
+          <Text name="LinkVisiAuthor">Visit Author home page</Text>
+          <Text name="PackageInfoTitle">Info</Text>
+          <Text name="PackageIntroductionTitle">Introduction</Text>
+          <Text name="PackageDependsTitle">Dependent mods</Text>
+          <Text name="PackageName">Package Name</Text>
+          <Text name="PackageVersion">Version</Text>
+          <Text name="PackageAuthor">Author</Text>
+          <Text name="PackageInstallTime">InstallTime</Text>
+          <Text name="PackageSystemPackage">Core mods cannot be uninstalled or disabled</Text>
+          <Text name="PackageWantUnaload">Do you wish to uninstall the mod? It will be immediately uninstalled from the game. The mod file will be deleted and cannot be recovered!</Text>
+          <Text name="PackageUnaloadTip">Unaload Tip</Text>
+          <Text name="SettingUITitle">Settings of mod {0}</Text>
         </Group>
         <Group name="LevelLoaderErrorUI">
           <Text name="Title">oops! Loading the level failed</Text>
-          <Text name="Message">Don't worry, it's not your fault, just try another level. If it's a level created by another player, try giving them feedback. \nLevel Developer: You can enter the developer mode and press F12 to enter the console to see more error messages.</Text>
+          <Text name="Message">Don't worry, it's not your fault, just try another level. If it's a level created by another player, try giving them feedback. \nLevel Developer: You can enter the developer mode and press ~ to enter the console to see more error messages.</Text>
           <Text name="CopyErrInfo">Copy error message</Text>
           <Text name="ErrInfoCopied">Error message copied !</Text>
         </Group>
@@ -269,6 +275,7 @@
           </Group>
         </Group>
         <Group name="messages">
+          <Text name="EnterPathInvalid">The file name you entered is invalid, please enter another</Text>
           <Text name="QuitAsk">Are you sure you want to quit the editor? If you exit without saving, you will lose your changes!</Text>
           <Text name="ExitTestModeAsk">Are you sure you're out of the test mode?</Text>
           <Text name="EnterSector">Enter the section to jump to (1-{0}): </Text>
@@ -288,11 +295,11 @@
           <Text name="ResetedSector">Reseted Sector</Text>
           <Text name="JumpedSector">Jumped Sector</Text>
           <Text name="TestFail">Unfortunately, you've lost all your life</Text>
-          <Text name="TestPass">恭喜，您已经过关</Text>
-          <Text name="TestPaused"><![CDATA[ 游戏已暂停，按 <sprite=8> 继续 ]]></Text>
-          <Text name="LoadModelAssetFailed">加载模型资产失败：{0}</Text>
-          <Text name="InstanceModelFailed">实例化模型失败：{0}</Text>
-          <Text name="Saving">保存中, 请勿关闭电源...</Text>
+          <Text name="TestPass">Congratulations, you have passed</Text>
+          <Text name="TestPaused"><![CDATA[ Game paused, press <sprite=8> back ]]></Text>
+          <Text name="LoadModelAssetFailed">LoadModel Asset Failed：{0}</Text>
+          <Text name="InstanceModelFailed">Instance Model Failed：{0}</Text>
+          <Text name="Saving">Saving, do not turn off the power...</Text>
           <Text name="LoadLevelDataFailed">Failed to load the level archive file, either because the file is inaccessible or corrupted</Text>
           <Text name="AccessFileFailed">Failed to access the file. The file permission may be insufficient</Text>
           <Text name="IOException">File access error, {0}</Text>
@@ -307,6 +314,7 @@
           <Text name="DeleteImportAsset">You are about to delete this asset. Deletion will cause the model instance that references this asset to be unusable. Are you sure?</Text>
           <Text name="PackeLevelFailed">Packe level failed</Text>
           <Text name="CantEditPackedLevel">Error, packed levels cannot be edited</Text>
+          <Text name="PackeLevelSuccess">Pack level success!\nUnfortunately, the author did not have enough funding and copyright to make the ballance unity rebuild available on Steam, so the feature was shelved. \nYou can still share your level files with other players in other ways.</Text>
         </Group>
         <Text name="StatusText">{0}/{1} Object/Sector Selected {2}</Text>
         <Text name="CreateNew">Create New</Text>
@@ -519,7 +527,7 @@
           <Text name="Moduls">Moduls</Text>
           <Text name="Others">Decoration</Text>
           <Text name="Import">Import model</Text>
-          <Text name="Info">Edit level ingo</Text>
+          <Text name="Info">Edit level info</Text>
           <Text name="Publish">Publish</Text>
           <Text name="Delete">Delete select</Text>
           <Text name="Copy">Copy select</Text>
@@ -575,6 +583,7 @@
           <Text name="PleaseEnterName">Please fill in the name of the item</Text>
         </Group>
         <Group name="help">
+          <Text name="Title">Welcome to the editor!</Text>
           <Text name="TestHelpTitle">Welcome to the test mode!</Text>
           <Text name="TesHelpContent"><![CDATA[ The test mode is a simulation environment that allows you to test whether your level is playable, in the here you can reset the ball at any time, reset the modul at any time, and the ball can fly up and down. \n\nTip: Before entering the test mode, select the checkpoint, you can start playing from the checkpoint! ]]></Text>
           <Text name="CustomSkyTip">Tip: Select custom to customize the sky picture</Text>

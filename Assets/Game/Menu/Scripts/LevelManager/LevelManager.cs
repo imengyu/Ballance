@@ -12,7 +12,6 @@ using Ballance2.Services.I18N;
 using Ballance2.Utils;
 using Newtonsoft.Json;
 using ICSharpCode.SharpZipLib.Zip;
-using System.Security;
 using System.Text.RegularExpressions;
 
 namespace Ballance2.Menu.LevelManager
@@ -42,7 +41,13 @@ namespace Ballance2.Menu.LevelManager
     public void DeleteLevel(LevelRegistedItem v)
     {
       if (v.Type == LevelRegistedType.Local || v.Type == LevelRegistedType.Mine)
-        File.Delete(((LevelRegistedLocallItem)v).path);
+      {
+        var path = ((LevelRegistedLocalItem)v).path;
+        if (Directory.Exists(path))
+          FileUtils.RemoveDirectory(path);
+        else if (File.Exists(path))
+          File.Delete(path);
+      }
       //TODO: 订阅
       RegisteredLevels.Remove(v);
     }
@@ -56,12 +61,12 @@ namespace Ballance2.Menu.LevelManager
         var files = dirInfo.GetFiles("*.blevel", SearchOption.TopDirectoryOnly);
         Log.D(TAG, "Scan Level dir \"" + dir + "\" found " + files.Length + " level files");
         for (int i = 0; i < files.Length; i++) 
-          RegisteredLevels.Add(new LevelRegistedLocallItem(files[i].FullName, false));
+          RegisteredLevels.Add(new LevelRegistedLocalItem(files[i].FullName, false));
         DirectoryInfo[] subdirs = dirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
         foreach (var item in subdirs)
         {
           if (File.Exists($"{item.FullName}/level.json") && File.Exists($"{item.FullName}/assets.json"))
-            RegisteredLevels.Add(new LevelRegistedLocallItem(item.FullName, false));
+            RegisteredLevels.Add(new LevelRegistedLocalItem(item.FullName, false));
         }
       } else {
         Log.W(TAG, "Level dir " + dir + " not exists!");
@@ -72,7 +77,7 @@ namespace Ballance2.Menu.LevelManager
       DirectoryInfo[] dirs = direction.GetDirectories("*", SearchOption.TopDirectoryOnly);
       for (int i = 0; i < dirs.Length; i++)
         if (dirs[i].Name != "MakerAssets" && !Regex.IsMatch(dirs[i].Name, "^level\\d{2}$"))
-          RegisteredLevels.Add(new LevelRegistedLocallItem(dirs[i].FullName, true));
+          RegisteredLevels.Add(new LevelRegistedLocalItem(dirs[i].FullName, true));
 #endif
     }
 
@@ -168,12 +173,11 @@ namespace Ballance2.Menu.LevelManager
       return Task.CompletedTask;
     }
   }
-
-  public class LevelRegistedLocallItem : LevelRegistedItem
+  public class LevelRegistedLocalItem : LevelRegistedItem
   {
     public readonly string path;
     public readonly bool isEditor;
-    public LevelRegistedLocallItem(string path, bool isEditor)
+    public LevelRegistedLocalItem(string path, bool isEditor)
     {
       this.path = path;
       this.isEditor = isEditor;
@@ -224,7 +228,6 @@ namespace Ballance2.Menu.LevelManager
       return path;
     }
   }
-
   public class LevelRegistedInternalItem : LevelRegistedItem
   {
     public LevelDefineInternal LevelDefineInternal;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /*
 * Copyright(c) 2021  mengyu
@@ -228,6 +229,18 @@ namespace Ballance2.Utils
     public static bool IsValid(Vector2 v)
     {
       return !float.IsNaN(v.x) && !float.IsNaN(v.y);
+    }
+
+    
+    /// <summary>
+    /// 判断是否连接了控制器
+    /// </summary>
+    public static bool HasGamePad
+    {
+      get
+      {
+        return Gamepad.all.Count > 0;
+      }
     }
 
     /// <summary>

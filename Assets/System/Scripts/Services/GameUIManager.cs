@@ -397,9 +397,9 @@ namespace Ballance2.Services
     /// </summary>
     /// <param name="name">页名称</param>
     /// <returns>返回跳转是否成功</returns>
-    public bool GoPage(string name)
+    public bool GoPage(string name, string overrideBackPage = "")
     {
-      return GoPageWithOptions(name, new Dictionary<string, object>());
+      return GoPageWithOptions(name, new Dictionary<string, object>(), overrideBackPage);
     }
 
     /// <summary>
@@ -408,7 +408,7 @@ namespace Ballance2.Services
     /// <param name="name">页名称</param>
     /// <param name="options">打开页所需要携带的参数，在页中可以使用 `GameUIPage.LastOption` 读取到传递进入页的参数。</param>
     /// <returns>返回跳转是否成功</returns>
-    public bool GoPageWithOptions(string name, Dictionary<string, object> options)
+    public bool GoPageWithOptions(string name, Dictionary<string, object> options, string overrideBackPage = "")
     {
       if (currentPage != null && currentPage.name == name)
         return true;
@@ -420,6 +420,8 @@ namespace Ballance2.Services
 
       //Hide old
       if (pageStack.Count > 0 && !page.NoPopPreviousPage) pageStack[pageStack.Count - 1].Hide();
+      if (!string.IsNullOrEmpty(overrideBackPage) && pages.TryGetValue(overrideBackPage, out GameUIPage prevPage))
+        pageStack.Add(prevPage);
       if (!pageStack.Contains(page)) pageStack.Add(page);
 
       page.LastOptions = options;
@@ -550,11 +552,14 @@ namespace Ballance2.Services
       UIToastText.text = text;
       float h = UIToastText.tmp.Get().preferredHeight;
       UIToast.sizeDelta = new Vector2(UIToast.sizeDelta.x, h > 50 ? h : 50);
-      UIToast.gameObject.SetActive(true);
-      UIToast.SetAsLastSibling();
-      UIToastAnimator.SetTrigger("Show");
-      toastTimeTick = time + 0.25f;
-      toastHideAnimPlayed = false;
+      if (!UIToast.gameObject.activeSelf)
+      {
+        UIToast.gameObject.SetActive(true);
+        UIToast.SetAsLastSibling();
+        UIToastAnimator.SetTrigger("Show");
+        toastTimeTick = time + 0.25f;
+        toastHideAnimPlayed = false;
+      }
     }
     private bool toastHideAnimPlayed = false;
     private void UpdateToastShow()

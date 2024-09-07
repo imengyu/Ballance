@@ -134,8 +134,8 @@ namespace Ballance2.UI.Core
         var sound = defaultSelection.select.GetComponent<ClickSound>();
         if(sound != null)
           sound.enabled = false;
-        EventSystem.current.SetSelectedGameObject(defaultSelection.select);
-        if(sound != null)
+        defaultSelection.SelectDefaultSelection();
+        if (sound != null)
           sound.enabled = true;
       }
 #endif

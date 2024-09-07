@@ -134,13 +134,14 @@ namespace Ballance2.Game.GamePlay
       if (_CamIsRotateingUp) {
         _CamRotateUpTick += Time.deltaTime;
         
-        float v = 0;
+        float v;
         if (CamIsSpaced)
           v = _CamUpSpeedCurve.Evaluate(_CamRotateUpTick / _CameraRotateUpTime);
         else
           v = _CamDownSpeedCurve.Evaluate(_CamRotateUpTick / _CameraRotateDownTime);
 
         _CamPosFrame.localPosition = new Vector3(0, _CamRotateUpStart.y + v * _CamRotateUpTarget.y, _CamRotateUpStart.z + v * _CamRotateUpTarget.z);
+        //transform.position = _CamPosFrame.position;
         if (v >= 1)
           _CamIsRotateingUp = false;
       }
@@ -247,7 +248,11 @@ namespace Ballance2.Game.GamePlay
     }
     private void _UpdateStateForDebugStats()
     {
-      if (GameManager.DebugMode && GamePlayUIControl.Instance.DebugStatValues.ContainsKey("CamDirection")) {
+      if (
+        GameManager.DebugMode 
+        && GamePlayUIControl.Instance?.DebugStatValues != null 
+        && GamePlayUIControl.Instance.DebugStatValues.ContainsKey("CamDirection")) 
+      {
         GamePlayUIControl.Instance.DebugStatValues["CamDirection"].Value = _CamOrientTransform.localEulerAngles.y.ToString("F2");
         GamePlayUIControl.Instance.DebugStatValues["CamState"].Value = $"IsSpaced: {CamIsSpaced} Follow: {CamFollow.Follow} Look: {CamFollow.Look}";
       }

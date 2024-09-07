@@ -178,6 +178,10 @@ namespace Ballance2.Utils
     {
       return theEntry.Name == name || theEntry.Name == $"/{name}";
     }
+    public static bool MatchRootName2(string path, string ext, ZipEntry theEntry)
+    {
+      return (theEntry.Name.StartsWith(path) || theEntry.Name.StartsWith($"/{path}")) && theEntry.Name.EndsWith(ext);
+    }
 
     /// <summary>
     /// 读取ZIP文件当前文件为字符串返回
@@ -224,6 +228,35 @@ namespace Ballance2.Utils
         t2d.LoadImage(ms.ToArray());
         t2d.Apply();
         return TextureUtils.CreateSpriteFromTexture(t2d);
+      }
+      catch (Exception e)
+      {
+        throw e;
+      }
+      finally
+      {
+        ms.Close();
+        ms.Dispose();
+      }
+    }
+    /// <summary>
+    /// 直接从ZIP文件中读取Texture2D
+    /// </summary>
+    /// <param name="zip"></param>
+    /// <param name="theEntry"></param>
+    /// <returns></returns>
+    public static async Task<Texture2D> LoadTextureInZip(ZipInputStream zip, ZipEntry theEntry)
+    {
+      MemoryStream ms = await ReadZipFileToMemoryAsync(zip);
+      try
+      {
+        ImageInfo? info = ImageInfo.FromStream(ms);
+        if (info == null)
+          throw new Exception("Get ImageInfo failed");
+        Texture2D t2d = new Texture2D(info.Value.Width, info.Value.Height);
+        t2d.LoadImage(ms.ToArray());
+        t2d.Apply();
+        return t2d;
       }
       catch (Exception e)
       {

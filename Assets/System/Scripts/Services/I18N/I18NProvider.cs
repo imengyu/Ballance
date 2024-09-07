@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml;
 using UnityEngine;
 
@@ -27,8 +28,10 @@ namespace Ballance2.Services.I18N
     private const string TAG = "I18NProvider";
 
     private static SystemLanguage currentLanguage = SystemLanguage.ChineseSimplified;
+    public static Dictionary<string, string> FallbackLanguageValues { get; } = new Dictionary<string, string>();
     public static Dictionary<string, string> LanguageValues { get; } = new Dictionary<string, string>();
     public static Dictionary<SystemLanguage, string> AdditionalLanguageFiles { get; } = new Dictionary<SystemLanguage, string>();
+    public static Dictionary<string, Func<string, string>> SettingStringReplacer { get; } = new Dictionary<string, Func<string, string>>();
 
     //由GameManager调用
 
@@ -43,7 +46,8 @@ namespace Ballance2.Services.I18N
       foreach (var file in files)
       {
         var xml = new XmlDocument();
-        xml.LoadXml(File.ReadAllText(file.FullName));
+        var fileContent = File.ReadAllText(file.FullName);
+        xml.LoadXml(fileContent);
         if (xml.DocumentElement != null && xml.DocumentElement.Name == "I18n" && xml.DocumentElement.ChildNodes.Count > 0)
         {
           var child = xml.DocumentElement.ChildNodes[0];
@@ -51,6 +55,8 @@ namespace Ballance2.Services.I18N
           {
             if (Enum.TryParse<SystemLanguage>(child.Attributes["name"].Value, out var result))
             {
+              if (result == currentLanguage)
+                LoadLanguageResources(fileContent);
               if (!AdditionalLanguageFiles.ContainsKey(result))
                 AdditionalLanguageFiles.Add(result, child.ChildNodes[0].InnerText);
             }
@@ -76,6 +82,102 @@ namespace Ballance2.Services.I18N
       }
     }
 
+    private static int StringBuilderIndexOf(StringBuilder sb, string value, int startIndex = 0, bool ignoreCase = false)
+    {
+      int len = value.Length;
+      int max = (sb.Length - len) + 1;
+      var v1 = (ignoreCase)
+          ? value.ToLower() : value;
+      var func1 = (ignoreCase)
+          ? new Func<char, char, bool>((x, y) => char.ToLower(x) == y)
+          : new Func<char, char, bool>((x, y) => x == y);
+      for (int i1 = startIndex; i1 < max; ++i1)
+        if (func1(sb[i1], v1[0]))
+        {
+          int i2 = 1;
+          while ((i2 < len) && func1(sb[i1 + i2], v1[i2]))
+            ++i2;
+          if (i2 == len)
+            return i1;
+        }
+      return -1;
+    }
+    private static string StringBuilderSubString(StringBuilder sb, int start, int len)
+    {
+      StringBuilder str = new StringBuilder(len);
+      for (int i = start, j = 0; j < len && i < sb.Length; i++, j++)
+        str.Append(sb[i]);
+      return str.ToString();
+    }
+    private static string PreMatchSettingStringReplacer(string value)
+    {
+      const string key = "<settings-replacer=";
+      const string keyend = "</settings-replacer>";
+      const int maxCount = 32;
+
+      if (!value.Contains(key))
+        return value;
+      var sb = new StringBuilder(value);
+      var count = 0;
+
+      while(count < maxCount)
+      {
+        var startIndex = StringBuilderIndexOf(sb, key);
+        if (startIndex == -1)
+          break;
+        var tagEndIndex = StringBuilderIndexOf(sb, keyend, startIndex);
+        if (tagEndIndex == -1) 
+          break;
+        var startEndIndex = -1;
+        var endIndex = tagEndIndex + 19;
+
+        for (int i = startIndex; i < sb.Length; i++)
+          if (sb[i] == '>')
+          {
+            startEndIndex = i;
+            break;
+          }
+        if (startEndIndex < startIndex)
+          break;
+        var valueStartIndex = startIndex + 19;
+        var tag = StringBuilderSubString(sb, valueStartIndex, startEndIndex - valueStartIndex);
+        var inner = StringBuilderSubString(sb, startEndIndex + 1, tagEndIndex - startEndIndex - 1);
+
+        var result = "";
+        if (SettingStringReplacer.TryGetValue(tag, out var replacer))
+          result = replacer(inner);
+
+        sb.Remove(startIndex, endIndex - startIndex + 1);
+        sb.Insert(startIndex, result);
+
+        count++;
+      }
+
+      return sb.ToString();
+    }
+
+    /// <summary>
+    /// 注册字符串动态设置文字修改器
+    /// </summary>
+    /// <param name="key">键值，用于取消注册</param>
+    /// <param name="cb">回调，用于替换字符串，参数是字符串资源中的原字符串</param>
+    public static void RegisterSettingStringReplacer(string key, Func<string, string> cb)
+    {
+      if (SettingStringReplacer.ContainsKey(key))
+        SettingStringReplacer[key] = cb;
+      else
+        SettingStringReplacer.Add(key, cb);
+    }
+    /// <summary>
+    /// 取消注册字符串动态设置文字修改器
+    /// </summary>
+    /// <param name="key"></param>
+    public static void UnRegisterSettingStringReplacer(string key)
+    {
+      if (SettingStringReplacer.ContainsKey(key))
+        SettingStringReplacer.Remove(key);
+    }
+
     /// <summary>
     /// 直接加载语言文件到字典中
     /// </summary>
@@ -95,10 +197,19 @@ namespace Ballance2.Services.I18N
           var nodeLanguageName = nodeLanguage.Attributes["name"];
           if (nodeLanguage.Name == "Language" && nodeLanguageName != null)
           {
-            if (System.Enum.TryParse<SystemLanguage>(nodeLanguageName.Value, true, out var languageName) && languageName == currentLanguage)
+            if (Enum.TryParse<SystemLanguage>(nodeLanguageName.Value, true, out var languageName))
             {
-              LoadLanguageNodeChild(dict, nodeLanguage, "");
-              break;
+              if (languageName == currentLanguage)
+              {
+                LoadLanguageNodeChild(dict, nodeLanguage, "");
+                break;
+              }
+              if (languageName == SystemLanguage.ChineseSimplified)
+              {
+                //中文作为兜底语言资源
+                LoadLanguageNodeChild(FallbackLanguageValues, nodeLanguage, "");
+                break;
+              }
             }
           }
         }
@@ -111,15 +222,6 @@ namespace Ballance2.Services.I18N
       return false;
     }
 
-    /// <summary>
-    /// 加载语言定义文件
-    /// </summary>
-    /// <param name="xmlAssets">语言定义XML字符串</param>
-    /// <returns>加载是否成功</returns>
-    public static bool LoadLanguageResources(string xmlAssets)
-    {
-      return DirectLoadLanguageResources(LanguageValues, xmlAssets);
-    }
     /// <summary>
     /// 预加载语言定义文件
     /// </summary>
@@ -158,6 +260,15 @@ namespace Ballance2.Services.I18N
     /// <summary>
     /// 加载语言定义文件
     /// </summary>
+    /// <param name="xmlAssets">语言定义XML字符串</param>
+    /// <returns>加载是否成功</returns>
+    public static bool LoadLanguageResources(string xmlAssets)
+    {
+      return DirectLoadLanguageResources(LanguageValues, xmlAssets);
+    }
+    /// <summary>
+    /// 加载语言定义文件
+    /// </summary>
     /// <param name="xmlAssets">语言定义XML资源文件</param>
     /// <returns>加载是否成功</returns>
     public static bool LoadLanguageResources(TextAsset xmlAssets)
@@ -182,15 +293,18 @@ namespace Ballance2.Services.I18N
     {
       return currentLanguage;
     }
+
     /// <summary>
     /// 获取语言字符串
     /// </summary>
     /// <param name="key">字符串键值</param>
     /// <returns>如果找到对应键值字符串，则返回字符串，否则返回null</returns>
-    public static string GetLanguageString(string key)
+    public static string GetLanguageString(string key, bool withFallback)
     {
-      if(LanguageValues.TryGetValue(key.ToUpper(), out var s1))
-        return s1;
+      if (LanguageValues.TryGetValue(key.ToUpper(), out var s1))
+        return PreMatchSettingStringReplacer(s1);
+      if (withFallback && FallbackLanguageValues.TryGetValue(key.ToUpper(), out s1))
+        return PreMatchSettingStringReplacer(s1);
       return null;
     }
   }

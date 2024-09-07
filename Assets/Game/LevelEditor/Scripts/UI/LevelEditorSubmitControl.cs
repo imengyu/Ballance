@@ -143,6 +143,12 @@ namespace Ballance2.Game.LevelEditor
         yield break;
       }
 
+
+      ui.Alert("I18N:core.editor.messages.PackeLevelSuccess", "", LevelEditorConfirmIcon.Success, onConfirm: () =>
+      {
+        Application.OpenURL(currentLevel.LevelDirPath + "/output");
+      });
+
       //TODO: update to steam
 
       ui.HideLoading();

@@ -33,7 +33,7 @@ namespace Ballance2.Entry
     public GameObject ModulTestUI = null; 
     
     [Tooltip("LevelCustomDebug 加载的关卡名称")]
-    public string LevelName = "level01";
+    public string LevelName = "Level01";
     [Tooltip("LevelEditorDebugManager 加载的关卡名称")]
     public string EditLevelName = "levelmake";
   }

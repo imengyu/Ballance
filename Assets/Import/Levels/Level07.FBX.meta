@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 9c74ba99d97c91e4dae4c6db272ed662
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects:
   - first:
@@ -117,6 +117,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Modul01_FloorRinne
+    second: {fileID: 2100000, guid: 1366f474bcdb20b45ad110fd9a05056b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Modul18_Gitter
     second: {fileID: 2100000, guid: b3e20799b30b5024889c2a9245e66edd, type: 2}
   - first:
@@ -139,6 +144,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Modul_15_Stone
     second: {fileID: 2100000, guid: 296c639616d0bdb43a249510279138e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Modul_15_Wood
+    second: {fileID: 2100000, guid: 921606dd928f6b445b75e0542a24e8f2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -216,8 +226,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 1
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -240,6 +248,7 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -267,6 +276,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -299,6 +309,8 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

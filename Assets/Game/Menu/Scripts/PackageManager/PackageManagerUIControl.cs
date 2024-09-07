@@ -232,7 +232,7 @@ namespace Ballance2.Menu
     }
 
     private void UnloadPackage(string name) {
-      gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManager.PackageUnaloadTip")  + '\n' + I18N.TrF("core.ui.PackageManager.PackageWantUnaload", packageStateChanges.Count), () => {
+      gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManager.PackageUnaloadTip")  + '\n' + I18N.TrF("core.ui.PackageManager.PackageWantUnaload", null, packageStateChanges.Count), () => {
         packageStateChanges.Clear();
         gameUIManager.BackPreviusPage();
       }, () => {
@@ -328,7 +328,7 @@ namespace Ballance2.Menu
     }
     private void Back() {
       if(packageStateChanges.Count > 0) {
-        gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManager.Tip")  + '\n' + I18N.TrF("core.ui.PackageManager.ChangeTip", packageStateChanges.Count), () => {
+        gameUIManager.GlobalConfirmWindow(I18N.Tr("core.ui.PackageManager.Tip")  + '\n' + I18N.TrF("core.ui.PackageManager.ChangeTip", null, packageStateChanges.Count), () => {
           packageStateChanges.Clear();
           gameUIManager.BackPreviusPage();
         }, () => {

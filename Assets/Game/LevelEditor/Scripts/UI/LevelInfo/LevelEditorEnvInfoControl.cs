@@ -8,6 +8,7 @@ using Ballance2.Services;
 using Ballance2.Utils;
 using SimpleFileBrowser;
 using TMPro;
+using TriLibCore.SFB;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -130,12 +131,13 @@ namespace Ballance2.Game.LevelEditor
     {
       if (DropdownSkyBox.value == 0)
       {
-        FileBrowser.SetFilters(false, ".png");
-        FileBrowser.ShowLoadDialog((paths) => {
+        var result = StandaloneFileBrowser.OpenFilePanel("Pick image file", "", new[] { new ExtensionFilter("Png image file", ".png") }, false);
+        if (result.Count > 0)
+        {
           LevelEditorManager.Instance.LevelEditorUIControl.ShowLoading();
-          StartCoroutine(LoadSkyImage(paths[0], type));
+          StartCoroutine(LoadSkyImage(result[0].Name, type));
           LevelEditorManager.Instance.LevelEditorUIControl.HideLoading();
-        }, () => {}, FileBrowser.PickMode.Files);
+        }
       }
     }
     public void ChooseColorButtonClick()

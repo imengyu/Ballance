@@ -8,6 +8,7 @@ using Ballance2.UI.Core.Controls;
 using Ballance2.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Ballance2.Menu
@@ -126,6 +127,43 @@ namespace Ballance2.Menu
       ButtonKeyChooseScreenShort.BindAction = control.ScreenShort;
       ButtonKeyChooseToggleFPS.BindAction = control.ToggleFPS;
       ButtonKeyChooseToggleView.BindAction = control.ToggleView;
+
+      I18NProvider.RegisterSettingStringReplacer("control", (key) =>
+      {
+        switch(key)
+        {
+          case "RotateView":
+            if (CommonUtils.HasGamePad)
+              return I18N.TrF("core.ui.GameUI.TutorialText.KeyAnd", null, 
+                control.ControllerActionRotateCamLeft.GetBindingDisplayString(),
+                control.ControllerActionRotateCamRight.GetBindingDisplayString()
+              );
+            return I18N.TrF("core.ui.GameUI.TutorialText.KeyBoth", null,
+              control.KeyBoardActionRotateCam.GetBindingDisplayString(),
+              I18N.TrF("core.ui.GameUI.TutorialText.KeyOr", null,
+                control.KeyBoardActionLeft.GetBindingDisplayString(),
+                control.KeyBoardActionRight.GetBindingDisplayString()
+              )
+            );
+          case "Overlook":
+            if (CommonUtils.HasGamePad)
+              return control.ControllerActionOverlook.GetBindingDisplayString();
+            return control.KeyBoardActionOverlook.GetBindingDisplayString();
+          case "Move":
+            if (!CommonUtils.HasGamePad)
+              return I18N.TrF("core.ui.GameUI.TutorialText.KeyOr4", null,
+               control.KeyBoardActionForward.GetBindingDisplayString(),
+               control.KeyBoardActionBack.GetBindingDisplayString(),
+               control.KeyBoardActionLeft.GetBindingDisplayString(),
+               control.KeyBoardActionRight.GetBindingDisplayString()
+             );
+            return control.ControllerActionMove.GetBindingDisplayString();
+          case "Back":
+
+            break;
+        }
+        return "";
+      });
     }
     private static void BindSettingsUI(GameUIMessageCenter MessageCenter) {
       var GameSettings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
@@ -191,7 +229,7 @@ namespace Ballance2.Menu
           for (int i = 0; i < resolutions.Length; i++)
           {
             var resolution = resolutions[i];
-            GrResolution.AddOption($"{resolution.width}x{resolution.height}@{resolution.refreshRateRatio.value}");
+            GrResolution.AddOption($"{resolution.width}x{resolution.height}@{resolution.refreshRateRatio.value.ToString("F2")}");
             if (
               updateGrResolution != null
               && currentResolution.width == resolution.width
@@ -243,7 +281,7 @@ namespace Ballance2.Menu
       MessageCenter.SubscribeEvent("BtnSettingsPackageClick", () => {
         GameUIManager.GoPage("PagePackageManager");
       });
-      MessageCenter.SubscribeEvent("BtnSettingsResetClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.Settings.ControlResetAsk" , () => {
+      MessageCenter.SubscribeEvent("BtnSettingsResetClick", () => GameUIManager.GlobalConfirmWindow("I18N:core.ui.Settings.Control.ResetAsk" , () => {
         GameSettingsManager.ResetDefaultSettings();
         ControlManager.Instance.LoadActionSettings(true);
         GameUIManager.BackPreviusPage();

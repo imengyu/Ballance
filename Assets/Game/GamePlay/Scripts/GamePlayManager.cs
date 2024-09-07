@@ -863,7 +863,11 @@ namespace Ballance2.Game.GamePlay
       GameManager.VoidDelegate callBack = null;
       if (loadNext)
       {
-        callBack = () => LevelBuilder.LevelBuilder.Instance.LoadLevel(LevelManager.Instance.GetLevelByName(NextLevelName));
+        callBack = () => {
+          var level = LevelManager.Instance.GetLevelByName(NextLevelName);
+          if (level != null)
+            LevelBuilder.LevelBuilder.Instance.LoadLevel(level);
+        };
       }
 
       //停止隐藏飞船定时

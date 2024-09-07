@@ -473,7 +473,8 @@ namespace Ballance2.Game.LevelEditor
       var modelsTempMap = new Dictionary<int, LevelDynamicModel>();
       foreach (var item in level.LevelData.LevelModels)
       {
-        modelsTempMap.Add(item.Uid, item);
+        if (!modelsTempMap.ContainsKey(item.Uid)) 
+          modelsTempMap.Add(item.Uid, item);
       }
       foreach (var item in level.LevelData.LevelModels)
       {

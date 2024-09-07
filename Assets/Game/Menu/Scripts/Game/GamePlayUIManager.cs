@@ -73,21 +73,23 @@ namespace Ballance2.Menu
         WinScoreUIControl.Instance.SaveHighscore(HighscoreEntryName.text);
 
         //当前有新的高分，跳转到高分页，否则直接进入下一关菜单
-        GameUIManager.GoPage("PageGameWin");
-        if (WinScoreUIControl.Instance.ThisTimeHasNewHighscore) {
-          GameTimer.Delay(0.2f, () => {
-            GameUIManager.GoPage("PageHighscore");
-            //高分页加载当前关卡数据
-            HighscoreUIControl.Instance.LoadLevelData(GamePlayManager.Instance.CurrentLevelName);
-          });
+        if (WinScoreUIControl.Instance.ThisTimeHasNewHighscore)
+        {
+          GameUIManager.GoPage("PageHighscore", "PageGameWin");
+          //高分页加载当前关卡数据
+          HighscoreUIControl.Instance.LoadLevelData(GamePlayManager.Instance.CurrentLevelName);
+        } 
+        else
+        {
+          GameUIManager.GoPage("PageGameWin");
         }
       });
 
-      KeypadUIManager.AddKeypad("BaseCenter", package.GetPrefabAsset("KeypadCenter.prefab"), package.GetSpriteAsset("keypad_c"), I18N.Tr("core.ui.Settings.ControlKeypadBaseCenter"));
-      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l"), I18N.Tr("core.ui.Settings.ControlKeypadBaseLeft"));
-      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r"), I18N.Tr("core.ui.Settings.ControlKeypadBaseRight"));
-      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l"), I18N.Tr("core.ui.Settings.ControlKeypadBaseJoyLeft"));
-      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r"), I18N.Tr("core.ui.Settings.ControlKeypadBaseJoyRight"));
+      KeypadUIManager.AddKeypad("BaseCenter", package.GetPrefabAsset("KeypadCenter.prefab"), package.GetSpriteAsset("keypad_c"), I18N.Tr("core.ui.Settings.ControlKeypad.BaseCenter"));
+      KeypadUIManager.AddKeypad("BaseLeft", package.GetPrefabAsset("KeypadLeft.prefab"), package.GetSpriteAsset("keypad_l"), I18N.Tr("core.ui.Settings.ControlKeypad.BaseLeft"));
+      KeypadUIManager.AddKeypad("BaseRight", package.GetPrefabAsset("KeypadRight.prefab"), package.GetSpriteAsset("keypad_r"), I18N.Tr("core.ui.Settings.ControlKeypad.BaseRight"));
+      KeypadUIManager.AddKeypad("BaseJoyLeft", package.GetPrefabAsset("KeypadJoyLeft.prefab"), package.GetSpriteAsset("keypad_joy_l"), I18N.Tr("core.ui.Settings.ControlKeypad.BaseJoyLeft"));
+      KeypadUIManager.AddKeypad("BaseJoyRight", package.GetPrefabAsset("KeypadJoyRight.prefab"), package.GetSpriteAsset("keypad_joy_r"), I18N.Tr("core.ui.Settings.ControlKeypad.BaseJoyRight"));
     }
   }
 }

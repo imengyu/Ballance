@@ -21,6 +21,7 @@ namespace Ballance2.Menu
     public RectTransform PanelError;
     public Button ButtonBack;
     public Button ButtonStart;
+    public Button ButtonStart2;
     public Button ButtonPreview;
     public Button ButtonEdit;
     public TMP_Text TextErrorContent;
@@ -50,6 +51,7 @@ namespace Ballance2.Menu
     private GameObjectPool itemDependsPrefabPool;
     private LevelSelectUIManager.ListItem selectedItem = null;
     private bool dependesChanged = true;
+    private bool isFromEditorPage = true;
 
     private void Start() {
       gameUIManager = GameSystem.GetSystemService<GameUIManager>();
@@ -60,6 +62,7 @@ namespace Ballance2.Menu
       PanelContent.gameObject.SetActive(false);
       PanelError.gameObject.SetActive(false);
       ButtonStart.onClick.AddListener(StartLevel);
+      ButtonStart2.onClick.AddListener(EditLevel);
       ButtonBack.onClick.AddListener(Back);
       ButtonPreview.onClick.AddListener(PreviewLevel);
       ButtonEdit.onClick.AddListener(EditLevel);
@@ -68,6 +71,7 @@ namespace Ballance2.Menu
       page.OnShow = (param) =>
       {
         selectedItem = (LevelSelectUIManager.ListItem)param["item"];
+        isFromEditorPage = (param.ContainsKey("isEditor") && (bool)param["isEditor"] == true);
         StartCoroutine(LoadLevelInfo(selectedItem));
       };
       page.OnHide = () =>
@@ -101,11 +105,25 @@ namespace Ballance2.Menu
         TextIntroduction.text = StringUtils.ReturnDefaultIsNullOrEmpty(item.Level.InfoJson.introduction, I18N.Tr("core.ui.Menu.LevelSelect.NoDsec"));
         if (item.Level.Type == LevelManager.LevelRegistedType.Mine)
         {
-          ButtonPreview.gameObject.SetActive(true);
-          ButtonEdit.gameObject.SetActive(true);
+          if (isFromEditorPage)
+          {
+            ButtonStart2.gameObject.SetActive(true);
+            ButtonStart.gameObject.SetActive(false);
+            ButtonPreview.gameObject.SetActive(false);
+            ButtonEdit.gameObject.SetActive(false);
+          }
+          else
+          {
+            ButtonStart2.gameObject.SetActive(false);
+            ButtonStart.gameObject.SetActive(true);
+            ButtonPreview.gameObject.SetActive(true);
+            ButtonEdit.gameObject.SetActive(true);
+          }
         }
         else
         {
+          ButtonStart2.gameObject.SetActive(false);
+          ButtonStart.gameObject.SetActive(true);
           ButtonPreview.gameObject.SetActive(item.Level.InfoJson.allowPreview);
           ButtonEdit.gameObject.SetActive(false);
         }   
@@ -146,10 +164,14 @@ namespace Ballance2.Menu
     }
     private void EditLevel() {
       if(selectedItem != null) {
-        gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
-        gameUIManager.MaskBlackFadeIn(1);
-        GameTimer.Delay(1, () => {
-          GameManager.GameMediator.NotifySingleEvent("CoreStartEditLevel", new object[]{ selectedItem.Level });
+        MenuLevelUIManager.ShowEditorControllerTip(() =>
+        {
+          gameSoundManager.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
+          gameUIManager.MaskBlackFadeIn(1);
+          GameTimer.Delay(1, () =>
+          {
+            GameManager.GameMediator.NotifySingleEvent("CoreStartEditLevel", new object[] { selectedItem.Level });
+          });
         });
       }
     }
@@ -176,9 +198,5 @@ namespace Ballance2.Menu
         });
       }
     }   
-    private void EnableAllDepends() {
-      //TODO: 启用所有依赖
-      gameUIManager.GlobalToast(I18N.Tr("core.ui.LevelEnableAllDependsTodo"));
-    }
   }
 }

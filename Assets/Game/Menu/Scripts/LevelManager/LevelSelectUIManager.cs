@@ -28,6 +28,8 @@ namespace Ballance2.Menu
     public UITabSelect Tab;
     public ScrollView List;
 
+    private bool isFromEditorPage = false;
+
     private void Start() {
       gameUIManager = GameSystem.GetSystemService<GameUIManager>();
       Tab.SetTabs(new TabItem[]
@@ -57,6 +59,7 @@ namespace Ballance2.Menu
       {
         if (param.ContainsKey("page"))
           Tab.JumpToItem(Tab.Tabs[3]);
+        isFromEditorPage = param.ContainsKey("isFromEditorPage");
       };
     }
     private void OnDestroy()
@@ -113,7 +116,7 @@ namespace Ballance2.Menu
           if (!IsNetwork && Level != null)
           {
             if (Level.Type == LevelRegistedType.Local || Level.Type == LevelRegistedType.Mine)
-              return I18N.TrF("core.ui.Menu.LevelSelect.LocalPath", "", ((LevelRegistedLocallItem)Level).path);
+              return I18N.TrF("core.ui.Menu.LevelSelect.LocalPath", "", ((LevelRegistedLocalItem)Level).path);
           }
           return "";
         }
@@ -202,7 +205,10 @@ namespace Ballance2.Menu
 
     private void OnItemClick(ListItem item)
     {
-      gameUIManager.GoPageWithOptions("PageStartLevelInfo", new Dictionary<string, object>() { { "item", item } });
+      gameUIManager.GoPageWithOptions("PageStartLevelInfo", new Dictionary<string, object>() { 
+        { "item", item } ,
+        { "isEditor", isFromEditorPage }
+      });
     }
     private void OnItemDeleteClick(ListItem item)
     {

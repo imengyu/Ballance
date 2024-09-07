@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Ballance2.Config;
 using Ballance2.Game;
 using Ballance2.Game.GamePlay;
 using Ballance2.Game.LevelBuilder;
 using Ballance2.Package;
 using Ballance2.Services;
 using Ballance2.Services.I18N;
-using Ballance2.UI.Core.Controls;
-using Ballance2.Utils;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -30,7 +28,6 @@ namespace Ballance2.Menu
       var PageStartLevelInfo = GameUIManager.RegisterPage("PageStartLevelInfo", "PageFull");
       var PageStartLevelSelect = GameUIManager.RegisterPage("PageStartLevelSelect", "PageFull");
       var PageStartEditor = GameUIManager.RegisterPage("PageStartEditor", "PageCommon");
-      var PageStartNMO = GameUIManager.RegisterPage("PageStartNMO", "PageCommon");
       var PageLightZone = GameUIManager.RegisterPage("PageLightZone", "PageFull");
       var PageAboutCreators = GameUIManager.RegisterPage("PageAboutCreators", "PageCommon");
       var PageAboutProject = GameUIManager.RegisterPage("PageAboutProject", "PageCommon");
@@ -48,30 +45,21 @@ namespace Ballance2.Menu
       PageAboutProject.CreateContent(package);
       PageAboutLicense.CreateContent(package);
       PageStart.CreateContent(package);
-      PageStartNMO.CreateContent(package);
       PageStartOrginal.CreateContent(package);
       PageStartLevelInfo.CreateContent(package);
       PageStartLevelSelect.CreateContent(package);
       PageStartEditor.CreateContent(package);
-      PageStart.OnShow = (options) =>
-      {
-        var ContentView = PageStart.Content.Find("ScrollViewVetical/Viewport/ContentView");
-        //非 windows 隐藏此按扭
-#if !UNITY_STANDALONE_WIN
-        ContentView.Find("ButtonNMO").gameObject.SetActive(false);
-#else
-        ContentView.Find("ButtonNMO").gameObject.SetActive(false);
-#endif
-      };
       PageStartOrginal.OnShow = (options) => {
         var ContentView = PageStartOrginal.Content.Find("ScrollViewVetical/Viewport/ContentView");
+        //原版关卡未过关按钮
         for (var i = 2; i <= 12; i++) {
           var button = ContentView.Find("ButtonLevel" + i).GetComponent<Button>();
-          var name = "level";
-          if (i < 10) 
-            name = name + "0" + i;
+          var name = "Level";
+          var prev = i - 1;
+          if (prev < 10) 
+            name = name + "0" + prev;
           else 
-            name = name + i;
+            name = name + prev;
           button.interactable = HighscoreManager.Instance.CheckLevelPassState(name);
         }
       };
@@ -113,35 +101,27 @@ namespace Ballance2.Menu
       MessageCenter.SubscribeEvent("BtnLevelEditorClick", () => GameUIManager.GoPage("PageStartEditor"));
       MessageCenter.SubscribeEvent("BtnEditNewLevelClick", () =>
       {
-        GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
-        GameUIManager.MaskBlackFadeIn(1);
-        GameTimer.Delay(1, () => {
-          GameManager.GameMediator.NotifySingleEvent("CoreStartEditLevel", new object[] { null });
+        ShowEditorControllerTip(() =>
+        {
+          GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
+          GameUIManager.MaskBlackFadeIn(1);
+          GameTimer.Delay(1, () => {
+            GameManager.GameMediator.NotifySingleEvent("CoreStartEditLevel", new object[] { null });
+          });
         });
       });
       MessageCenter.SubscribeEvent("BtnEditExistsLevelClick", () =>
       {
         GameUIManager.GoPageWithOptions("PageStartLevelSelect", new Dictionary<string, object>()
         {
-          { "page", 3 }
+          { "page", 3 },
+          { "isFromEditorPage", true }
         });
       });
-      MessageCenter.SubscribeEvent("BtnStartNMOClick", () => GameUIManager.GoPage("PageStartNMO"));
       MessageCenter.SubscribeEvent("BtnStartClick", () => GameUIManager.GoPage("PageStart"));
       MessageCenter.SubscribeEvent("BtnCustomLevelClick", () =>  {
         GameManager.GameMediator.NotifySingleEvent("PageStartCustomLevelLoad");
         GameUIManager.GoPage("PageStartLevelSelect");
-      });
-      MessageCenter.SubscribeEvent("BtnCustomNMOLevelClick", () => {
-        LevelLoaderNative.PickLevelFile(".nmo", (path, _) => {
-          //播放加载声音
-          GameSoundManager.Instance.PlayFastVoice("core.sounds:Menu_load.wav", GameSoundType.Normal);
-          GameUIManager.MaskBlackFadeIn(1);
-          //加载
-          GameTimer.Delay(1, () => { 
-            GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", path);
-          });
-        });
       });
       MessageCenter.SubscribeEvent("BtnAboutClick", () => GameUIManager.GoPage("PageAbout"));
       MessageCenter.SubscribeEvent("BtnSettingsClick", () => GameUIManager.GoPage("PageSettings"));
@@ -210,7 +190,7 @@ namespace Ballance2.Menu
               GameUIManager.GlobalToast(I18N.Tr("core.ui.Settings.Debug.YouAreInDebugMode"));
               return;
             } else
-              GameUIManager.GlobalToast(I18N.TrF("core.ui.Settings.Debug.ClickNTimeToDebugMode", (8-lastClickCount)));
+              GameUIManager.GlobalToast(I18N.TrF("core.ui.Settings.Debug.ClickNTimeToDebugMode", null, (8 -lastClickCount)));
           }
         }
       });
@@ -228,6 +208,18 @@ namespace Ballance2.Menu
         return;
       GameUIManager.Instance.MaskBlackFadeIn(1);
       GameTimer.Delay(1, () => GameManager.GameMediator.NotifySingleEvent("CoreStartLoadLevel", level));
+    }
+    public static void ShowEditorControllerTip(Action cb)
+    {
+      if (Gamepad.all.Count == 0)
+      {
+        cb();
+        return;
+      }
+      GameUIManager.Instance.GlobalConfirmWindow(I18N.Tr("core.editor.help.ControllerTip"), () =>
+      {
+        cb();
+      });
     }
 
     //GRAVITY 菜单控制

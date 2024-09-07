@@ -771,11 +771,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4537979571061933298, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Size
-      value: 0.9515086
+      value: 0.65837854
       objectReference: {fileID: 0}
     - target: {fileID: 4537979571061933298, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_Value
-      value: -0.00002926348
+      value: -1.264616
       objectReference: {fileID: 0}
     - target: {fileID: 6670425074761761996, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -795,7 +795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492604842380458381, guid: 4eebc0c0ecf4702418cc59f1454c4a1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -271.89917
+      value: -234.9731
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1386,6 +1386,10 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u5426"
       objectReference: {fileID: 0}
+    - target: {fileID: 3814407818929445080, guid: f97307d9f747d494182e650eca2e3312, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4815170550084725317, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_Text
       value: "\u662F"
@@ -1409,6 +1413,10 @@ PrefabInstance:
     - target: {fileID: 6105755564847118056, guid: f97307d9f747d494182e650eca2e3312, type: 3}
       propertyPath: m_text
       value: "\u663E\u793A\u4E91\u5C42?"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949479710450992351, guid: f97307d9f747d494182e650eca2e3312, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1565,7 +1573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6004983436288741366, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_text
-      value: Unknow %
+      value: Unknow
       objectReference: {fileID: 0}
     - target: {fileID: 6497597936550056333, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: m_AnchoredPosition.x

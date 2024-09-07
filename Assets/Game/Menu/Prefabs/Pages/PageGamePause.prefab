@@ -387,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Menu.MainHighScore
+      value: CORE.UI.MENU.MAIN.HIGHSCORE
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString
@@ -565,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Menu.MainSettings
+      value: CORE.UI.MENU.MAIN.SETTINGS
       objectReference: {fileID: 0}
     - target: {fileID: 3405820842219860313, guid: 19d23828a8e3a3b408e04c70f20f19e9, type: 3}
       propertyPath: DefaultString

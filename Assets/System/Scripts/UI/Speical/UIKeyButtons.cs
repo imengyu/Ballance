@@ -140,6 +140,14 @@ namespace Ballance2.UI
       keyboardBox.transform.DestroyAllChildren();
       keyButtons.Clear();
     }
+    public void SetDisplayActionVisible(int index, bool visible)
+    {
+      keyButtons[index].gameObject.SetActive(visible);
+      if (visible)
+        keyButtons[index].EnableOnScreenButton();
+      else
+        keyButtons[index].DisableOnScreenButton();
+    }
     public void AddDisplayActions(InputAction action, string DisplayName, Action actualAction = null) 
     {
       var controlPath = GetCurrentControlPath(action);

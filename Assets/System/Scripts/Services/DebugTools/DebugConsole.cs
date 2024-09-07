@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Ballance2.Res;
 using Ballance2.Services;
 using Ballance2.Services.InputManager;
@@ -37,6 +38,8 @@ namespace Ballance2.DebugTools
     public TMP_InputField FilterLogInputField;
     public TMP_Text CommandHelpText;
 
+    public static DebugConsole Instance;
+
     private struct LogItem
     {
       public GameObject go;
@@ -59,6 +62,7 @@ namespace Ballance2.DebugTools
 
     private void Start()
     {
+      Instance = this;
       // 注册日志观察者
       logObserver = Log.RegisterLogObserver((level, tag, message, stackTrace) =>
       {
@@ -83,26 +87,8 @@ namespace Ballance2.DebugTools
           message, 
           level >= LogLevel.Warning ? $"\n{stackTrace}" : ""
         );
+        AddStringToConsole(t, message, level, stackTrace);
 
-        var newEle = CloneUtils.CloneNewObjectWithParent(DebugLogItemPrefab, ConsoleContainerContent);
-        var text = newEle.GetComponent<TMP_Text>();
-        text.text = t;
-        UIAnchorPosUtils.SetUIAnchor((RectTransform)newEle.transform, UIAnchor.Left, UIAnchor.Top);
-        UIAnchorPosUtils.SetUIPivot((RectTransform)newEle.transform, UIPivot.TopLeft);
-
-        var item = new LogItem
-        {
-          go = newEle,
-          message = message,
-          level = level,
-          stackTrace = stackTrace
-        };
-        logItems.Add(item);
-
-        //重新布局
-        RelayoutLogContent();
-
-        text.gameObject.SetActive(true);
         //滚动到末尾
         if (logAutoScroll)
           ConsoleScrollView.normalizedPosition = Vector2.zero;
@@ -140,9 +126,40 @@ namespace Ballance2.DebugTools
       }*/
     }
 
+    public void AddStringToConsole(string str, string message = "", LogLevel level = LogLevel.None, string stackTrace = "")
+    {
+      var newEle = CloneUtils.CloneNewObjectWithParent(DebugLogItemPrefab, ConsoleContainerContent);
+      var text = newEle.GetComponent<TMP_Text>();
+      text.text = str;
+      UIAnchorPosUtils.SetUIAnchor((RectTransform)newEle.transform, UIAnchor.Left, UIAnchor.Top);
+      UIAnchorPosUtils.SetUIPivot((RectTransform)newEle.transform, UIPivot.TopLeft);
+
+      var item = new LogItem
+      {
+        go = newEle,
+        message = message,
+        level = level,
+        stackTrace = stackTrace
+      };
+      logItems.Add(item);
+
+      //重新布局
+      RelayoutLogContent();
+
+      text.gameObject.SetActive(true);
+    }
+
+    private float lastLayoutTime = 0;
+
     //布局日志界面
     private void RelayoutLogContent()
     {
+      if (Time.time - lastLayoutTime < 0.2f)
+      {
+        lastLayoutTime = Time.time;
+        return;
+      }
+      lastLayoutTime = Time.time;
       var transform = ConsoleContainerContent;
       var logFilterEmpty = logFilter == "";
       float h = 0.0f, w = transform.sizeDelta.x;

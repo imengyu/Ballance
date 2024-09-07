@@ -88,7 +88,7 @@ namespace Ballance2.Game.LevelEditor
         return;
       }
 
-      var levelName = level == null ? "" : Path.GetFileNameWithoutExtension(((LevelRegistedLocallItem)level).path);
+      var levelName = level == null ? "" : Path.GetFileNameWithoutExtension(((LevelRegistedLocalItem)level).path);
       Log.D(TAG, $"Entry with {levelName}");
 
       if (isFirstInit)
@@ -168,7 +168,12 @@ namespace Ballance2.Game.LevelEditor
     {
       Log.E(TAG, message);
       LevelEditorUIControl.HideLoading();
-      LevelEditorUIControl.Alert("I18N:core.editor.messages.LoadFailed", message, LevelEditorConfirmIcon.Error, onConfirm: () => Quit());
+      LevelEditorUIControl.Alert("I18N:core.editor.messages.LoadFailed", message, LevelEditorConfirmIcon.Error, onConfirm: () => {
+        if (isTest)
+          ExitTestMode();
+        else
+          Quit();
+      });
     }
     private void ShowNewLevelDialog() {
       Log.D(TAG, $"New Level Dialog");
@@ -180,6 +185,20 @@ namespace Ballance2.Game.LevelEditor
         showInput: true,
         onConfirm: (text) =>
       {
+        if (string.IsNullOrEmpty(text))
+        {
+          GameManager.Instance.Delay(0.3f, () =>
+          {
+            LevelEditorUIControl.Alert("", "I18N:core.editor.messages.EnterPathInvalid", LevelEditorConfirmIcon.Error, onConfirm: () =>
+            {
+              GameManager.Instance.Delay(0.3f, () =>
+              {
+                ShowNewLevelDialog();
+              });
+            });
+          });
+          return;
+        }
         var finalName = StringUtils.RemoveSpeicalChars(text);
         var levelPath = GamePathManager.GetLevelRealPath(finalName, false, true);
         if (Directory.Exists(levelPath))
@@ -264,19 +283,23 @@ namespace Ballance2.Game.LevelEditor
       LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
       StartCoroutine(_IntoTest());
     }
-    public void ExitTestMode()
+    public void ExitTestModeAndAsk()
     {
       LevelEditorUIControl.Confirm(
         "",
         "I18N:core.editor.messages.ExitTestModeAsk",
         LevelEditorConfirmIcon.Warning, onConfirm: (_) =>
         {
-          LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.PrepareEditor");
-          LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
-          LevelEditorUIControl.SetPauseTipShow(false);
-          StartCoroutine(_QuitTest());
+          ExitTestMode();
         }
       );
+    }
+    public void ExitTestMode()
+    {
+      LevelEditorUIControl.ShowLoading("I18N:core.editor.messages.PrepareEditor");
+      LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.None);
+      LevelEditorUIControl.SetPauseTipShow(false);
+      StartCoroutine(_QuitTest());
     }
     public void TestResetSector(bool restart)
     {
@@ -396,6 +419,7 @@ namespace Ballance2.Game.LevelEditor
 
 
     private bool isTakingScreenshort = false;
+    private bool isTest = false;
     private IEnumerator _Screenshort()
     {
       ScreenShortAudio.Play();
@@ -421,8 +445,11 @@ namespace Ballance2.Game.LevelEditor
     }
     private IEnumerator _IntoTest()
     {
+      EventSystem.current.SetSelectedGameObject(null);
+
       yield return new WaitForSeconds(1);
 
+      isTest = true;
       GameMediator.Instance.DispatchGlobalEvent(GameEventNames.EVENT_LEVEL_BUILDER_BEFORE_START);
 
       //当选择了检查点时，则从检查点选择的节开始
@@ -449,11 +476,10 @@ namespace Ballance2.Game.LevelEditor
 
       LevelEditorUIControl.SetToolBarMode(LevelEditorUIControl.ToolBarMode.Test);
       LevelEditorUIControl.HideLoading();
-
-      EventSystem.current.SetSelectedGameObject(null);
     }
     private IEnumerator _QuitTest()
     {
+      isTest = false;
       yield return new WaitForSeconds(1);
 
       GamePlayManager.Instance._Stop(BallControlStatus.NoControl);

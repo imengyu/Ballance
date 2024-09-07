@@ -38,7 +38,7 @@ namespace Ballance2.UI
       if (controlPath.StartsWith("<Keyboard>/")) {
         controllerIcon.gameObject.SetActive(false);
         keyboardBox.gameObject.SetActive(true);
-        keyboardText.text = key;
+        keyboardText.text = key.ToUpper();
         return;
       } 
 

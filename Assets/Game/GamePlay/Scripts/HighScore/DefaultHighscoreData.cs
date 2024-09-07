@@ -13,19 +13,19 @@ namespace Ballance2.Game.GamePlay
     /// </summary>
     /// <value></value>
     public static readonly string[] DefaultHighscoreLevelNamesData = new string[] {
-      "level01",
-      "level02",
-      "level03",
-      "level04",
-      "level05",
-      "level06",
-      "level07",
-      "level08",
-      "level09",
-      "level10",
-      "level11",
-      "level12",
-      "level13"
+      "Level01",
+      "Level02",
+      "Level03",
+      "Level04",
+      "Level05",
+      "Level06",
+      "Level07",
+      "Level08",
+      "Level09",
+      "Level10",
+      "Level11",
+      "Level12",
+      "Level13"
     };
 
     private static Dictionary<string, List<HighscoreDataItem>> _DefaultHighscoreData = null;
@@ -80,9 +80,9 @@ namespace Ballance2.Game.GamePlay
           return _DefaultHighscoreData;
         _DefaultHighscoreData = new Dictionary<string, List<HighscoreDataItem>>();
         for(int i = 1; i <= 11; i++)
-          _DefaultHighscoreData.Add($"level{(i < 10 ? '0' : "")}{i}", DefaultHightScoreLev01To11Data);
-        _DefaultHighscoreData.Add($"level12", DefaultHightScoreLev12Data);
-        _DefaultHighscoreData.Add($"level13", DefaultHightScoreLev01To11Data);
+          _DefaultHighscoreData.Add($"Level{(i < 10 ? '0' : "")}{i}", DefaultHightScoreLev01To11Data);
+        _DefaultHighscoreData.Add($"Level12", DefaultHightScoreLev12Data);
+        _DefaultHighscoreData.Add($"Level13", DefaultHightScoreLev01To11Data);
         return _DefaultHighscoreData;
       }
     }

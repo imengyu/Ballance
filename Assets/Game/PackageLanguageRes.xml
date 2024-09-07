@@ -35,9 +35,7 @@
             <Text name="GoGithub">前往项目 GitHub </Text>
             <Text name="ProjectAbout">Ballance Rebuild 是滚球 Ballance 游戏的开源 Unity 重制版，让 Ballance 老游戏可以运行在最新的设备上。由 快乐的梦鱼 制作。\n\n你可以游玩这个重制版，还可以根据此重制版制作自定义模组或者地图，分享给其他玩家游玩。\n\n项目的源代码存放在 https://github.com/imengyu/Ballance 。\n\n如果你遇到了BUG，或者有很棒的点子，建议，欢迎前往项目主页 https://github.com/imengyu/Ballance 提交你的 Issue，我们一起讨论呀。\n\n如果希望为Ballance开发自己的mod，关卡，欢迎前往 https://github.com/imengyu/Ballance/wiki 了解相关教程！\n\n也欢迎在 Ballance 吧讨论游戏。</Text>
           </Group>
-          <Group name="Start">    
-            <Text name="StartMenuNMO">加载旧版Ballance关卡（NMO文件）</Text>
-            <Text name="StartMenuNMODesc"><![CDATA[ 你可以加载一个标准的 Ballance 原版关卡（NMO文件）。大部分关卡可以加载成功并且游玩，但目前有少数限制：\n不能加载带有 Virtools 脚本的关卡\n不支持 Virtools 的点、线网格。\n材质不支持 Virtools 的特殊效果，将使用默认材质代替。\n不支持设置关卡天空盒、关卡分数，没有背景音乐。]]></Text>
+          <Group name="Start">
             <Text name="NewLevel">创建新关卡</Text>
             <Text name="EditExistsLevel">编辑已有关卡</Text>
           </Group>
@@ -48,7 +46,7 @@
               <Text name="Local">本地关卡</Text>
               <Text name="Mine">我的关卡</Text>
             </Group>
-            <Text name="EmptySubscribe">你还没有订阅关卡，可以去创意工坊订阅一些</Text>
+            <Text name="EmptySubscribe"><![CDATA[很遗憾，作者没有足够的资金和版权，Ballance重制版不能上架Steam，未来如果有一天可以上架，这里会有内容的]]></Text>
             <Text name="EmptyMine">你还没有创建过自己的关卡，可以去关卡编辑器创建一个属于自己的关卡！</Text>
             <Text name="Empty">当前分类下没有找到关卡，去其他地方看看吧</Text>
             <Text name="Play">游玩！</Text>
@@ -83,16 +81,22 @@
             <Text name="Next">下一关</Text>
           </Group>
           <Group name="TutorialText">
-            <Text name="1">欢迎来到 Ballance！\nBallance 平衡球 是一款滚球游戏。\n你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。\n\n游戏教程：\n您可以随时使用“ESC”键停止或退出游戏。\n你可以按“回车”键继续游戏教程，或按“Q”键退出教程。</Text>
-            <Text name="2">视图旋转：\n按住左“SHIFT”键并使用“LEFT”或“RIGHT”箭头键将视图旋转90°。\n\n按“回车”键继续...</Text>
-            <Text name="3">俯瞰视图：\n按住“空格键”以升高摄像机，你可以看的更高。\n\n按“回车”键继续...</Text>
-            <Text name="4">移动球：\n请将视线转向前方，直到看到前面有两座塔楼的轨道。\n使用“箭头”键（不带“SHIFT”）向前、向后、向左和向右移动球。\n\n请沿着这条路走！</Text>
-            <Text name="5">额外生命球：\n\n如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。\n\n按“回车”键继续...</Text>
-            <Text name="6">变球器：\n\n通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。\n\n这是一个石质变球器。\n\n 按“回车”键继续...</Text>
-            <Text name="7">这个斜坡太陡了，不能用石球！\n\n找一个木制变球器，再试一次。\n\n提示：转动视图（SHIFT+LEFT/RIGHT），以获得更好的方向。向后滚动可能很危险！\n\n按“回车”键继续...</Text>
-            <Text name="8">额外分数球：\n\n左边的显示屏显示的是你的实际时间点，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。\n\n按“回车”键继续...</Text>
-            <Text name="9">检查点：\n\n这是你必须通过的第一个检查点。\n\n如果你在游戏中失去了生命，你可以从最后一个检查点继续游戏。\n\n按“回车”键继续...</Text>
-            <Text name="10">最后有一些提示：\n\n如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。\n\n额外提示：欢迎前往 Ballance 吧讨论游戏！\n\n按“回车”键退出教程...</Text>
+            <Text name="Continue">继续...</Text>
+            <Text name="Quit">退出教程</Text>
+            <Text name="KeyAnd">{0} 和 {1}</Text>
+            <Text name="KeyOr">{0} 或 {1}</Text>
+            <Text name="KeyOr4">{0}、{1}、{2}、{3}</Text>
+            <Text name="KeyBoth">按住 {0} 并使用 {1}</Text>
+            <Text name="1"><![CDATA[ 欢迎来到平衡球！\n平衡球是一款滚球游戏。你需要操纵一个球，穿过一个充满了令人费解机制的超现实云世界，经历一系列的挑战，通过富有想象力的路线来操纵小巧到达终点。\n\n游戏教程：\n您可以随时使用“ESC”键暂停或退出游戏。]]> </Text>
+            <Text name="2"><![CDATA[ 视图视角：\n<settings-replacer=control>RotateView</settings-replacer> 可以将视角旋转90°。]]> </Text>
+            <Text name="3"><![CDATA[ 俯瞰视角：\n使用 <settings-replacer=control>Overlook</settings-replacer> 可以升高视角，你可以看的更高。]]> </Text>
+            <Text name="4"><![CDATA[ 移动球：\n请将视线看向前方，直到看到前面有两座塔楼和轨道。\n使用 <settings-replacer=control>Move</settings-replacer> 向前、向后、向左和向右移动球。\n\n请沿着这条路走！]]> </Text>
+            <Text name="5"><![CDATA[ 额外生命球：\n\n如果你从轨道上掉下来，你就会失去一条生命。你的剩余生命将显示在屏幕的右下角。通过碰撞“额外生命球”，你可以获得额外的生命。]]> </Text>
+            <Text name="6"><![CDATA[ 变球器：\n\n通过使用“变球器”，你可以改变球的材质。变球器显示的材料表示变球器的类型。\n\n这是一个石质变球器。]]> </Text>
+            <Text name="7"><![CDATA[ 这个斜坡太陡了，不能用石球！\n\n找一个木制变球器，再试一次。\n\n提示：你可以转动视角 (<settings-replacer=control>RotateView</settings-replacer>)，以获得更好的方向。注意，向后滚动可能很危险！]]> </Text>
+            <Text name="8"><![CDATA[ 额外分数球：\n\n左边的显示屏显示的是你的实际时间点分数，在比赛中时间点会不断减少。你可以通过多拿一个分数球来提高分数。]]> </Text>
+            <Text name="9"><![CDATA[ 检查点：\n\n这是你必须通过的第一个检查点。\n\n如果你在游戏中失去了生命，你可以从最近的一个检查点重新继续游戏。]]> </Text>
+            <Text name="10"><![CDATA[ 最后有一些提示：\n\n如果你在某个时候遇到困难或需要一些技术帮助，欢迎前往 Ballance 吧分享问题，和大家一起讨论游戏！]]> </Text>
           </Group>
         </Group>
         <Group name="Controller">
@@ -132,11 +136,6 @@
             <Text name="ResetAsk">你是否希望重设所有设置为默认值?</Text>
             <Text name="MenuOverlook">俯视</Text>
             <Text name="UISize">键盘大小</Text>
-            <Text name="KeypadBaseLeft">按键式左</Text>
-            <Text name="KeypadBaseRight">按键式右</Text>
-            <Text name="KeypadBaseCenter">按键式两侧</Text>
-            <Text name="KeypadBaseJoyLeft">摇杆式左（不能走单轨）</Text>
-            <Text name="KeypadBaseJoyRight">摇杆式右（不能走单轨）</Text>
             <Text name="TitleMobile">手机</Text>
             <Text name="TitleOthers">其他按键</Text>
             <Text name="Screenshot">截图</Text>
@@ -162,6 +161,13 @@
             <Text name="YouAreInDebugMode">你已经在开发者模式了哦，第一次开启需要重启游戏才能生效</Text>
             <Text name="ClickNTimeToDebugMode">再点击 {0} 次进入开发者模式了</Text>
             <Text name="Version">版本：{0}</Text>
+          </Group>
+          <Group name="ControlKeypad">
+            <Text name="BaseLeft">按键式左</Text>
+            <Text name="BaseRight">按键式右</Text>
+            <Text name="BaseCenter">按键式两侧</Text>
+            <Text name="BaseJoyLeft">摇杆式左（不能走单轨）</Text>
+            <Text name="BaseJoyRight">摇杆式右（不能走单轨）</Text>
           </Group>
         </Group>
         <Group name="PackageManager">
@@ -201,7 +207,7 @@
         </Group>
         <Group name="LevelLoaderErrorUI">
           <Text name="Title">oops! 加载关卡失败了</Text>
-          <Text name="Message">放心，这不是你的问题，换一个关卡玩吧\n如果这是其他玩家制作的关卡，可以试试向他们反馈问题。\n关卡开发者：您可以进入开发者模式按 F12 进入控制台查看更多错误信息。</Text>
+          <Text name="Message">放心，这不是你的问题，换一个关卡玩吧\n如果这是其他玩家制作的关卡，可以试试向他们反馈问题。\n关卡开发者：您可以进入开发者模式按 ~ 进入控制台查看更多错误信息。</Text>
           <Text name="CopyErrInfo">复制错误信息</Text>
           <Text name="ErrInfoCopied">错误信息已复制到剪贴板</Text>
         </Group>
@@ -214,10 +220,6 @@
           <Text name="Skylayer">显示云层</Text>
           <Text name="CameraSpeed">相机速度 {0}</Text>
         </Group>
-      </Group>
-      <Group name="package">
-        <Text name="Introduction">Ballance 基础系统包，包含全部自带基础球与基础机关</Text>
-        <Text name="Description">Ballance 基础系统包，包含全部自带基础球与基础机关，是所有MOD的基础依赖，不可卸载。</Text>
       </Group>
       <Group name="editor">
         <Text name="Loading">加载中</Text>
@@ -270,6 +272,7 @@
         </Group>
         <Group name="messages">
           <Text name="QuitAsk">确定退出编辑器吗？如果没有保存就退出的话会丢失修改哦！</Text>
+          <Text name="EnterPathInvalid">您输入的文件名称无效，请重新输入</Text>
           <Text name="ExitTestModeAsk">确定退出试验场吗？</Text>
           <Text name="EnterSector">请输入要跳转的小节（1-{0}）：</Text>
           <Text name="EnterSectorInvalid">输入的小节数字不正确</Text>
@@ -307,6 +310,7 @@
           <Text name="DeleteImportAsset">您将要删除此资产，删除会导致引用此资产的模型实例不可再使用，确认吗？</Text>
           <Text name="PackeLevelFailed">打包关卡失败</Text>
           <Text name="CantEditPackedLevel">错误，已打包的关卡无法编辑</Text>
+          <Text name="PackeLevelSuccess">打包关卡成功！\n但是很遗憾，作者没有足够的资金和版权，ballance重制版不能上架Steam，因此这个功能搁置了。\n你依然可以把你的关卡通过其他方式分享文件给其他玩家游玩。</Text>
         </Group>
         <Text name="StatusText">{0}/{1} 对象/小节 选中 {2}</Text>
         <Text name="CreateNew">创建新关卡文件</Text>
@@ -579,11 +583,13 @@
           <Text name="PleaseEnterName">请填写物品名称哦</Text>
         </Group>
         <Group name="help">
+          <Text name="Title">编辑器操作帮助</Text>
+          <Text name="ControllerTip">提示：关卡编辑器操作比较复杂，建议使用鼠标，控制器可能不能完全完成所有操作</Text>
           <Text name="TestHelpTitle">欢迎使用试验场！</Text>
           <Text name="TesHelpContent"><![CDATA[ 试验场是一个模拟环境，允许您测试自己的关卡是否可玩，在试验场中您可以随时重置球，随时重置机关，球可以在试验场上下飞行。\n\n小提示：进入试验场之前先选择检查点，可以从该检查点开始玩哦！ ]]></Text>
           <Text name="CustomSkyTip">小提示：选择 custom 可以自定义天空图片</Text>
           <Text name="BasicTitle">关卡编辑器</Text>
-          <Text name="BasicDesc"><![CDATA[ 欢迎使用关卡编辑器！\n\n关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。 ]]></Text>
+          <Text name="BasicDesc"><![CDATA[ 欢迎使用关卡编辑器！\n\n关卡编辑器是一个自由试验场，您可以在这里创建您自己独一无二的关卡和迷宫，在这里尽情的游玩。\n您还可以把自己制作的关卡分享给其他玩家游玩。\n\n当您编辑关卡完成后，可以点击“测试玩”进入试验场模式，随时测试关卡是否可玩。\n\n关卡编辑器需要使用鼠标操作。 ]]></Text>
           <Text name="MoveTitle">基础操作</Text>
           <Text name="MoveDesc"><![CDATA[ <size=+1>移动与旋转视角</size>\n\n按住鼠标右键 <sprite=6> 然后拖动鼠标即可旋转视角。\n按住鼠标中键 <sprite=7> 然后拖动鼠标即可平移视角。\n按住鼠标右键 <sprite=6> 然后使用 <sprite=1> 键也可旋转视角，按 <sprite=2> 键可以下降视角，按 <sprite=3> 键可以上升视角。\n\n<size=+1>选择、添加与删除对象</size>\n\n使用鼠标左键 <sprite=5> 点击可以选择关卡中的对象。\n在资产工具中选中你想要添加的对象，然后拖拽入关卡可以添加。\n点击工具栏上的删除按钮可以删除选中的对象。\n ]]></Text>
           <Text name="ResourceTitle">资产库</Text>

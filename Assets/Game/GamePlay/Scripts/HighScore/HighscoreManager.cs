@@ -192,7 +192,8 @@ namespace Ballance2.Game.GamePlay
     /// <param name="levelName">关卡名称</param>
     /// <param name="score">分数</param>
     /// <returns>是否有新的高分</returns>
-    public bool CheckLevelHighScore(string levelName, int score) {
+    public bool CheckLevelHighScore(string levelName, int score)
+    {
       var list = GetData(levelName);
       if (list == null)
         return true;

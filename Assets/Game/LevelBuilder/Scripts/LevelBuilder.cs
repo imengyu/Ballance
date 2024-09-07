@@ -63,7 +63,7 @@ namespace Ballance2.Game.LevelBuilder {
 
     private RectTransform LevelBuilderUI;
     private Progress LevelBuilderUIProgress;
-    private TMP_Text LevelBuilderUITextErrorContent;
+    private UIText LevelBuilderUITextErrorContent;
     private GameObject LevelBuilderUIPanelFailed;
     private Button LevelBuilderUIButtonBack;
     private Button LevelBuilderUIButtonSubmitBug;
@@ -86,7 +86,7 @@ namespace Ballance2.Game.LevelBuilder {
 
           LevelBuilderUI = GameUIManager.Instance.InitViewToCanvas(GamePackage.GetSystemPackage().GetPrefabAsset("LevelBuilderUI"), "GameLevelBuilderUI", true);
           LevelBuilderUIProgress = LevelBuilderUI.Find("Progress").GetComponent<Progress>();
-          LevelBuilderUITextErrorContent = LevelBuilderUI.Find("PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent").GetComponent<TMP_Text>();
+          LevelBuilderUITextErrorContent = LevelBuilderUI.Find("PanelFailed/ErrorArea/ScrollView/Viewport/TextErrorContent").GetComponent<UIText>();
           LevelBuilderUIPanelFailed = LevelBuilderUI.Find("PanelFailed").gameObject;
           LevelBuilderUIButtonBack = LevelBuilderUI.Find("PanelFailed/ButtonBack").GetComponent<Button>();
           LevelBuilderUIButtonCopyErrInfo = LevelBuilderUI.Find("PanelFailed/ButtonCopyErrInfo").GetComponent<Button>();
@@ -1287,14 +1287,30 @@ namespace Ballance2.Game.LevelBuilder {
       if (IsEditorMode)
         return;
       if (level.skyBox == "custom") {
+
         //加载自定义天空盒
         Log.D(TAG, "Load custom SkyBox");
-        var B = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.B);
-        var F = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.F);
-        var L = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.L);
-        var R = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.R);
-        var T = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.T);
-        var D = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.D);
+
+        Texture B = null, F = null, L = null, R = null, T = null, D = null;
+        if (IsDynamicLevel)
+        {
+          //动态关卡资源固定
+          B = CurrentLevelAsset.GetTextureAsset("CustomSkyBoxB.png");
+          F = CurrentLevelAsset.GetTextureAsset("CustomSkyBoxF.png");
+          L = CurrentLevelAsset.GetTextureAsset("CustomSkyBoxL.png");
+          R = CurrentLevelAsset.GetTextureAsset("CustomSkyBoxR.png");
+          T = CurrentLevelAsset.GetTextureAsset("CustomSkyBoxT.png");
+          D = CurrentLevelAsset.GetTextureAsset("CustomSkyBoxD.png");
+        }
+        else if (level.customSkyBox != null)
+        {
+          B = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.B);
+          F = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.F);
+          L = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.L);
+          R = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.R);
+          T = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.T);
+          D = CurrentLevelAsset.GetTextureAsset(level.customSkyBox.D);
+        }
         if (B == null) Log.W(TAG, "Failed to load customSkyBox.B texture");
         if (F == null) Log.W(TAG, "Failed to load customSkyBox.F texture");
         if (L == null) Log.W(TAG, "Failed to load customSkyBox.L texture");
@@ -1354,7 +1370,7 @@ namespace Ballance2.Game.LevelBuilder {
       Log.D(TAG, "Load others");
       //加载第一关教程
       //-----------------------------
-      if (!IsPreviewMode && !IsEditorMode && levelName == "level01")
+      if (!IsPreviewMode && !IsEditorMode && levelName == "Level01")
         GameManager.Instance.InstancePrefab(GamePackage.GetSystemPackage().GetPrefabAsset("TutorialCore.prefab"), "GameTutorialCore");
       if (!IsEditorMode) 
       {

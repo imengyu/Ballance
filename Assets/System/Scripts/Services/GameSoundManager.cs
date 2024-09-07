@@ -265,7 +265,8 @@ namespace Ballance2.Services
     {
       if (!IsSoundPlayerRegistered(audioSource))
         RegisterAudioSource(type, audioSource);
-      else GameErrorChecker.LastError = GameError.AlreadyRegistered;
+      else 
+        GameErrorChecker.LastError = GameError.AlreadyRegistered;
       return audioSource;
     }
 

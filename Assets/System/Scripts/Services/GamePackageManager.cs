@@ -176,8 +176,9 @@ namespace Ballance2.Services
         {
           packageEnableStatusListXml.LoadXml(sr.ReadToEnd());
         }
-        catch
+        catch(Exception e)
         {
+          Log.W(TAG, "Parse PackageStatus.xml failed : " + e.ToString());
           packageEnableStatusListXml.LoadXml(ConstStrings.DEFAULT_PACKAGE_STATUS_XML);
         }
         sr.Close();

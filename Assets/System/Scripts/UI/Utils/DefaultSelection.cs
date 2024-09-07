@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,14 +10,26 @@ namespace Ballance2.UI.Utils
   public class DefaultSelection : MonoBehaviour
   {
     public GameObject select;
+    public GameObject selectSecondChoice;
 
     public void SelectDefaultSelection()
     {
-      Select(select);
+      if (select.activeSelf)
+        Select(select);
+      else
+        Select(selectSecondChoice);
     }
     public void Select(GameObject go)
     {
-      EventSystem.current.SetSelectedGameObject(go);
+      StartCoroutine(DelaySelect(go));
+    }
+
+    private IEnumerator DelaySelect(GameObject go)
+    {
+      yield return new WaitForSeconds(0.01f);
+
+      if (EventSystem.current.currentSelectedGameObject != go)
+        EventSystem.current.SetSelectedGameObject(go);
     }
   }
 }

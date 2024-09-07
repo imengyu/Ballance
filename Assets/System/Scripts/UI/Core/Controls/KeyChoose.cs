@@ -79,6 +79,12 @@ namespace Ballance2.UI.Core.Controls
     {
       if (bindAction != null)
       {
+        var needRenableAfterRebind = false;
+        if (bindAction.enabled)
+        {
+          bindAction.Disable();
+          needRenableAfterRebind = true;
+        }
         var uIManager = GameUIManager.Instance;
         uIManager.GoPageWithOptions("PageBindKey", new Dictionary<string, object>() {
           { "keyName", ActionName == "" ? Text.text : ActionName },
@@ -105,8 +111,13 @@ namespace Ballance2.UI.Core.Controls
           onSelect?.Invoke(bindAction.GetBindingDisplayString(BindingIndex));
           uIManager.BackPreviusPage();
           rebindOperation.Dispose();
-        })
-          .Start();
+          if (needRenableAfterRebind)
+            bindAction.Enable();
+        }).OnCancel(_ =>
+        {
+          if (needRenableAfterRebind)
+            bindAction.Enable();
+        }).Start();
       }
     }
 

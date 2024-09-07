@@ -164,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.AudioBackground
+      value: CORE.UI.SETTINGS.AUDIO.BACKGROUND
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -353,7 +353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.AudioMain
+      value: CORE.UI.SETTINGS.AUDIO.MAIN
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString
@@ -506,7 +506,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.AudioTilte
+      value: CORE.UI.SETTINGS.AUDIO.TILTE
       objectReference: {fileID: 0}
     - target: {fileID: 2620808502569428468, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: DefaultString
@@ -606,7 +606,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: b3878ebda42abc4419aa253900051707, type: 2}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_fontStyle
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6536691433535230804, guid: 45ca3f86a530c7344aa1f0b57c3a75f3, type: 3}
       propertyPath: m_fontSizeBase
@@ -831,7 +831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: ResourceKey
-      value: core.ui.Settings.AudioUI
+      value: CORE.UI.SETTINGS.AUDIO.UI
       objectReference: {fileID: 0}
     - target: {fileID: 7032980752278618802, guid: 943dd3c0e7cff344b94a30d9844d13cb, type: 3}
       propertyPath: DefaultString

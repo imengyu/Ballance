@@ -47,7 +47,7 @@ namespace Ballance2.Services.I18N
     /// <returns>返回找到的字符串，如果未找到，则返回 [Key xxx not found!]</returns>
     public static string Tr(string key)
     {
-      var str = I18NProvider.GetLanguageString(key);
+      var str = I18NProvider.GetLanguageString(key, true);
       if (str != null)
         return str;
       return string.Format("[Key {0} not found!]", key);
@@ -60,23 +60,10 @@ namespace Ballance2.Services.I18N
     /// <returns></returns>
     public static string Tr(string key, string defaultString)
     {
-      var str = I18NProvider.GetLanguageString(key);
+      var str = I18NProvider.GetLanguageString(key, false);
       if (str != null)
         return str;
       return defaultString;
-    }
-    /// <summary>
-    /// 获取国际化字符串并自定义格式化参数
-    /// </summary>
-    /// <param name="key">字符串键</param>
-    /// <param name="formatParams">要自定义格式化的参数</param>
-    /// <returns></returns>
-    public static string TrF(string key, params object[] formatParams)
-    {
-      var str = I18NProvider.GetLanguageString(key);
-      if (str != null)
-        return string.Format(str, formatParams);
-      return string.Format("[Key {0} not found!]", key);
     }
     /// <summary>
     /// 获取国际化字符串并自定义格式化参数
@@ -87,7 +74,7 @@ namespace Ballance2.Services.I18N
     /// <returns></returns>
     public static string TrF(string key, string defaultString, params object[] formatParams)
     {
-      var str = I18NProvider.GetLanguageString(key);
+      var str = I18NProvider.GetLanguageString(key, string.IsNullOrEmpty(defaultString));
       try {
         return string.Format(str != null ? str : defaultString, formatParams);
       } catch (System.Exception e) {
